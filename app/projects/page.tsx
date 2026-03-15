@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Clock, Star, ListChecks, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 
@@ -14,40 +15,44 @@ export default function ProjectsPage() {
 
   const projects = [
     {
+      slug: "popsicle-stick-bridge",
       title: t.projectsPage.bridgeTitle,
       category: "engineering" as ProjectCategory,
       difficulty: t.projectsPage.easy,
       time: "1-2 hours",
       image: "/images/trussbridge.jpg",
       description: t.projectsPage.bridgeDesc,
-      materials: ["Popsicle sticks (50+)", "Wood glue or hot glue", "Ruler", "Small weights for testing"],
+      materials: ["Popsicle sticks (50+)", "Wood glue or hot glue", "Printable truss template", "Small weights for testing"],
       steps: [
-        "Plan your bridge design on paper",
-        "Build the base using triangular supports",
-        "Add the deck and side supports",
+        "Print or trace the truss template",
+        "Build two matching trusses",
+        "Reinforce the weak joints",
+        "Add the deck and top bracing",
         "Let it dry completely",
         "Test with weights and see how much it holds!",
       ],
       tagColor: "bg-avanza-purple",
     },
     {
+      slug: "lego-robot-builder",
       title: t.projectsPage.robotTitle,
       category: "robotics" as ProjectCategory,
       difficulty: t.projectsPage.medium,
       time: "2-3 hours",
-      image: "/images/mindstorm.jpg",
+      image: "/images/lego robotics.jpeg",
       description: t.projectsPage.robotDesc,
-      materials: ["LEGO bricks (assorted)", "LEGO motors (optional)", "LEGO wheels", "Creativity!"],
+      materials: ["SPIKE Prime hub", "Large angular motor", "Force sensor", "Technic beams and pins"],
       steps: [
-        "Sketch your robot design",
-        "Build the robot body and frame",
-        "Add wheels or legs for movement",
-        "Decorate and customize your robot",
-        "Test it out and make improvements!",
+        "Open the official Super Cleanup build guides",
+        "Build a wide rolling base",
+        "Add the front tower and grabber arm",
+        "Connect the motor and force sensor",
+        "Test different objects and compare results!",
       ],
       tagColor: "bg-avanza-green",
     },
     {
+      slug: "coke-mentos-experiment",
       title: t.projectsPage.mentosTitle,
       category: "science" as ProjectCategory,
       difficulty: t.projectsPage.easy,
@@ -65,6 +70,7 @@ export default function ProjectsPage() {
       tagColor: "bg-avanza-orange",
     },
     {
+      slug: "my-first-python-program",
       title: t.projectsPage.pythonTitle,
       category: "coding" as ProjectCategory,
       difficulty: t.projectsPage.easy,
@@ -82,6 +88,7 @@ export default function ProjectsPage() {
       tagColor: "bg-avanza-teal",
     },
     {
+      slug: "baking-soda-volcano",
       title: t.projectsPage.volcanoTitle,
       category: "science" as ProjectCategory,
       difficulty: t.projectsPage.easy,
@@ -99,6 +106,7 @@ export default function ProjectsPage() {
       tagColor: "bg-avanza-orange",
     },
     {
+      slug: "simple-circuit-light",
       title: t.projectsPage.circuitTitle,
       category: "engineering" as ProjectCategory,
       difficulty: t.projectsPage.medium,
@@ -207,6 +215,7 @@ export default function ProjectsPage() {
 
 function ProjectCard({
   title,
+  slug,
   difficulty,
   time,
   image,
@@ -217,6 +226,7 @@ function ProjectCard({
   translations,
 }: {
   title: string
+  slug: string
   difficulty: string
   time: string
   image: string
@@ -289,9 +299,12 @@ function ProjectCard({
           </ol>
         </div>
 
-        <button className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full ${tagColor} px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02]`}>
+        <Link
+          href={`/projects/${slug}`}
+          className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full ${tagColor} px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02]`}
+        >
           {translations.viewFullProject} <ArrowRight className="h-4 w-4" />
-        </button>
+        </Link>
       </div>
     </div>
   )

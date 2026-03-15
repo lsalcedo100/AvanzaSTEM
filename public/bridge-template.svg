@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="11in" height="3.5in" viewBox="0 0 1056 336" fill="none">
+  <rect width="1056" height="336" fill="#F8FCFF"/>
+  <g opacity="0.22" stroke="#8CB7DB" stroke-width="1">
+    <path d="M0 24.5H1056"/>
+    <path d="M0 72.5H1056"/>
+    <path d="M0 120.5H1056"/>
+    <path d="M0 168.5H1056"/>
+    <path d="M0 216.5H1056"/>
+    <path d="M0 264.5H1056"/>
+    <path d="M0 312.5H1056"/>
+    <path d="M24.5 0V336"/>
+    <path d="M72.5 0V336"/>
+    <path d="M120.5 0V336"/>
+    <path d="M168.5 0V336"/>
+    <path d="M216.5 0V336"/>
+    <path d="M264.5 0V336"/>
+    <path d="M312.5 0V336"/>
+    <path d="M360.5 0V336"/>
+    <path d="M408.5 0V336"/>
+    <path d="M456.5 0V336"/>
+    <path d="M504.5 0V336"/>
+    <path d="M552.5 0V336"/>
+    <path d="M600.5 0V336"/>
+    <path d="M648.5 0V336"/>
+    <path d="M696.5 0V336"/>
+    <path d="M744.5 0V336"/>
+    <path d="M792.5 0V336"/>
+    <path d="M840.5 0V336"/>
+    <path d="M888.5 0V336"/>
+    <path d="M936.5 0V336"/>
+    <path d="M984.5 0V336"/>
+    <path d="M1032.5 0V336"/>
+  </g>
+
+  <rect x="18" y="18" width="1020" height="300" rx="20" stroke="#B9D2E8" stroke-width="2"/>
+
+  <text x="44" y="52" fill="#103051" font-family="Arial, sans-serif" font-size="24" font-weight="700">
+    Popsicle Stick Bridge Template
+  </text>
+  <text x="44" y="80" fill="#42617E" font-family="Arial, sans-serif" font-size="14">
+    Print at 100% scale. Cover with wax paper before gluing. Use the 1-inch bar below to confirm your printer did not resize the page.
+  </text>
+
+  <g transform="translate(44 106)">
+    <text x="0" y="12" fill="#103051" font-family="Arial, sans-serif" font-size="13" font-weight="700">Top chord guide</text>
+    <text x="0" y="170" fill="#103051" font-family="Arial, sans-serif" font-size="13" font-weight="700">Bottom chord guide</text>
+    <text x="0" y="196" fill="#42617E" font-family="Arial, sans-serif" font-size="13">Build one truss here, let it dry, then reuse the template for the second side wall.</text>
+
+    <path d="M92 40H860" stroke="#EF8C62" stroke-width="8" stroke-linecap="round"/>
+    <path d="M92 148H860" stroke="#5DA9E9" stroke-width="8" stroke-linecap="round"/>
+
+    <path d="M92 148L188 40L284 148L380 40L476 148L572 40L668 148L764 40L860 148" stroke="#1F4E79" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <circle cx="92" cy="148" r="8" fill="#1F4E79"/>
+    <circle cx="188" cy="40" r="8" fill="#1F4E79"/>
+    <circle cx="284" cy="148" r="8" fill="#1F4E79"/>
+    <circle cx="380" cy="40" r="8" fill="#1F4E79"/>
+    <circle cx="476" cy="148" r="8" fill="#1F4E79"/>
+    <circle cx="572" cy="40" r="8" fill="#1F4E79"/>
+    <circle cx="668" cy="148" r="8" fill="#1F4E79"/>
+    <circle cx="764" cy="40" r="8" fill="#1F4E79"/>
+    <circle cx="860" cy="148" r="8" fill="#1F4E79"/>
+
+    <rect x="260" y="16" width="120" height="30" rx="15" fill="#FFF3C6"/>
+    <text x="279" y="36" fill="#5A4104" font-family="Arial, sans-serif" font-size="12" font-weight="700">Compression zone</text>
+
+    <rect x="320" y="132" width="100" height="30" rx="15" fill="#DDF0FF"/>
+    <text x="341" y="152" fill="#143B61" font-family="Arial, sans-serif" font-size="12" font-weight="700">Tension zone</text>
+
+    <text x="670" y="24" fill="#42617E" font-family="Arial, sans-serif" font-size="12">Neat triangles = stronger truss</text>
+    <text x="704" y="170" fill="#42617E" font-family="Arial, sans-serif" font-size="12">Deck and bracing get added later</text>
+  </g>
+
+  <g transform="translate(724 266)">
+    <text x="0" y="0" fill="#103051" font-family="Arial, sans-serif" font-size="13" font-weight="700">1-inch check bar</text>
+    <rect x="0" y="12" width="96" height="12" rx="6" fill="#103051"/>
+    <text x="28" y="46" fill="#42617E" font-family="Arial, sans-serif" font-size="12">should measure exactly 1 inch</text>
+  </g>
+</svg>
