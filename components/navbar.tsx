@@ -37,9 +37,9 @@ export function Navbar() {
   }, [])
 
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-to-r from-[#16a34a] via-[#65a30d] to-[#eab308]">
+    <nav className="sticky top-0 z-50 bg-[#dbf2a5]">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4.5">
-        <Link href="/" className="text-3xl font-extrabold tracking-tight text-primary-foreground">
+        <Link href="/" className="text-4xl font-extrabold tracking-tight text-avanza-dark">
           Avanza STEM
         </Link>
 
@@ -52,8 +52,8 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${isActive
-                    ? "border-2 border-primary-foreground text-primary-foreground"
-                    : "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                    ? "border-2 border-avanza-dark bg-avanza-dark/8 text-avanza-dark"
+                    : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
                   }`}
               >
                 {link.label}
@@ -65,7 +65,7 @@ export function Navbar() {
           <div className="relative ml-3" ref={desktopLangRef}>
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="inline-flex items-center gap-1.5 rounded-full border-2 border-primary-foreground/30 px-3 py-1.5 text-sm font-semibold text-primary-foreground transition-colors hover:border-primary-foreground/60 hover:bg-primary-foreground/10"
+              className="inline-flex items-center gap-1.5 rounded-full border-2 border-avanza-dark/25 px-3 py-1.5 text-sm font-semibold text-avanza-dark transition-colors hover:border-avanza-dark/45 hover:bg-avanza-dark/8"
               aria-label="Switch language"
             >
               <Globe className="h-4 w-4" />
@@ -103,7 +103,7 @@ export function Navbar() {
           <div className="relative" ref={mobileLangRef}>
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="inline-flex items-center gap-1 rounded-full border border-primary-foreground/30 px-2.5 py-1.5 text-xs font-semibold text-primary-foreground"
+              className="inline-flex items-center gap-1 rounded-full border border-avanza-dark/25 px-2.5 py-1.5 text-xs font-semibold text-avanza-dark"
               aria-label="Switch language"
             >
               <Globe className="h-3.5 w-3.5" />
@@ -135,7 +135,7 @@ export function Navbar() {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="text-primary-foreground"
+            className="text-avanza-dark"
             aria-label="Toggle navigation menu"
           >
             {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -145,7 +145,7 @@ export function Navbar() {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <div className="border-t border-primary-foreground/20 bg-gradient-to-r from-[#16a34a] via-[#65a30d] to-[#eab308] px-6 pb-4 md:hidden">
+        <div className="border-t border-avanza-dark/15 bg-[#9bcf23] px-6 pb-4 md:hidden">
           {navLinks.map((link) => {
             const isActive = pathname === link.href
             return (
@@ -154,8 +154,8 @@ export function Navbar() {
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={`block rounded-lg px-4 py-3 text-sm font-semibold transition-all ${isActive
-                    ? "bg-primary-foreground/15 text-primary-foreground"
-                    : "text-primary-foreground/90 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                    ? "bg-avanza-dark/10 text-avanza-dark"
+                    : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
                   }`}
               >
                 {link.label}

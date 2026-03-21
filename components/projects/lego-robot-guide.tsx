@@ -24,8 +24,9 @@ import {
   Star,
   Wrench,
 } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
 import { Progress } from "@/components/ui/progress"
-import type { ProjectGuide } from "@/lib/project-guides"
+import { getProjectGuide, type ProjectGuide } from "@/lib/project-guides"
 
 type ResourceLink = {
   title: string
@@ -432,6 +433,8 @@ const codeToneClasses: Record<CodeTokenKind, string> = {
 }
 
 export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
+  const { language, t } = useLanguage()
+  const guideProject = getProjectGuide(project.slug, language) ?? project
   const [activeStep, setActiveStep] = useState(0)
   const [selectedPrinciple, setSelectedPrinciple] = useState<PrincipleId>("stability")
   const [selectedObject, setSelectedObject] = useState<TestObject["id"]>("paper")
@@ -488,33 +491,39 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
             className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/8 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/12"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Projects
+            {t.projectsPage.backToProjects}
           </Link>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-[1.04fr_0.96fr]">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full bg-[#b8f2d7] px-4 py-2 text-sm font-black uppercase tracking-[0.2em] text-[#10392c]">
-                Official LEGO Education Build
+                {language === "es" ? "Construccion oficial de LEGO Education" : language === "zh" ? "LEGO Education 官方搭建" : "Official LEGO Education Build"}
               </div>
               <h1 className="mt-5 text-5xl font-black tracking-tight text-white md:text-6xl">
-                Super Cleanup Grabber Robot
+                {guideProject.title}
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-8 text-white/82">
-                This page is built around LEGO Education&apos;s official SPIKE Prime{" "}
-                <span className="font-semibold text-white">Super Cleanup</span> lesson. Instead of
-                a vague robot teaser, you get a specific grabber mission, real source links, and a
-                clear explanation of why the robot stays balanced, grabs objects, and responds to
-                code.
+                {language === "en"
+                  ? (
+                      <>
+                        This page is built around LEGO Education&apos;s official SPIKE Prime{" "}
+                        <span className="font-semibold text-white">Super Cleanup</span> lesson. Instead of
+                        a vague robot teaser, you get a specific grabber mission, real source links, and a
+                        clear explanation of why the robot stays balanced, grabs objects, and responds to
+                        code.
+                      </>
+                    )
+                  : guideProject.description}
               </p>
 
               <div className="mt-7 flex flex-wrap gap-3 text-sm text-white/90">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/8 px-4 py-2">
                   <Star className="h-4 w-4 text-[#ffe37c]" />
-                  {project.difficulty}
+                  {guideProject.difficulty}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/8 px-4 py-2">
                   <Clock className="h-4 w-4 text-[#8ed0ff]" />
-                  {project.time}
+                  {guideProject.time}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/8 px-4 py-2 font-mono">
                   <Bot className="h-4 w-4 text-[#a8f0c8]" />
@@ -537,10 +546,14 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
                 ))}
               </div>
 
-              <BlueprintNote title="Source-backed, not made up" tone="mint" className="mt-8 max-w-lg lg:ml-10">
-                The official build books contain the exact snapping order. This page acts like the
-                engineering coach beside them, showing what each subsystem is doing and why the
-                design choices matter.
+              <BlueprintNote
+                title={language === "es" ? "Basado en fuentes reales" : language === "zh" ? "有官方来源，不是编出来的" : "Source-backed, not made up"}
+                tone="mint"
+                className="mt-8 max-w-lg lg:ml-10"
+              >
+                {language === "en"
+                  ? "The official build books contain the exact snapping order. This page acts like the engineering coach beside them, showing what each subsystem is doing and why the design choices matter."
+                  : guideProject.why}
               </BlueprintNote>
             </div>
 
