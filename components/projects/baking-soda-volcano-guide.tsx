@@ -18,8 +18,9 @@ import {
   Sparkles,
   Star,
 } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
 import { Progress } from "@/components/ui/progress"
-import type { ProjectGuide } from "@/lib/project-guides"
+import { getProjectGuide, type ProjectGuide } from "@/lib/project-guides"
 
 type LabItem = {
   name: string
@@ -214,6 +215,8 @@ const reactionSteps = {
 } as const
 
 export function BakingSodaVolcanoGuide({ project }: { project: ProjectGuide }) {
+  const { language, t } = useLanguage()
+  const guideProject = getProjectGuide(project.slug, language) ?? project
   const [activeStep, setActiveStep] = useState(0)
   const [reactionPhase, setReactionPhase] = useState<"step1" | "step2">("step1")
   const [bubbleTick, setBubbleTick] = useState(0)
@@ -292,31 +295,31 @@ export function BakingSodaVolcanoGuide({ project }: { project: ProjectGuide }) {
             className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/8 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/12"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Projects
+            {t.projectsPage.backToProjects}
           </Link>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_0.98fr]">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full bg-[#ffb26f] px-4 py-2 text-sm font-black uppercase tracking-[0.2em] text-[#351a08]">
-                Geological Connection
+                {language === "es" ? "Conexion geologica" : language === "zh" ? "地质联系" : "Geological Connection"}
               </div>
               <h1 className="mt-5 text-5xl font-black tracking-tight text-white md:text-6xl">
-                {project.title}
+                {guideProject.title}
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-8 text-white/82">
-                Real volcanoes build pressure when gas collects inside magma. Your mini volcano does
-                something similar with carbon dioxide gas, so this project lets you see a giant
-                Earth science idea in a tabletop experiment.
+                {language === "en"
+                  ? "Real volcanoes build pressure when gas collects inside magma. Your mini volcano does something similar with carbon dioxide gas, so this project lets you see a giant Earth science idea in a tabletop experiment."
+                  : guideProject.description}
               </p>
 
               <div className="mt-7 flex flex-wrap gap-3 text-sm text-white/90">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/8 px-4 py-2">
                   <Star className="h-4 w-4 text-[#ffcf7a]" />
-                  {project.difficulty}
+                  {guideProject.difficulty}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/8 px-4 py-2">
                   <Clock className="h-4 w-4 text-[#8dd8ff]" />
-                  {project.time}
+                  {guideProject.time}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/8 px-4 py-2 font-mono">
                   <Atom className="h-4 w-4 text-[#9df0c8]" />
@@ -324,9 +327,14 @@ export function BakingSodaVolcanoGuide({ project }: { project: ProjectGuide }) {
                 </span>
               </div>
 
-              <GeoNote title="Real-World Link" tone="lava" className="mt-8 max-w-sm lg:ml-8">
-                This model is not real magma, but the pressure story is similar. Gas trapped in a
-                tight space pushes upward until it can escape.
+              <GeoNote
+                title={language === "es" ? "Conexion con el mundo real" : language === "zh" ? "现实联系" : "Real-World Link"}
+                tone="lava"
+                className="mt-8 max-w-sm lg:ml-8"
+              >
+                {language === "en"
+                  ? "This model is not real magma, but the pressure story is similar. Gas trapped in a tight space pushes upward until it can escape."
+                  : guideProject.why}
               </GeoNote>
             </div>
 

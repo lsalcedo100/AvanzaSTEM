@@ -1,8 +1,10 @@
 import Image from "next/image"
 import Link from "next/link"
+import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Clock, Lightbulb, ListChecks, ShieldAlert, Star } from "lucide-react"
 import { getProjectGuide, projectGuides } from "@/lib/project-guides"
+import { type Language, translations } from "@/lib/translations"
 
 export function generateStaticParams() {
   return projectGuides
@@ -27,7 +29,11 @@ export default async function ProjectGuidePage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const project = getProjectGuide(slug)
+  const cookieStore = await cookies()
+  const cookieLanguage = cookieStore.get("avanza-lang")?.value
+  const language: Language = cookieLanguage === "es" || cookieLanguage === "zh" ? cookieLanguage : "en"
+  const t = translations[language]
+  const project = getProjectGuide(slug, language)
 
   if (!project) {
     notFound()
@@ -42,7 +48,7 @@ export default async function ProjectGuidePage({
             className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/20"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Projects
+            {t.projectsPage.backToProjects}
           </Link>
 
           <div className="mt-8 grid items-center gap-8 md:grid-cols-[1.1fr_0.9fr]">
@@ -79,7 +85,7 @@ export default async function ProjectGuidePage({
         <div className="mx-auto grid max-w-5xl gap-8 px-6 lg:grid-cols-[1.3fr_0.7fr]">
           <div className="space-y-8">
             <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
-              <h2 className="text-2xl font-extrabold text-card-foreground">Introduction</h2>
+              <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.introduction}</h2>
               <div className="mt-4 space-y-3 text-base leading-7 text-muted-foreground">
                 {project.introduction.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
@@ -90,7 +96,7 @@ export default async function ProjectGuidePage({
             <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
               <div className="flex items-center gap-3">
                 <Lightbulb className="h-6 w-6 text-avanza-orange" />
-                <h2 className="text-2xl font-extrabold text-card-foreground">The Why</h2>
+                <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.theWhy}</h2>
               </div>
               <p className="mt-4 text-base leading-7 text-muted-foreground">{project.why}</p>
             </div>
@@ -99,7 +105,7 @@ export default async function ProjectGuidePage({
               <div className="flex items-center gap-3">
                 <ListChecks className="h-6 w-6 text-avanza-green" />
                 <h2 className="text-2xl font-extrabold text-card-foreground">
-                  Step-by-Step Instructions
+                  {t.projectsPage.stepByStepInstructions}
                 </h2>
               </div>
               <ol className="mt-6 space-y-4">
@@ -117,7 +123,7 @@ export default async function ProjectGuidePage({
 
           <div className="space-y-8">
             <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
-              <h2 className="text-2xl font-extrabold text-card-foreground">Materials List</h2>
+              <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.materialsList}</h2>
               <ul className="mt-4 space-y-3">
                 {project.materials.map((material) => (
                   <li key={material} className="rounded-2xl bg-secondary/60 px-4 py-3 text-sm text-foreground">
@@ -130,13 +136,13 @@ export default async function ProjectGuidePage({
             <div className="rounded-3xl border-2 border-avanza-orange/30 bg-avanza-orange/5 p-8 shadow-sm">
               <div className="flex items-center gap-3">
                 <ShieldAlert className="h-6 w-6 text-avanza-orange" />
-                <h2 className="text-2xl font-extrabold text-card-foreground">Safety First</h2>
+                <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.safetyFirst}</h2>
               </div>
               <p className="mt-4 text-base leading-7 text-muted-foreground">{project.safety}</p>
             </div>
 
             <div className="rounded-3xl border border-avanza-purple/20 bg-avanza-purple/5 p-8 shadow-sm">
-              <h2 className="text-2xl font-extrabold text-card-foreground">Challenge Mode</h2>
+              <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.challengeMode}</h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">{project.challenge}</p>
             </div>
           </div>

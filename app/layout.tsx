@@ -1,13 +1,15 @@
 import type { Metadata } from 'next'
-import { Nunito, Geist_Mono } from 'next/font/google'
+import { Roboto_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { LanguageProvider } from '@/components/language-provider'
 
-const _nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const robotoMono = Roboto_Mono({
+  subsets: ['latin'],
+  variable: '--font-roboto-mono',
+})
 
 export const metadata: Metadata = {
   title: 'Avanza STEM - Inspiring Young Hispanic Minds in STEM',
@@ -38,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">
+      <body className={`${robotoMono.variable} font-sans antialiased`}>
         <LanguageProvider>
           <Navbar />
           <main>{children}</main>

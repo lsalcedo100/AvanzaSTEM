@@ -21,10 +21,11 @@ import {
   Wrench,
   Zap,
 } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import type { ProjectGuide } from "@/lib/project-guides"
+import { getProjectGuide, type ProjectGuide } from "@/lib/project-guides"
 
 type Material = {
   name: string
@@ -353,6 +354,8 @@ const flowDots = [
 ]
 
 export function SimpleCircuitLightGuide({ project }: { project: ProjectGuide }) {
+  const { language, t } = useLanguage()
+  const guideProject = getProjectGuide(project.slug, language) ?? project
   const [activeStep, setActiveStep] = useState(0)
   const [flowIndex, setFlowIndex] = useState(0)
   const [selectedComponent, setSelectedComponent] = useState("led")
@@ -422,31 +425,31 @@ export function SimpleCircuitLightGuide({ project }: { project: ProjectGuide }) 
             className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/15"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Projects
+            {t.projectsPage.backToProjects}
           </Link>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_0.92fr]">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full bg-[#ffe37c] px-4 py-2 text-sm font-black uppercase tracking-[0.2em] text-[#13284e]">
-                The Mission
+                {language === "es" ? "La mision" : language === "zh" ? "任务" : "The Mission"}
               </div>
               <h1 className="mt-5 text-5xl font-black tracking-tight text-white md:text-6xl">
-                {project.title}
+                {guideProject.title}
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-8 text-white/82">
-                Build your first glowing circuit and think like a real electrical engineer. This
-                page turns the project into a mini mission with clues, checkpoints, and lab tools
-                you can explore as you go.
+                {language === "en"
+                  ? "Build your first glowing circuit and think like a real electrical engineer. This page turns the project into a mini mission with clues, checkpoints, and lab tools you can explore as you go."
+                  : guideProject.description}
               </p>
 
               <div className="mt-7 flex flex-wrap gap-3 text-sm text-white/90">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2">
                   <Star className="h-4 w-4 text-[#ffe37c]" />
-                  {project.difficulty}
+                  {guideProject.difficulty}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2">
                   <Clock className="h-4 w-4 text-[#95f0ff]" />
-                  {project.time}
+                  {guideProject.time}
                 </span>
               </div>
 
@@ -494,7 +497,7 @@ export function SimpleCircuitLightGuide({ project }: { project: ProjectGuide }) 
 
                   <TabsContent value="photo">
                     <div className="relative h-[360px] overflow-hidden rounded-[1.6rem] bg-[#0b1730]">
-                      <Image src={project.image} alt={project.title} fill className="object-cover" />
+                      <Image src={guideProject.image} alt={guideProject.title} fill className="object-cover" />
                       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#09111f] via-[#09111f]/85 to-transparent p-5 text-sm text-white/88">
                         Photo View: This is what the finished mission can look like on your table.
                       </div>
@@ -523,9 +526,19 @@ export function SimpleCircuitLightGuide({ project }: { project: ProjectGuide }) 
                 </Tabs>
               </div>
 
-              <PostIt title="Engineer Note" color="mint" className="mt-6 max-w-xs lg:ml-auto">
-                A schematic is a <strong>map</strong> of the circuit, not a picture. Engineers use
-                it to understand how everything connects.
+              <PostIt
+                title={language === "es" ? "Nota del ingeniero" : language === "zh" ? "工程师提示" : "Engineer Note"}
+                color="mint"
+                className="mt-6 max-w-xs lg:ml-auto"
+              >
+                {language === "en"
+                  ? (
+                      <>
+                        A schematic is a <strong>map</strong> of the circuit, not a picture. Engineers use
+                        it to understand how everything connects.
+                      </>
+                    )
+                  : guideProject.why}
               </PostIt>
             </div>
           </div>
@@ -559,11 +572,12 @@ export function SimpleCircuitLightGuide({ project }: { project: ProjectGuide }) 
 
             <div className="rounded-[2rem] bg-[#13284e] p-6 text-white shadow-[0_30px_70px_rgba(19,40,78,0.18)]">
               <p className="text-sm font-black uppercase tracking-[0.2em] text-[#ffe37c]">
-                Safety Check
+                {language === "es" ? "Revision de seguridad" : language === "zh" ? "安全检查" : "Safety Check"}
               </p>
               <p className="mt-3 text-sm leading-7 text-white/82">
-                Use only small batteries. Never plug your project into a wall outlet, and ask an
-                adult to help if you want to add a resistor or a breadboard kit.
+                {language === "en"
+                  ? "Use only small batteries. Never plug your project into a wall outlet, and ask an adult to help if you want to add a resistor or a breadboard kit."
+                  : guideProject.safety}
               </p>
             </div>
           </div>

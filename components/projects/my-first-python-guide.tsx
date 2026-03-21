@@ -23,8 +23,9 @@ import {
   Terminal,
   Trophy,
 } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
 import { Progress } from "@/components/ui/progress"
-import type { ProjectGuide } from "@/lib/project-guides"
+import { getProjectGuide, type ProjectGuide } from "@/lib/project-guides"
 
 type CodeTokenKind =
   | "keyword"
@@ -442,6 +443,8 @@ const toneClasses: Record<CodeTokenKind, string> = {
 }
 
 export function MyFirstPythonGuide({ project }: { project: ProjectGuide }) {
+  const { language, t } = useLanguage()
+  const guideProject = getProjectGuide(project.slug, language) ?? project
   const [activeStep, setActiveStep] = useState(0)
   const [frameIndex, setFrameIndex] = useState(0)
   const [visibleLineCount, setVisibleLineCount] = useState(1)
@@ -521,31 +524,31 @@ export function MyFirstPythonGuide({ project }: { project: ProjectGuide }) {
             className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/15"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Projects
+            {t.projectsPage.backToProjects}
           </Link>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_0.95fr]">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full bg-[#b7ffcf] px-4 py-2 text-sm font-black uppercase tracking-[0.2em] text-[#08381c]">
-                Code Mission
+                {language === "es" ? "Mision de codigo" : language === "zh" ? "代码任务" : "Code Mission"}
               </div>
               <h1 className="mt-5 text-5xl font-black tracking-tight text-white md:text-6xl">
-                {project.title}
+                {guideProject.title}
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-8 text-white/82">
-                Build a quiz game that talks to the player, checks their answer, and keeps score.
-                We are going code-first, so you can see exactly what each line does while you build
-                it.
+                {language === "en"
+                  ? "Build a quiz game that talks to the player, checks their answer, and keeps score. We are going code-first, so you can see exactly what each line does while you build it."
+                  : guideProject.description}
               </p>
 
               <div className="mt-7 flex flex-wrap gap-3 text-sm text-white/90">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2">
                   <Star className="h-4 w-4 text-[#ffe37c]" />
-                  {project.difficulty}
+                  {guideProject.difficulty}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2">
                   <Clock className="h-4 w-4 text-[#7dd8ff]" />
-                  {project.time}
+                  {guideProject.time}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 font-mono">
                   <Code2 className="h-4 w-4 text-[#90f3b5]" />
@@ -566,9 +569,14 @@ export function MyFirstPythonGuide({ project }: { project: ProjectGuide }) {
                 />
               </div>
 
-              <NoteCard title="Net Smart" tone="yellow" className="mt-8 max-w-sm lg:ml-8">
-                Use school-approved coding sites and never type private information into your
-                program. Names for practice are great. Passwords are not.
+              <NoteCard
+                title={language === "es" ? "Seguridad en linea" : language === "zh" ? "安全上网" : "Net Smart"}
+                tone="yellow"
+                className="mt-8 max-w-sm lg:ml-8"
+              >
+                {language === "en"
+                  ? "Use school-approved coding sites and never type private information into your program. Names for practice are great. Passwords are not."
+                  : guideProject.safety}
               </NoteCard>
             </div>
 

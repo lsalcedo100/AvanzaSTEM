@@ -46,8 +46,8 @@
 }
 
 @theme inline {
-  --font-sans: 'Nunito', 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-sans: var(--font-roboto-mono);
+  --font-mono: var(--font-roboto-mono);
   --color-avanza-green: var(--avanza-green);
   --color-avanza-teal: var(--avanza-teal);
   --color-avanza-purple: var(--avanza-purple);

@@ -5,125 +5,29 @@ import Image from "next/image"
 import Link from "next/link"
 import { Clock, Star, ListChecks, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
+import { getProjectGuides } from "@/lib/project-guides"
 
 type ProjectCategory = "engineering" | "science" | "coding" | "robotics"
 type FilterTag = "all" | ProjectCategory
 
+const projectTagColors: Record<string, string> = {
+  "popsicle-stick-bridge": "bg-avanza-purple",
+  "lego-robot-builder": "bg-avanza-green",
+  "coke-mentos-experiment": "bg-avanza-orange",
+  "my-first-python-program": "bg-avanza-teal",
+  "baking-soda-volcano": "bg-avanza-orange",
+  "simple-circuit-light": "bg-avanza-purple",
+}
+
 export default function ProjectsPage() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
   const [activeFilter, setActiveFilter] = useState<FilterTag>("all")
 
-  const projects = [
-    {
-      slug: "popsicle-stick-bridge",
-      title: t.projectsPage.bridgeTitle,
-      category: "engineering" as ProjectCategory,
-      difficulty: t.projectsPage.easy,
-      time: "1-2 hours",
-      image: "/images/trussbridge.jpg",
-      description: t.projectsPage.bridgeDesc,
-      materials: ["Popsicle sticks (50+)", "Wood glue or hot glue", "Printable truss template", "Small weights for testing"],
-      steps: [
-        "Print or trace the truss template",
-        "Build two matching trusses",
-        "Reinforce the weak joints",
-        "Add the deck and top bracing",
-        "Let it dry completely",
-        "Test with weights and see how much it holds!",
-      ],
-      tagColor: "bg-avanza-purple",
-    },
-    {
-      slug: "lego-robot-builder",
-      title: t.projectsPage.robotTitle,
-      category: "robotics" as ProjectCategory,
-      difficulty: t.projectsPage.medium,
-      time: "2-3 hours",
-      image: "/images/lego robotics.jpeg",
-      description: t.projectsPage.robotDesc,
-      materials: ["SPIKE Prime hub", "Large angular motor", "Force sensor", "Technic beams and pins"],
-      steps: [
-        "Open the official Super Cleanup build guides",
-        "Build a wide rolling base",
-        "Add the front tower and grabber arm",
-        "Connect the motor and force sensor",
-        "Test different objects and compare results!",
-      ],
-      tagColor: "bg-avanza-green",
-    },
-    {
-      slug: "coke-mentos-experiment",
-      title: t.projectsPage.mentosTitle,
-      category: "science" as ProjectCategory,
-      difficulty: t.projectsPage.easy,
-      time: "30 minutes",
-      image: "/images/coke.jpg",
-      description: t.projectsPage.mentosDesc,
-      materials: ["2-liter bottle of Diet Coke", "Pack of Mentos candy", "Open outdoor space", "Safety goggles"],
-      steps: [
-        "Set up in an open outdoor area",
-        "Open the Diet Coke and place upright",
-        "Stack 5-6 Mentos for quick release",
-        "Drop all Mentos in at once and step back",
-        "Observe the eruption and discuss the science!",
-      ],
-      tagColor: "bg-avanza-orange",
-    },
-    {
-      slug: "my-first-python-program",
-      title: t.projectsPage.pythonTitle,
-      category: "coding" as ProjectCategory,
-      difficulty: t.projectsPage.easy,
-      time: "1 hour",
-      image: "/images/pythoncode.jpeg",
-      description: t.projectsPage.pythonDesc,
-      materials: ["Computer with internet", "Python installed (or use online editor)", "Curiosity to learn!"],
-      steps: [
-        "Open a Python editor online",
-        "Learn to print messages to the screen",
-        "Create variables to store the score",
-        "Add questions using input()",
-        "Run your quiz and test it with friends!",
-      ],
-      tagColor: "bg-avanza-teal",
-    },
-    {
-      slug: "baking-soda-volcano",
-      title: t.projectsPage.volcanoTitle,
-      category: "science" as ProjectCategory,
-      difficulty: t.projectsPage.easy,
-      time: "1 hour",
-      image: "/images/bsvolcano.jpg",
-      description: t.projectsPage.volcanoDesc,
-      materials: ["Baking soda", "Vinegar", "Food coloring", "Play dough or clay", "Small bottle"],
-      steps: [
-        "Shape clay around the bottle to form a volcano",
-        "Add baking soda inside the bottle",
-        "Add a few drops of food coloring",
-        "Pour vinegar in and watch it erupt!",
-        "Discuss: what chemical reaction happened?",
-      ],
-      tagColor: "bg-avanza-orange",
-    },
-    {
-      slug: "simple-circuit-light",
-      title: t.projectsPage.circuitTitle,
-      category: "engineering" as ProjectCategory,
-      difficulty: t.projectsPage.medium,
-      time: "1-2 hours",
-      image: "/images/circuit.jpg",
-      description: t.projectsPage.circuitDesc,
-      materials: ["LED light", "9V battery", "Copper wire", "Tape", "Small switch (optional)"],
-      steps: [
-        "Learn about circuit components",
-        "Connect the wire to the battery terminal",
-        "Attach the LED to the circuit",
-        "Add a switch to control the light",
-        "Test your circuit and troubleshoot!",
-      ],
-      tagColor: "bg-avanza-purple",
-    },
-  ]
+  const projects = getProjectGuides(language).map((project) => ({
+    ...project,
+    category: project.categoryKey as ProjectCategory,
+    tagColor: projectTagColors[project.slug] ?? "bg-avanza-green",
+  }))
 
   const filterTags: { key: FilterTag; label: string }[] = [
     { key: "all", label: t.projectsPage.all },
@@ -132,7 +36,10 @@ export default function ProjectsPage() {
     { key: "coding", label: t.projectsPage.coding },
     { key: "robotics", label: t.projectsPage.robotics },
   ]
-  const filteredProjects = activeFilter === "all" ? projects : projects.filter((project) => project.category === activeFilter)
+  const filteredProjects =
+    activeFilter === "all"
+      ? projects
+      : projects.filter((project) => project.category === activeFilter)
 
   return (
     <>
@@ -174,7 +81,7 @@ export default function ProjectsPage() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredProjects.map((project) => (
-              <ProjectCard key={project.title} {...project} translations={t.projectsPage} />
+              <ProjectCard key={project.slug} {...project} translations={t.projectsPage} />
             ))}
           </div>
         </div>
