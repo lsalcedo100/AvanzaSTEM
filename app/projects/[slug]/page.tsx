@@ -3,8 +3,8 @@ import Link from "next/link"
 import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Clock, Lightbulb, ListChecks, ShieldAlert, Star } from "lucide-react"
-import { getProjectGuide, projectGuides } from "@/lib/project-guides"
-import { type Language, translations } from "@/lib/translations"
+import { getProjectGuide, projectGuides } from "@/features/projects/data"
+import { type Language, translations } from "@/i18n/translations"
 
 export function generateStaticParams() {
   return projectGuides

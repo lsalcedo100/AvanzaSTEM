@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
-import { PopsicleStickBridgeGuide } from "@/components/projects/popsicle-stick-bridge-guide"
-import { getProjectGuide } from "@/lib/project-guides"
+import { PopsicleStickBridgeGuide } from "@/features/projects/components/popsicle-stick-bridge-guide"
+import { getProjectGuide } from "@/features/projects/data"
 
 export default function PopsicleStickBridgePage() {
   const project = getProjectGuide("popsicle-stick-bridge")

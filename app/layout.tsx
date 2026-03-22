@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { Roboto_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-import { Navbar } from '@/components/navbar'
-import { Footer } from '@/components/footer'
-import { LanguageProvider } from '@/components/language-provider'
+import { Footer } from '@/components/layout/footer'
+import { Navbar } from '@/components/layout/navbar'
+import { LanguageProvider } from '@/components/providers/language-provider'
 
 const robotoMono = Roboto_Mono({
   subsets: ['latin'],
@@ -15,16 +15,8 @@ export const metadata: Metadata = {
   title: 'Avanza STEM - Inspiring Young Hispanic Minds in STEM',
   description: 'Free online STEM learning, fun projects, and local workshops designed for young Hispanic students. Explore science, technology, engineering, and math with Avanza STEM.',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-    ],
+    icon: '/icon-light-32x32.png',
+    shortcut: '/icon-light-32x32.png',
     apple: '/apple-icon.png',
   },
 }

@@ -2,8 +2,8 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, BookOpen, Wrench, FlaskConical, Users } from "lucide-react"
-import { useLanguage } from "@/components/language-provider"
+import { ArrowRight } from "lucide-react"
+import { useLanguage } from "@/components/providers/language-provider"
 
 export default function HomePage() {
   const { t } = useLanguage()
@@ -11,13 +11,13 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-avanza-teal to-avanza-green">
+      <section className="relative overflow-hidden bg-[#e7f5fe]">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-10 px-6 py-20 md:flex-row md:py-28">
           <div className="flex-1">
-            <h1 className="text-balance text-5xl font-extrabold italic leading-tight text-primary-foreground md:text-6xl">
+            <h1 className="text-balance text-5xl font-extrabold italic leading-tight text-foreground md:text-6xl">
               {t.home.heroTitle}
             </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-primary-foreground/85">
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-foreground/80">
               {t.home.heroDescription}
             </p>
             <Link
@@ -30,7 +30,7 @@ export default function HomePage() {
           <div className="flex-1">
             <div className="overflow-hidden rounded-2xl shadow-2xl">
               <Image
-                src="/images/home picture.png"
+                src="/images/home/hero.png"
                 alt="Young Hispanic youth collaborating on a popsicle stick engineering project at a workshop table"
                 width={600}
                 height={400}
@@ -62,35 +62,43 @@ export default function HomePage() {
 
           <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <OfferCard
-              icon={<BookOpen className="h-8 w-8" />}
+              categoryWord={t.home.onlineCurriculumsWord}
               title={t.home.onlineCurriculums}
               description={t.home.onlineCurriculumsDesc}
               href="/curriculums"
-              color="bg-avanza-green"
+              accentBar="bg-avanza-green"
+              accentGlow="from-avanza-green/10"
+              categoryWordColor="text-avanza-green/20"
               learnMore={t.home.learnMore}
             />
             <OfferCard
-              icon={<Wrench className="h-8 w-8" />}
+              categoryWord={t.home.diyProjectsWord}
               title={t.home.diyProjects}
               description={t.home.diyProjectsDesc}
               href="/projects"
-              color="bg-avanza-purple"
+              accentBar="bg-avanza-purple"
+              accentGlow="from-avanza-purple/10"
+              categoryWordColor="text-avanza-purple/20"
               learnMore={t.home.learnMore}
             />
             <OfferCard
-              icon={<FlaskConical className="h-8 w-8" />}
+              categoryWord={t.home.blogHowTosWord}
               title={t.home.blogHowTos}
               description={t.home.blogHowTosDesc}
               href="/blog"
-              color="bg-avanza-orange"
+              accentBar="bg-avanza-orange"
+              accentGlow="from-avanza-orange/10"
+              categoryWordColor="text-avanza-orange/20"
               learnMore={t.home.learnMore}
             />
             <OfferCard
-              icon={<Users className="h-8 w-8" />}
+              categoryWord={t.home.localWorkshopsWord}
               title={t.home.localWorkshops}
               description={t.home.localWorkshopsDesc}
               href="/workshops"
-              color="bg-avanza-teal"
+              accentBar="bg-avanza-teal"
+              accentGlow="from-avanza-teal/10"
+              categoryWordColor="text-avanza-teal/20"
               learnMore={t.home.learnMore}
             />
           </div>
@@ -111,17 +119,17 @@ export default function HomePage() {
 
           <div className="mt-14 grid gap-8 md:grid-cols-3">
             <FeaturedCard
-              image="/images/bridge building-EDIT.jpg"
+              image="/images/home/featured-bridge.jpg"
               title={t.home.featuredBridge}
               description={t.home.featuredBridgeDesc}
             />
             <FeaturedCard
-              image="/images/python.jpg"
+              image="/images/home/featured-python.jpg"
               title={t.home.featuredCoding}
               description={t.home.featuredCodingDesc}
             />
             <FeaturedCard
-              image="/images/coke pic.jpg"
+              image="/images/home/featured-mentos.jpg"
               title={t.home.featuredMentos}
               description={t.home.featuredMentosDesc}
             />
@@ -189,33 +197,44 @@ export default function HomePage() {
 }
 
 function OfferCard({
-  icon,
+  categoryWord,
   title,
   description,
   href,
-  color,
+  accentBar,
+  accentGlow,
+  categoryWordColor,
   learnMore,
 }: {
-  icon: React.ReactNode
+  categoryWord: string
   title: string
   description: string
   href: string
-  color: string
+  accentBar: string
+  accentGlow: string
+  categoryWordColor: string
   learnMore: string
 }) {
   return (
     <Link
       href={href}
-      className="group flex flex-col rounded-2xl border border-border bg-card p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+      className="group relative flex min-h-[320px] flex-col overflow-hidden rounded-2xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
-      <div className={`inline-flex h-14 w-14 items-center justify-center rounded-xl ${color} text-primary-foreground`}>
-        {icon}
-      </div>
-      <h3 className="mt-5 text-xl font-bold text-card-foreground">{title}</h3>
-      <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
-      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-avanza-green transition-colors group-hover:text-avanza-teal">
-        {learnMore} <ArrowRight className="h-4 w-4" />
+      <div className={`absolute inset-x-0 top-0 h-1 ${accentBar}`} />
+      <div className={`absolute inset-0 bg-gradient-to-br ${accentGlow} via-transparent to-transparent`} />
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none absolute right-8 top-8 text-right text-[2.75rem] font-black uppercase leading-[0.82] tracking-[0.08em] ${categoryWordColor} transition-transform duration-300 group-hover:-translate-y-1`}
+      >
+        {categoryWord}
       </span>
+      <div className="relative mt-24 flex flex-1 flex-col">
+        <h3 className="text-xl font-bold text-card-foreground">{title}</h3>
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
+        <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-avanza-green transition-colors group-hover:text-avanza-teal">
+          {learnMore} <ArrowRight className="h-4 w-4" />
+        </span>
+      </div>
     </Link>
   )
 }

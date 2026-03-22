@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
-import { SimpleCircuitLightGuide } from "@/components/projects/simple-circuit-light-guide"
-import { getProjectGuide } from "@/lib/project-guides"
+import { SimpleCircuitLightGuide } from "@/features/projects/components/simple-circuit-light-guide"
+import { getProjectGuide } from "@/features/projects/data"
 
 export default function SimpleCircuitLightPage() {
   const project = getProjectGuide("simple-circuit-light")

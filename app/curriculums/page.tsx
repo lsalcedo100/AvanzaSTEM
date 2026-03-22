@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { BookOpen, Clock, Users, ArrowRight } from "lucide-react"
-import { useLanguage } from "@/components/language-provider"
+import { useLanguage } from "@/components/providers/language-provider"
 
 export default function CurriculumsPage() {
   const { t } = useLanguage()
@@ -11,7 +11,7 @@ export default function CurriculumsPage() {
     {
       title: t.curriculumsPage.pythonTitle,
       description: t.curriculumsPage.pythonDesc,
-      image: "/images/Python1.jpg",
+      image: "/images/curriculums/python.jpg",
       grades: "Grades 3-6",
       duration: "8 weeks",
       topics: ["Variables & Data Types", "Loops & Conditionals", "Simple Functions", "Build a Mini Game"],
@@ -21,7 +21,7 @@ export default function CurriculumsPage() {
     {
       title: t.curriculumsPage.engineeringTitle,
       description: t.curriculumsPage.engineeringDesc,
-      image: "/images/engineering.jpg",
+      image: "/images/curriculums/engineering.jpg",
       grades: "Grades 2-5",
       duration: "6 weeks",
       topics: ["Types of Structures", "Forces & Loads", "Building with Materials", "Design Challenges"],
@@ -31,7 +31,7 @@ export default function CurriculumsPage() {
     {
       title: t.curriculumsPage.scienceTitle,
       description: t.curriculumsPage.scienceDesc,
-      image: "/images/Science.png",
+      image: "/images/curriculums/science.png",
       grades: "Grades 2-4",
       duration: "6 weeks",
       topics: ["Chemical Reactions", "States of Matter", "Simple Machines", "Life Sciences"],
@@ -41,7 +41,7 @@ export default function CurriculumsPage() {
     {
       title: t.curriculumsPage.mathTitle,
       description: t.curriculumsPage.mathDesc,
-      image: "/images/math.jpg",
+      image: "/images/curriculums/math.jpg",
       grades: "Grades 2-5",
       duration: "10 weeks",
       topics: ["Number Patterns", "Geometry Basics", "Measurement Fun", "Problem Solving"],
@@ -51,7 +51,7 @@ export default function CurriculumsPage() {
     {
       title: t.curriculumsPage.roboticsTitle,
       description: t.curriculumsPage.roboticsDesc,
-      image: "/images/robotics.jpg",
+      image: "/images/curriculums/robotics.jpg",
       grades: "Grades 4-6",
       duration: "8 weeks",
       topics: ["Robot Components", "Sensors & Motors", "Basic Programming", "Robot Challenges"],
@@ -61,7 +61,7 @@ export default function CurriculumsPage() {
     {
       title: t.curriculumsPage.aiTitle,
       description: t.curriculumsPage.aiDesc,
-      image: "/images/ai.png",
+      image: "/images/curriculums/ai.png",
       grades: "Grades 5-8",
       duration: "6 weeks",
       topics: ["What is AI?", "Training a Model", "Image Recognition", "AI Ethics"],
@@ -123,7 +123,7 @@ export default function CurriculumsPage() {
             {t.curriculumsPage.cantFindDesc}
           </p>
           <a
-            href="mailto:hello@avanzastem.org"
+            href="mailto:liam@avanzastem.org"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary-foreground px-8 py-4 text-lg font-bold text-avanza-purple transition-transform hover:scale-105"
           >
             {t.curriculumsPage.suggestTopic} <ArrowRight className="h-5 w-5" />

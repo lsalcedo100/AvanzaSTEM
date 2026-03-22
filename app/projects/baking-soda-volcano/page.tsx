@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
-import { BakingSodaVolcanoGuide } from "@/components/projects/baking-soda-volcano-guide"
-import { getProjectGuide } from "@/lib/project-guides"
+import { BakingSodaVolcanoGuide } from "@/features/projects/components/baking-soda-volcano-guide"
+import { getProjectGuide } from "@/features/projects/data"
 
 export default function BakingSodaVolcanoPage() {
   const project = getProjectGuide("baking-soda-volcano")
