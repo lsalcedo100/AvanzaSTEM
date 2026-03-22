@@ -2,7 +2,8 @@
 
 import Image from "next/image"
 import { Calendar, User, ArrowRight, Clock } from "lucide-react"
-import { useLanguage } from "@/components/language-provider"
+import { NewsletterSignup } from "@/components/blog/newsletter-signup"
+import { useLanguage } from "@/components/providers/language-provider"
 
 export default function BlogPage() {
   const { t } = useLanguage()
@@ -10,7 +11,7 @@ export default function BlogPage() {
   const featuredPost = {
     title: t.blogPage.featuredTitle,
     excerpt: t.blogPage.featuredExcerpt,
-    image: "/images/coding.jpg",
+    image: "/images/blog/featured-coding.jpg",
     author: "Liam Salcedo",
     date: "February 20, 2026",
     readTime: "5 min",
@@ -21,7 +22,7 @@ export default function BlogPage() {
     {
       title: t.blogPage.post1Title,
       excerpt: t.blogPage.post1Excerpt,
-      image: "/images/eggy in water.jpg",
+      image: "/images/blog/egg-experiment.jpg",
       author: "Liam Salcedo",
       date: "February 15, 2026",
       readTime: "4 min",
@@ -31,7 +32,7 @@ export default function BlogPage() {
     {
       title: t.blogPage.post2Title,
       excerpt: t.blogPage.post2Excerpt,
-      image: "/images/kids with bridge-EDIT.jpg",
+      image: "/images/blog/bridge-build.jpg",
       author: "Liam Salcedo",
       date: "February 10, 2026",
       readTime: "6 min",
@@ -41,7 +42,7 @@ export default function BlogPage() {
     {
       title: t.blogPage.post3Title,
       excerpt: t.blogPage.post3Excerpt,
-      image: "/images/lego robotics.jpeg",
+      image: "/images/shared/lego-robotics.jpeg",
       author: "Liam Salcedo",
       date: "February 5, 2026",
       readTime: "5 min",
@@ -51,7 +52,7 @@ export default function BlogPage() {
     {
       title: t.blogPage.post4Title,
       excerpt: t.blogPage.post4Excerpt,
-      image: "/images/workshop-ai.jpg",
+      image: "/images/shared/ai-workshop.jpg",
       author: "Liam Salcedo",
       date: "January 28, 2026",
       readTime: "4 min",
@@ -61,7 +62,7 @@ export default function BlogPage() {
     {
       title: t.blogPage.post5Title,
       excerpt: t.blogPage.post5Excerpt,
-      image: "/images/abacus.jpg",
+      image: "/images/blog/abacus.jpg",
       author: "Liam Salcedo",
       date: "January 20, 2026",
       readTime: "3 min",
@@ -71,7 +72,7 @@ export default function BlogPage() {
     {
       title: t.blogPage.post6Title,
       excerpt: t.blogPage.post6Excerpt,
-      image: "/images/people from workshop-EDIT.jpg",
+      image: "/images/blog/community-workshop.jpg",
       author: "Liam Salcedo",
       date: "January 12, 2026",
       readTime: "7 min",
@@ -150,27 +151,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Newsletter CTA */}
-      <section className="bg-gradient-to-br from-avanza-teal to-avanza-green py-16">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-3xl font-extrabold text-primary-foreground">
-            {t.blogPage.stayUpdated}
-          </h2>
-          <p className="mt-4 text-lg text-primary-foreground/85">
-            {t.blogPage.stayUpdatedDesc}
-          </p>
-          <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
-            <input
-              type="email"
-              placeholder={t.blogPage.enterEmail}
-              className="flex-1 rounded-full border-2 border-primary-foreground/20 bg-primary-foreground/10 px-6 py-3 text-primary-foreground placeholder:text-primary-foreground/50 focus:border-primary-foreground/40 focus:outline-none"
-            />
-            <button className="rounded-full bg-primary-foreground px-8 py-3 font-bold text-avanza-green transition-transform hover:scale-105">
-              {t.blogPage.subscribe}
-            </button>
-          </div>
-        </div>
-      </section>
+      <NewsletterSignup />
     </>
   )
 }

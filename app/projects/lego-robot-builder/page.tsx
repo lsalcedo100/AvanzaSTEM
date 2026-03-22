@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
-import { LegoRobotGuide } from "@/components/projects/lego-robot-guide"
-import { getProjectGuide } from "@/lib/project-guides"
+import { LegoRobotGuide } from "@/features/projects/components/lego-robot-guide"
+import { getProjectGuide } from "@/features/projects/data"
 
 export default function LegoRobotBuilderPage() {
   const project = getProjectGuide("lego-robot-builder")

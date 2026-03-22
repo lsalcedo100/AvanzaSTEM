@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Calendar, MapPin, Clock, Users, ArrowRight, CheckCircle2 } from "lucide-react"
-import { useLanguage } from "@/components/language-provider"
+import { useLanguage } from "@/components/providers/language-provider"
 
 export default function WorkshopsPage() {
   const { t } = useLanguage()
@@ -12,7 +12,7 @@ export default function WorkshopsPage() {
       title: t.workshopsPage.bridgeTitle,
       topic: t.projectsPage.engineering,
       description: t.workshopsPage.bridgeDesc,
-      image: "/images/kids with truss bridge-EDIT.jpg",
+      image: "/images/workshops/upcoming-bridge-building.jpg",
       date: "March 15, 2026",
       time: "10:00 AM - 1:00 PM",
       location: "Community Center, Main St.",
@@ -24,7 +24,7 @@ export default function WorkshopsPage() {
       title: t.workshopsPage.codingTitle,
       topic: t.projectsPage.coding,
       description: t.workshopsPage.codingDesc,
-      image: "/images/coding day-EDIT.jpg",
+      image: "/images/workshops/upcoming-python.jpg",
       date: "March 22, 2026",
       time: "10:00 AM - 12:30 PM",
       location: "Public Library, Tech Lab",
@@ -36,7 +36,7 @@ export default function WorkshopsPage() {
       title: t.workshopsPage.aiTitle,
       topic: "AI",
       description: t.workshopsPage.aiDesc,
-      image: "/images/workshop-ai.jpg",
+      image: "/images/shared/ai-workshop.jpg",
       date: "April 5, 2026",
       time: "10:00 AM - 1:00 PM",
       location: "Community Center, Main St.",
@@ -48,7 +48,7 @@ export default function WorkshopsPage() {
       title: t.workshopsPage.roboticsTitle,
       topic: t.projectsPage.robotics,
       description: t.workshopsPage.roboticsDesc,
-      image: "/images/kids working on robotics.jpg",
+      image: "/images/workshops/upcoming-robotics.jpg",
       date: "April 19, 2026",
       time: "10:00 AM - 2:00 PM",
       location: "Community Center, Main St.",
@@ -64,21 +64,21 @@ export default function WorkshopsPage() {
       topic: t.projectsPage.science,
       date: "January 18, 2026",
       attendees: "25 students",
-      image: "/images/experiment-science.jpg",
+      image: "/images/workshops/past-science.jpg",
     },
     {
       title: t.workshopsPage.pastEngineering,
       topic: t.projectsPage.engineering,
       date: "December 7, 2025",
       attendees: "18 students",
-      image: "/images/workshop-engineering.jpg",
+      image: "/images/workshops/past-engineering.jpg",
     },
     {
       title: t.workshopsPage.pastCoding,
       topic: t.projectsPage.coding,
       date: "November 15, 2025",
       attendees: "20 students",
-      image: "/images/curriculum-coding.jpg",
+      image: "/images/workshops/past-coding.jpg",
     },
   ]
 
@@ -178,7 +178,7 @@ export default function WorkshopsPage() {
             {t.workshopsPage.wantToHostDesc}
           </p>
           <a
-            href="mailto:hello@avanzastem.org"
+            href="mailto:liam@avanzastem.org"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary-foreground px-8 py-4 text-lg font-bold text-avanza-purple transition-transform hover:scale-105"
           >
             {t.workshopsPage.contactUs} <ArrowRight className="h-5 w-5" />

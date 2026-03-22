@@ -4,8 +4,8 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Clock, Star, ListChecks, ArrowRight } from "lucide-react"
-import { useLanguage } from "@/components/language-provider"
-import { getProjectGuides } from "@/lib/project-guides"
+import { useLanguage } from "@/components/providers/language-provider"
+import { getProjectGuides } from "@/features/projects/data"
 
 type ProjectCategory = "engineering" | "science" | "coding" | "robotics"
 type FilterTag = "all" | ProjectCategory
@@ -109,7 +109,7 @@ export default function ProjectsPage() {
             {t.projectsPage.haveIdeaDesc}
           </p>
           <a
-            href="mailto:hello@avanzastem.org"
+            href="mailto:liam@avanzastem.org"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-4 text-lg font-bold text-primary-foreground transition-transform hover:scale-105"
           >
             {t.projectsPage.shareIdea} <ArrowRight className="h-5 w-5" />

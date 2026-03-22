@@ -31,3 +31,7 @@ coverage/
 
 # Production build folder (if using standard build tools)
 dist/
+
+# TypeScript incremental build info
+*.tsbuildinfo
+.vercel
