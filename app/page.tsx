@@ -129,7 +129,7 @@ export default function HomePage() {
               description={t.home.featuredCodingDesc}
             />
             <FeaturedCard
-              image="/images/home/featured-mentos.jpg"
+              image="/images/home/diet coke explosion.png"
               title={t.home.featuredMentos}
               description={t.home.featuredMentosDesc}
             />
