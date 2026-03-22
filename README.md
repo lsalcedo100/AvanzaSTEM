@@ -28,12 +28,14 @@ To run the project locally, install dependencies with `npm install` and start th
 
 ## Newsletter setup
 
-The blog newsletter form now posts to `app/api/subscribe`, which validates the email address and forwards the signup through FormSubmit. It works out of the box with the public Avanza STEM inbox.
+The blog newsletter form posts to `app/api/subscribe`, which validates the email address and sends a notification email through Resend.
 
 1. Copy `.env.example` to `.env.local`.
-2. Optionally set `NEWSLETTER_RECIPIENT_EMAIL` if you want signups to go to a different inbox.
-3. Optionally set `NEWSLETTER_FORMSUBMIT_ENDPOINT` if you want to use FormSubmit's hidden random-string endpoint instead of a visible email address.
+2. Set `RESEND_API_KEY` to a valid Resend API key.
+3. Verify your sending domain in Resend before testing delivery to `liam@avanzastem.org`.
+4. Optionally set `NEWSLETTER_FROM_EMAIL` to a sender identity you have configured in Resend. If you leave it blank, the app uses `Avanza STEM <newsletter@avanzastem.org>`.
+5. Optionally set `NEWSLETTER_RECIPIENT_EMAIL` if you want signups to go to a different inbox. If you leave it blank, signups are emailed to `liam@avanzastem.org`.
 
-The forwarded submission includes `email`, `source`, `page`, and `submittedAt`, plus a subject line tailored to newsletter signups.
+The notification includes the subscriber `email`, `source`, `page`, and `submittedAt`, plus a subject line tailored to newsletter signups.
 
-If you point the form at a new inbox or a new FormSubmit endpoint, FormSubmit requires a one-time email confirmation before submissions start arriving there.
+For production delivery, use a sender address on a domain you have verified in Resend.
