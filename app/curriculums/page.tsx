@@ -1,8 +1,8 @@
 "use client"
 
-import Image from "next/image"
 import { BookOpen, Clock, Users, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
+import { LightboxImage } from "@/components/ui/lightbox-image"
 
 export default function CurriculumsPage() {
   const { t } = useLanguage()
@@ -160,7 +160,7 @@ function CurriculumCard({
   return (
     <div className={`group overflow-hidden rounded-2xl border-2 ${borderColor}/30 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg`}>
       <div className="relative h-48 overflow-hidden">
-        <Image
+        <LightboxImage
           src={image}
           alt={title}
           fill

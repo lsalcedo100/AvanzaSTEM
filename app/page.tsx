@@ -1,9 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
+import { LightboxImage } from "@/components/ui/lightbox-image"
 
 export default function HomePage() {
   const { t } = useLanguage()
@@ -29,7 +29,7 @@ export default function HomePage() {
           </div>
           <div className="flex-1">
             <div className="overflow-hidden rounded-2xl shadow-2xl">
-              <Image
+              <LightboxImage
                 src="/images/home/hero.png"
                 alt="Young Hispanic youth collaborating on a popsicle stick engineering project at a workshop table"
                 width={600}
@@ -159,10 +159,10 @@ export default function HomePage() {
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 text-center md:grid-cols-4">
-            <StatCard number="500+" label={t.home.studentsReached} />
-            <StatCard number="12" label={t.home.curriculumTopics} />
-            <StatCard number="25+" label={t.home.diyProjectsCount} />
-            <StatCard number="10" label={t.home.workshopsHosted} />
+            <StatCard number="70+" label={t.home.studentsReached} />
+            <StatCard number="6" label={t.home.curriculumTopics} />
+            <StatCard number="6" label={t.home.diyProjectsCount} />
+            <StatCard number="4" label={t.home.workshopsHosted} />
           </div>
         </div>
       </section>
@@ -251,7 +251,7 @@ function FeaturedCard({
   return (
     <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
       <div className="relative h-52 overflow-hidden">
-        <Image
+        <LightboxImage
           src={image}
           alt={title}
           fill

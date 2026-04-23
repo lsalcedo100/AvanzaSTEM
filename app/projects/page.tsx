@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { Clock, Star, ListChecks, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
+import { LightboxImage } from "@/components/ui/lightbox-image"
 import { getProjectGuides } from "@/features/projects/data"
 
 type ProjectCategory = "engineering" | "science" | "coding" | "robotics"
@@ -152,7 +152,7 @@ function ProjectCard({
   return (
     <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
       <div className="relative h-48 overflow-hidden">
-        <Image
+        <LightboxImage
           src={image}
           alt={title}
           fill
