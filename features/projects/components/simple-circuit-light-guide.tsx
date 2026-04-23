@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import type { ReactNode } from "react"
@@ -21,6 +20,7 @@ import {
   Wrench,
   Zap,
 } from "lucide-react"
+import { LightboxImage } from "@/components/ui/lightbox-image"
 import { useLanguage } from "@/components/providers/language-provider"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Progress } from "@/components/ui/progress"
@@ -497,7 +497,7 @@ export function SimpleCircuitLightGuide({ project }: { project: ProjectGuide }) 
 
                   <TabsContent value="photo">
                     <div className="relative h-[360px] overflow-hidden rounded-[1.6rem] bg-[#0b1730]">
-                      <Image src={guideProject.image} alt={guideProject.title} fill className="object-cover" />
+                      <LightboxImage src={guideProject.image} alt={guideProject.title} fill className="object-cover" />
                       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#09111f] via-[#09111f]/85 to-transparent p-5 text-sm text-white/88">
                         Photo View: This is what the finished mission can look like on your table.
                       </div>

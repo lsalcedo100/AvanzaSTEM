@@ -1,8 +1,8 @@
-import Image from "next/image"
 import Link from "next/link"
 import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Clock, Lightbulb, ListChecks, ShieldAlert, Star } from "lucide-react"
+import { LightboxImage } from "@/components/ui/lightbox-image"
 import { getProjectGuide, projectGuides } from "@/features/projects/data"
 import { type Language, translations } from "@/i18n/translations"
 
@@ -75,7 +75,7 @@ export default async function ProjectGuidePage({
             </div>
 
             <div className="relative h-72 overflow-hidden rounded-3xl border border-primary-foreground/15 shadow-2xl">
-              <Image src={project.image} alt={project.title} fill className="object-cover" />
+              <LightboxImage src={project.image} alt={project.title} fill className="object-cover" />
             </div>
           </div>
         </div>

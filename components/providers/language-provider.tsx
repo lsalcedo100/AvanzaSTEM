@@ -28,21 +28,28 @@ type LanguageContextType = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en")
-  const [mounted, setMounted] = useState(false)
+export function LanguageProvider({
+  children,
+  initialLanguage = "en",
+}: {
+  children: ReactNode
+  initialLanguage?: Language
+}) {
+  const [language, setLanguageState] = useState<Language>(initialLanguage)
 
   useEffect(() => {
-    setLanguageState(getStoredLanguage())
-    setMounted(true)
+    const storedLanguage = getStoredLanguage()
+    setLanguageState(storedLanguage)
+    document.documentElement.lang = storedLanguage
   }, [])
 
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang)
+    document.documentElement.lang = lang
     storeLanguage(lang)
   }, [])
 
-  const t = translations[mounted ? language : "en"]
+  const t = translations[language]
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>

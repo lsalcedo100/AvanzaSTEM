@@ -78,23 +78,35 @@ export function Navbar() {
           {/* Language Switcher */}
           <div className="relative ml-3" ref={desktopLangRef}>
             <button
+              type="button"
               onClick={() => setLangOpen(!langOpen)}
               className="inline-flex items-center gap-1.5 rounded-full border-2 border-avanza-dark/25 px-3 py-1.5 text-sm font-semibold text-avanza-dark transition-colors hover:border-avanza-dark/45 hover:bg-avanza-dark/8"
               aria-label="Switch language"
+              aria-expanded={langOpen}
+              aria-haspopup="menu"
+              aria-controls="desktop-language-menu"
             >
               <Globe className="h-4 w-4" />
               <span>{languageLabels[language]}</span>
             </button>
 
             {langOpen && (
-              <div className="absolute right-0 top-full mt-2 w-36 overflow-hidden rounded-xl border border-border bg-card shadow-lg">
+              <div
+                id="desktop-language-menu"
+                role="menu"
+                aria-label="Choose language"
+                className="absolute right-0 top-full z-[60] mt-2 w-36 overflow-hidden rounded-xl border border-border bg-card shadow-lg"
+              >
                 {(Object.keys(languageLabels) as Language[]).map((lang) => (
                   <button
+                    type="button"
                     key={lang}
                     onClick={() => {
                       setLanguage(lang)
                       setLangOpen(false)
                     }}
+                    role="menuitemradio"
+                    aria-checked={language === lang}
                     className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm font-medium transition-colors ${language === lang
                         ? "bg-avanza-green/10 text-avanza-green"
                         : "text-card-foreground hover:bg-secondary"
@@ -116,22 +128,34 @@ export function Navbar() {
           {/* Mobile Language */}
           <div className="relative" ref={mobileLangRef}>
             <button
+              type="button"
               onClick={() => setLangOpen(!langOpen)}
               className="inline-flex items-center gap-1 rounded-full border border-avanza-dark/25 px-2.5 py-1.5 text-xs font-semibold text-avanza-dark"
               aria-label="Switch language"
+              aria-expanded={langOpen}
+              aria-haspopup="menu"
+              aria-controls="mobile-language-menu"
             >
               <Globe className="h-3.5 w-3.5" />
               <span>{language.toUpperCase()}</span>
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full mt-2 w-36 overflow-hidden rounded-xl border border-border bg-card shadow-lg">
+              <div
+                id="mobile-language-menu"
+                role="menu"
+                aria-label="Choose language"
+                className="absolute right-0 top-full z-[60] mt-2 w-36 overflow-hidden rounded-xl border border-border bg-card shadow-lg"
+              >
                 {(Object.keys(languageLabels) as Language[]).map((lang) => (
                   <button
+                    type="button"
                     key={lang}
                     onClick={() => {
                       setLanguage(lang)
                       setLangOpen(false)
                     }}
+                    role="menuitemradio"
+                    aria-checked={language === lang}
                     className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm font-medium transition-colors ${language === lang
                         ? "bg-avanza-green/10 text-avanza-green"
                         : "text-card-foreground hover:bg-secondary"
@@ -148,9 +172,11 @@ export function Navbar() {
           </div>
 
           <button
+            type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
             className="text-avanza-dark"
             aria-label="Toggle navigation menu"
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>

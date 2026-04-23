@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import type { ReactNode } from "react"
 import type { LucideIcon } from "lucide-react"
@@ -18,6 +17,7 @@ import {
   Star,
   Triangle,
 } from "lucide-react"
+import { LightboxImage } from "@/components/ui/lightbox-image"
 import { useLanguage } from "@/components/providers/language-provider"
 import { getProjectGuide, type ProjectGuide } from "@/features/projects/data"
 
@@ -359,7 +359,7 @@ export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide })
 
                 <div className="mt-4 rounded-[1.7rem] bg-[linear-gradient(180deg,#07121f_0%,#0b1828_100%)] p-4">
                   <div className="relative h-[360px] overflow-hidden rounded-[1.4rem] border border-white/8">
-                    <Image src={guideProject.image} alt={guideProject.title} fill className="object-cover" />
+                    <LightboxImage src={guideProject.image} alt={guideProject.title} fill className="object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#08182a] via-transparent to-transparent" />
                   </div>
                 </div>

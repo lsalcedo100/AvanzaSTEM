@@ -1,274 +1,215 @@
 "use client"
 
-import Image from "next/image"
-import { Calendar, MapPin, Clock, Users, ArrowRight, CheckCircle2 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
+import { LightboxImage } from "@/components/ui/lightbox-image"
 
 export default function WorkshopsPage() {
   const { t } = useLanguage()
-
-  const upcomingWorkshops = [
+  const workshops = [
     {
-      title: t.workshopsPage.bridgeTitle,
-      topic: t.projectsPage.engineering,
-      description: t.workshopsPage.bridgeDesc,
-      image: "/images/workshops/upcoming-bridge-building.jpg",
-      date: "March 15, 2026",
-      time: "10:00 AM - 1:00 PM",
-      location: "Community Center, Main St.",
-      ageRange: "Grades 2-5",
-      spots: "20 " + t.workshopsPage.spotsAvailable,
-      color: "bg-avanza-purple",
+      week: t.workshopsPage.week1,
+      title: t.workshopsPage.buildingTitle,
+      description: t.workshopsPage.buildingDesc,
+      image: "/images/workshops/Building Workshop Description.jpeg",
+      imageAlt: "Students learning engineering concepts during a building workshop",
+      accent: "bg-avanza-purple",
     },
     {
-      title: t.workshopsPage.codingTitle,
-      topic: t.projectsPage.coding,
-      description: t.workshopsPage.codingDesc,
-      image: "/images/workshops/upcoming-python.jpg",
-      date: "March 22, 2026",
-      time: "10:00 AM - 12:30 PM",
-      location: "Public Library, Tech Lab",
-      ageRange: "Grades 3-6",
-      spots: "15 " + t.workshopsPage.spotsAvailable,
-      color: "bg-avanza-green",
+      week: t.workshopsPage.week2,
+      title: t.workshopsPage.codingWorkshopTitle,
+      description: t.workshopsPage.codingWorkshopDesc,
+      image: "/images/workshops/Coding Workshop Description.png",
+      imageAlt: "Students practicing Python during a coding workshop",
+      accent: "bg-avanza-green",
+      reverse: true,
     },
     {
-      title: t.workshopsPage.aiTitle,
-      topic: "AI",
-      description: t.workshopsPage.aiDesc,
-      image: "/images/shared/ai-workshop.jpg",
-      date: "April 5, 2026",
-      time: "10:00 AM - 1:00 PM",
-      location: "Community Center, Main St.",
-      ageRange: "Grades 5-8",
-      spots: "15 " + t.workshopsPage.spotsAvailable,
-      color: "bg-avanza-teal",
-    },
-    {
-      title: t.workshopsPage.roboticsTitle,
-      topic: t.projectsPage.robotics,
-      description: t.workshopsPage.roboticsDesc,
-      image: "/images/workshops/upcoming-robotics.jpg",
-      date: "April 19, 2026",
-      time: "10:00 AM - 2:00 PM",
-      location: "Community Center, Main St.",
-      ageRange: "Grades 4-6",
-      spots: "12 " + t.workshopsPage.spotsAvailable,
-      color: "bg-avanza-orange",
+      week: t.workshopsPage.week3,
+      title: t.workshopsPage.aiWorkshopTitle,
+      description: t.workshopsPage.aiWorkshopDesc,
+      note: t.workshopsPage.responsibleAiNote,
+      noteTitle: t.workshopsPage.responsibleAi,
+      image: "/images/workshops/AI Workshop Description.JPG",
+      imageAlt: "Students exploring artificial intelligence concepts in a workshop",
+      accent: "bg-avanza-teal",
     },
   ]
-
-  const pastWorkshops = [
+  const approachPoints = [
     {
-      title: t.workshopsPage.pastScience,
-      topic: t.projectsPage.science,
-      date: "January 18, 2026",
-      attendees: "25 students",
-      image: "/images/workshops/past-science.jpg",
+      title: t.workshopsPage.handsOnLearning,
+      description: t.workshopsPage.handsOnShortDesc,
     },
     {
-      title: t.workshopsPage.pastEngineering,
-      topic: t.projectsPage.engineering,
-      date: "December 7, 2025",
-      attendees: "18 students",
-      image: "/images/workshops/past-engineering.jpg",
+      title: t.workshopsPage.realWorldRelevance,
+      description: t.workshopsPage.realWorldRelevanceDesc,
     },
     {
-      title: t.workshopsPage.pastCoding,
-      topic: t.projectsPage.coding,
-      date: "November 15, 2025",
-      attendees: "20 students",
-      image: "/images/workshops/past-coding.jpg",
+      title: t.workshopsPage.interactiveTeaching,
+      description: t.workshopsPage.interactiveTeachingDesc,
     },
   ]
 
   return (
     <>
-      {/* Hero */}
       <section className="bg-gradient-to-br from-avanza-teal to-avanza-green py-20">
-        <div className="mx-auto max-w-7xl px-6 text-center">
-          <h1 className="text-4xl font-extrabold text-primary-foreground md:text-5xl">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <p className="text-sm font-bold uppercase tracking-wider text-primary-foreground/80">
+            {t.workshopsPage.seriesEyebrow}
+          </p>
+          <h1 className="mt-3 text-4xl font-extrabold text-primary-foreground md:text-6xl">
             {t.workshopsPage.title}
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-primary-foreground/85">
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-primary-foreground/90 md:text-xl">
             {t.workshopsPage.description}
           </p>
         </div>
       </section>
 
-      {/* Upcoming Workshops */}
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-3xl font-extrabold text-foreground">{t.workshopsPage.upcoming}</h2>
-          <p className="mt-2 text-lg text-muted-foreground">
-            {t.workshopsPage.upcomingDesc}
-          </p>
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">
+              {t.workshopsPage.journeyTitle}
+            </h2>
+            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+              {t.workshopsPage.journeyDesc}
+            </p>
+          </div>
 
-          <div className="mt-10 space-y-8">
-            {upcomingWorkshops.map((workshop) => (
-              <WorkshopCard key={workshop.title} {...workshop} registerNow={t.workshopsPage.registerNow} />
+          <div className="mt-16 space-y-14">
+            {workshops.map((workshop) => (
+              <WorkshopSection key={workshop.title} {...workshop} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* What to Expect */}
       <section className="bg-secondary py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-center text-3xl font-extrabold text-foreground md:text-4xl">
-            {t.workshopsPage.whatToExpect}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-muted-foreground">
-            {t.workshopsPage.whatToExpectDesc}
-          </p>
-
-          <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <ExpectCard title={t.workshopsPage.freeForAll} description={t.workshopsPage.freeForAllDesc} />
-            <ExpectCard title={t.workshopsPage.smallGroups} description={t.workshopsPage.smallGroupsDesc} />
-            <ExpectCard title={t.workshopsPage.handsOnLearning} description={t.workshopsPage.handsOnLearningDesc} />
-            <ExpectCard title={t.workshopsPage.takeItHome} description={t.workshopsPage.takeItHomeDesc} />
-          </div>
-        </div>
-      </section>
-
-      {/* Past Workshops */}
-      <section className="bg-background py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-3xl font-extrabold text-foreground">{t.workshopsPage.pastWorkshops}</h2>
-          <p className="mt-2 text-lg text-muted-foreground">
-            {t.workshopsPage.pastWorkshopsDesc}
-          </p>
-
-          <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {pastWorkshops.map((workshop) => (
-              <div
-                key={workshop.title}
-                className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={workshop.image}
-                    alt={workshop.title}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-avanza-dark/40" />
-                  <div className="absolute bottom-4 left-4 text-primary-foreground">
-                    <p className="text-xs font-bold text-avanza-green">{workshop.topic}</p>
-                    <h3 className="text-lg font-bold">{workshop.title}</h3>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between p-4">
-                  <span className="text-sm text-muted-foreground">{workshop.date}</span>
-                  <span className="text-sm font-semibold text-avanza-green">{workshop.attendees}</span>
-                </div>
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div className="max-w-xl">
+              <p className="text-sm font-bold uppercase tracking-wider text-avanza-green">
+                {t.workshopsPage.approachEyebrow}
+              </p>
+              <h2 className="mt-6 text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
+                {t.workshopsPage.approachTitle}
+              </h2>
+              <div className="mt-6 space-y-5 text-lg leading-relaxed text-muted-foreground">
+                <p>{t.workshopsPage.approachP1}</p>
+                <p>{t.workshopsPage.approachP2}</p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      {/* CTA */}
-      <section className="bg-gradient-to-br from-avanza-purple to-avanza-teal py-20">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-3xl font-extrabold text-primary-foreground md:text-4xl">
-            {t.workshopsPage.wantToHost}
-          </h2>
-          <p className="mt-4 text-lg text-primary-foreground/85">
-            {t.workshopsPage.wantToHostDesc}
-          </p>
-          <a
-            href="mailto:liam@avanzastem.org"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary-foreground px-8 py-4 text-lg font-bold text-avanza-purple transition-transform hover:scale-105"
-          >
-            {t.workshopsPage.contactUs} <ArrowRight className="h-5 w-5" />
-          </a>
+            <div className="rounded-xl border border-avanza-green/15 bg-background/70 p-7 shadow-[0_18px_45px_rgba(26,26,46,0.07)] sm:p-8">
+              <p className="text-sm font-bold uppercase tracking-wider text-avanza-teal">
+                {t.workshopsPage.engagementEyebrow}
+              </p>
+              <h3 className="mt-3 text-2xl font-extrabold leading-tight text-card-foreground">
+                {t.workshopsPage.engagementTitle}
+              </h3>
+              <ul className="mt-7 space-y-4">
+                {approachPoints.map((point) => (
+                  <ApproachPoint
+                    key={point.title}
+                    title={point.title}
+                    description={point.description}
+                  />
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
     </>
   )
 }
 
-function WorkshopCard({
+function ApproachPoint({
   title,
-  topic,
   description,
-  image,
-  date,
-  time,
-  location,
-  ageRange,
-  spots,
-  color,
-  registerNow,
 }: {
   title: string
-  topic: string
   description: string
-  image: string
-  date: string
-  time: string
-  location: string
-  ageRange: string
-  spots: string
-  color: string
-  registerNow: string
 }) {
   return (
-    <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:shadow-lg md:flex">
-      <div className="relative min-h-[250px] md:w-2/5">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-        <span className={`absolute left-4 top-4 rounded-full ${color} px-3 py-1 text-xs font-bold text-primary-foreground`}>
-          {topic}
-        </span>
+    <li className="group relative rounded-lg border border-border/70 bg-card/85 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-avanza-green/25 hover:bg-card hover:shadow-[0_12px_28px_rgba(26,26,46,0.06)]">
+      <div className="absolute inset-y-5 left-0 w-1 rounded-r-full bg-avanza-green/60" />
+      <div className="pl-4">
+        <h4 className="font-bold leading-snug text-card-foreground">
+          {title}
+        </h4>
+        <p className="mt-2 leading-relaxed text-muted-foreground">
+          {description}
+        </p>
       </div>
-      <div className="flex flex-1 flex-col justify-center p-8">
-        <h3 className="text-2xl font-bold text-card-foreground">{title}</h3>
-        <p className="mt-2 leading-relaxed text-muted-foreground">{description}</p>
-
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-            <Calendar className="h-4 w-4 text-avanza-green" /> {date}
-          </span>
-          <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-            <Clock className="h-4 w-4 text-avanza-green" /> {time}
-          </span>
-          <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4 text-avanza-green" /> {location}
-          </span>
-          <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-            <Users className="h-4 w-4 text-avanza-green" /> {ageRange}
-          </span>
-        </div>
-
-        <div className="mt-6 flex flex-wrap items-center gap-4">
-          <button className={`inline-flex items-center gap-2 rounded-full ${color} px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-105`}>
-            {registerNow} <ArrowRight className="h-4 w-4" />
-          </button>
-          <span className="text-sm font-semibold text-avanza-green">{spots}</span>
-        </div>
-      </div>
-    </div>
+    </li>
   )
 }
 
-function ExpectCard({
+function WorkshopSection({
+  week,
   title,
   description,
+  note,
+  noteTitle,
+  image,
+  imageAlt,
+  accent,
+  reverse = false,
 }: {
+  week: string
   title: string
   description: string
+  note?: string
+  noteTitle?: string
+  image: string
+  imageAlt: string
+  accent: string
+  reverse?: boolean
 }) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-border bg-card p-8 text-center shadow-sm">
-      <CheckCircle2 className="h-10 w-10 text-avanza-green" />
-      <h3 className="mt-4 text-lg font-bold text-card-foreground">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
-    </div>
+    <article className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+      <div
+        className={`grid gap-0 lg:grid-cols-2 lg:items-stretch ${
+          reverse ? "lg:[&>*:first-child]:order-2" : ""
+        }`}
+      >
+        <div className="relative min-h-[280px] sm:min-h-[360px] lg:min-h-[460px]">
+          <LightboxImage
+            src={image}
+            alt={imageAlt}
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover"
+          />
+        </div>
+
+        <div className="flex items-center">
+          <div className="p-8 sm:p-10 lg:p-14">
+            <div className={`h-1.5 w-20 rounded-full ${accent}`} aria-hidden="true" />
+            <p className="mt-8 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+              {week}
+            </p>
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-card-foreground md:text-4xl">
+              {title}
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              {description}
+            </p>
+
+            {note && (
+              <div className="mt-8 border-l-4 border-avanza-teal bg-avanza-teal/10 p-5">
+                <h3 className="text-base font-extrabold text-card-foreground">
+                  {noteTitle}
+                </h3>
+                <p className="mt-3 leading-relaxed text-muted-foreground">
+                  {note}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
   )
 }

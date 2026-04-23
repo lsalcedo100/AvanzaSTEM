@@ -1,9 +1,9 @@
 "use client"
 
-import Image from "next/image"
 import { Calendar, User, ArrowRight, Clock } from "lucide-react"
 import { NewsletterSignup } from "@/components/blog/newsletter-signup"
 import { useLanguage } from "@/components/providers/language-provider"
+import { LightboxImage } from "@/components/ui/lightbox-image"
 
 export default function BlogPage() {
   const { t } = useLanguage()
@@ -100,7 +100,7 @@ export default function BlogPage() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-all hover:shadow-xl md:flex">
             <div className="relative min-h-[300px] md:w-1/2">
-              <Image
+              <LightboxImage
                 src={featuredPost.image}
                 alt={featuredPost.title}
                 fill
@@ -180,7 +180,7 @@ function BlogCard({
   return (
     <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
       <div className="relative h-48 overflow-hidden">
-        <Image
+        <LightboxImage
           src={image}
           alt={title}
           fill

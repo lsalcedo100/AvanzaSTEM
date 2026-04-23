@@ -86,7 +86,7 @@ export function Footer() {
 
         <div className="mt-12 border-t border-primary-foreground/10 pt-8 text-center">
           <p className="text-sm text-primary-foreground/50">
-            {new Date().getFullYear()} {t.footer.copyright}
+            2025 {t.footer.copyright}
           </p>
         </div>
       </div>
