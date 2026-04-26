@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Calendar, User, ArrowRight, Clock } from "lucide-react"
 import { NewsletterSignup } from "@/components/blog/newsletter-signup"
 import { useLanguage } from "@/components/providers/language-provider"
@@ -17,6 +18,7 @@ export default function BlogPage() {
     date: "February 20, 2026",
     readTime: "5 min",
     category: "Coding",
+    href: "/blog/why-every-kid-should-learn-to-code",
   }
 
   const blogPosts = [
@@ -29,6 +31,7 @@ export default function BlogPage() {
       readTime: "4 min",
       category: "Science",
       color: "bg-avanza-orange",
+      href: "/blog/5-easy-science-experiments",
     },
     {
       title: t.blogPage.post2Title,
@@ -39,6 +42,7 @@ export default function BlogPage() {
       readTime: "6 min",
       category: "Engineering",
       color: "bg-avanza-purple",
+      href: "/blog/how-to-build-the-strongest-popsicle-stick-bridge",
     },
     {
       title: t.blogPage.post3Title,
@@ -49,6 +53,7 @@ export default function BlogPage() {
       readTime: "5 min",
       category: "Robotics",
       color: "bg-avanza-green",
+      href: "/blog/getting-started-with-lego-robotics",
     },
     {
       title: t.blogPage.post4Title,
@@ -59,6 +64,7 @@ export default function BlogPage() {
       readTime: "4 min",
       category: "AI",
       color: "bg-avanza-teal",
+      href: "/blog/what-is-ai-explaining-to-kids",
     },
     {
       title: t.blogPage.post5Title,
@@ -69,6 +75,7 @@ export default function BlogPage() {
       readTime: "3 min",
       category: "Math",
       color: "bg-avanza-orange",
+      href: "/blog/math-games-that-make-learning-fun",
     },
     {
       title: t.blogPage.post6Title,
@@ -79,6 +86,7 @@ export default function BlogPage() {
       readTime: "7 min",
       category: "Community",
       color: "bg-avanza-purple",
+      href: "/blog/building-a-community-stem-workshops",
     },
   ]
 
@@ -100,7 +108,7 @@ export default function BlogPage() {
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn>
-            <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-all duration-300 hover:shadow-xl md:flex">
+            <Link href={featuredPost.href} className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-all duration-300 hover:shadow-xl md:flex">
               <div className="relative min-h-[300px] md:w-1/2">
                 <LightboxImage
                   src={featuredPost.image}
@@ -133,11 +141,11 @@ export default function BlogPage() {
                     <Clock className="h-4 w-4" /> {featuredPost.readTime}
                   </span>
                 </div>
-                <button className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-200 hover:scale-105 hover:shadow-md">
+                <span className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-200 group-hover:scale-105 group-hover:shadow-md">
                   {t.blogPage.readArticle} <ArrowRight className="h-4 w-4" />
-                </button>
+                </span>
               </div>
-            </div>
+            </Link>
           </FadeIn>
         </div>
       </section>
@@ -173,6 +181,7 @@ function BlogCard({
   category,
   color,
   readMore,
+  href,
 }: {
   title: string
   excerpt: string
@@ -183,40 +192,43 @@ function BlogCard({
   category: string
   color: string
   readMore: string
+  href: string
 }) {
   return (
-    <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
-      <div className="relative h-48 overflow-hidden">
-        <LightboxImage
-          src={image}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <span className={`absolute left-4 top-4 rounded-full ${color} px-3 py-1 text-xs font-bold text-primary-foreground`}>
-          {category}
-        </span>
-      </div>
-      <div className="p-6">
-        <h3 className="text-lg font-bold leading-snug text-card-foreground">{title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>
-
-        <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1">
-            <User className="h-3 w-3" /> {author}
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <Calendar className="h-3 w-3" /> {date}
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <Clock className="h-3 w-3" /> {readTime}
+    <Link href={href} className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
+      <article>
+        <div className="relative h-48 overflow-hidden">
+          <LightboxImage
+            src={image}
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <span className={`absolute left-4 top-4 rounded-full ${color} px-3 py-1 text-xs font-bold text-primary-foreground`}>
+            {category}
           </span>
         </div>
+        <div className="p-6">
+          <h3 className="text-lg font-bold leading-snug text-card-foreground">{title}</h3>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>
 
-        <button className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-avanza-green transition-all duration-200 hover:gap-2 hover:text-avanza-teal">
-          {readMore} <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-        </button>
-      </div>
-    </article>
+          <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1">
+              <User className="h-3 w-3" /> {author}
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <Calendar className="h-3 w-3" /> {date}
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <Clock className="h-3 w-3" /> {readTime}
+            </span>
+          </div>
+
+          <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-avanza-green transition-all duration-200 group-hover:gap-2 group-hover:text-avanza-teal">
+            {readMore} <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </span>
+        </div>
+      </article>
+    </Link>
   )
 }
