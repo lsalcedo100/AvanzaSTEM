@@ -45,17 +45,76 @@ async function getCookieLanguage(): Promise<Language> {
   return isLanguage(cookieLanguage) ? cookieLanguage : 'en'
 }
 
+const BASE_URL = 'https://avanzastem.org'
+
+const ogImageByLanguage: Record<Language, string> = {
+  en: '/images/og-default-en.png',
+  es: '/images/og-default-es.png',
+  zh: '/images/og-default-zh.png',
+}
+
+const ogLocaleByLanguage: Record<Language, string> = {
+  en: 'en_US',
+  es: 'es_US',
+  zh: 'zh_CN',
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const language = await getCookieLanguage()
+  const { title, description } = metadataByLanguage[language]
+  const ogImage = ogImageByLanguage[language]
 
   return {
-    ...metadataByLanguage[language],
+    title,
+    description,
+    metadataBase: new URL(BASE_URL),
+    alternates: {
+      canonical: '/',
+    },
+    openGraph: {
+      title: title as string,
+      description: description as string,
+      url: BASE_URL,
+      siteName: 'Avanza STEM',
+      locale: ogLocaleByLanguage[language],
+      type: 'website',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: 'Avanza STEM',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title as string,
+      description: description as string,
+      images: [ogImage],
+    },
     icons: {
       icon: '/icon-light-32x32.png',
       shortcut: '/icon-light-32x32.png',
       apple: '/apple-icon.png',
     },
   }
+}
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Avanza STEM',
+  url: BASE_URL,
+  logo: `${BASE_URL}/icon-light-32x32.png`,
+  description:
+    'Free online STEM learning, fun projects, and local workshops designed for young Hispanic students.',
+  sameAs: [],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'liam@avanzastem.org',
+    contactType: 'customer support',
+  },
 }
 
 export const viewport = {
@@ -72,6 +131,10 @@ export default async function RootLayout({
   return (
     <html lang={language} suppressHydrationWarning>
       <body className={`${robotoMono.variable} font-sans antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <LanguageProvider initialLanguage={language}>
           <ImageLightboxProvider>
             <Navbar />
