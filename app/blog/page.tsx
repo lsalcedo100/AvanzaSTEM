@@ -4,6 +4,7 @@ import { Calendar, User, ArrowRight, Clock } from "lucide-react"
 import { NewsletterSignup } from "@/components/blog/newsletter-signup"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
+import { FadeIn } from "@/components/ui/animate"
 
 export default function BlogPage() {
   const { t } = useLanguage()
@@ -85,67 +86,73 @@ export default function BlogPage() {
     <>
       {/* Hero */}
       <section className="bg-gradient-to-br from-avanza-orange to-[#e74c8b] py-20">
-        <div className="mx-auto max-w-7xl px-6 text-center">
+        <FadeIn className="mx-auto max-w-7xl px-6 text-center">
           <h1 className="text-4xl font-extrabold text-primary-foreground md:text-5xl">
             {t.blogPage.title}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-primary-foreground/85">
             {t.blogPage.description}
           </p>
-        </div>
+        </FadeIn>
       </section>
 
       {/* Featured Post */}
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-all hover:shadow-xl md:flex">
-            <div className="relative min-h-[300px] md:w-1/2">
-              <LightboxImage
-                src={featuredPost.image}
-                alt={featuredPost.title}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <span className="absolute left-4 top-4 rounded-full bg-avanza-green px-3 py-1 text-xs font-bold text-primary-foreground">
-                {t.blogPage.featured}
-              </span>
-            </div>
-            <div className="flex flex-col justify-center p-8 md:w-1/2">
-              <span className="inline-block w-fit rounded-full bg-avanza-green/10 px-3 py-1 text-xs font-bold text-avanza-green">
-                {featuredPost.category}
-              </span>
-              <h2 className="mt-4 text-2xl font-extrabold text-card-foreground md:text-3xl">
-                {featuredPost.title}
-              </h2>
-              <p className="mt-3 leading-relaxed text-muted-foreground">
-                {featuredPost.excerpt}
-              </p>
-              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                <span className="inline-flex items-center gap-1">
-                  <User className="h-4 w-4" /> {featuredPost.author}
-                </span>
-                <span className="inline-flex items-center gap-1">
-                  <Calendar className="h-4 w-4" /> {featuredPost.date}
-                </span>
-                <span className="inline-flex items-center gap-1">
-                  <Clock className="h-4 w-4" /> {featuredPost.readTime}
+          <FadeIn>
+            <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-all duration-300 hover:shadow-xl md:flex">
+              <div className="relative min-h-[300px] md:w-1/2">
+                <LightboxImage
+                  src={featuredPost.image}
+                  alt={featuredPost.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute left-4 top-4 rounded-full bg-avanza-green px-3 py-1 text-xs font-bold text-primary-foreground">
+                  {t.blogPage.featured}
                 </span>
               </div>
-              <button className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-105">
-                {t.blogPage.readArticle} <ArrowRight className="h-4 w-4" />
-              </button>
+              <div className="flex flex-col justify-center p-8 md:w-1/2">
+                <span className="inline-block w-fit rounded-full bg-avanza-green/10 px-3 py-1 text-xs font-bold text-avanza-green">
+                  {featuredPost.category}
+                </span>
+                <h2 className="mt-4 text-2xl font-extrabold text-card-foreground md:text-3xl">
+                  {featuredPost.title}
+                </h2>
+                <p className="mt-3 leading-relaxed text-muted-foreground">
+                  {featuredPost.excerpt}
+                </p>
+                <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-1">
+                    <User className="h-4 w-4" /> {featuredPost.author}
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <Calendar className="h-4 w-4" /> {featuredPost.date}
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <Clock className="h-4 w-4" /> {featuredPost.readTime}
+                  </span>
+                </div>
+                <button className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-200 hover:scale-105 hover:shadow-md">
+                  {t.blogPage.readArticle} <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
             </div>
-          </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* Blog Grid */}
       <section className="bg-secondary py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-3xl font-extrabold text-foreground">{t.blogPage.latestPosts}</h2>
+          <FadeIn>
+            <h2 className="text-3xl font-extrabold text-foreground">{t.blogPage.latestPosts}</h2>
+          </FadeIn>
           <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {blogPosts.map((post) => (
-              <BlogCard key={post.title} {...post} readMore={t.blogPage.readMore} />
+            {blogPosts.map((post, i) => (
+              <FadeIn key={post.title} delay={i * 75}>
+                <BlogCard {...post} readMore={t.blogPage.readMore} />
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -178,13 +185,13 @@ function BlogCard({
   readMore: string
 }) {
   return (
-    <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+    <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
       <div className="relative h-48 overflow-hidden">
         <LightboxImage
           src={image}
           alt={title}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <span className={`absolute left-4 top-4 rounded-full ${color} px-3 py-1 text-xs font-bold text-primary-foreground`}>
           {category}
@@ -206,8 +213,8 @@ function BlogCard({
           </span>
         </div>
 
-        <button className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-avanza-green transition-colors hover:text-avanza-teal">
-          {readMore} <ArrowRight className="h-4 w-4" />
+        <button className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-avanza-green transition-all duration-200 hover:gap-2 hover:text-avanza-teal">
+          {readMore} <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
         </button>
       </div>
     </article>

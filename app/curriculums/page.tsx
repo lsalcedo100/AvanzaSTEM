@@ -3,6 +3,7 @@
 import { BookOpen, Clock, Users, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
+import { FadeIn } from "@/components/ui/animate"
 
 export default function CurriculumsPage() {
   const { t } = useLanguage()
@@ -74,22 +75,28 @@ export default function CurriculumsPage() {
     <>
       {/* Hero */}
       <section className="bg-gradient-to-br from-avanza-green to-avanza-teal py-20">
-        <div className="mx-auto max-w-7xl px-6 text-center">
+        <FadeIn className="mx-auto max-w-7xl px-6 text-center">
           <h1 className="text-4xl font-extrabold text-primary-foreground md:text-5xl">
             {t.curriculumsPage.title}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-primary-foreground/85">
             {t.curriculumsPage.description}
           </p>
-        </div>
+        </FadeIn>
       </section>
 
       {/* Curriculum Grid */}
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {curriculums.map((curriculum) => (
-              <CurriculumCard key={curriculum.title} {...curriculum} topicsCovered={t.curriculumsPage.topicsCovered} startLearning={t.curriculumsPage.startLearning} />
+            {curriculums.map((curriculum, i) => (
+              <FadeIn key={curriculum.title} delay={i * 70}>
+                <CurriculumCard
+                  {...curriculum}
+                  topicsCovered={t.curriculumsPage.topicsCovered}
+                  startLearning={t.curriculumsPage.startLearning}
+                />
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -98,24 +105,32 @@ export default function CurriculumsPage() {
       {/* How It Works */}
       <section className="bg-secondary py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-center text-3xl font-extrabold text-foreground md:text-4xl">
-            {t.curriculumsPage.howItWorks}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-muted-foreground">
-            {t.curriculumsPage.howItWorksDesc}
-          </p>
+          <FadeIn className="text-center">
+            <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">
+              {t.curriculumsPage.howItWorks}
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+              {t.curriculumsPage.howItWorksDesc}
+            </p>
+          </FadeIn>
 
           <div className="mt-14 grid gap-8 md:grid-cols-3">
-            <StepCard step="1" title={t.curriculumsPage.step1} description={t.curriculumsPage.step1Desc} />
-            <StepCard step="2" title={t.curriculumsPage.step2} description={t.curriculumsPage.step2Desc} />
-            <StepCard step="3" title={t.curriculumsPage.step3} description={t.curriculumsPage.step3Desc} />
+            {[
+              { step: "1", title: t.curriculumsPage.step1, description: t.curriculumsPage.step1Desc },
+              { step: "2", title: t.curriculumsPage.step2, description: t.curriculumsPage.step2Desc },
+              { step: "3", title: t.curriculumsPage.step3, description: t.curriculumsPage.step3Desc },
+            ].map((s, i) => (
+              <FadeIn key={s.step} delay={i * 100}>
+                <StepCard {...s} />
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="bg-gradient-to-br from-avanza-purple to-avanza-teal py-16">
-        <div className="mx-auto max-w-4xl px-6 text-center">
+        <FadeIn className="mx-auto max-w-4xl px-6 text-center" rootMargin="0px 0px -30px 0px">
           <h2 className="text-3xl font-extrabold text-primary-foreground">
             {t.curriculumsPage.cantFind}
           </h2>
@@ -124,11 +139,11 @@ export default function CurriculumsPage() {
           </p>
           <a
             href="mailto:liam@avanzastem.org"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary-foreground px-8 py-4 text-lg font-bold text-avanza-purple transition-transform hover:scale-105"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary-foreground px-8 py-4 text-lg font-bold text-avanza-purple transition-all duration-300 hover:scale-105 hover:shadow-xl"
           >
             {t.curriculumsPage.suggestTopic} <ArrowRight className="h-5 w-5" />
           </a>
-        </div>
+        </FadeIn>
       </section>
     </>
   )
@@ -158,13 +173,13 @@ function CurriculumCard({
   startLearning: string
 }) {
   return (
-    <div className={`group overflow-hidden rounded-2xl border-2 ${borderColor}/30 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg`}>
+    <div className={`group overflow-hidden rounded-2xl border-2 ${borderColor}/30 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl`}>
       <div className="relative h-48 overflow-hidden">
         <LightboxImage
           src={image}
           alt={title}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="p-6">
@@ -194,7 +209,7 @@ function CurriculumCard({
           </div>
         </div>
 
-        <button className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full ${color} px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02]`}>
+        <button className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full ${color} px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:shadow-md`}>
           <BookOpen className="h-4 w-4" /> {startLearning}
         </button>
       </div>
@@ -213,7 +228,7 @@ function StepCard({
 }) {
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-avanza-green text-2xl font-extrabold text-primary-foreground">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-avanza-green text-2xl font-extrabold text-primary-foreground shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg">
         {step}
       </div>
       <h3 className="mt-4 text-xl font-bold text-foreground">{title}</h3>
