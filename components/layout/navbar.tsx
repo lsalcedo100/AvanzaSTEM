@@ -184,8 +184,12 @@ export function Navbar() {
       </div>
 
       {/* Mobile nav */}
-      {mobileOpen && (
-        <div className="border-t border-avanza-dark/15 bg-[#9bcf23] px-6 pb-4 md:hidden">
+      <div
+        className={`overflow-hidden border-t border-avanza-dark/15 bg-[#9bcf23] transition-all duration-300 ease-in-out md:hidden ${
+          mobileOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-6 pb-4 pt-1">
           {navLinks.map((link) => {
             const isActive = pathname === link.href
             return (
@@ -193,7 +197,7 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`block rounded-lg px-4 py-3 text-sm font-semibold transition-all ${isActive
+                className={`block rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-200 ${isActive
                     ? "bg-avanza-dark/10 text-avanza-dark"
                     : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
                   }`}
@@ -203,7 +207,7 @@ export function Navbar() {
             )
           })}
         </div>
-      )}
+      </div>
     </nav>
   )
 }

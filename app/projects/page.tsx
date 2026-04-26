@@ -6,6 +6,7 @@ import { Clock, Star, ListChecks, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { getProjectGuides } from "@/features/projects/data"
+import { FadeIn } from "@/components/ui/animate"
 
 type ProjectCategory = "engineering" | "science" | "coding" | "robotics"
 type FilterTag = "all" | ProjectCategory
@@ -45,14 +46,14 @@ export default function ProjectsPage() {
     <>
       {/* Hero */}
       <section className="bg-gradient-to-br from-avanza-purple to-[#e74c8b] py-20">
-        <div className="mx-auto max-w-7xl px-6 text-center">
+        <FadeIn className="mx-auto max-w-7xl px-6 text-center">
           <h1 className="text-4xl font-extrabold text-primary-foreground md:text-5xl">
             {t.projectsPage.title}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-primary-foreground/85">
             {t.projectsPage.description}
           </p>
-        </div>
+        </FadeIn>
       </section>
 
       {/* Filter Tags */}
@@ -64,10 +65,10 @@ export default function ProjectsPage() {
               type="button"
               aria-pressed={activeFilter === tag.key}
               onClick={() => setActiveFilter(tag.key)}
-              className={`cursor-pointer rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
+              className={`cursor-pointer rounded-full px-5 py-2 text-sm font-semibold transition-all duration-200 ${
                 activeFilter === tag.key
-                  ? "bg-avanza-green text-primary-foreground"
-                  : "bg-secondary text-secondary-foreground hover:bg-avanza-green/10"
+                  ? "bg-avanza-green text-primary-foreground shadow-md"
+                  : "bg-secondary text-secondary-foreground hover:bg-avanza-green/10 hover:text-avanza-green"
               }`}
             >
               {tag.label}
@@ -80,8 +81,10 @@ export default function ProjectsPage() {
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {filteredProjects.map((project) => (
-              <ProjectCard key={project.slug} {...project} translations={t.projectsPage} />
+            {filteredProjects.map((project, i) => (
+              <FadeIn key={project.slug} delay={i * 70}>
+                <ProjectCard {...project} translations={t.projectsPage} />
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -90,18 +93,20 @@ export default function ProjectsPage() {
       {/* Safety Note */}
       <section className="bg-secondary py-16">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <div className="rounded-2xl border-2 border-avanza-orange/30 bg-card p-8">
-            <h2 className="text-2xl font-extrabold text-foreground">{t.projectsPage.safetyFirst}</h2>
-            <p className="mt-4 text-muted-foreground">
-              {t.projectsPage.safetyText}
-            </p>
-          </div>
+          <FadeIn>
+            <div className="rounded-2xl border-2 border-avanza-orange/30 bg-card p-8">
+              <h2 className="text-2xl font-extrabold text-foreground">{t.projectsPage.safetyFirst}</h2>
+              <p className="mt-4 text-muted-foreground">
+                {t.projectsPage.safetyText}
+              </p>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* CTA */}
       <section className="bg-avanza-dark py-16">
-        <div className="mx-auto max-w-4xl px-6 text-center">
+        <FadeIn className="mx-auto max-w-4xl px-6 text-center" rootMargin="0px 0px -30px 0px">
           <h2 className="text-3xl font-extrabold text-primary-foreground">
             {t.projectsPage.haveIdea}
           </h2>
@@ -110,11 +115,11 @@ export default function ProjectsPage() {
           </p>
           <a
             href="mailto:liam@avanzastem.org"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-4 text-lg font-bold text-primary-foreground transition-transform hover:scale-105"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-4 text-lg font-bold text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-xl"
           >
             {t.projectsPage.shareIdea} <ArrowRight className="h-5 w-5" />
           </a>
-        </div>
+        </FadeIn>
       </section>
     </>
   )
@@ -150,13 +155,13 @@ function ProjectCard({
   }
 }) {
   return (
-    <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+    <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
       <div className="relative h-48 overflow-hidden">
         <LightboxImage
           src={image}
           alt={title}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="p-6">
@@ -208,7 +213,7 @@ function ProjectCard({
 
         <Link
           href={`/projects/${slug}`}
-          className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full ${tagColor} px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02]`}
+          className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full ${tagColor} px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:shadow-md`}
         >
           {translations.viewFullProject} <ArrowRight className="h-4 w-4" />
         </Link>

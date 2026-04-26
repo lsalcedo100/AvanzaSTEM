@@ -235,6 +235,14 @@ const en = {
     realWorldRelevanceDesc: "Using examples students already understand and experience daily.",
     interactiveTeaching: "Interactive Teaching",
     interactiveTeachingDesc: "Keeping students engaged through participation, not passive listening.",
+    completedProgramsEyebrow: "Completed Programs",
+    pastProgramsHeadingPre: "Where We've",
+    pastProgramsHeadingAccent: "Made an Impact",
+    completedBadge: "Completed",
+    cliftonLibrary: "Clifton Public Library",
+    cliftonDesc: "This program was hosted at the Clifton Public Library in Clifton, New Jersey, where I taught a group of 3rd–5th grade students through interactive STEM activities. We also held an extra session for a hands-on Coke and Mentos demonstration, used to explain the science behind the eruption and introduce the concept of physical vs. chemical changes, learning to figure out why it is actually a physical reaction rather than a chemical change.",
+    allwoodLibrary: "Allwood Branch Library",
+    allwoodDesc: "This program was held at the Allwood Branch Library, where I taught a group of grade school students through several fun, hands-on STEM activities. The session encouraged students to explore core scientific concepts through engaging demonstrations and guided experimentation.",
   },
 
   // Footer
@@ -468,6 +476,14 @@ const es: Translations = {
     realWorldRelevanceDesc: "Usar ejemplos que los estudiantes ya entienden y viven a diario.",
     interactiveTeaching: "Ensenanza interactiva",
     interactiveTeachingDesc: "Mantener a los estudiantes involucrados mediante participacion, no escucha pasiva.",
+    completedProgramsEyebrow: "Programas Completados",
+    pastProgramsHeadingPre: "Donde Hemos",
+    pastProgramsHeadingAccent: "Hecho Impacto",
+    completedBadge: "Completado",
+    cliftonLibrary: "Biblioteca Publica de Clifton",
+    cliftonDesc: "Este programa se realizo en la Biblioteca Publica de Clifton en Clifton, Nueva Jersey, donde ensene a un grupo de estudiantes de 3ro a 5to grado a traves de actividades STEM interactivas. Tambien realizamos una sesion adicional con una demostracion practica de Coca-Cola y Mentos para explicar la ciencia detras de la erupcion e introducir el concepto de cambios fisicos y quimicos.",
+    allwoodLibrary: "Biblioteca Allwood Branch",
+    allwoodDesc: "Este programa se llevo a cabo en la Biblioteca Allwood Branch, donde ensene a un grupo de estudiantes de primaria a traves de varias actividades STEM divertidas y practicas. La sesion animo a los estudiantes a explorar conceptos cientificos fundamentales mediante demostraciones interesantes y experimentacion guiada.",
   },
 
   footer: {
@@ -700,6 +716,14 @@ const zh: Translations = {
     realWorldRelevanceDesc: "使用学生已经理解并每天接触的例子。",
     interactiveTeaching: "互动式教学",
     interactiveTeachingDesc: "通过参与让学生保持投入，而不是被动听讲。",
+    completedProgramsEyebrow: "已完成的项目",
+    pastProgramsHeadingPre: "我们留下的",
+    pastProgramsHeadingAccent: "深远影响",
+    completedBadge: "已完成",
+    cliftonLibrary: "克利夫顿公共图书馆",
+    cliftonDesc: "该项目在新泽西州克利夫顿的克利夫顿公共图书馆举办，我在那里为一组3至5年级的学生开展了互动STEM活动。我们还额外举办了一次可乐与曼妥思的实践演示，用于解释喷发背后的科学原理，并介绍物理变化与化学变化的概念。",
+    allwoodLibrary: "奥尔伍德分馆图书馆",
+    allwoodDesc: "该项目在奥尔伍德分馆图书馆举办，我在那里为一群小学生开展了多项有趣的动手STEM活动。课程鼓励学生通过生动的演示和引导式实验探索核心科学概念。",
   },
 
   footer: {
