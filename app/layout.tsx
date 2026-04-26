@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { Roboto_Mono } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
+import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import { Footer } from '@/components/layout/footer'
 import { Navbar } from '@/components/layout/navbar'
