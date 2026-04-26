@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
@@ -5,6 +6,37 @@ import { ArrowLeft, Clock, Lightbulb, ListChecks, ShieldAlert, Star } from "luci
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { getProjectGuide, projectGuides } from "@/features/projects/data"
 import { type Language, translations } from "@/i18n/translations"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const cookieStore = await cookies()
+  const cookieLanguage = cookieStore.get("avanza-lang")?.value
+  const language: Language = cookieLanguage === "es" || cookieLanguage === "zh" ? cookieLanguage : "en"
+  const project = getProjectGuide(slug, language)
+
+  if (!project) return {}
+
+  const title = `${project.title} - Avanza STEM`
+  const description = project.description
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/projects/${slug}` },
+    openGraph: {
+      title,
+      description,
+      url: `https://avanzastem.org/projects/${slug}`,
+      type: 'article',
+      images: [{ url: project.image, alt: project.title }],
+    },
+    twitter: { card: 'summary_large_image', title, description },
+  }
+}
 
 export function generateStaticParams() {
   return projectGuides
