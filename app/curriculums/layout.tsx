@@ -14,7 +14,7 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
   en: {
     title: 'Free STEM Curricula for Kids Grades 2-8 - Avanza STEM',
     description:
-      'Free STEM curricula for grades 2-8 — Python coding, engineering, robotics, AI, science, and math. Complete lesson plans designed for young Hispanic students.',
+      'Free online STEM curriculums for Hispanic students in grades 2 and up. Structured courses in coding, science, engineering, and math.',
   },
   es: {
     title: 'Currícula STEM Gratuita para Niños Grados 2-8 - Avanza STEM',
@@ -116,8 +116,14 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: 'https://avanzastem.org/curriculums',
       type: 'website',
+      images: [{ url: '/images/og-default-en.png', width: 1200, height: 630, alt: 'Avanza STEM Curriculums' }],
     },
-    twitter: { card: 'summary_large_image', title, description },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/images/og-default-en.png'],
+    },
   }
 }
 

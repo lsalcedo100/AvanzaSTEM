@@ -18,9 +18,9 @@ const VALID_LANGUAGES: Language[] = ['en', 'es', 'zh']
 
 const metadataByLanguage: Record<Language, Pick<Metadata, 'title' | 'description'>> = {
   en: {
-    title: 'Avanza STEM - Inspiring Young Hispanic Minds in STEM',
+    title: 'Free STEM Education for Hispanic Kids | Avanza STEM',
     description:
-      'Free online STEM learning, fun projects, and local workshops designed for young Hispanic students. Explore science, technology, engineering, and math with Avanza STEM.',
+      'Free STEM education for Hispanic kids in grades 2 and up. Explore online curriculums, DIY projects, and local workshops in your community.',
   },
   es: {
     title: 'Avanza STEM - Inspirando a jovenes hispanos en STEM',
@@ -106,9 +106,9 @@ const organizationJsonLd = {
   '@type': 'Organization',
   name: 'Avanza STEM',
   url: BASE_URL,
-  logo: `${BASE_URL}/icon-light-32x32.png`,
+  logo: `${BASE_URL}/avanza-logo.svg`,
   description:
-    'Free online STEM learning, fun projects, and local workshops designed for young Hispanic students.',
+    'Free STEM education for young Hispanic students including online curriculums, DIY projects, and local workshops.',
   sameAs: [],
   contactPoint: {
     '@type': 'ContactPoint',

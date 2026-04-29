@@ -14,7 +14,7 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
   en: {
     title: 'Free STEM Workshops for Kids - Avanza STEM',
     description:
-      'Join Avanza STEM\'s 3-week workshop series covering engineering, coding with Python, and AI — hands-on free learning for young Hispanic students in your community.',
+      'Free in-person STEM workshops for Hispanic kids in New Jersey. 3-week programs covering engineering, Python coding, and artificial intelligence.',
   },
   es: {
     title: 'Talleres STEM Gratuitos para Niños - Avanza STEM',
@@ -77,9 +77,43 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: 'https://avanzastem.org/workshops',
       type: 'website',
+      images: [{ url: '/images/og-default-en.png', width: 1200, height: 630, alt: 'Avanza STEM Workshops' }],
     },
-    twitter: { card: 'summary_large_image', title, description },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/images/og-default-en.png'],
+    },
   }
+}
+
+const educationEventJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationEvent',
+  name: 'The Maker Mindset Series – Free STEM Workshops',
+  description:
+    'A free 3-week in-person STEM workshop series for Hispanic students covering engineering, Python coding, and artificial intelligence.',
+  organizer: {
+    '@type': 'Organization',
+    name: 'Avanza STEM',
+    url: 'https://avanzastem.org',
+  },
+  location: {
+    '@type': 'Place',
+    name: 'Clifton Public Library',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Clifton',
+      addressRegion: 'NJ',
+      addressCountry: 'US',
+    },
+  },
+  isAccessibleForFree: true,
+  audience: {
+    '@type': 'EducationalAudience',
+    educationalRole: 'student',
+  },
 }
 
 export default function WorkshopsLayout({ children }: { children: React.ReactNode }) {
@@ -88,6 +122,10 @@ export default function WorkshopsLayout({ children }: { children: React.ReactNod
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(workshopsJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(educationEventJsonLd) }}
       />
       {children}
     </>

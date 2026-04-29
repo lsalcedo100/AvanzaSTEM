@@ -14,7 +14,7 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
   en: {
     title: 'STEM Projects for Kids - Avanza STEM',
     description:
-      'Free hands-on STEM projects for kids — build bridges, wire circuit lights, code Python programs, launch volcanoes, and more. Step-by-step guides for young Hispanic students.',
+      'Fun DIY STEM projects for kids including building bridges, coding games, and science experiments. Free step-by-step guides for grades 2 and up.',
   },
   es: {
     title: 'Proyectos STEM para Niños - Avanza STEM',
@@ -40,8 +40,14 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: 'https://avanzastem.org/projects',
       type: 'website',
+      images: [{ url: '/images/og-default-en.png', width: 1200, height: 630, alt: 'Avanza STEM Projects' }],
     },
-    twitter: { card: 'summary_large_image', title, description },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/images/og-default-en.png'],
+    },
   }
 }
 
