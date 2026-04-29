@@ -92,7 +92,7 @@ export default function HomePage() {
             {[
               { image: "/images/home/featured-bridge.jpg", title: t.home.featuredBridge, description: t.home.featuredBridgeDesc },
               { image: "/images/home/featured-python.jpg", title: t.home.featuredCoding, description: t.home.featuredCodingDesc },
-              { image: "/images/home/diet coke explosion.png", title: t.home.featuredMentos, description: t.home.featuredMentosDesc },
+              { image: "/images/home/coke-mentos-science-experiment-kids.png", alt: "Coke and Mentos chemical reaction science experiment for kids", title: t.home.featuredMentos, description: t.home.featuredMentosDesc },
             ].map((card, i) => (
               <FadeIn key={card.title} delay={i * 100}>
                 <FeaturedCard {...card} />
@@ -212,10 +212,12 @@ function OfferCard({
 
 function FeaturedCard({
   image,
+  alt,
   title,
   description,
 }: {
   image: string
+  alt?: string
   title: string
   description: string
 }) {
@@ -224,7 +226,7 @@ function FeaturedCard({
       <div className="relative h-52 overflow-hidden">
         <LightboxImage
           src={image}
-          alt={title}
+          alt={alt ?? title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />

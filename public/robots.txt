@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://avanzastem.org/sitemap.xml
+Sitemap: https://www.avanzastem.org/sitemap.xml

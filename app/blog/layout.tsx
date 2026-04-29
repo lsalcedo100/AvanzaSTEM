@@ -14,7 +14,7 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
   en: {
     title: 'STEM Blog for Hispanic Students - Avanza STEM',
     description:
-      'STEM tips, fun activity ideas, and inspiration for young Hispanic students and their families. Science experiments, coding tutorials, and engineering projects on the Avanza STEM blog.',
+      'STEM tips, tutorials, and how-to guides for young Hispanic students. Learn coding, science, engineering, and math in a fun and engaging way.',
   },
   es: {
     title: 'Blog STEM para Estudiantes Hispanos - Avanza STEM',
@@ -54,8 +54,14 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: 'https://avanzastem.org/blog',
       type: 'website',
+      images: [{ url: '/images/og-default-en.png', width: 1200, height: 630, alt: 'Avanza STEM Blog' }],
     },
-    twitter: { card: 'summary_large_image', title, description },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/images/og-default-en.png'],
+    },
   }
 }
 
