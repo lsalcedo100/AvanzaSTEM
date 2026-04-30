@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import Image from "next/image"
 import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
-import { ArrowLeft, Clock, Lightbulb, ListChecks, ShieldAlert, Star } from "lucide-react"
-import { LightboxImage } from "@/components/ui/lightbox-image"
+import { ArrowLeft } from "lucide-react"
 import { getProjectGuide, projectGuides } from "@/features/projects/data"
 import { type Language, translations } from "@/i18n/translations"
 
@@ -31,10 +31,10 @@ export async function generateMetadata({
       title,
       description,
       url: `https://avanzastem.org/projects/${slug}`,
-      type: 'article',
+      type: "article",
       images: [{ url: project.image, alt: project.title }],
     },
-    twitter: { card: 'summary_large_image', title, description },
+    twitter: { card: "summary_large_image", title, description },
   }
 }
 
@@ -72,114 +72,114 @@ export default async function ProjectGuidePage({
   }
 
   return (
-    <>
-      <section className="bg-gradient-to-br from-avanza-purple to-[#e74c8b] py-16">
-        <div className="mx-auto max-w-5xl px-6">
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/20"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {t.projectsPage.backToProjects}
-          </Link>
+    <div className="bg-background">
+      <div className="mx-auto max-w-4xl px-6 py-12">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t.projectsPage.backToProjects}
+        </Link>
 
-          <div className="mt-8 grid items-center gap-8 md:grid-cols-[1.1fr_0.9fr]">
-            <div>
-              <span className="inline-block rounded-full bg-primary-foreground/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-primary-foreground">
-                {project.category}
-              </span>
-              <h1 className="mt-4 text-4xl font-extrabold text-primary-foreground md:text-5xl">
-                {project.title}
-              </h1>
-              <p className="mt-4 max-w-2xl text-lg text-primary-foreground/85">
-                {project.description}
-              </p>
-              <div className="mt-6 flex flex-wrap gap-4 text-sm text-primary-foreground/90">
-                <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-4 py-2">
-                  <Star className="h-4 w-4" />
-                  {project.difficulty}
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-4 py-2">
-                  <Clock className="h-4 w-4" />
-                  {project.time}
-                </span>
-              </div>
-            </div>
+        <div className="mt-8">
+          <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+            {project.category}
+          </p>
+          <h1 className="mt-2 text-4xl font-bold tracking-tight text-foreground">
+            {project.title}
+          </h1>
+          <p className="mt-3 text-lg text-muted-foreground">{project.description}</p>
+          <p className="mt-3 text-sm text-muted-foreground">
+            {project.difficulty} · {project.time}
+          </p>
+        </div>
 
-            <div className="relative h-72 overflow-hidden rounded-3xl border border-primary-foreground/15 shadow-2xl">
-              <LightboxImage src={project.image} alt={project.title} fill className="object-cover" />
-            </div>
+        <div className="mt-8 overflow-hidden rounded-lg border border-border">
+          <div className="relative h-80">
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
         </div>
-      </section>
+      </div>
 
-      <section className="bg-background py-16">
-        <div className="mx-auto grid max-w-5xl gap-8 px-6 lg:grid-cols-[1.3fr_0.7fr]">
-          <div className="space-y-8">
-            <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
-              <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.introduction}</h2>
-              <div className="mt-4 space-y-3 text-base leading-7 text-muted-foreground">
-                {project.introduction.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-            </div>
+      <div className="border-t border-border">
+        <div className="mx-auto max-w-4xl px-6 py-12">
+          <div className="grid gap-16 lg:grid-cols-[1fr_260px]">
+            <div className="space-y-10">
+              <section>
+                <h2 className="text-xl font-bold text-foreground">
+                  {t.projectsPage.introduction}
+                </h2>
+                <div className="mt-4 space-y-3 text-base leading-7 text-muted-foreground">
+                  {project.introduction.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              </section>
 
-            <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
-              <div className="flex items-center gap-3">
-                <Lightbulb className="h-6 w-6 text-avanza-orange" />
-                <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.theWhy}</h2>
-              </div>
-              <p className="mt-4 text-base leading-7 text-muted-foreground">{project.why}</p>
-            </div>
+              <section>
+                <h2 className="text-xl font-bold text-foreground">{t.projectsPage.theWhy}</h2>
+                <p className="mt-4 text-base leading-7 text-muted-foreground">{project.why}</p>
+              </section>
 
-            <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
-              <div className="flex items-center gap-3">
-                <ListChecks className="h-6 w-6 text-avanza-green" />
-                <h2 className="text-2xl font-extrabold text-card-foreground">
+              <section>
+                <h2 className="text-xl font-bold text-foreground">
                   {t.projectsPage.stepByStepInstructions}
                 </h2>
-              </div>
-              <ol className="mt-6 space-y-4">
-                {project.steps.map((step, index) => (
-                  <li key={step} className="flex items-start gap-4 rounded-2xl bg-secondary/60 p-4">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-avanza-green text-sm font-extrabold text-primary-foreground">
-                      {index + 1}
-                    </span>
-                    <p className="pt-1 text-base leading-7 text-foreground">{step}</p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
-
-          <div className="space-y-8">
-            <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
-              <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.materialsList}</h2>
-              <ul className="mt-4 space-y-3">
-                {project.materials.map((material) => (
-                  <li key={material} className="rounded-2xl bg-secondary/60 px-4 py-3 text-sm text-foreground">
-                    {material}
-                  </li>
-                ))}
-              </ul>
+                <ol className="mt-5 space-y-5">
+                  {project.steps.map((step, index) => (
+                    <li key={step} className="flex items-start gap-4">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-sm font-bold text-foreground">
+                        {index + 1}
+                      </span>
+                      <p className="pt-0.5 text-base leading-7 text-foreground">{step}</p>
+                    </li>
+                  ))}
+                </ol>
+              </section>
             </div>
 
-            <div className="rounded-3xl border-2 border-avanza-orange/30 bg-avanza-orange/5 p-8 shadow-sm">
-              <div className="flex items-center gap-3">
-                <ShieldAlert className="h-6 w-6 text-avanza-orange" />
-                <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.safetyFirst}</h2>
-              </div>
-              <p className="mt-4 text-base leading-7 text-muted-foreground">{project.safety}</p>
-            </div>
+            <aside className="space-y-10">
+              <section>
+                <h2 className="text-sm font-bold uppercase tracking-wide text-foreground">
+                  {t.projectsPage.materialsList}
+                </h2>
+                <ul className="mt-4 space-y-2">
+                  {project.materials.map((material) => (
+                    <li
+                      key={material}
+                      className="flex items-start gap-2 text-sm leading-relaxed text-foreground"
+                    >
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground" />
+                      {material}
+                    </li>
+                  ))}
+                </ul>
+              </section>
 
-            <div className="rounded-3xl border border-avanza-purple/20 bg-avanza-purple/5 p-8 shadow-sm">
-              <h2 className="text-2xl font-extrabold text-card-foreground">{t.projectsPage.challengeMode}</h2>
-              <p className="mt-4 text-base leading-7 text-muted-foreground">{project.challenge}</p>
-            </div>
+              <section className="border-t border-border pt-8">
+                <h2 className="text-sm font-bold uppercase tracking-wide text-foreground">
+                  {t.projectsPage.safetyFirst}
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">{project.safety}</p>
+              </section>
+
+              <section className="border-t border-border pt-8">
+                <h2 className="text-sm font-bold uppercase tracking-wide text-foreground">
+                  {t.projectsPage.challengeMode}
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">{project.challenge}</p>
+              </section>
+            </aside>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   )
 }
