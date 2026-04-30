@@ -185,7 +185,7 @@ export function Navbar() {
 
       {/* Mobile nav */}
       <div
-        className={`overflow-hidden border-t border-avanza-dark/15 bg-[#9bcf23] transition-all duration-300 ease-in-out md:hidden ${
+        className={`overflow-hidden border-t border-avanza-dark/15 bg-[#dbf2a5] transition-all duration-300 ease-in-out md:hidden ${
           mobileOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
         }`}
       >

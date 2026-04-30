@@ -43,26 +43,31 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Programs */}
+          {/* Follow Us */}
           <div>
             <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-avanza-green">
-              {t.footer.programs}
+              Follow Us
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/curriculums" className="text-sm text-primary-foreground/70 transition-colors hover:text-avanza-green">
-                  {t.footer.onlineCurriculums}
-                </Link>
+                <a
+                  href="https://instagram.com/avanzastem"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary-foreground/70 transition-colors hover:text-avanza-green"
+                >
+                  Instagram
+                </a>
               </li>
               <li>
-                <Link href="/projects" className="text-sm text-primary-foreground/70 transition-colors hover:text-avanza-green">
-                  {t.footer.diyProjects}
-                </Link>
-              </li>
-              <li>
-                <Link href="/workshops" className="text-sm text-primary-foreground/70 transition-colors hover:text-avanza-green">
-                  {t.footer.localWorkshops}
-                </Link>
+                <a
+                  href="https://youtube.com/@avanzastem"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary-foreground/70 transition-colors hover:text-avanza-green"
+                >
+                  YouTube
+                </a>
               </li>
             </ul>
           </div>
@@ -86,7 +91,7 @@ export function Footer() {
 
         <div className="mt-12 border-t border-primary-foreground/10 pt-8 text-center">
           <p className="text-sm text-primary-foreground/50">
-            2025 {t.footer.copyright}
+            {new Date().getFullYear()} {t.footer.copyright}
           </p>
         </div>
       </div>
