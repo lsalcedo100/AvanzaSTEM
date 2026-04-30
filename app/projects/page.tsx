@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Clock, Star, ListChecks, ArrowRight } from "lucide-react"
+import { Clock, Star, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { getProjectGuides } from "@/features/projects/data"
@@ -83,7 +83,7 @@ export default function ProjectsPage() {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredProjects.map((project, i) => (
               <FadeIn key={project.slug} delay={i * 70}>
-                <ProjectCard {...project} translations={t.projectsPage} />
+                <ProjectCard {...project} translations={{ viewFullProject: t.projectsPage.viewFullProject }} />
               </FadeIn>
             ))}
           </div>
@@ -132,8 +132,6 @@ function ProjectCard({
   time,
   image,
   description,
-  materials,
-  steps,
   tagColor,
   translations,
 }: {
@@ -143,14 +141,8 @@ function ProjectCard({
   time: string
   image: string
   description: string
-  materials: string[]
-  steps: string[]
   tagColor: string
   translations: {
-    whatYouNeed: string
-    steps: string
-    moreItems: string
-    moreSteps: string
     viewFullProject: string
   }
 }) {
@@ -175,40 +167,6 @@ function ProjectCard({
           <span className="inline-flex items-center gap-1">
             <Clock className="h-3.5 w-3.5" /> {time}
           </span>
-        </div>
-
-        <div className="mt-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{translations.whatYouNeed}</p>
-          <ul className="mt-2 space-y-1">
-            {materials.slice(0, 3).map((material) => (
-              <li key={material} className="text-xs text-muted-foreground">
-                {"- " + material}
-              </li>
-            ))}
-            {materials.length > 3 && (
-              <li className="text-xs font-medium text-avanza-green">{"+ " + (materials.length - 3) + " " + translations.moreItems}</li>
-            )}
-          </ul>
-        </div>
-
-        <div className="mt-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{translations.steps}</p>
-          <ol className="mt-2 space-y-1">
-            {steps.slice(0, 3).map((step, i) => (
-              <li key={step} className="flex items-start gap-2 text-xs text-muted-foreground">
-                <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-avanza-green/20 text-[10px] font-bold text-avanza-green">
-                  {i + 1}
-                </span>
-                {step}
-              </li>
-            ))}
-            {steps.length > 3 && (
-              <li className="text-xs font-medium text-avanza-green">
-                <ListChecks className="mr-1 inline h-3 w-3" />
-                {"+ " + (steps.length - 3) + " " + translations.moreSteps}
-              </li>
-            )}
-          </ol>
         </div>
 
         <Link

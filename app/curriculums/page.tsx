@@ -94,7 +94,6 @@ export default function CurriculumsPage() {
                 <CurriculumCard
                   {...curriculum}
                   topicsCovered={t.curriculumsPage.topicsCovered}
-                  startLearning={t.curriculumsPage.startLearning}
                 />
               </FadeIn>
             ))}
@@ -159,7 +158,6 @@ function CurriculumCard({
   color,
   borderColor,
   topicsCovered,
-  startLearning,
 }: {
   title: string
   description: string
@@ -170,7 +168,6 @@ function CurriculumCard({
   color: string
   borderColor: string
   topicsCovered: string
-  startLearning: string
 }) {
   return (
     <div className={`group overflow-hidden rounded-2xl border-2 ${borderColor}/30 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl`}>
@@ -209,9 +206,9 @@ function CurriculumCard({
           </div>
         </div>
 
-        <button className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full ${color} px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:shadow-md`}>
-          <BookOpen className="h-4 w-4" /> {startLearning}
-        </button>
+        <span className={`mt-6 inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-full opacity-60 ${color} px-6 py-3 text-sm font-bold text-primary-foreground`}>
+          <BookOpen className="h-4 w-4" /> Coming Soon
+        </span>
       </div>
     </div>
   )

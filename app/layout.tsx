@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
-import { Roboto_Mono } from 'next/font/google'
+import { Roboto_Mono, Nunito } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import { Footer } from '@/components/layout/footer'
@@ -12,6 +12,11 @@ import { type Language } from '@/i18n/translations'
 const robotoMono = Roboto_Mono({
   subsets: ['latin'],
   variable: '--font-roboto-mono',
+})
+
+const nunito = Nunito({
+  subsets: ['latin'],
+  variable: '--font-nunito',
 })
 
 const VALID_LANGUAGES: Language[] = ['en', 'es', 'zh']
@@ -130,7 +135,7 @@ export default async function RootLayout({
 
   return (
     <html lang={language} suppressHydrationWarning>
-      <body className={`${robotoMono.variable} font-sans antialiased`}>
+      <body className={`${robotoMono.variable} ${nunito.variable} font-sans antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

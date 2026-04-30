@@ -46,7 +46,7 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-roboto-mono);
+  --font-sans: var(--font-nunito);
   --font-mono: var(--font-roboto-mono);
   --color-avanza-green: var(--avanza-green);
   --color-avanza-teal: var(--avanza-teal);

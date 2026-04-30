@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#e7f5fe]">
+      <section className="relative overflow-hidden bg-[#edffd6]">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-10 px-6 py-20 md:flex-row md:py-28">
           <FadeIn className="flex-1" delay={0}>
             <h1 className="text-balance text-5xl font-extrabold italic leading-tight text-foreground md:text-6xl">
@@ -40,12 +40,6 @@ export default function HomePage() {
               />
             </div>
           </FadeIn>
-        </div>
-        {/* Decorative wave */}
-        <div className="absolute bottom-0 left-0 w-full">
-          <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 40C360 100 720 0 1080 50C1260 75 1380 60 1440 40V100H0V40Z" fill="white" />
-          </svg>
         </div>
       </section>
 
@@ -77,7 +71,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured Section */}
-      <section className="bg-secondary py-20">
+      <section className="bg-linear-to-b from-secondary via-secondary/50 to-background py-24">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="text-center">
             <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">
@@ -88,14 +82,14 @@ export default function HomePage() {
             </p>
           </FadeIn>
 
-          <div className="mt-14 grid gap-8 md:grid-cols-3">
+          <div className="mt-14 grid items-stretch gap-8 md:grid-cols-3">
             {[
-              { image: "/images/home/featured-bridge.jpg", title: t.home.featuredBridge, description: t.home.featuredBridgeDesc },
-              { image: "/images/home/featured-python.jpg", title: t.home.featuredCoding, description: t.home.featuredCodingDesc },
-              { image: "/images/home/coke-mentos-science-experiment-kids.png", alt: "Coke and Mentos chemical reaction science experiment for kids", title: t.home.featuredMentos, description: t.home.featuredMentosDesc },
+              { image: "/images/home/featured-bridge.jpg", title: t.home.featuredBridge, description: t.home.featuredBridgeDesc, href: "/projects/popsicle-stick-bridge" },
+              { image: "/images/home/featured-python.jpg", title: t.home.featuredCoding, description: t.home.featuredCodingDesc, href: "/projects/my-first-python-program" },
+              { image: "/images/home/coke-mentos-science-experiment-kids.png", alt: "Coke and Mentos chemical reaction science experiment for kids", title: t.home.featuredMentos, description: t.home.featuredMentosDesc, href: "/blog/5-easy-science-experiments" },
             ].map((card, i) => (
-              <FadeIn key={card.title} delay={i * 100}>
-                <FeaturedCard {...card} />
+              <FadeIn key={card.title} delay={i * 100} className="h-full">
+                <FeaturedCard {...card} cta={t.home.learnMore} />
               </FadeIn>
             ))}
           </div>
@@ -215,28 +209,40 @@ function FeaturedCard({
   alt,
   title,
   description,
+  href,
+  cta,
 }: {
   image: string
   alt?: string
   title: string
   description: string
+  href?: string
+  cta: string
 }) {
-  return (
-    <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
-      <div className="relative h-52 overflow-hidden">
+  const inner = (
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl bg-card shadow-[0_4px_20px_rgba(26,26,46,0.07)] transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_24px_48px_rgba(26,26,46,0.13)]">
+      <div className="relative h-60 shrink-0 overflow-hidden">
         <LightboxImage
           src={image}
           alt={alt ?? title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
+        <div className="absolute inset-0 bg-linear-to-t from-black/35 via-black/5 to-transparent" />
       </div>
-      <div className="p-6">
-        <h3 className="text-lg font-bold text-card-foreground">{title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
+      <div className="flex flex-1 flex-col p-6">
+        <h3 className="text-xl font-extrabold leading-snug text-card-foreground">{title}</h3>
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground/80 line-clamp-2">{description}</p>
+        <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-avanza-green transition-all duration-200 group-hover:gap-2.5">
+          {cta} <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </span>
       </div>
     </div>
   )
+  if (href) {
+    return <Link href={href} className="block h-full">{inner}</Link>
+  }
+  return inner
 }
 
 function StatCard({ number, label }: { number: string; label: string }) {

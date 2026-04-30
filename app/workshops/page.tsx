@@ -3,6 +3,7 @@
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
+import { Gallery } from "@/components/ui/gallery"
 
 export default function WorkshopsPage() {
   const { t } = useLanguage()
@@ -162,6 +163,8 @@ export default function WorkshopsPage() {
           </div>
         </div>
       </section>
+
+      <Gallery limit={12} />
     </>
   )
 }
