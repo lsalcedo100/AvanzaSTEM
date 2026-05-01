@@ -30,8 +30,8 @@ export function Footer() {
                 { href: "/projects", label: t.nav.projects },
                 { href: "/blog", label: t.nav.blog },
                 { href: "/workshops", label: t.nav.workshops },
-                { href: "/faq", label: "FAQ" },
-                { href: "/host", label: "Host a Workshop" },
+                { href: "/faq", label: t.faqPage.title },
+                { href: "/host", label: t.hostPage.title },
               ].map((link) => (
                 <li key={link.href}>
                   <Link

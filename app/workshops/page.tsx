@@ -13,7 +13,7 @@ export default function WorkshopsPage() {
       title: t.workshopsPage.buildingTitle,
       description: t.workshopsPage.buildingDesc,
       image: "/images/workshops/Building Workshop Description.jpeg",
-      imageAlt: "Students learning engineering concepts during a building workshop",
+      imageAlt: t.workshopsPage.buildingImageAlt,
       accent: "bg-avanza-purple",
     },
     {
@@ -21,7 +21,7 @@ export default function WorkshopsPage() {
       title: t.workshopsPage.codingWorkshopTitle,
       description: t.workshopsPage.codingWorkshopDesc,
       image: "/images/workshops/Coding Workshop Description.png",
-      imageAlt: "Students practicing Python during a coding workshop",
+      imageAlt: t.workshopsPage.codingImageAlt,
       accent: "bg-avanza-green",
       reverse: true,
     },
@@ -32,7 +32,7 @@ export default function WorkshopsPage() {
       note: t.workshopsPage.responsibleAiNote,
       noteTitle: t.workshopsPage.responsibleAi,
       image: "/images/workshops/AI Workshop Description.JPG",
-      imageAlt: "Students exploring artificial intelligence concepts in a workshop",
+      imageAlt: t.workshopsPage.aiImageAlt,
       accent: "bg-avanza-teal",
     },
   ]
@@ -108,7 +108,7 @@ export default function WorkshopsPage() {
                 name={t.workshopsPage.cliftonLibrary}
                 badge={t.workshopsPage.completedBadge}
                 image="/images/workshops/past-science.jpg"
-                imageAlt="Workshop held at Clifton Public Library"
+                imageAlt={t.workshopsPage.cliftonImageAlt}
                 description={t.workshopsPage.cliftonDesc}
               />
             </FadeIn>
@@ -117,7 +117,7 @@ export default function WorkshopsPage() {
                 name={t.workshopsPage.allwoodLibrary}
                 badge={t.workshopsPage.completedBadge}
                 image="/images/workshops/past-coding.jpg"
-                imageAlt="Workshop held at Allwood Branch Library"
+                imageAlt={t.workshopsPage.allwoodImageAlt}
                 description={t.workshopsPage.allwoodDesc}
               />
             </FadeIn>

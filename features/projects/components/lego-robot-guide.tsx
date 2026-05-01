@@ -8,35 +8,16 @@ import { getProjectGuide, type ProjectGuide } from "@/features/projects/data"
 
 const RESOURCE_LINKS = [
   {
-    label: "Official LEGO Education lesson — Super Cleanup",
     href: "https://education.lego.com/en-us/lessons/prime-invention-squad/super-cleanup/",
   },
   {
-    label: "Build Book 1 (PDF)",
     href: "https://assets.education.lego.com/v3/assets/blt293eea581807678a/blt56a81c75560c9a81/5f8802cbf71916144453a493/supercleaup-bi-pdf-book1of3.pdf?locale=en-us",
   },
   {
-    label: "Build Book 2 (PDF)",
     href: "https://assets.education.lego.com/v3/assets/blt293eea581807678a/bltb5e585f94cb4e72b/5f8802e5a302dc0d859a734d/supercleaup-bi-pdf-book2of3.pdf?locale=en-us",
   },
   {
-    label: "Python lesson — Clean Up with Multiple Functions",
     href: "https://education.lego.com/en-us/lessons/spike-python-u7-impacting-the-environment-with-functions/spike-python-u7l2-clean-up-with-multiple-functions/",
-  },
-]
-
-const ENGINEERING_NOTES = [
-  {
-    title: "Why a wide base matters",
-    body: "When the grabber reaches forward, the robot's weight shifts forward too. A low, wide base keeps the center of gravity above the wheels so the robot doesn't tip over. Think of it like leaning forward with a heavy backpack — your feet need to be wide apart to stay balanced.",
-  },
-  {
-    title: "How the motor becomes a grabber",
-    body: "The motor spins in a circle, but the beams and pins redirect that circular motion into a claw that opens and closes. This is the same idea engineers use in cranes, factory grippers, and doors.",
-  },
-  {
-    title: "Why functions make the code easier to fix",
-    body: "Instead of one giant script, the official Python lesson splits the mission into small jobs: grab(), drive(), release(). If the robot grabs badly, you only need to fix that one function instead of rewriting everything.",
   },
 ]
 
@@ -65,12 +46,7 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
           </h1>
           <p className="mt-3 text-lg text-muted-foreground">{guide.description}</p>
           <p className="mt-3 text-sm text-muted-foreground">
-            {guide.difficulty} · {guide.time} ·{" "}
-            {language === "es"
-              ? "Set SPIKE Prime #45678"
-              : language === "zh"
-                ? "SPIKE Prime 套装 #45678"
-                : "SPIKE Prime Set #45678"}
+            {guide.difficulty} · {guide.time} · {t.projectsPage.legoSet}
           </p>
         </div>
 
@@ -91,17 +67,9 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
         <div className="mt-6 rounded-md border border-border bg-secondary/40 px-5 py-4">
           <p className="text-sm text-foreground">
             <span className="font-semibold">
-              {language === "es"
-                ? "Esta guía está basada en la lección oficial de LEGO Education."
-                : language === "zh"
-                  ? "本指南基于乐高教育的官方课程。"
-                  : "This guide is built around the official LEGO Education Super Cleanup lesson."}
+              {t.projectsPage.legoOfficialNote}
             </span>{" "}
-            {language === "es"
-              ? "Los libros de construcción contienen el orden exacto de ensamblaje."
-              : language === "zh"
-                ? "官方搭建手册包含精确的组装步骤。"
-                : "The build books below contain the exact snapping order — use them alongside these steps."}
+            {t.projectsPage.legoBuildBooksNote}
           </p>
         </div>
       </div>
@@ -147,21 +115,13 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
               {/* Engineering notes */}
               <section>
                 <h2 className="text-xl font-bold text-foreground">
-                  {language === "es"
-                    ? "Por qué funciona"
-                    : language === "zh"
-                      ? "为什么这样设计"
-                      : "How it works"}
+                  {t.projectsPage.legoHowWorksTitle}
                 </h2>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {language === "es"
-                    ? "Tres conceptos de ingeniería que explican cada parte del robot."
-                    : language === "zh"
-                      ? "三个工程概念，解释机器人每个部件的设计原因。"
-                      : "Three engineering ideas behind why the robot is built the way it is."}
+                  {t.projectsPage.legoHowWorksDesc}
                 </p>
                 <dl className="mt-5 space-y-6">
-                  {ENGINEERING_NOTES.map((note) => (
+                  {t.projectsPage.legoEngineeringNotes.map((note) => (
                     <div key={note.title} className="border-t border-border pt-5">
                       <dt className="font-semibold text-foreground">{note.title}</dt>
                       <dd className="mt-2 text-sm leading-6 text-muted-foreground">{note.body}</dd>
@@ -192,10 +152,10 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
 
               <section className="border-t border-border pt-8">
                 <h2 className="text-sm font-bold uppercase tracking-wide text-foreground">
-                  {language === "es" ? "Fuentes oficiales" : language === "zh" ? "官方资源" : "Official sources"}
+                  {t.projectsPage.officialSources}
                 </h2>
                 <ul className="mt-4 space-y-3">
-                  {RESOURCE_LINKS.map((link) => (
+                  {RESOURCE_LINKS.map((link, index) => (
                     <li key={link.href}>
                       <a
                         href={link.href}
@@ -204,7 +164,7 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
                         className="inline-flex items-start gap-1.5 text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
                       >
                         <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                        {link.label}
+                        {t.projectsPage.legoResourceLabels[index]}
                       </a>
                     </li>
                   ))}

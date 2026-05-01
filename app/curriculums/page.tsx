@@ -14,9 +14,9 @@ export default function CurriculumsPage() {
       title: t.curriculumsPage.pythonTitle,
       description: t.curriculumsPage.pythonDesc,
       image: "/images/curriculums/python.jpg",
-      grades: "Grades 3-6",
-      duration: "8 weeks",
-      topics: ["Variables & Data Types", "Loops & Conditionals", "Simple Functions", "Build a Mini Game"],
+      grades: t.curriculumsPage.grades36,
+      duration: t.curriculumsPage.duration8Weeks,
+      topics: t.curriculumsPage.pythonTopics,
       color: "bg-avanza-green",
       borderColor: "border-avanza-green",
       progress: 65,
@@ -25,9 +25,9 @@ export default function CurriculumsPage() {
       title: t.curriculumsPage.engineeringTitle,
       description: t.curriculumsPage.engineeringDesc,
       image: "/images/curriculums/engineering.jpg",
-      grades: "Grades 2-5",
-      duration: "6 weeks",
-      topics: ["Types of Structures", "Forces & Loads", "Building with Materials", "Design Challenges"],
+      grades: t.curriculumsPage.grades25,
+      duration: t.curriculumsPage.duration6Weeks,
+      topics: t.curriculumsPage.engineeringTopics,
       color: "bg-avanza-purple",
       borderColor: "border-avanza-purple",
       progress: 40,
@@ -36,9 +36,9 @@ export default function CurriculumsPage() {
       title: t.curriculumsPage.scienceTitle,
       description: t.curriculumsPage.scienceDesc,
       image: "/images/curriculums/science.png",
-      grades: "Grades 2-4",
-      duration: "6 weeks",
-      topics: ["Chemical Reactions", "States of Matter", "Simple Machines", "Life Sciences"],
+      grades: t.curriculumsPage.grades24,
+      duration: t.curriculumsPage.duration6Weeks,
+      topics: t.curriculumsPage.scienceTopics,
       color: "bg-avanza-orange",
       borderColor: "border-avanza-orange",
       progress: 30,
@@ -47,9 +47,9 @@ export default function CurriculumsPage() {
       title: t.curriculumsPage.mathTitle,
       description: t.curriculumsPage.mathDesc,
       image: "/images/curriculums/math.jpg",
-      grades: "Grades 2-5",
-      duration: "10 weeks",
-      topics: ["Number Patterns", "Geometry Basics", "Measurement Fun", "Problem Solving"],
+      grades: t.curriculumsPage.grades25,
+      duration: t.curriculumsPage.duration10Weeks,
+      topics: t.curriculumsPage.mathTopics,
       color: "bg-avanza-teal",
       borderColor: "border-avanza-teal",
       progress: 20,
@@ -58,9 +58,9 @@ export default function CurriculumsPage() {
       title: t.curriculumsPage.roboticsTitle,
       description: t.curriculumsPage.roboticsDesc,
       image: "/images/curriculums/robotics.jpg",
-      grades: "Grades 4-6",
-      duration: "8 weeks",
-      topics: ["Robot Components", "Sensors & Motors", "Basic Programming", "Robot Challenges"],
+      grades: t.curriculumsPage.grades46,
+      duration: t.curriculumsPage.duration8Weeks,
+      topics: t.curriculumsPage.roboticsTopics,
       color: "bg-avanza-green",
       borderColor: "border-avanza-green",
       progress: 15,
@@ -69,9 +69,9 @@ export default function CurriculumsPage() {
       title: t.curriculumsPage.aiTitle,
       description: t.curriculumsPage.aiDesc,
       image: "/images/curriculums/ai.png",
-      grades: "Grades 5-8",
-      duration: "6 weeks",
-      topics: ["What is AI?", "Training a Model", "Image Recognition", "AI Ethics"],
+      grades: t.curriculumsPage.grades58,
+      duration: t.curriculumsPage.duration6Weeks,
+      topics: t.curriculumsPage.aiTopics,
       color: "bg-avanza-purple",
       borderColor: "border-avanza-purple",
       progress: 10,
@@ -103,6 +103,7 @@ export default function CurriculumsPage() {
                   topicsCovered={t.curriculumsPage.topicsCovered}
                   inDevelopment={t.curriculumsPage.inDevelopment}
                   joinWaitlist={t.curriculumsPage.joinWaitlist}
+                  progressComplete={t.curriculumsPage.progressComplete}
                 />
               </FadeIn>
             ))}
@@ -168,6 +169,7 @@ function CurriculumCard({
   topicsCovered,
   inDevelopment,
   joinWaitlist,
+  progressComplete,
   progress,
 }: {
   title: string
@@ -181,6 +183,7 @@ function CurriculumCard({
   topicsCovered: string
   inDevelopment: string
   joinWaitlist: string
+  progressComplete: string
   progress: number
 }) {
   return (
@@ -223,7 +226,7 @@ function CurriculumCard({
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{inDevelopment}</p>
-            <p className="text-xs font-semibold text-muted-foreground">{progress}% complete</p>
+            <p className="text-xs font-semibold text-muted-foreground">{progress}% {progressComplete}</p>
           </div>
           <Progress value={progress} className="mt-2" />
           <a

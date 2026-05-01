@@ -1,6 +1,9 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react"
+import { useLanguage } from "@/components/providers/language-provider"
 
 type BlogPostLayoutProps = {
   title: string
@@ -25,6 +28,8 @@ export function BlogPostLayout({
   imageAlt,
   children,
 }: BlogPostLayoutProps) {
+  const { t } = useLanguage()
+
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-3xl px-6 py-10">
@@ -33,7 +38,7 @@ export function BlogPostLayout({
           className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Blog
+          {t.blogPage.backToBlog}
         </Link>
 
         <header className="mt-8">
@@ -53,7 +58,7 @@ export function BlogPostLayout({
               <Calendar className="h-4 w-4" /> {date}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Clock className="h-4 w-4" /> {readTime} read
+              <Clock className="h-4 w-4" /> {readTime} {t.blogPage.readSuffix}
             </span>
           </div>
         </header>
