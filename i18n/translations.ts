@@ -16,13 +16,15 @@ const en = {
     projects: "Projects",
     blog: "Blog",
     workshops: "Workshops",
+    gallery: "Gallery",
+    about: "About",
   },
 
   // Homepage
   home: {
     heroTitle: "Your Journey to STEM Starts Here!",
     heroDescription: "Free online learning, fun projects, and local workshops designed for young Hispanic students. Let's explore science, technology, engineering, and math together!",
-    startLearning: "Start Learning",
+    startLearning: "Explore Projects",
     whatWeOffer: "What We Offer",
     whatWeOfferDescription: "Everything you need to start your STEM adventure, from online courses to hands-on projects and in-person workshops.",
     onlineCurriculums: "Online Curriculums",
@@ -54,12 +56,17 @@ const en = {
     findWorkshop: "Find a Workshop Near You",
     studentsReached: "Students Reached",
     curriculumTopics: "Curriculum Topics",
-    diyProjectsCount: "DIY Projects",
+    diyProjectsCount: "Languages Supported",
     workshopsHosted: "Workshops Hosted",
+    languagesSupported: "Languages Supported",
     readyTitle: "Ready to Start Your STEM Journey?",
     readyDesc: "Explore our free curriculums, try a hands-on project, or sign up for a local workshop today.",
     browseCurriculums: "Browse Curriculums",
     viewProjects: "View Projects",
+    testimonialsTitle: "What Families Are Saying",
+    galleryTitle: "See Our Students in Action",
+    galleryDesc: "Real photos from our workshops and events.",
+    viewAllPhotos: "View All Photos",
   },
 
   // Curriculums page
@@ -79,6 +86,8 @@ const en = {
     cantFind: "Can't find what you're looking for?",
     cantFindDesc: "We're always adding new curriculums. Let us know what topics you'd like to see!",
     suggestTopic: "Suggest a Topic",
+    inDevelopment: "In Development",
+    joinWaitlist: "Join Waitlist",
     // Curriculum items
     pythonTitle: "Intro to Python Programming",
     pythonDesc: "Learn the basics of coding with Python through fun, interactive lessons. Build simple games and solve puzzles while learning to think like a programmer.",
@@ -256,6 +265,7 @@ const en = {
     getInTouch: "Get In Touch",
     haveQuestions: "Have questions or want to get involved?",
     copyright: "Avanza STEM. All rights reserved. Inspiring the next generation of STEM leaders.",
+    followUs: "Follow Us",
   },
 }
 
@@ -266,12 +276,14 @@ const es: Translations = {
     projects: "Proyectos",
     blog: "Blog",
     workshops: "Talleres",
+    gallery: "Galería",
+    about: "Nosotros",
   },
 
   home: {
     heroTitle: "Tu Viaje hacia STEM Comienza Aqui!",
     heroDescription: "Aprendizaje en linea gratuito, proyectos divertidos y talleres locales disenados para jovenes estudiantes hispanos. Exploremos ciencia, tecnologia, ingenieria y matematicas juntos!",
-    startLearning: "Empieza a Aprender",
+    startLearning: "Explorar Proyectos",
     whatWeOffer: "Lo Que Ofrecemos",
     whatWeOfferDescription: "Todo lo que necesitas para comenzar tu aventura STEM, desde cursos en linea hasta proyectos practicos y talleres presenciales.",
     onlineCurriculums: "Cursos en Linea",
@@ -303,12 +315,17 @@ const es: Translations = {
     findWorkshop: "Encuentra un Taller Cerca de Ti",
     studentsReached: "Estudiantes Alcanzados",
     curriculumTopics: "Temas de Cursos",
-    diyProjectsCount: "Proyectos DIY",
+    diyProjectsCount: "Idiomas disponibles",
     workshopsHosted: "Talleres Realizados",
+    languagesSupported: "Idiomas disponibles",
     readyTitle: "Listo para Comenzar tu Viaje STEM?",
     readyDesc: "Explora nuestros cursos gratuitos, prueba un proyecto practico o inscribete en un taller local hoy.",
     browseCurriculums: "Ver Cursos",
     viewProjects: "Ver Proyectos",
+    testimonialsTitle: "Lo que dicen las familias",
+    galleryTitle: "Mira a nuestros estudiantes en acción",
+    galleryDesc: "Fotos reales de nuestros talleres y eventos.",
+    viewAllPhotos: "Ver todas las fotos",
   },
 
   curriculumsPage: {
@@ -327,6 +344,8 @@ const es: Translations = {
     cantFind: "No encuentras lo que buscas?",
     cantFindDesc: "Siempre estamos agregando nuevos cursos. Dejanos saber que temas te gustaria ver!",
     suggestTopic: "Sugerir un Tema",
+    inDevelopment: "En desarrollo",
+    joinWaitlist: "Únete a la lista de espera",
     pythonTitle: "Introduccion a la Programacion en Python",
     pythonDesc: "Aprende los conceptos basicos de programacion con Python a traves de lecciones divertidas e interactivas. Construye juegos simples y resuelve puzzles mientras aprendes a pensar como programador.",
     engineeringTitle: "Fundamentos de Ingenieria",
@@ -496,6 +515,7 @@ const es: Translations = {
     getInTouch: "Contacto",
     haveQuestions: "Tienes preguntas o quieres participar?",
     copyright: "Avanza STEM. Todos los derechos reservados. Inspirando la proxima generacion de lideres STEM.",
+    followUs: "Síguenos",
   },
 }
 
@@ -506,12 +526,14 @@ const zh: Translations = {
     projects: "项目",
     blog: "博客",
     workshops: "工作坊",
+    gallery: "照片库",
+    about: "关于我们",
   },
 
   home: {
     heroTitle: "你的STEM之旅从这里开始!",
     heroDescription: "为年轻的西班牙裔学生设计的免费在线学习、有趣的项目和本地工作坊。让我们一起探索科学、技术、工程和数学!",
-    startLearning: "开始学习",
+    startLearning: "探索项目",
     whatWeOffer: "我们提供什么",
     whatWeOfferDescription: "从在线课程到动手项目和面对面工作坊，开始您的STEM冒险所需的一切。",
     onlineCurriculums: "在线课程",
@@ -543,12 +565,17 @@ const zh: Translations = {
     findWorkshop: "在您附近找到工作坊",
     studentsReached: "已服务学生",
     curriculumTopics: "课程主题",
-    diyProjectsCount: "DIY项目",
+    diyProjectsCount: "支持语言",
     workshopsHosted: "已举办工作坊",
+    languagesSupported: "支持语言",
     readyTitle: "准备好开始您的STEM之旅了吗?",
     readyDesc: "探索我们的免费课程，尝试动手项目，或立即报名参加本地工作坊。",
     browseCurriculums: "浏览课程",
     viewProjects: "查看项目",
+    testimonialsTitle: "家长的评价",
+    galleryTitle: "看看我们的学生在行动",
+    galleryDesc: "来自我们工作坊和活动的真实照片。",
+    viewAllPhotos: "查看所有照片",
   },
 
   curriculumsPage: {
@@ -567,6 +594,8 @@ const zh: Translations = {
     cantFind: "找不到您要找的内容?",
     cantFindDesc: "我们一直在添加新课程。让我们知道您想看到什么主题!",
     suggestTopic: "建议主题",
+    inDevelopment: "开发中",
+    joinWaitlist: "加入候补名单",
     pythonTitle: "Python编程入门",
     pythonDesc: "通过有趣的互动课程学习Python编程基础。构建简单的游戏并解决谜题。",
     engineeringTitle: "工程基础",
@@ -736,6 +765,7 @@ const zh: Translations = {
     getInTouch: "联系我们",
     haveQuestions: "有问题或想参与?",
     copyright: "Avanza STEM。保留所有权利。激励下一代STEM领袖。",
+    followUs: "关注我们",
   },
 }
 
