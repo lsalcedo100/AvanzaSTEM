@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { X, ChevronLeft, ChevronRight, Images } from "lucide-react"
+import { useLanguage } from "@/components/providers/language-provider"
 
 const cloudName = "dw4uprmkk"
 
@@ -20,6 +21,7 @@ interface GalleryProps {
 }
 
 export function Gallery({ limit }: GalleryProps) {
+  const { t } = useLanguage()
   const displayed = limit ? galleryImages.slice(0, limit) : galleryImages
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const isOpen = activeIndex !== null
@@ -55,7 +57,7 @@ export function Gallery({ limit }: GalleryProps) {
     <section className="bg-background py-20">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="mb-10 text-center text-3xl font-extrabold text-foreground md:text-4xl">
-          Photo Gallery
+          {t.galleryPage.sectionTitle}
         </h2>
 
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
@@ -68,7 +70,7 @@ export function Gallery({ limit }: GalleryProps) {
             >
               <Image
                 src={img.thumbnail}
-                alt={`Gallery photo ${i + 1}`}
+                alt={`${t.galleryPage.photoAlt} ${i + 1}`}
                 fill
                 loading="lazy"
                 sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -85,7 +87,7 @@ export function Gallery({ limit }: GalleryProps) {
               className="inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-3.5 text-base font-bold text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"
             >
               <Images className="h-5 w-5" />
-              View All Photos
+              {t.galleryPage.viewAllPhotos}
             </Link>
           </div>
         )}
@@ -100,7 +102,7 @@ export function Gallery({ limit }: GalleryProps) {
             type="button"
             onClick={closeModal}
             className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25"
-            aria-label="Close"
+            aria-label={t.galleryPage.close}
           >
             <X className="h-6 w-6" />
           </button>
@@ -109,7 +111,7 @@ export function Gallery({ limit }: GalleryProps) {
             type="button"
             onClick={(e) => { e.stopPropagation(); prev() }}
             className="absolute left-4 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25"
-            aria-label="Previous"
+            aria-label={t.galleryPage.previous}
           >
             <ChevronLeft className="h-7 w-7" />
           </button>
@@ -121,7 +123,7 @@ export function Gallery({ limit }: GalleryProps) {
             <Image
               key={activeIndex}
               src={displayed[activeIndex].full}
-              alt={`Gallery photo ${activeIndex + 1}`}
+              alt={`${t.galleryPage.photoAlt} ${activeIndex + 1}`}
               width={1600}
               height={1200}
               className="max-h-[90vh] w-full object-contain"
@@ -133,7 +135,7 @@ export function Gallery({ limit }: GalleryProps) {
             type="button"
             onClick={(e) => { e.stopPropagation(); next() }}
             className="absolute right-4 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25"
-            aria-label="Next"
+            aria-label={t.galleryPage.next}
           >
             <ChevronRight className="h-7 w-7" />
           </button>

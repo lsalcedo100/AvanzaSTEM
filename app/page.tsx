@@ -36,7 +36,7 @@ export default function HomePage() {
             <div className="overflow-hidden rounded-2xl shadow-2xl transition-shadow duration-300 hover:shadow-[0_32px_64px_rgba(26,26,46,0.15)]">
               <LightboxImage
                 src="/images/home/hero.png"
-                alt="Young Hispanic youth collaborating on a popsicle stick engineering project at a workshop table"
+                alt={t.home.heroImageAlt}
                 width={600}
                 height={400}
                 className="h-auto w-full object-cover"
@@ -90,7 +90,7 @@ export default function HomePage() {
             {[
               { image: "/images/home/featured-bridge.jpg", title: t.home.featuredBridge, description: t.home.featuredBridgeDesc, href: "/projects/popsicle-stick-bridge" },
               { image: "/images/home/featured-python.jpg", title: t.home.featuredCoding, description: t.home.featuredCodingDesc, href: "/projects/my-first-python-program" },
-              { image: "/images/home/coke-mentos-science-experiment-kids.png", alt: "Coke and Mentos chemical reaction science experiment for kids", title: t.home.featuredMentos, description: t.home.featuredMentosDesc, href: "/blog/5-easy-science-experiments" },
+              { image: "/images/home/coke-mentos-science-experiment-kids.png", alt: t.home.mentosImageAlt, title: t.home.featuredMentos, description: t.home.featuredMentosDesc, href: "/blog/5-easy-science-experiments" },
             ].map((card, i) => (
               <FadeIn key={card.title} delay={i * 100} className="h-full">
                 <FeaturedCard {...card} cta={t.home.learnMore} />
@@ -108,10 +108,10 @@ export default function HomePage() {
               <div>
                 <div className="text-8xl font-black leading-none text-primary-foreground/20">"</div>
                 <blockquote className="text-2xl font-bold italic leading-relaxed text-primary-foreground">
-                  I didn't know I could build something that works. But I did. And now I want to build more.
+                  {t.home.missionQuote}
                 </blockquote>
                 <p className="mt-4 text-sm text-primary-foreground/70">
-                  — Sofia, age 9, Avanza STEM student
+                  - {t.home.missionQuoteAttribution}
                 </p>
                 <hr className="mt-6 border-primary-foreground/20" />
               </div>
@@ -145,19 +145,19 @@ export default function HomePage() {
           <div className="mt-14 grid gap-8 md:grid-cols-3">
             {[
               {
-                quote: "My daughter had never shown interest in science before. After attending an Avanza STEM workshop, she came home and built a volcano on our kitchen table. She hasn't stopped asking questions since.",
-                name: "Maria G.",
-                role: "Parent, Clifton",
+                quote: t.home.testimonial1Quote,
+                name: t.home.testimonial1Name,
+                role: t.home.testimonial1Role,
               },
               {
-                quote: "As a librarian, finding free, bilingual STEM programming that actually engages kids is almost impossible. Avanza STEM does it effortlessly. Our kids were glued to every activity.",
-                name: "Ms. Reyes",
-                role: "Children's Librarian",
+                quote: t.home.testimonial2Quote,
+                name: t.home.testimonial2Name,
+                role: t.home.testimonial2Role,
               },
               {
-                quote: "I learned how to code and built my first Python game. I didn't think I could do something like that. Now I want to be a software engineer.",
-                name: "Diego, age 11",
-                role: "Workshop Student",
+                quote: t.home.testimonial3Quote,
+                name: t.home.testimonial3Name,
+                role: t.home.testimonial3Role,
               },
             ].map((testimonial, i) => (
               <FadeIn key={testimonial.name} delay={i * 100}>
@@ -191,7 +191,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.15em] text-avanza-green">
-              133 Photos
+              {t.home.photoCount}
             </p>
             <h2 className="mt-2 text-3xl font-extrabold text-primary-foreground md:text-4xl">
               {t.home.galleryTitle}
@@ -206,12 +206,12 @@ export default function HomePage() {
               <FadeIn key={i} delay={i * 40}>
                 <Link
                   href="/gallery"
-                  aria-label={`View gallery photo ${i + 1}`}
+                  aria-label={`${t.home.viewGalleryPhoto} ${i + 1}`}
                   className="group relative block aspect-square overflow-hidden rounded-xl"
                 >
                   <Image
                     src={img.thumbnail}
-                    alt={`Workshop photo ${i + 1}`}
+                    alt={`${t.home.workshopPhotoAlt} ${i + 1}`}
                     fill
                     loading="lazy"
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
