@@ -43,6 +43,7 @@
   --avanza-purple: #8b5cf6;
   --avanza-orange: #f97316;
   --avanza-dark: #1a1a2e;
+  --avanza-navbar: #dbf2a5;
 }
 
 @theme inline {
@@ -53,6 +54,7 @@
   --color-avanza-purple: var(--avanza-purple);
   --color-avanza-orange: var(--avanza-orange);
   --color-avanza-dark: var(--avanza-dark);
+  --color-avanza-navbar: var(--avanza-navbar);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

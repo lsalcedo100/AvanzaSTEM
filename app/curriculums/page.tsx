@@ -1,9 +1,10 @@
 "use client"
 
-import { BookOpen, Clock, Users, ArrowRight } from "lucide-react"
+import { Clock, Users, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
+import { Progress } from "@/components/ui/progress"
 
 export default function CurriculumsPage() {
   const { t } = useLanguage()
@@ -18,6 +19,7 @@ export default function CurriculumsPage() {
       topics: ["Variables & Data Types", "Loops & Conditionals", "Simple Functions", "Build a Mini Game"],
       color: "bg-avanza-green",
       borderColor: "border-avanza-green",
+      progress: 65,
     },
     {
       title: t.curriculumsPage.engineeringTitle,
@@ -28,6 +30,7 @@ export default function CurriculumsPage() {
       topics: ["Types of Structures", "Forces & Loads", "Building with Materials", "Design Challenges"],
       color: "bg-avanza-purple",
       borderColor: "border-avanza-purple",
+      progress: 40,
     },
     {
       title: t.curriculumsPage.scienceTitle,
@@ -38,6 +41,7 @@ export default function CurriculumsPage() {
       topics: ["Chemical Reactions", "States of Matter", "Simple Machines", "Life Sciences"],
       color: "bg-avanza-orange",
       borderColor: "border-avanza-orange",
+      progress: 30,
     },
     {
       title: t.curriculumsPage.mathTitle,
@@ -48,6 +52,7 @@ export default function CurriculumsPage() {
       topics: ["Number Patterns", "Geometry Basics", "Measurement Fun", "Problem Solving"],
       color: "bg-avanza-teal",
       borderColor: "border-avanza-teal",
+      progress: 20,
     },
     {
       title: t.curriculumsPage.roboticsTitle,
@@ -58,6 +63,7 @@ export default function CurriculumsPage() {
       topics: ["Robot Components", "Sensors & Motors", "Basic Programming", "Robot Challenges"],
       color: "bg-avanza-green",
       borderColor: "border-avanza-green",
+      progress: 15,
     },
     {
       title: t.curriculumsPage.aiTitle,
@@ -68,6 +74,7 @@ export default function CurriculumsPage() {
       topics: ["What is AI?", "Training a Model", "Image Recognition", "AI Ethics"],
       color: "bg-avanza-purple",
       borderColor: "border-avanza-purple",
+      progress: 10,
     },
   ]
 
@@ -94,6 +101,8 @@ export default function CurriculumsPage() {
                 <CurriculumCard
                   {...curriculum}
                   topicsCovered={t.curriculumsPage.topicsCovered}
+                  inDevelopment={t.curriculumsPage.inDevelopment}
+                  joinWaitlist={t.curriculumsPage.joinWaitlist}
                 />
               </FadeIn>
             ))}
@@ -155,9 +164,11 @@ function CurriculumCard({
   grades,
   duration,
   topics,
-  color,
   borderColor,
   topicsCovered,
+  inDevelopment,
+  joinWaitlist,
+  progress,
 }: {
   title: string
   description: string
@@ -168,6 +179,9 @@ function CurriculumCard({
   color: string
   borderColor: string
   topicsCovered: string
+  inDevelopment: string
+  joinWaitlist: string
+  progress: number
 }) {
   return (
     <div className={`group overflow-hidden rounded-2xl border-2 ${borderColor}/30 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl`}>
@@ -206,9 +220,19 @@ function CurriculumCard({
           </div>
         </div>
 
-        <span className={`mt-6 inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-full opacity-60 ${color} px-6 py-3 text-sm font-bold text-primary-foreground`}>
-          <BookOpen className="h-4 w-4" /> Coming Soon
-        </span>
+        <div className="mt-6">
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{inDevelopment}</p>
+            <p className="text-xs font-semibold text-muted-foreground">{progress}% complete</p>
+          </div>
+          <Progress value={progress} className="mt-2" />
+          <a
+            href={`mailto:liam@avanzastem.org?subject=Waitlist: ${encodeURIComponent(title)}`}
+            className="mt-3 inline-flex items-center rounded-full border border-border px-4 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-avanza-green hover:text-avanza-green"
+          >
+            {joinWaitlist}
+          </a>
+        </div>
       </div>
     </div>
   )

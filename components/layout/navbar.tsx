@@ -18,10 +18,11 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/", label: t.nav.home },
-    { href: "/curriculums", label: t.nav.curriculums },
     { href: "/projects", label: t.nav.projects },
     { href: "/blog", label: t.nav.blog },
     { href: "/workshops", label: t.nav.workshops },
+    { href: "/gallery", label: t.nav.gallery },
+    { href: "/about", label: t.nav.about },
   ]
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export function Navbar() {
   }, [])
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#dbf2a5]">
+    <nav className="sticky top-0 z-50 bg-avanza-navbar">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4.5">
         <Link
           href="/"
@@ -185,7 +186,7 @@ export function Navbar() {
 
       {/* Mobile nav */}
       <div
-        className={`overflow-hidden border-t border-avanza-dark/15 bg-[#dbf2a5] transition-all duration-300 ease-in-out md:hidden ${
+        className={`overflow-hidden border-t border-avanza-dark/15 bg-avanza-navbar transition-all duration-300 ease-in-out md:hidden ${
           mobileOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
