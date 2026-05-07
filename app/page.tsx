@@ -2,11 +2,27 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Images } from "lucide-react"
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Globe2,
+  HandHeart,
+  Hammer,
+  Images,
+  Languages,
+  MapPin,
+  Sparkles,
+  Sprout,
+} from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
 import { CountUp } from "@/components/ui/count-up"
+import { CuriosityCompass } from "@/components/ui/curiosity-compass"
+import { PythonPlayground } from "@/components/ui/python-playground"
+import { BridgeLoadDemo } from "@/components/ui/bridge-load-demo"
+import { JengaTower } from "@/components/ui/jenga-tower"
+import { AtomBuilder } from "@/components/ui/atom-builder"
 import { galleryImages } from "@/components/ui/gallery"
 import { NewsletterSignup } from "@/components/blog/newsletter-signup"
 
@@ -15,39 +31,92 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero Section */}
+      {/* HERO — bright, warm, with sticker badges */}
       <section className="relative overflow-hidden bg-[#edffd6]">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-10 px-6 py-20 md:flex-row md:py-28">
+        {/* Confetti dots */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 12% 18%, rgba(46,204,113,0.18) 0 6px, transparent 7px), radial-gradient(circle at 84% 26%, rgba(139,92,246,0.16) 0 5px, transparent 6px), radial-gradient(circle at 22% 78%, rgba(249,115,22,0.16) 0 4px, transparent 5px), radial-gradient(circle at 76% 84%, rgba(26,188,156,0.18) 0 5px, transparent 6px)",
+          }}
+        />
+        <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 py-20 md:flex-row md:py-28">
           <FadeIn className="flex-1" delay={0}>
-            <h1 className="text-balance text-5xl font-extrabold italic leading-tight text-foreground md:text-6xl">
+            <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/30 bg-white/70 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.18em] text-avanza-dark backdrop-blur-sm">
+              <Sparkles className="h-3.5 w-3.5 text-avanza-orange" />
+              {t.home.heroEyebrow}
+            </span>
+            <h1 className="mt-6 text-balance text-[2.7rem] font-extrabold italic leading-[1.05] text-foreground sm:text-5xl md:text-6xl">
               {t.home.heroTitle}
             </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-foreground/80">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/80">
               {t.home.heroDescription}
             </p>
-            <Link
-              href="/projects"
-              className="mt-8 inline-flex items-center gap-3 rounded-full bg-avanza-dark px-8 py-4 text-lg font-bold text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
-            >
-              {t.home.startLearning} <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <Link
+                href="/projects"
+                className="group inline-flex items-center gap-3 rounded-full bg-avanza-dark px-7 py-3.5 text-base font-bold text-primary-foreground shadow-[0_12px_32px_-10px_rgba(26,26,46,0.5)] transition-all duration-300 hover:scale-[1.04] hover:shadow-[0_18px_40px_-10px_rgba(26,26,46,0.6)]"
+              >
+                {t.home.startLearning}
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/find-a-workshop"
+                className="inline-flex items-center gap-2 rounded-full bg-white/80 px-5 py-3.5 text-base font-bold text-avanza-dark ring-1 ring-avanza-dark/15 transition-all duration-200 hover:bg-white hover:ring-avanza-dark/30"
+              >
+                <MapPin className="h-4 w-4" />
+                {t.home.finderTrigger}
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+            {/* Sticker badges */}
+            <div className="mt-8 flex flex-wrap gap-2">
+              <HeroBadge icon={HandHeart} label={t.home.heroBadgeFree} tilt="-rotate-2" tone="green" />
+              <HeroBadge icon={Languages} label={t.home.heroBadgeAllAges} tilt="rotate-1" tone="orange" />
+              <HeroBadge icon={MapPin} label={t.home.heroBadgeLocal} tilt="-rotate-1" tone="purple" />
+            </div>
           </FadeIn>
           <FadeIn className="flex-1" delay={120}>
-            <div className="overflow-hidden rounded-2xl shadow-2xl transition-shadow duration-300 hover:shadow-[0_32px_64px_rgba(26,26,46,0.15)]">
-              <LightboxImage
-                src="/images/home/hero.png"
-                alt={t.home.heroImageAlt}
-                width={600}
-                height={400}
-                className="h-auto w-full object-cover"
-                priority
+            <div className="relative">
+              {/* Hand-drawn frame */}
+              <div
+                aria-hidden="true"
+                className="absolute -inset-2 rounded-[28px] bg-avanza-dark/8 [transform:rotate(-1.4deg)]"
               />
+              <div className="relative overflow-hidden rounded-[24px] shadow-2xl ring-1 ring-avanza-dark/10 transition-shadow duration-300 hover:shadow-[0_36px_72px_rgba(26,26,46,0.25)]">
+                <LightboxImage
+                  src="/images/home/hero.png"
+                  alt={t.home.heroImageAlt}
+                  width={600}
+                  height={400}
+                  className="h-auto w-full object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 600px"
+                />
+              </div>
+              {/* Floating sticker on photo */}
+              <div className="absolute -bottom-4 -right-2 hidden rotate-3 items-center gap-2 rounded-2xl bg-white px-4 py-2.5 text-sm font-extrabold text-avanza-dark shadow-lg sm:flex">
+                <Sprout className="h-5 w-5 text-avanza-green" />
+                {t.home.welcomeBadge}
+              </div>
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* What We Offer */}
+      {/* VALUES STRIP — instantly communicates the spirit of the org */}
+      <section className="bg-avanza-dark py-12">
+        <div className="mx-auto grid max-w-7xl gap-6 px-6 sm:grid-cols-2 md:grid-cols-4">
+          <ValueChip icon={HandHeart} title={t.home.valueFree} note={t.home.valueFreeNote} hoverAnim="thump" />
+          <ValueChip icon={Globe2} title={t.home.valueBilingual} note={t.home.valueBilingualNote} hoverAnim="spin" />
+          <ValueChip icon={Hammer} title={t.home.valueHandsOn} note={t.home.valueHandsOnNote} hoverAnim="tap" />
+          <ValueChip icon={MapPin} title={t.home.valueCommunity} note={t.home.valueCommunityNote} hoverAnim="bounce" />
+        </div>
+      </section>
+
+      {/* WHAT WE OFFER */}
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="text-center">
@@ -74,7 +143,89 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Section */}
+      {/* INTERACTIVE: CURIOSITY COMPASS — pick a path, get a real starter project */}
+      <CuriosityCompass />
+
+      {/* INTERACTIVE: PYTHON PLAYGROUND — real Python in the browser via Pyodide */}
+      <PythonPlayground />
+
+      {/* REAL WORKSHOPS — banner showcase pulled from /public/images/workshops */}
+      <section className="bg-background py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <FadeIn className="mx-auto max-w-3xl text-center">
+            <span className="text-xs font-bold uppercase tracking-[0.18em] text-avanza-green">
+              {t.home.realWorkshopsEyebrow}
+            </span>
+            <h2 className="mt-3 text-3xl font-extrabold text-foreground md:text-4xl">
+              {t.home.realWorkshopsTitle}
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+              {t.home.realWorkshopsDesc}
+            </p>
+          </FadeIn>
+
+          <div className="mt-14 grid gap-7 md:grid-cols-3">
+            {[
+              {
+                week: 1,
+                title: t.home.realWorkshopBuilding,
+                desc: t.home.realWorkshopBuildingShort,
+                image: "/images/workshops/Building Workshop Description.jpeg",
+                tone: "bg-avanza-orange",
+                tilt: "-rotate-[0.6deg] hover:rotate-0",
+              },
+              {
+                week: 2,
+                title: t.home.realWorkshopCoding,
+                desc: t.home.realWorkshopCodingShort,
+                image: "/images/workshops/Coding Workshop Description.png",
+                tone: "bg-avanza-green",
+                tilt: "rotate-[0.7deg] hover:rotate-0",
+              },
+              {
+                week: 3,
+                title: t.home.realWorkshopAi,
+                desc: t.home.realWorkshopAiShort,
+                image: "/images/workshops/AI Workshop Description.JPG",
+                tone: "bg-avanza-purple",
+                tilt: "-rotate-[0.4deg] hover:rotate-0",
+              },
+            ].map((card, i) => (
+              <FadeIn key={card.title} delay={i * 90} className="h-full">
+                <RealWorkshopCard
+                  weekNumber={card.week}
+                  weekLabel={t.home.realWorkshopWeekLabel}
+                  title={card.title}
+                  description={card.desc}
+                  image={card.image}
+                  imageAlt={`${t.home.realWorkshopBannerAlt} – ${card.title}`}
+                  tone={card.tone}
+                  tilt={card.tilt}
+                  cta={t.home.realWorkshopExplore}
+                />
+              </FadeIn>
+            ))}
+          </div>
+
+          <FadeIn className="mt-12 flex justify-center">
+            <Link
+              href="/workshops"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-avanza-dark/15 bg-white px-6 py-3 text-sm font-bold text-avanza-dark transition-all duration-200 hover:border-avanza-dark/35 hover:bg-avanza-dark/5"
+            >
+              {t.home.findWorkshop}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* INTERACTIVE: BRIDGE LOAD DEMO — drag a weight onto the truss bridge */}
+      <BridgeLoadDemo />
+
+      {/* INTERACTIVE: JENGA TOWER — drag blocks, watch stability collapse */}
+      <JengaTower />
+
+      {/* FEATURED ACTIVITIES */}
       <section className="bg-linear-to-b from-secondary via-secondary/50 to-background py-24">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="text-center">
@@ -100,7 +251,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Mission Statement */}
+      {/* INTERACTIVE: ATOM BUILDER — add protons / neutrons / electrons */}
+      <AtomBuilder />
+
+      {/* MISSION */}
       <section className="bg-gradient-to-br from-avanza-purple to-avanza-teal py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
@@ -134,7 +288,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* TESTIMONIALS */}
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="text-center">
@@ -144,21 +298,9 @@ export default function HomePage() {
           </FadeIn>
           <div className="mt-14 grid gap-8 md:grid-cols-3">
             {[
-              {
-                quote: t.home.testimonial1Quote,
-                name: t.home.testimonial1Name,
-                role: t.home.testimonial1Role,
-              },
-              {
-                quote: t.home.testimonial2Quote,
-                name: t.home.testimonial2Name,
-                role: t.home.testimonial2Role,
-              },
-              {
-                quote: t.home.testimonial3Quote,
-                name: t.home.testimonial3Name,
-                role: t.home.testimonial3Role,
-              },
+              { quote: t.home.testimonial1Quote, name: t.home.testimonial1Name, role: t.home.testimonial1Role },
+              { quote: t.home.testimonial2Quote, name: t.home.testimonial2Name, role: t.home.testimonial2Role },
+              { quote: t.home.testimonial3Quote, name: t.home.testimonial3Name, role: t.home.testimonial3Role },
             ].map((testimonial, i) => (
               <FadeIn key={testimonial.name} delay={i * 100}>
                 <TestimonialCard {...testimonial} />
@@ -168,8 +310,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="bg-background py-20">
+      {/* STATS */}
+      <section className="bg-background pb-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 text-center md:grid-cols-4">
             {[
@@ -186,7 +328,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Gallery Teaser */}
+      {/* GALLERY TEASER */}
       <section className="bg-avanza-dark py-20">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="text-center">
@@ -203,19 +345,20 @@ export default function HomePage() {
 
           <div className="mt-12 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
             {galleryImages.slice(0, 8).map((img, i) => (
-              <FadeIn key={i} delay={i * 40}>
+              <FadeIn key={img.id} delay={i * 40}>
                 <Link
                   href="/gallery"
                   aria-label={`${t.home.viewGalleryPhoto} ${i + 1}`}
-                  className="group relative block aspect-square overflow-hidden rounded-xl"
+                  className="group relative block aspect-square overflow-hidden rounded-xl bg-white/5"
                 >
                   <Image
-                    src={img.thumbnail}
+                    src={img.thumb}
                     alt={`${t.home.workshopPhotoAlt} ${i + 1}`}
                     fill
                     loading="lazy"
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20" />
                 </Link>
@@ -237,7 +380,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Newsletter */}
+      {/* NEWSLETTER */}
       <FadeIn>
         <NewsletterSignup />
       </FadeIn>
@@ -268,6 +411,152 @@ export default function HomePage() {
         </FadeIn>
       </section>
     </>
+  )
+}
+
+function HeroBadge({
+  icon: Icon,
+  label,
+  tilt,
+  tone,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  tilt: string
+  tone: "green" | "orange" | "purple"
+}) {
+  const toneClasses = {
+    green: "bg-avanza-green text-white",
+    orange: "bg-avanza-orange text-white",
+    purple: "bg-avanza-purple text-white",
+  }[tone]
+  return (
+    <span
+      className={`group/badge inline-flex cursor-default items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wider shadow-md transition-transform duration-300 hover:!rotate-0 hover:scale-110 hover:shadow-lg ${toneClasses} ${tilt}`}
+    >
+      <Icon className="h-3.5 w-3.5 transition-transform duration-500 group-hover/badge:rotate-[360deg]" />
+      {label}
+    </span>
+  )
+}
+
+function ValueChip({
+  icon: Icon,
+  title,
+  note,
+  hoverAnim = "thump",
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  note: string
+  hoverAnim?: "thump" | "spin" | "tap" | "bounce"
+}) {
+  const iconAnimClass =
+    hoverAnim === "spin"
+      ? "transition-transform duration-700 ease-out group-hover:rotate-[360deg]"
+      : hoverAnim === "tap"
+        ? "transition-transform duration-200 group-hover:[animation:value-tap_0.6s_ease-in-out]"
+        : hoverAnim === "bounce"
+          ? "transition-transform duration-200 group-hover:[animation:value-bounce_0.7s_cubic-bezier(0.34,1.56,0.64,1)]"
+          : "transition-transform duration-200 group-hover:[animation:value-thump_0.7s_ease-in-out]"
+  return (
+    <div className="group flex cursor-default items-start gap-4">
+      <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-avanza-green/15 text-avanza-green ring-1 ring-avanza-green/30 transition-all duration-200 group-hover:scale-105 group-hover:bg-avanza-green/25 group-hover:ring-avanza-green/50">
+        <Icon className={`h-5 w-5 ${iconAnimClass}`} />
+      </div>
+      <div>
+        <p className="text-sm font-extrabold uppercase tracking-wider text-primary-foreground transition-colors group-hover:text-avanza-green">
+          {title}
+        </p>
+        <p className="mt-1 text-sm leading-relaxed text-primary-foreground/65">
+          {note}
+        </p>
+      </div>
+      <style>{`
+        @keyframes value-thump {
+          0%, 100% { transform: scale(1); }
+          25% { transform: scale(1.18); }
+          45% { transform: scale(0.92); }
+          70% { transform: scale(1.08); }
+        }
+        @keyframes value-tap {
+          0%, 100% { transform: rotate(0deg); }
+          30% { transform: rotate(-22deg); }
+          55% { transform: rotate(8deg); }
+          80% { transform: rotate(-4deg); }
+        }
+        @keyframes value-bounce {
+          0%, 100% { transform: translateY(0); }
+          40% { transform: translateY(-6px); }
+          70% { transform: translateY(-2px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .group:hover [class*="value-"],
+          .group:hover [class*="rotate-\\[360deg\\]"] {
+            animation: none !important;
+            transform: none !important;
+          }
+        }
+      `}</style>
+    </div>
+  )
+}
+
+function RealWorkshopCard({
+  weekNumber,
+  weekLabel,
+  title,
+  description,
+  image,
+  imageAlt,
+  tone,
+  tilt,
+  cta,
+}: {
+  weekNumber: number
+  weekLabel: string
+  title: string
+  description: string
+  image: string
+  imageAlt: string
+  tone: string
+  tilt: string
+  cta: string
+}) {
+  return (
+    <Link
+      href="/workshops"
+      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_20px_50px_-30px_rgba(26,26,46,0.4)] ring-1 ring-avanza-dark/8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_64px_-28px_rgba(26,26,46,0.5)] ${tilt}`}
+    >
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-secondary">
+        <Image
+          src={image}
+          alt={imageAlt}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-avanza-dark/70 via-avanza-dark/0 to-transparent" />
+        {/* Sticker week badge */}
+        <span
+          className={`absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full ${tone} px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-lg`}
+        >
+          {weekLabel} {weekNumber}
+        </span>
+      </div>
+      <div className="flex flex-1 flex-col gap-3 p-6">
+        <h3 className="text-xl font-extrabold leading-snug text-foreground">
+          {title}
+        </h3>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {description}
+        </p>
+        <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-extrabold text-avanza-dark transition-all duration-200 group-hover:gap-2.5">
+          {cta}
+          <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </span>
+      </div>
+    </Link>
   )
 }
 

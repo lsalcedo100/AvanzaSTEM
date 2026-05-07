@@ -97,8 +97,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    background-color: var(--avanza-navbar);
+  }
   body {
-    @apply bg-background text-foreground;
+    background-color: transparent;
+    @apply text-foreground;
+  }
+  main {
+    @apply bg-background;
   }
 }
 
