@@ -12,13 +12,44 @@ export function Navbar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const { language, setLanguage, t } = useLanguage()
   const desktopLangRef = useRef<HTMLDivElement>(null)
   const mobileLangRef = useRef<HTMLDivElement>(null)
 
+  useEffect(() => {
+    // Hysteresis to prevent oscillation when the navbar's height change
+    // shifts scrollY back across a single threshold.
+    const ENTER = 48 // become collapsed pill once we're well past the top
+    const EXIT = 4 // only go back to expanded once we're nearly at the top
+    let isScrolled = window.scrollY > ENTER
+    setScrolled(isScrolled)
+    let raf = 0
+    const onScroll = () => {
+      if (raf) return
+      raf = window.requestAnimationFrame(() => {
+        raf = 0
+        const y = window.scrollY
+        if (!isScrolled && y > ENTER) {
+          isScrolled = true
+          setScrolled(true)
+        } else if (isScrolled && y < EXIT) {
+          isScrolled = false
+          setScrolled(false)
+        }
+      })
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      if (raf) window.cancelAnimationFrame(raf)
+    }
+  }, [])
+
   const navLinks = [
     { href: "/", label: t.nav.home },
     { href: "/projects", label: t.nav.projects },
+    { href: "/games", label: t.nav.games },
     { href: "/blog", label: t.nav.blog },
     { href: "/workshops", label: t.nav.workshops },
     { href: "/gallery", label: t.nav.gallery },
@@ -39,8 +70,20 @@ export function Navbar() {
   }, [])
 
   return (
-    <nav className="sticky top-0 z-50 bg-avanza-navbar">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4.5">
+    <nav
+      className={`sticky z-50 transition-[top,padding,background-color] duration-300 ease-out ${
+        scrolled
+          ? "top-3 bg-transparent px-3 sm:top-4 sm:px-6"
+          : "top-0 bg-avanza-navbar px-0"
+      }`}
+    >
+      <div
+        className={`mx-auto flex items-center justify-between transition-all duration-300 ease-out ${
+          scrolled
+            ? "max-w-5xl rounded-full border border-avanza-dark/10 bg-avanza-navbar/85 px-4 py-2 shadow-[0_12px_30px_-12px_rgba(26,26,46,0.35)] backdrop-blur-md sm:px-6 sm:py-2.5"
+            : "w-full max-w-7xl rounded-none border border-transparent bg-transparent px-6 py-4.5 shadow-none"
+        }`}
+      >
         <Link
           href="/"
           className="flex items-center gap-3 text-avanza-dark transition-opacity hover:opacity-90"
@@ -50,10 +93,16 @@ export function Navbar() {
             alt="Avanza STEM logo"
             width={56}
             height={56}
-            className="h-11 w-11 shrink-0 sm:h-14 sm:w-14"
+            className={`shrink-0 transition-all duration-300 ${
+              scrolled ? "h-9 w-9 sm:h-10 sm:w-10" : "h-11 w-11 sm:h-14 sm:w-14"
+            }`}
             priority
           />
-          <span className="text-2xl font-extrabold tracking-tight sm:text-4xl">
+          <span
+            className={`font-extrabold tracking-tight transition-all duration-300 ${
+              scrolled ? "text-lg sm:text-2xl" : "text-2xl sm:text-4xl"
+            }`}
+          >
             Avanza STEM
           </span>
         </Link>
@@ -186,9 +235,11 @@ export function Navbar() {
 
       {/* Mobile nav */}
       <div
-        className={`overflow-hidden border-t border-avanza-dark/15 bg-avanza-navbar transition-all duration-300 ease-in-out md:hidden ${
-          mobileOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`mx-auto overflow-hidden bg-avanza-navbar transition-all duration-300 ease-in-out md:hidden ${
+          scrolled
+            ? "mt-2 max-w-5xl rounded-2xl border border-avanza-dark/10 shadow-[0_12px_30px_-12px_rgba(26,26,46,0.35)]"
+            : "w-full border-t border-avanza-dark/15"
+        } ${mobileOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"}`}
       >
         <div className="px-6 pb-4 pt-1">
           {navLinks.map((link) => {

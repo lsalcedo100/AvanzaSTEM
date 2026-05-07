@@ -29,6 +29,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/projects`, lastModified, priority: 0.8, changeFrequency: 'monthly' },
     { url: `${BASE_URL}/blog`, lastModified, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${BASE_URL}/workshops`, lastModified, priority: 0.8, changeFrequency: 'weekly' },
+    { url: `${BASE_URL}/find-a-workshop`, lastModified, priority: 0.7, changeFrequency: 'monthly' },
+    { url: `${BASE_URL}/games`, lastModified, priority: 0.7, changeFrequency: 'monthly' },
   ]
 
   const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({

@@ -1,0 +1,999 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "Avanza STEM logo Avanza STEM" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "Avanza STEM logo" [ref=e5]
+        - generic [ref=e6]: Avanza STEM
+      - generic [ref=e7]:
+        - link "Home" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - link "Projects" [ref=e9] [cursor=pointer]:
+          - /url: /projects
+        - link "Games" [ref=e10] [cursor=pointer]:
+          - /url: /games
+        - link "Blog" [ref=e11] [cursor=pointer]:
+          - /url: /blog
+        - link "Workshops" [ref=e12] [cursor=pointer]:
+          - /url: /workshops
+        - link "Gallery" [ref=e13] [cursor=pointer]:
+          - /url: /gallery
+        - link "About" [ref=e14] [cursor=pointer]:
+          - /url: /about
+        - button "Switch language" [ref=e16]:
+          - img [ref=e17]
+          - generic [ref=e20]: English
+  - main [ref=e21]:
+    - generic [ref=e24]:
+      - link "Back to home" [ref=e25] [cursor=pointer]:
+        - /url: /
+        - img [ref=e26]
+        - text: Back to home
+      - generic [ref=e28]:
+        - img [ref=e29]
+        - text: Games & playgrounds
+      - heading "Play your way through STEM" [level=1] [ref=e31]
+      - paragraph [ref=e32]: Every game on this page teaches something real — physics, code, chemistry, engineering. They all run right in your browser, no install, no login.
+      - generic [ref=e33]:
+        - img [ref=e34]
+        - text: 14 interactive games
+    - generic [ref=e38]:
+      - paragraph [ref=e40]: Jump to a game
+      - generic [ref=e41]:
+        - link "Python Playground Write 10 lines of real Python and run it instantly. No install. Play" [ref=e43] [cursor=pointer]:
+          - /url: "#python"
+          - generic [ref=e44]:
+            - img [ref=e47]
+            - generic [ref=e51]:
+              - heading "Python Playground" [level=3] [ref=e52]
+              - paragraph [ref=e53]: Write 10 lines of real Python and run it instantly. No install.
+            - generic [ref=e54]:
+              - text: Play
+              - img [ref=e55]
+        - link "Bridge Load Lab Drag a weight onto a truss bridge and watch it sag, stress, and snap. Play" [ref=e59] [cursor=pointer]:
+          - /url: "#bridge"
+          - generic [ref=e60]:
+            - img [ref=e63]
+            - generic [ref=e65]:
+              - heading "Bridge Load Lab" [level=3] [ref=e66]
+              - paragraph [ref=e67]: Drag a weight onto a truss bridge and watch it sag, stress, and snap.
+            - generic [ref=e68]:
+              - text: Play
+              - img [ref=e69]
+        - link "Block Tower Physics Pull blocks, stack them on top, and try not to topple the tower. Play" [ref=e73] [cursor=pointer]:
+          - /url: "#tower"
+          - generic [ref=e74]:
+            - img [ref=e77]
+            - generic [ref=e81]:
+              - heading "Block Tower Physics" [level=3] [ref=e82]
+              - paragraph [ref=e83]: Pull blocks, stack them on top, and try not to topple the tower.
+            - generic [ref=e84]:
+              - text: Play
+              - img [ref=e85]
+        - link "Atom Builder Add protons, neutrons, electrons. Watch the element change in real time. Play" [ref=e89] [cursor=pointer]:
+          - /url: "#atom"
+          - generic [ref=e90]:
+            - img [ref=e93]
+            - generic [ref=e97]:
+              - heading "Atom Builder" [level=3] [ref=e98]
+              - paragraph [ref=e99]: Add protons, neutrons, electrons. Watch the element change in real time.
+            - generic [ref=e100]:
+              - text: Play
+              - img [ref=e101]
+        - link "Curiosity Compass Tell us how you like to learn. We'll point you to your first project. Play" [ref=e105] [cursor=pointer]:
+          - /url: "#compass"
+          - generic [ref=e106]:
+            - img [ref=e109]
+            - generic [ref=e112]:
+              - heading "Curiosity Compass" [level=3] [ref=e113]
+              - paragraph [ref=e114]: Tell us how you like to learn. We'll point you to your first project.
+            - generic [ref=e115]:
+              - text: Play
+              - img [ref=e116]
+        - link "Code-the-Path Robot Drag direction blocks to drive a robot to the goal flag. Play" [ref=e120] [cursor=pointer]:
+          - /url: "#robot"
+          - generic [ref=e121]:
+            - img [ref=e124]
+            - generic [ref=e131]:
+              - heading "Code-the-Path Robot" [level=3] [ref=e132]
+              - paragraph [ref=e133]: Drag direction blocks to drive a robot to the goal flag.
+            - generic [ref=e134]:
+              - text: Play
+              - img [ref=e135]
+        - link "Circuit Builder Wire batteries, bulbs, and switches into a circuit and light it up. Play" [ref=e139] [cursor=pointer]:
+          - /url: "#circuit"
+          - generic [ref=e140]:
+            - img [ref=e143]
+            - generic [ref=e145]:
+              - heading "Circuit Builder" [level=3] [ref=e146]
+              - paragraph [ref=e147]: Wire batteries, bulbs, and switches into a circuit and light it up.
+            - generic [ref=e148]:
+              - text: Play
+              - img [ref=e149]
+        - link "Catapult Lab Pick angle and power, fire the catapult, hit the targets. Play" [ref=e153] [cursor=pointer]:
+          - /url: "#catapult"
+          - generic [ref=e154]:
+            - img [ref=e157]
+            - generic [ref=e163]:
+              - heading "Catapult Lab" [level=3] [ref=e164]
+              - paragraph [ref=e165]: Pick angle and power, fire the catapult, hit the targets.
+            - generic [ref=e166]:
+              - text: Play
+              - img [ref=e167]
+        - link "Gravity Sandbox Drag to fling planets and watch them orbit, collide, or escape. Play" [ref=e171] [cursor=pointer]:
+          - /url: "#gravity"
+          - generic [ref=e172]:
+            - img [ref=e175]
+            - generic [ref=e180]:
+              - heading "Gravity Sandbox" [level=3] [ref=e181]
+              - paragraph [ref=e182]: Drag to fling planets and watch them orbit, collide, or escape.
+            - generic [ref=e183]:
+              - text: Play
+              - img [ref=e184]
+        - link "Logic Gate Puzzle Pick the right gates so your circuit matches the truth table. Play" [ref=e188] [cursor=pointer]:
+          - /url: "#logic"
+          - generic [ref=e189]:
+            - img [ref=e192]
+            - generic [ref=e207]:
+              - heading "Logic Gate Puzzle" [level=3] [ref=e208]
+              - paragraph [ref=e209]: Pick the right gates so your circuit matches the truth table.
+            - generic [ref=e210]:
+              - text: Play
+              - img [ref=e211]
+        - link "Density Tower Pour liquids, drop objects, and find out who floats and who sinks. Play" [ref=e215] [cursor=pointer]:
+          - /url: "#density"
+          - generic [ref=e216]:
+            - img [ref=e219]
+            - generic [ref=e223]:
+              - heading "Density Tower" [level=3] [ref=e224]
+              - paragraph [ref=e225]: Pour liquids, drop objects, and find out who floats and who sinks.
+            - generic [ref=e226]:
+              - text: Play
+              - img [ref=e227]
+        - link "Sorting Race Watch four sorting algorithms race the same numbers in real time. Play" [ref=e231] [cursor=pointer]:
+          - /url: "#sort"
+          - generic [ref=e232]:
+            - img [ref=e235]
+            - generic [ref=e240]:
+              - heading "Sorting Race" [level=3] [ref=e241]
+              - paragraph [ref=e242]: Watch four sorting algorithms race the same numbers in real time.
+            - generic [ref=e243]:
+              - text: Play
+              - img [ref=e244]
+        - link "Marble Run Place ramps and pipes so the marble drops into the goal cup. Play" [ref=e248] [cursor=pointer]:
+          - /url: "#marble"
+          - generic [ref=e249]:
+            - img [ref=e252]
+            - generic [ref=e254]:
+              - heading "Marble Run" [level=3] [ref=e255]
+              - paragraph [ref=e256]: Place ramps and pipes so the marble drops into the goal cup.
+            - generic [ref=e257]:
+              - text: Play
+              - img [ref=e258]
+        - link "New page Workshop Finder Drop your ZIP code and find Avanza STEM at a library near you. Play" [ref=e262] [cursor=pointer]:
+          - /url: /find-a-workshop
+          - generic [ref=e263]:
+            - generic [ref=e264]:
+              - img [ref=e266]
+              - generic [ref=e269]: New page
+            - generic [ref=e270]:
+              - heading "Workshop Finder" [level=3] [ref=e271]
+              - paragraph [ref=e272]: Drop your ZIP code and find Avanza STEM at a library near you.
+            - generic [ref=e273]:
+              - text: Play
+              - img [ref=e274]
+    - generic [ref=e279]:
+      - generic [ref=e280]:
+        - generic [ref=e281]:
+          - img [ref=e282]
+          - text: Try it yourself
+        - heading "Real Python, right in your browser" [level=2] [ref=e285]
+        - paragraph [ref=e286]: This is real Python running in your browser - no install, no setup. Edit the code below, hit Run, and see what happens. Your code is capped at 10 lines so it stays a snack, not a meal.
+      - generic [ref=e288]:
+        - generic [ref=e289]:
+          - generic [ref=e291]:
+            - generic [ref=e292]:
+              - generic [ref=e297]:
+                - img [ref=e298]
+                - text: Code editor
+              - generic [ref=e300]: 3 / 10 lines
+            - generic [ref=e301]:
+              - generic [ref=e302]:
+                - generic [ref=e303]: "1"
+                - generic [ref=e304]: "2"
+                - generic [ref=e305]: "3"
+              - textbox "Python code editor" [ref=e306]:
+                - /placeholder: "# Type Python here..."
+                - text: print("Hello, scientist!") name = "Avanza" print("Welcome,", name)
+            - generic [ref=e307]:
+              - button "Run" [ref=e308]:
+                - img [ref=e309]
+                - text: Run
+              - button "Clear" [ref=e311]:
+                - img [ref=e312]
+                - text: Clear
+          - generic [ref=e315]:
+            - generic [ref=e316]: Try a snippet
+            - button "Hello world" [pressed] [ref=e317]
+            - button "Multiply numbers" [ref=e318]
+            - button "Star pyramid" [ref=e319]
+        - generic [ref=e322]:
+          - generic [ref=e323]:
+            - generic [ref=e324]:
+              - img [ref=e325]
+              - text: Output
+            - generic [ref=e327]: Idle
+          - paragraph [ref=e330]: Hit Run to see your code come alive.
+          - generic [ref=e331]: Sandboxed - no internet, no files, just code.
+    - generic [ref=e334]:
+      - generic [ref=e335]:
+        - generic [ref=e336]:
+          - img [ref=e337]
+          - text: Engineering lab
+        - heading "How much can a truss hold?" [level=2] [ref=e341]
+        - paragraph [ref=e342]: Slide more weight onto the deck and watch the bridge sag. Push too far and it gives. Real engineers design every bridge to stop way before that point.
+      - generic [ref=e344]:
+        - generic [ref=e347]:
+          - img "Truss bridge load demo" [ref=e349]:
+            - generic [ref=e369]:
+              - generic [ref=e371]: 8kg
+              - generic [ref=e372]: Load
+          - generic [ref=e373]:
+            - generic [ref=e374]:
+              - generic [ref=e375]: Add weight
+              - generic [ref=e376]: 8 kg
+            - slider "Add weight 8 kg" [ref=e377]: "8"
+            - generic [ref=e378]:
+              - generic [ref=e379]: "0"
+              - generic [ref=e380]: 38 kg · danger zone
+              - generic [ref=e381]: "50"
+          - generic [ref=e382]:
+            - generic [ref=e383]: Stable
+            - button "Reset" [ref=e385]:
+              - img [ref=e386]
+              - text: Reset
+        - generic [ref=e391]:
+          - generic [ref=e392]:
+            - img [ref=e393]
+            - text: Did you know
+          - heading "Trusses share the load." [level=3] [ref=e396]
+          - paragraph [ref=e397]: A truss is a triangle made of straight bars. Triangles can't squish, so the weight gets split among every bar - that's why this little bridge can hold so much.
+          - generic [ref=e398]:
+            - generic [ref=e399]:
+              - term [ref=e400]: Load
+              - definition [ref=e401]: 8 kg
+            - generic [ref=e402]:
+              - term [ref=e403]: Limit
+              - definition [ref=e404]: 38 kg
+            - generic [ref=e405]:
+              - term [ref=e406]: Headroom
+              - definition [ref=e407]: 79%
+    - generic [ref=e409]:
+      - generic:
+        - img
+      - generic [ref=e410]:
+        - generic [ref=e411]:
+          - generic [ref=e412]:
+            - img [ref=e413]
+            - text: Engineering lab
+          - heading "Drag blocks. Build it taller." [level=2] [ref=e417]
+          - paragraph [ref=e418]: Real physics, real collisions, real gravity. Grab any block in any direction, pull it out, and stack it on top. The tower will lean, sway, and topple just like a real one — that's the engineering challenge.
+        - generic [ref=e419]:
+          - generic [ref=e420]:
+            - application "Interactive physics block tower" [ref=e421]
+            - paragraph [ref=e423]: Click and drag any block — up, down, sideways. Stack pulled blocks on top to make the tower grow.
+          - generic [ref=e424]:
+            - generic [ref=e425]:
+              - paragraph [ref=e426]: Blocks stacked above
+              - generic [ref=e427]:
+                - generic [ref=e428]: "0"
+                - generic [ref=e429]: blocks
+              - generic [ref=e430]:
+                - generic [ref=e431]:
+                  - paragraph [ref=e432]: Highest reached
+                  - paragraph [ref=e433]: 0rows
+                - generic [ref=e434]:
+                  - paragraph [ref=e435]: Status
+                  - generic [ref=e436]: Live
+            - list [ref=e438]:
+              - listitem [ref=e439]:
+                - generic [ref=e441]: Drag a block out from a side or wiggle it loose.
+              - listitem [ref=e442]:
+                - generic [ref=e444]: Drop pulled blocks on top to stack them higher.
+              - listitem [ref=e445]:
+                - generic [ref=e447]: Tower fell? Hit Rebuild to start fresh.
+            - generic [ref=e448]:
+              - paragraph [ref=e449]: Why this works
+              - paragraph [ref=e450]: Every block has weight, friction, and momentum. Pull one out and the load above it has to find a new path to the ground — exactly like real load redistribution in bridges and buildings. Stack carefully and the tower stays balanced; pull too aggressively and gravity wins.
+            - button "Rebuild tower" [ref=e451]:
+              - img [ref=e452]
+              - text: Rebuild tower
+    - generic [ref=e457]:
+      - generic [ref=e458]:
+        - generic [ref=e459]:
+          - img [ref=e460]
+          - text: Chemistry bench
+        - heading "Build an atom, name an element" [level=2] [ref=e464]
+        - paragraph [ref=e465]: Add or remove protons, neutrons, and electrons. The number of protons decides which element you have. Try making oxygen (8 protons) - it's the air you breathe.
+      - generic [ref=e467]:
+        - img "Atom builder" [ref=e472]:
+          - generic [ref=e479]: e
+          - generic [ref=e483]: +
+        - generic [ref=e486]:
+          - generic [ref=e487]:
+            - generic [ref=e488]: H
+            - generic [ref=e489]:
+              - paragraph [ref=e490]: Element
+              - paragraph [ref=e491]: Hydrogen
+              - paragraph [ref=e492]: "Mass: 1 · Charge: 0"
+          - generic [ref=e493]:
+            - generic [ref=e496]:
+              - paragraph [ref=e497]: Protons
+              - paragraph [ref=e498]: Positive (+). Decides the element.
+            - generic [ref=e499]:
+              - button "Protons -1" [ref=e500]:
+                - img [ref=e501]
+              - generic [ref=e502]: "1"
+              - button "Protons +1" [ref=e503]:
+                - img [ref=e504]
+          - generic [ref=e505]:
+            - generic [ref=e508]:
+              - paragraph [ref=e509]: Neutrons
+              - paragraph [ref=e510]: No charge. Adds weight.
+            - generic [ref=e511]:
+              - button "Neutrons -1" [ref=e512]:
+                - img [ref=e513]
+              - generic [ref=e514]: "0"
+              - button "Neutrons +1" [ref=e515]:
+                - img [ref=e516]
+          - generic [ref=e517]:
+            - generic [ref=e520]:
+              - paragraph [ref=e521]: Electrons
+              - paragraph [ref=e522]: Negative (-). Orbit the nucleus.
+            - generic [ref=e523]:
+              - button "Electrons -1" [ref=e524]:
+                - img [ref=e525]
+              - generic [ref=e526]: "1"
+              - button "Electrons +1" [ref=e527]:
+                - img [ref=e528]
+          - generic [ref=e529]:
+            - generic [ref=e530]:
+              - img [ref=e531]
+              - text: Looks stable
+            - button "Reset" [ref=e534]:
+              - img [ref=e535]
+              - text: Reset
+    - generic [ref=e539]:
+      - generic:
+        - img
+      - generic [ref=e540]:
+        - generic [ref=e541]:
+          - generic [ref=e542]:
+            - img [ref=e543]
+            - text: Find your spark
+          - heading "What kind of STEM kid are you?" [level=2] [ref=e546]
+          - paragraph [ref=e547]: There's no wrong answer. Pick the one that sounds the most like you and we'll show you a great place to start.
+        - generic [ref=e548]:
+          - button "I love to build things Towers, bridges, gadgets that actually hold weight." [ref=e550]:
+            - img [ref=e552]
+            - generic [ref=e556]:
+              - heading "I love to build things" [level=3] [ref=e557]
+              - paragraph [ref=e558]: Towers, bridges, gadgets that actually hold weight.
+          - button "I love computers Games, apps, anything that talks back when I type." [ref=e560]:
+            - img [ref=e562]
+            - generic [ref=e566]:
+              - heading "I love computers" [level=3] [ref=e567]
+              - paragraph [ref=e568]: Games, apps, anything that talks back when I type.
+          - button "I love to ask why What makes things tick, fizz, or erupt — safely." [ref=e570]:
+            - img [ref=e572]
+            - generic [ref=e579]:
+              - heading "I love to ask why" [level=3] [ref=e580]
+              - paragraph [ref=e581]: What makes things tick, fizz, or erupt — safely.
+          - button "I love new ideas Robots, AI, the future-y kind of stuff." [ref=e583]:
+            - img [ref=e585]
+            - generic [ref=e590]:
+              - heading "I love new ideas" [level=3] [ref=e591]
+              - paragraph [ref=e592]: Robots, AI, the future-y kind of stuff.
+        - paragraph [ref=e594]:
+          - generic [ref=e595]: ↓
+          - text: Tap a card to see your starter project
+    - generic [ref=e598]:
+      - generic [ref=e599]:
+        - generic [ref=e600]:
+          - img [ref=e601]
+          - text: Computer Science
+        - heading "Program a robot to reach the flag" [level=2] [ref=e604]
+        - paragraph [ref=e605]: Stack movement blocks one after another, hit run, and watch the robot follow your instructions step by step.
+      - generic [ref=e607]:
+        - generic [ref=e610]:
+          - generic [ref=e612]:
+            - button "Level 1" [ref=e613]
+            - button "Level 2" [ref=e614]
+            - button "Level 3" [ref=e615]
+          - img "Code-the-path grid" [ref=e617]
+        - generic [ref=e632]:
+          - generic [ref=e633]:
+            - paragraph [ref=e634]: Your program
+            - paragraph [ref=e635]: 0/30
+          - paragraph [ref=e637]: Add blocks below to build your program
+          - generic [ref=e638]:
+            - button "↑ Forward" [ref=e639]:
+              - generic [ref=e640]: ↑
+              - generic [ref=e641]: Forward
+            - button "↺ Left" [ref=e642]:
+              - generic [ref=e643]: ↺
+              - generic [ref=e644]: Left
+            - button "↻ Right" [ref=e645]:
+              - generic [ref=e646]: ↻
+              - generic [ref=e647]: Right
+          - generic [ref=e648]:
+            - button "Run program" [disabled] [ref=e649]:
+              - img [ref=e650]
+              - text: Run program
+            - button "Undo last block" [disabled] [ref=e652]:
+              - img [ref=e653]
+            - button "Clear program" [disabled] [ref=e656]:
+              - img [ref=e657]
+            - button "Reset robot" [ref=e660]:
+              - img [ref=e661]
+          - generic [ref=e664]:
+            - paragraph [ref=e665]: What you learn
+            - paragraph [ref=e666]: Computers do exactly what you tell them — in order. Sequencing your steps is the heart of programming.
+    - generic [ref=e669]:
+      - generic [ref=e670]:
+        - generic [ref=e671]:
+          - img [ref=e672]
+          - text: Electricity
+        - heading "Build a circuit that turns the lights on" [level=2] [ref=e674]
+        - paragraph [ref=e675]: Drop in batteries, wires, switches and bulbs. The bulb glows when current can flow in a loop from + back to −.
+      - generic [ref=e677]:
+        - generic [ref=e680]:
+          - generic [ref=e681]:
+            - button "Hand" [ref=e682]:
+              - img [ref=e683]
+              - text: Hand
+            - button "Wire" [ref=e686]:
+              - img [ref=e687]
+              - text: Wire
+            - button "Bulb" [ref=e690]:
+              - img [ref=e691]
+              - text: Bulb
+            - button "Switch" [ref=e693]:
+              - img [ref=e694]
+              - text: Switch
+            - button "Battery" [ref=e696]:
+              - img [ref=e697]
+              - text: Battery
+            - button "Erase" [ref=e700]:
+              - img [ref=e701]
+              - text: Erase
+          - generic [ref=e704]:
+            - button "Cell empty" [ref=e705]
+            - button "Cell wire" [ref=e706]:
+              - img [ref=e707]
+            - button "Cell wire" [ref=e708]:
+              - img [ref=e709]
+            - button "Cell switch" [ref=e710]:
+              - img [ref=e711]
+            - button "Cell wire" [ref=e714]:
+              - img [ref=e715]
+            - button "Cell wire" [ref=e716]:
+              - img [ref=e717]
+            - button "Cell empty" [ref=e718]
+            - button "Cell empty" [ref=e719]
+            - button "Cell wire" [ref=e720]:
+              - img [ref=e721]
+            - button "Cell empty" [ref=e722]
+            - button "Cell empty" [ref=e723]
+            - button "Cell empty" [ref=e724]
+            - button "Cell wire" [ref=e725]:
+              - img [ref=e726]
+            - button "Cell empty" [ref=e727]
+            - button "Cell empty" [ref=e728]
+            - button "Cell battery" [ref=e729]:
+              - img [ref=e730]:
+                - generic [ref=e732]: −
+                - generic [ref=e733]: +
+            - button "Cell empty" [ref=e734]
+            - button "Cell empty" [ref=e735]
+            - button "Cell empty" [ref=e736]
+            - button "Cell wire" [ref=e737]:
+              - img [ref=e738]
+            - button "Cell empty" [ref=e739]
+            - button "Cell empty" [ref=e740]
+            - button "Cell wire" [ref=e741]:
+              - img [ref=e742]
+            - button "Cell empty" [ref=e743]
+            - button "Cell empty" [ref=e744]
+            - button "Cell empty" [ref=e745]
+            - button "Cell wire" [ref=e746]:
+              - img [ref=e747]
+            - button "Cell empty" [ref=e748]
+            - button "Cell empty" [ref=e749]
+            - button "Cell wire" [ref=e750]:
+              - img [ref=e751]
+            - button "Cell wire" [ref=e752]:
+              - img [ref=e753]
+            - button "Cell bulb" [ref=e754]:
+              - img [ref=e755]
+            - button "Cell wire" [ref=e759]:
+              - img [ref=e760]
+            - button "Cell wire" [ref=e761]:
+              - img [ref=e762]
+            - button "Cell empty" [ref=e763]
+          - generic [ref=e764]:
+            - generic [ref=e765]:
+              - generic [ref=e766]: Open — no loop yet
+              - generic [ref=e768]: 0/1 lit
+            - generic [ref=e769]:
+              - button "Clear board" [ref=e770]
+              - button "Reset" [ref=e771]:
+                - img [ref=e772]
+                - text: Reset
+        - generic [ref=e777]:
+          - generic [ref=e778]:
+            - img [ref=e779]
+            - text: Did you know
+          - heading "Electricity needs a path home" [level=3] [ref=e782]
+          - paragraph [ref=e783]: Current flows out of the battery's plus side, through your wires, and back to the minus side. Break that loop anywhere — open switch, missing wire — and everything goes dark.
+          - list [ref=e784]:
+            - listitem [ref=e785]: Use the Hand tool to flip switches on and off.
+            - listitem [ref=e787]: Add a bulb anywhere on the loop to make it glow.
+            - listitem [ref=e789]: Tap the battery again to rotate it 90°.
+    - generic [ref=e793]:
+      - generic [ref=e794]:
+        - generic [ref=e795]:
+          - img [ref=e796]
+          - text: Projectile motion
+        - heading "Aim, fire, and hit every target" [level=2] [ref=e798]
+        - paragraph [ref=e799]: Slide the angle and power, watch the dotted prediction, and fire. The dashed curve shows where the projectile would land before you launch.
+      - generic [ref=e801]:
+        - generic [ref=e804]:
+          - img [ref=e806]:
+            - generic [ref=e830]: 45°
+          - generic [ref=e831]:
+            - generic [ref=e832]:
+              - generic [ref=e833]:
+                - generic [ref=e834]: Angle
+                - generic [ref=e835]: 45°
+              - slider [ref=e836]: "45"
+            - generic [ref=e837]:
+              - generic [ref=e838]:
+                - generic [ref=e839]: Power
+                - generic [ref=e840]: 40 m/s
+              - slider [ref=e841]: "40"
+            - generic [ref=e842]:
+              - generic [ref=e843]:
+                - generic [ref=e844]: Mass
+                - generic [ref=e845]: 2 kg
+              - slider [ref=e846]: "2"
+          - generic [ref=e847]:
+            - button "Fire!" [ref=e848]:
+              - img [ref=e849]
+              - text: Fire!
+            - generic [ref=e851]:
+              - generic [ref=e852]: "Hits: 0/3"
+              - generic [ref=e853]: "Shots: 1"
+              - button "Reset" [ref=e854]:
+                - img [ref=e855]
+                - text: Reset
+        - generic [ref=e860]:
+          - generic [ref=e861]:
+            - img [ref=e862]
+            - text: Physics minute
+          - heading "45° goes the farthest" [level=3] [ref=e865]
+          - paragraph [ref=e866]: Without air resistance, a projectile fired at 45° travels the longest range. Steeper angles fly higher; shallower angles fly fast and flat.
+          - generic [ref=e867]:
+            - generic [ref=e868]:
+              - term [ref=e869]: Range
+              - definition [ref=e870]: 163.1 m
+            - generic [ref=e871]:
+              - term [ref=e872]: Apex
+              - definition [ref=e873]: 40.8 m
+            - generic [ref=e874]:
+              - term [ref=e875]: Flight time
+              - definition [ref=e876]: 5.77 s
+            - generic [ref=e877]:
+              - term [ref=e878]: Energy
+              - definition [ref=e879]: 1600 J
+    - generic [ref=e882]:
+      - generic [ref=e883]:
+        - generic [ref=e884]:
+          - img [ref=e885]
+          - text: Astronomy
+        - heading "Build a tiny solar system" [level=2] [ref=e890]
+        - paragraph [ref=e891]: Click and drag in the sky to fling a new planet. Every body pulls every other one, just like in real space.
+      - generic [ref=e893]:
+        - generic [ref=e898]:
+          - generic [ref=e899]:
+            - generic [ref=e900]:
+              - generic [ref=e901]: Planet mass
+              - generic [ref=e902]: "40"
+            - slider [ref=e903]: "40"
+          - button "Pause" [ref=e904]:
+            - img [ref=e905]
+            - text: Pause
+          - button "Reset scene" [ref=e908]:
+            - img [ref=e909]
+            - text: Reset scene
+          - button "Clear all" [ref=e912]:
+            - img [ref=e913]
+            - text: Clear all
+        - generic [ref=e918]:
+          - generic [ref=e919]:
+            - img [ref=e920]
+            - text: Stargazer fact
+          - heading "Gravity scales by mass and distance" [level=3] [ref=e923]
+          - paragraph [ref=e924]: The pull between two bodies grows with their masses and shrinks fast as they move apart — that's Newton's law of universal gravitation.
+          - generic [ref=e925]:
+            - generic [ref=e926]:
+              - term [ref=e927]: Bodies
+              - definition [ref=e928]: "2"
+            - generic [ref=e929]:
+              - term [ref=e930]: Status
+              - definition [ref=e931]: Running
+          - list [ref=e932]:
+            - listitem [ref=e933]: Drag from one spot to another to set start velocity.
+            - listitem [ref=e935]: Heavier planets bend the orbits of lighter ones.
+            - listitem [ref=e937]: Two bodies that get too close merge into one.
+    - generic [ref=e941]:
+      - generic [ref=e942]:
+        - generic [ref=e943]:
+          - img [ref=e944]
+          - text: Boolean logic
+        - heading "Match the truth table" [level=2] [ref=e947]
+        - paragraph [ref=e948]: Each level shows a target output for every input combo. Try gate types until your circuit produces those outputs.
+      - generic [ref=e950]:
+        - generic [ref=e953]:
+          - generic [ref=e954]:
+            - button "Level 1" [ref=e955]
+            - button "Level 2" [ref=e956]
+            - button "Level 3" [ref=e957]
+            - button "Level 4" [ref=e958]
+            - button "Level 5" [ref=e959]
+            - generic [ref=e960]: Both must be 1
+          - generic [ref=e961]:
+            - generic [ref=e962]: Inputs
+            - button "A 0" [ref=e963]:
+              - generic [ref=e964]: A
+              - generic [ref=e965]: "0"
+            - button "B 0" [ref=e966]:
+              - generic [ref=e967]: B
+              - generic [ref=e968]: "0"
+          - generic [ref=e970]:
+            - generic [ref=e971]: G1
+            - generic [ref=e972]: A, B
+            - generic [ref=e973]: 0,0
+            - generic [ref=e974]: →
+            - generic [ref=e975]:
+              - button "AND" [ref=e976]
+              - button "OR" [ref=e977]
+              - button "XOR" [ref=e978]
+              - button "NAND" [ref=e979]
+              - button "NOR" [ref=e980]
+            - generic [ref=e981]: "Out: ?"
+          - generic [ref=e982]:
+            - generic [ref=e983]: Outputs
+            - generic [ref=e984]: Y = ?
+            - generic [ref=e985]: Pick a gate for every slot
+        - generic [ref=e988]:
+          - generic [ref=e989]:
+            - img [ref=e990]
+            - text: Target truth table
+          - table [ref=e994]:
+            - rowgroup [ref=e995]:
+              - row "A B Y ✓" [ref=e996]:
+                - columnheader "A" [ref=e997]
+                - columnheader "B" [ref=e998]
+                - columnheader "Y" [ref=e999]
+                - columnheader "✓" [ref=e1000]
+            - rowgroup [ref=e1001]:
+              - row "0 0 0 ·" [ref=e1002]:
+                - cell "0" [ref=e1003]
+                - cell "0" [ref=e1004]
+                - cell "0" [ref=e1005]
+                - cell "·" [ref=e1006]
+              - row "0 1 0 ·" [ref=e1007]:
+                - cell "0" [ref=e1008]
+                - cell "1" [ref=e1009]
+                - cell "0" [ref=e1010]
+                - cell "·" [ref=e1011]
+              - row "1 0 0 ·" [ref=e1012]:
+                - cell "1" [ref=e1013]
+                - cell "0" [ref=e1014]
+                - cell "0" [ref=e1015]
+                - cell "·" [ref=e1016]
+              - row "1 1 1 ·" [ref=e1017]:
+                - cell "1" [ref=e1018]
+                - cell "1" [ref=e1019]
+                - cell "1" [ref=e1020]
+                - cell "·" [ref=e1021]
+          - button "Reset" [ref=e1022]:
+            - img [ref=e1023]
+            - text: Reset
+    - generic [ref=e1028]:
+      - generic [ref=e1029]:
+        - generic [ref=e1030]:
+          - img [ref=e1031]
+          - text: Chemistry
+        - heading "Stack a tower of liquids" [level=2] [ref=e1033]
+        - paragraph [ref=e1034]: Pour different liquids and they sort themselves by density. Drop objects in to see exactly where each one floats.
+      - generic [ref=e1036]:
+        - generic [ref=e1039]:
+          - img [ref=e1040]:
+            - generic [ref=e1043]: Pour something to start
+          - paragraph [ref=e1044]: "Tube fill: 0/9"
+        - generic [ref=e1047]:
+          - generic [ref=e1048]:
+            - generic [ref=e1049]:
+              - img [ref=e1050]
+              - text: Pour liquids
+            - generic [ref=e1052]:
+              - button "Oil ρ = 0.92 g/cm³" [ref=e1053]:
+                - generic [ref=e1055]: Oil
+                - generic [ref=e1056]: ρ = 0.92 g/cm³
+              - button "Water ρ = 1 g/cm³" [ref=e1057]:
+                - generic [ref=e1059]: Water
+                - generic [ref=e1060]: ρ = 1 g/cm³
+              - button "Milk ρ = 1.03 g/cm³" [ref=e1061]:
+                - generic [ref=e1063]: Milk
+                - generic [ref=e1064]: ρ = 1.03 g/cm³
+              - button "Saltwater ρ = 1.1 g/cm³" [ref=e1065]:
+                - generic [ref=e1067]: Saltwater
+                - generic [ref=e1068]: ρ = 1.1 g/cm³
+              - button "Corn syrup ρ = 1.36 g/cm³" [ref=e1069]:
+                - generic [ref=e1071]: Corn syrup
+                - generic [ref=e1072]: ρ = 1.36 g/cm³
+              - button "Honey ρ = 1.42 g/cm³" [ref=e1073]:
+                - generic [ref=e1075]: Honey
+                - generic [ref=e1076]: ρ = 1.42 g/cm³
+              - button "Mercury ρ = 13.5 g/cm³" [ref=e1077]:
+                - generic [ref=e1079]: Mercury
+                - generic [ref=e1080]: ρ = 13.5 g/cm³
+          - generic [ref=e1081]:
+            - generic [ref=e1082]:
+              - img [ref=e1083]
+              - text: Drop objects
+            - generic [ref=e1086]:
+              - button "🟫 Cork ρ = 0.24" [ref=e1087]:
+                - generic [ref=e1088]: 🟫
+                - generic [ref=e1089]:
+                  - generic [ref=e1090]: Cork
+                  - generic [ref=e1091]: ρ = 0.24
+              - button "🧊 Ice cube ρ = 0.92" [ref=e1092]:
+                - generic [ref=e1093]: 🧊
+                - generic [ref=e1094]:
+                  - generic [ref=e1095]: Ice cube
+                  - generic [ref=e1096]: ρ = 0.92
+              - button "🍇 Grape ρ = 1.05" [ref=e1097]:
+                - generic [ref=e1098]: 🍇
+                - generic [ref=e1099]:
+                  - generic [ref=e1100]: Grape
+                  - generic [ref=e1101]: ρ = 1.05
+              - button "🍅 Tomato ρ = 1.1" [ref=e1102]:
+                - generic [ref=e1103]: 🍅
+                - generic [ref=e1104]:
+                  - generic [ref=e1105]: Tomato
+                  - generic [ref=e1106]: ρ = 1.1
+              - button "🟠 Penny ρ = 8.96" [ref=e1107]:
+                - generic [ref=e1108]: 🟠
+                - generic [ref=e1109]:
+                  - generic [ref=e1110]: Penny
+                  - generic [ref=e1111]: ρ = 8.96
+              - button "💍 Gold ring ρ = 19.3" [ref=e1112]:
+                - generic [ref=e1113]: 💍
+                - generic [ref=e1114]:
+                  - generic [ref=e1115]: Gold ring
+                  - generic [ref=e1116]: ρ = 19.3
+          - generic [ref=e1117]:
+            - paragraph [ref=e1118]: Why it works
+            - paragraph [ref=e1119]: Anything denser than the liquid it's in sinks. A grape sinks in water but floats in honey because honey is much denser.
+          - generic [ref=e1120]:
+            - button "Take objects out" [ref=e1121]:
+              - img [ref=e1122]
+              - text: Take objects out
+            - button "Empty the tube" [ref=e1125]:
+              - img [ref=e1126]
+              - text: Empty the tube
+    - generic [ref=e1131]:
+      - generic [ref=e1132]:
+        - generic [ref=e1133]:
+          - img [ref=e1134]
+          - text: Algorithms
+        - heading "Which sort wins the race?" [level=2] [ref=e1136]
+        - paragraph [ref=e1137]: Same shuffled bars, four different ways to sort them. Speed up or slow down to see how each algorithm thinks.
+      - generic [ref=e1139]:
+        - generic [ref=e1140]:
+          - button "Start race" [ref=e1141]:
+            - img [ref=e1142]
+            - text: Start race
+          - button "New numbers" [ref=e1144]:
+            - img [ref=e1145]
+            - text: New numbers
+          - generic [ref=e1148]:
+            - generic [ref=e1149]: Speed
+            - slider [ref=e1150]: "60"
+            - generic [ref=e1151]: 60/s
+        - generic [ref=e1152]:
+          - generic [ref=e1153]:
+            - generic [ref=e1154]:
+              - generic [ref=e1157]: Bubble sort
+              - generic [ref=e1158]:
+                - generic [ref=e1159]: ≷ 0
+                - generic [ref=e1160]: ↔ 0
+            - paragraph [ref=e1161]: Compare neighbors, swap if out of order. Repeat.
+          - generic [ref=e1191]:
+            - generic [ref=e1192]:
+              - generic [ref=e1195]: Insertion sort
+              - generic [ref=e1196]:
+                - generic [ref=e1197]: ≷ 0
+                - generic [ref=e1198]: ↔ 0
+            - paragraph [ref=e1199]: Take each card and slot it into the sorted pile.
+          - generic [ref=e1229]:
+            - generic [ref=e1230]:
+              - generic [ref=e1233]: Selection sort
+              - generic [ref=e1234]:
+                - generic [ref=e1235]: ≷ 0
+                - generic [ref=e1236]: ↔ 0
+            - paragraph [ref=e1237]: Find the smallest, put it first. Repeat.
+          - generic [ref=e1267]:
+            - generic [ref=e1268]:
+              - generic [ref=e1271]: Quicksort
+              - generic [ref=e1272]:
+                - generic [ref=e1273]: ≷ 0
+                - generic [ref=e1274]: ↔ 0
+            - paragraph [ref=e1275]: Pick a pivot and split into smaller and bigger halves.
+        - generic [ref=e1305]:
+          - paragraph [ref=e1306]: Algorithm fact
+          - paragraph [ref=e1307]: Bubble and selection do roughly n² steps. Quicksort averages n·log n — that's why it usually finishes first as the array grows.
+    - generic [ref=e1310]:
+      - generic [ref=e1311]:
+        - generic [ref=e1312]:
+          - img [ref=e1313]
+          - text: Engineering
+        - heading "Guide the marble to the cup" [level=2] [ref=e1315]
+        - paragraph [ref=e1316]: Drop ramps and pipes onto the grid so the marble — released from the top — rolls all the way to the goal.
+      - generic [ref=e1318]:
+        - generic [ref=e1321]:
+          - generic [ref=e1323]:
+            - button "Level 1" [ref=e1324]
+            - button "Level 2" [ref=e1325]
+            - button "Level 3" [ref=e1326]
+          - generic [ref=e1327]:
+            - button "╲ Right ramp" [ref=e1328]:
+              - generic [ref=e1329]: ╲
+              - generic [ref=e1330]: Right ramp
+            - button "╱ Left ramp" [ref=e1331]:
+              - generic [ref=e1332]: ╱
+              - generic [ref=e1333]: Left ramp
+            - button "│ Pipe" [ref=e1334]:
+              - generic [ref=e1335]: │
+              - generic [ref=e1336]: Pipe
+            - button "Erase" [ref=e1337]:
+              - img [ref=e1339]
+              - generic [ref=e1342]: Erase
+          - generic [ref=e1343]:
+            - button [ref=e1344] [cursor=pointer]
+            - button "⬇" [ref=e1345]:
+              - generic [ref=e1346]: ⬇
+            - button [ref=e1347] [cursor=pointer]
+            - button [ref=e1348] [cursor=pointer]
+            - button [ref=e1349] [cursor=pointer]
+            - button [ref=e1350] [cursor=pointer]
+            - button [ref=e1351] [cursor=pointer]
+            - button [ref=e1352] [cursor=pointer]
+            - button [ref=e1353] [cursor=pointer]
+            - button [ref=e1354] [cursor=pointer]
+            - button [ref=e1355] [cursor=pointer]
+            - button [ref=e1356] [cursor=pointer]
+            - button [ref=e1357] [cursor=pointer]
+            - button [ref=e1358] [cursor=pointer]
+            - button [ref=e1359] [cursor=pointer]
+            - button [ref=e1360] [cursor=pointer]
+            - button [ref=e1361] [cursor=pointer]
+            - button [ref=e1362] [cursor=pointer]
+            - button [ref=e1363] [cursor=pointer]
+            - button [ref=e1364] [cursor=pointer]
+            - button [ref=e1365] [cursor=pointer]
+            - button [ref=e1366] [cursor=pointer]
+            - button [ref=e1367] [cursor=pointer]
+            - button [ref=e1368] [cursor=pointer]
+            - button [ref=e1369] [cursor=pointer]
+            - button [ref=e1370] [cursor=pointer]
+            - button [ref=e1371] [cursor=pointer]
+            - button [ref=e1372] [cursor=pointer]
+            - button [ref=e1373] [cursor=pointer]
+            - button [ref=e1374] [cursor=pointer]
+            - button [ref=e1375] [cursor=pointer]
+            - button [ref=e1376] [cursor=pointer]
+            - button [ref=e1377] [cursor=pointer]
+            - button [ref=e1378] [cursor=pointer]
+            - button [ref=e1379] [cursor=pointer]
+            - button [ref=e1380] [cursor=pointer]
+            - button [ref=e1381] [cursor=pointer]
+            - button [ref=e1382] [cursor=pointer]
+            - button [ref=e1383] [cursor=pointer]
+            - button [ref=e1384] [cursor=pointer]
+            - button [ref=e1385] [cursor=pointer]
+            - button [ref=e1386] [cursor=pointer]
+            - button [ref=e1387] [cursor=pointer]
+            - button [ref=e1388] [cursor=pointer]
+            - button [ref=e1389] [cursor=pointer]
+            - button [ref=e1390] [cursor=pointer]
+            - button [ref=e1391] [cursor=pointer]
+            - button "🏆" [ref=e1392]:
+              - generic [ref=e1393]: 🏆
+            - button [ref=e1394] [cursor=pointer]
+          - generic [ref=e1395]:
+            - button "Drop marble" [ref=e1396]:
+              - img [ref=e1397]
+              - text: Drop marble
+            - button "Reset level" [ref=e1399]:
+              - img [ref=e1400]
+              - text: Reset level
+        - generic [ref=e1405]:
+          - generic [ref=e1406]:
+            - img [ref=e1407]
+            - text: Engineering fact
+          - heading "Gravity does the work" [level=3] [ref=e1410]
+          - paragraph [ref=e1411]: Every ramp converts a little potential energy into motion. Engineers chain shapes together so balls (or water, or skiers) flow exactly where they want.
+          - list [ref=e1412]:
+            - listitem [ref=e1413]: The marble always enters from the side you point the piece at.
+            - listitem [ref=e1415]: Empty squares let the marble drop straight down.
+            - listitem [ref=e1417]: Walls and gaps mean you must steer around them.
+    - generic [ref=e1420]:
+      - heading "More games coming soon." [level=2] [ref=e1421]
+      - paragraph [ref=e1422]: Have an idea for a STEM game we should build? Tell us — we love new ideas.
+      - link "Share an idea" [ref=e1423] [cursor=pointer]:
+        - /url: mailto:liam@avanzastem.org?subject=Game%20idea
+        - text: Share an idea
+        - img [ref=e1424]
+  - contentinfo [ref=e1426]:
+    - generic [ref=e1427]:
+      - generic [ref=e1428]:
+        - generic [ref=e1429]:
+          - heading "Avanza STEM" [level=3] [ref=e1430]
+          - paragraph [ref=e1431]: Empowering young Hispanic students through free STEM education, hands-on projects, and local workshops.
+        - generic [ref=e1432]:
+          - heading "Quick Links" [level=4] [ref=e1433]
+          - list [ref=e1434]:
+            - listitem [ref=e1435]:
+              - link "Home" [ref=e1436] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e1437]:
+              - link "Projects" [ref=e1438] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e1439]:
+              - link "Blog" [ref=e1440] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e1441]:
+              - link "Workshops" [ref=e1442] [cursor=pointer]:
+                - /url: /workshops
+            - listitem [ref=e1443]:
+              - link "Frequently Asked Questions" [ref=e1444] [cursor=pointer]:
+                - /url: /faq
+            - listitem [ref=e1445]:
+              - link "Bring Avanza STEM to Your Community" [ref=e1446] [cursor=pointer]:
+                - /url: /host
+        - generic [ref=e1447]:
+          - heading "Follow Us" [level=4] [ref=e1448]
+          - list [ref=e1449]:
+            - listitem [ref=e1450]:
+              - link "Instagram" [ref=e1451] [cursor=pointer]:
+                - /url: https://instagram.com/avanzastem
+                - img [ref=e1452]
+                - text: Instagram
+            - listitem [ref=e1454]:
+              - link "YouTube" [ref=e1455] [cursor=pointer]:
+                - /url: https://youtube.com/@avanzastem
+                - img [ref=e1456]
+                - text: YouTube
+        - generic [ref=e1459]:
+          - heading "Get In Touch" [level=4] [ref=e1460]
+          - paragraph [ref=e1461]: Have questions or want to get involved?
+          - link "liam@avanzastem.org" [ref=e1462] [cursor=pointer]:
+            - /url: mailto:liam@avanzastem.org
+      - paragraph [ref=e1464]: © 2025–2026 Avanza STEM. All rights reserved. Inspiring the next generation of STEM leaders.
+  - button "Open Next.js Dev Tools" [ref=e1470] [cursor=pointer]:
+    - img [ref=e1471]
+  - alert [ref=e1474]

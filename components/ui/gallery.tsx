@@ -1,20 +1,58 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
-import Image from "next/image"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import { X, ChevronLeft, ChevronRight, Images } from "lucide-react"
+import {
+  ArrowUp,
+  ChevronLeft,
+  ChevronRight,
+  Images,
+  X,
+} from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 
-const cloudName = "dw4uprmkk"
+const CLOUD_NAME = "dw4uprmkk"
+const TOTAL_IMAGES = 133
+const INITIAL_BATCH = 30
+const BATCH_STEP = 24
 
-export const galleryImages = Array.from({ length: 133 }, (_, i) => {
+type GalleryItem = {
+  id: string
+  thumb: string
+  thumbSrcSet: string
+  blur: string
+  full: string
+  preload: string
+  /** legacy alias used by homepage gallery teaser */
+  thumbnail: string
+}
+
+const tx = (num: string, transforms: string) =>
+  `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${transforms}/gallery-${num}.jpg`
+
+const buildItem = (i: number): GalleryItem => {
   const num = String(i + 1).padStart(5, "0")
+  const thumb = tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_400")
   return {
-    thumbnail: `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto,w_600/gallery-${num}.jpg`,
-    full: `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/gallery-${num}.jpg`,
+    id: num,
+    thumb,
+    thumbnail: thumb,
+    thumbSrcSet: [
+      `${tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_240")} 240w`,
+      `${tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_360")} 360w`,
+      `${tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_480")} 480w`,
+      `${tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_640")} 640w`,
+    ].join(", "),
+    blur: tx(num, "e_blur:2000,q_30,f_auto,w_24,c_fill,ar_1:1,g_auto"),
+    full: tx(num, "f_auto,q_auto:good,w_1600"),
+    preload: tx(num, "f_auto,q_auto:eco,w_900"),
   }
-})
+}
+
+export const galleryImages: GalleryItem[] = Array.from(
+  { length: TOTAL_IMAGES },
+  (_, i) => buildItem(i),
+)
 
 interface GalleryProps {
   limit?: number
@@ -22,7 +60,41 @@ interface GalleryProps {
 
 export function Gallery({ limit }: GalleryProps) {
   const { t } = useLanguage()
-  const displayed = limit ? galleryImages.slice(0, limit) : galleryImages
+  const all = useMemo(
+    () => (limit ? galleryImages.slice(0, limit) : galleryImages),
+    [limit],
+  )
+
+  // Progressive batched DOM rendering. Even with native lazy-loading, mounting
+  // 133 <img> nodes up-front bloats first paint - we mount in chunks instead.
+  const [renderCount, setRenderCount] = useState(() =>
+    Math.min(all.length, INITIAL_BATCH),
+  )
+  const sentinelRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setRenderCount((c) => Math.min(all.length, Math.max(c, INITIAL_BATCH)))
+  }, [all.length])
+
+  useEffect(() => {
+    if (renderCount >= all.length) return
+    const sentinel = sentinelRef.current
+    if (!sentinel) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setRenderCount((c) => Math.min(all.length, c + BATCH_STEP))
+        }
+      },
+      { rootMargin: "1200px 0px" },
+    )
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [renderCount, all.length])
+
+  const visible = all.slice(0, renderCount)
+
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const isOpen = activeIndex !== null
 
@@ -30,12 +102,14 @@ export function Gallery({ limit }: GalleryProps) {
   const closeModal = () => setActiveIndex(null)
 
   const prev = useCallback(() => {
-    setActiveIndex((i) => (i === null ? null : (i - 1 + displayed.length) % displayed.length))
-  }, [displayed.length])
+    setActiveIndex((i) =>
+      i === null ? null : (i - 1 + all.length) % all.length,
+    )
+  }, [all.length])
 
   const next = useCallback(() => {
-    setActiveIndex((i) => (i === null ? null : (i + 1) % displayed.length))
-  }, [displayed.length])
+    setActiveIndex((i) => (i === null ? null : (i + 1) % all.length))
+  }, [all.length])
 
   useEffect(() => {
     if (!isOpen) return
@@ -49,42 +123,92 @@ export function Gallery({ limit }: GalleryProps) {
   }, [isOpen, prev, next])
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : ""
-    return () => { document.body.style.overflow = "" }
+    if (!isOpen) return
+    const previous = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = previous
+    }
   }, [isOpen])
 
-  return (
-    <section className="bg-background py-20">
-      <div className="mx-auto max-w-7xl px-6">
-        <h2 className="mb-10 text-center text-3xl font-extrabold text-foreground md:text-4xl">
-          {t.galleryPage.sectionTitle}
-        </h2>
+  // Light prefetch of adjacent images so arrow navigation feels instant.
+  useEffect(() => {
+    if (activeIndex === null) return
+    const neighbours = [
+      all[(activeIndex + 1) % all.length],
+      all[(activeIndex - 1 + all.length) % all.length],
+    ]
+    neighbours.forEach((n) => {
+      const img = new window.Image()
+      img.decoding = "async"
+      img.src = n.preload
+    })
+  }, [activeIndex, all])
 
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-          {displayed.map((img, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => openModal(i)}
-              className="group relative aspect-square overflow-hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
-            >
-              <Image
-                src={img.thumbnail}
-                alt={`${t.galleryPage.photoAlt} ${i + 1}`}
-                fill
-                loading="lazy"
-                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                className="object-cover transition-transform duration-300 group-hover:scale-110"
-              />
-            </button>
+  // Back-to-top — only on the full gallery page (no `limit`).
+  const [showTop, setShowTop] = useState(false)
+  useEffect(() => {
+    if (limit) return
+    const onScroll = () => setShowTop(window.scrollY > 800)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [limit])
+
+  return (
+    <section className="relative bg-background py-16 sm:py-20">
+      <div className="mx-auto max-w-7xl px-6">
+        {!limit && (
+          <div className="mb-10 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-avanza-green">
+                {t.galleryPage.eyebrow ?? "Snapshots"}
+              </p>
+              <h2 className="mt-2 text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
+                {t.galleryPage.sectionTitle}
+              </h2>
+            </div>
+            <p className="text-sm font-semibold text-muted-foreground">
+              {(t.galleryPage.showingCount ?? "Showing {shown} of {total} photos")
+                .replace("{shown}", String(visible.length))
+                .replace("{total}", String(all.length))}
+            </p>
+          </div>
+        )}
+
+        {limit && (
+          <h2 className="mb-10 text-center text-3xl font-extrabold text-foreground md:text-4xl">
+            {t.galleryPage.sectionTitle}
+          </h2>
+        )}
+
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
+          {visible.map((img, i) => (
+            <GalleryThumb
+              key={img.id}
+              img={img}
+              index={i}
+              alt={`${t.galleryPage.photoAlt} ${i + 1}`}
+              onOpen={openModal}
+            />
           ))}
         </div>
+
+        {!limit && renderCount < all.length && (
+          <div
+            ref={sentinelRef}
+            className="mt-10 flex flex-col items-center justify-center gap-3 py-6 text-sm text-muted-foreground"
+          >
+            <span className="inline-flex h-3 w-3 animate-ping rounded-full bg-avanza-green" />
+            <span>{t.galleryPage.loadingMore ?? "Loading more photos…"}</span>
+          </div>
+        )}
 
         {limit && (
           <div className="mt-10 flex justify-center">
             <Link
               href="/gallery"
-              className="inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-3.5 text-base font-bold text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              className="group inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-3.5 text-base font-bold text-primary-foreground shadow-[0_10px_28px_rgba(46,204,113,0.32)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_14px_36px_rgba(46,204,113,0.42)]"
             >
               <Images className="h-5 w-5" />
               {t.galleryPage.viewAllPhotos}
@@ -93,58 +217,186 @@ export function Gallery({ limit }: GalleryProps) {
         )}
       </div>
 
-      {isOpen && activeIndex !== null && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
-          onClick={closeModal}
+      {showTop && (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label={t.galleryPage.backToTop ?? "Back to top"}
+          className="fixed bottom-6 right-6 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-avanza-dark text-primary-foreground shadow-lg transition-all duration-200 hover:scale-105 hover:bg-avanza-green"
         >
-          <button
-            type="button"
-            onClick={closeModal}
-            className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25"
-            aria-label={t.galleryPage.close}
-          >
-            <X className="h-6 w-6" />
-          </button>
+          <ArrowUp className="h-5 w-5" />
+        </button>
+      )}
 
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); prev() }}
-            className="absolute left-4 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25"
-            aria-label={t.galleryPage.previous}
-          >
-            <ChevronLeft className="h-7 w-7" />
-          </button>
-
-          <div
-            className="relative mx-16 max-h-[90vh] w-full max-w-5xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Image
-              key={activeIndex}
-              src={displayed[activeIndex].full}
-              alt={`${t.galleryPage.photoAlt} ${activeIndex + 1}`}
-              width={1600}
-              height={1200}
-              className="max-h-[90vh] w-full object-contain"
-              priority
-            />
-          </div>
-
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); next() }}
-            className="absolute right-4 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25"
-            aria-label={t.galleryPage.next}
-          >
-            <ChevronRight className="h-7 w-7" />
-          </button>
-
-          <span className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-4 py-1 text-sm text-white">
-            {activeIndex + 1} / {displayed.length}
-          </span>
-        </div>
+      {isOpen && activeIndex !== null && (
+        <Lightbox
+          item={all[activeIndex]}
+          index={activeIndex}
+          total={all.length}
+          alt={`${t.galleryPage.photoAlt} ${activeIndex + 1}`}
+          onClose={closeModal}
+          onPrev={prev}
+          onNext={next}
+          closeLabel={t.galleryPage.close}
+          prevLabel={t.galleryPage.previous}
+          nextLabel={t.galleryPage.next}
+        />
       )}
     </section>
+  )
+}
+
+function GalleryThumb({
+  img,
+  index,
+  alt,
+  onOpen,
+}: {
+  img: GalleryItem
+  index: number
+  alt: string
+  onOpen: (i: number) => void
+}) {
+  const [loaded, setLoaded] = useState(false)
+  // Eagerly fetch the very first row so the gallery never appears empty.
+  const eager = index < 6
+
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(index)}
+      aria-label={alt}
+      className="group relative block aspect-square overflow-hidden rounded-xl bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
+    >
+      {/* Tiny blurred placeholder fills the box instantly */}
+      <img
+        src={img.blur}
+        alt=""
+        aria-hidden="true"
+        className={`absolute inset-0 h-full w-full scale-110 object-cover blur-md transition-opacity duration-500 ${
+          loaded ? "opacity-0" : "opacity-100"
+        }`}
+        decoding="async"
+        loading="eager"
+      />
+      <img
+        src={img.thumb}
+        srcSet={img.thumbSrcSet}
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={eager ? "high" : "auto"}
+        onLoad={() => setLoaded(true)}
+        className={`relative h-full w-full object-cover transition-[opacity,transform] duration-500 ease-out ${
+          loaded ? "opacity-100" : "opacity-0"
+        } group-hover:scale-[1.06]`}
+      />
+      {/* Hover veil + tiny number stamp */}
+      <div className="absolute inset-0 bg-avanza-dark/0 transition-colors duration-300 group-hover:bg-avanza-dark/15" />
+      <span className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-avanza-dark/60 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-primary-foreground opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+        #{index + 1}
+      </span>
+    </button>
+  )
+}
+
+function Lightbox({
+  item,
+  index,
+  total,
+  alt,
+  onClose,
+  onPrev,
+  onNext,
+  closeLabel,
+  prevLabel,
+  nextLabel,
+}: {
+  item: GalleryItem
+  index: number
+  total: number
+  alt: string
+  onClose: () => void
+  onPrev: () => void
+  onNext: () => void
+  closeLabel: string
+  prevLabel: string
+  nextLabel: string
+}) {
+  const [fullLoaded, setFullLoaded] = useState(false)
+
+  useEffect(() => {
+    setFullLoaded(false)
+  }, [index])
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25"
+        aria-label={closeLabel}
+      >
+        <X className="h-6 w-6" />
+      </button>
+
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation()
+          onPrev()
+        }}
+        className="absolute left-3 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25 sm:left-4"
+        aria-label={prevLabel}
+      >
+        <ChevronLeft className="h-7 w-7" />
+      </button>
+
+      <div
+        className="relative mx-12 flex max-h-[90vh] w-full max-w-5xl items-center justify-center sm:mx-16"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Always-visible quick preview while the full image streams in */}
+        <img
+          src={item.preload}
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 m-auto max-h-[90vh] w-full object-contain transition-opacity duration-500 ${
+            fullLoaded ? "opacity-0" : "opacity-100"
+          }`}
+        />
+        <img
+          key={item.id}
+          src={item.full}
+          alt={alt}
+          onLoad={() => setFullLoaded(true)}
+          className={`relative max-h-[90vh] w-full object-contain transition-opacity duration-500 ${
+            fullLoaded ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      </div>
+
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation()
+          onNext()
+        }}
+        className="absolute right-3 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25 sm:right-4"
+        aria-label={nextLabel}
+      >
+        <ChevronRight className="h-7 w-7" />
+      </button>
+
+      <span className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-4 py-1 text-sm font-medium text-white backdrop-blur-sm">
+        {index + 1} / {total}
+      </span>
+    </div>
   )
 }
