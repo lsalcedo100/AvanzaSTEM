@@ -57,6 +57,9 @@ export type BlogSlug =
   | "what-is-ai-explaining-to-kids"
   | "math-games-that-make-learning-fun"
   | "building-a-community-stem-workshops"
+  | "electricity-and-simple-circuits"
+  | "math-in-nature-fibonacci-fractals"
+  | "how-computers-store-information-binary"
 
 const common = {
   en: {
