@@ -250,6 +250,85 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       challenge:
         "Build a second light into the circuit and compare what happens when you place it in a different spot.",
     },
+    {
+      slug: "elephant-toothpaste-experiment",
+      title: "Elephant Toothpaste Experiment",
+      category: "Science",
+      categoryKey: "science",
+      difficulty: "Medium",
+      time: "30 minutes",
+      image: "/images/projects/elephant-toothpaste-experiment/cover.jpg",
+      description:
+        "Watch a giant foam tower erupt from a single bottle as hydrogen peroxide breaks apart and releases oxygen in a spectacular exothermic reaction.",
+      introduction: [
+        "Elephant toothpaste gets its name because the foam that shoots out is so huge it looks like it could belong to an elephant. But this is not just a cool explosion—it is a real chemical reaction you can control.",
+        "This experiment teaches you how catalysts speed up reactions, why heat is released when chemicals change, and how oxygen gas turns a liquid into an enormous pile of foam right before your eyes.",
+      ],
+      why:
+        "Hydrogen peroxide naturally breaks down into water and oxygen gas, but it does so very slowly on its own. Adding a catalyst, like yeast mixed with warm water, gives the reaction a shortcut and makes it happen almost instantly. The oxygen gas escapes so quickly that it gets trapped inside the dish soap, creating thousands of bubbles stacked into thick foam. The reaction is also exothermic, meaning it releases heat you can feel when you touch the foam carefully after it settles.",
+      materials: [
+        "1/2 cup of 6% or 12% hydrogen peroxide (found at beauty supply stores)",
+        "1 packet of dry active yeast",
+        "3 tablespoons of warm water",
+        "A squirt of dish soap",
+        "A few drops of food coloring",
+        "A 16-ounce or larger plastic bottle or graduated cylinder",
+        "A tray or baking sheet for easy cleanup",
+        "Safety goggles and gloves",
+      ],
+      steps: [
+        "Put on safety goggles and gloves before handling the hydrogen peroxide.",
+        "Set the bottle in the center of the tray so the foam stays contained.",
+        "Add the dish soap and a few drops of food coloring directly into the bottle.",
+        "Pour the hydrogen peroxide into the bottle and swirl it gently to mix.",
+        "In a separate cup, stir the yeast packet into the warm water for about 30 seconds until it dissolves.",
+        "Pour the yeast mixture quickly into the bottle and step back right away.",
+        "Watch the foam shoot up fast and notice how warm it feels when you touch it carefully after it slows down.",
+        "Discuss what happened: what was the catalyst, where did the heat come from, and what was inside all those bubbles?",
+      ],
+      safety:
+        "Always have an adult handle and pour the hydrogen peroxide, which can irritate skin and eyes. Wear safety goggles and gloves throughout the experiment. The foam is warm and safe to touch after it fully settles, but do not let liquid contact eyes or skin during the reaction. Dispose of the foam and any leftover liquid by rinsing them down a drain with plenty of water.",
+      challenge:
+        "Try two different concentrations of hydrogen peroxide—3% from the drugstore and 6% or higher from a beauty supply store—and compare how tall each foam tower grows.",
+    },
+    {
+      slug: "making-oobleck",
+      title: "Making Oobleck",
+      category: "Science",
+      categoryKey: "science",
+      difficulty: "Easy",
+      time: "20 minutes",
+      image: "/images/projects/making-oobleck/cover.jpg",
+      description:
+        "Mix just two ingredients to make a mysterious goop that flows like a liquid but turns solid when you squeeze it—and discover the science of non-Newtonian fluids.",
+      introduction: [
+        "Oobleck is named after a sticky substance in a Dr. Seuss story, and it is just as weird and unpredictable as it sounds. It runs through your fingers like water, but the moment you squeeze or hit it, it goes hard as a rock.",
+        "This activity explores a fascinating class of materials called non-Newtonian fluids, and it only takes two ingredients and a few minutes to make a bowlful of science you can actually hold in your hands.",
+      ],
+      why:
+        "Most liquids like water and juice flow at the same rate no matter how hard you push them. Oobleck is different because it is a non-Newtonian fluid, meaning its viscosity—how thick or runny it is—changes depending on pressure. When you push or hit the oobleck quickly, the cornstarch particles lock together and it behaves like a solid. When pressure is released, the particles separate and it flows like a liquid again. This property is called shear thickening, and engineers study materials like this for things like body armor and pothole filler.",
+      materials: [
+        "2 cups of cornstarch",
+        "1 cup of water",
+        "A few drops of food coloring (optional)",
+        "A large mixing bowl",
+        "A spoon or spatula",
+        "A rimmed tray to contain the mess",
+      ],
+      steps: [
+        "Pour the cornstarch into the large mixing bowl.",
+        "Add the food coloring to the water if you want your oobleck to be colorful.",
+        "Slowly pour the water into the cornstarch, stirring as you go—do not add it all at once.",
+        "Keep mixing until the oobleck has no dry lumps and feels strange to stir.",
+        "Try poking the surface fast with your finger, then dipping your finger in slowly and notice the difference.",
+        "Pick up a handful and squeeze it tight, then open your hand and let it drip.",
+        "Talk about what you notice: when does it feel solid? When does it flow like a liquid?",
+      ],
+      safety:
+        "Oobleck is made from food-safe ingredients and is safe to touch, but it can be very messy. Avoid pouring it down drains because cornstarch can build up inside pipes and cause clogs. Instead, let leftover oobleck dry out completely on the tray, then scrape it into the trash. Wash bowls and hands with warm water and let any residue dry before scraping it off.",
+      challenge:
+        "Try changing the ratio of cornstarch to water by adding a little more of each and notice how the texture changes. You can also place a bag of oobleck on a speaker and watch it dance when you play music with strong bass.",
+    },
   ],
   es: [
     {
@@ -481,6 +560,85 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       challenge:
         "Construye una segunda luz en el circuito y compara que pasa cuando la colocas en otro lugar.",
     },
+    {
+      slug: "elephant-toothpaste-experiment",
+      title: "Experimento Pasta de Dientes de Elefante",
+      category: "Ciencia",
+      categoryKey: "science",
+      difficulty: "Medio",
+      time: "30 minutos",
+      image: "/images/projects/elephant-toothpaste-experiment/cover.jpg",
+      description:
+        "Observa como una enorme torre de espuma erupciona de una botella cuando el peroxido de hidrogeno se descompone y libera oxigeno en una espectacular reaccion exotermica.",
+      introduction: [
+        "La pasta de dientes de elefante recibe su nombre porque la espuma que sale disparada es tan enorme que pareceria que pertenece a un elefante. Pero no es solo una explosion espectacular: es una reaccion quimica real que tu puedes controlar.",
+        "Este experimento te ensena como los catalizadores aceleran las reacciones, por que se libera calor cuando los quimicos cambian y como el gas oxigeno convierte un liquido en una pila gigante de espuma ante tus propios ojos.",
+      ],
+      why:
+        "El peroxido de hidrogeno se descompone naturalmente en agua y gas oxigeno, pero lo hace muy lentamente por si solo. Agregar un catalizador, como levadura mezclada con agua tibia, le da a la reaccion un atajo y hace que ocurra casi al instante. El gas oxigeno escapa tan rapido que queda atrapado dentro del jabon para platos, creando miles de burbujas apiladas en espuma espesa. La reaccion tambien es exotermica, lo que significa que libera calor que puedes sentir cuando tocas la espuma con cuidado despues de que se calme.",
+      materials: [
+        "1/2 taza de peroxido de hidrogeno al 6% o 12% (se consigue en tiendas de belleza)",
+        "1 sobre de levadura seca activa",
+        "3 cucharadas de agua tibia",
+        "Un chorrito de jabon para platos",
+        "Unas gotas de colorante de comida",
+        "Una botella de plastico de 500 ml o mas grande, o un cilindro graduado",
+        "Una bandeja o charola para facilitar la limpieza",
+        "Gafas de seguridad y guantes",
+      ],
+      steps: [
+        "Ponte las gafas de seguridad y los guantes antes de manejar el peroxido de hidrogeno.",
+        "Coloca la botella en el centro de la bandeja para que la espuma quede contenida.",
+        "Agrega el jabon y unas gotas de colorante directamente en la botella.",
+        "Vierte el peroxido de hidrogeno en la botella y agitala suavemente para mezclar.",
+        "En un vaso aparte, mezcla el sobre de levadura con el agua tibia durante unos 30 segundos hasta que se disuelva.",
+        "Vierte rapidamente la mezcla de levadura en la botella y alejate enseguida.",
+        "Observa como la espuma sube disparada y nota el calor que emite cuando la tocas con cuidado despues de que se calme.",
+        "Habla sobre lo que paso: que fue el catalizador, de donde vino el calor y que habia dentro de todas esas burbujas.",
+      ],
+      safety:
+        "Siempre pide a un adulto que maneje y vierta el peroxido de hidrogeno, ya que puede irritar la piel y los ojos. Usa gafas de seguridad y guantes durante todo el experimento. La espuma es tibia y segura de tocar despues de que se calme completamente, pero no permitas que el liquido entre en contacto con los ojos o la piel durante la reaccion. Desecha la espuma y el liquido sobrante enjuagandolos por el desague con abundante agua.",
+      challenge:
+        "Prueba dos concentraciones diferentes de peroxido de hidrogeno: al 3% de la farmacia y al 6% o mas de una tienda de belleza, y compara que tan alta crece cada torre de espuma.",
+    },
+    {
+      slug: "making-oobleck",
+      title: "Haciendo Oobleck",
+      category: "Ciencia",
+      categoryKey: "science",
+      difficulty: "Facil",
+      time: "20 minutos",
+      image: "/images/projects/making-oobleck/cover.jpg",
+      description:
+        "Mezcla solo dos ingredientes para crear una sustancia misteriosa que fluye como liquido pero se solidifica al apretarla, y descubre la ciencia de los fluidos no newtonianos.",
+      introduction: [
+        "El oobleck toma su nombre de una sustancia pegajosa en un cuento del Dr. Seuss, y es tan extrano e impredecible como suena. Corre entre tus dedos como agua, pero en el momento en que lo aprietas o golpeas, se endurece como una roca.",
+        "Esta actividad explora una fascinante clase de materiales llamados fluidos no newtonianos, y solo necesitas dos ingredientes y unos minutos para hacer un tazon lleno de ciencia que puedes sostener en tus propias manos.",
+      ],
+      why:
+        "La mayoria de los liquidos como el agua y el jugo fluyen a la misma velocidad sin importar con que fuerza los empujes. El oobleck es diferente porque es un fluido no newtoniano, lo que significa que su viscosidad, es decir que tan espeso o liquido es, cambia segun la presion. Cuando empujas o golpeas el oobleck rapidamente, las particulas de maicena se traban entre si y se comporta como un solido. Cuando se libera la presion, las particulas se separan y fluye como liquido de nuevo. Esta propiedad se llama espesamiento por cizallamiento, y los ingenieros estudian materiales similares para cosas como armaduras corporales y relleno de baches.",
+      materials: [
+        "2 tazas de maicena",
+        "1 taza de agua",
+        "Unas gotas de colorante de comida (opcional)",
+        "Un tazon grande para mezclar",
+        "Una cuchara o espatula",
+        "Una bandeja con bordes para contener el desorden",
+      ],
+      steps: [
+        "Vierte la maicena en el tazon grande.",
+        "Agrega el colorante al agua si quieres que tu oobleck tenga color.",
+        "Vierte el agua lentamente sobre la maicena, revolviendo mientras lo haces; no la agregues toda de una vez.",
+        "Sigue mezclando hasta que el oobleck no tenga grumos secos y se sienta extrano al revolver.",
+        "Intenta pinchar la superficie rapidamente con el dedo, luego sumerge el dedo lentamente y nota la diferencia.",
+        "Toma un punado y apretalo con fuerza, luego abre la mano y deja que gotee.",
+        "Habla sobre lo que notas: cuando se siente solido? Cuando fluye como liquido?",
+      ],
+      safety:
+        "El oobleck esta hecho con ingredientes seguros para el contacto con la piel, pero puede ser muy desordenado. Evita vertirlo por el desague porque la maicena puede acumularse dentro de las tuberias y causar obstrucciones. En cambio, deja que el oobleck sobrante se seque completamente en la bandeja y luego raspalo y echalo a la basura. Lava los tazones y las manos con agua tibia y deja que cualquier residuo se seque antes de rasparlo.",
+      challenge:
+        "Prueba cambiar la proporcion de maicena y agua agregando un poco mas de cada uno y nota como cambia la textura. Tambien puedes poner una bolsa con oobleck sobre un parlante y ver como baila cuando pones musica con mucho bajo.",
+    },
   ],
   zh: [
     {
@@ -711,6 +869,85 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
         "这个项目只能使用小电池，绝对不要把电路接到墙上的插座。连接之前，请让大人帮你检查电池、LED 方向和任何电阻部件。",
       challenge:
         "在电路里再加入第二盏灯，比较把它放在不同位置时会发生什么。",
+    },
+    {
+      slug: "elephant-toothpaste-experiment",
+      title: "大象牙膏实验",
+      category: "科学",
+      categoryKey: "science",
+      difficulty: "中等",
+      time: "30分钟",
+      image: "/images/projects/elephant-toothpaste-experiment/cover.jpg",
+      description:
+        "看着一瓶液体喷出巨大泡沫柱——当双氧水分解并释放氧气时，会发生一场令人惊叹的放热反应。",
+      introduction: [
+        "大象牙膏得名于它喷出的泡沫大得像大象才能用的牙膏。但这不只是一场酷炫的爆发——它是一个你可以亲手控制的真实化学反应。",
+        "这个实验教你了解催化剂如何加快反应速度、化学变化为什么会释放热量，以及氧气如何将液体瞬间变成一大堆泡沫。",
+      ],
+      why:
+        "双氧水在自然状态下会慢慢分解成水和氧气，但速度非常缓慢。加入催化剂（比如溶于温水的酵母），反应就会加速，几乎瞬间完成。氧气迅速逸出，被洗洁精困住形成千万个气泡，堆叠成厚厚的泡沫。这个反应还是放热反应，泡沫平息后小心触摸，你会感到它还有些温热。",
+      materials: [
+        "半杯 6% 或 12% 双氧水（在美发用品店可以买到）",
+        "1 包干活酵母",
+        "3 汤匙温水",
+        "少量洗洁精",
+        "几滴食用色素",
+        "一个 500 毫升或更大的塑料瓶或量筒",
+        "一个托盘，方便清理",
+        "护目镜和手套",
+      ],
+      steps: [
+        "在接触双氧水之前，先戴好护目镜和手套。",
+        "把瓶子放在托盘中央，让泡沫不会到处乱跑。",
+        "往瓶子里直接加入洗洁精和几滴食用色素。",
+        "把双氧水倒入瓶中，轻轻摇晃混合。",
+        "在另一个杯子里，把酵母包倒入温水中搅拌约 30 秒，直到溶解。",
+        "迅速把酵母溶液倒进瓶子，然后立刻后退。",
+        "观察泡沫迅速涌出，等它完全平息后小心触摸，感受它的温度。",
+        "讨论发生了什么：催化剂是什么？热量从哪里来？泡沫里面是什么气体？",
+      ],
+      safety:
+        "双氧水会刺激皮肤和眼睛，请务必由大人负责取用和倒入。全程佩戴护目镜和手套。泡沫完全平息后可以安全触摸，但反应过程中不要让液体接触眼睛或皮肤。实验结束后，用大量清水冲洗托盘，将泡沫和液体安全排入下水道。",
+      challenge:
+        "分别用药店的 3% 双氧水和美发店的 6% 或更高浓度双氧水做实验，比较两次泡沫柱的高度有什么不同。",
+    },
+    {
+      slug: "making-oobleck",
+      title: "制作奥不力克",
+      category: "科学",
+      categoryKey: "science",
+      difficulty: "简单",
+      time: "20分钟",
+      image: "/images/projects/making-oobleck/cover.jpg",
+      description:
+        "只需两种材料就能调出一种神奇的东西——它像液体一样流淌，但用手一捏就变成固体，一起来探索非牛顿流体的科学吧。",
+      introduction: [
+        "奥不力克（Oobleck）这个名字来自苏斯博士的故事里的神奇黏稠物质，它也像故事里写的那样奇怪和难以捉摸。它能像水一样从手指间流过，但一旦你捏紧或拍打它，就会像石头一样变硬。",
+        "这个活动探索一类叫非牛顿流体的迷人材料，只需两种材料和几分钟，你就能做出一碗可以用手感受的科学实验。",
+      ],
+      why:
+        "大多数液体，比如水和果汁，不管用多大力推压，流动速度都一样。奥不力克不同，它是一种非牛顿流体，意味着它的粘度——有多稠或多稀——会随压力变化。当你快速按压或拍打它时，玉米淀粉颗粒互相锁住，表现得像固体。压力释放后，颗粒分开，它又像液体一样流动。这种特性叫做剪切增稠，工程师们研究类似材料用于防弹衣和路面修补等领域。",
+      materials: [
+        "2 杯玉米淀粉",
+        "1 杯水",
+        "几滴食用色素（可选）",
+        "一个大号混合碗",
+        "一把勺子或刮刀",
+        "一个有边缘的托盘，方便控制散落",
+      ],
+      steps: [
+        "把玉米淀粉倒入大碗中。",
+        "如果想让奥不力克有颜色，把食用色素滴入水中。",
+        "边搅拌边慢慢把水倒入玉米淀粉，不要一次全倒进去。",
+        "继续搅拌直到没有干结块，感觉搅拌起来有点奇怪为止。",
+        "用手指快速戳一下表面，然后再慢慢把手指按进去，感受两者的不同。",
+        "抓起一把捏紧，然后张开手让它滴落。",
+        "说说你观察到了什么：它什么时候像固体？什么时候像液体？",
+      ],
+      safety:
+        "奥不力克由食品级材料制成，接触皮肤是安全的，但会很乱。不要把它倒进下水道，因为玉米淀粉会堵塞管道。剩余的奥不力克应让其在托盘上自然晾干，再刮入垃圾桶丢弃。碗和手用温水冲洗，等残留物干燥后再刮去。",
+      challenge:
+        "试着调整玉米淀粉和水的比例，各多加一点，观察质地怎样变化。你也可以把一袋奥不力克放在音箱上，播放重低音音乐，看看它如何随节奏舞动。",
     },
   ],
 }

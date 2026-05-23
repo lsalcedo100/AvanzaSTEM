@@ -12,7 +12,6 @@ import {
   Languages,
   MapPin,
   Sparkles,
-  Sprout,
 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
@@ -95,11 +94,6 @@ export default function HomePage() {
                   priority
                   sizes="(max-width: 768px) 100vw, 600px"
                 />
-              </div>
-              {/* Floating sticker on photo */}
-              <div className="absolute -bottom-4 -right-2 hidden rotate-3 items-center gap-2 rounded-2xl bg-white px-4 py-2.5 text-sm font-extrabold text-avanza-dark shadow-lg sm:flex">
-                <Sprout className="h-5 w-5 text-avanza-green" />
-                {t.home.welcomeBadge}
               </div>
             </div>
           </FadeIn>
