@@ -329,6 +329,121 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       challenge:
         "Try changing the ratio of cornstarch to water by adding a little more of each and notice how the texture changes. You can also place a bag of oobleck on a speaker and watch it dance when you play music with strong bass.",
     },
+    {
+      slug: "rubber-band-powered-car",
+      title: "Rubber Band-Powered Car",
+      category: "Engineering",
+      categoryKey: "engineering",
+      difficulty: "Easy",
+      time: "1-2 hours",
+      image: "/images/projects/Rubber Band Powered Car.png",
+      description:
+        "A simple DIY car that moves without electricity or batteries — just the stored energy of a twisted rubber band powering the wheels and axle forward.",
+      introduction: [
+        "A rubber band-powered car is one of the most satisfying builds because you do all the work, wind it up, set it down, and then watch physics take over.",
+        "You can build one from everyday materials and then start tweaking — change the rubber band, the wheels, or the car weight — and see exactly how each change affects how far it travels.",
+      ],
+      why:
+        "The rubber band stores energy when it is twisted or wound up. When the car is released, the rubber band untwists and transfers that stored energy into the wheels or axle. This changes potential energy into kinetic energy, which is the energy of motion. The car moves best on a smooth, flat surface, and students can improve the design by changing the rubber band, wheels, car length, or car weight.",
+      materials: [
+        "Cardboard, foam board, or another lightweight material for the car body",
+        "4 wheels such as bottle caps, cardboard circles, or small toy wheels",
+        "2 wooden skewers, pencils, or straws for axles",
+        "Straw pieces to hold the axles in place",
+        "1–2 rubber bands",
+        "Tape, glue, and scissors",
+        "Optional: different wheel sizes or rubber bands for testing improvements",
+      ],
+      steps: [
+        "Build the main body of the car using cardboard, foam board, or another lightweight material.",
+        "Attach straw pieces to the bottom of the car body to hold the axles in place.",
+        "Slide skewers, pencils, or straws through the axle holders.",
+        "Attach the wheels carefully to each end of the axles, making sure they spin smoothly.",
+        "Connect one end of the rubber band to the car body and the other end to the rear axle.",
+        "Twist or wind the rubber band by turning the rear wheels or axle backward.",
+        "Place the car on a smooth, flat surface.",
+        "Release the car and watch it move forward using rubber band power.",
+      ],
+      safety:
+        "Ask an adult for help with scissors and sharp skewers. Keep the rubber band away from your face when winding it up since it can snap back. Do not aim the car at anyone when releasing it.",
+      challenge:
+        "Can your car travel farther? Try a stronger or thicker rubber band, different wheel sizes, or a longer or shorter car body. Test whether a lighter car moves farther than a heavier one, and race against another team to see whose design wins.",
+    },
+    {
+      slug: "lemon-powered-batteries",
+      title: "Lemon-Powered Batteries",
+      category: "Science",
+      categoryKey: "science",
+      difficulty: "Easy",
+      time: "30-45 minutes",
+      image: "/images/projects/Lemon powered batteries.png",
+      description:
+        "Turn lemons into a real battery and light up an LED by discovering how chemical energy becomes electrical energy.",
+      introduction: [
+        "Did you know a lemon can power a light? It sounds impossible, but lemons contain acid that can kickstart a chemical reaction between two different metals and produce a small electric current.",
+        "This project teaches you how real batteries work, why scientists pair different metals together, and what electrolytes do — all from something you can find in your kitchen.",
+      ],
+      why:
+        "A lemon battery works because of a chemical reaction between two different metals and the acidic lemon juice. The zinc nail and copper piece act as electrodes, while the lemon juice acts as the electrolyte. Electrons move from the zinc through the wires to the copper, creating a small electric current. One lemon may not produce enough power for every device, so connecting multiple lemons in a chain increases the total voltage.",
+      materials: [
+        "2–4 lemons",
+        "Copper coins, copper wire, or copper strips",
+        "Zinc nails or galvanized nails (lightly sanded so the surface is clean)",
+        "Alligator clip wires",
+        "Small LED light, digital clock, or voltmeter",
+        "Paper towels for cleanup",
+      ],
+      steps: [
+        "Roll the lemons gently on a table to loosen the juice inside.",
+        "Insert one zinc nail and one copper piece into each lemon, making sure they do not touch each other.",
+        "Connect the copper piece from one lemon to the zinc nail of the next lemon using alligator clips.",
+        "Continue connecting lemons in a chain if using multiple lemons.",
+        "Attach the two free ends at either end of the chain to an LED, small digital clock, or voltmeter.",
+        "Observe whether the device turns on or how much voltage the lemons produce.",
+      ],
+      safety:
+        "The lemon juice is acidic and can sting if it gets in your eyes, so wash your hands after handling cut lemons. Ask an adult for help pushing nails into the lemons and when connecting the wires. Do not put the wires or clips in your mouth.",
+      challenge:
+        "Can you power an LED with more than one lemon? Try adding more lemons and see what changes. Swap the lemon for a potato, orange, or apple and compare which fruit produces the most voltage.",
+    },
+    {
+      slug: "balloon-powered-car",
+      title: "Balloon-Powered Car",
+      category: "Engineering",
+      categoryKey: "engineering",
+      difficulty: "Easy",
+      time: "1-2 hours",
+      image: "/images/projects/Balloon Powered Car.png",
+      description:
+        "Build a car that runs on air and discover how Newton's Third Law of Motion turns a simple balloon into a powerful engine.",
+      introduction: [
+        "A balloon-powered car uses the air rushing out of a balloon to push itself forward. When air escapes backward through a straw, the car moves forward — that is Newton's Third Law of Motion at work.",
+        "You can build one from everyday recycled materials and then test how small changes in design — like wheel size, car weight, or how tightly the balloon is sealed — make it travel farther.",
+      ],
+      why:
+        "When the balloon is inflated, it stores potential energy in the stretched rubber and compressed air. When the balloon is released, the air escapes backward through the straw. That backward push creates an equal and opposite reaction, pushing the car forward. The stored potential energy becomes kinetic energy, which is the energy of motion.",
+      materials: [
+        "Small piece of stiff cardboard or a plastic water bottle for the car body",
+        "4 plastic bottle caps for wheels",
+        "2 wooden skewers or sturdy straws for axles",
+        "4 short straw pieces to hold the axles",
+        "1 balloon",
+        "1 straw",
+        "Tape, scissors, and glue",
+      ],
+      steps: [
+        "Tape straw pieces to the underside of the car body to hold the axles.",
+        "Slide skewers or straws through the axle holders.",
+        "Attach bottle caps to the ends of each axle to create wheels.",
+        "Insert a straw into the balloon and tape it tightly so no air leaks out.",
+        "Tape the balloon-and-straw engine to the top of the car with the straw pointing off the back.",
+        "Blow up the balloon, pinch the straw, place the car on a flat surface, and release it.",
+      ],
+      safety:
+        "Ask an adult for help with scissors and sharp skewers. Make sure the car is placed on a flat, safe surface before releasing it, and keep fingers away from spinning wheels and axles during the test run.",
+      challenge:
+        "Can your car travel farther? Try using bigger wheels, making the car body lighter, creating a more airtight balloon connection, or racing against another team to see whose design wins.",
+    },
   ],
   es: [
     {
@@ -639,6 +754,121 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       challenge:
         "Prueba cambiar la proporcion de maicena y agua agregando un poco mas de cada uno y nota como cambia la textura. Tambien puedes poner una bolsa con oobleck sobre un parlante y ver como baila cuando pones musica con mucho bajo.",
     },
+    {
+      slug: "rubber-band-powered-car",
+      title: "Auto Propulsado por Liga",
+      category: "Ingenieria",
+      categoryKey: "engineering",
+      difficulty: "Facil",
+      time: "1-2 horas",
+      image: "/images/projects/Rubber Band Powered Car.png",
+      description:
+        "Un auto DIY sencillo que se mueve sin electricidad ni baterias, usando solo la energia almacenada de una liga retorcida para impulsar las ruedas y el eje hacia adelante.",
+      introduction: [
+        "Un auto propulsado por liga es uno de los proyectos mas satisfactorios porque tu haces todo el trabajo — lo enrollas, lo sueltas sobre una superficie plana — y observas como la fisica hace el resto.",
+        "Puedes construirlo con materiales del hogar y luego comenzar a ajustarlo: cambia la liga, las ruedas o el peso del auto, y observa exactamente como cada cambio afecta la distancia que recorre.",
+      ],
+      why:
+        "La liga almacena energia cuando se retuerce o enrolla. Al soltar el auto, la liga se desenrolla y transfiere esa energia almacenada a las ruedas o al eje. Esto convierte la energia potencial en energia cinetica, que es la energia del movimiento. El auto funciona mejor en una superficie lisa y plana, y los estudiantes pueden mejorar el diseno cambiando la liga, las ruedas, la longitud o el peso del auto.",
+      materials: [
+        "Carton, foamy u otro material ligero para el cuerpo del auto",
+        "4 ruedas, como tapas de botella, circulos de carton o ruedas de juguete pequenas",
+        "2 palitos de madera, lapices o popotes para los ejes",
+        "Trozos de popote para sostener los ejes en su lugar",
+        "1 a 2 ligas",
+        "Cinta adhesiva, pegamento y tijeras",
+        "Opcional: diferentes tamanos de ruedas o ligas para probar mejoras",
+      ],
+      steps: [
+        "Construye el cuerpo principal del auto usando carton, foamy u otro material ligero.",
+        "Pega trozos de popote en la parte inferior del cuerpo del auto para sostener los ejes.",
+        "Desliza palitos, lapices o popotes a traves de los soportes de eje.",
+        "Pega las ruedas con cuidado en cada extremo de los ejes, asegurandote de que giren bien.",
+        "Conecta un extremo de la liga al cuerpo del auto y el otro extremo al eje trasero.",
+        "Retuerce o enrolla la liga girando las ruedas traseras o el eje hacia atras.",
+        "Coloca el auto en una superficie lisa y plana.",
+        "Suelta el auto y observa como avanza usando la energia de la liga.",
+      ],
+      safety:
+        "Pide ayuda a un adulto con las tijeras y los palitos afilados. Mantén la liga lejos de tu cara al enrollarla porque puede regresar de golpe. No apuntes el auto hacia nadie al soltarlo.",
+      challenge:
+        "¿Puede tu auto recorrer mas distancia? Prueba con una liga mas resistente o mas gruesa, diferentes tamanos de ruedas o un cuerpo de auto mas largo o corto. Verifica si un auto mas ligero va mas lejos que uno mas pesado y compite contra otro equipo para ver que diseno gana.",
+    },
+    {
+      slug: "lemon-powered-batteries",
+      title: "Baterias de Limon",
+      category: "Ciencia",
+      categoryKey: "science",
+      difficulty: "Facil",
+      time: "30-45 minutos",
+      image: "/images/projects/Lemon powered batteries.png",
+      description:
+        "Convierte limones en una bateria real y enciende un LED descubriendo como la energia quimica se convierte en energia electrica.",
+      introduction: [
+        "¿Sabias que un limon puede encender una luz? Parece imposible, pero el jugo de limon contiene acido que puede iniciar una reaccion quimica entre dos metales diferentes y producir una pequena corriente electrica.",
+        "Este proyecto te ensena como funcionan las baterias reales, por que los cientificos combinan metales diferentes y que hacen los electrolitos — con algo que puedes encontrar en tu cocina.",
+      ],
+      why:
+        "Una bateria de limon funciona gracias a una reaccion quimica entre dos metales diferentes y el jugo acido del limon. El clavo de zinc y la pieza de cobre actuan como electrodos, mientras que el jugo de limon actua como electrolito. Los electrones se mueven del zinc al cobre a traves de los cables, creando una pequena corriente electrica. Un solo limon puede no producir suficiente energia, por lo que conectar varios limones en cadena aumenta el voltaje total.",
+      materials: [
+        "2 a 4 limones",
+        "Monedas de cobre, alambre de cobre o tiras de cobre",
+        "Clavos de zinc o clavos galvanizados (lijados levemente para limpiar la superficie)",
+        "Cables con pinzas de cocodrilo",
+        "Foco LED pequeno, reloj digital o voltimetro",
+        "Toallas de papel para la limpieza",
+      ],
+      steps: [
+        "Rueda los limones suavemente sobre una mesa para aflojar el jugo por dentro.",
+        "Inserta un clavo de zinc y una pieza de cobre en cada limon, asegurandote de que no se toquen entre si.",
+        "Conecta la pieza de cobre de un limon al clavo de zinc del siguiente usando pinzas de cocodrilo.",
+        "Continua conectando los limones en cadena si usas varios.",
+        "Conecta los dos extremos libres de la cadena a un LED, reloj digital pequeno o voltimetro.",
+        "Observa si el dispositivo enciende o cuanto voltaje producen los limones.",
+      ],
+      safety:
+        "El jugo de limon es acido y puede arder si te llega a los ojos, asi que lavate las manos despues de manipular limones cortados. Pide ayuda a un adulto para insertar los clavos y conectar los cables. No pongas los cables ni las pinzas en la boca.",
+      challenge:
+        "¿Puedes encender un LED con mas de un limon? Intenta agregar mas limones y observa que cambia. Cambia el limon por una papa, naranja o manzana y compara cual fruta produce mas voltaje.",
+    },
+    {
+      slug: "balloon-powered-car",
+      title: "Auto Propulsado por Globo",
+      category: "Ingenieria",
+      categoryKey: "engineering",
+      difficulty: "Facil",
+      time: "1-2 horas",
+      image: "/images/projects/Balloon Powered Car.png",
+      description:
+        "Construye un auto que funciona con aire y descubre como la Tercera Ley de Newton convierte un globo en un motor poderoso.",
+      introduction: [
+        "Un auto propulsado por globo usa el aire que sale del globo para empujarse hacia adelante. Cuando el aire escapa hacia atras por un popote, el auto avanza — eso es la Tercera Ley del Movimiento de Newton en accion.",
+        "Puedes construirlo con materiales reciclados del hogar y luego probar como pequenos cambios en el diseno — como el tamano de las ruedas, el peso del auto o que tan bien esta sellado el globo — lo hacen recorrer mas distancia.",
+      ],
+      why:
+        "Cuando el globo esta inflado, almacena energia potencial en el hule estirado y el aire comprimido. Al soltar el globo, el aire escapa hacia atras por el popote. Ese empuje hacia atras crea una reaccion igual y opuesta que impulsa el auto hacia adelante. La energia potencial almacenada se convierte en energia cinetica, que es la energia del movimiento.",
+      materials: [
+        "Un trozo pequeno de carton rigido o una botella de plastico para el cuerpo del auto",
+        "4 tapas de botella de plastico para las ruedas",
+        "2 palitos de madera o popotes resistentes para los ejes",
+        "4 trozos cortos de popote para sostener los ejes",
+        "1 globo",
+        "1 popote",
+        "Cinta adhesiva, tijeras y pegamento",
+      ],
+      steps: [
+        "Pega trozos de popote en la parte de abajo del cuerpo del auto para sostener los ejes.",
+        "Desliza los palitos o popotes a traves de los soportes de ejes.",
+        "Pega las tapas de botella en los extremos de cada eje para crear las ruedas.",
+        "Inserta un popote en el globo y pegalo con cinta para que no salga aire.",
+        "Pega el motor de globo y popote encima del auto con el popote apuntando hacia la parte trasera.",
+        "Infla el globo, pellizca el popote, coloca el auto en una superficie plana y sueltalo.",
+      ],
+      safety:
+        "Pide ayuda a un adulto con las tijeras y los palitos afilados. Asegurate de colocar el auto en una superficie plana y segura antes de soltarlo, y mantén los dedos alejados de las ruedas y ejes giratorios durante la prueba.",
+      challenge:
+        "¿Puede tu auto recorrer mas distancia? Intenta usar ruedas mas grandes, hacer el cuerpo del auto mas liviano, crear una conexion de globo mas hermetica o competir contra otro equipo para ver que diseno gana.",
+    },
   ],
   zh: [
     {
@@ -948,6 +1178,121 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
         "奥不力克由食品级材料制成，接触皮肤是安全的，但会很乱。不要把它倒进下水道，因为玉米淀粉会堵塞管道。剩余的奥不力克应让其在托盘上自然晾干，再刮入垃圾桶丢弃。碗和手用温水冲洗，等残留物干燥后再刮去。",
       challenge:
         "试着调整玉米淀粉和水的比例，各多加一点，观察质地怎样变化。你也可以把一袋奥不力克放在音箱上，播放重低音音乐，看看它如何随节奏舞动。",
+    },
+    {
+      slug: "rubber-band-powered-car",
+      title: "橡皮筋动力车",
+      category: "工程",
+      categoryKey: "engineering",
+      difficulty: "简单",
+      time: "1-2小时",
+      image: "/images/projects/Rubber Band Powered Car.png",
+      description:
+        "一辆不需要电力或电池的手工小车——只用扭紧的橡皮筋储存的能量推动车轮和车轴向前转动。",
+      introduction: [
+        "橡皮筋动力车是最有成就感的手工之一：你完成所有的搭建，把它绕紧，放在平面上，然后看着物理学把剩下的事做完。",
+        "你可以用日常材料搭建它，然后开始调整——换橡皮筋、改变轮子或者调整车重——观察每次改动对行驶距离的影响。",
+      ],
+      why:
+        "橡皮筋被扭紧或绕圈时会储存能量。松开小车后，橡皮筋回弹并将储存的能量传递给车轮或车轴。这将势能转化为动能，也就是运动的能量。小车在光滑的平面上跑得最好，学生可以通过改变橡皮筋、轮子、车身长度或车重来优化设计。",
+      materials: [
+        "纸板、泡沫板或其他轻质材料，用作车身",
+        "4个轮子，例如瓶盖、纸板圆圈或小玩具轮子",
+        "2根竹签、铅笔或吸管，用作车轴",
+        "吸管段，用于固定车轴",
+        "1到2根橡皮筋",
+        "胶带、胶水和剪刀",
+        "可选：不同尺寸的轮子或橡皮筋，用于测试改进效果",
+      ],
+      steps: [
+        "用纸板、泡沫板或其他轻质材料搭建车身主体。",
+        "将吸管段粘在车身底部，用来固定车轴。",
+        "将竹签、铅笔或吸管穿过轴套。",
+        "将轮子仔细安装到每根轴的两端，确保它们能顺畅旋转。",
+        "将橡皮筋一端固定在车身上，另一端固定在后轴上。",
+        "向后转动后轮或后轴，将橡皮筋扭紧或绕圈。",
+        "把小车放在光滑的平面上。",
+        "松开小车，看着它靠橡皮筋的力量向前驶去。",
+      ],
+      safety:
+        "使用剪刀和尖竹签时请让大人帮忙。绕紧橡皮筋时让它远离脸部，以免弹回伤人。放车时不要朝着任何人的方向。",
+      challenge:
+        "能让你的车跑更远吗？试试更粗或更强的橡皮筋、不同尺寸的轮子，或者更长、更短的车身。测试更轻的车是否比更重的跑得更远，和另一组比赛看谁的设计赢。",
+    },
+    {
+      slug: "lemon-powered-batteries",
+      title: "柠檬电池",
+      category: "科学",
+      categoryKey: "science",
+      difficulty: "简单",
+      time: "30-45分钟",
+      image: "/images/projects/Lemon powered batteries.png",
+      description:
+        "把柠檬变成真正的电池，点亮一个LED灯，探索化学能如何转化为电能。",
+      introduction: [
+        "你知道柠檬能点亮灯泡吗？听起来不可思议，但柠檬汁里含有酸性物质，能引发两种不同金属之间的化学反应，产生微弱的电流。",
+        "这个项目教你了解真实电池的工作原理、科学家为什么要配对不同金属，以及电解质的作用——材料就藏在你家厨房里。",
+      ],
+      why:
+        "柠檬电池靠的是两种不同金属与酸性柠檬汁之间的化学反应。锌钉和铜片充当电极，柠檬汁充当电解质。电子从锌通过导线流向铜，形成微弱的电流。单个柠檬产生的电压可能不够，但将多个柠檬串联起来可以提高总电压。",
+      materials: [
+        "2到4个柠檬",
+        "铜币、铜线或铜条",
+        "锌钉或镀锌钉（轻轻打磨表面使其清洁）",
+        "带鳄鱼夹的导线",
+        "小型LED灯、数字时钟或电压表",
+        "纸巾用于清洁",
+      ],
+      steps: [
+        "将柠檬在桌上轻轻滚动，让内部汁液松动。",
+        "在每个柠檬上分别插入一根锌钉和一片铜，确保两者不互相接触。",
+        "用鳄鱼夹将一个柠檬的铜片连接到下一个柠檬的锌钉。",
+        "如果使用多个柠檬，继续按顺序串联连接。",
+        "将链条两端的空余导线连接到LED灯、小型数字时钟或电压表。",
+        "观察设备是否点亮，或柠檬产生了多少电压。",
+      ],
+      safety:
+        "柠檬汁是酸性的，溅入眼睛会刺痛，切开柠檬后请洗手。插钉子和连接导线时请让大人帮忙。不要把导线或鳄鱼夹放进嘴里。",
+      challenge:
+        "能用超过一个柠檬点亮LED吗？多加几个柠檬看看有什么变化。换成土豆、橙子或苹果试试，比较哪种水果产生的电压最大。",
+    },
+    {
+      slug: "balloon-powered-car",
+      title: "气球动力车",
+      category: "工程",
+      categoryKey: "engineering",
+      difficulty: "简单",
+      time: "1-2小时",
+      image: "/images/projects/Balloon Powered Car.png",
+      description:
+        "造一辆靠空气驱动的小车，探索牛顿第三定律如何让一个简单气球变成强力引擎。",
+      introduction: [
+        "气球动力车利用从气球里冲出来的空气推动自己前进。当空气通过吸管向后喷出，小车就会向前运动——这就是牛顿第三运动定律在起作用。",
+        "你可以用家里常见的废旧材料来搭建它，然后测试轮子大小、车身重量或气球密封程度等细节变化，看看哪些改动能让小车跑得更远。",
+      ],
+      why:
+        "气球充气后，拉伸的橡皮和压缩的空气中储存了势能。松开气球时，空气通过吸管向后喷出。这个向后的推力产生了一个等大反向的作用力，将小车推向前方。储存的势能转化为动能，也就是运动的能量。",
+      materials: [
+        "一小块硬纸板或塑料水瓶，用作车身",
+        "4个塑料瓶盖，用作车轮",
+        "2根竹签或结实的吸管，用作车轴",
+        "4段短吸管，用于固定车轴",
+        "1个气球",
+        "1根吸管",
+        "胶带、剪刀和胶水",
+      ],
+      steps: [
+        "将短吸管段粘在车身底部，作为车轴的固定套管。",
+        "将竹签或吸管穿过轴套。",
+        "把瓶盖粘在每根轴的两端，制成车轮。",
+        "将一根吸管插入气球口，用胶带紧紧缠绕，确保不漏气。",
+        "将气球和吸管组成的动力装置粘在车身顶部，吸管末端朝向车尾。",
+        "吹满气球，捏住吸管，将小车放在平坦的地面上，松手放开。",
+      ],
+      safety:
+        "使用剪刀和尖竹签时请让大人帮忙。放开小车前，确保它放在平坦、安全的地面上，测试时手指远离转动的车轮和车轴。",
+      challenge:
+        "你的车能跑更远吗？试试换更大的轮子、让车身更轻、把气球接口封得更严，或者和另一组比赛，看谁的设计跑得更远。",
     },
   ],
 }
