@@ -1,81 +1,33 @@
-import type { Metadata } from "next"
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
-import { cookies } from "next/headers"
-import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
-import { getProjectGuide, projectGuides } from "@/features/projects/data"
-import { type Language, translations } from "@/i18n/translations"
+import { useLanguage } from "@/components/providers/language-provider"
+import { getProjectGuide, type ProjectGuide } from "@/features/projects/data"
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
-  const { slug } = await params
-  const cookieStore = await cookies()
-  const cookieLanguage = cookieStore.get("avanza-lang")?.value
-  const language: Language = cookieLanguage === "es" || cookieLanguage === "zh" ? cookieLanguage : "en"
-  const project = getProjectGuide(slug, language)
+const WHAT_YOU_LEARN = [
+  "Newton's Third Law of Motion",
+  "Potential and kinetic energy",
+  "Basic engineering design",
+  "How small changes in wheels, axles, weight, and airflow affect performance",
+]
 
-  if (!project) return {}
+const CHALLENGE_PROMPTS = [
+  "Can your car travel farther?",
+  "What happens if you use bigger wheels?",
+  "What happens if the car body is lighter?",
+  "Can you make the balloon connection more airtight?",
+  "Can you race against another team?",
+]
 
-  const title = `${project.title} - Avanza STEM`
-  const description = project.description
-
-  return {
-    title,
-    description,
-    alternates: { canonical: `/projects/${slug}` },
-    openGraph: {
-      title,
-      description,
-      url: `https://avanzastem.org/projects/${slug}`,
-      type: "article",
-      images: [{ url: project.image, alt: project.title }],
-    },
-    twitter: { card: "summary_large_image", title, description },
-  }
-}
-
-export function generateStaticParams() {
-  return projectGuides
-    .filter(
-      (project) =>
-        ![
-          "popsicle-stick-bridge",
-          "simple-circuit-light",
-          "my-first-python-program",
-          "baking-soda-volcano",
-          "lego-robot-builder",
-          "balloon-powered-car",
-          "lemon-powered-batteries",
-          "rubber-band-powered-car",
-        ].includes(project.slug),
-    )
-    .map((project) => ({
-      slug: project.slug,
-    }))
-}
-
-export default async function ProjectGuidePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params
-  const cookieStore = await cookies()
-  const cookieLanguage = cookieStore.get("avanza-lang")?.value
-  const language: Language = cookieLanguage === "es" || cookieLanguage === "zh" ? cookieLanguage : "en"
-  const t = translations[language]
-  const project = getProjectGuide(slug, language)
-
-  if (!project) {
-    notFound()
-  }
+export function BalloonPoweredCarGuide({ project }: { project: ProjectGuide }) {
+  const { language, t } = useLanguage()
+  const guide = getProjectGuide(project.slug, language) ?? project
 
   return (
     <div className="bg-background">
+      {/* Header */}
       <div className="mx-auto max-w-4xl px-6 py-12">
         <Link
           href="/projects"
@@ -87,22 +39,23 @@ export default async function ProjectGuidePage({
 
         <div className="mt-8">
           <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-            {project.category}
+            {guide.category}
           </p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-foreground">
-            {project.title}
+            {guide.title}
           </h1>
-          <p className="mt-3 text-lg text-muted-foreground">{project.description}</p>
+          <p className="mt-3 text-lg text-muted-foreground">{guide.description}</p>
           <p className="mt-3 text-sm text-muted-foreground">
-            {project.difficulty} · {project.time}
+            {guide.difficulty} · {guide.time}
           </p>
         </div>
 
+        {/* Hero image */}
         <div className="mt-8 overflow-hidden rounded-lg border border-border">
           <div className="relative h-80">
             <Image
-              src={project.image}
-              alt={project.title}
+              src={guide.image}
+              alt={guide.title}
               fill
               className="object-cover"
               priority
@@ -111,24 +64,42 @@ export default async function ProjectGuidePage({
         </div>
       </div>
 
+      {/* Content */}
       <div className="border-t border-border">
         <div className="mx-auto max-w-4xl px-6 py-12">
           <div className="grid gap-16 lg:grid-cols-[1fr_260px]">
+            {/* Main */}
             <div className="space-y-10">
               <section>
                 <h2 className="text-xl font-bold text-foreground">
                   {t.projectsPage.introduction}
                 </h2>
                 <div className="mt-4 space-y-3 text-base leading-7 text-muted-foreground">
-                  {project.introduction.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
+                  {guide.introduction.map((p) => (
+                    <p key={p}>{p}</p>
                   ))}
                 </div>
               </section>
 
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">What You&apos;ll Learn</h2>
+                  <ul className="mt-5 space-y-3">
+                    {WHAT_YOU_LEARN.map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground" />
+                        <p className="text-base leading-7 text-muted-foreground">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
               <section>
-                <h2 className="text-xl font-bold text-foreground">{t.projectsPage.theWhy}</h2>
-                <p className="mt-4 text-base leading-7 text-muted-foreground">{project.why}</p>
+                <h2 className="text-xl font-bold text-foreground">
+                  {language === "en" ? "How It Works" : t.projectsPage.theWhy}
+                </h2>
+                <p className="mt-4 text-base leading-7 text-muted-foreground">{guide.why}</p>
               </section>
 
               <section>
@@ -136,7 +107,7 @@ export default async function ProjectGuidePage({
                   {t.projectsPage.stepByStepInstructions}
                 </h2>
                 <ol className="mt-5 space-y-5">
-                  {project.steps.map((step, index) => (
+                  {guide.steps.map((step, index) => (
                     <li key={step} className="flex items-start gap-4">
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-sm font-bold text-foreground">
                         {index + 1}
@@ -148,19 +119,20 @@ export default async function ProjectGuidePage({
               </section>
             </div>
 
+            {/* Sidebar */}
             <aside className="space-y-10">
               <section>
                 <h2 className="text-sm font-bold uppercase tracking-wide text-foreground">
                   {t.projectsPage.materialsList}
                 </h2>
                 <ul className="mt-4 space-y-2">
-                  {project.materials.map((material) => (
+                  {guide.materials.map((item) => (
                     <li
-                      key={material}
+                      key={item}
                       className="flex items-start gap-2 text-sm leading-relaxed text-foreground"
                     >
                       <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground" />
-                      {material}
+                      {item}
                     </li>
                   ))}
                 </ul>
@@ -170,14 +142,27 @@ export default async function ProjectGuidePage({
                 <h2 className="text-sm font-bold uppercase tracking-wide text-foreground">
                   {t.projectsPage.safetyFirst}
                 </h2>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">{project.safety}</p>
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">{guide.safety}</p>
               </section>
 
               <section className="border-t border-border pt-8">
                 <h2 className="text-sm font-bold uppercase tracking-wide text-foreground">
-                  {t.projectsPage.challengeMode}
+                  {language === "en" ? "Try This!" : t.projectsPage.challengeMode}
                 </h2>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">{project.challenge}</p>
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">{guide.challenge}</p>
+                {language === "en" && (
+                  <ul className="mt-4 space-y-2">
+                    {CHALLENGE_PROMPTS.map((prompt) => (
+                      <li
+                        key={prompt}
+                        className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"
+                      >
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground" />
+                        {prompt}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </section>
             </aside>
           </div>
