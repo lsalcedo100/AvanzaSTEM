@@ -244,13 +244,13 @@ export function CodePathRobot() {
                     ))}
                   </div>
                   {status === "win" && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-sm">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-avanza-dark shadow-sm">
                       <Sparkles className="h-3 w-3" />
                       {t.gamesPage.robotWin}
                     </span>
                   )}
                   {status === "fail" && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-orange px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-sm">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-orange px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-avanza-dark shadow-sm">
                       {t.gamesPage.robotTryAgain}
                     </span>
                   )}
@@ -295,11 +295,11 @@ export function CodePathRobot() {
                           className={cn(
                             "inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-extrabold transition",
                             i === pc - 1 && running
-                              ? "bg-avanza-green text-white ring-2 ring-white/40"
+                              ? "bg-avanza-green text-avanza-dark ring-2 ring-white/40"
                               : b === "forward"
                                 ? "bg-avanza-purple/85 text-white"
                                 : b === "left"
-                                  ? "bg-avanza-orange/85 text-white"
+                                  ? "bg-avanza-orange text-avanza-dark"
                                   : "bg-avanza-teal/85 text-white",
                           )}
                         >
@@ -354,7 +354,7 @@ export function CodePathRobot() {
                     type="button"
                     onClick={run}
                     disabled={running || program.length === 0}
-                    className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-avanza-green px-4 py-2.5 text-sm font-extrabold text-white transition disabled:cursor-not-allowed disabled:opacity-50 hover:enabled:bg-emerald-400"
+                    className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-avanza-green px-4 py-2.5 text-sm font-extrabold text-avanza-dark transition disabled:cursor-not-allowed disabled:opacity-50 hover:enabled:bg-emerald-400"
                   >
                     <Play className="h-4 w-4" />
                     {t.gamesPage.robotRun}

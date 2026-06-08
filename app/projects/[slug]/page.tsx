@@ -5,6 +5,7 @@ import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { getProjectGuide, projectGuides } from "@/features/projects/data"
+import { generateProjectMetadata } from "@/features/projects/metadata"
 import { type Language, translations } from "@/i18n/translations"
 
 export async function generateMetadata({
@@ -13,29 +14,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const cookieStore = await cookies()
-  const cookieLanguage = cookieStore.get("avanza-lang")?.value
-  const language: Language = cookieLanguage === "es" || cookieLanguage === "zh" ? cookieLanguage : "en"
-  const project = getProjectGuide(slug, language)
-
-  if (!project) return {}
-
-  const title = `${project.title} - Avanza STEM`
-  const description = project.description
-
-  return {
-    title,
-    description,
-    alternates: { canonical: `/projects/${slug}` },
-    openGraph: {
-      title,
-      description,
-      url: `https://avanzastem.org/projects/${slug}`,
-      type: "article",
-      images: [{ url: project.image, alt: project.title }],
-    },
-    twitter: { card: "summary_large_image", title, description },
-  }
+  return generateProjectMetadata(slug)
 }
 
 export function generateStaticParams() {

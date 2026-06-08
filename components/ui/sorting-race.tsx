@@ -343,7 +343,7 @@ export function SortingRace() {
                 type="button"
                 onClick={running ? stop : start}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-extrabold text-white transition hover:scale-[1.04]",
+                  "inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-extrabold text-avanza-dark transition hover:scale-[1.04]",
                   running ? "bg-avanza-orange" : "bg-avanza-green",
                 )}
               >
@@ -373,7 +373,7 @@ export function SortingRace() {
                 <span className="font-mono text-xs text-muted-foreground">{speed}/s</span>
               </div>
               {winner && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white shadow">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-avanza-dark shadow">
                   <Sparkles className="h-3 w-3" />
                   {t.gamesPage.sortWinner}: {algoName(t, winner)}
                 </span>
@@ -436,12 +436,12 @@ function Lane({
           {finishedAt && (
             <span
               className={cn(
-                "rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white",
+                "rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider",
                 finishedAt === 1
-                  ? "bg-avanza-green"
+                  ? "bg-avanza-green text-avanza-dark"
                   : finishedAt === 2
-                    ? "bg-avanza-orange"
-                    : "bg-avanza-dark/40",
+                    ? "bg-avanza-orange text-avanza-dark"
+                    : "bg-avanza-dark/40 text-white",
               )}
             >
               #{finishedAt}

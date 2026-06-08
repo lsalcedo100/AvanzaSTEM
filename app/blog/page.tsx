@@ -95,10 +95,10 @@ export default function BlogPage() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-avanza-orange to-[#e74c8b] py-20">
         <FadeIn className="mx-auto max-w-7xl px-6 text-center">
-          <h1 className="text-4xl font-extrabold text-primary-foreground md:text-5xl">
+          <h1 className="text-4xl font-extrabold text-avanza-dark md:text-5xl">
             {t.blogPage.title}
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-primary-foreground/85">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-avanza-dark">
             {t.blogPage.description}
           </p>
         </FadeIn>
@@ -108,19 +108,25 @@ export default function BlogPage() {
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn>
-            <Link href={featuredPost.href} className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-all duration-300 hover:shadow-xl md:flex">
+            <article className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-all duration-300 hover:shadow-xl md:flex">
               <div className="relative min-h-[300px] md:w-1/2">
                 <LightboxImage
                   src={featuredPost.image}
                   alt={featuredPost.title}
                   fill
+                  buttonClassName="z-20"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <span className="absolute left-4 top-4 rounded-full bg-avanza-green px-3 py-1 text-xs font-bold text-primary-foreground">
+                <span className="pointer-events-none absolute left-4 top-4 z-30 rounded-full bg-avanza-green px-3 py-1 text-xs font-bold text-avanza-dark">
                   {t.blogPage.featured}
                 </span>
               </div>
-              <div className="flex flex-col justify-center p-8 md:w-1/2">
+              <Link
+                href={featuredPost.href}
+                aria-label={featuredPost.title}
+                className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-dark focus-visible:ring-offset-2"
+              />
+              <div className="pointer-events-none relative z-20 flex flex-col justify-center p-8 md:w-1/2">
                 <span className="inline-block w-fit rounded-full bg-avanza-green/10 px-3 py-1 text-xs font-bold text-avanza-green">
                   {featuredPost.category}
                 </span>
@@ -141,11 +147,11 @@ export default function BlogPage() {
                     <Clock className="h-4 w-4" /> {featuredPost.readTime}
                   </span>
                 </div>
-                <span className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-200 group-hover:scale-105 group-hover:shadow-md">
+                <span className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-avanza-dark transition-all duration-200 group-hover:scale-105 group-hover:shadow-md">
                   {t.blogPage.readArticle} <ArrowRight className="h-4 w-4" />
                 </span>
               </div>
-            </Link>
+            </article>
           </FadeIn>
         </div>
       </section>
@@ -194,41 +200,50 @@ function BlogCard({
   readMore: string
   href: string
 }) {
+  const badgeTextColor =
+    color === "bg-avanza-green" || color === "bg-avanza-orange"
+      ? "text-avanza-dark"
+      : "text-primary-foreground"
+
   return (
-    <Link href={href} className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
-      <article>
-        <div className="relative h-48 overflow-hidden">
-          <LightboxImage
-            src={image}
-            alt={title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-          <span className={`absolute left-4 top-4 rounded-full ${color} px-3 py-1 text-xs font-bold text-primary-foreground`}>
-            {category}
+    <article className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
+      <div className="relative h-48 overflow-hidden">
+        <LightboxImage
+          src={image}
+          alt={title}
+          fill
+          buttonClassName="z-20"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <span className={`pointer-events-none absolute left-4 top-4 z-30 rounded-full ${color} px-3 py-1 text-xs font-bold ${badgeTextColor}`}>
+          {category}
+        </span>
+      </div>
+      <Link
+        href={href}
+        aria-label={title}
+        className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-dark focus-visible:ring-offset-2"
+      />
+      <div className="pointer-events-none relative z-20 p-6">
+        <h3 className="text-lg font-bold leading-snug text-card-foreground">{title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>
+
+        <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+          <span className="inline-flex items-center gap-1">
+            <User className="h-3 w-3" /> {author}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <Calendar className="h-3 w-3" /> {date}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <Clock className="h-3 w-3" /> {readTime}
           </span>
         </div>
-        <div className="p-6">
-          <h3 className="text-lg font-bold leading-snug text-card-foreground">{title}</h3>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>
 
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-            <span className="inline-flex items-center gap-1">
-              <User className="h-3 w-3" /> {author}
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <Calendar className="h-3 w-3" /> {date}
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <Clock className="h-3 w-3" /> {readTime}
-            </span>
-          </div>
-
-          <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-avanza-green transition-all duration-200 group-hover:gap-2 group-hover:text-avanza-teal">
-            {readMore} <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-          </span>
-        </div>
-      </article>
-    </Link>
+        <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-avanza-green transition-all duration-200 group-hover:gap-2 group-hover:text-avanza-teal">
+          {readMore} <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </span>
+      </div>
+    </article>
   )
 }

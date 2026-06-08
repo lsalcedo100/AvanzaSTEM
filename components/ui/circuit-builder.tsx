@@ -379,7 +379,7 @@ export function CircuitBuilder() {
                         sim.shorted
                           ? "bg-red-500 text-white"
                           : sim.closed
-                            ? "bg-avanza-green text-white"
+                            ? "bg-avanza-green text-avanza-dark"
                             : "bg-avanza-dark/12 text-avanza-dark",
                       )}
                     >
@@ -473,7 +473,7 @@ function ToolBtn({
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-extrabold transition",
         active
-          ? "bg-avanza-orange text-white shadow-md"
+          ? "bg-avanza-orange text-avanza-dark shadow-md"
           : "bg-avanza-dark/8 text-avanza-dark hover:bg-avanza-dark/15",
       )}
     >

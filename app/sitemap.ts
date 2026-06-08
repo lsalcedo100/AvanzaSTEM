@@ -1,51 +1,48 @@
 import type { MetadataRoute } from 'next'
+import { localizedBlogArticles } from '@/features/blog/posts'
+import { projectGuides } from '@/features/projects/data'
 
 const BASE_URL = 'https://avanzastem.org'
 
-const blogSlugs = [
-  'why-every-kid-should-learn-to-code',
-  '5-easy-science-experiments',
-  'how-to-build-the-strongest-popsicle-stick-bridge',
-  'getting-started-with-lego-robotics',
-  'what-is-ai-explaining-to-kids',
-  'math-games-that-make-learning-fun',
-  'building-a-community-stem-workshops',
-]
-
-const projectSlugs = [
-  'popsicle-stick-bridge',
-  'lego-robot-builder',
-  'my-first-python-program',
-  'baking-soda-volcano',
-  'simple-circuit-light',
-]
+const staticRoutes = [
+  { path: '/', priority: 1.0, changeFrequency: 'weekly' },
+  { path: '/about', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/projects', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/games', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/blog', priority: 0.8, changeFrequency: 'weekly' },
+  { path: '/workshops', priority: 0.8, changeFrequency: 'weekly' },
+  { path: '/find-a-workshop', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/workshop-finder', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/host', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/gallery', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/curriculums', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/faq', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/privacy', priority: 0.4, changeFrequency: 'yearly' },
+] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date('2026-04-29')
+  const lastModified = new Date('2026-06-07')
 
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${BASE_URL}/`, lastModified, priority: 1.0, changeFrequency: 'weekly' },
-    { url: `${BASE_URL}/curriculums`, lastModified, priority: 0.8, changeFrequency: 'monthly' },
-    { url: `${BASE_URL}/projects`, lastModified, priority: 0.8, changeFrequency: 'monthly' },
-    { url: `${BASE_URL}/blog`, lastModified, priority: 0.8, changeFrequency: 'weekly' },
-    { url: `${BASE_URL}/workshops`, lastModified, priority: 0.8, changeFrequency: 'weekly' },
-    { url: `${BASE_URL}/find-a-workshop`, lastModified, priority: 0.7, changeFrequency: 'monthly' },
-    { url: `${BASE_URL}/games`, lastModified, priority: 0.7, changeFrequency: 'monthly' },
-  ]
+  const staticSitemapRoutes: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
+    url: `${BASE_URL}${route.path}`,
+    lastModified,
+    priority: route.priority,
+    changeFrequency: route.changeFrequency,
+  }))
 
-  const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
+  const blogRoutes: MetadataRoute.Sitemap = Object.keys(localizedBlogArticles.en).map((slug) => ({
     url: `${BASE_URL}/blog/${slug}`,
     lastModified,
     priority: 0.7,
     changeFrequency: 'monthly' as const,
   }))
 
-  const projectRoutes: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
-    url: `${BASE_URL}/projects/${slug}`,
+  const projectRoutes: MetadataRoute.Sitemap = projectGuides.map((project) => ({
+    url: `${BASE_URL}/projects/${project.slug}`,
     lastModified,
     priority: 0.7,
     changeFrequency: 'monthly' as const,
   }))
 
-  return [...staticRoutes, ...blogRoutes, ...projectRoutes]
+  return [...staticSitemapRoutes, ...blogRoutes, ...projectRoutes]
 }

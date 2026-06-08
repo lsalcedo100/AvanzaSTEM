@@ -13,8 +13,11 @@ import {
 import { localizedBlogArticles, type BlogBlock, type BlogSlug } from "@/features/blog/posts"
 
 export function LocalizedBlogPost({ slug }: { slug: BlogSlug }) {
-  const { language } = useLanguage()
-  const post = localizedBlogArticles[language][slug]
+  const { language, t } = useLanguage()
+  const enArticle = localizedBlogArticles.en[slug]
+  const localizedArticle = language !== "en" ? localizedBlogArticles[language][slug] : undefined
+  const isFallback = language !== "en" && localizedArticle === undefined
+  const post = localizedArticle ?? enArticle
 
   return (
     <BlogPostLayout
@@ -27,6 +30,14 @@ export function LocalizedBlogPost({ slug }: { slug: BlogSlug }) {
       image={post.image}
       imageAlt={post.imageAlt}
     >
+      {isFallback && (
+        <div
+          role="note"
+          className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200"
+        >
+          {t.blogPage.fallbackNote}
+        </div>
+      )}
       {post.sections.map((section, index) => (
         <PostSection key={`${section.title}-${index}`} title={section.title}>
           {section.blocks.map((block, blockIndex) => (

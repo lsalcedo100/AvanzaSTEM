@@ -5,6 +5,7 @@ import { useLanguage } from "@/components/providers/language-provider"
 import { type Translations } from "@/i18n/translations"
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const MAX_EMAIL_LENGTH = 254
 
 type Feedback = { type: "error"; message: string } | null
 
@@ -80,15 +81,18 @@ export function NewsletterSignup() {
     window.history.replaceState(window.history.state, "", nextUrl)
   }, [t.blogPage])
 
-  async function submitEmail(event?: FormEvent<HTMLFormElement>) {
-    event?.preventDefault()
+  async function submitEmail(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
 
     if (isPending) {
       return
     }
 
-    const normalizedEmail = email.trim().toLowerCase()
-    if (!EMAIL_PATTERN.test(normalizedEmail)) {
+    const formData = new FormData(event.currentTarget)
+    const normalizedEmail = String(formData.get("email") ?? "").trim().toLowerCase()
+    const website = String(formData.get("website") ?? "")
+
+    if (!EMAIL_PATTERN.test(normalizedEmail) || normalizedEmail.length > MAX_EMAIL_LENGTH) {
       setFeedback({ type: "error", message: t.blogPage.invalidEmail })
       return
     }
@@ -101,7 +105,7 @@ export function NewsletterSignup() {
       const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: normalizedEmail }),
+        body: JSON.stringify({ email: normalizedEmail, website }),
       })
 
       const data = (await response.json().catch(() => null)) as
@@ -146,16 +150,30 @@ export function NewsletterSignup() {
           <p className="mx-auto mt-5 max-w-4xl text-lg leading-relaxed text-primary-foreground/85 sm:text-xl">
             {t.blogPage.stayUpdatedDesc}
           </p>
+          <p className="mx-auto mt-3 max-w-3xl text-sm font-semibold leading-relaxed text-primary-foreground/80">
+            {t.blogPage.newsletterAudienceNote}
+          </p>
 
           <form
             action="/api/subscribe"
             method="post"
+            noValidate
             onSubmit={(event) => {
               void submitEmail(event)
             }}
             aria-labelledby="newsletter-signup-heading"
             className="mx-auto mt-10 flex max-w-4xl flex-col gap-4 sm:flex-row sm:items-center"
           >
+            <div aria-hidden="true" className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden">
+              <label htmlFor="newsletter-website">Website</label>
+              <input
+                id="newsletter-website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
             <label htmlFor="newsletter-email" className="sr-only">
               {t.blogPage.enterEmail}
             </label>
@@ -165,17 +183,22 @@ export function NewsletterSignup() {
               type="email"
               required
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                setEmail(event.target.value)
+                setFeedback(null)
+                setIsSuccessOpen(false)
+              }}
               placeholder={t.blogPage.enterEmail}
               autoComplete="email"
               inputMode="email"
+              maxLength={MAX_EMAIL_LENGTH}
               disabled={isPending}
-              className="min-w-0 flex-1 rounded-full border-2 border-primary-foreground/20 bg-primary-foreground/12 px-7 py-4 text-lg text-primary-foreground placeholder:text-primary-foreground/55 backdrop-blur-sm transition-colors focus:border-primary-foreground/50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-80"
+              className="min-w-0 flex-1 rounded-full border-2 border-primary-foreground/20 bg-primary-foreground/12 px-7 py-4 text-lg text-primary-foreground placeholder:text-primary-foreground/55 backdrop-blur-sm transition-colors focus:border-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary-foreground/70 focus:ring-offset-2 focus:ring-offset-avanza-teal disabled:cursor-not-allowed disabled:opacity-80"
             />
             <button
               type="submit"
               disabled={isPending}
-              className="inline-flex justify-center rounded-full bg-primary-foreground px-10 py-4 text-lg font-bold text-avanza-green shadow-lg transition-transform duration-200 hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:scale-100"
+              className="inline-flex justify-center rounded-full bg-primary-foreground px-10 py-4 text-lg font-bold text-avanza-green shadow-lg transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-teal disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:scale-100"
             >
               {isPending ? t.blogPage.subscribing : t.blogPage.subscribe}
             </button>
@@ -222,7 +245,7 @@ export function NewsletterSignup() {
             <button
               type="button"
               onClick={() => setIsSuccessOpen(false)}
-              className="mt-6 inline-flex rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-primary-foreground transition-transform duration-200 hover:scale-[1.02]"
+              className="mt-6 inline-flex rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-avanza-dark transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
             >
               {t.blogPage.closeSuccessDialog}
             </button>

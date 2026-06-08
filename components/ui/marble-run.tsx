@@ -259,7 +259,7 @@ export function MarbleRun() {
                         className={cn(
                           "rounded-full px-3 py-1 text-xs font-extrabold uppercase tracking-wider transition",
                           i === levelIdx
-                            ? "bg-avanza-orange text-white"
+                            ? "bg-avanza-orange text-avanza-dark"
                             : "bg-avanza-dark/8 text-avanza-dark hover:bg-avanza-dark/15",
                         )}
                       >
@@ -268,13 +268,13 @@ export function MarbleRun() {
                     ))}
                   </div>
                   {result === "win" && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-sm">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-avanza-dark shadow-sm">
                       <Sparkles className="h-3 w-3" />
                       {t.gamesPage.marbleWin}
                     </span>
                   )}
                   {result === "lose" && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-orange px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-sm">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-orange px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-avanza-dark shadow-sm">
                       {t.gamesPage.marbleTryAgain}
                     </span>
                   )}
@@ -358,7 +358,7 @@ export function MarbleRun() {
                     type="button"
                     onClick={play}
                     disabled={running}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-avanza-orange px-4 py-2 text-sm font-extrabold text-white transition disabled:cursor-not-allowed disabled:opacity-50 hover:enabled:scale-[1.04]"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-avanza-orange px-4 py-2 text-sm font-extrabold text-avanza-dark transition disabled:cursor-not-allowed disabled:opacity-50 hover:enabled:scale-[1.04]"
                   >
                     <Play className="h-4 w-4" />
                     {t.gamesPage.marbleDrop}
@@ -433,7 +433,7 @@ function ToolBtn({
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-extrabold transition",
         active
-          ? "bg-avanza-orange text-white shadow-md"
+          ? "bg-avanza-orange text-avanza-dark shadow-md"
           : "bg-avanza-dark/8 text-avanza-dark hover:bg-avanza-dark/15",
       )}
     >

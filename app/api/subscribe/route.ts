@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server"
+import { checkRateLimit, getClientIp, isHoneypotFilled } from "../_utils/form-safety"
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const DEFAULT_RECIPIENT_EMAIL = "liam@avanzastem.org"
 const DEFAULT_FROM_EMAIL = "Avanza STEM <newsletter@avanzastem.org>"
 const RESEND_API_URL = "https://api.resend.com/emails"
 const RESEND_USER_AGENT = "avanza-stem-newsletter/1.0"
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000
+const RATE_LIMIT_MAX_REQUESTS = 5
+const MAX_EMAIL_LENGTH = 254
 
 function redirectToBlog(request: Request, result: string) {
   const url = new URL("/blog", request.url)
@@ -71,14 +75,17 @@ export async function POST(request: Request) {
   const contentType = request.headers.get("content-type")?.toLowerCase() ?? ""
   const expectsJson = contentType.includes("application/json")
   let rawEmail: unknown
+  let website: unknown
 
   try {
     if (expectsJson) {
-      const payload = (await request.json()) as { email?: unknown }
+      const payload = (await request.json()) as { email?: unknown; website?: unknown }
       rawEmail = payload.email
+      website = payload.website
     } else {
       const formData = await request.formData()
       rawEmail = formData.get("email")
+      website = formData.get("website")
     }
   } catch {
     return jsonOrRedirect(
@@ -91,7 +98,32 @@ export async function POST(request: Request) {
 
   const email = typeof rawEmail === "string" ? rawEmail.trim().toLowerCase() : ""
 
-  if (!EMAIL_PATTERN.test(email)) {
+  if (isHoneypotFilled(website)) {
+    return jsonOrRedirect(
+      request,
+      expectsJson,
+      { code: "request_failed" },
+      { status: 400 },
+    )
+  }
+
+  const clientIp = getClientIp(request)
+  const rateLimit = checkRateLimit({
+    key: `newsletter:${clientIp}`,
+    limit: RATE_LIMIT_MAX_REQUESTS,
+    windowMs: RATE_LIMIT_WINDOW_MS,
+  })
+
+  if (!rateLimit.allowed) {
+    return jsonOrRedirect(
+      request,
+      expectsJson,
+      { code: "request_failed" },
+      { status: 429 },
+    )
+  }
+
+  if (!EMAIL_PATTERN.test(email) || email.length > MAX_EMAIL_LENGTH) {
     return jsonOrRedirect(
       request,
       expectsJson,

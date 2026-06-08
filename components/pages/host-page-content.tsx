@@ -1,11 +1,23 @@
 "use client"
 
+import { useState } from "react"
 import { Package, Users, Star } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 
+type FormStatus = "idle" | "submitting" | "success" | "error"
+
+const MAX_NAME_LENGTH = 100
+const MAX_EMAIL_LENGTH = 254
+const MAX_VENUE_LENGTH = 140
+const MAX_MESSAGE_LENGTH = 2000
+
 export function HostPageContent() {
   const { t } = useLanguage()
+
+  const [status, setStatus] = useState<FormStatus>("idle")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [fields, setFields] = useState({ name: "", email: "", venue: "", message: "" })
 
   const benefitCards = [
     {
@@ -43,17 +55,55 @@ export function HostPageContent() {
     },
   ]
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    setStatus("submitting")
+    setErrorMessage("")
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: String(formData.get("name") ?? ""),
+          email: String(formData.get("email") ?? ""),
+          venue: String(formData.get("venue") ?? ""),
+          message: String(formData.get("message") ?? ""),
+          website: String(formData.get("website") ?? ""),
+        }),
+      })
+
+      if (res.ok) {
+        setStatus("success")
+        setFields({ name: "", email: "", venue: "", message: "" })
+      } else {
+        const data = (await res.json().catch(() => null)) as { code?: string } | null
+        const code = data?.code ?? "request_failed"
+        setErrorMessage(
+          code === "validation_error"
+            ? "Please check your entries and try again."
+            : "Something went wrong. Please try again or email us directly.",
+        )
+        setStatus("error")
+      }
+    } catch {
+      setErrorMessage("Something went wrong. Please try again or email us directly.")
+      setStatus("error")
+    }
+  }
+
   return (
     <>
       <section className="bg-gradient-to-br from-avanza-teal to-avanza-green py-20">
         <FadeIn className="mx-auto max-w-4xl px-6 text-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-primary-foreground/70">
+          <p className="text-sm font-bold uppercase tracking-widest text-avanza-dark/70">
             {t.hostPage.eyebrow}
           </p>
-          <h1 className="mt-3 text-4xl font-extrabold text-primary-foreground md:text-5xl">
+          <h1 className="mt-3 text-4xl font-extrabold text-avanza-dark md:text-5xl">
             {t.hostPage.title}
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-primary-foreground/90">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-avanza-dark/80">
             {t.hostPage.description}
           </p>
         </FadeIn>
@@ -144,45 +194,117 @@ export function HostPageContent() {
             </p>
           </FadeIn>
           <FadeIn delay={100}>
-            <form
-              action="mailto:liam@avanzastem.org"
-              method="POST"
-              encType="text/plain"
-              className="mt-10 flex flex-col gap-4"
-            >
-              <input
-                type="text"
-                name="name"
-                placeholder={t.hostPage.namePlaceholder}
-                required
-                className="w-full rounded-xl border border-primary-foreground/20 bg-primary-foreground/8 px-5 py-3.5 text-primary-foreground placeholder:text-primary-foreground/40 focus:border-avanza-green focus:outline-none"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder={t.hostPage.emailPlaceholder}
-                required
-                className="w-full rounded-xl border border-primary-foreground/20 bg-primary-foreground/8 px-5 py-3.5 text-primary-foreground placeholder:text-primary-foreground/40 focus:border-avanza-green focus:outline-none"
-              />
-              <input
-                type="text"
-                name="venue"
-                placeholder={t.hostPage.venuePlaceholder}
-                className="w-full rounded-xl border border-primary-foreground/20 bg-primary-foreground/8 px-5 py-3.5 text-primary-foreground placeholder:text-primary-foreground/40 focus:border-avanza-green focus:outline-none"
-              />
-              <textarea
-                name="message"
-                rows={4}
-                placeholder={t.hostPage.messagePlaceholder}
-                className="w-full resize-none rounded-xl border border-primary-foreground/20 bg-primary-foreground/8 px-5 py-3.5 text-primary-foreground placeholder:text-primary-foreground/40 focus:border-avanza-green focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="mt-2 rounded-full bg-avanza-green px-8 py-4 text-lg font-bold text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            <div aria-live="polite" aria-atomic="true" className="mt-6">
+              {status === "success" && (
+                <div className="rounded-xl bg-avanza-green/20 px-5 py-4 text-center text-sm font-semibold text-avanza-green">
+                  Message sent! We&apos;ll be in touch soon.
+                </div>
+              )}
+              {status === "error" && errorMessage && (
+                <div className="rounded-xl bg-red-500/20 px-5 py-4 text-center text-sm font-semibold text-red-400">
+                  {errorMessage}
+                </div>
+              )}
+            </div>
+
+            {status !== "success" && (
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                className="mt-4 flex flex-col gap-4"
               >
-                {t.hostPage.sendMessage}
-              </button>
-            </form>
+                <div aria-hidden="true" className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden">
+                  <label htmlFor="host-website">Website</label>
+                  <input
+                    id="host-website"
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="host-name" className="sr-only">
+                    {t.hostPage.namePlaceholder}
+                  </label>
+                  <input
+                    id="host-name"
+                    type="text"
+                    name="name"
+                    value={fields.name}
+                    onChange={(e) => setFields((f) => ({ ...f, name: e.target.value }))}
+                    placeholder={t.hostPage.namePlaceholder}
+                    required
+                    aria-required="true"
+                    maxLength={MAX_NAME_LENGTH}
+                    disabled={status === "submitting"}
+                    className="w-full rounded-xl border border-primary-foreground/20 bg-primary-foreground/8 px-5 py-3.5 text-primary-foreground placeholder:text-primary-foreground/40 focus-visible:border-avanza-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-dark disabled:opacity-60"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="host-email" className="sr-only">
+                    {t.hostPage.emailPlaceholder}
+                  </label>
+                  <input
+                    id="host-email"
+                    type="email"
+                    name="email"
+                    value={fields.email}
+                    onChange={(e) => setFields((f) => ({ ...f, email: e.target.value }))}
+                    placeholder={t.hostPage.emailPlaceholder}
+                    required
+                    aria-required="true"
+                    maxLength={MAX_EMAIL_LENGTH}
+                    disabled={status === "submitting"}
+                    className="w-full rounded-xl border border-primary-foreground/20 bg-primary-foreground/8 px-5 py-3.5 text-primary-foreground placeholder:text-primary-foreground/40 focus-visible:border-avanza-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-dark disabled:opacity-60"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="host-venue" className="sr-only">
+                    {t.hostPage.venuePlaceholder}
+                  </label>
+                  <input
+                    id="host-venue"
+                    type="text"
+                    name="venue"
+                    value={fields.venue}
+                    onChange={(e) => setFields((f) => ({ ...f, venue: e.target.value }))}
+                    placeholder={t.hostPage.venuePlaceholder}
+                    required
+                    aria-required="true"
+                    maxLength={MAX_VENUE_LENGTH}
+                    disabled={status === "submitting"}
+                    className="w-full rounded-xl border border-primary-foreground/20 bg-primary-foreground/8 px-5 py-3.5 text-primary-foreground placeholder:text-primary-foreground/40 focus-visible:border-avanza-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-dark disabled:opacity-60"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="host-message" className="sr-only">
+                    {t.hostPage.messagePlaceholder}
+                  </label>
+                  <textarea
+                    id="host-message"
+                    name="message"
+                    value={fields.message}
+                    onChange={(e) => setFields((f) => ({ ...f, message: e.target.value }))}
+                    rows={4}
+                    placeholder={t.hostPage.messagePlaceholder}
+                    required
+                    aria-required="true"
+                    maxLength={MAX_MESSAGE_LENGTH}
+                    disabled={status === "submitting"}
+                    className="w-full resize-none rounded-xl border border-primary-foreground/20 bg-primary-foreground/8 px-5 py-3.5 text-primary-foreground placeholder:text-primary-foreground/40 focus-visible:border-avanza-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-dark disabled:opacity-60"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={status === "submitting"}
+                  className="mt-2 rounded-full bg-avanza-green px-8 py-4 text-lg font-bold text-avanza-dark shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-green disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+                >
+                  {status === "submitting" ? "Sending…" : t.hostPage.sendMessage}
+                </button>
+              </form>
+            )}
+
             <p className="mt-6 text-center text-sm text-primary-foreground/50">
               {t.hostPage.preferEmail}{" "}
               <a href="mailto:liam@avanzastem.org" className="text-avanza-green transition-colors hover:text-avanza-teal">

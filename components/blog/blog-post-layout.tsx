@@ -128,7 +128,7 @@ export function PostNumberedList({ items }: { items: { title: string; body: stri
     <ol className="space-y-4">
       {items.map((item, i) => (
         <li key={item.title} className="flex gap-4">
-          <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-avanza-green text-xs font-bold text-white">
+          <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-avanza-green text-xs font-bold text-avanza-dark">
             {i + 1}
           </span>
           <div>

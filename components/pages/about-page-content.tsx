@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Heart, Lightbulb, Users, ArrowRight } from "lucide-react"
+import { Heart, Lightbulb, Users, ArrowRight, HandHeart } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { LightboxImage } from "@/components/ui/lightbox-image"
@@ -35,13 +35,13 @@ export function AboutPageContent() {
     <>
       <section className="bg-gradient-to-br from-avanza-green to-avanza-teal py-20">
         <FadeIn className="mx-auto max-w-4xl px-6 text-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-primary-foreground/70">
+          <p className="text-sm font-bold uppercase tracking-widest text-avanza-dark/70">
             {t.aboutPage.eyebrow}
           </p>
-          <h1 className="mt-3 text-4xl font-extrabold text-primary-foreground md:text-5xl">
+          <h1 className="mt-3 text-4xl font-extrabold text-avanza-dark md:text-5xl">
             {t.aboutPage.title}
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-primary-foreground/90">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-avanza-dark/80">
             {t.aboutPage.description}
           </p>
         </FadeIn>
@@ -132,6 +132,56 @@ export function AboutPageContent() {
               </a>
             </p>
           </FadeIn>
+        </div>
+      </section>
+
+      {/* GET INVOLVED + SUPPORT */}
+      <section className="bg-background py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid items-start gap-14 lg:grid-cols-2">
+            <FadeIn>
+              <span className="text-xs font-bold uppercase tracking-[0.18em] text-avanza-green">
+                {t.aboutPage.getInvolvedEyebrow}
+              </span>
+              <h2 className="mt-3 text-3xl font-extrabold text-foreground md:text-4xl">
+                {t.aboutPage.getInvolvedTitle}
+              </h2>
+              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+                {t.aboutPage.getInvolvedDesc}
+              </p>
+              <p className="mt-6 font-semibold text-foreground">{t.aboutPage.getInvolvedWho}</p>
+              <ul className="mt-3 space-y-2">
+                {t.aboutPage.getInvolvedItems.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-muted-foreground">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-avanza-green" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-sm italic text-muted-foreground">{t.aboutPage.getInvolvedCommitment}</p>
+              <a
+                href="mailto:liam@avanzastem.org"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-avanza-dark shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              >
+                <HandHeart className="h-4 w-4" />
+                {t.aboutPage.getInvolvedCTA}
+              </a>
+            </FadeIn>
+            <FadeIn delay={100}>
+              <div className="rounded-2xl border border-border bg-secondary p-8 shadow-sm">
+                <h3 className="text-xl font-extrabold text-foreground">{t.aboutPage.supportTitle}</h3>
+                <p className="mt-3 text-base leading-relaxed text-muted-foreground">{t.aboutPage.supportDesc}</p>
+                <p className="mt-5 text-base text-foreground">{t.aboutPage.supportCTA}</p>
+                <a
+                  href="mailto:liam@avanzastem.org"
+                  className="mt-3 inline-flex items-center gap-1.5 font-bold text-avanza-green transition-colors hover:text-avanza-teal"
+                >
+                  {t.aboutPage.supportEmail}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 

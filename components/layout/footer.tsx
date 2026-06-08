@@ -27,6 +27,7 @@ export function Footer() {
             <ul className="space-y-2">
               {[
                 { href: "/", label: t.nav.home },
+                { href: "/curriculums", label: t.nav.curriculums },
                 { href: "/projects", label: t.nav.projects },
                 { href: "/blog", label: t.nav.blog },
                 { href: "/workshops", label: t.nav.workshops },
@@ -96,6 +97,14 @@ export function Footer() {
         <div className="mt-12 border-t border-primary-foreground/10 pt-8 text-center">
           <p className="text-sm text-primary-foreground/50">
             © 2025–{new Date().getFullYear()} {t.footer.copyright}
+          </p>
+          <p className="mt-3">
+            <Link
+              href="/privacy"
+              className="text-xs text-primary-foreground/40 transition-colors hover:text-avanza-green"
+            >
+              {t.footer.privacy}
+            </Link>
           </p>
         </div>
       </div>
