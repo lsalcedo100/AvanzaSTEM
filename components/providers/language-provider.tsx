@@ -1,10 +1,9 @@
 "use client"
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react"
-import { type Language, type Translations, translations } from "@/i18n/translations"
+import { type Language, type Translations, translations, VALID_LANGUAGES } from "@/i18n/translations"
 
 const COOKIE_NAME = "avanza-lang"
-const VALID_LANGUAGES: Language[] = ["en", "es", "zh"]
 
 function getStoredLanguage(): Language {
   if (typeof document === "undefined") return "en"

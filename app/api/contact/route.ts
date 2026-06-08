@@ -3,6 +3,7 @@ import { checkRateLimit, getClientIp, isHoneypotFilled } from "../_utils/form-sa
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const DEFAULT_RECIPIENT_EMAIL = "liam@avanzastem.org"
+// Launch note: contact@avanzastem.org and newsletter@avanzastem.org must be verified in Resend DNS before launch.
 const DEFAULT_FROM_EMAIL = "Avanza STEM <contact@avanzastem.org>"
 const RESEND_API_URL = "https://api.resend.com/emails"
 const RESEND_USER_AGENT = "avanza-stem-contact/1.0"
@@ -15,6 +16,18 @@ const MAX_MESSAGE_LENGTH = 2000
 
 function genericError(status = 400) {
   return NextResponse.json({ code: "request_failed" }, { status })
+}
+
+function isSenderDomainSetupError(status: number, data: { message?: string; name?: string } | null) {
+  const message = data?.message?.toLowerCase() ?? ""
+
+  return (
+    status === 403 &&
+    data?.name === "validation_error" &&
+    (message.includes("verify a domain") ||
+      message.includes("domain is not verified") ||
+      message.includes("domain not verified"))
+  )
 }
 
 function escapeHtml(value: string) {
@@ -171,11 +184,7 @@ export async function POST(request: Request) {
         data,
       })
 
-      if (
-        response.status === 403 &&
-        data?.name === "validation_error" &&
-        data.message?.includes("verify a domain")
-      ) {
+      if (isSenderDomainSetupError(response.status, data)) {
         return NextResponse.json({ code: "sender_domain_not_verified" }, { status: 502 })
       }
 

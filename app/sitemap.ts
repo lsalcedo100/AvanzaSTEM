@@ -12,7 +12,6 @@ const staticRoutes = [
   { path: '/blog', priority: 0.8, changeFrequency: 'weekly' },
   { path: '/workshops', priority: 0.8, changeFrequency: 'weekly' },
   { path: '/find-a-workshop', priority: 0.7, changeFrequency: 'monthly' },
-  { path: '/workshop-finder', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/host', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/gallery', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/curriculums', priority: 0.8, changeFrequency: 'monthly' },

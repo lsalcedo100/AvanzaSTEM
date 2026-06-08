@@ -1,34 +1,28 @@
 import type { Metadata } from "next"
-import { cookies } from "next/headers"
 import type { Language } from "@/i18n/translations"
 import { AboutPageContent } from "@/components/pages/about-page-content"
-
-const VALID_LANGUAGES: Language[] = ["en", "es", "zh"]
+import { getLanguage } from "@/lib/get-language"
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
     title: "About | Avanza STEM",
     description:
-      "Learn about Avanza STEM - a free STEM education initiative for young Hispanic students, founded in New Jersey.",
+      "Learn about Avanza STEM, a youth-led volunteer program bringing free hands-on STEM workshops and beginner-friendly projects to students.",
   },
   es: {
     title: "Nosotros | Avanza STEM",
     description:
-      "Conoce Avanza STEM, una iniciativa gratuita de educación STEM para jóvenes estudiantes hispanos fundada en Nueva Jersey.",
+      "Conoce Avanza STEM, un programa juvenil de voluntariado que ofrece talleres STEM practicos gratuitos y proyectos para principiantes.",
   },
   zh: {
     title: "关于我们 | Avanza STEM",
     description:
-      "了解 Avanza STEM——一个为新泽西州年轻西班牙裔学生提供免费 STEM 教育的公益项目。",
+      "了解 Avanza STEM，一个由青年主导的志愿项目，为学生带来免费的动手 STEM 工作坊和适合初学者的项目。",
   },
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cookieStore = await cookies()
-  const rawLang = cookieStore.get("avanza-lang")?.value
-  const language: Language = VALID_LANGUAGES.includes(rawLang as Language)
-    ? (rawLang as Language)
-    : "en"
+  const language = await getLanguage()
   return metadataByLanguage[language]
 }
 

@@ -1,9 +1,7 @@
-import { cookies } from "next/headers"
 import type { Metadata } from "next"
 import { localizedBlogArticles, type BlogSlug } from "@/features/blog/posts"
-import type { Language } from "@/i18n/translations"
+import { getLanguage } from "@/lib/get-language"
 
-const VALID_LANGUAGES: Language[] = ["en", "es", "zh"]
 const BASE_URL = "https://avanzastem.org"
 
 export async function generateBlogPostMetadata(
@@ -11,11 +9,7 @@ export async function generateBlogPostMetadata(
   description: string,
   datePublished: string
 ): Promise<Metadata> {
-  const cookieStore = await cookies()
-  const rawLang = cookieStore.get("avanza-lang")?.value
-  const lang: Language = VALID_LANGUAGES.includes(rawLang as Language)
-    ? (rawLang as Language)
-    : "en"
+  const lang = await getLanguage()
 
   const article =
     (lang !== "en" ? localizedBlogArticles[lang][slug] : undefined) ??
