@@ -1,6 +1,11 @@
 import { notFound } from "next/navigation"
 import { SimpleCircuitLightGuide } from "@/features/projects/components/simple-circuit-light-guide"
 import { getProjectGuide } from "@/features/projects/data"
+import { generateProjectMetadata } from "@/features/projects/metadata"
+
+export async function generateMetadata() {
+  return generateProjectMetadata("simple-circuit-light")
+}
 
 export default function SimpleCircuitLightPage() {
   const project = getProjectGuide("simple-circuit-light")

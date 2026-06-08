@@ -179,9 +179,9 @@ export function AtomBuilder() {
                     className={cn(
                       "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest shadow-sm",
                       isStableLike
-                        ? "bg-avanza-green text-white"
+                        ? "bg-avanza-green text-avanza-dark"
                         : isNeutral
-                          ? "bg-avanza-orange text-white"
+                          ? "bg-avanza-orange text-avanza-dark"
                           : "bg-avanza-purple text-white",
                     )}
                   >
@@ -252,7 +252,7 @@ function ParticleRow({
           type="button"
           onClick={onInc}
           aria-label={`${label} +1`}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-avanza-green text-white transition-colors hover:bg-emerald-400 active:scale-95"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-avanza-green text-avanza-dark transition-colors hover:bg-emerald-400 active:scale-95"
         >
           <Plus className="h-4 w-4" />
         </button>

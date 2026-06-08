@@ -11,6 +11,8 @@ const MAX_LINES = 10
 const PYODIDE_VERSION = "0.26.4"
 const PYODIDE_INDEX_URL = `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`
 const PYODIDE_SCRIPT_URL = `${PYODIDE_INDEX_URL}pyodide.js`
+const PYODIDE_SCRIPT_INTEGRITY =
+  "sha384-i3R37b3tF+HWudsUf1VSEOY2YxwSNMqY8DQa9Z0O3xh+NkJ9o+yjcGyIi5huj+nB"
 
 type PyodideAPI = {
   runPythonAsync: (code: string) => Promise<unknown>
@@ -64,6 +66,9 @@ function loadPyodideOnce(): Promise<PyodideAPI> {
     const script = document.createElement("script")
     script.src = PYODIDE_SCRIPT_URL
     script.async = true
+    script.crossOrigin = "anonymous"
+    script.integrity = PYODIDE_SCRIPT_INTEGRITY
+    script.referrerPolicy = "no-referrer"
     script.dataset.avanzaPyodide = "true"
     script.addEventListener("load", finish, { once: true })
     script.addEventListener(
@@ -286,7 +291,7 @@ export function PythonPlayground() {
                     onClick={handleRun}
                     disabled={isBusy || overLimit || code.trim().length === 0}
                     className={cn(
-                      "group inline-flex items-center gap-2 rounded-full bg-avanza-green px-5 py-2.5 text-sm font-extrabold text-white shadow-[0_8px_24px_-10px_rgba(46,204,113,0.7)] transition-all duration-200",
+                      "group inline-flex items-center gap-2 rounded-full bg-avanza-green px-5 py-2.5 text-sm font-extrabold text-avanza-dark shadow-[0_8px_24px_-10px_rgba(46,204,113,0.7)] transition-all duration-200",
                       "hover:scale-[1.04] hover:bg-emerald-400",
                       "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100",
                     )}
@@ -326,9 +331,9 @@ export function PythonPlayground() {
                 </span>
                 {(Object.keys(snippets) as SnippetKey[]).map((key, i) => {
                   const tones = [
-                    "bg-avanza-green text-white",
+                    "bg-avanza-green text-avanza-dark",
                     "bg-avanza-purple text-white",
-                    "bg-avanza-orange text-white",
+                    "bg-avanza-orange text-avanza-dark",
                   ]
                   const tilts = ["-rotate-[1.4deg]", "rotate-[1deg]", "-rotate-[0.6deg]"]
                   const isActive = activeSnippet === key

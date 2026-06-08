@@ -1,5 +1,6 @@
 "use client"
 
+import "leaflet/dist/leaflet.css"
 import {
   useCallback,
   useEffect,
@@ -27,7 +28,6 @@ type Library = {
   zip: string
   lat: number
   lng: number
-  upcoming?: string
   status: "active" | "placeholder"
 }
 
@@ -39,7 +39,6 @@ const LIBRARIES: Library[] = [
     zip: "07011",
     lat: 40.866,
     lng: -74.163,
-    upcoming: "Bridge Building Challenge — Sat 10am",
     status: "active",
   },
   {
@@ -49,12 +48,11 @@ const LIBRARIES: Library[] = [
     zip: "07012",
     lat: 40.881,
     lng: -74.181,
-    upcoming: "Intro to Python — Sat 2pm",
     status: "active",
   },
   {
     id: "newark",
-    name: "Newark Public Library",
+    name: "Newark area",
     city: "Newark",
     zip: "07102",
     lat: 40.738,
@@ -63,7 +61,7 @@ const LIBRARIES: Library[] = [
   },
   {
     id: "jersey-city",
-    name: "Jersey City Free Public Library",
+    name: "Jersey City area",
     city: "Jersey City",
     zip: "07302",
     lat: 40.717,
@@ -72,7 +70,7 @@ const LIBRARIES: Library[] = [
   },
   {
     id: "paterson",
-    name: "Paterson Public Library",
+    name: "Paterson area",
     city: "Paterson",
     zip: "07505",
     lat: 40.916,
@@ -81,7 +79,7 @@ const LIBRARIES: Library[] = [
   },
   {
     id: "edison",
-    name: "Edison Township Library",
+    name: "Edison area",
     city: "Edison",
     zip: "08820",
     lat: 40.518,
@@ -90,7 +88,7 @@ const LIBRARIES: Library[] = [
   },
   {
     id: "trenton",
-    name: "Trenton Free Public Library",
+    name: "Trenton area",
     city: "Trenton",
     zip: "08608",
     lat: 40.220,
@@ -99,7 +97,7 @@ const LIBRARIES: Library[] = [
   },
   {
     id: "atlantic-city",
-    name: "Atlantic City Free Public Library",
+    name: "Atlantic City area",
     city: "Atlantic City",
     zip: "08401",
     lat: 39.364,
@@ -257,6 +255,8 @@ function PromptHero({
   onSkip: () => void
   inputRef: React.RefObject<HTMLInputElement | null>
 }) {
+  const currentSites = LIBRARIES.filter((lib) => lib.status === "active")
+
   return (
     <section className="relative flex min-h-[calc(100vh-80px)] items-center overflow-hidden bg-gradient-to-br from-avanza-teal via-[#1da085] to-avanza-green py-16">
       <div
@@ -281,23 +281,27 @@ function PromptHero({
         <FadeIn>
           <Link
             href="/"
-            className="mb-10 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-bold text-primary-foreground/90 backdrop-blur-sm transition-colors hover:bg-white/25"
+            className="mb-10 inline-flex items-center gap-1.5 rounded-full bg-white/25 px-3.5 py-1.5 text-xs font-bold text-avanza-dark backdrop-blur-sm transition-colors hover:bg-white/35"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t.home.finderBackToHome}
           </Link>
 
-          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-white/45 bg-white/15 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.2em] text-primary-foreground backdrop-blur-sm">
+          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/35 bg-white/25 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.2em] text-avanza-dark backdrop-blur-sm">
             <MapPin className="h-3.5 w-3.5" />
             {t.home.finderEyebrow}
           </span>
 
-          <h1 className="mt-7 text-balance text-5xl font-extrabold leading-[1.02] text-primary-foreground italic md:text-7xl">
+          <h1 className="mt-7 text-balance text-5xl font-extrabold leading-[1.02] text-avanza-dark italic md:text-7xl">
             {t.home.finderHeadline}
           </h1>
 
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-primary-foreground/90 md:text-xl">
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-avanza-dark/80 md:text-xl">
             {t.home.finderSubhead}
+          </p>
+
+          <p className="mx-auto mt-5 max-w-xl rounded-2xl border border-avanza-dark/20 bg-white/25 px-4 py-3 text-sm font-semibold leading-relaxed text-avanza-dark/80 shadow-[0_12px_35px_-25px_rgba(26,26,46,0.55)] backdrop-blur-sm">
+            {t.home.finderCurrentNote}
           </p>
 
           <form onSubmit={onSubmit} className="mt-10">
@@ -357,12 +361,12 @@ function PromptHero({
           <div className="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-foreground/75">
             <span className="inline-flex items-center gap-1.5">
               <Sparkles className="h-3 w-3" />
-              {LIBRARIES.length} libraries · NJ
+              {currentSites.length} {t.home.finderCurrentCount} · Clifton, NJ
             </span>
             <span className="hidden h-1 w-1 rounded-full bg-primary-foreground/40 sm:inline-block" />
             <span>Free, always</span>
             <span className="hidden h-1 w-1 rounded-full bg-primary-foreground/40 sm:inline-block" />
-            <span>Bilingual</span>
+            <span>{t.home.finderLanguageNote}</span>
           </div>
         </FadeIn>
       </div>
@@ -389,6 +393,9 @@ function MapView({
   onSelect: (id: string | null) => void
   onTryAnother: () => void
 }) {
+  const currentSites = libraries.filter((lib) => lib.status === "active")
+  const planningAreas = libraries.filter((lib) => lib.status === "placeholder")
+
   return (
     <>
       {/* Compact context bar */}
@@ -441,6 +448,11 @@ function MapView({
               coming: t.home.finderLegendComing,
               you: t.home.finderLegendYou,
             }}
+            labels={{
+              noUpcomingDate: t.home.finderNoUpcomingDate,
+              planningArea: t.home.finderPlanningArea,
+              notScheduled: t.home.finderNotScheduled,
+            }}
           />
 
           <div className="flex flex-col gap-4 bg-white p-6 sm:p-8">
@@ -449,69 +461,36 @@ function MapView({
                 {submittedZip ? t.home.finderResultsTitle : t.home.finderShowingAll}
               </p>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {libraries.length} libraries
+                {currentSites.length} {t.home.finderCurrentCount} · {planningAreas.length} {t.home.finderPlanningCount}
               </p>
             </div>
 
             <p className="text-xs text-muted-foreground">
               {t.home.finderSelectMarker}
             </p>
+            <p className="text-xs text-avanza-green/80 font-semibold">
+              {t.home.finderListNote}
+            </p>
 
-            <ul className="space-y-3">
-              {libraries.map((lib, i) => {
-                const isActive = lib.id === activeId
-                const isClosest = submittedZip !== null && i === 0
-                return (
-                  <li key={lib.id}>
-                    <button
-                      type="button"
-                      onClick={() => onSelect(lib.id)}
-                      aria-pressed={isActive}
-                      className={`group flex w-full items-start gap-4 rounded-2xl border-2 p-4 text-left transition-all duration-200 ${
-                        isActive
-                          ? "border-avanza-green bg-avanza-green/8 shadow-[0_8px_24px_-12px_rgba(46,204,113,0.45)]"
-                          : "border-avanza-dark/10 bg-white hover:border-avanza-dark/25 hover:bg-secondary"
-                      }`}
-                    >
-                      <span
-                        className={`mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${
-                          isClosest
-                            ? "bg-avanza-green text-white"
-                            : lib.status === "active"
-                              ? "bg-avanza-orange/15 text-avanza-orange"
-                              : "bg-avanza-dark/10 text-avanza-dark/60"
-                        }`}
-                      >
-                        {i + 1}
-                      </span>
-                      <div className="flex-1">
-                        <p className="text-sm font-extrabold leading-snug text-foreground">
-                          {lib.name}
-                        </p>
-                        <p className="mt-0.5 text-xs text-muted-foreground">
-                          {lib.city}, NJ · {t.home.finderZipShort} {lib.zip}
-                        </p>
-                        {lib.upcoming ? (
-                          <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-avanza-green/10 px-2 py-0.5 text-[11px] font-bold text-avanza-green">
-                            <CalendarDays className="h-3 w-3" />
-                            {lib.upcoming}
-                          </p>
-                        ) : (
-                          <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                            {t.home.finderTbd}
-                          </p>
-                        )}
-                      </div>
-                      {typeof lib.miles === "number" && (
-                        <span className="shrink-0 rounded-full bg-avanza-dark/5 px-2.5 py-1 text-[11px] font-bold text-avanza-dark">
-                          {lib.miles} {t.home.finderMiles}
-                        </span>
-                      )}
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
+            <div className="space-y-6">
+              <LocationSection
+                title={t.home.finderCurrentSites}
+                libraries={currentSites}
+                activeId={activeId}
+                submittedZip={submittedZip}
+                onSelect={onSelect}
+                t={t}
+              />
+
+              <LocationSection
+                title={t.home.finderInterestSites}
+                libraries={planningAreas}
+                activeId={activeId}
+                submittedZip={submittedZip}
+                onSelect={onSelect}
+                t={t}
+              />
+            </div>
 
             <a
               href="mailto:liam@avanzastem.org?subject=Bring%20Avanza%20STEM%20to%20our%20library"
@@ -532,15 +511,20 @@ function MapView({
                 <p className="mt-1 text-xs text-primary-foreground/70">
                   {t.home.finderZipShort} {active.zip}
                 </p>
-                {active.upcoming ? (
+                {active.status === "active" ? (
                   <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold">
                     <CalendarDays className="h-3 w-3" />
-                    {active.upcoming}
+                    {t.home.finderNoUpcomingDate}
                   </p>
                 ) : (
-                  <p className="mt-3 text-[11px] font-semibold uppercase tracking-wide text-primary-foreground/60">
-                    {t.home.finderTbd}
-                  </p>
+                  <div className="mt-3 space-y-1.5">
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-primary-foreground/70">
+                      {t.home.finderPlanningArea}
+                    </p>
+                    <p className="text-xs text-primary-foreground/70">
+                      {t.home.finderNotScheduled}
+                    </p>
+                  </div>
                 )}
                 {typeof active.miles === "number" && (
                   <p className="mt-3 text-xs text-primary-foreground/70">
@@ -553,6 +537,96 @@ function MapView({
         </div>
       </section>
     </>
+  )
+}
+
+function LocationSection({
+  title,
+  libraries,
+  activeId,
+  submittedZip,
+  onSelect,
+  t,
+}: {
+  title: string
+  libraries: (Library & { miles?: number })[]
+  activeId: string | null
+  submittedZip: string | null
+  onSelect: (id: string | null) => void
+  t: ReturnType<typeof useLanguage>["t"]
+}) {
+  return (
+    <section aria-labelledby={`finder-${title.replace(/\s+/g, "-").toLowerCase()}`}>
+      <h2
+        id={`finder-${title.replace(/\s+/g, "-").toLowerCase()}`}
+        className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-avanza-dark/70"
+      >
+        {title}
+      </h2>
+
+      <ul className="mt-3 space-y-3" aria-label={title}>
+        {libraries.map((lib, i) => {
+          const isActive = lib.id === activeId
+          const isClosest = submittedZip !== null && i === 0
+          const isCurrentSite = lib.status === "active"
+
+          return (
+            <li key={lib.id}>
+              <button
+                type="button"
+                onClick={() => onSelect(lib.id)}
+                aria-pressed={isActive}
+                className={`group flex w-full items-start gap-4 rounded-2xl border-2 p-4 text-left transition-all duration-200 ${
+                  isActive
+                    ? "border-avanza-green bg-avanza-green/8 shadow-[0_8px_24px_-12px_rgba(46,204,113,0.45)]"
+                    : "border-avanza-dark/10 bg-white hover:border-avanza-dark/25 hover:bg-secondary"
+                }`}
+              >
+                <span
+                  className={`mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${
+                    isClosest
+                      ? "bg-avanza-green text-avanza-dark"
+                      : isCurrentSite
+                        ? "bg-avanza-orange/15 text-avanza-orange"
+                        : "bg-avanza-dark/10 text-avanza-dark/60"
+                  }`}
+                >
+                  {i + 1}
+                </span>
+                <div className="flex-1">
+                  <p className="text-sm font-extrabold leading-snug text-foreground">
+                    {lib.name}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {lib.city}, NJ · {t.home.finderZipShort} {lib.zip}
+                  </p>
+                  {isCurrentSite ? (
+                    <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-avanza-green/10 px-2 py-0.5 text-[11px] font-bold text-avanza-green">
+                      <CalendarDays className="h-3 w-3" />
+                      {t.home.finderNoUpcomingDate}
+                    </p>
+                  ) : (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      <span className="rounded-full bg-avanza-dark/5 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-avanza-dark/70">
+                        {t.home.finderPlanningArea}
+                      </span>
+                      <span className="rounded-full bg-avanza-green/10 px-2 py-0.5 text-[11px] font-bold text-avanza-green">
+                        {t.home.finderHelpBring}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                {typeof lib.miles === "number" && (
+                  <span className="shrink-0 rounded-full bg-avanza-dark/5 px-2.5 py-1 text-[11px] font-bold text-avanza-dark">
+                    {lib.miles} {t.home.finderMiles}
+                  </span>
+                )}
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+    </section>
   )
 }
 
@@ -569,6 +643,7 @@ function LeafletMap({
   loadingLabel,
   errorLabel,
   legend,
+  labels,
 }: {
   libraries: (Library & { miles?: number })[]
   userLatLng: { lat: number; lng: number } | null
@@ -578,9 +653,11 @@ function LeafletMap({
   loadingLabel: string
   errorLabel: string
   legend: { active: string; coming: string; you: string }
+  labels: { noUpcomingDate: string; planningArea: string; notScheduled: string }
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<unknown>(null)
+  const leafletRef = useRef<unknown>(null)
   const markersRef = useRef<Map<string, unknown>>(new Map())
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading")
 
@@ -594,64 +671,12 @@ function LeafletMap({
   useEffect(() => {
     let cancelled = false
 
-    const ensureCss = () =>
-      new Promise<void>((resolve) => {
-        const existing = document.getElementById(
-          "leaflet-cdn-css",
-        ) as HTMLLinkElement | null
-        if (existing) {
-          // If the CSS link is already in the DOM but not yet loaded, wait.
-          if ((existing as HTMLLinkElement & { sheet?: CSSStyleSheet }).sheet) {
-            resolve()
-          } else {
-            existing.addEventListener("load", () => resolve(), { once: true })
-            existing.addEventListener("error", () => resolve(), { once: true })
-          }
-          return
-        }
-        const link = document.createElement("link")
-        link.id = "leaflet-cdn-css"
-        link.rel = "stylesheet"
-        link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        link.crossOrigin = "anonymous"
-        link.addEventListener("load", () => resolve(), { once: true })
-        link.addEventListener("error", () => resolve(), { once: true })
-        document.head.appendChild(link)
-      })
-
-    const loadJs = () =>
-      new Promise<unknown>((resolve, reject) => {
-        const w = window as unknown as { L?: unknown }
-        if (w.L) return resolve(w.L)
-        const existing = document.getElementById(
-          "leaflet-cdn-js",
-        ) as HTMLScriptElement | null
-        if (existing) {
-          existing.addEventListener("load", () => resolve(w.L))
-          existing.addEventListener("error", () =>
-            reject(new Error("leaflet load failed")),
-          )
-          return
-        }
-        const script = document.createElement("script")
-        script.id = "leaflet-cdn-js"
-        script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        script.async = true
-        script.crossOrigin = "anonymous"
-        script.onload = () => resolve(w.L)
-        script.onerror = () => reject(new Error("leaflet load failed"))
-        document.head.appendChild(script)
-      })
-
-    // Wait for CSS to actually apply before booting the map. Without the CSS,
-    // tile <img> elements are not absolutely positioned and render flowed
-    // across the page in a broken grid of squares.
-    Promise.all([ensureCss(), loadJs()])
-      .then(([, L]) => L)
-      .then((L) => {
+    import("leaflet")
+      .then((mod) => {
         if (cancelled || !containerRef.current) return
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const Lx = L as any
+        const Lx = mod as any
+        leafletRef.current = Lx
 
         const map = Lx
           .map(containerRef.current, {
@@ -699,9 +724,8 @@ function LeafletMap({
   // Render / re-render markers whenever the library list or selection changes.
   useEffect(() => {
     if (status !== "ready") return
-    const w = window as unknown as { L?: unknown }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const L = w.L as any
+    const L = leafletRef.current as any
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const map = mapRef.current as any
     if (!L || !map) return
@@ -747,7 +771,8 @@ function LeafletMap({
         <div style="min-width:180px;font-family:inherit">
           <p style="margin:0;font-weight:800;font-size:13px;color:#1a1a2e">${escapeHtml(lib.name)}</p>
           <p style="margin:2px 0 0;font-size:11px;color:#6b7280">${escapeHtml(lib.city)}, NJ &middot; ZIP ${escapeHtml(lib.zip)}</p>
-          ${lib.upcoming ? `<p style="margin:6px 0 0;font-size:11px;font-weight:700;color:#2ecc71">${escapeHtml(lib.upcoming)}</p>` : ""}
+          <p style="margin:6px 0 0;font-size:11px;font-weight:700;color:${lib.status === "active" ? "#2ecc71" : "#1a1a2e"}">${escapeHtml(lib.status === "active" ? labels.noUpcomingDate : labels.planningArea)}</p>
+          ${lib.status === "placeholder" ? `<p style="margin:2px 0 0;font-size:11px;color:#6b7280">${escapeHtml(labels.notScheduled)}</p>` : ""}
         </div>`
       marker.bindPopup(popupHtml, {
         closeButton: false,
@@ -785,7 +810,7 @@ function LeafletMap({
         duration: 0.8,
       })
     }
-  }, [libraries, userLatLng, activeId, status])
+  }, [libraries, userLatLng, activeId, status, labels])
 
   // Open popup of the active marker
   useEffect(() => {

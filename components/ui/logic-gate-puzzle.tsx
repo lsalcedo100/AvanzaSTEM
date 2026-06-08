@@ -285,7 +285,7 @@ export function LogicGatePuzzle() {
                       className={cn(
                         "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-extrabold transition",
                         inputs[name]
-                          ? "bg-avanza-green text-white shadow-md"
+                          ? "bg-avanza-green text-avanza-dark shadow-md"
                           : "bg-avanza-dark/12 text-avanza-dark",
                       )}
                     >
@@ -389,7 +389,7 @@ export function LogicGatePuzzle() {
                           v < 0
                             ? "bg-white/10 text-white/40"
                             : v
-                              ? "bg-avanza-green text-white shadow"
+                              ? "bg-avanza-green text-avanza-dark shadow"
                               : "bg-white/15 text-white/85",
                         )}
                       >
@@ -476,7 +476,7 @@ export function LogicGatePuzzle() {
                 </div>
 
                 {allMatch && (
-                  <div className="inline-flex items-center gap-2 self-start rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-sm">
+                  <div className="inline-flex items-center gap-2 self-start rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-avanza-dark shadow-sm">
                     <Sparkles className="h-3.5 w-3.5" />
                     {t.gamesPage.logicSolved}
                   </div>

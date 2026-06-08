@@ -5,9 +5,6 @@ const nextConfig = {
     "172.*.*.*",
     "192.168.*.*",
   ],
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

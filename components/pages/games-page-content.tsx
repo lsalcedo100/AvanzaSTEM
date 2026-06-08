@@ -317,7 +317,7 @@ export function GamesPageContent() {
           </p>
           <a
             href="mailto:liam@avanzastem.org?subject=Game%20idea"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-avanza-green px-7 py-3.5 text-base font-extrabold text-primary-foreground shadow-lg transition-all duration-300 hover:scale-[1.04]"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-avanza-green px-7 py-3.5 text-base font-extrabold text-avanza-dark shadow-lg transition-all duration-300 hover:scale-[1.04]"
           >
             Share an idea
             <ArrowRight className="h-4 w-4" />

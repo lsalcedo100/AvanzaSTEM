@@ -346,7 +346,7 @@ export function CatapultLab() {
                     type="button"
                     onClick={launch}
                     disabled={running}
-                    className="inline-flex items-center gap-2 rounded-full bg-avanza-orange px-5 py-2.5 text-sm font-extrabold text-white shadow-md transition disabled:cursor-not-allowed disabled:opacity-50 hover:enabled:scale-[1.04]"
+                    className="inline-flex items-center gap-2 rounded-full bg-avanza-orange px-5 py-2.5 text-sm font-extrabold text-avanza-dark shadow-md transition disabled:cursor-not-allowed disabled:opacity-50 hover:enabled:scale-[1.04]"
                   >
                     <Play className="h-4 w-4" />
                     {t.gamesPage.catapultFire}
@@ -395,7 +395,7 @@ export function CatapultLab() {
                   <Stat label={t.gamesPage.catapultEnergy} value={`${(0.5 * mass * power * power).toFixed(0)} J`} />
                 </dl>
                 {allHit && shots > 0 && (
-                  <div className="mt-2 inline-flex items-center gap-2 self-start rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">
+                  <div className="mt-2 inline-flex items-center gap-2 self-start rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-avanza-dark">
                     <Target className="h-3.5 w-3.5" />
                     {t.gamesPage.catapultAllHit}
                   </div>

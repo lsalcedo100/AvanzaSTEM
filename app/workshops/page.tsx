@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
@@ -55,14 +56,20 @@ export default function WorkshopsPage() {
     <>
       <section className="bg-gradient-to-br from-avanza-teal to-avanza-green py-20">
         <FadeIn className="mx-auto max-w-5xl px-6 text-center">
-          <p className="text-sm font-bold uppercase tracking-wider text-primary-foreground/80">
+          <p className="text-sm font-bold uppercase tracking-wider text-avanza-dark/70">
             {t.workshopsPage.seriesEyebrow}
           </p>
-          <h1 className="mt-3 text-4xl font-extrabold text-primary-foreground md:text-6xl">
+          <h1 className="mt-3 text-4xl font-extrabold text-avanza-dark md:text-6xl">
             {t.workshopsPage.title}
           </h1>
-          <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-primary-foreground/90 md:text-xl">
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-avanza-dark/80 md:text-xl">
             {t.workshopsPage.description}
+          </p>
+          <p className="mx-auto mt-5 max-w-3xl rounded-lg border border-avanza-dark/20 bg-white/25 px-4 py-3 text-sm font-semibold leading-relaxed text-avanza-dark/80">
+            {t.workshopsPage.finderConnection}{" "}
+            <Link href="/find-a-workshop" className="font-extrabold underline underline-offset-4">
+              {t.workshopsPage.finderLink}
+            </Link>
           </p>
         </FadeIn>
       </section>

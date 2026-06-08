@@ -18,7 +18,7 @@ export default function NotFound() {
       </p>
       <Link
         href="/"
-        className="mt-8 inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-4 text-lg font-bold text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+        className="mt-8 inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-4 text-lg font-bold text-avanza-dark shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
       >
         {t.notFoundPage.backHome} <ArrowRight className="h-5 w-5" />
       </Link>

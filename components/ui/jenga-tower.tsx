@@ -1,17 +1,9 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Hammer, RotateCcw, Sparkles } from "lucide-react"
+import { Hammer, Play, RotateCcw, Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
-
-declare global {
-  interface Window {
-    // matter-js is attached as window.Matter when the CDN script loads
-    // We type it as unknown to avoid taking on @types/matter-js as a dep.
-    Matter?: unknown
-  }
-}
 
 const ROWS = 7
 const COLS = 3
@@ -36,42 +28,23 @@ export function JengaTower() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const worldRef = useRef<{ engine: any; render: any; runner: any; blocks: any[]; stackTop: number } | null>(null)
-  const [status, setStatus] = useState<"loading" | "playing" | "error">("loading")
+  const matterRef = useRef<typeof import("matter-js") | null>(null)
+  const [started, setStarted] = useState(false)
+  const [status, setStatus] = useState<"idle" | "loading" | "playing" | "error">("idle")
   const [stackedAbove, setStackedAbove] = useState(0)
   const [highestRows, setHighestRows] = useState(0)
   const [resetKey, setResetKey] = useState(0)
 
   useEffect(() => {
+    if (!started) return
+
     let cancelled = false
+    setStatus("loading")
 
-    const loadMatter = (): Promise<unknown> =>
-      new Promise((resolve, reject) => {
-        if (window.Matter) return resolve(window.Matter)
-        const id = "matter-js-cdn"
-        const existing = document.getElementById(
-          id,
-        ) as HTMLScriptElement | null
-        if (existing) {
-          existing.addEventListener("load", () => resolve(window.Matter))
-          existing.addEventListener("error", () => reject())
-          return
-        }
-        const script = document.createElement("script")
-        script.id = id
-        script.src =
-          "https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js"
-        script.async = true
-        script.crossOrigin = "anonymous"
-        script.onload = () => resolve(window.Matter)
-        script.onerror = () => reject()
-        document.head.appendChild(script)
-      })
-
-    loadMatter()
-      .then((MatterAny) => {
+    import("matter-js")
+      .then((Matter) => {
         if (cancelled || !canvasRef.current) return
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const Matter = MatterAny as any
+        matterRef.current = Matter
         const {
           Engine,
           Render,
@@ -151,9 +124,13 @@ export function JengaTower() {
           },
         })
         // Don't capture wheel scroll on the canvas — let the page scroll.
-        if (mouse.element && mouse.mousewheel) {
-          mouse.element.removeEventListener("wheel", mouse.mousewheel)
-          mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel)
+        const mouseWithWheel = mouse as unknown as {
+          element?: HTMLElement
+          mousewheel?: EventListener
+        }
+        if (mouseWithWheel.element && mouseWithWheel.mousewheel) {
+          mouseWithWheel.element.removeEventListener("wheel", mouseWithWheel.mousewheel)
+          mouseWithWheel.element.removeEventListener("DOMMouseScroll", mouseWithWheel.mousewheel)
         }
         // Sync mouse pixel ratio for sharp interaction on retina
         Mouse.setOffset(mouse, { x: 0, y: 0 })
@@ -201,8 +178,7 @@ export function JengaTower() {
     return () => {
       cancelled = true
       const w = worldRef.current
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const Matter = window.Matter as any
+      const Matter = matterRef.current
       if (w && Matter) {
         try {
           Matter.Render.stop(w.render)
@@ -220,11 +196,20 @@ export function JengaTower() {
       }
       worldRef.current = null
     }
-  }, [resetKey])
+  }, [resetKey, started])
+
+  const start = () => {
+    setStarted(true)
+    setStatus("loading")
+  }
 
   const reset = () => {
     setStackedAbove(0)
     setHighestRows(0)
+    if (!started) {
+      start()
+      return
+    }
     setResetKey((k) => k + 1)
     setStatus("loading")
   }
@@ -299,6 +284,23 @@ export function JengaTower() {
                   {t.home.jengaError}
                 </div>
               )}
+              {status === "idle" && (
+                <div className="absolute inset-3 flex items-center justify-center rounded-2xl bg-white/80 p-6 text-center backdrop-blur-sm">
+                  <div className="max-w-xs">
+                    <p className="text-sm font-extrabold text-avanza-dark">
+                      {t.home.jengaInstruction}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={start}
+                      className="mt-4 inline-flex items-center gap-2 rounded-full bg-avanza-orange px-5 py-2.5 text-sm font-extrabold text-avanza-dark shadow-md transition-transform duration-200 hover:scale-105"
+                    >
+                      <Play className="h-4 w-4 fill-white" />
+                      {t.gamesPage.cardOpen}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             <p className="mt-4 text-center text-xs font-semibold text-muted-foreground">
@@ -341,7 +343,9 @@ export function JengaTower() {
                         ? "bg-avanza-green/15 text-avanza-green"
                         : status === "loading"
                           ? "bg-avanza-orange/15 text-avanza-orange"
-                          : "bg-destructive/15 text-destructive"
+                          : status === "idle"
+                            ? "bg-avanza-dark/8 text-avanza-dark/60"
+                            : "bg-destructive/15 text-destructive"
                     }`}
                   >
                     <span
@@ -350,14 +354,18 @@ export function JengaTower() {
                           ? "bg-avanza-green"
                           : status === "loading"
                             ? "animate-pulse bg-avanza-orange"
-                            : "bg-destructive"
+                            : status === "idle"
+                              ? "bg-avanza-dark/40"
+                              : "bg-destructive"
                       }`}
                     />
                     {status === "playing"
                       ? "Live"
                       : status === "loading"
                         ? "Loading"
-                        : "Error"}
+                        : status === "idle"
+                          ? "Ready"
+                          : "Error"}
                   </span>
                 </div>
               </div>

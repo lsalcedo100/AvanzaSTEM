@@ -188,7 +188,7 @@ export function Gallery({ limit }: GalleryProps) {
               key={img.id}
               img={img}
               index={i}
-              alt={`${t.galleryPage.photoAlt} ${i + 1}`}
+              alt={`${t.galleryPage.photoAlt} ${i + 1} of ${all.length}`}
               onOpen={openModal}
             />
           ))}
@@ -208,7 +208,7 @@ export function Gallery({ limit }: GalleryProps) {
           <div className="mt-10 flex justify-center">
             <Link
               href="/gallery"
-              className="group inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-3.5 text-base font-bold text-primary-foreground shadow-[0_10px_28px_rgba(46,204,113,0.32)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_14px_36px_rgba(46,204,113,0.42)]"
+              className="group inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-3.5 text-base font-bold text-avanza-dark shadow-[0_10px_28px_rgba(46,204,113,0.32)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_14px_36px_rgba(46,204,113,0.42)]"
             >
               <Images className="h-5 w-5" />
               {t.galleryPage.viewAllPhotos}
@@ -222,7 +222,7 @@ export function Gallery({ limit }: GalleryProps) {
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label={t.galleryPage.backToTop ?? "Back to top"}
-          className="fixed bottom-6 right-6 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-avanza-dark text-primary-foreground shadow-lg transition-all duration-200 hover:scale-105 hover:bg-avanza-green"
+          className="fixed bottom-6 right-6 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-avanza-dark text-primary-foreground shadow-lg transition-all duration-200 hover:scale-105 hover:bg-avanza-green hover:text-avanza-dark"
         >
           <ArrowUp className="h-5 w-5" />
         </button>
@@ -233,7 +233,7 @@ export function Gallery({ limit }: GalleryProps) {
           item={all[activeIndex]}
           index={activeIndex}
           total={all.length}
-          alt={`${t.galleryPage.photoAlt} ${activeIndex + 1}`}
+          alt={`${t.galleryPage.photoAlt} ${activeIndex + 1} of ${all.length}`}
           onClose={closeModal}
           onPrev={prev}
           onNext={next}
@@ -325,10 +325,16 @@ function Lightbox({
   nextLabel: string
 }) {
   const [fullLoaded, setFullLoaded] = useState(false)
+  const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     setFullLoaded(false)
   }, [index])
+
+  // Move focus to the close button when the dialog opens.
+  useEffect(() => {
+    closeRef.current?.focus()
+  }, [])
 
   return (
     <div
@@ -336,11 +342,13 @@ function Lightbox({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
+      aria-label={alt}
     >
       <button
+        ref={closeRef}
         type="button"
         onClick={onClose}
-        className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25"
+        className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
         aria-label={closeLabel}
       >
         <X className="h-6 w-6" />
@@ -352,7 +360,7 @@ function Lightbox({
           e.stopPropagation()
           onPrev()
         }}
-        className="absolute left-3 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25 sm:left-4"
+        className="absolute left-3 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:left-4"
         aria-label={prevLabel}
       >
         <ChevronLeft className="h-7 w-7" />
@@ -388,7 +396,7 @@ function Lightbox({
           e.stopPropagation()
           onNext()
         }}
-        className="absolute right-3 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25 sm:right-4"
+        className="absolute right-3 z-10 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:right-4"
         aria-label={nextLabel}
       >
         <ChevronRight className="h-7 w-7" />

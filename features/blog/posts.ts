@@ -57,9 +57,12 @@ export type BlogSlug =
   | "what-is-ai-explaining-to-kids"
   | "math-games-that-make-learning-fun"
   | "building-a-community-stem-workshops"
-  | "electricity-and-simple-circuits"
-  | "math-in-nature-fibonacci-fractals"
-  | "how-computers-store-information-binary"
+
+export type LocalizedBlogArticles = {
+  en: Record<BlogSlug, BlogArticle>
+  es: Partial<Record<BlogSlug, BlogArticle>>
+  zh: Partial<Record<BlogSlug, BlogArticle>>
+}
 
 const common = {
   en: {
@@ -103,7 +106,7 @@ const common = {
   },
 }
 
-export const localizedBlogArticles: Record<Language, Record<BlogSlug, BlogArticle>> = {
+export const localizedBlogArticles: LocalizedBlogArticles = {
   en: {
     "why-every-kid-should-learn-to-code": {
       title: "Why Every Kid Should Learn to Code (And How to Start)",
@@ -394,8 +397,8 @@ export const localizedBlogArticles: Record<Language, Record<BlogSlug, BlogArticl
       ],
     },
   },
-  es: {} as Record<BlogSlug, BlogArticle>,
-  zh: {} as Record<BlogSlug, BlogArticle>,
+  es: {},
+  zh: {},
 }
 
 localizedBlogArticles.es = {
@@ -554,7 +557,7 @@ localizedBlogArticles.zh = {
     ],
   },
   "how-to-build-the-strongest-popsicle-stick-bridge": {
-    ...localizedBlogArticles.es["how-to-build-the-strongest-popsicle-stick-bridge"],
+    ...localizedBlogArticles.en["how-to-build-the-strongest-popsicle-stick-bridge"],
     title: "如何建造最坚固的冰棒棍桥",
     category: "工程",
     date: common.zh.dates.feb10,
@@ -570,7 +573,7 @@ localizedBlogArticles.zh = {
     ],
   },
   "getting-started-with-lego-robotics": {
-    ...localizedBlogArticles.es["getting-started-with-lego-robotics"],
+    ...localizedBlogArticles.en["getting-started-with-lego-robotics"],
     title: "乐高机器人入门：家长指南",
     category: "机器人",
     date: common.zh.dates.feb5,
@@ -587,7 +590,7 @@ localizedBlogArticles.zh = {
     ],
   },
   "what-is-ai-explaining-to-kids": {
-    ...localizedBlogArticles.es["what-is-ai-explaining-to-kids"],
+    ...localizedBlogArticles.en["what-is-ai-explaining-to-kids"],
     title: "什么是 AI? 给孩子解释人工智能",
     category: "AI",
     date: common.zh.dates.jan28,
@@ -604,7 +607,7 @@ localizedBlogArticles.zh = {
     ],
   },
   "math-games-that-make-learning-fun": {
-    ...localizedBlogArticles.es["math-games-that-make-learning-fun"],
+    ...localizedBlogArticles.en["math-games-that-make-learning-fun"],
     title: "让学习变有趣的数学游戏",
     category: "数学",
     date: common.zh.dates.jan20,
@@ -624,7 +627,7 @@ localizedBlogArticles.zh = {
     ],
   },
   "building-a-community-stem-workshops": {
-    ...localizedBlogArticles.es["building-a-community-stem-workshops"],
+    ...localizedBlogArticles.en["building-a-community-stem-workshops"],
     title: "建设社区：本地 STEM 工作坊如何改变生活",
     category: "社区",
     date: common.zh.dates.jan12,

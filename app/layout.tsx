@@ -25,17 +25,17 @@ const metadataByLanguage: Record<Language, Pick<Metadata, 'title' | 'description
   en: {
     title: 'Free STEM Education for Hispanic Kids | Avanza STEM',
     description:
-      'Free STEM education for Hispanic kids in grades 2 and up. Explore online curriculums, DIY projects, and local workshops in your community.',
+      'Free multilingual STEM resources for Hispanic kids in grades 2 and up. Explore online curriculums, DIY projects, and local workshops in your community.',
   },
   es: {
     title: 'Avanza STEM - Inspirando a jovenes hispanos en STEM',
     description:
-      'Aprendizaje STEM gratuito, proyectos divertidos y talleres locales para jovenes estudiantes hispanos. Explora ciencia, tecnologia, ingenieria y matematicas con Avanza STEM.',
+      'Recursos STEM multilingues gratuitos, proyectos divertidos y talleres locales para jovenes estudiantes hispanos. Explora ciencia, tecnologia, ingenieria y matematicas con Avanza STEM.',
   },
   zh: {
     title: 'Avanza STEM - 启发年轻西班牙裔学生学习 STEM',
     description:
-      '为年轻西班牙裔学生提供免费的 STEM 在线学习、有趣项目和本地工作坊。和 Avanza STEM 一起探索科学、技术、工程和数学。',
+      '为年轻西班牙裔学生提供免费的多语言 STEM 资源、有趣项目和本地工作坊。和 Avanza STEM 一起探索科学、技术、工程和数学。',
   },
 }
 
@@ -113,7 +113,7 @@ const organizationJsonLd = {
   url: BASE_URL,
   logo: `${BASE_URL}/avanza-logo.svg`,
   description:
-    'Free STEM education for young Hispanic students including online curriculums, DIY projects, and local workshops.',
+    'Free multilingual STEM resources for young Hispanic students including online curriculums, DIY projects, and local workshops.',
   sameAs: [],
   contactPoint: {
     '@type': 'ContactPoint',
@@ -140,14 +140,20 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-200 focus:rounded-lg focus:bg-avanza-green focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-avanza-dark focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
+        >
+          Skip to content
+        </a>
         <LanguageProvider initialLanguage={language}>
           <ImageLightboxProvider>
             <Navbar />
-            <main>{children}</main>
+            <main id="main-content">{children}</main>
             <Footer />
           </ImageLightboxProvider>
         </LanguageProvider>
-        <Analytics />
+        {process.env.VERCEL ? <Analytics /> : null}
       </body>
     </html>
   )

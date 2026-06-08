@@ -28,8 +28,8 @@ export function BridgeLoadDemo() {
   }, [load, broken])
 
   const statusCopy = {
-    safe: { label: t.home.bridgeStatusSafe, tone: "bg-avanza-green text-white" },
-    stress: { label: t.home.bridgeStatusStress, tone: "bg-avanza-orange text-white" },
+    safe: { label: t.home.bridgeStatusSafe, tone: "bg-avanza-green text-avanza-dark" },
+    stress: { label: t.home.bridgeStatusStress, tone: "bg-avanza-orange text-avanza-dark" },
     broken: { label: t.home.bridgeStatusBroken, tone: "bg-red-500 text-white" },
   }[status]
 

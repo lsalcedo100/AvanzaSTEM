@@ -1,7 +1,7 @@
 import { GalleryPageContent } from "@/components/pages/gallery-page-content"
 
 export const metadata = {
-  title: "Photo Gallery | AvanzaSTEM",
+  title: "Photo Gallery | Avanza STEM",
   description: "Browse photos from our STEM workshops and programs.",
 }
 
