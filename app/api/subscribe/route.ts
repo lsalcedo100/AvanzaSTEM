@@ -3,6 +3,7 @@ import { checkRateLimit, getClientIp, isHoneypotFilled } from "../_utils/form-sa
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const DEFAULT_RECIPIENT_EMAIL = "liam@avanzastem.org"
+// Launch note: newsletter@avanzastem.org and contact@avanzastem.org must be verified in Resend DNS before launch.
 const DEFAULT_FROM_EMAIL = "Avanza STEM <newsletter@avanzastem.org>"
 const RESEND_API_URL = "https://api.resend.com/emails"
 const RESEND_USER_AGENT = "avanza-stem-newsletter/1.0"
@@ -14,6 +15,18 @@ function redirectToBlog(request: Request, result: string) {
   const url = new URL("/blog", request.url)
   url.searchParams.set("newsletter", result)
   return NextResponse.redirect(url, { status: 303 })
+}
+
+function isSenderDomainSetupError(status: number, data: { message?: string; name?: string } | null) {
+  const message = data?.message?.toLowerCase() ?? ""
+
+  return (
+    status === 403 &&
+    data?.name === "validation_error" &&
+    (message.includes("verify a domain") ||
+      message.includes("domain is not verified") ||
+      message.includes("domain not verified"))
+  )
 }
 
 function jsonOrRedirect(
@@ -182,11 +195,7 @@ export async function POST(request: Request) {
         data,
       })
 
-      if (
-        response.status === 403 &&
-        data?.name === "validation_error" &&
-        data.message?.includes("verify a domain")
-      ) {
+      if (isSenderDomainSetupError(response.status, data)) {
         return jsonOrRedirect(
           request,
           expectsJson,

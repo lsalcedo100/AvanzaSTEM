@@ -1,233 +1,172 @@
 "use client"
 
 import Link from "next/link"
-import { type ComponentType, type ReactNode, useEffect, useRef, useState } from "react"
-import { Atom, Code2, Hammer, Loader2, Play, Wrench } from "lucide-react"
+import { ArrowRight, Atom, Code2, Hammer, Play, Sparkles, Wrench } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
-import { cn } from "@/lib/utils"
+import { FadeIn } from "@/components/ui/animate"
 
-type LabLoader = () => Promise<ComponentType>
-
-const loadPythonPlayground: LabLoader = () =>
-  import("@/components/ui/python-playground").then((mod) => mod.PythonPlayground)
-
-const loadBridgeLoadDemo: LabLoader = () =>
-  import("@/components/ui/bridge-load-demo").then((mod) => mod.BridgeLoadDemo)
+type LabCard = {
+  href: string
+  icon: LucideIcon
+  eyebrow: string
+  title: string
+  description: string
+  tone: string
+  preview: "code" | "bridge" | "tower" | "atom"
+}
 
 export function InteractiveLabTeasers() {
   const { t } = useLanguage()
+  const labs: LabCard[] = [
+    {
+      href: "/games#python",
+      icon: Code2,
+      eyebrow: t.home.pyEyebrow,
+      title: t.home.pyTitle,
+      description: t.home.pyDesc,
+      tone: "bg-avanza-green text-avanza-dark",
+      preview: "code",
+    },
+    {
+      href: "/games#bridge",
+      icon: Wrench,
+      eyebrow: t.home.bridgeEyebrow,
+      title: t.home.bridgeTitle,
+      description: t.home.bridgeDesc,
+      tone: "bg-avanza-orange text-avanza-dark",
+      preview: "bridge",
+    },
+    {
+      href: "/games#tower",
+      icon: Hammer,
+      eyebrow: t.home.jengaEyebrow,
+      title: t.home.jengaTitle,
+      description: t.home.jengaDesc,
+      tone: "bg-avanza-purple text-white",
+      preview: "tower",
+    },
+    {
+      href: "/games#atom",
+      icon: Atom,
+      eyebrow: t.home.atomEyebrow,
+      title: t.home.atomTitle,
+      description: t.home.atomDesc,
+      tone: "bg-avanza-teal text-avanza-dark",
+      preview: "atom",
+    },
+  ]
 
   return (
-    <>
-      <LazyLab
-        loader={loadPythonPlayground}
-        fallback={
-          <LabPlaceholder
-            eyebrow={t.home.pyEyebrow}
-            title={t.home.pyTitle}
-            description={t.home.pyDesc}
-            cta={t.home.pyRun}
-            icon={Code2}
-            tone="green"
-            preview="code"
-          />
-        }
-      />
-
-      <LazyLab
-        loader={loadBridgeLoadDemo}
-        fallback={
-          <LabPlaceholder
-            eyebrow={t.home.bridgeEyebrow}
-            title={t.home.bridgeTitle}
-            description={t.home.bridgeDesc}
-            cta={t.gamesPage.cardOpen}
-            icon={Wrench}
-            tone="orange"
-            preview="bridge"
-          />
-        }
-      />
-
-      <section className="relative overflow-hidden bg-[#fff8e7] py-16 md:py-20">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.45]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(26,26,46,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(26,26,46,0.06) 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }}
-        />
-        <div className="relative mx-auto grid max-w-6xl gap-5 px-6 md:grid-cols-2">
-          <GameTeaser
-            href="/games#tower"
-            icon={Hammer}
-            eyebrow={t.home.jengaEyebrow}
-            title={t.home.jengaTitle}
-            description={t.home.jengaDesc}
-            cta={t.gamesPage.cardOpen}
-            tone="purple"
-          />
-          <GameTeaser
-            href="/games#atom"
-            icon={Atom}
-            eyebrow={t.home.atomEyebrow}
-            title={t.home.atomTitle}
-            description={t.home.atomDesc}
-            cta={t.gamesPage.cardOpen}
-            tone="teal"
-          />
-        </div>
-      </section>
-    </>
-  )
-}
-
-function LazyLab({
-  fallback,
-  loader,
-}: {
-  fallback: ReactNode
-  loader: LabLoader
-}) {
-  const ref = useRef<HTMLElement>(null)
-  const [Component, setComponent] = useState<ComponentType | null>(null)
-  const [shouldLoad, setShouldLoad] = useState(false)
-
-  useEffect(() => {
-    if (shouldLoad || Component) return
-    const el = ref.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldLoad(true)
-          observer.disconnect()
-        }
-      },
-      { rootMargin: "520px 0px", threshold: 0.01 },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [Component, shouldLoad])
-
-  useEffect(() => {
-    if (!shouldLoad || Component) return
-    let cancelled = false
-
-    loader().then((Loaded) => {
-      if (!cancelled) setComponent(() => Loaded)
-    })
-
-    return () => {
-      cancelled = true
-    }
-  }, [Component, loader, shouldLoad])
-
-  return (
-    <section ref={ref} className="contents">
-      {Component ? (
-        <Component />
-      ) : (
-        <button
-          type="button"
-          onClick={() => setShouldLoad(true)}
-          className="block w-full text-left"
-        >
-          {fallback}
-        </button>
-      )}
-    </section>
-  )
-}
-
-function LabPlaceholder({
-  cta,
-  description,
-  eyebrow,
-  icon: Icon,
-  preview,
-  title,
-  tone,
-}: {
-  cta: string
-  description: string
-  eyebrow: string
-  icon: LucideIcon
-  preview: "bridge" | "code"
-  title: string
-  tone: "green" | "orange"
-}) {
-  const toneClasses = {
-    green: "bg-avanza-green text-avanza-dark",
-    orange: "bg-avanza-orange text-avanza-dark",
-  }[tone]
-
-  return (
-    <section
-      className={cn(
-        "relative overflow-hidden py-20 md:py-24",
-        preview === "code" ? "bg-[#fff8e8]" : "bg-[#f1fff7]",
-      )}
-    >
+    <section className="relative overflow-hidden bg-[#fff8e7] py-16 md:py-20">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.42]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(26,26,46,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(26,26,46,0.05) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
+            "linear-gradient(to right, rgba(26,26,46,0.055) 1px, transparent 1px), linear-gradient(to bottom, rgba(26,26,46,0.055) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
         }}
       />
-      <div className="relative mx-auto grid max-w-6xl items-center gap-8 px-6 lg:grid-cols-[0.95fr_1.05fr]">
-        <div>
+      <div className="relative mx-auto max-w-7xl px-6">
+        <FadeIn className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/25 bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-avanza-dark">
-            <Icon className="h-3.5 w-3.5 text-avanza-orange" />
-            {eyebrow}
+            <Sparkles className="h-3.5 w-3.5 text-avanza-orange" />
+            {t.home.labsTeaserEyebrow}
           </span>
-          <h2 className="mt-5 text-balance text-4xl font-extrabold leading-tight text-foreground md:text-5xl">
-            {title}
+          <h2 className="mt-4 text-3xl font-extrabold text-foreground md:text-4xl">
+            {t.home.labsTeaserTitle}
           </h2>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            {description}
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            {t.home.labsTeaserDesc}
           </p>
-          <span className={cn("mt-7 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-extrabold shadow-md", toneClasses)}>
-            <Play className="h-4 w-4 fill-white" />
-            {cta}
-          </span>
+        </FadeIn>
+
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {labs.map((lab, index) => (
+            <FadeIn key={lab.href} delay={index * 70} className="h-full">
+              <LabCard lab={lab} cta={t.gamesPage.cardOpen} />
+            </FadeIn>
+          ))}
         </div>
 
-        <div className="relative overflow-hidden rounded-3xl bg-white p-4 shadow-[0_28px_64px_-30px_rgba(26,26,46,0.35)] ring-1 ring-avanza-dark/10">
-          {preview === "code" ? <CodePreview /> : <BridgePreview />}
-          <div className="absolute inset-0 flex items-center justify-center bg-white/60 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:opacity-100">
-            <span className="inline-flex items-center gap-2 rounded-full bg-avanza-dark px-4 py-2 text-sm font-extrabold text-primary-foreground">
-              <Loader2 className="h-4 w-4" />
-              {cta}
-            </span>
-          </div>
-        </div>
+        <FadeIn className="mt-10 flex justify-center">
+          <Link
+            href="/games"
+            className="group inline-flex items-center gap-2 rounded-full bg-avanza-dark px-7 py-3.5 text-base font-extrabold text-primary-foreground shadow-[0_16px_36px_-18px_rgba(26,26,46,0.65)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_20px_44px_-18px_rgba(26,26,46,0.75)]"
+          >
+            {t.home.labsTeaserCta}
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+        </FadeIn>
       </div>
     </section>
   )
 }
 
+function LabCard({ lab, cta }: { lab: LabCard; cta: string }) {
+  const Icon = lab.icon
+  return (
+    <Link
+      href={lab.href}
+      className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_20px_48px_-30px_rgba(26,26,46,0.42)] ring-1 ring-avanza-dark/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_26px_58px_-30px_rgba(26,26,46,0.5)]"
+    >
+      <StaticPreview type={lab.preview} tone={lab.tone} />
+      <div className="flex flex-1 flex-col p-6">
+        <div className="flex items-start justify-between gap-4">
+          <span className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${lab.tone}`}>
+            <Icon className="h-5 w-5" />
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-dark px-3 py-1.5 text-xs font-extrabold text-primary-foreground">
+            <Play className="h-3.5 w-3.5 fill-white" />
+            {cta}
+          </span>
+        </div>
+        <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
+          {lab.eyebrow}
+        </p>
+        <h3 className="mt-2 text-xl font-extrabold leading-snug text-foreground">
+          {lab.title}
+        </h3>
+        <p className="mt-3 line-clamp-4 flex-1 text-sm leading-relaxed text-muted-foreground">
+          {lab.description}
+        </p>
+        <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-extrabold text-avanza-green transition-all duration-200 group-hover:gap-2.5">
+          {cta}
+          <ArrowRight className="h-4 w-4" />
+        </span>
+      </div>
+    </Link>
+  )
+}
+
+function StaticPreview({ type, tone }: { type: LabCard["preview"]; tone: string }) {
+  return (
+    <div className="relative h-40 overflow-hidden bg-[#f6fff1]">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(26,26,46,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(26,26,46,0.06)_1px,transparent_1px)] bg-[size:24px_24px]" />
+      <div className="relative flex h-full items-center justify-center p-5">
+        {type === "code" && <CodePreview />}
+        {type === "bridge" && <BridgePreview />}
+        {type === "tower" && <TowerPreview />}
+        {type === "atom" && <AtomPreview />}
+      </div>
+      <span className={`absolute right-4 top-4 h-3 w-3 rounded-full ${tone}`} />
+    </div>
+  )
+}
+
 function CodePreview() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-[#0f1024]">
-      <div className="flex gap-2 border-b border-white/10 bg-[#16172e] px-4 py-3">
-        <span className="h-3 w-3 rounded-full bg-[#ff5f56]" />
-        <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
-        <span className="h-3 w-3 rounded-full bg-[#27c93f]" />
+    <div className="w-full overflow-hidden rounded-xl bg-[#101226] shadow-lg">
+      <div className="flex gap-1.5 border-b border-white/10 bg-[#171932] px-3 py-2">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
       </div>
-      <div className="space-y-3 p-5 font-mono text-sm text-emerald-200">
-        <p>{'print("Hello, scientist!")'}</p>
+      <div className="space-y-2 p-4 font-mono text-xs text-emerald-200">
+        <p>{'print("hello")'}</p>
         <p>for idea in range(3):</p>
-        <p className="pl-6">{'print("try", idea + 1)'}</p>
-        <p className="text-white/35"># Pyodide loads only when code runs</p>
+        <p className="pl-5 text-white/70">try_again()</p>
       </div>
     </div>
   )
@@ -235,69 +174,46 @@ function CodePreview() {
 
 function BridgePreview() {
   return (
-    <svg viewBox="0 0 720 360" className="aspect-[16/9] w-full rounded-2xl bg-[#fafff5]" role="img" aria-label="Truss bridge preview">
-      <rect x="0" y="292" width="720" height="68" fill="#dff5dc" />
-      <rect x="120" y="286" width="80" height="74" fill="#1a1a2e" />
-      <rect x="520" y="286" width="80" height="74" fill="#1a1a2e" />
-      <g fill="none" stroke="#1a1a2e" strokeLinecap="round" strokeLinejoin="round" strokeWidth="10">
-        <path d="M155 230 L600 230" />
-        <path d="M175 145 L580 145" />
-        <path d="M175 145 L155 230 L275 145 L360 230 L455 145 L600 230 L580 145" />
-        <path d="M275 145 L240 230 M455 145 L485 230 M360 230 L360 145" />
+    <svg viewBox="0 0 320 150" className="w-full" role="img" aria-label="Bridge lab preview">
+      <rect x="0" y="122" width="320" height="28" rx="10" fill="#dff5dc" />
+      <g fill="none" stroke="#1a1a2e" strokeLinecap="round" strokeLinejoin="round" strokeWidth="7">
+        <path d="M36 100h248" />
+        <path d="M56 48h208" />
+        <path d="M56 48 36 100 112 48 160 100 212 48 284 100 264 48" />
+        <path d="M112 48 92 100M212 48l20 52M160 100V48" />
       </g>
-      <rect x="330" y="180" width="70" height="48" rx="8" fill="#f97316" />
-      <text x="365" y="211" textAnchor="middle" fill="white" fontFamily="sans-serif" fontSize="18" fontWeight="800">
-        kg
-      </text>
+      <rect x="140" y="73" width="40" height="28" rx="7" fill="#f97316" />
     </svg>
   )
 }
 
-function GameTeaser({
-  cta,
-  description,
-  eyebrow,
-  href,
-  icon: Icon,
-  title,
-  tone,
-}: {
-  cta: string
-  description: string
-  eyebrow: string
-  href: string
-  icon: LucideIcon
-  title: string
-  tone: "purple" | "teal"
-}) {
-  const toneClasses = {
-    purple: "bg-avanza-purple text-white ring-avanza-purple/30",
-    teal: "bg-avanza-teal text-white ring-avanza-teal/30",
-  }[tone]
-
+function TowerPreview() {
   return (
-    <Link
-      href={href}
-      className="group flex h-full flex-col rounded-3xl bg-white p-6 shadow-[0_24px_60px_-32px_rgba(26,26,46,0.45)] ring-1 ring-avanza-dark/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-34px_rgba(26,26,46,0.55)]"
-    >
-      <div className="flex items-start justify-between gap-4">
-        <span className={cn("inline-flex h-12 w-12 items-center justify-center rounded-2xl shadow-md ring-4", toneClasses)}>
-          <Icon className="h-6 w-6" />
-        </span>
-        <span className="inline-flex items-center gap-2 rounded-full bg-avanza-dark px-4 py-2 text-sm font-extrabold text-primary-foreground">
-          {cta}
-          <Play className="h-3.5 w-3.5 fill-white transition-transform duration-200 group-hover:translate-x-0.5" />
-        </span>
-      </div>
-      <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.18em] text-muted-foreground">
-        {eyebrow}
-      </p>
-      <h2 className="mt-3 text-2xl font-extrabold leading-tight text-foreground md:text-3xl">
-        {title}
-      </h2>
-      <p className="mt-4 line-clamp-4 text-base leading-relaxed text-muted-foreground">
-        {description}
-      </p>
-    </Link>
+    <div className="flex h-full items-end justify-center gap-1">
+      {[0, 1, 2].map((column) => (
+        <div key={column} className="flex flex-col-reverse gap-1">
+          {[0, 1, 2, 3].map((row) => (
+            <span
+              key={row}
+              className="block h-8 w-14 rounded-md bg-avanza-purple shadow-sm"
+              style={{ transform: `translateY(${column % 2 === 0 ? 0 : 6}px) rotate(${row % 2 === 0 ? -1 : 1}deg)` }}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function AtomPreview() {
+  return (
+    <div className="relative h-28 w-28">
+      <span className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-avanza-teal shadow-lg" />
+      <span className="absolute inset-4 rounded-full border-2 border-avanza-dark/35" />
+      <span className="absolute inset-x-1 top-1/2 h-10 -translate-y-1/2 rounded-[50%] border-2 border-avanza-purple/70" />
+      <span className="absolute inset-y-1 left-1/2 w-10 -translate-x-1/2 rounded-[50%] border-2 border-avanza-orange/75" />
+      <span className="absolute right-5 top-6 h-4 w-4 rounded-full bg-avanza-orange shadow-md" />
+      <span className="absolute bottom-4 left-8 h-3.5 w-3.5 rounded-full bg-avanza-purple shadow-md" />
+    </div>
   )
 }

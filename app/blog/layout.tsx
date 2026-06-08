@@ -1,14 +1,6 @@
 import type { Metadata } from 'next'
-import { cookies } from 'next/headers'
 import { type Language } from '@/i18n/translations'
-
-const VALID_LANGUAGES: Language[] = ['en', 'es', 'zh']
-
-async function getCookieLanguage(): Promise<Language> {
-  const cookieStore = await cookies()
-  const value = cookieStore.get('avanza-lang')?.value
-  return VALID_LANGUAGES.includes(value as Language) ? (value as Language) : 'en'
-}
+import { getLanguage } from '@/lib/get-language'
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
@@ -43,7 +35,7 @@ const blogJsonLd = {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const language = await getCookieLanguage()
+  const language = await getLanguage()
   const { title, description } = metadataByLanguage[language]
   return {
     title,

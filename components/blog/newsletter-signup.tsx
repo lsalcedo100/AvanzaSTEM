@@ -9,6 +9,13 @@ const MAX_EMAIL_LENGTH = 254
 
 type Feedback = { type: "error"; message: string } | null
 
+type NewsletterSignupProps = {
+  sectionId?: string
+  heading?: string
+  description?: string
+  audienceNote?: string
+}
+
 function getErrorMessage(
   code: string | null | undefined,
   blogPage: Translations["blogPage"],
@@ -28,12 +35,20 @@ function getErrorMessage(
   return blogPage.subscribeError
 }
 
-export function NewsletterSignup() {
+export function NewsletterSignup({
+  sectionId = "newsletter-signup",
+  heading,
+  description,
+  audienceNote,
+}: NewsletterSignupProps = {}) {
   const { t } = useLanguage()
   const [email, setEmail] = useState("")
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [isPending, setIsPending] = useState(false)
   const [isSuccessOpen, setIsSuccessOpen] = useState(false)
+  const headingId = `${sectionId}-heading`
+  const emailId = `${sectionId}-email`
+  const websiteId = `${sectionId}-website`
 
   useEffect(() => {
     if (!isSuccessOpen) {
@@ -132,7 +147,7 @@ export function NewsletterSignup() {
   return (
     <>
       <section
-        id="newsletter-signup"
+        id={sectionId}
         className="relative overflow-hidden bg-gradient-to-br from-avanza-teal via-[#24c7a4] to-avanza-green py-16 sm:py-20"
       >
         <div
@@ -142,16 +157,16 @@ export function NewsletterSignup() {
 
         <div className="relative mx-auto max-w-5xl px-6 text-center">
           <h2
-            id="newsletter-signup-heading"
+            id={headingId}
             className="text-4xl font-extrabold tracking-[0.12em] text-primary-foreground sm:text-5xl"
           >
-            {t.blogPage.stayUpdated}
+            {heading ?? t.blogPage.stayUpdated}
           </h2>
           <p className="mx-auto mt-5 max-w-4xl text-lg leading-relaxed text-primary-foreground/85 sm:text-xl">
-            {t.blogPage.stayUpdatedDesc}
+            {description ?? t.blogPage.stayUpdatedDesc}
           </p>
           <p className="mx-auto mt-3 max-w-3xl text-sm font-semibold leading-relaxed text-primary-foreground/80">
-            {t.blogPage.newsletterAudienceNote}
+            {audienceNote ?? t.blogPage.newsletterAudienceNote}
           </p>
 
           <form
@@ -161,24 +176,24 @@ export function NewsletterSignup() {
             onSubmit={(event) => {
               void submitEmail(event)
             }}
-            aria-labelledby="newsletter-signup-heading"
+            aria-labelledby={headingId}
             className="mx-auto mt-10 flex max-w-4xl flex-col gap-4 sm:flex-row sm:items-center"
           >
             <div aria-hidden="true" className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden">
-              <label htmlFor="newsletter-website">Website</label>
+              <label htmlFor={websiteId}>Website</label>
               <input
-                id="newsletter-website"
+                id={websiteId}
                 name="website"
                 type="text"
                 tabIndex={-1}
                 autoComplete="off"
               />
             </div>
-            <label htmlFor="newsletter-email" className="sr-only">
+            <label htmlFor={emailId} className="sr-only">
               {t.blogPage.enterEmail}
             </label>
             <input
-              id="newsletter-email"
+              id={emailId}
               name="email"
               type="email"
               required

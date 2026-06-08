@@ -50,7 +50,7 @@ export function Navbar() {
   }, [])
 
   const topNavLinks = [
-    { href: "/", label: t.nav.home },
+    { href: "/projects", label: t.nav.projects },
     { href: "/games", label: t.nav.games },
     { href: "/workshops", label: t.nav.workshops },
     { href: "/host", label: t.nav.host },
@@ -60,7 +60,6 @@ export function Navbar() {
 
   const learnLinks = [
     { href: "/curriculums", label: t.nav.curriculums },
-    { href: "/projects", label: t.nav.projects },
     { href: "/blog", label: t.nav.blog },
   ]
 
@@ -138,18 +137,6 @@ export function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-1 lg:flex">
-          {/* Home */}
-          <Link
-            href="/"
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${focusRing} ${
-              pathname === "/"
-                ? "border-2 border-avanza-dark bg-avanza-dark/8 text-avanza-dark"
-                : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
-            }`}
-          >
-            {t.nav.home}
-          </Link>
-
           {/* Learn dropdown */}
           <div className="relative" ref={learnRef}>
             <button
@@ -196,7 +183,7 @@ export function Navbar() {
           </div>
 
           {/* Remaining top-level links */}
-          {topNavLinks.slice(1).map((link) => {
+          {topNavLinks.map((link) => {
             const isActive = pathname === link.href
             return (
               <Link
@@ -373,7 +360,7 @@ export function Navbar() {
           })}
 
           {/* Remaining top-level links */}
-          {topNavLinks.slice(1).map((link) => {
+          {topNavLinks.map((link) => {
             const isActive = pathname === link.href
             return (
               <Link

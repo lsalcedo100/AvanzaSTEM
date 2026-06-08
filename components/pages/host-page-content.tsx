@@ -6,6 +6,12 @@ import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 
 type FormStatus = "idle" | "submitting" | "success" | "error"
+type ContactErrorCode =
+  | "validation_error"
+  | "provider_not_configured"
+  | "sender_domain_not_verified"
+  | "upstream_error"
+  | "request_failed"
 
 const MAX_NAME_LENGTH = 100
 const MAX_EMAIL_LENGTH = 254
@@ -55,6 +61,18 @@ export function HostPageContent() {
     },
   ]
 
+  function getContactErrorMessage(code: ContactErrorCode | string) {
+    if (code === "validation_error") {
+      return t.hostPage.formErrorValidation
+    }
+
+    if (code === "provider_not_configured" || code === "sender_domain_not_verified") {
+      return t.hostPage.formEmailSetup
+    }
+
+    return t.hostPage.formErrorGeneral
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -78,17 +96,13 @@ export function HostPageContent() {
         setStatus("success")
         setFields({ name: "", email: "", venue: "", message: "" })
       } else {
-        const data = (await res.json().catch(() => null)) as { code?: string } | null
+        const data = (await res.json().catch(() => null)) as { code?: ContactErrorCode } | null
         const code = data?.code ?? "request_failed"
-        setErrorMessage(
-          code === "validation_error"
-            ? "Please check your entries and try again."
-            : "Something went wrong. Please try again or email us directly.",
-        )
+        setErrorMessage(getContactErrorMessage(code))
         setStatus("error")
       }
     } catch {
-      setErrorMessage("Something went wrong. Please try again or email us directly.")
+      setErrorMessage(t.hostPage.formErrorGeneral)
       setStatus("error")
     }
   }
@@ -197,7 +211,7 @@ export function HostPageContent() {
             <div aria-live="polite" aria-atomic="true" className="mt-6">
               {status === "success" && (
                 <div className="rounded-xl bg-avanza-green/20 px-5 py-4 text-center text-sm font-semibold text-avanza-green">
-                  Message sent! We&apos;ll be in touch soon.
+                  {t.hostPage.formSuccess}
                 </div>
               )}
               {status === "error" && errorMessage && (
@@ -224,7 +238,7 @@ export function HostPageContent() {
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="host-name" className="sr-only">
+                  <label htmlFor="host-name" className="text-sm font-bold text-primary-foreground/80">
                     {t.hostPage.namePlaceholder}
                   </label>
                   <input
@@ -242,7 +256,7 @@ export function HostPageContent() {
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="host-email" className="sr-only">
+                  <label htmlFor="host-email" className="text-sm font-bold text-primary-foreground/80">
                     {t.hostPage.emailPlaceholder}
                   </label>
                   <input
@@ -260,7 +274,7 @@ export function HostPageContent() {
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="host-venue" className="sr-only">
+                  <label htmlFor="host-venue" className="text-sm font-bold text-primary-foreground/80">
                     {t.hostPage.venuePlaceholder}
                   </label>
                   <input
@@ -278,7 +292,7 @@ export function HostPageContent() {
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="host-message" className="sr-only">
+                  <label htmlFor="host-message" className="text-sm font-bold text-primary-foreground/80">
                     {t.hostPage.messagePlaceholder}
                   </label>
                   <textarea
@@ -300,7 +314,7 @@ export function HostPageContent() {
                   disabled={status === "submitting"}
                   className="mt-2 rounded-full bg-avanza-green px-8 py-4 text-lg font-bold text-avanza-dark shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-green disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
                 >
-                  {status === "submitting" ? "Sending…" : t.hostPage.sendMessage}
+                  {status === "submitting" ? t.hostPage.sendingMessage : t.hostPage.sendMessage}
                 </button>
               </form>
             )}

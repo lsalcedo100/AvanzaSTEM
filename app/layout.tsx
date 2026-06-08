@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { cookies } from 'next/headers'
 import { Roboto_Mono, Nunito } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
@@ -8,6 +7,7 @@ import { Navbar } from '@/components/layout/navbar'
 import { ImageLightboxProvider } from '@/components/providers/image-lightbox-provider'
 import { LanguageProvider } from '@/components/providers/language-provider'
 import { type Language } from '@/i18n/translations'
+import { getLanguage } from '@/lib/get-language'
 
 const robotoMono = Roboto_Mono({
   subsets: ['latin'],
@@ -19,35 +19,22 @@ const nunito = Nunito({
   variable: '--font-nunito',
 })
 
-const VALID_LANGUAGES: Language[] = ['en', 'es', 'zh']
-
 const metadataByLanguage: Record<Language, Pick<Metadata, 'title' | 'description'>> = {
   en: {
-    title: 'Free STEM Education for Hispanic Kids | Avanza STEM',
+    title: 'Free Hands-On STEM Workshops and Projects | Avanza STEM',
     description:
-      'Free multilingual STEM resources for Hispanic kids in grades 2 and up. Explore online curriculums, DIY projects, and local workshops in your community.',
+      'Avanza STEM is a youth-led program bringing free hands-on STEM workshops and beginner-friendly projects to students, with a special focus on Hispanic and underrepresented communities.',
   },
   es: {
-    title: 'Avanza STEM - Inspirando a jovenes hispanos en STEM',
+    title: 'Talleres y proyectos STEM gratuitos | Avanza STEM',
     description:
-      'Recursos STEM multilingues gratuitos, proyectos divertidos y talleres locales para jovenes estudiantes hispanos. Explora ciencia, tecnologia, ingenieria y matematicas con Avanza STEM.',
+      'Avanza STEM es un programa juvenil que ofrece talleres STEM practicos gratuitos y proyectos para principiantes, con un enfoque especial en comunidades hispanas y subrepresentadas.',
   },
   zh: {
-    title: 'Avanza STEM - 启发年轻西班牙裔学生学习 STEM',
+    title: '免费的动手 STEM 工作坊和项目 | Avanza STEM',
     description:
-      '为年轻西班牙裔学生提供免费的多语言 STEM 资源、有趣项目和本地工作坊。和 Avanza STEM 一起探索科学、技术、工程和数学。',
+      'Avanza STEM 是一个由青年主导的项目，为学生带来免费的动手 STEM 工作坊和适合初学者的项目，特别关注西班牙裔和代表性不足的社区。',
   },
-}
-
-function isLanguage(value: string | undefined): value is Language {
-  return VALID_LANGUAGES.includes(value as Language)
-}
-
-async function getCookieLanguage(): Promise<Language> {
-  const cookieStore = await cookies()
-  const cookieLanguage = cookieStore.get('avanza-lang')?.value
-
-  return isLanguage(cookieLanguage) ? cookieLanguage : 'en'
 }
 
 const BASE_URL = 'https://avanzastem.org'
@@ -65,7 +52,7 @@ const ogLocaleByLanguage: Record<Language, string> = {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const language = await getCookieLanguage()
+  const language = await getLanguage()
   const { title, description } = metadataByLanguage[language]
   const ogImage = ogImageByLanguage[language]
 
@@ -113,8 +100,8 @@ const organizationJsonLd = {
   url: BASE_URL,
   logo: `${BASE_URL}/avanza-logo.svg`,
   description:
-    'Free multilingual STEM resources for young Hispanic students including online curriculums, DIY projects, and local workshops.',
-  sameAs: [],
+    'A youth-led program bringing free hands-on STEM workshops and beginner-friendly projects to students, with a special focus on Hispanic and underrepresented communities.',
+  sameAs: ['https://instagram.com/avanzastem'],
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'liam@avanzastem.org',
@@ -131,7 +118,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const language = await getCookieLanguage()
+  const language = await getLanguage()
 
   return (
     <html lang={language} suppressHydrationWarning>

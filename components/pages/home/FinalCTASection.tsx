@@ -18,10 +18,10 @@ export function FinalCTASection() {
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="/curriculums"
+            href="/workshops"
             className="inline-flex items-center gap-2 rounded-full bg-avanza-green px-8 py-4 text-lg font-bold text-avanza-dark shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
           >
-            {t.home.browseCurriculums} <ArrowRight className="h-5 w-5" />
+            {t.home.findWorkshop} <ArrowRight className="h-5 w-5" />
           </Link>
           <Link
             href="/projects"

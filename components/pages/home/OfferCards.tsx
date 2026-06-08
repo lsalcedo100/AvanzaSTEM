@@ -62,12 +62,11 @@ export function OfferCards() {
           </p>
         </FadeIn>
 
-        <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-8 md:grid-cols-3">
           {[
-            { categoryWord: t.home.onlineCurriculumsWord, title: t.home.onlineCurriculums, description: t.home.onlineCurriculumsDesc, href: "/curriculums", accentBar: "bg-avanza-green", accentGlow: "from-avanza-green/10", categoryWordColor: "text-avanza-green/35" },
+            { categoryWord: t.home.localWorkshopsWord, title: t.home.localWorkshops, description: t.home.localWorkshopsDesc, href: "/workshops", accentBar: "bg-avanza-teal", accentGlow: "from-avanza-teal/10", categoryWordColor: "text-avanza-teal/35" },
             { categoryWord: t.home.diyProjectsWord, title: t.home.diyProjects, description: t.home.diyProjectsDesc, href: "/projects", accentBar: "bg-avanza-purple", accentGlow: "from-avanza-purple/10", categoryWordColor: "text-avanza-purple/35" },
             { categoryWord: t.home.blogHowTosWord, title: t.home.blogHowTos, description: t.home.blogHowTosDesc, href: "/blog", accentBar: "bg-avanza-orange", accentGlow: "from-avanza-orange/10", categoryWordColor: "text-avanza-orange/35" },
-            { categoryWord: t.home.localWorkshopsWord, title: t.home.localWorkshops, description: t.home.localWorkshopsDesc, href: "/workshops", accentBar: "bg-avanza-teal", accentGlow: "from-avanza-teal/10", categoryWordColor: "text-avanza-teal/35" },
           ].map((card, i) => (
             <FadeIn key={card.href} delay={i * 80}>
               <OfferCard {...card} learnMore={t.home.learnMore} />

@@ -180,7 +180,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "Easy",
       time: "1 hour",
-      image: "/images/blog/egg-experiment.jpg",
+      image: "/images/projects/baking-soda-volcano/cover.jpg",
       description:
         "Build a mini volcano and trigger a bubbly eruption with a classic acid-and-base reaction.",
       introduction: [
@@ -257,7 +257,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "Medium",
       time: "30 minutes",
-      image: "/images/blog/egg-experiment.jpg",
+      image: "/images/projects/elephant-toothpaste-experiment/cover.jpg",
       description:
         "Watch a giant foam tower erupt from a single bottle as hydrogen peroxide breaks apart and releases oxygen in a spectacular exothermic reaction.",
       introduction: [
@@ -298,7 +298,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "Easy",
       time: "20 minutes",
-      image: "/images/blog/egg-experiment.jpg",
+      image: "/images/projects/making-oobleck/cover.jpg",
       description:
         "Mix just two ingredients to make a mysterious goop that flows like a liquid but turns solid when you squeeze it—and discover the science of non-Newtonian fluids.",
       introduction: [
@@ -605,7 +605,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "Facil",
       time: "1 hora",
-      image: "/images/blog/egg-experiment.jpg",
+      image: "/images/projects/baking-soda-volcano/cover.jpg",
       description:
         "Construye un mini volcan y provoca una erupcion espumosa con una reaccion clasica entre acido y base.",
       introduction: [
@@ -682,7 +682,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "Medio",
       time: "30 minutos",
-      image: "/images/blog/egg-experiment.jpg",
+      image: "/images/projects/elephant-toothpaste-experiment/cover.jpg",
       description:
         "Observa como una enorme torre de espuma erupciona de una botella cuando el peroxido de hidrogeno se descompone y libera oxigeno en una espectacular reaccion exotermica.",
       introduction: [
@@ -723,7 +723,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "Facil",
       time: "20 minutos",
-      image: "/images/blog/egg-experiment.jpg",
+      image: "/images/projects/making-oobleck/cover.jpg",
       description:
         "Mezcla solo dos ingredientes para crear una sustancia misteriosa que fluye como liquido pero se solidifica al apretarla, y descubre la ciencia de los fluidos no newtonianos.",
       introduction: [
@@ -1030,7 +1030,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "简单",
       time: "1小时",
-      image: "/images/blog/egg-experiment.jpg",
+      image: "/images/projects/baking-soda-volcano/cover.jpg",
       description:
         "搭建一座迷你火山，用经典的酸碱反应制造充满泡沫的喷发。",
       introduction: [
@@ -1107,7 +1107,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "中等",
       time: "30分钟",
-      image: "/images/blog/egg-experiment.jpg",
+      image: "/images/projects/elephant-toothpaste-experiment/cover.jpg",
       description:
         "看着一瓶液体喷出巨大泡沫柱——当双氧水分解并释放氧气时，会发生一场令人惊叹的放热反应。",
       introduction: [
@@ -1148,7 +1148,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "简单",
       time: "20分钟",
-      image: "/images/blog/egg-experiment.jpg",
+      image: "/images/projects/making-oobleck/cover.jpg",
       description:
         "只需两种材料就能调出一种神奇的东西——它像液体一样流淌，但用手一捏就变成固体，一起来探索非牛顿流体的科学吧。",
       introduction: [

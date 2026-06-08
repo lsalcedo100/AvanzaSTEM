@@ -12,13 +12,12 @@ export function MissionSection() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           <FadeIn>
-            <div>
-              <div className="text-8xl font-black leading-none text-primary-foreground/20">&ldquo;</div>
-              <blockquote className="text-2xl font-bold italic leading-relaxed text-primary-foreground">
-                {t.home.missionQuote}
-              </blockquote>
-              <p className="mt-4 text-sm text-primary-foreground/70">
-                - {t.home.missionQuoteAttribution}
+            <div className="rounded-2xl border border-primary-foreground/15 bg-primary-foreground/10 p-8 shadow-xl shadow-black/10">
+              <p className="text-xs font-bold uppercase tracking-[0.15em] text-primary-foreground/65">
+                {t.home.missionBeliefLabel}
+              </p>
+              <p className="mt-4 text-2xl font-bold leading-relaxed text-primary-foreground">
+                {t.home.missionBelief}
               </p>
               <hr className="mt-6 border-primary-foreground/20" />
             </div>

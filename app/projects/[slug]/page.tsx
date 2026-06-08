@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
-import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { getProjectGuide, projectGuides } from "@/features/projects/data"
 import { generateProjectMetadata } from "@/features/projects/metadata"
-import { type Language, translations } from "@/i18n/translations"
+import { translations } from "@/i18n/translations"
+import { getLanguage } from "@/lib/get-language"
 
 export async function generateMetadata({
   params,
@@ -43,9 +43,7 @@ export default async function ProjectGuidePage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const cookieStore = await cookies()
-  const cookieLanguage = cookieStore.get("avanza-lang")?.value
-  const language: Language = cookieLanguage === "es" || cookieLanguage === "zh" ? cookieLanguage : "en"
+  const language = await getLanguage()
   const t = translations[language]
   const project = getProjectGuide(slug, language)
 
