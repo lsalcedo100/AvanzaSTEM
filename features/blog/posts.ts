@@ -1,5 +1,3 @@
-import type { Language } from "@/i18n/translations"
-
 export type BlogBlock =
   | { type: "paragraph"; text: string }
   | { type: "paragraphWithLink"; before: string; linkText: string; href: string; after: string }

@@ -3,8 +3,8 @@
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState, useRef, useEffect } from "react"
-import { Menu, X, Globe, ChevronDown } from "lucide-react"
+import { useState, useRef, useEffect, useSyncExternalStore } from "react"
+import { Menu, X, Globe } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { type Language, languageLabels } from "@/i18n/translations"
 
@@ -12,12 +12,15 @@ export function Navbar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
-  const [learnOpen, setLearnOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  )
   const { language, setLanguage, t } = useLanguage()
   const desktopLangRef = useRef<HTMLDivElement>(null)
   const mobileLangRef = useRef<HTMLDivElement>(null)
-  const learnRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
@@ -51,19 +54,13 @@ export function Navbar() {
 
   const topNavLinks = [
     { href: "/projects", label: t.nav.projects },
+    { href: "/blog", label: t.nav.blog },
     { href: "/games", label: t.nav.games },
     { href: "/workshops", label: t.nav.workshops },
     { href: "/host", label: t.nav.host },
     { href: "/gallery", label: t.nav.gallery },
     { href: "/about", label: t.nav.about },
   ]
-
-  const learnLinks = [
-    { href: "/curriculums", label: t.nav.curriculums },
-    { href: "/blog", label: t.nav.blog },
-  ]
-
-  const isLearnActive = learnLinks.some((link) => pathname === link.href)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -73,9 +70,6 @@ export function Navbar() {
       if (!isInsideDesktop && !isInsideMobile) {
         setLangOpen(false)
       }
-      if (!learnRef.current?.contains(target)) {
-        setLearnOpen(false)
-      }
     }
     function handleEscape(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -84,7 +78,6 @@ export function Navbar() {
           hamburgerRef.current?.focus()
         }
         setLangOpen(false)
-        setLearnOpen(false)
       }
     }
     document.addEventListener("mousedown", handleClickOutside)
@@ -137,54 +130,9 @@ export function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-1 lg:flex">
-          {/* Learn dropdown */}
-          <div className="relative" ref={learnRef}>
-            <button
-              type="button"
-              onClick={() => setLearnOpen(!learnOpen)}
-              className={`inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold transition-all ${focusRing} ${
-                isLearnActive
-                  ? "border-2 border-avanza-dark bg-avanza-dark/8 text-avanza-dark"
-                  : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
-              }`}
-              aria-expanded={learnOpen}
-              aria-haspopup="menu"
-              aria-controls="desktop-learn-menu"
-            >
-              {t.nav.learn}
-              <ChevronDown
-                className={`h-3.5 w-3.5 transition-transform duration-200 ${learnOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-
-            {learnOpen && (
-              <div
-                id="desktop-learn-menu"
-                role="menu"
-                className="absolute left-0 top-full z-60 mt-2 w-44 overflow-hidden rounded-xl border border-border bg-card shadow-lg"
-              >
-                {learnLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    role="menuitem"
-                    onClick={() => setLearnOpen(false)}
-                    className={`block px-4 py-2.5 text-sm font-medium transition-colors ${focusRing} ${
-                      pathname === link.href
-                        ? "bg-avanza-green/10 text-avanza-green"
-                        : "text-card-foreground hover:bg-secondary"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Remaining top-level links */}
+          {/* Top-level links */}
           {topNavLinks.map((link) => {
-            const isActive = pathname === link.href
+            const isActive = mounted && pathname === link.href
             return (
               <Link
                 key={link.href}
@@ -329,7 +277,7 @@ export function Navbar() {
             href="/"
             onClick={() => setMobileOpen(false)}
             className={`block rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-200 ${focusRing} ${
-              pathname === "/"
+              mounted && pathname === "/"
                 ? "bg-avanza-dark/10 text-avanza-dark"
                 : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
             }`}
@@ -337,31 +285,9 @@ export function Navbar() {
             {t.nav.home}
           </Link>
 
-          {/* Learn section */}
-          <p className="mt-2 px-4 pb-1 text-[10px] font-bold uppercase tracking-widest text-avanza-dark/40">
-            {t.nav.learn}
-          </p>
-          {learnLinks.map((link) => {
-            const isActive = pathname === link.href
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className={`block rounded-lg py-2.5 pl-8 pr-4 text-sm font-semibold transition-all duration-200 ${focusRing} ${
-                  isActive
-                    ? "bg-avanza-dark/10 text-avanza-dark"
-                    : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
-                }`}
-              >
-                {link.label}
-              </Link>
-            )
-          })}
-
-          {/* Remaining top-level links */}
+          {/* Top-level links */}
           {topNavLinks.map((link) => {
-            const isActive = pathname === link.href
+            const isActive = mounted && pathname === link.href
             return (
               <Link
                 key={link.href}

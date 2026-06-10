@@ -2,7 +2,6 @@
 
 import "leaflet/dist/leaflet.css"
 import {
-  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -670,6 +669,7 @@ function LeafletMap({
   // One-time Leaflet load + map init. Re-running this would tear down the map.
   useEffect(() => {
     let cancelled = false
+    const markers = markersRef.current
 
     import("leaflet")
       .then((mod) => {
@@ -716,9 +716,8 @@ function LeafletMap({
         m.remove()
         mapRef.current = null
       }
-      markersRef.current.clear()
+      markers.clear()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Render / re-render markers whenever the library list or selection changes.
@@ -839,7 +838,7 @@ function LeafletMap({
       )}
 
       {/* Legend */}
-      <div className="pointer-events-none absolute bottom-4 left-4 z-[5] flex flex-wrap items-center gap-3 rounded-full bg-white/95 px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground shadow-md backdrop-blur-sm">
+      <div className="pointer-events-none absolute bottom-4 left-4 z-5 flex flex-wrap items-center gap-3 rounded-full bg-white/95 px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground shadow-md backdrop-blur-sm">
         <span className="inline-flex items-center gap-1.5">
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-avanza-orange" />
           {legend.active}

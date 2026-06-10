@@ -20,7 +20,7 @@ const staticRoutes = [
 ] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date('2026-06-07')
+  const lastModified = new Date()
 
   const staticSitemapRoutes: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${BASE_URL}${route.path}`,

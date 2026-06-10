@@ -1,14 +1,14 @@
-"use client"
-
 import Link from "next/link"
 import { Calendar, User, ArrowRight, Clock } from "lucide-react"
 import { NewsletterSignup } from "@/components/blog/newsletter-signup"
-import { useLanguage } from "@/components/providers/language-provider"
+import { translations } from "@/i18n/translations"
+import { getLanguage } from "@/lib/get-language"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
 
-export default function BlogPage() {
-  const { t } = useLanguage()
+export default async function BlogPage() {
+  const language = await getLanguage()
+  const t = translations[language]
 
   const featuredPost = {
     title: t.blogPage.featuredTitle,
