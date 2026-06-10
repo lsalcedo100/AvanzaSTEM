@@ -54,7 +54,7 @@ export function GalleryTeaserSection() {
             >
               <Images className="h-8 w-8 text-avanza-green transition-transform duration-300 group-hover:scale-110" />
               <div className="text-center">
-                <p className="text-xl font-extrabold text-primary-foreground">133+</p>
+                <p className="text-xl font-extrabold text-primary-foreground">{galleryImages.length}+</p>
                 <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground/35">
                   {t.home.statsAsOf}
                 </p>

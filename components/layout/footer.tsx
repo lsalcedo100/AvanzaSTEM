@@ -26,12 +26,12 @@ export function Footer() {
             <ul className="space-y-2">
               {[
                 { href: "/", label: t.nav.home },
-                { href: "/curriculums", label: t.nav.curriculums },
                 { href: "/projects", label: t.nav.projects },
                 { href: "/blog", label: t.nav.blog },
                 { href: "/workshops", label: t.nav.workshops },
-                { href: "/faq", label: t.faqPage.title },
+                { href: "/find-a-workshop", label: t.home.finderTrigger },
                 { href: "/host", label: t.hostPage.title },
+                { href: "/faq", label: t.faqPage.title },
               ].map((link) => (
                 <li key={link.href}>
                   <Link

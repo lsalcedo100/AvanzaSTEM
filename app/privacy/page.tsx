@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <main className="bg-background py-20">
+    <div className="bg-background py-20">
       <div className="mx-auto max-w-3xl px-6">
         <p className="text-sm font-bold uppercase tracking-widest text-avanza-green">
           Legal
@@ -163,6 +163,6 @@ export default function PrivacyPage() {
 
         </div>
       </div>
-    </main>
+    </div>
   )
 }

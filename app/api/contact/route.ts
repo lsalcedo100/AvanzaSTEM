@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { checkRateLimit, getClientIp, isHoneypotFilled } from "../_utils/form-safety"
+import { isHoneypotFilled } from "../_utils/form-safety"
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const DEFAULT_RECIPIENT_EMAIL = "liam@avanzastem.org"
@@ -7,8 +7,6 @@ const DEFAULT_RECIPIENT_EMAIL = "liam@avanzastem.org"
 const DEFAULT_FROM_EMAIL = "Avanza STEM <contact@avanzastem.org>"
 const RESEND_API_URL = "https://api.resend.com/emails"
 const RESEND_USER_AGENT = "avanza-stem-contact/1.0"
-const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000
-const RATE_LIMIT_MAX_REQUESTS = 5
 const MAX_NAME_LENGTH = 100
 const MAX_EMAIL_LENGTH = 254
 const MAX_VENUE_LENGTH = 140
@@ -103,17 +101,6 @@ export async function POST(request: Request) {
 
   if (isHoneypotFilled(website)) {
     return genericError()
-  }
-
-  const clientIp = getClientIp(request)
-  const rateLimit = checkRateLimit({
-    key: `contact:${clientIp}`,
-    limit: RATE_LIMIT_MAX_REQUESTS,
-    windowMs: RATE_LIMIT_WINDOW_MS,
-  })
-
-  if (!rateLimit.allowed) {
-    return genericError(429)
   }
 
   const errors: Record<string, string> = {}
