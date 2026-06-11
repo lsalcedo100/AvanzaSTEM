@@ -12,7 +12,7 @@ import {
 import { useLanguage } from "@/components/providers/language-provider"
 
 const CLOUD_NAME = "dw4uprmkk"
-const TOTAL_IMAGES = 133
+const TOTAL_IMAGES = 174
 const INITIAL_BATCH = 30
 const BATCH_STEP = 24
 
@@ -30,20 +30,20 @@ type GalleryItem = {
 const tx = (num: string, transforms: string) =>
   `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${transforms}/gallery-${num}.jpg`
 
-const buildItem = (i: number): GalleryItem => {
-  const num = String(i + 1).padStart(5, "0")
-  const thumb = tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_400")
+const buildItem = (galleryIndex: number): GalleryItem => {
+  const num = String(galleryIndex).padStart(5, "0")
+  const thumb = tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_400")
   return {
     id: num,
     thumb,
     thumbnail: thumb,
     thumbSrcSet: [
-      `${tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_240")} 240w`,
-      `${tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_360")} 360w`,
-      `${tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_480")} 480w`,
-      `${tx(num, "c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_640")} 640w`,
+      `${tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_240")} 240w`,
+      `${tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_360")} 360w`,
+      `${tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_480")} 480w`,
+      `${tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_640")} 640w`,
     ].join(", "),
-    blur: tx(num, "e_blur:2000,q_30,f_auto,w_24,c_fill,ar_1:1,g_auto"),
+    blur: tx(num, "a_auto,e_blur:2000,q_30,f_auto,w_24,c_fill,ar_1:1,g_auto"),
     full: tx(num, "f_auto,q_auto:good,w_1600"),
     preload: tx(num, "f_auto,q_auto:eco,w_900"),
   }
@@ -51,7 +51,7 @@ const buildItem = (i: number): GalleryItem => {
 
 export const galleryImages: GalleryItem[] = Array.from(
   { length: TOTAL_IMAGES },
-  (_, i) => buildItem(i),
+  (_, i) => buildItem(TOTAL_IMAGES - i),
 )
 
 interface GalleryProps {
@@ -66,7 +66,7 @@ export function Gallery({ limit }: GalleryProps) {
   )
 
   // Progressive batched DOM rendering. Even with native lazy-loading, mounting
-  // 133 <img> nodes up-front bloats first paint - we mount in chunks instead.
+  // 174 <img> nodes up-front bloats first paint - we mount in chunks instead.
   const [renderCount, setRenderCount] = useState(() =>
     Math.min(all.length, INITIAL_BATCH),
   )
@@ -258,6 +258,12 @@ function GalleryThumb({
   onOpen: (i: number) => void
 }) {
   const [loaded, setLoaded] = useState(false)
+  const markLoaded = useCallback(() => setLoaded(true), [])
+  const imageRef = useCallback((node: HTMLImageElement | null) => {
+    if (node?.complete && node.naturalWidth > 0) {
+      setLoaded(true)
+    }
+  }, [])
   // Eagerly fetch the very first row so the gallery never appears empty.
   const eager = index < 6
 
@@ -280,6 +286,7 @@ function GalleryThumb({
         loading="eager"
       />
       <img
+        ref={imageRef}
         src={img.thumb}
         srcSet={img.thumbSrcSet}
         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -287,7 +294,7 @@ function GalleryThumb({
         loading={eager ? "eager" : "lazy"}
         decoding="async"
         fetchPriority={eager ? "high" : "auto"}
-        onLoad={() => setLoaded(true)}
+        onLoad={markLoaded}
         className={`relative h-full w-full object-cover transition-[opacity,transform] duration-500 ease-out ${
           loaded ? "opacity-100" : "opacity-0"
         } group-hover:scale-[1.06]`}

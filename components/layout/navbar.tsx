@@ -107,7 +107,7 @@ export function Navbar() {
       >
         <Link
           href="/"
-          className={`flex items-center gap-3 text-avanza-dark transition-opacity hover:opacity-90 ${focusRing} rounded-lg`}
+          className={`flex shrink-0 items-center gap-3 text-avanza-dark transition-opacity hover:opacity-90 ${focusRing} rounded-lg`}
         >
           <Image
             src="/avanza-logo.svg"
@@ -120,7 +120,7 @@ export function Navbar() {
             priority
           />
           <span
-            className={`font-extrabold tracking-tight transition-all duration-300 ${
+            className={`whitespace-nowrap font-extrabold tracking-tight transition-all duration-300 ${
               scrolled ? "text-lg sm:text-2xl" : "text-2xl sm:text-4xl"
             }`}
           >
@@ -129,7 +129,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-1 lg:flex">
+        <div className="hidden items-center gap-0.5 xl:gap-1 lg:flex">
           {/* Top-level links */}
           {topNavLinks.map((link) => {
             const isActive = mounted && pathname === link.href
@@ -137,7 +137,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${focusRing} ${
+                className={`whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold transition-all xl:px-4 ${focusRing} ${
                   isActive
                     ? "border-2 border-avanza-dark bg-avanza-dark/8 text-avanza-dark"
                     : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
