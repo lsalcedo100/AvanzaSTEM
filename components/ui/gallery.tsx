@@ -32,20 +32,22 @@ const tx = (num: string, transforms: string) =>
 
 const buildItem = (galleryIndex: number): GalleryItem => {
   const num = String(galleryIndex).padStart(5, "0")
-  const thumb = tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_400")
+  const thumbRotation = num === "00092" || num === "00091" || num === "00096" ? "a_0," : ""
+  const fullRotation = num === "00096" ? "a_0," : ""
+  const thumb = tx(num, `${thumbRotation}c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_400`)
   return {
     id: num,
     thumb,
     thumbnail: thumb,
     thumbSrcSet: [
-      `${tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_240")} 240w`,
-      `${tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_360")} 360w`,
-      `${tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_480")} 480w`,
-      `${tx(num, "a_auto,c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_640")} 640w`,
+      `${tx(num, `${thumbRotation}c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_240`)} 240w`,
+      `${tx(num, `${thumbRotation}c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_360`)} 360w`,
+      `${tx(num, `${thumbRotation}c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_480`)} 480w`,
+      `${tx(num, `${thumbRotation}c_fill,ar_1:1,g_auto,f_auto,q_auto:eco,w_640`)} 640w`,
     ].join(", "),
-    blur: tx(num, "a_auto,e_blur:2000,q_30,f_auto,w_24,c_fill,ar_1:1,g_auto"),
-    full: tx(num, "f_auto,q_auto:good,w_1600"),
-    preload: tx(num, "f_auto,q_auto:eco,w_900"),
+    blur: tx(num, `${thumbRotation}e_blur:2000,q_30,f_auto,w_24,c_fill,ar_1:1,g_auto`),
+    full: tx(num, `${fullRotation}f_auto,q_auto:good,w_1600`),
+    preload: tx(num, `${fullRotation}f_auto,q_auto:eco,w_900`),
   }
 }
 
