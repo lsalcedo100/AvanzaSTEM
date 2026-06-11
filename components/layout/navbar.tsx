@@ -129,7 +129,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-0.5 xl:gap-1 lg:flex">
+        <div className="hidden items-center gap-0.5 xl:gap-1 lg:flex lg:pl-3">
           {/* Top-level links */}
           {topNavLinks.map((link) => {
             const isActive = mounted && pathname === link.href
