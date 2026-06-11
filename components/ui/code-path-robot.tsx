@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Bot, Play, RotateCcw, Sparkles, Trash2, Undo2 } from "lucide-react"
+import { Play, RotateCcw, Sparkles, Trash2, Undo2 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { cn } from "@/lib/utils"
@@ -204,10 +204,9 @@ export function CodePathRobot() {
 
       <div className="relative mx-auto max-w-6xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/25 bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-avanza-dark">
-            <Bot className="h-3.5 w-3.5 text-avanza-purple" />
+          <p className="text-sm font-bold uppercase tracking-wider text-avanza-purple">
             {t.gamesPage.robotEyebrow}
-          </span>
+          </p>
           <h2 className="mt-5 text-balance text-4xl font-extrabold leading-tight text-foreground md:text-5xl">
             {t.gamesPage.robotTitle}
           </h2>
@@ -388,7 +387,7 @@ export function CodePathRobot() {
                 </div>
 
                 <div className="mt-auto rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
-                  <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-avanza-green">
+                  <p className="text-base font-extrabold text-white">
                     {t.gamesPage.robotLessonTitle}
                   </p>
                   <p className="mt-1.5 text-sm leading-relaxed text-white/80">
