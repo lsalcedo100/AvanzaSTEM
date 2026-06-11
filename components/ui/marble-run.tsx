@@ -77,13 +77,13 @@ function pieceExit(piece: Cell, entry: Side): Side | null {
   if (piece === "wall") return null
   if (piece === "goal") return null // ball arrives, doesn't exit
   if (piece === "ramp-r") {
-    // ╲ — top↔right, left↔bottom
+    // ╲: top↔right, left↔bottom
     if (entry === "top") return "right"
     if (entry === "left") return "bottom"
     return null
   }
   if (piece === "ramp-l") {
-    // ╱ — top↔left, right↔bottom
+    // ╱: top↔left, right↔bottom
     if (entry === "top") return "left"
     if (entry === "right") return "bottom"
     return null

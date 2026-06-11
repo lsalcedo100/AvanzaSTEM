@@ -7,7 +7,7 @@ import { FadeIn } from "@/components/ui/animate"
 import { cn } from "@/lib/utils"
 
 const ELEMENTS: Array<{ symbol: string; name: string }> = [
-  { symbol: "?", name: "—" }, // index 0 = empty
+  { symbol: "?", name: "None" }, // index 0 = empty
   { symbol: "H", name: "Hydrogen" },
   { symbol: "He", name: "Helium" },
   { symbol: "Li", name: "Lithium" },

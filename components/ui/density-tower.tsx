@@ -129,7 +129,7 @@ export function DensityTower() {
           // Object sits at the TOP of this chosen layer (it floats on it)
           yPos = chosen.topY + 8
         } else {
-          // Denser than all layers — sinks to bottom
+          // Denser than all layers: sinks to bottom
           yPos = TUBE_H - 14
         }
       }

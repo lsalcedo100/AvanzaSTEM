@@ -3,7 +3,7 @@ import { LocalizedBlogPost } from "@/components/blog/localized-blog-post"
 
 const SLUG = "why-every-kid-should-learn-to-code" as const
 const DESCRIPTION =
-  "Coding teaches problem-solving, creativity, and logic. Learn how to start your child with Python programming — no prior experience needed."
+  "Coding teaches problem-solving, creativity, and logic. Learn how to start your child with Python programming. No prior experience needed."
 
 export async function generateMetadata() {
   return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-02-20")

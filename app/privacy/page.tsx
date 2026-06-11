@@ -80,7 +80,7 @@ export default function PrivacyPage() {
             </ul>
             <p className="mt-4 text-muted-foreground">
               We do not sell, rent, or share your personal information with third parties for
-              marketing purposes — ever.
+              marketing purposes, ever.
             </p>
           </section>
 

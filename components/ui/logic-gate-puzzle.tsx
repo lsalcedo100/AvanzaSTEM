@@ -311,7 +311,7 @@ export function LogicGatePuzzle() {
                       if (!subType) return -1
                       const subInputs = sub.inputs.map((s) => {
                         if (typeof s === "string") return inputs[s] ?? 0
-                        return 0 // shallow — only one level deep used in current levels
+                        return 0 // shallow: only one level deep used in current levels
                       })
                       return evalGate(subType, subInputs[0] ?? 0, subInputs[1] ?? 0)
                     })

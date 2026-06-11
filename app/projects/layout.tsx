@@ -11,12 +11,12 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
   es: {
     title: 'Proyectos STEM para Niños - Avanza STEM',
     description:
-      'Proyectos STEM gratuitos para niños — construye puentes, circuitos eléctricos, programa en Python, lanza volcanes y más. Guías paso a paso para jóvenes estudiantes hispanos.',
+      'Proyectos STEM gratuitos para niños: construye puentes, circuitos eléctricos, programa en Python, lanza volcanes y más. Guías paso a paso para jóvenes estudiantes hispanos.',
   },
   zh: {
     title: 'STEM 儿童项目 - Avanza STEM',
     description:
-      '为儿童提供免费的动手 STEM 项目——搭建桥梁、制作电路灯、用 Python 编程、发射火山等。为西班牙裔学生提供的分步指南。',
+      '为儿童提供免费的动手 STEM 项目：搭建桥梁、制作电路灯、用 Python 编程、发射火山等。为西班牙裔学生提供的分步指南。',
   },
 }
 

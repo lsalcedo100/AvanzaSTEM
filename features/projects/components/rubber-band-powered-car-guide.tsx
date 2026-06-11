@@ -29,7 +29,7 @@ const PHYSICS_TERMS = [
   {
     term: "Potential energy",
     definition:
-      "Energy stored in an object because of its position or shape. A wound-up rubber band holds potential energy in its twisted form — ready to be released.",
+      "Energy stored in an object because of its position or shape. A wound-up rubber band holds potential energy in its twisted form, ready to be released.",
   },
   {
     term: "Kinetic energy",

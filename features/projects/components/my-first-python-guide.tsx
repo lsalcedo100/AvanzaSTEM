@@ -10,7 +10,7 @@ const PYTHON_CONCEPTS = [
   {
     name: "print()",
     description:
-      'Shows text on screen. Try: print("Hello!") — the computer displays exactly what is inside the quotes.',
+      'Shows text on screen. Try: print("Hello!"). The computer displays exactly what is inside the quotes.',
     example: 'print("Welcome to my quiz!")',
   },
   {
@@ -22,7 +22,7 @@ const PYTHON_CONCEPTS = [
   {
     name: "variables",
     description:
-      "A named container that holds a value. You can change what is inside it during the program — perfect for keeping score.",
+      "A named container that holds a value. You can change what is inside it during the program, perfect for keeping score.",
     example: "score = 0",
   },
   {
@@ -42,7 +42,7 @@ if answer.lower() == "paris":
     score = score + 1
     print("Correct!")
 else:
-    print("Not quite — it's Paris.")
+    print("Not quite, it's Paris.")
 
 print("Your score:", score, "out of 1")`
 

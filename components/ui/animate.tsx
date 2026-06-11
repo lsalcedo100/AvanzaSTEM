@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 interface FadeInProps {
   children: React.ReactNode
   className?: string
-  /** Delay in ms — use for stagger effects in grouped lists */
+  /** Delay in ms; use for stagger effects in grouped lists */
   delay?: number
   as?: React.ElementType
   rootMargin?: string

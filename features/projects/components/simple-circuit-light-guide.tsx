@@ -15,7 +15,7 @@ const COMPONENT_NOTES = [
   {
     name: "LED",
     detail:
-      "Light-emitting diode. It only works in one direction — the long leg connects to positive, the short leg to negative. Flip it around if it does not light up.",
+      "Light-emitting diode. It only works in one direction: the long leg connects to positive, the short leg to negative. Flip it around if it does not light up.",
   },
   {
     name: "Wires",
@@ -30,7 +30,7 @@ const COMPONENT_NOTES = [
 ]
 
 const TROUBLESHOOTING = [
-  { problem: "LED does not light", fix: "Flip the LED around — polarity is wrong." },
+  { problem: "LED does not light", fix: "Flip the LED around. Polarity is wrong." },
   { problem: "LED lights but is very dim", fix: "Check all wire connections. A loose contact reduces current." },
   { problem: "Nothing happens at all", fix: "Check the battery has charge and both wires are connected firmly." },
   { problem: "LED burns out quickly", fix: "Add a resistor between the battery and LED to limit current." },

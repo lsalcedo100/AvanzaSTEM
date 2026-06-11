@@ -10,7 +10,7 @@ const SCIENCE_TERMS = [
   {
     term: "Nucleation",
     definition:
-      "When dissolved gas finds a rough surface to escape from. The tiny bumps on Mentos candy do the same thing — they give gas many escape points at once.",
+      "When dissolved gas finds a rough surface to escape from. The tiny bumps on Mentos candy do the same thing: they give gas many escape points at once.",
   },
   {
     term: "Carbon dioxide (CO₂)",
@@ -94,7 +94,7 @@ export function BakingSodaVolcanoGuide({ project }: { project: ProjectGuide }) {
                 <p className="mt-4 text-base leading-7 text-muted-foreground">{guide.why}</p>
               </section>
 
-              {/* Chemical equation — shown in English only */}
+              {/* Chemical equation, shown in English only */}
               {language === "en" && (
                 <section>
                   <h2 className="text-xl font-bold text-foreground">The reaction in full</h2>
@@ -104,7 +104,7 @@ export function BakingSodaVolcanoGuide({ project }: { project: ProjectGuide }) {
                   <div className="mt-5 space-y-5">
                     <div className="border-t border-border pt-5">
                       <p className="font-semibold text-foreground">
-                        Step 1 — Acid-base exchange
+                        Step 1: Acid-base exchange
                       </p>
                       <p className="mt-2 text-sm leading-6 text-muted-foreground">
                         Acetic acid (vinegar) meets sodium bicarbonate (baking soda). They trade
@@ -112,7 +112,7 @@ export function BakingSodaVolcanoGuide({ project }: { project: ProjectGuide }) {
                       </p>
                     </div>
                     <div className="border-t border-border pt-5">
-                      <p className="font-semibold text-foreground">Step 2 — Decomposition</p>
+                      <p className="font-semibold text-foreground">Step 2: Decomposition</p>
                       <p className="mt-2 text-sm leading-6 text-muted-foreground">
                         Carbonic acid is unstable, so it immediately breaks apart into water and
                         carbon dioxide gas. That is the CO₂ you see rushing out as foam.
@@ -200,7 +200,7 @@ export function BakingSodaVolcanoGuide({ project }: { project: ProjectGuide }) {
                     Turn it into an experiment
                   </h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    Change only one thing at a time — vinegar amount, baking soda amount, or soap — and
+                    Change only one thing at a time: vinegar amount, baking soda amount, or soap, and
                     measure the eruption height each trial. That is the difference between a cool
                     demo and a real experiment.
                   </p>

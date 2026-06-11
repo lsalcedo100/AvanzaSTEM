@@ -145,7 +145,7 @@ export function Gallery({ limit }: GalleryProps) {
     })
   }, [activeIndex, all])
 
-  // Back-to-top — only on the full gallery page (no `limit`).
+  // Back-to-top, only on the full gallery page (no `limit`).
   const [showTop, setShowTop] = useState(false)
   useEffect(() => {
     if (limit) return
