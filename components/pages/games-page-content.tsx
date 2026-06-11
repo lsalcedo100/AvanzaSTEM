@@ -27,7 +27,6 @@ type Group = {
   id: string
   name: string
   description: string
-  accent: string
   activities: Activity[]
 }
 
@@ -39,7 +38,6 @@ export function GamesPageContent() {
       id: "group-code",
       name: t.gamesPage.groupCodeName,
       description: t.gamesPage.groupCodeDesc,
-      accent: "bg-avanza-purple",
       activities: [
         { id: "python", name: t.gamesPage.pythonName, tagline: t.gamesPage.pythonTagline },
         { id: "robot", name: t.gamesPage.robotName, tagline: t.gamesPage.robotTagline },
@@ -51,7 +49,6 @@ export function GamesPageContent() {
       id: "group-build",
       name: t.gamesPage.groupBuildName,
       description: t.gamesPage.groupBuildDesc,
-      accent: "bg-avanza-orange",
       activities: [
         { id: "bridge", name: t.gamesPage.bridgeName, tagline: t.gamesPage.bridgeTagline },
         { id: "tower", name: t.gamesPage.towerName, tagline: t.gamesPage.towerTagline },
@@ -63,7 +60,6 @@ export function GamesPageContent() {
       id: "group-science",
       name: t.gamesPage.groupScienceName,
       description: t.gamesPage.groupScienceDesc,
-      accent: "bg-avanza-teal",
       activities: [
         { id: "atom", name: t.gamesPage.atomName, tagline: t.gamesPage.atomTagline },
         { id: "circuit", name: t.gamesPage.circuitName, tagline: t.gamesPage.circuitTagline },
