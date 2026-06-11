@@ -7,7 +7,6 @@ import { PythonPlayground } from "@/components/ui/python-playground"
 import { BridgeLoadDemo } from "@/components/ui/bridge-load-demo"
 import { JengaTower } from "@/components/ui/jenga-tower"
 import { AtomBuilder } from "@/components/ui/atom-builder"
-import { StartHere } from "@/components/ui/start-here"
 import { CodePathRobot } from "@/components/ui/code-path-robot"
 import { CircuitBuilder } from "@/components/ui/circuit-builder"
 import { CatapultLab } from "@/components/ui/catapult-lab"
@@ -105,9 +104,6 @@ export function GamesPageContent() {
         </div>
       </section>
 
-      {/* NOT SURE WHERE TO START */}
-      <StartHere />
-
       {/* WHAT'S HERE: grouped table of contents */}
       <section className="bg-white py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-6">
@@ -122,10 +118,18 @@ export function GamesPageContent() {
           <div className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-8">
             {groups.map((group, i) => (
               <FadeIn key={group.id} delay={i * 80}>
-                <h3 className="text-lg font-extrabold text-foreground">{group.name}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {group.description}
-                </p>
+                <div
+                  className={`h-1.5 w-12 rounded-full ${
+                    group.id === "group-code"
+                      ? "bg-avanza-purple"
+                      : group.id === "group-build"
+                        ? "bg-avanza-orange"
+                        : "bg-avanza-teal"
+                  }`}
+                />
+                <h3 className="mt-4 text-2xl font-extrabold leading-tight text-foreground md:text-3xl">
+                  {group.name}
+                </h3>
                 <ul className="mt-5 space-y-4">
                   {group.activities.map((activity) => (
                     <li key={activity.id}>

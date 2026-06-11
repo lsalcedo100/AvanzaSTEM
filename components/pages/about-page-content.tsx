@@ -31,6 +31,29 @@ export function AboutPageContent() {
     },
   ]
 
+  const teamMembers = [
+    {
+      name: "Liam Salcedo",
+      role: t.aboutPage.founderRole,
+      bio: t.aboutPage.founderBio,
+      image: "/images/about/liam.jpeg",
+      imageAlt: t.aboutPage.liamPhotoAlt,
+      imagePosition: "object-[center_35%]",
+      accent: "bg-avanza-green/20",
+      text: "text-avanza-green",
+    },
+    {
+      name: 'Enqi "Tommy" Qi',
+      role: t.aboutPage.tommyRole,
+      bio: t.aboutPage.tommyBio,
+      image: "/images/about/enqi.jpeg",
+      imageAlt: t.aboutPage.tommyPhotoAlt,
+      imagePosition: "object-center",
+      accent: "bg-avanza-teal/20",
+      text: "text-avanza-teal",
+    },
+  ]
+
   return (
     <>
       <section className="bg-gradient-to-br from-avanza-green to-avanza-teal py-20">
@@ -64,10 +87,11 @@ export function AboutPageContent() {
             <FadeIn delay={100}>
               <div className="relative h-80 overflow-hidden rounded-2xl shadow-2xl lg:h-96">
                 <LightboxImage
-                  src="/images/workshops/past-science.jpg"
-                  alt={t.aboutPage.imageAlt}
+                  src="/images/about/liam-and-enqi.jpg"
+                  alt={t.aboutPage.teamPhotoAlt}
                   fill
-                  className="object-cover"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover object-[center_38%]"
                 />
               </div>
             </FadeIn>
@@ -112,15 +136,25 @@ export function AboutPageContent() {
             </p>
           </FadeIn>
           <FadeIn delay={100}>
-            <div className="mx-auto mt-14 max-w-sm rounded-2xl border border-border bg-card p-8 text-center shadow-sm">
-              <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-avanza-green/20">
-                <span className="text-3xl font-extrabold text-avanza-green">L</span>
-              </div>
-              <h3 className="mt-4 text-xl font-bold text-card-foreground">Liam Salcedo</h3>
-              <p className="text-sm font-semibold text-avanza-green">{t.aboutPage.founderRole}</p>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {t.aboutPage.founderBio}
-              </p>
+            <div className="mx-auto mt-14 grid max-w-3xl gap-8 md:grid-cols-2">
+              {teamMembers.map((member) => (
+                <div key={member.name} className="rounded-2xl border border-border bg-card p-8 text-center shadow-sm">
+                  <div className={`relative mx-auto aspect-[4/5] w-full max-w-52 overflow-hidden rounded-xl ${member.accent}`}>
+                    <LightboxImage
+                      src={member.image}
+                      alt={member.imageAlt}
+                      fill
+                      sizes="(min-width: 768px) 13rem, 13rem"
+                      className={`object-cover ${member.imagePosition}`}
+                    />
+                  </div>
+                  <h3 className="mt-4 text-xl font-bold text-card-foreground">{member.name}</h3>
+                  <p className={`text-sm font-semibold ${member.text}`}>{member.role}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {member.bio}
+                  </p>
+                </div>
+              ))}
             </div>
             <p className="mt-10 text-center text-base text-muted-foreground">
               {t.aboutPage.helpText}{" "}
