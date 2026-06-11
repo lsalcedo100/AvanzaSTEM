@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Eraser, Play, RotateCcw, Sparkles, Wrench } from "lucide-react"
+import { Eraser, Play, RotateCcw, Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { cn } from "@/lib/utils"
@@ -228,10 +228,9 @@ export function MarbleRun() {
 
       <div className="relative mx-auto max-w-6xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/25 bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-avanza-dark">
-            <Wrench className="h-3.5 w-3.5 text-avanza-orange" />
+          <p className="text-sm font-bold uppercase tracking-wider text-avanza-orange">
             {t.gamesPage.marbleEyebrow}
-          </span>
+          </p>
           <h2 className="mt-5 text-balance text-4xl font-extrabold leading-tight text-foreground md:text-5xl">
             {t.gamesPage.marbleTitle}
           </h2>
@@ -382,10 +381,6 @@ export function MarbleRun() {
                 className="absolute -inset-2 rounded-[28px] bg-avanza-dark/8 [transform:rotate(0.6deg)]"
               />
               <div className="relative flex h-full flex-col gap-4 rounded-3xl bg-avanza-dark p-7 text-primary-foreground shadow-[0_28px_64px_-30px_rgba(26,26,46,0.4)]">
-                <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white/85">
-                  <Sparkles className="h-3.5 w-3.5 text-avanza-green" />
-                  {t.gamesPage.marbleFactEyebrow}
-                </div>
                 <h3 className="text-2xl font-extrabold leading-tight md:text-3xl">
                   {t.gamesPage.marbleFactTitle}
                 </h3>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Hammer, Play, RotateCcw, Sparkles } from "lucide-react"
+import { Play, RotateCcw, Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 
@@ -234,10 +234,9 @@ export function JengaTower() {
 
       <div className="relative mx-auto max-w-7xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/25 bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-avanza-dark">
-            <Hammer className="h-3.5 w-3.5 text-avanza-orange" />
+          <p className="text-sm font-bold uppercase tracking-wider text-avanza-purple">
             {t.home.jengaEyebrow}
-          </span>
+          </p>
           <h2 className="mt-5 text-balance text-3xl font-extrabold leading-tight text-foreground md:text-5xl">
             {t.home.jengaTitle}
           </h2>
@@ -378,7 +377,7 @@ export function JengaTower() {
             </ul>
 
             <div className="rounded-2xl bg-avanza-dark p-5 text-primary-foreground">
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-avanza-green">
+              <p className="text-lg font-extrabold text-white">
                 {t.home.jengaLessonTitle}
               </p>
               <p className="mt-2 text-sm leading-relaxed text-primary-foreground/85">

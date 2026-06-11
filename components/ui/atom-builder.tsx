@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { Atom, Minus, Plus, RotateCcw, Sparkles } from "lucide-react"
+import { Minus, Plus, RotateCcw, Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { cn } from "@/lib/utils"
@@ -91,10 +91,9 @@ export function AtomBuilder() {
 
       <div className="relative mx-auto max-w-6xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/25 bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-avanza-dark">
-            <Atom className="h-3.5 w-3.5 text-avanza-purple" />
+          <p className="text-sm font-bold uppercase tracking-wider text-avanza-teal">
             {t.home.atomEyebrow}
-          </span>
+          </p>
           <h2 className="mt-5 text-balance text-4xl font-extrabold leading-tight text-foreground md:text-5xl">
             {t.home.atomTitle}
           </h2>
