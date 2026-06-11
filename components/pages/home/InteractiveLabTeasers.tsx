@@ -1,14 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, Atom, Code2, Hammer, Play, Sparkles, Wrench } from "lucide-react"
-import type { LucideIcon } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 
 type LabCard = {
   href: string
-  icon: LucideIcon
   eyebrow: string
   title: string
   description: string
@@ -21,7 +19,6 @@ export function InteractiveLabTeasers() {
   const labs: LabCard[] = [
     {
       href: "/games#python",
-      icon: Code2,
       eyebrow: t.home.pyEyebrow,
       title: t.home.pyTitle,
       description: t.home.pyDesc,
@@ -30,7 +27,6 @@ export function InteractiveLabTeasers() {
     },
     {
       href: "/games#bridge",
-      icon: Wrench,
       eyebrow: t.home.bridgeEyebrow,
       title: t.home.bridgeTitle,
       description: t.home.bridgeDesc,
@@ -39,7 +35,6 @@ export function InteractiveLabTeasers() {
     },
     {
       href: "/games#tower",
-      icon: Hammer,
       eyebrow: t.home.jengaEyebrow,
       title: t.home.jengaTitle,
       description: t.home.jengaDesc,
@@ -48,7 +43,6 @@ export function InteractiveLabTeasers() {
     },
     {
       href: "/games#atom",
-      icon: Atom,
       eyebrow: t.home.atomEyebrow,
       title: t.home.atomTitle,
       description: t.home.atomDesc,
@@ -58,23 +52,10 @@ export function InteractiveLabTeasers() {
   ]
 
   return (
-    <section className="relative overflow-hidden bg-[#fff8e7] py-16 md:py-20">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.42]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(26,26,46,0.055) 1px, transparent 1px), linear-gradient(to bottom, rgba(26,26,46,0.055) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      />
-      <div className="relative mx-auto max-w-7xl px-6">
+    <section className="bg-[#fff8e7] py-16 md:py-20">
+      <div className="mx-auto max-w-7xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/25 bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-avanza-dark">
-            <Sparkles className="h-3.5 w-3.5 text-avanza-orange" />
-            {t.home.labsTeaserEyebrow}
-          </span>
-          <h2 className="mt-4 text-3xl font-extrabold text-foreground md:text-4xl">
+          <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">
             {t.home.labsTeaserTitle}
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
@@ -105,7 +86,6 @@ export function InteractiveLabTeasers() {
 }
 
 function LabCard({ lab, cta }: { lab: LabCard; cta: string }) {
-  const Icon = lab.icon
   return (
     <Link
       href={lab.href}
@@ -113,16 +93,7 @@ function LabCard({ lab, cta }: { lab: LabCard; cta: string }) {
     >
       <StaticPreview type={lab.preview} tone={lab.tone} />
       <div className="flex flex-1 flex-col p-6">
-        <div className="flex items-start justify-between gap-4">
-          <span className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${lab.tone}`}>
-            <Icon className="h-5 w-5" />
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-dark px-3 py-1.5 text-xs font-extrabold text-primary-foreground">
-            <Play className="h-3.5 w-3.5 fill-white" />
-            {cta}
-          </span>
-        </div>
-        <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
           {lab.eyebrow}
         </p>
         <h3 className="mt-2 text-xl font-extrabold leading-snug text-foreground">

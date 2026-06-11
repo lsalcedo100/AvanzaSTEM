@@ -24,7 +24,7 @@ type Path = {
   ring: string
   shadow: string
   lift: string
-  /** Slight tilt to feel sticker-like — alternates left/right. */
+  /** Slight tilt to feel sticker-like; alternates left/right. */
   tilt: string
 }
 

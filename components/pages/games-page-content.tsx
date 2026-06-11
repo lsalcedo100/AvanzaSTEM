@@ -247,7 +247,7 @@ export function GamesPageContent() {
         </div>
       </section>
 
-      {/* GAME CARD GRID — anchor-jumps to each section */}
+      {/* GAME CARD GRID: anchor-jumps to each section */}
       <section className="bg-[#fcfaf3] py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="mb-8 text-center">
@@ -265,7 +265,7 @@ export function GamesPageContent() {
         </div>
       </section>
 
-      {/* GAME SECTIONS — anchored, scroll-margin top so navbar doesn't cover */}
+      {/* GAME SECTIONS: anchored, scroll-margin top so navbar doesn't cover */}
       <div id="python" style={{ scrollMarginTop: 96 }}>
         <PythonPlayground />
       </div>
@@ -313,7 +313,7 @@ export function GamesPageContent() {
             More games coming soon.
           </h2>
           <p className="mt-4 text-base text-primary-foreground/70">
-            Have an idea for a STEM game we should build? Tell us — we love new ideas.
+            Have an idea for a STEM game we should build? Tell us, we love new ideas.
           </p>
           <a
             href="mailto:liam@avanzastem.org?subject=Game%20idea"

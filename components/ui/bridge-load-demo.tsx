@@ -226,7 +226,7 @@ function BridgeSVG({
   const bays = 4
   const bayWidth = (right - left) / bays
 
-  // Sag affects deck mid points — deepest at center, less at supports.
+  // Sag affects deck mid points: deepest at center, less at supports.
   const sagAt = (i: number) => {
     const t = i / bays
     // parabola, max at t=0.5
@@ -302,7 +302,7 @@ function BridgeSVG({
         {topPoints.map((p, i) => (
           <line key={`v${i}`} x1={p.x} y1={p.y} x2={deckPoints[i].x} y2={deckPoints[i].y} />
         ))}
-        {/* Diagonals — alternate direction for X pattern feel */}
+        {/* Diagonals: alternate direction for X pattern feel */}
         {Array.from({ length: bays }).map((_, i) => {
           const a = topPoints[i]
           const b = deckPoints[i + 1]

@@ -261,7 +261,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       description:
         "Watch a giant foam tower erupt from a single bottle as hydrogen peroxide breaks apart and releases oxygen in a spectacular exothermic reaction.",
       introduction: [
-        "Elephant toothpaste gets its name because the foam that shoots out is so huge it looks like it could belong to an elephant. But this is not just a cool explosion—it is a real chemical reaction you can control.",
+        "Elephant toothpaste gets its name because the foam that shoots out is so huge it looks like it could belong to an elephant. But this is not just a cool explosion. It is a real chemical reaction you can control.",
         "This experiment teaches you how catalysts speed up reactions, why heat is released when chemicals change, and how oxygen gas turns a liquid into an enormous pile of foam right before your eyes.",
       ],
       why:
@@ -289,7 +289,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       safety:
         "Always have an adult handle and pour the hydrogen peroxide, which can irritate skin and eyes. Wear safety goggles and gloves throughout the experiment. The foam is warm and safe to touch after it fully settles, but do not let liquid contact eyes or skin during the reaction. Dispose of the foam and any leftover liquid by rinsing them down a drain with plenty of water.",
       challenge:
-        "Try two different concentrations of hydrogen peroxide—3% from the drugstore and 6% or higher from a beauty supply store—and compare how tall each foam tower grows.",
+        "Try two different concentrations of hydrogen peroxide (3% from the drugstore and 6% or higher from a beauty supply store) and compare how tall each foam tower grows.",
     },
     {
       slug: "making-oobleck",
@@ -300,13 +300,13 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       time: "20 minutes",
       image: "/images/projects/making-oobleck/cover.jpg",
       description:
-        "Mix just two ingredients to make a mysterious goop that flows like a liquid but turns solid when you squeeze it—and discover the science of non-Newtonian fluids.",
+        "Mix just two ingredients to make a mysterious goop that flows like a liquid but turns solid when you squeeze it, and discover the science of non-Newtonian fluids.",
       introduction: [
         "Oobleck is named after a sticky substance in a Dr. Seuss story, and it is just as weird and unpredictable as it sounds. It runs through your fingers like water, but the moment you squeeze or hit it, it goes hard as a rock.",
         "This activity explores a fascinating class of materials called non-Newtonian fluids, and it only takes two ingredients and a few minutes to make a bowlful of science you can actually hold in your hands.",
       ],
       why:
-        "Most liquids like water and juice flow at the same rate no matter how hard you push them. Oobleck is different because it is a non-Newtonian fluid, meaning its viscosity—how thick or runny it is—changes depending on pressure. When you push or hit the oobleck quickly, the cornstarch particles lock together and it behaves like a solid. When pressure is released, the particles separate and it flows like a liquid again. This property is called shear thickening, and engineers study materials like this for things like body armor and pothole filler.",
+        "Most liquids like water and juice flow at the same rate no matter how hard you push them. Oobleck is different because it is a non-Newtonian fluid, meaning its viscosity (how thick or runny it is) changes depending on pressure. When you push or hit the oobleck quickly, the cornstarch particles lock together and it behaves like a solid. When pressure is released, the particles separate and it flows like a liquid again. This property is called shear thickening, and engineers study materials like this for things like body armor and pothole filler.",
       materials: [
         "2 cups of cornstarch",
         "1 cup of water",
@@ -318,7 +318,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       steps: [
         "Pour the cornstarch into the large mixing bowl.",
         "Add the food coloring to the water if you want your oobleck to be colorful.",
-        "Slowly pour the water into the cornstarch, stirring as you go—do not add it all at once.",
+        "Slowly pour the water into the cornstarch, stirring as you go. Do not add it all at once.",
         "Keep mixing until the oobleck has no dry lumps and feels strange to stir.",
         "Try poking the surface fast with your finger, then dipping your finger in slowly and notice the difference.",
         "Pick up a handful and squeeze it tight, then open your hand and let it drip.",
@@ -338,10 +338,10 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       time: "1-2 hours",
       image: "/images/projects/Rubber Band Powered Car.png",
       description:
-        "A simple DIY car that moves without electricity or batteries — just the stored energy of a twisted rubber band powering the wheels and axle forward.",
+        "A simple DIY car that moves without electricity or batteries, just the stored energy of a twisted rubber band powering the wheels and axle forward.",
       introduction: [
         "A rubber band-powered car is one of the most satisfying builds because you do all the work, wind it up, set it down, and then watch physics take over.",
-        "You can build one from everyday materials and then start tweaking — change the rubber band, the wheels, or the car weight — and see exactly how each change affects how far it travels.",
+        "You can build one from everyday materials and then start tweaking: change the rubber band, the wheels, or the car weight, and see exactly how each change affects how far it travels.",
       ],
       why:
         "The rubber band stores energy when it is twisted or wound up. When the car is released, the rubber band untwists and transfers that stored energy into the wheels or axle. This changes potential energy into kinetic energy, which is the energy of motion. The car moves best on a smooth, flat surface, and students can improve the design by changing the rubber band, wheels, car length, or car weight.",
@@ -381,7 +381,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
         "Turn lemons into a real battery and light up an LED by discovering how chemical energy becomes electrical energy.",
       introduction: [
         "Did you know a lemon can power a light? It sounds impossible, but lemons contain acid that can kickstart a chemical reaction between two different metals and produce a small electric current.",
-        "This project teaches you how real batteries work, why scientists pair different metals together, and what electrolytes do — all from something you can find in your kitchen.",
+        "This project teaches you how real batteries work, why scientists pair different metals together, and what electrolytes do, all from something you can find in your kitchen.",
       ],
       why:
         "A lemon battery works because of a chemical reaction between two different metals and the acidic lemon juice. The zinc nail and copper piece act as electrodes, while the lemon juice acts as the electrolyte. Electrons move from the zinc through the wires to the copper, creating a small electric current. One lemon may not produce enough power for every device, so connecting multiple lemons in a chain increases the total voltage.",
@@ -417,8 +417,8 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       description:
         "Build a car that runs on air and discover how Newton's Third Law of Motion turns a simple balloon into a powerful engine.",
       introduction: [
-        "A balloon-powered car uses the air rushing out of a balloon to push itself forward. When air escapes backward through a straw, the car moves forward — that is Newton's Third Law of Motion at work.",
-        "You can build one from everyday recycled materials and then test how small changes in design — like wheel size, car weight, or how tightly the balloon is sealed — make it travel farther.",
+        "A balloon-powered car uses the air rushing out of a balloon to push itself forward. When air escapes backward through a straw, the car moves forward. That is Newton's Third Law of Motion at work.",
+        "You can build one from everyday recycled materials and then test how small changes in design, like wheel size, car weight, or how tightly the balloon is sealed, make it travel farther.",
       ],
       why:
         "When the balloon is inflated, it stores potential energy in the stretched rubber and compressed air. When the balloon is released, the air escapes backward through the straw. That backward push creates an equal and opposite reaction, pushing the car forward. The stored potential energy becomes kinetic energy, which is the energy of motion.",
@@ -765,7 +765,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       description:
         "Un auto DIY sencillo que se mueve sin electricidad ni baterias, usando solo la energia almacenada de una liga retorcida para impulsar las ruedas y el eje hacia adelante.",
       introduction: [
-        "Un auto propulsado por liga es uno de los proyectos mas satisfactorios porque tu haces todo el trabajo — lo enrollas, lo sueltas sobre una superficie plana — y observas como la fisica hace el resto.",
+        "Un auto propulsado por liga es uno de los proyectos mas satisfactorios porque tu haces todo el trabajo: lo enrollas, lo sueltas sobre una superficie plana, y observas como la fisica hace el resto.",
         "Puedes construirlo con materiales del hogar y luego comenzar a ajustarlo: cambia la liga, las ruedas o el peso del auto, y observa exactamente como cada cambio afecta la distancia que recorre.",
       ],
       why:
@@ -806,7 +806,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
         "Convierte limones en una bateria real y enciende un LED descubriendo como la energia quimica se convierte en energia electrica.",
       introduction: [
         "¿Sabias que un limon puede encender una luz? Parece imposible, pero el jugo de limon contiene acido que puede iniciar una reaccion quimica entre dos metales diferentes y producir una pequena corriente electrica.",
-        "Este proyecto te ensena como funcionan las baterias reales, por que los cientificos combinan metales diferentes y que hacen los electrolitos — con algo que puedes encontrar en tu cocina.",
+        "Este proyecto te ensena como funcionan las baterias reales, por que los cientificos combinan metales diferentes y que hacen los electrolitos, con algo que puedes encontrar en tu cocina.",
       ],
       why:
         "Una bateria de limon funciona gracias a una reaccion quimica entre dos metales diferentes y el jugo acido del limon. El clavo de zinc y la pieza de cobre actuan como electrodos, mientras que el jugo de limon actua como electrolito. Los electrones se mueven del zinc al cobre a traves de los cables, creando una pequena corriente electrica. Un solo limon puede no producir suficiente energia, por lo que conectar varios limones en cadena aumenta el voltaje total.",
@@ -842,8 +842,8 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       description:
         "Construye un auto que funciona con aire y descubre como la Tercera Ley de Newton convierte un globo en un motor poderoso.",
       introduction: [
-        "Un auto propulsado por globo usa el aire que sale del globo para empujarse hacia adelante. Cuando el aire escapa hacia atras por un popote, el auto avanza — eso es la Tercera Ley del Movimiento de Newton en accion.",
-        "Puedes construirlo con materiales reciclados del hogar y luego probar como pequenos cambios en el diseno — como el tamano de las ruedas, el peso del auto o que tan bien esta sellado el globo — lo hacen recorrer mas distancia.",
+        "Un auto propulsado por globo usa el aire que sale del globo para empujarse hacia adelante. Cuando el aire escapa hacia atras por un popote, el auto avanza. Eso es la Tercera Ley del Movimiento de Newton en accion.",
+        "Puedes construirlo con materiales reciclados del hogar y luego probar como pequenos cambios en el diseno: como el tamano de las ruedas, el peso del auto o que tan bien esta sellado el globo, lo hacen recorrer mas distancia.",
       ],
       why:
         "Cuando el globo esta inflado, almacena energia potencial en el hule estirado y el aire comprimido. Al soltar el globo, el aire escapa hacia atras por el popote. Ese empuje hacia atras crea una reaccion igual y opuesta que impulsa el auto hacia adelante. La energia potencial almacenada se convierte en energia cinetica, que es la energia del movimiento.",
@@ -1109,9 +1109,9 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       time: "30分钟",
       image: "/images/projects/elephant-toothpaste-experiment/cover.jpg",
       description:
-        "看着一瓶液体喷出巨大泡沫柱——当双氧水分解并释放氧气时，会发生一场令人惊叹的放热反应。",
+        "看着一瓶液体喷出巨大泡沫柱，当双氧水分解并释放氧气时，会发生一场令人惊叹的放热反应。",
       introduction: [
-        "大象牙膏得名于它喷出的泡沫大得像大象才能用的牙膏。但这不只是一场酷炫的爆发——它是一个你可以亲手控制的真实化学反应。",
+        "大象牙膏得名于它喷出的泡沫大得像大象才能用的牙膏。但这不只是一场酷炫的爆发，它是一个你可以亲手控制的真实化学反应。",
         "这个实验教你了解催化剂如何加快反应速度、化学变化为什么会释放热量，以及氧气如何将液体瞬间变成一大堆泡沫。",
       ],
       why:
@@ -1150,13 +1150,13 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       time: "20分钟",
       image: "/images/projects/making-oobleck/cover.jpg",
       description:
-        "只需两种材料就能调出一种神奇的东西——它像液体一样流淌，但用手一捏就变成固体，一起来探索非牛顿流体的科学吧。",
+        "只需两种材料就能调出一种神奇的东西，它像液体一样流淌，但用手一捏就变成固体，一起来探索非牛顿流体的科学吧。",
       introduction: [
         "奥不力克（Oobleck）这个名字来自苏斯博士的故事里的神奇黏稠物质，它也像故事里写的那样奇怪和难以捉摸。它能像水一样从手指间流过，但一旦你捏紧或拍打它，就会像石头一样变硬。",
         "这个活动探索一类叫非牛顿流体的迷人材料，只需两种材料和几分钟，你就能做出一碗可以用手感受的科学实验。",
       ],
       why:
-        "大多数液体，比如水和果汁，不管用多大力推压，流动速度都一样。奥不力克不同，它是一种非牛顿流体，意味着它的粘度——有多稠或多稀——会随压力变化。当你快速按压或拍打它时，玉米淀粉颗粒互相锁住，表现得像固体。压力释放后，颗粒分开，它又像液体一样流动。这种特性叫做剪切增稠，工程师们研究类似材料用于防弹衣和路面修补等领域。",
+        "大多数液体，比如水和果汁，不管用多大力推压，流动速度都一样。奥不力克不同，它是一种非牛顿流体，意味着它的粘度（有多稠或多稀）会随压力变化。当你快速按压或拍打它时，玉米淀粉颗粒互相锁住，表现得像固体。压力释放后，颗粒分开，它又像液体一样流动。这种特性叫做剪切增稠，工程师们研究类似材料用于防弹衣和路面修补等领域。",
       materials: [
         "2 杯玉米淀粉",
         "1 杯水",
@@ -1188,10 +1188,10 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       time: "1-2小时",
       image: "/images/projects/Rubber Band Powered Car.png",
       description:
-        "一辆不需要电力或电池的手工小车——只用扭紧的橡皮筋储存的能量推动车轮和车轴向前转动。",
+        "一辆不需要电力或电池的手工小车，只用扭紧的橡皮筋储存的能量推动车轮和车轴向前转动。",
       introduction: [
         "橡皮筋动力车是最有成就感的手工之一：你完成所有的搭建，把它绕紧，放在平面上，然后看着物理学把剩下的事做完。",
-        "你可以用日常材料搭建它，然后开始调整——换橡皮筋、改变轮子或者调整车重——观察每次改动对行驶距离的影响。",
+        "你可以用日常材料搭建它，然后开始调整：换橡皮筋、改变轮子或者调整车重，观察每次改动对行驶距离的影响。",
       ],
       why:
         "橡皮筋被扭紧或绕圈时会储存能量。松开小车后，橡皮筋回弹并将储存的能量传递给车轮或车轴。这将势能转化为动能，也就是运动的能量。小车在光滑的平面上跑得最好，学生可以通过改变橡皮筋、轮子、车身长度或车重来优化设计。",
@@ -1231,7 +1231,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
         "把柠檬变成真正的电池，点亮一个LED灯，探索化学能如何转化为电能。",
       introduction: [
         "你知道柠檬能点亮灯泡吗？听起来不可思议，但柠檬汁里含有酸性物质，能引发两种不同金属之间的化学反应，产生微弱的电流。",
-        "这个项目教你了解真实电池的工作原理、科学家为什么要配对不同金属，以及电解质的作用——材料就藏在你家厨房里。",
+        "这个项目教你了解真实电池的工作原理、科学家为什么要配对不同金属，以及电解质的作用，材料就藏在你家厨房里。",
       ],
       why:
         "柠檬电池靠的是两种不同金属与酸性柠檬汁之间的化学反应。锌钉和铜片充当电极，柠檬汁充当电解质。电子从锌通过导线流向铜，形成微弱的电流。单个柠檬产生的电压可能不够，但将多个柠檬串联起来可以提高总电压。",
@@ -1267,7 +1267,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       description:
         "造一辆靠空气驱动的小车，探索牛顿第三定律如何让一个简单气球变成强力引擎。",
       introduction: [
-        "气球动力车利用从气球里冲出来的空气推动自己前进。当空气通过吸管向后喷出，小车就会向前运动——这就是牛顿第三运动定律在起作用。",
+        "气球动力车利用从气球里冲出来的空气推动自己前进。当空气通过吸管向后喷出，小车就会向前运动，这就是牛顿第三运动定律在起作用。",
         "你可以用家里常见的废旧材料来搭建它，然后测试轮子大小、车身重量或气球密封程度等细节变化，看看哪些改动能让小车跑得更远。",
       ],
       why:

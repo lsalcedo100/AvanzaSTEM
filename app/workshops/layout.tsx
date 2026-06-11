@@ -8,7 +8,7 @@ const workshopsJsonLd = {
     {
       '@type': 'Event',
       position: 1,
-      name: 'Building Workshop — Week 1',
+      name: 'Building Workshop: Week 1',
       description: 'Hands-on engineering and building workshop for young students',
       organizer: { '@type': 'Organization', name: 'Avanza STEM', url: 'https://avanzastem.org' },
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -17,7 +17,7 @@ const workshopsJsonLd = {
     {
       '@type': 'Event',
       position: 2,
-      name: 'Coding Workshop — Week 2',
+      name: 'Coding Workshop: Week 2',
       description: 'Learn Python programming in a hands-on coding workshop',
       organizer: { '@type': 'Organization', name: 'Avanza STEM', url: 'https://avanzastem.org' },
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -26,7 +26,7 @@ const workshopsJsonLd = {
     {
       '@type': 'Event',
       position: 3,
-      name: 'AI Workshop — Week 3',
+      name: 'AI Workshop: Week 3',
       description: 'Explore artificial intelligence concepts responsibly in a fun workshop setting',
       organizer: { '@type': 'Organization', name: 'Avanza STEM', url: 'https://avanzastem.org' },
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',

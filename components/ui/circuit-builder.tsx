@@ -48,7 +48,7 @@ function clone(grid: Cell[][]): Cell[][] {
   return grid.map((row) => row.map((c) => ({ ...c })))
 }
 
-// Sample starter circuit — a closed rectangle loop with battery on the left,
+// Sample starter circuit: a closed rectangle loop with battery on the left,
 // bulb at the bottom, switch up top.
 function starterGrid(): Cell[][] {
   const g = emptyGrid()
@@ -133,7 +133,7 @@ function simulate(grid: Cell[][]): SimResult {
       const sidesArr = Array.from(open)
       if (cell.kind === "battery") {
         // Battery does NOT internally connect + and −
-        // (each terminal is its own node; we'll union all OTHER open sides — none in this case)
+        // (each terminal is its own node; we'll union all OTHER open sides, none in this case)
         // Skip
       } else {
         // wire, bulb, closed switch: union all open sides

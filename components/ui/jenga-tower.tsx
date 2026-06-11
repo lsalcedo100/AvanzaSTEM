@@ -123,7 +123,7 @@ export function JengaTower() {
             render: { visible: false },
           },
         })
-        // Don't capture wheel scroll on the canvas — let the page scroll.
+        // Don't capture wheel scroll on the canvas; let the page scroll.
         const mouseWithWheel = mouse as unknown as {
           element?: HTMLElement
           mousewheel?: EventListener

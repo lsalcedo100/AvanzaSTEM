@@ -145,7 +145,7 @@ export function CodePathRobot() {
 
     const tick = () => {
       if (i >= program.length) {
-        // End of program — check win
+        // End of program; check win
         const reachedGoal = current.x === level.goal.x && current.y === level.goal.y
         const collectedAll = level.stars.every((s) =>
           collectedSet.has(`${s.x},${s.y}`),
