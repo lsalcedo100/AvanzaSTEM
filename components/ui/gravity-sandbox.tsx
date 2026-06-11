@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Globe2, Pause, Play, RotateCcw, Sparkles, Trash2 } from "lucide-react"
+import { Pause, Play, RotateCcw, Trash2 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { cn } from "@/lib/utils"
@@ -324,10 +324,9 @@ export function GravitySandbox() {
 
       <div className="relative mx-auto max-w-6xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-white/30 bg-white/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-white backdrop-blur-sm">
-            <Globe2 className="h-3.5 w-3.5 text-avanza-teal" />
+          <p className="text-sm font-bold uppercase tracking-wider text-white/70">
             {t.gamesPage.gravityEyebrow}
-          </span>
+          </p>
           <h2 className="mt-5 text-balance text-4xl font-extrabold leading-tight text-primary-foreground md:text-5xl">
             {t.gamesPage.gravityTitle}
           </h2>
@@ -406,10 +405,6 @@ export function GravitySandbox() {
                 className="absolute -inset-2 rounded-[28px] bg-white/10 [transform:rotate(0.7deg)]"
               />
               <div className="relative flex h-full flex-col gap-4 rounded-3xl bg-white/8 p-7 text-white shadow-[0_28px_64px_-30px_rgba(0,0,0,0.7)] ring-1 ring-white/15 backdrop-blur-md">
-                <div className="inline-flex w-fit items-center gap-2 rounded-full bg-avanza-teal/30 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">
-                  <Sparkles className="h-3.5 w-3.5 text-avanza-teal" />
-                  {t.gamesPage.gravityFactEyebrow}
-                </div>
                 <h3 className="text-2xl font-extrabold leading-tight md:text-3xl">
                   {t.gamesPage.gravityFactTitle}
                 </h3>
