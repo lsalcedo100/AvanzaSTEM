@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ArrowDown, BarChart3, Pause, Play, RotateCcw, Sparkles } from "lucide-react"
+import { ArrowDown, Pause, Play, RotateCcw, Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { cn } from "@/lib/utils"
@@ -323,10 +323,9 @@ export function SortingRace() {
 
       <div className="relative mx-auto max-w-6xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/25 bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-avanza-dark">
-            <BarChart3 className="h-3.5 w-3.5 text-avanza-orange" />
+          <p className="text-sm font-bold uppercase tracking-wider text-avanza-orange">
             {t.gamesPage.sortEyebrow}
-          </span>
+          </p>
           <h2 className="mt-5 text-balance text-4xl font-extrabold leading-tight text-foreground md:text-5xl">
             {t.gamesPage.sortTitle}
           </h2>
@@ -396,7 +395,7 @@ export function SortingRace() {
 
             {/* Footer fact */}
             <div className="rounded-2xl bg-avanza-dark p-6 text-primary-foreground">
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-avanza-green">
+              <p className="text-lg font-extrabold text-white">
                 {t.gamesPage.sortFactEyebrow}
               </p>
               <p className="mt-2 text-base leading-relaxed text-white/85">
