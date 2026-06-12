@@ -6,34 +6,41 @@ import { ArrowLeft } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { getProjectGuide, type ProjectGuide } from "@/features/projects/data"
 
+const POLARITY_IMAGE = "/images/projects/simple-circuit-light/detailed%20image%20of%20a%20circuit.jpg"
+
 const COMPONENT_NOTES = [
   {
-    name: "Battery",
+    name: "Battery pack",
     detail:
-      "The power source. Electricity flows from the positive terminal (+) through the circuit and back into the negative terminal (−). A 9V battery or a small AA battery pack both work.",
+      "The power source. Use a small battery pack, such as 2 AA batteries. The red lead connects to the positive rail and the black lead connects to the negative rail.",
+  },
+  {
+    name: "Breadboard",
+    detail:
+      "A solderless building board. Holes in the same row are connected inside, so you can join parts without twisting wires or using solder.",
+  },
+  {
+    name: "Resistor",
+    detail:
+      "A current limiter. It slows the flow of electricity enough to protect the LED from getting too much current and burning out.",
   },
   {
     name: "LED",
     detail:
-      "Light-emitting diode. It only works in one direction: the long leg connects to positive, the short leg to negative. Flip it around if it does not light up.",
+      "Light-emitting diode. It only works in one direction: the long leg is the anode and points toward positive, while the short leg is the cathode and points toward negative.",
   },
   {
-    name: "Wires",
+    name: "Jumper wires",
     detail:
-      "The pathway electricity travels through. Insulated wire keeps the current going in one direction and prevents short circuits.",
-  },
-  {
-    name: "Switch",
-    detail:
-      "Opens or closes the circuit. When the switch is open, electricity cannot flow and the light goes out. When it is closed, the path is complete and the light turns on.",
+      "Short insulated wires that connect breadboard rows to the power rails. They create the path current follows through the circuit.",
   },
 ]
 
 const TROUBLESHOOTING = [
-  { problem: "LED does not light", fix: "Flip the LED around. Polarity is wrong." },
-  { problem: "LED lights but is very dim", fix: "Check all wire connections. A loose contact reduces current." },
-  { problem: "Nothing happens at all", fix: "Check the battery has charge and both wires are connected firmly." },
-  { problem: "LED burns out quickly", fix: "Add a resistor between the battery and LED to limit current." },
+  { problem: "LED does not light", fix: "Disconnect the battery, flip the LED around, and check that the long leg points toward the resistor and positive rail." },
+  { problem: "LED lights but is very dim", fix: "Check for loose jumper wires and make sure the resistor and LED leg share the same breadboard row." },
+  { problem: "Nothing happens at all", fix: "Check the battery charge and confirm the red lead is on the + rail and the black lead is on the - rail." },
+  { problem: "LED gets hot or burns out", fix: "Disconnect the battery right away. The resistor may be missing, too small, or not actually in series with the LED." },
 ]
 
 export function SimpleCircuitLightGuide({ project }: { project: ProjectGuide }) {
@@ -66,13 +73,13 @@ export function SimpleCircuitLightGuide({ project }: { project: ProjectGuide }) 
         </div>
 
         {/* Hero image */}
-        <div className="mt-8 overflow-hidden rounded-lg border border-border">
+        <div className="mt-8 overflow-hidden rounded-lg border border-border bg-white">
           <div className="relative h-80">
             <Image
               src={guide.image}
-              alt={guide.title}
+              alt="Breadboard LED circuit with a battery, resistor, and jumper wires"
               fill
-              className="object-cover"
+              className="object-contain"
               priority
             />
           </div>
@@ -120,6 +127,16 @@ export function SimpleCircuitLightGuide({ project }: { project: ProjectGuide }) 
               {/* Component notes */}
               {language === "en" && (
                 <section>
+                  <div className="mb-8 overflow-hidden rounded-lg border border-border bg-white">
+                    <div className="relative h-72">
+                      <Image
+                        src={POLARITY_IMAGE}
+                        alt="Close-up breadboard circuit showing the LED longer lead, shorter lead, resistor, and connected breadboard rows"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
                   <h2 className="text-xl font-bold text-foreground">What each part does</h2>
                   <dl className="mt-5 space-y-5">
                     {COMPONENT_NOTES.map((c) => (
