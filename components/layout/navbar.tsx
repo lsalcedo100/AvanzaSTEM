@@ -22,6 +22,7 @@ export function Navbar() {
   const desktopLangRef = useRef<HTMLDivElement>(null)
   const mobileLangRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
+  const isSpanish = language === "es"
 
   useEffect(() => {
     // Hysteresis to prevent oscillation when the navbar's height change
@@ -101,7 +102,7 @@ export function Navbar() {
       <div
         className={`mx-auto flex items-center justify-between transition-all duration-300 ease-out ${
           scrolled
-            ? "max-w-5xl rounded-full border border-avanza-dark/10 bg-avanza-navbar/85 px-4 py-2 shadow-[0_12px_30px_-12px_rgba(26,26,46,0.35)] backdrop-blur-md sm:px-6 sm:py-2.5"
+            ? `${isSpanish ? "w-full max-w-6xl xl:w-fit xl:max-w-[calc(100vw-3rem)]" : "w-full max-w-5xl lg:w-fit lg:max-w-[calc(100vw-3rem)]"} rounded-full border border-avanza-dark/10 bg-avanza-navbar/85 px-4 py-2 shadow-[0_12px_30px_-12px_rgba(26,26,46,0.35)] backdrop-blur-md sm:px-6 sm:py-2.5`
             : "w-full max-w-7xl rounded-none border border-transparent bg-transparent px-6 py-4.5 shadow-none"
         }`}
       >
@@ -129,7 +130,11 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-0.5 xl:gap-1 lg:flex lg:pl-3">
+        <div
+          className={`hidden items-center gap-0.5 ${
+            isSpanish ? "min-w-0 flex-1 xl:flex xl:gap-1 xl:pl-3" : "min-w-0 flex-1 lg:flex lg:pl-3 xl:gap-1"
+          }`}
+        >
           {/* Top-level links */}
           {topNavLinks.map((link) => {
             const isActive = mounted && pathname === link.href
@@ -149,11 +154,11 @@ export function Navbar() {
           })}
 
           {/* Language Switcher */}
-          <div className="relative ml-3" ref={desktopLangRef}>
+          <div className="relative ml-3 shrink-0" ref={desktopLangRef}>
             <button
               type="button"
               onClick={() => setLangOpen(!langOpen)}
-              className={`inline-flex items-center gap-1.5 rounded-full border-2 border-avanza-dark/25 px-3 py-1.5 text-sm font-semibold text-avanza-dark transition-colors hover:border-avanza-dark/45 hover:bg-avanza-dark/8 ${focusRing}`}
+              className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border-2 border-avanza-dark/25 px-3 py-1.5 text-sm font-semibold text-avanza-dark transition-colors hover:border-avanza-dark/45 hover:bg-avanza-dark/8 ${focusRing}`}
               aria-label={t.nav.switchLanguage}
               aria-expanded={langOpen}
               aria-haspopup="menu"
@@ -198,7 +203,7 @@ export function Navbar() {
         </div>
 
         {/* Mobile toggle */}
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className={`flex items-center gap-2 ${isSpanish ? "xl:hidden" : "lg:hidden"}`}>
           {/* Mobile Language */}
           <div className="relative" ref={mobileLangRef}>
             <button
@@ -265,9 +270,13 @@ export function Navbar() {
         id="mobile-nav"
         aria-hidden={!mobileOpen}
         inert={!mobileOpen || undefined}
-        className={`mx-auto overflow-hidden bg-avanza-navbar transition-all duration-300 ease-in-out lg:hidden ${
+        className={`mx-auto overflow-hidden bg-avanza-navbar transition-all duration-300 ease-in-out ${
+          isSpanish ? "xl:hidden" : "lg:hidden"
+        } ${
           scrolled
-            ? "mt-2 max-w-5xl rounded-2xl border border-avanza-dark/10 shadow-[0_12px_30px_-12px_rgba(26,26,46,0.35)]"
+            ? `mt-2 ${
+                isSpanish ? "max-w-6xl" : "max-w-5xl"
+              } rounded-2xl border border-avanza-dark/10 shadow-[0_12px_30px_-12px_rgba(26,26,46,0.35)]`
             : "w-full border-t border-avanza-dark/15"
         } ${mobileOpen ? "max-h-120 opacity-100" : "max-h-0 opacity-0"}`}
       >

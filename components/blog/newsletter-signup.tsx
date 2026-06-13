@@ -213,7 +213,7 @@ export function NewsletterSignup({
             <button
               type="submit"
               disabled={isPending}
-              className="inline-flex justify-center rounded-full bg-primary-foreground px-10 py-4 text-lg font-bold text-avanza-green shadow-lg transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-teal disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:scale-100"
+              className="inline-flex justify-center rounded-full bg-primary-foreground px-10 py-4 text-lg font-bold text-avanza-green-dark shadow-lg transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-teal disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:scale-100"
             >
               {isPending ? t.blogPage.subscribing : t.blogPage.subscribe}
             </button>
