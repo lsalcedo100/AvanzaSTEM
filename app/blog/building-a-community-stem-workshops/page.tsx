@@ -1,5 +1,6 @@
 import { generateBlogPostMetadata } from "@/features/blog/metadata"
 import { LocalizedBlogPost } from "@/components/blog/localized-blog-post"
+import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "building-a-community-stem-workshops" as const
 const DESCRIPTION =
@@ -15,9 +16,9 @@ const blogPostJsonLd = {
   headline: "Building a Community: How Local STEM Workshops Change Lives",
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
-  publisher: { "@type": "Organization", name: "Avanza STEM", url: "https://avanzastem.org" },
+  publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
   datePublished: "2026-01-12",
-  url: "https://avanzastem.org/blog/building-a-community-stem-workshops",
+  url: `${siteConfig.url}/blog/building-a-community-stem-workshops`,
 }
 
 export default function BuildingACommunityPage() {

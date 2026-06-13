@@ -1,5 +1,6 @@
 import { generateBlogPostMetadata } from "@/features/blog/metadata"
 import { LocalizedBlogPost } from "@/components/blog/localized-blog-post"
+import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "why-every-kid-should-learn-to-code" as const
 const DESCRIPTION =
@@ -15,9 +16,9 @@ const blogPostJsonLd = {
   headline: "Why Every Kid Should Learn to Code (And How to Start)",
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
-  publisher: { "@type": "Organization", name: "Avanza STEM", url: "https://avanzastem.org" },
+  publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
   datePublished: "2026-02-20",
-  url: "https://avanzastem.org/blog/why-every-kid-should-learn-to-code",
+  url: `${siteConfig.url}/blog/why-every-kid-should-learn-to-code`,
 }
 
 export default function WhyKidsShouldLearnToCodePage() {

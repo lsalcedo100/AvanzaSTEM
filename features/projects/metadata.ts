@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import { getProjectGuide } from "@/features/projects/data"
 import { getLanguage } from "@/lib/get-language"
-
-const BASE_URL = "https://avanzastem.org"
+import { siteConfig } from "@/lib/site-config"
 
 export async function generateProjectMetadata(slug: string): Promise<Metadata> {
   const language = await getLanguage()
@@ -12,7 +11,7 @@ export async function generateProjectMetadata(slug: string): Promise<Metadata> {
 
   const title = `${project.title} - Avanza STEM`
   const description = project.description
-  const url = `${BASE_URL}/projects/${slug}`
+  const url = `${siteConfig.url}/projects/${slug}`
 
   return {
     title,

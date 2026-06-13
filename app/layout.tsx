@@ -8,6 +8,7 @@ import { ImageLightboxProvider } from '@/components/providers/image-lightbox-pro
 import { LanguageProvider } from '@/components/providers/language-provider'
 import { type Language } from '@/i18n/translations'
 import { getLanguage } from '@/lib/get-language'
+import { siteConfig } from '@/lib/site-config'
 
 const robotoMono = Roboto_Mono({
   subsets: ['latin'],
@@ -37,8 +38,6 @@ const metadataByLanguage: Record<Language, Pick<Metadata, 'title' | 'description
   },
 }
 
-const BASE_URL = 'https://avanzastem.org'
-
 const ogImageByLanguage: Record<Language, string> = {
   en: '/images/og-default-en.png',
   es: '/images/og-default-es.png',
@@ -59,15 +58,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    metadataBase: new URL(BASE_URL),
+    metadataBase: new URL(siteConfig.url),
     alternates: {
       canonical: '/',
     },
     openGraph: {
       title: title as string,
       description: description as string,
-      url: BASE_URL,
-      siteName: 'Avanza STEM',
+      url: siteConfig.url,
+      siteName: siteConfig.name,
       locale: ogLocaleByLanguage[language],
       type: 'website',
       images: [
@@ -96,9 +95,9 @@ export async function generateMetadata(): Promise<Metadata> {
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Avanza STEM',
-  url: BASE_URL,
-  logo: `${BASE_URL}/avanza-logo.svg`,
+  name: siteConfig.name,
+  url: siteConfig.url,
+  logo: `${siteConfig.url}/avanza-logo.svg`,
   description:
     'A youth-led program bringing free hands-on STEM workshops and beginner-friendly projects to students, with a special focus on Hispanic and underrepresented communities.',
   sameAs: ['https://instagram.com/avanzastem'],

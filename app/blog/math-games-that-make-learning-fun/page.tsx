@@ -1,5 +1,6 @@
 import { generateBlogPostMetadata } from "@/features/blog/metadata"
 import { LocalizedBlogPost } from "@/components/blog/localized-blog-post"
+import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "math-games-that-make-learning-fun" as const
 const DESCRIPTION =
@@ -15,9 +16,9 @@ const blogPostJsonLd = {
   headline: "Math Games That Make Learning Fun",
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
-  publisher: { "@type": "Organization", name: "Avanza STEM", url: "https://avanzastem.org" },
+  publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
   datePublished: "2026-01-20",
-  url: "https://avanzastem.org/blog/math-games-that-make-learning-fun",
+  url: `${siteConfig.url}/blog/math-games-that-make-learning-fun`,
 }
 
 export default function MathGamesThatMakeLearningFunPage() {

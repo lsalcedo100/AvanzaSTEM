@@ -1,5 +1,6 @@
 import { generateBlogPostMetadata } from "@/features/blog/metadata"
 import { LocalizedBlogPost } from "@/components/blog/localized-blog-post"
+import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "how-to-build-the-strongest-popsicle-stick-bridge" as const
 const DESCRIPTION =
@@ -15,9 +16,9 @@ const blogPostJsonLd = {
   headline: "How to Build the Strongest Popsicle Stick Bridge",
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
-  publisher: { "@type": "Organization", name: "Avanza STEM", url: "https://avanzastem.org" },
+  publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
   datePublished: "2026-02-10",
-  url: "https://avanzastem.org/blog/how-to-build-the-strongest-popsicle-stick-bridge",
+  url: `${siteConfig.url}/blog/how-to-build-the-strongest-popsicle-stick-bridge`,
 }
 
 export default function PopsicleStickBridgeBlogPage() {

@@ -1,8 +1,17 @@
 import type { Metadata } from "next"
+import { siteConfig } from "@/lib/site-config"
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Avanza STEM",
   description: "Learn how Avanza STEM collects, uses, and protects your personal information.",
+  alternates: { canonical: "/privacy" },
+  openGraph: {
+    title: "Privacy Policy | Avanza STEM",
+    description: "Learn how Avanza STEM collects, uses, and protects your personal information.",
+    url: `${siteConfig.url}/privacy`,
+    siteName: siteConfig.name,
+    type: "website",
+  },
 }
 
 export default function PrivacyPage() {

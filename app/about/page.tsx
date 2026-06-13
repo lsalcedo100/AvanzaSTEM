@@ -2,12 +2,13 @@ import type { Metadata } from "next"
 import type { Language } from "@/i18n/translations"
 import { AboutPageContent } from "@/components/pages/about-page-content"
 import { getLanguage } from "@/lib/get-language"
+import { siteConfig } from "@/lib/site-config"
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
-    title: "About | Avanza STEM",
+    title: "About Avanza STEM: Free Bilingual STEM Workshops",
     description:
-      "Learn about Avanza STEM, a youth-led volunteer program bringing free hands-on STEM workshops and beginner-friendly projects to students.",
+      "Learn about Avanza STEM, a youth-led volunteer program bringing free bilingual STEM workshops and beginner-friendly projects to students.",
   },
   es: {
     title: "Nosotros | Avanza STEM",
@@ -23,7 +24,19 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
 
 export async function generateMetadata(): Promise<Metadata> {
   const language = await getLanguage()
-  return metadataByLanguage[language]
+  const { title, description } = metadataByLanguage[language]
+  return {
+    title,
+    description,
+    alternates: { canonical: "/about" },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}/about`,
+      siteName: siteConfig.name,
+      type: "website",
+    },
+  }
 }
 
 export default function AboutPage() {
