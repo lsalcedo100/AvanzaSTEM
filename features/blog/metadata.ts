@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import { localizedBlogArticles, type BlogSlug } from "@/features/blog/posts"
 import { getLanguage } from "@/lib/get-language"
-
-const BASE_URL = "https://avanzastem.org"
+import { siteConfig } from "@/lib/site-config"
 
 export async function generateBlogPostMetadata(
   slug: BlogSlug,
@@ -16,7 +15,7 @@ export async function generateBlogPostMetadata(
     localizedBlogArticles.en[slug]
 
   const title = `${article.title} - Avanza STEM`
-  const url = `${BASE_URL}/blog/${slug}`
+  const url = `${siteConfig.url}/blog/${slug}`
 
   return {
     title,

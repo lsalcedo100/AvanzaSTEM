@@ -2,8 +2,7 @@ import type { Metadata } from "next"
 import { WorkshopsPageContent } from "@/components/pages/workshops-page-content"
 import { getLanguage } from "@/lib/get-language"
 import type { Language } from "@/i18n/translations"
-
-const BASE_URL = "https://avanzastem.org"
+import { siteConfig } from "@/lib/site-config"
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
@@ -34,8 +33,8 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: `${BASE_URL}/workshops`,
-      siteName: "Avanza STEM",
+      url: `${siteConfig.url}/workshops`,
+      siteName: siteConfig.name,
       type: "website",
       images: [
         {

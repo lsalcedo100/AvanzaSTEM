@@ -1,66 +1,82 @@
-const workshopsJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  name: 'Avanza STEM Workshop Series',
-  description: 'A 3-week hands-on STEM workshop series for young Hispanic students',
-  url: 'https://avanzastem.org/workshops',
-  itemListElement: [
-    {
-      '@type': 'Event',
-      position: 1,
-      name: 'Building Workshop: Week 1',
-      description: 'Hands-on engineering and building workshop for young students',
-      organizer: { '@type': 'Organization', name: 'Avanza STEM', url: 'https://avanzastem.org' },
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      isAccessibleForFree: true,
-    },
-    {
-      '@type': 'Event',
-      position: 2,
-      name: 'Coding Workshop: Week 2',
-      description: 'Learn Python programming in a hands-on coding workshop',
-      organizer: { '@type': 'Organization', name: 'Avanza STEM', url: 'https://avanzastem.org' },
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      isAccessibleForFree: true,
-    },
-    {
-      '@type': 'Event',
-      position: 3,
-      name: 'AI Workshop: Week 3',
-      description: 'Explore artificial intelligence concepts responsibly in a fun workshop setting',
-      organizer: { '@type': 'Organization', name: 'Avanza STEM', url: 'https://avanzastem.org' },
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      isAccessibleForFree: true,
-    },
-  ],
+import { siteConfig } from '@/lib/site-config'
+
+const providerJsonLd = {
+  '@type': 'EducationalOrganization',
+  name: siteConfig.name,
+  url: siteConfig.url,
 }
 
-const educationEventJsonLd = {
+const workshopsJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'EducationEvent',
-  name: 'The Maker Mindset Series – Free STEM Workshops',
+  '@type': 'Service',
+  name: 'Free STEM Workshops in Clifton, NJ',
+  serviceType: 'Hands-on STEM education workshops',
   description:
-    'A free 3-week in-person STEM workshop series for Hispanic students covering engineering, Python coding, and artificial intelligence.',
-  organizer: {
-    '@type': 'Organization',
-    name: 'Avanza STEM',
-    url: 'https://avanzastem.org',
-  },
-  location: {
-    '@type': 'Place',
-    name: 'Clifton Public Library',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Clifton',
-      addressRegion: 'NJ',
-      addressCountry: 'US',
+    'Free in-person STEM workshops for students near Clifton, NJ, including engineering, Python coding, and responsible AI activities.',
+  url: `${siteConfig.url}/workshops`,
+  provider: providerJsonLd,
+  areaServed: [
+    {
+      '@type': 'City',
+      name: 'Clifton',
+      address: {
+        '@type': 'PostalAddress',
+        addressRegion: 'NJ',
+        addressCountry: 'US',
+      },
     },
-  },
-  isAccessibleForFree: true,
+  ],
   audience: {
     '@type': 'EducationalAudience',
     educationalRole: 'student',
   },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    url: `${siteConfig.url}/find-a-workshop`,
+  },
+}
+
+const workshopCoursesJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Avanza STEM Workshop Topics',
+  description: 'Undated workshop topics offered by Avanza STEM community partners.',
+  url: `${siteConfig.url}/workshops`,
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      item: {
+        '@type': 'Course',
+        name: 'Building Workshop',
+        description: 'Hands-on engineering and building workshop for young students.',
+        provider: providerJsonLd,
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      item: {
+        '@type': 'Course',
+        name: 'Coding Workshop',
+        description: 'Beginner-friendly Python programming workshop for students.',
+        provider: providerJsonLd,
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      item: {
+        '@type': 'Course',
+        name: 'AI Workshop',
+        description: 'Responsible artificial intelligence concepts explored through hands-on activities.',
+        provider: providerJsonLd,
+      },
+    },
+  ],
 }
 
 export default function WorkshopsLayout({ children }: { children: React.ReactNode }) {
@@ -72,7 +88,7 @@ export default function WorkshopsLayout({ children }: { children: React.ReactNod
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(educationEventJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(workshopCoursesJsonLd) }}
       />
       {children}
     </>

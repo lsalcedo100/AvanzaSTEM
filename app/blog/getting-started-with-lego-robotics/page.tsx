@@ -1,5 +1,6 @@
 import { generateBlogPostMetadata } from "@/features/blog/metadata"
 import { LocalizedBlogPost } from "@/components/blog/localized-blog-post"
+import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "getting-started-with-lego-robotics" as const
 const DESCRIPTION =
@@ -15,9 +16,9 @@ const blogPostJsonLd = {
   headline: "Getting Started with LEGO Robotics: A Parent's Guide",
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
-  publisher: { "@type": "Organization", name: "Avanza STEM", url: "https://avanzastem.org" },
+  publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
   datePublished: "2026-02-05",
-  url: "https://avanzastem.org/blog/getting-started-with-lego-robotics",
+  url: `${siteConfig.url}/blog/getting-started-with-lego-robotics`,
 }
 
 export default function LegoRoboticsParentsGuidePage() {

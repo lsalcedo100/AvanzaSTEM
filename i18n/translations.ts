@@ -113,9 +113,9 @@ const en = {
     languagesSupported: "Languages Supported",
     browseCurriculums: "Explore Projects",
     // Workshop Finder (interactive map)
-    finderEyebrow: "Workshops near you",
-    finderHeadline: "What's your ZIP code?",
-    finderSubhead: "Enter it below to see confirmed current workshop sites and planning areas in New Jersey.",
+    finderEyebrow: "Clifton, NJ workshops",
+    finderHeadline: "Free STEM Workshops Near Clifton, NJ",
+    finderSubhead: "Enter your ZIP code to find free Avanza STEM workshops near Clifton, NJ and nearby New Jersey communities.",
     finderCurrentNote: "Currently active at Clifton Public Library and Allwood Branch Library in Clifton, NJ. More locations are added as libraries and schools partner with us.",
     finderZipLabel: "Your ZIP code",
     finderZipPlaceholder: "e.g. 07011",
@@ -151,8 +151,8 @@ const en = {
     finderLegendActive: "Current workshop sites",
     finderLegendComing: "Planning areas",
     finderLegendYou: "You",
-    finderMetaTitle: "Find a Workshop Near You | Avanza STEM",
-    finderMetaDesc: "Enter your ZIP code to see confirmed Avanza STEM workshop sites and planning areas in New Jersey.",
+    finderMetaTitle: "Free STEM Workshops Near Clifton, NJ | Avanza STEM",
+    finderMetaDesc: "Find free STEM workshops near Clifton, NJ for nearby families and students, including bilingual English and Spanish support.",
     // Physics block tower
     jengaEyebrow: "Engineering lab",
     jengaTitle: "Drag blocks. Build it taller.",

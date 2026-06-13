@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { type Language } from '@/i18n/translations'
 import { getLanguage } from '@/lib/get-language'
+import { siteConfig } from '@/lib/site-config'
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
@@ -25,11 +26,11 @@ const blogJsonLd = {
   '@type': 'Blog',
   name: 'Avanza STEM Blog',
   description: 'STEM tips, activity ideas, and inspiration for young Hispanic students',
-  url: 'https://avanzastem.org/blog',
+  url: `${siteConfig.url}/blog`,
   publisher: {
     '@type': 'Organization',
-    name: 'Avanza STEM',
-    url: 'https://avanzastem.org',
+    name: siteConfig.name,
+    url: siteConfig.url,
   },
   inLanguage: 'en',
 }
@@ -44,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: 'https://avanzastem.org/blog',
+      url: `${siteConfig.url}/blog`,
       type: 'website',
       images: [{ url: '/images/og-default-en.png', width: 1200, height: 630, alt: 'Avanza STEM Blog' }],
     },

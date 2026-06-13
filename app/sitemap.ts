@@ -1,8 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { localizedBlogArticles } from '@/features/blog/posts'
 import { projectGuides } from '@/features/projects/data'
-
-const BASE_URL = 'https://avanzastem.org'
+import { siteConfig } from '@/lib/site-config'
 
 const staticRoutes = [
   { path: '/', priority: 1.0, changeFrequency: 'weekly' },
@@ -20,25 +19,20 @@ const staticRoutes = [
 ] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date()
-
   const staticSitemapRoutes: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
-    url: `${BASE_URL}${route.path}`,
-    lastModified,
+    url: `${siteConfig.url}${route.path}`,
     priority: route.priority,
     changeFrequency: route.changeFrequency,
   }))
 
   const blogRoutes: MetadataRoute.Sitemap = Object.keys(localizedBlogArticles.en).map((slug) => ({
-    url: `${BASE_URL}/blog/${slug}`,
-    lastModified,
+    url: `${siteConfig.url}/blog/${slug}`,
     priority: 0.7,
     changeFrequency: 'monthly' as const,
   }))
 
   const projectRoutes: MetadataRoute.Sitemap = projectGuides.map((project) => ({
-    url: `${BASE_URL}/projects/${project.slug}`,
-    lastModified,
+    url: `${siteConfig.url}/projects/${project.slug}`,
     priority: 0.7,
     changeFrequency: 'monthly' as const,
   }))

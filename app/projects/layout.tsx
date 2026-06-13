@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { type Language } from '@/i18n/translations'
 import { getLanguage } from '@/lib/get-language'
+import { siteConfig } from '@/lib/site-config'
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
@@ -30,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: 'https://avanzastem.org/projects',
+      url: `${siteConfig.url}/projects`,
       type: 'website',
       images: [{ url: '/images/og-default-en.png', width: 1200, height: 630, alt: 'Avanza STEM Projects' }],
     },

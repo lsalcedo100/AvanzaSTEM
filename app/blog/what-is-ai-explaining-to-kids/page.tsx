@@ -1,5 +1,6 @@
 import { generateBlogPostMetadata } from "@/features/blog/metadata"
 import { LocalizedBlogPost } from "@/components/blog/localized-blog-post"
+import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "what-is-ai-explaining-to-kids" as const
 const DESCRIPTION =
@@ -15,9 +16,9 @@ const blogPostJsonLd = {
   headline: "What is AI? Explaining Artificial Intelligence to Kids",
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
-  publisher: { "@type": "Organization", name: "Avanza STEM", url: "https://avanzastem.org" },
+  publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
   datePublished: "2026-01-28",
-  url: "https://avanzastem.org/blog/what-is-ai-explaining-to-kids",
+  url: `${siteConfig.url}/blog/what-is-ai-explaining-to-kids`,
 }
 
 export default function WhatIsAIPage() {
