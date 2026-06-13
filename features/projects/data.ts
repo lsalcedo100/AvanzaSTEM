@@ -2,6 +2,30 @@ import type { Language } from "@/i18n/translations"
 
 export type ProjectCategoryKey = "engineering" | "science" | "coding" | "robotics"
 
+/**
+ * Real step-by-step photos for a project guide.
+ *
+ * Adding a new step photo:
+ * 1. Save the photo under `public/images/projects/<slug>/step-<n>-<short-description>.<ext>`
+ *    (e.g. `public/images/projects/popsicle-stick-bridge/step-3-glue-triangles.jpg`).
+ * 2. Add an entry to that project's `stepImages` array (per language, if the
+ *    photo includes language-specific labels/text) with the matching `step`
+ *    number and a specific, descriptive `alt` string in the style
+ *    "Step 3: gluing the first truss triangle of the popsicle stick bridge".
+ * 3. Never use vague alt text like "image", "photo", or "step image".
+ *
+ * Do not invent placeholder photos - leave `stepImages` undefined/empty for
+ * steps that don't have a real photo yet. Guide components render step
+ * photos only when an entry exists, so an empty array is always safe.
+ */
+export type ProjectStepImage = {
+  /** 1-based position matching the corresponding entry in `steps`. */
+  step: number
+  src: string
+  /** Descriptive alt text, e.g. "Step 3: gluing the first truss triangle of the popsicle stick bridge". */
+  alt: string
+}
+
 export type ProjectGuide = {
   slug: string
   title: string
@@ -15,6 +39,8 @@ export type ProjectGuide = {
   why: string
   materials: string[]
   steps: string[]
+  /** Optional photos illustrating individual steps, shown inline with the matching step. */
+  stepImages?: ProjectStepImage[]
   safety: string
   challenge: string
 }
@@ -245,6 +271,13 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
         "Use a jumper wire to connect the LED's short-leg row back to the - rail. Now the resistor and LED are in one series path.",
         "Connect the battery or turn the battery pack on. The LED should light as current flows from +, through the resistor, through the LED, and back to -.",
         "If the LED does not light, disconnect the battery first, then flip the LED around or check that each part is plugged into the correct row.",
+      ],
+      stepImages: [
+        {
+          step: 6,
+          src: "/images/projects/simple-circuit-light/step-6-lit-circuit.jpg",
+          alt: "Step 6: lit LED on the breadboard circuit, with the longer anode lead and shorter cathode lead labeled where they connect to the resistor and negative rail",
+        },
       ],
       safety:
         "Use only small low-voltage batteries and never plug your circuit into a wall outlet. Always include the resistor before powering the LED, and disconnect the battery before moving parts around.",
@@ -672,6 +705,13 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
         "Conecta la bateria o enciende el portapilas. El LED debe encenderse cuando la corriente va de +, pasa por la resistencia, pasa por el LED y regresa a -.",
         "Si el LED no enciende, desconecta primero la bateria y luego voltea el LED o revisa que cada pieza este en la fila correcta.",
       ],
+      stepImages: [
+        {
+          step: 6,
+          src: "/images/projects/simple-circuit-light/step-6-lit-circuit.jpg",
+          alt: "Paso 6: LED encendido en el circuito de la protoboard, con la pata larga (anodo) y la pata corta (catodo) senaladas donde se conectan a la resistencia y al riel negativo",
+        },
+      ],
       safety:
         "Usa solo baterias pequenas de bajo voltaje y nunca conectes tu circuito a un enchufe de pared. Siempre incluye la resistencia antes de encender el LED y desconecta la bateria antes de mover piezas.",
       challenge:
@@ -1097,6 +1137,13 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
         "用一根跳线把 LED 短脚所在的那一排接回 - 电源轨。现在电阻和 LED 就在同一条串联通路中。",
         "连接电池或打开电池盒。电流会从 + 出发，经过电阻，经过 LED，再回到 -，LED 应该会亮起来。",
         "如果 LED 不亮，先断开电池，然后把 LED 反过来，或检查每个零件是否插在正确的排孔中。",
+      ],
+      stepImages: [
+        {
+          step: 6,
+          src: "/images/projects/simple-circuit-light/step-6-lit-circuit.jpg",
+          alt: "第 6 步：面包板电路中点亮的 LED，标注了较长的阳极引脚和较短的阴极引脚分别连接到电阻和负极电源轨的位置",
+        },
       ],
       safety:
         "这个项目只能使用低电压小电池，绝对不要把电路接到墙上的插座。给 LED 通电前一定要接入电阻，移动零件前要先断开电池。",

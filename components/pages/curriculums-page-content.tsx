@@ -23,6 +23,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-green",
       borderColor: "border-avanza-green",
       progress: 65,
+      href: "/projects/my-first-python-program",
     },
     {
       title: t.curriculumsPage.engineeringTitle,
@@ -34,6 +35,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-purple",
       borderColor: "border-avanza-purple",
       progress: 40,
+      href: "/projects/popsicle-stick-bridge",
     },
     {
       title: t.curriculumsPage.scienceTitle,
@@ -45,6 +47,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-orange",
       borderColor: "border-avanza-orange",
       progress: 30,
+      href: "/projects/baking-soda-volcano",
     },
     {
       title: t.curriculumsPage.mathTitle,
@@ -56,6 +59,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-teal",
       borderColor: "border-avanza-teal",
       progress: 20,
+      href: "/projects",
     },
     {
       title: t.curriculumsPage.roboticsTitle,
@@ -67,6 +71,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-green",
       borderColor: "border-avanza-green",
       progress: 15,
+      href: "/projects/lego-robot-builder",
     },
     {
       title: t.curriculumsPage.aiTitle,
@@ -78,6 +83,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-purple",
       borderColor: "border-avanza-purple",
       progress: 10,
+      href: "/blog/what-is-ai-explaining-to-kids",
     },
   ]
 
@@ -118,8 +124,9 @@ export function CurriculumsPageContent() {
         <FadeIn className="mx-auto max-w-4xl px-6 text-center">
           <h2 className="text-2xl font-extrabold text-foreground">Start learning now</h2>
           <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-            While the full curriculum paths are being built, these free project guides cover the
-            same engineering, coding, circuits, science, and robotics skills.
+            These free curriculum paths are useful now: start with the available lessons below, then
+            use each project guide as a classroom activity, after-school club plan, or at-home STEM
+            challenge while fuller lesson sequences continue to grow.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
             {projectsToTry.map((project) => (
@@ -281,12 +288,12 @@ function CurriculumCard({
             {statusLabel}
           </span>
           {status === "available" && href ? (
-            <a
+            <Link
               href={href}
               className="inline-flex items-center gap-1 text-xs font-semibold text-avanza-green transition-colors hover:text-avanza-teal"
             >
               {startLearning} <ArrowRight className="h-3.5 w-3.5" />
-            </a>
+            </Link>
           ) : (
             <a
               href={`#${CURRICULUM_SIGNUP_ID}`}

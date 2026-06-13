@@ -55,6 +55,7 @@ export function Navbar() {
 
   const topNavLinks = [
     { href: "/projects", label: t.nav.projects },
+    { href: "/curriculums", label: t.nav.curriculums },
     { href: "/blog", label: t.nav.blog },
     { href: "/games", label: t.nav.games },
     { href: "/workshops", label: t.nav.workshops },

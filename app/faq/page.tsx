@@ -1,19 +1,28 @@
 import type { Metadata } from "next"
 import { FAQPageContent } from "@/components/pages/faq-page-content"
 import { translations } from "@/i18n/translations"
+import { enOnlyAlternates } from "@/lib/i18n-routes"
 import { siteConfig } from "@/lib/site-config"
 
-export const metadata: Metadata = {
-  title: "Free STEM Workshop FAQ | Avanza STEM",
-  description: "Answers to common questions about Avanza STEM workshops, curricula, costs, and how to get involved.",
-  alternates: { canonical: "/faq" },
-  openGraph: {
-    title: "Free STEM Workshop FAQ | Avanza STEM",
-    description: "Answers to common questions about Avanza STEM workshops, curricula, costs, and how to get involved.",
-    url: `${siteConfig.url}/faq`,
-    siteName: siteConfig.name,
-    type: "website",
-  },
+export function generateMetadata(): Metadata {
+  const title = "Free STEM Workshop FAQ | Avanza STEM"
+  const description = "Answers to common questions about Avanza STEM workshops, curricula, costs, and how to get involved."
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: "/faq",
+      languages: enOnlyAlternates("/faq"),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}/faq`,
+      siteName: siteConfig.name,
+      type: "website",
+    },
+  }
 }
 
 const faqJsonLd = {

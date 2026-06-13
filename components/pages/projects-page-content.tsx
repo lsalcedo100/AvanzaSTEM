@@ -45,13 +45,6 @@ export function ProjectsPageContent() {
 
   const learningPaths = [
     {
-      title: "STEM projects for kids",
-      copy:
-        "Start with hands-on builds that use household materials, clear safety notes, and short explanations parents and educators can use at home or in class.",
-      href: "/projects/coke-mentos-experiment",
-      link: "coke and Mentos science project",
-    },
-    {
       title: "Engineering projects for kids",
       copy:
         "Build structures and machines, then test how design choices change strength, distance, or stability.",
@@ -64,6 +57,13 @@ export function ProjectsPageContent() {
         "Write beginner-friendly programs with visible outcomes, including a quiz students can run and customize right away.",
       href: "/projects/my-first-python-program",
       link: "Python quiz game for kids",
+    },
+    {
+      title: "Robotics projects for kids",
+      copy:
+        "Snap together a LEGO build, then write the pseudocode that tells it what to do step by step.",
+      href: "/projects/lego-robot-builder",
+      link: "LEGO robot builder",
     },
     {
       title: "Science fair projects",
@@ -97,6 +97,93 @@ export function ProjectsPageContent() {
           </div>
         </FadeIn>
       </section>
+
+      {language === "en" && (
+        <section className="border-b border-border bg-background py-14">
+          <FadeIn className="mx-auto max-w-4xl px-6">
+            <h2 className="text-2xl font-bold text-foreground">What Is a STEM Project?</h2>
+            <p className="mt-4 text-base leading-7 text-muted-foreground">
+              A STEM project is a hands-on activity where kids design, build, test, or
+              investigate something themselves, instead of just reading about how it works.
+              Science, technology, engineering, and math show up together: a bridge build
+              uses engineering and math, a quiz game uses coding and logic, and a kitchen
+              experiment uses the scientific method from start to finish.
+            </p>
+            <p className="mt-4 text-base leading-7 text-muted-foreground">
+              The best beginner STEM projects give kids a clear goal - build a bridge that
+              holds weight, write a program that asks questions, grow crystals overnight -
+              and then let them test their first attempt, see what happens, and improve it.
+            </p>
+            <h3 className="mt-8 text-lg font-bold text-foreground">
+              Popular STEM project examples
+            </h3>
+            <p className="mt-3 text-base leading-7 text-muted-foreground">
+              Try a{" "}
+              <Link
+                href="/projects/popsicle-stick-bridge"
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                popsicle stick truss bridge
+              </Link>{" "}
+              for an engineering challenge, build the{" "}
+              <Link
+                href="/projects/lego-robot-builder"
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                LEGO robot builder
+              </Link>{" "}
+              for robotics, write your{" "}
+              <Link
+                href="/projects/my-first-python-program"
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                first Python program
+              </Link>{" "}
+              for coding, or run the{" "}
+              <Link
+                href="/projects/baking-soda-volcano"
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                baking soda volcano
+              </Link>{" "}
+              experiment for a science fair-style investigation.
+            </p>
+            <h3 className="mt-8 text-lg font-bold text-foreground">
+              How to choose a STEM project
+            </h3>
+            <ul className="mt-3 space-y-2">
+              {[
+                "Pick a category you're curious about - engineering, coding, robotics, or a science experiment - using the filters below.",
+                "Check how much time you have. Most projects on this site list a difficulty level and an estimated time so you can plan a single session or a multi-day build.",
+                "Look at the materials list first. Several projects use things you likely already have at home, like cardboard, tape, or baking soda.",
+                "If you want a guided sequence instead of picking one at a time, follow one of our free curriculum paths.",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground" />
+                  <p className="text-base leading-7 text-muted-foreground">{item}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-base leading-7 text-muted-foreground">
+              Want a structured plan instead?{" "}
+              <Link
+                href="/curriculums"
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                Browse our free curriculum paths
+              </Link>{" "}
+              or{" "}
+              <Link
+                href="/workshops"
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                find an in-person STEM workshop
+              </Link>{" "}
+              near you.
+            </p>
+          </FadeIn>
+        </section>
+      )}
 
       <section className="border-b border-border bg-secondary/40 py-12">
         <div className="mx-auto grid max-w-7xl gap-5 px-6 md:grid-cols-2 lg:grid-cols-4">

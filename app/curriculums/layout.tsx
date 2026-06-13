@@ -3,8 +3,9 @@ import { siteConfig } from '@/lib/site-config'
 const curriculumsJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Avanza STEM Curricula',
-  description: 'Avanza STEM curriculum lesson paths are in development and launching soon.',
+  name: 'Free STEM Curriculum Paths for Kids',
+  description:
+    'Free STEM curriculum paths for kids with available project guides in Python, engineering, science, robotics, math, and AI.',
   url: `${siteConfig.url}/curriculums`,
   publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
 }

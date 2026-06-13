@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import type { Language } from "@/i18n/translations"
 import { AboutPageContent } from "@/components/pages/about-page-content"
 import { getLanguage } from "@/lib/get-language"
+import { enOnlyAlternates } from "@/lib/i18n-routes"
 import { siteConfig } from "@/lib/site-config"
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
@@ -28,7 +29,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: "/about" },
+    alternates: {
+      canonical: "/about",
+      languages: enOnlyAlternates("/about"),
+    },
     openGraph: {
       title,
       description,

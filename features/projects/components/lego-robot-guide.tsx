@@ -5,6 +5,8 @@ import Image from "next/image"
 import { ArrowLeft, ArrowUpRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { getProjectGuide, type ProjectGuide } from "@/features/projects/data"
+import { projectFaqs } from "@/features/projects/structured-data"
+import { ProjectStepPhoto } from "@/features/projects/components/step-photo"
 
 const RESOURCE_LINKS = [
   {
@@ -58,6 +60,7 @@ const TROUBLESHOOTING = [
 export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
   const { language, t } = useLanguage()
   const guide = getProjectGuide(project.slug, language) ?? project
+  const faqs = projectFaqs[language]?.["lego-robot-builder"] ?? projectFaqs.en["lego-robot-builder"] ?? []
 
   return (
     <div className="bg-background">
@@ -91,6 +94,7 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
               src={guide.image}
               alt={guide.title}
               fill
+              sizes="(min-width: 1024px) 896px, calc(100vw - 48px)"
               className="object-cover"
               priority
             />
@@ -106,6 +110,11 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
             {t.projectsPage.legoBuildBooksNote}
           </p>
         </div>
+
+        {/* LEGO trademark disclaimer */}
+        <p className="mt-3 text-xs leading-5 text-muted-foreground">
+          {t.projectsPage.legoTrademarkDisclaimer}
+        </p>
       </div>
 
       {/* Content */}
@@ -135,14 +144,20 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
                   {t.projectsPage.stepByStepInstructions}
                 </h2>
                 <ol className="mt-5 space-y-5">
-                  {guide.steps.map((step, index) => (
-                    <li key={step} className="flex items-start gap-4">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-sm font-bold text-foreground">
-                        {index + 1}
-                      </span>
-                      <p className="pt-0.5 text-base leading-7 text-foreground">{step}</p>
-                    </li>
-                  ))}
+                  {guide.steps.map((step, index) => {
+                    const stepImage = guide.stepImages?.find((image) => image.step === index + 1)
+                    return (
+                      <li key={step} className="flex items-start gap-4">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-sm font-bold text-foreground">
+                          {index + 1}
+                        </span>
+                        <div className="flex-1 space-y-3">
+                          <p className="pt-0.5 text-base leading-7 text-foreground">{step}</p>
+                          {stepImage ? <ProjectStepPhoto stepImage={stepImage} /> : null}
+                        </div>
+                      </li>
+                    )
+                  })}
                 </ol>
               </section>
 
@@ -217,6 +232,48 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
                       </tbody>
                     </table>
                   </div>
+                </section>
+              )}
+
+              {faqs.length > 0 && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">{t.faqPage.title}</h2>
+                  <dl className="mt-5 space-y-5">
+                    {faqs.map((faq) => (
+                      <div key={faq.question} className="border-t border-border pt-5">
+                        <dt className="font-semibold text-foreground">{faq.question}</dt>
+                        <dd className="mt-1 text-sm leading-6 text-muted-foreground">
+                          {faq.answer}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
+              )}
+
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Related Projects for Kids
+                  </h2>
+                  <p className="mt-4 text-base leading-7 text-muted-foreground">
+                    Once the robot can grab, drive, and release on command, try writing your{" "}
+                    <Link
+                      href="/projects/my-first-python-program"
+                      className="font-semibold text-foreground underline underline-offset-4"
+                    >
+                      first Python program
+                    </Link>{" "}
+                    to practice the same step-by-step thinking with text instead of blocks, or
+                    follow the full{" "}
+                    <Link
+                      href="/curriculums"
+                      className="font-semibold text-foreground underline underline-offset-4"
+                    >
+                      robotics curriculum path
+                    </Link>{" "}
+                    for what to build next.
+                  </p>
                 </section>
               )}
             </div>
