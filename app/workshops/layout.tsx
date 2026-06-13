@@ -9,10 +9,10 @@ const providerJsonLd = {
 const workshopsJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Free STEM Workshops in Clifton, NJ',
-  serviceType: 'Hands-on STEM education workshops',
+  name: 'The Maker Mindset Series',
+  serviceType: 'Three part hands on STEM workshop series',
   description:
-    'Free in-person STEM workshops for students near Clifton, NJ, including engineering, Python coding, and responsible AI activities.',
+    'Avanza STEM hands on STEM workshop series for young students, usually hosted through libraries and community partners, with separate building, coding, and AI workshops.',
   url: `${siteConfig.url}/workshops`,
   provider: providerJsonLd,
   areaServed: [
@@ -42,8 +42,8 @@ const workshopsJsonLd = {
 const workshopCoursesJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'Avanza STEM Workshop Topics',
-  description: 'Undated workshop topics offered by Avanza STEM community partners.',
+  name: 'The Three Maker Mindset Workshops',
+  description: 'Building, coding, and AI workshops in Avanza STEM\'s Maker Mindset Series, usually held about one week apart through library and community partners.',
   url: `${siteConfig.url}/workshops`,
   itemListElement: [
     {
@@ -52,7 +52,7 @@ const workshopCoursesJsonLd = {
       item: {
         '@type': 'Course',
         name: 'Building Workshop',
-        description: 'Hands-on engineering and building workshop for young students.',
+        description: 'Hands on engineering and building workshop for young students.',
         provider: providerJsonLd,
       },
     },
@@ -62,7 +62,7 @@ const workshopCoursesJsonLd = {
       item: {
         '@type': 'Course',
         name: 'Coding Workshop',
-        description: 'Beginner-friendly Python programming workshop for students.',
+        description: 'Beginner friendly Python programming workshop for students.',
         provider: providerJsonLd,
       },
     },
@@ -72,7 +72,7 @@ const workshopCoursesJsonLd = {
       item: {
         '@type': 'Course',
         name: 'AI Workshop',
-        description: 'Responsible artificial intelligence concepts explored through hands-on activities.',
+        description: 'Responsible artificial intelligence concepts explored through hands on activities.',
         provider: providerJsonLd,
       },
     },

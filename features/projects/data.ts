@@ -64,7 +64,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       why:
         "A truss bridge spreads force through triangles. The top chord often gets squeezed in compression, the bottom chord gets pulled in tension, and the diagonal web members help move the load across the whole structure.",
       materials: [
-        "60 or more popsicle sticks",
+        "90 or more popsicle sticks",
         "Hot glue gun and glue sticks",
         "A ruler",
         "A marker or pen",
@@ -1347,10 +1347,27 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
   ],
 }
 
-export const projectGuides = localizedProjectGuides.en
+const projectDisplayOrder = new Map(
+  ["popsicle-stick-bridge", "lego-robot-builder", "simple-circuit-light"].map((slug, index) => [
+    slug,
+    index,
+  ])
+)
+
+function orderProjectGuides(projects: ProjectGuide[]) {
+  return [...projects].sort((a, b) => {
+    const aOrder = projectDisplayOrder.get(a.slug) ?? Number.MAX_SAFE_INTEGER
+    const bOrder = projectDisplayOrder.get(b.slug) ?? Number.MAX_SAFE_INTEGER
+
+    if (aOrder !== bOrder) return aOrder - bOrder
+    return projects.indexOf(a) - projects.indexOf(b)
+  })
+}
+
+export const projectGuides = orderProjectGuides(localizedProjectGuides.en)
 
 export function getProjectGuides(language: Language = "en") {
-  return localizedProjectGuides[language] ?? localizedProjectGuides.en
+  return orderProjectGuides(localizedProjectGuides[language] ?? localizedProjectGuides.en)
 }
 
 export function getProjectGuide(slug: string, language: Language = "en") {

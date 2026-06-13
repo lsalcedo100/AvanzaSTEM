@@ -6,6 +6,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
+import { galleryImages } from "@/components/ui/gallery"
 
 function ProgramCard({
   image,
@@ -93,7 +94,7 @@ export function WhatStudentsDoSection() {
 
   const programs = [
     {
-      image: "/images/workshops/Building Workshop Description.jpeg",
+      image: galleryImages[0].full,
       title: t.home.realWorkshopBuilding,
       description: t.home.realWorkshopBuildingShort,
     },

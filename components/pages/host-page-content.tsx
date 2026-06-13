@@ -59,6 +59,14 @@ export function HostPageContent() {
       name: t.workshopsPage.allwoodLibrary,
       description: t.hostPage.allwoodDescription,
     },
+    {
+      name: t.workshopsPage.chathamsLibrary,
+      description: t.hostPage.chathamsDescription,
+    },
+    {
+      name: t.workshopsPage.roselandLibrary,
+      description: t.hostPage.roselandDescription,
+    },
   ]
 
   function getContactErrorMessage(code: ContactErrorCode | string) {
