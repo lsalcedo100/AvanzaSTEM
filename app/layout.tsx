@@ -104,7 +104,7 @@ const organizationJsonLd = {
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'liam@avanzastem.org',
-    contactType: 'customer support',
+    contactType: 'educational program inquiries',
   },
 }
 

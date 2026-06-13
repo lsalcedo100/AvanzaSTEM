@@ -21,6 +21,40 @@ const RESOURCE_LINKS = [
   },
 ]
 
+const PSEUDOCODE = `def grab():
+    close_claw_until_object_is_held()
+
+def drive_to_drop_zone():
+    drive_forward_for_seconds(2)
+    turn_toward_drop_area()
+
+def release():
+    open_claw()
+    back_up_safely()
+
+grab()
+drive_to_drop_zone()
+release()`
+
+const TROUBLESHOOTING = [
+  {
+    problem: "Robot tips forward",
+    fix: "Move heavy parts lower, widen the base, or reduce how far the grabber reaches before lifting.",
+  },
+  {
+    problem: "Claw does not grip",
+    fix: "Check the motor cable, reduce friction in the jaw, and test smaller objects before heavier ones.",
+  },
+  {
+    problem: "Robot drives crooked",
+    fix: "Make sure both wheels are attached firmly and use the same speed value for the left and right motors.",
+  },
+  {
+    problem: "Code runs in the wrong order",
+    fix: "Split the mission into named functions such as grab, drive, and release, then test one function at a time.",
+  },
+]
+
 export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
   const { language, t } = useLanguage()
   const guide = getProjectGuide(project.slug, language) ?? project
@@ -112,6 +146,25 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
                 </ol>
               </section>
 
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">Setup checklist</h2>
+                  <ul className="mt-5 space-y-3">
+                    {[
+                      "Charge the SPIKE Prime hub before class or testing time.",
+                      "Update the SPIKE app or web app so the hub, motor, and sensor connect reliably.",
+                      "Pair the hub, then test the motor by turning it slowly before attaching the claw.",
+                      "Place three test objects nearby: one light, one round, and one awkwardly shaped.",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground" />
+                        <p className="text-base leading-7 text-muted-foreground">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
               {/* Engineering notes */}
               <section>
                 <h2 className="text-xl font-bold text-foreground">
@@ -129,6 +182,43 @@ export function LegoRobotGuide({ project }: { project: ProjectGuide }) {
                   ))}
                 </dl>
               </section>
+
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">Code plan or pseudocode</h2>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                    The exact blocks or Python commands depend on your SPIKE setup, but the robot
+                    should follow this logic: grab, drive, release, then reset for another test.
+                  </p>
+                  <pre className="mt-4 overflow-x-auto rounded-md border border-border bg-secondary/40 px-5 py-4 font-mono text-sm leading-7 text-foreground">
+                    {PSEUDOCODE}
+                  </pre>
+                </section>
+              )}
+
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">Troubleshooting</h2>
+                  <div className="mt-5 overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border text-left">
+                          <th className="pb-3 font-semibold text-foreground">Problem</th>
+                          <th className="pb-3 font-semibold text-foreground">Fix</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {TROUBLESHOOTING.map((row) => (
+                          <tr key={row.problem} className="border-b border-border">
+                            <td className="py-3 pr-6 text-muted-foreground">{row.problem}</td>
+                            <td className="py-3 text-foreground">{row.fix}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
             </div>
 
             {/* Sidebar */}

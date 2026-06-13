@@ -73,6 +73,33 @@ export function BlogPageContent() {
     },
   ]
 
+  const topicClusters = [
+    {
+      title: "Coding",
+      description: "Begin with a tiny program, then grow it into a real project students can edit.",
+      href: "/projects/my-first-python-program",
+      link: "first Python quiz game",
+    },
+    {
+      title: "Science experiments",
+      description: "Use variables, safety notes, and data tables to turn exciting demos into fair tests.",
+      href: "/projects/coke-mentos-experiment",
+      link: "coke and Mentos science project",
+    },
+    {
+      title: "Engineering builds",
+      description: "Design, build, test, and improve structures and machines with everyday materials.",
+      href: "/projects/popsicle-stick-bridge",
+      link: "popsicle stick truss bridge",
+    },
+    {
+      title: "AI for kids",
+      description: "Explain machine learning with hands-on examples before students use AI tools.",
+      href: "/blog/what-is-ai-explaining-to-kids",
+      link: "AI for kids guide",
+    },
+  ]
+
   return (
     <>
       {/* Hero */}
@@ -127,6 +154,35 @@ export function BlogPageContent() {
               </div>
             </Link>
           </FadeIn>
+        </div>
+      </section>
+
+      <section className="border-y border-border bg-background py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <FadeIn>
+            <h2 className="text-2xl font-extrabold text-foreground">Explore STEM topic clusters</h2>
+            <p className="mt-2 max-w-2xl text-muted-foreground">
+              Follow a topic from a short article into a hands-on project guide.
+            </p>
+          </FadeIn>
+          <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {topicClusters.map((cluster, i) => (
+              <FadeIn key={cluster.title} delay={i * 60}>
+                <article className="h-full rounded-md border border-border bg-card p-5">
+                  <h3 className="font-bold text-card-foreground">{cluster.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                    {cluster.description}
+                  </p>
+                  <Link
+                    href={cluster.href}
+                    className="mt-4 inline-flex text-sm font-semibold text-avanza-green-dark underline underline-offset-4"
+                  >
+                    {cluster.link}
+                  </Link>
+                </article>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </section>
 

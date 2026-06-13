@@ -29,6 +29,13 @@ const SCIENCE_TERMS = [
   },
 ]
 
+const SCIENCE_FAIR_ROWS = [
+  { label: "Hypothesis", detail: "If we add more vinegar while keeping baking soda the same, then the eruption height may increase until the baking soda runs out." },
+  { label: "Independent variable", detail: "The one thing you change: vinegar amount, baking soda amount, soap amount, or bottle shape." },
+  { label: "Dependent variable", detail: "What you measure: eruption height, foam overflow distance, or reaction time." },
+  { label: "Controlled variables", detail: "Keep the bottle, tray, baking soda type, vinegar type, and measuring method the same." },
+]
+
 export function BakingSodaVolcanoGuide({ project }: { project: ProjectGuide }) {
   const { language, t } = useLanguage()
   const guide = getProjectGuide(project.slug, language) ?? project
@@ -157,6 +164,50 @@ export function BakingSodaVolcanoGuide({ project }: { project: ProjectGuide }) {
                       </div>
                     ))}
                   </dl>
+                </section>
+              )}
+
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Turn It Into a Science Fair Project
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                    A volcano demo becomes a stronger science experiment when you change one variable
+                    at a time, measure the result, and repeat each test.
+                  </p>
+                  <dl className="mt-5 space-y-5">
+                    {SCIENCE_FAIR_ROWS.map((row) => (
+                      <div key={row.label} className="border-t border-border pt-5">
+                        <dt className="font-semibold text-foreground">{row.label}</dt>
+                        <dd className="mt-1 text-sm leading-6 text-muted-foreground">
+                          {row.detail}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <div className="mt-6 overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border text-left">
+                          <th className="pb-3 font-semibold text-foreground">Trial</th>
+                          <th className="pb-3 font-semibold text-foreground">Vinegar amount</th>
+                          <th className="pb-3 font-semibold text-foreground">Baking soda amount</th>
+                          <th className="pb-3 font-semibold text-foreground">Eruption height</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[1, 2, 3].map((trial) => (
+                          <tr key={trial} className="border-b border-border">
+                            <td className="py-3 text-muted-foreground">{trial}</td>
+                            <td className="py-3 text-muted-foreground">_____</td>
+                            <td className="py-3 text-muted-foreground">_____</td>
+                            <td className="py-3 text-muted-foreground">_____</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </section>
               )}
             </div>

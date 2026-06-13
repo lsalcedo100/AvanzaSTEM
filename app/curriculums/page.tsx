@@ -6,9 +6,9 @@ import { siteConfig } from "@/lib/site-config"
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
-    title: "STEM Curriculums in Development | Avanza STEM",
+    title: "Free STEM Curriculum Paths for Kids: Python, Engineering & AI | Avanza STEM",
     description:
-      "Preview Avanza STEM curriculum topics in development, including Python, engineering, science, math, robotics, and AI lessons for young learners.",
+      "Explore free STEM curriculum paths for kids in Python, engineering, science, robotics, math, and AI, with hands-on project guides to start learning now.",
   },
   es: {
     title: "Curriculos STEM en desarrollo | Avanza STEM",

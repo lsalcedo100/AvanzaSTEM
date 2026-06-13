@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Clock, Users, ArrowRight } from "lucide-react"
 import { NewsletterSignup } from "@/components/blog/newsletter-signup"
 import { useLanguage } from "@/components/providers/language-provider"
@@ -70,7 +71,7 @@ export function CurriculumsPageContent() {
     {
       title: t.curriculumsPage.aiTitle,
       description: t.curriculumsPage.aiDesc,
-      image: "/images/curriculums/ai.png",
+      image: "/images/curriculums/ai.jpg",
       grades: t.curriculumsPage.grades58,
       duration: t.curriculumsPage.duration6Weeks,
       topics: t.curriculumsPage.aiTopics,
@@ -78,6 +79,14 @@ export function CurriculumsPageContent() {
       borderColor: "border-avanza-purple",
       progress: 10,
     },
+  ]
+
+  const projectsToTry = [
+    { href: "/projects/my-first-python-program", label: "first Python quiz game" },
+    { href: "/projects/popsicle-stick-bridge", label: "popsicle stick truss bridge" },
+    { href: "/projects/simple-circuit-light", label: "simple circuit light" },
+    { href: "/projects/baking-soda-volcano", label: "baking soda volcano" },
+    { href: "/projects/lego-robot-builder", label: "LEGO SPIKE Prime Super Cleanup robot" },
   ]
 
   return (
@@ -101,6 +110,27 @@ export function CurriculumsPageContent() {
             >
               {t.curriculumsPage.launchCta} <ArrowRight className="h-4 w-4" />
             </a>
+          </div>
+        </FadeIn>
+      </section>
+
+      <section className="border-b border-border bg-background py-12">
+        <FadeIn className="mx-auto max-w-4xl px-6 text-center">
+          <h2 className="text-2xl font-extrabold text-foreground">Start learning now</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+            While the full curriculum paths are being built, these free project guides cover the
+            same engineering, coding, circuits, science, and robotics skills.
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {projectsToTry.map((project) => (
+              <Link
+                key={project.href}
+                href={project.href}
+                className="rounded-full border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-avanza-green hover:text-avanza-green-dark"
+              >
+                {project.label}
+              </Link>
+            ))}
           </div>
         </FadeIn>
       </section>
