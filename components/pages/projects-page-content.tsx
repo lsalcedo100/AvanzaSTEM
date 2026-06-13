@@ -5,18 +5,15 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import { FadeIn } from "@/components/ui/animate"
-import type { ProjectGuide } from "@/features/projects/data"
-import type { Translations } from "@/i18n/translations"
+import { getProjectGuides } from "@/features/projects/data"
+import { useLanguage } from "@/components/providers/language-provider"
 
 type ProjectCategory = "engineering" | "science" | "coding" | "robotics"
 type FilterTag = "all" | ProjectCategory
 
-type Props = {
-  projects: ProjectGuide[]
-  t: Translations
-}
-
-export function ProjectsPageContent({ projects, t }: Props) {
+export function ProjectsPageContent() {
+  const { language, t } = useLanguage()
+  const projects = getProjectGuides(language)
   const [activeFilter, setActiveFilter] = useState<FilterTag>("all")
 
   const filterTags: { key: FilterTag; label: string }[] = [
