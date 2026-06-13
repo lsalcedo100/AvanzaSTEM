@@ -6,6 +6,7 @@ import Image from "next/image"
 import { ArrowLeft, ArrowUpRight, PlayCircle } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { getProjectGuide, type ProjectGuide } from "@/features/projects/data"
+import { projectFaqs } from "@/features/projects/structured-data"
 
 const VIDEO_EMBED = "https://www.youtube-nocookie.com/embed/V2duNLaNyDE?rel=0"
 
@@ -56,33 +57,18 @@ const TROUBLESHOOTING = [
   },
 ]
 
-const FAQS = [
-  {
-    question: "What is the strongest popsicle stick bridge design for beginners?",
-    answer:
-      "A Warren truss bridge is a strong beginner choice because repeating triangles spread the load clearly and are easier to measure than curved or highly angled designs.",
-  },
-  {
-    question: "How do you make a truss bridge out of popsicle sticks?",
-    answer:
-      "Build two matching side trusses first, connect them with cross pieces, add diagonal bracing, let every glue joint cure fully, then run a slow center load test.",
-  },
-  {
-    question: "Why does a triangle truss make the bridge stronger?",
-    answer:
-      "Triangles resist changing shape. That helps the bridge move force through the sticks instead of letting the frame lean into a weak diamond shape.",
-  },
-  {
-    question: "How can this become a science fair or classroom project?",
-    answer:
-      "Keep the span, materials, and testing method the same, then compare one design change at a time, such as fewer sticks, extra bracing, or a different truss pattern.",
-  },
+const LOAD_TEST_ROWS = [
+  { trial: "1", load: "2 lb / 1 kg", observation: "No visible sagging", change: "Keep design" },
+  { trial: "2", load: "5 lb / 2.3 kg", observation: "Middle deck bends slightly", change: "Add deck support" },
+  { trial: "3", load: "8 lb / 3.6 kg", observation: "One joint starts to separate", change: "Improve joint curing" },
+  { trial: "Failure", load: "_____ lb / kg", observation: "Where did it break?", change: "Redesign one weak area" },
 ]
 
 export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide }) {
   const { language, t } = useLanguage()
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const guide = getProjectGuide(project.slug, language) ?? project
+  const faqs = projectFaqs[language]?.["popsicle-stick-bridge"] ?? projectFaqs.en["popsicle-stick-bridge"] ?? []
 
   const backLabel = t.projectsPage.backToProjects
   const materialsLabel = t.projectsPage.materialsList
@@ -121,6 +107,7 @@ export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide })
               src={guide.image}
               alt={guide.title}
               fill
+              sizes="(min-width: 1024px) 896px, calc(100vw - 48px)"
               className="object-cover"
               priority
             />
@@ -225,6 +212,25 @@ export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide })
                 </section>
               )}
 
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Printable Warren Truss Bridge Template
+                  </h2>
+                  <p className="mt-4 text-base leading-7 text-muted-foreground">
+                    Use the bridge diagram and template as a spacing guide before you glue. Trace
+                    one side truss first, build the second side directly over the same triangle
+                    pattern, and check that both sides match before adding cross pieces.
+                  </p>
+                  <Link
+                    href="/images/projects/popsicle-stick-bridge/template.svg"
+                    className="mt-4 inline-flex text-sm font-semibold text-avanza-green-dark underline underline-offset-4"
+                  >
+                    Open the popsicle stick bridge template
+                  </Link>
+                </section>
+              )}
+
               <section>
                 <h2 className="text-xl font-bold text-foreground">
                   {t.projectsPage.bridgeBuildStepsTitle}
@@ -256,6 +262,7 @@ export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide })
                         src="/images/projects/popsicle-stick-bridge/diagram.png"
                         alt="Labeled popsicle stick truss bridge diagram showing triangle panels and force paths"
                         fill
+                        sizes="(min-width: 1024px) 896px, calc(100vw - 48px)"
                         className="object-contain"
                       />
                     </div>
@@ -300,6 +307,32 @@ export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide })
               {language === "en" && (
                 <section>
                   <h2 className="text-xl font-bold text-foreground">
+                    Popsicle Stick Bridge Variations to Try Next
+                  </h2>
+                  <p className="mt-4 text-base leading-7 text-muted-foreground">
+                    Once your Warren truss bridge holds weight reliably, change one variable at
+                    a time and retest. Each variation below uses the same triangle panels and
+                    load-testing steps from this guide.
+                  </p>
+                  <ul className="mt-5 space-y-3">
+                    {[
+                      "Single-triangle bridge: replace the repeating Warren pattern with one large triangle on each side. It is faster to build but usually fails at a lower load - good for comparing against the original design.",
+                      "Three-truss bridge: add a third truss down the center of the deck to support a wider roadway, then compare how much extra weight it holds versus the two-truss version.",
+                      "Double-stick members: glue two sticks together for the top and bottom chords only, keep the diagonals single, and see which joints fail first now.",
+                      "Chopstick bridge: build the exact same Warren truss layout with wooden chopsticks instead of popsicle sticks. The longer chopsticks let you build a wider span, which works well for older students or a class-wide competition.",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground" />
+                        <p className="text-base leading-7 text-muted-foreground">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
                     How Much Weight Can a Popsicle Stick Bridge Hold?
                   </h2>
                   <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -308,6 +341,63 @@ export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide })
                     the weight is placed. Record both the bridge weight and the maximum load so you
                     can compare strength-to-weight ratio instead of only chasing the biggest number.
                   </p>
+                </section>
+              )}
+
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Load-Testing Data Table
+                  </h2>
+                  <p className="mt-4 text-base leading-7 text-muted-foreground">
+                    Use the same span, center loading point, and weight increments for every trial.
+                    This makes the classroom STEM challenge fair and helps students explain which
+                    design change actually improved the bridge.
+                  </p>
+                  <div className="mt-5 overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border text-left">
+                          <th className="pb-3 font-semibold text-foreground">Trial</th>
+                          <th className="pb-3 font-semibold text-foreground">Load added</th>
+                          <th className="pb-3 font-semibold text-foreground">Observation</th>
+                          <th className="pb-3 font-semibold text-foreground">Next improvement</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {LOAD_TEST_ROWS.map((row) => (
+                          <tr key={row.trial} className="border-b border-border">
+                            <td className="py-3 pr-6 text-muted-foreground">{row.trial}</td>
+                            <td className="py-3 pr-6 text-muted-foreground">{row.load}</td>
+                            <td className="py-3 pr-6 text-muted-foreground">{row.observation}</td>
+                            <td className="py-3 text-foreground">{row.change}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
+
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
+                    How to Improve Bridge Strength
+                  </h2>
+                  <ul className="mt-5 space-y-3">
+                    {[
+                      "Let hot glue cure fully before testing; rushed joints usually fail first.",
+                      "Keep the two Warren truss sides identical so the load is shared evenly.",
+                      "Add light lateral bracing across the top to stop twisting.",
+                      "Place the load at the center of the deck instead of hanging it from one side.",
+                      "Reinforce the first weak joint you observe, then retest with the same method.",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground" />
+                        <p className="text-base leading-7 text-muted-foreground">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
                 </section>
               )}
 
@@ -361,13 +451,11 @@ export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide })
                 </section>
               )}
 
-              {language === "en" && (
+              {faqs.length > 0 && (
                 <section>
-                  <h2 className="text-xl font-bold text-foreground">
-                    Popsicle Stick Bridge FAQ
-                  </h2>
+                  <h2 className="text-xl font-bold text-foreground">{t.faqPage.title}</h2>
                   <dl className="mt-5 space-y-5">
-                    {FAQS.map((faq) => (
+                    {faqs.map((faq) => (
                       <div key={faq.question} className="border-t border-border pt-5">
                         <dt className="font-semibold text-foreground">{faq.question}</dt>
                         <dd className="mt-1 text-sm leading-6 text-muted-foreground">

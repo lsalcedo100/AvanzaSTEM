@@ -30,17 +30,30 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export function LanguageProvider({
   children,
   initialLanguage = "en",
+  syncFromUrl = false,
 }: {
   children: ReactNode
   initialLanguage?: Language
+  /**
+   * When true, initialLanguage was derived from a locale-prefixed URL (e.g.
+   * /es/projects) and is treated as the source of truth: the cookie is
+   * synced to match instead of overriding initialLanguage on mount.
+   */
+  syncFromUrl?: boolean
 }) {
   const [language, setLanguageState] = useState<Language>(initialLanguage)
 
   useEffect(() => {
+    if (syncFromUrl) {
+      setLanguageState(initialLanguage)
+      document.documentElement.lang = initialLanguage
+      storeLanguage(initialLanguage)
+      return
+    }
     const storedLanguage = getStoredLanguage()
     setLanguageState(storedLanguage)
     document.documentElement.lang = storedLanguage
-  }, [])
+  }, [initialLanguage, syncFromUrl])
 
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang)

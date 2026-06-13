@@ -1,18 +1,19 @@
 import type { Metadata } from "next"
 import { getProjectGuide } from "@/features/projects/data"
-import { getLanguage } from "@/lib/get-language"
+import { type Language } from "@/i18n/translations"
+import { languageAlternates, localizedPath } from "@/lib/i18n-routes"
 import { siteConfig } from "@/lib/site-config"
 
 const metadataOverrides: Record<string, { title: string; description: string }> = {
   "popsicle-stick-bridge": {
-    title: "How to Build a Popsicle Stick Truss Bridge | Avanza STEM",
+    title: "Popsicle Stick Bridge: Step-by-Step Truss Design + Load Test | Avanza STEM",
     description:
-      "Build a popsicle stick truss bridge with Warren truss triangles, then load test it in this step-by-step STEM project for kids and students.",
+      "Learn how to make a Warren truss bridge out of popsicle sticks (or a chopstick bridge), build popsicle stick triangle trusses for strength, and load test the finished bridge in this step-by-step STEM project.",
   },
   "lego-robot-builder": {
-    title: "LEGO SPIKE Prime Super Cleanup Robot Guide | Avanza STEM",
+    title: "LEGO SPIKE Prime Super Cleanup Robot: Beginner Robotics Guide | Avanza STEM",
     description:
-      "Build a LEGO SPIKE Prime Super Cleanup-style robot with parts, setup steps, pseudocode, troubleshooting, and testing guidance for students.",
+      "Build your own LEGO SPIKE Prime Super Cleanup robot step by step. A beginner-friendly STEM robotics activity for kids, with parts lists, build steps, pseudocode, and troubleshooting tips.",
   },
   "my-first-python-program": {
     title: "First Python Quiz Game for Kids: Copy/Paste Starter Code | Avanza STEM",
@@ -26,8 +27,7 @@ const metadataOverrides: Record<string, { title: string; description: string }> 
   },
 }
 
-export async function generateProjectMetadata(slug: string): Promise<Metadata> {
-  const language = await getLanguage()
+export function generateProjectMetadata(slug: string, language: Language = "en"): Metadata {
   const project = getProjectGuide(slug, language)
 
   if (!project) return {}
@@ -35,12 +35,16 @@ export async function generateProjectMetadata(slug: string): Promise<Metadata> {
   const override = language === "en" ? metadataOverrides[slug] : undefined
   const title = override?.title ?? `${project.title} - Avanza STEM`
   const description = override?.description ?? project.description
-  const url = `${siteConfig.url}/projects/${slug}`
+  const path = `/projects/${slug}`
+  const url = `${siteConfig.url}${localizedPath(path, language)}`
 
   return {
     title,
     description,
-    alternates: { canonical: `/projects/${slug}` },
+    alternates: {
+      canonical: localizedPath(path, language),
+      languages: languageAlternates(path),
+    },
     openGraph: {
       title,
       description,
@@ -53,6 +57,49 @@ export async function generateProjectMetadata(slug: string): Promise<Metadata> {
       title,
       description,
       images: [project.image],
+    },
+  }
+}
+
+const projectsIndexMetadataByLanguage: Record<Language, { title: string; description: string }> = {
+  en: {
+    title: "Free STEM Projects for Kids: Bridges, Circuits, Python & Science Experiments | Avanza STEM",
+    description:
+      "Free beginner-friendly STEM projects for kids, parents, students, and educators, including engineering bridges, simple circuits, Python, science experiments, and more.",
+  },
+  es: {
+    title: "Proyectos STEM para Niños - Avanza STEM",
+    description:
+      "Proyectos STEM gratuitos para niños: construye puentes, circuitos eléctricos, programa en Python, lanza volcanes y más. Guías paso a paso para jóvenes estudiantes hispanos.",
+  },
+  zh: {
+    title: "STEM 儿童项目 - Avanza STEM",
+    description:
+      "为儿童提供免费的动手 STEM 项目：搭建桥梁、制作电路灯、用 Python 编程、发射火山等。为西班牙裔学生提供的分步指南。",
+  },
+}
+
+export function generateProjectsIndexMetadata(language: Language = "en"): Metadata {
+  const { title, description } = projectsIndexMetadataByLanguage[language]
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: localizedPath("/projects", language),
+      languages: languageAlternates("/projects"),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${localizedPath("/projects", language)}`,
+      type: "website",
+      images: [{ url: "/images/og-default-en.png", width: 1200, height: 630, alt: "Avanza STEM Projects" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
     },
   }
 }

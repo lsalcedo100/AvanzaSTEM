@@ -1,4 +1,5 @@
 import { generateBlogPostMetadata } from "@/features/blog/metadata"
+import { getBlogBreadcrumbJsonLd } from "@/features/blog/structured-data"
 import { LocalizedBlogPost } from "@/components/blog/localized-blog-post"
 import { siteConfig } from "@/lib/site-config"
 
@@ -21,6 +22,8 @@ const blogPostJsonLd = {
   url: `${siteConfig.url}/blog/building-a-community-stem-workshops`,
 }
 
+const breadcrumbJsonLd = getBlogBreadcrumbJsonLd(SLUG)
+
 export default function BuildingACommunityPage() {
   return (
     <>
@@ -28,6 +31,12 @@ export default function BuildingACommunityPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostJsonLd) }}
       />
+      {breadcrumbJsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
+      ) : null}
       <LocalizedBlogPost slug={SLUG} />
     </>
   )

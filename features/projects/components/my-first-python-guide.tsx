@@ -5,6 +5,7 @@ import Image from "next/image"
 import { ArrowLeft } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { getProjectGuide, type ProjectGuide } from "@/features/projects/data"
+import { ProjectStepPhoto } from "@/features/projects/components/step-photo"
 
 const PYTHON_CONCEPTS = [
   {
@@ -82,6 +83,7 @@ export function MyFirstPythonGuide({ project }: { project: ProjectGuide }) {
               src={guide.image}
               alt={guide.title}
               fill
+              sizes="(min-width: 1024px) 896px, calc(100vw - 48px)"
               className="object-cover"
               priority
             />
@@ -130,14 +132,20 @@ export function MyFirstPythonGuide({ project }: { project: ProjectGuide }) {
                   {t.projectsPage.stepByStepInstructions}
                 </h2>
                 <ol className="mt-5 space-y-5">
-                  {guide.steps.map((step, index) => (
-                    <li key={step} className="flex items-start gap-4">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-sm font-bold text-foreground">
-                        {index + 1}
-                      </span>
-                      <p className="pt-0.5 text-base leading-7 text-foreground">{step}</p>
-                    </li>
-                  ))}
+                  {guide.steps.map((step, index) => {
+                    const stepImage = guide.stepImages?.find((image) => image.step === index + 1)
+                    return (
+                      <li key={step} className="flex items-start gap-4">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-sm font-bold text-foreground">
+                          {index + 1}
+                        </span>
+                        <div className="flex-1 space-y-3">
+                          <p className="pt-0.5 text-base leading-7 text-foreground">{step}</p>
+                          {stepImage ? <ProjectStepPhoto stepImage={stepImage} /> : null}
+                        </div>
+                      </li>
+                    )
+                  })}
                 </ol>
               </section>
 

@@ -27,7 +27,9 @@ export function Footer() {
               {[
                 { href: "/", label: t.nav.home },
                 { href: "/projects", label: t.nav.projects },
+                { href: "/curriculums", label: t.nav.curriculums },
                 { href: "/blog", label: t.nav.blog },
+                { href: "/games", label: t.nav.games },
                 { href: "/workshops", label: t.nav.workshops },
                 { href: "/find-a-workshop", label: t.home.finderTrigger },
                 { href: "/host", label: t.hostPage.title },
