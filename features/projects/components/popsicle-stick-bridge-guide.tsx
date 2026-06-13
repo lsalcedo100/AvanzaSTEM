@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, ArrowUpRight, PlayCircle } from "lucide-react"
@@ -66,7 +65,6 @@ const LOAD_TEST_ROWS = [
 
 export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide }) {
   const { language, t } = useLanguage()
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const guide = getProjectGuide(project.slug, language) ?? project
   const faqs = projectFaqs[language]?.["popsicle-stick-bridge"] ?? projectFaqs.en["popsicle-stick-bridge"] ?? []
 
@@ -123,33 +121,14 @@ export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide })
             className="relative overflow-hidden rounded-lg border border-border bg-avanza-dark"
             style={{ paddingBottom: "56.25%" }}
           >
-            {isVideoLoaded ? (
-              <iframe
-                src={`${VIDEO_EMBED}&autoplay=1`}
-                title={t.projectsPage.bridgeVideoTitle}
-                className="absolute inset-0 h-full w-full"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            ) : (
-              <button
-                type="button"
-                onClick={() => setIsVideoLoaded(true)}
-                className="absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-4 bg-[radial-gradient(circle_at_center,rgba(46,204,113,0.25),transparent_58%)] px-6 text-center text-primary-foreground transition-colors hover:bg-avanza-dark/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                aria-label={`Load video: ${t.projectsPage.bridgeVideoTitle}`}
-              >
-                <span className="flex h-16 w-16 items-center justify-center rounded-full bg-avanza-green text-avanza-dark shadow-lg">
-                  <PlayCircle className="h-8 w-8" />
-                </span>
-                <span className="max-w-md text-base font-bold">
-                  Load the build-along video only when you are ready to watch.
-                </span>
-                <span className="text-xs text-primary-foreground/75">
-                  This avoids loading YouTube during the initial page render.
-                </span>
-              </button>
-            )}
+            <iframe
+              src={VIDEO_EMBED}
+              title={t.projectsPage.bridgeVideoTitle}
+              className="absolute inset-0 h-full w-full"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
           <p className="mt-2 text-xs text-muted-foreground">{t.projectsPage.bridgeVideoTitle}</p>
         </div>

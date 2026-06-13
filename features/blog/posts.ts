@@ -427,7 +427,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       sections: [
         { title: "", blocks: [
           { type: "paragraph", text: "The hardest part of starting Avanza STEM was believing that showing up to a library with materials and a laptop could matter." },
-          { type: "paragraph", text: "After programs at Clifton Public Library and Allwood Branch Library reaching more than 70 students, the answer is clear: it matters because students see that STEM belongs to them too." },
+          { type: "paragraph", text: "After programs at Clifton Public Library, Allwood Branch Library, Library of the Chathams, and Roseland Free Public Library reaching more than 70 students, the answer is clear: it matters because students see that STEM belongs to them too." },
         ] },
         { title: "What a Workshop Actually Looks Like", blocks: [
           { type: "paragraph", text: "Our current format is a three-week series covering engineering, coding, and AI. Each session is free and requires no prior experience." },
@@ -705,7 +705,7 @@ localizedBlogArticles.es = {
     sections: [
       { title: "", blocks: [
         { type: "paragraph", text: "Lo más difícil de empezar Avanza STEM fue creer que llegar a una biblioteca con materiales y una laptop podía importar." },
-        { type: "paragraph", text: "Después de programas en la Biblioteca Pública de Clifton y la Sucursal Allwood que han llegado a más de 70 estudiantes, la respuesta es clara: importa porque los estudiantes ven que STEM también les pertenece." },
+        { type: "paragraph", text: "Después de programas en Clifton Public Library, Allwood Branch Library, Library of the Chathams y Roseland Free Public Library que han llegado a más de 70 estudiantes, la respuesta es clara: importa porque los estudiantes ven que STEM también les pertenece." },
       ] },
       { title: "Cómo Es un Taller en la Práctica", blocks: [
         { type: "paragraph", text: "Nuestro formato actual es una serie de tres semanas que cubre ingeniería, programación e inteligencia artificial. Cada sesión es gratuita y no requiere experiencia previa." },

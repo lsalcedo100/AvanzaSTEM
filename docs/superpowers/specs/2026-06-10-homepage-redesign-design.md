@@ -193,7 +193,8 @@ closing element.
   - Subhead: "Whether you're a student, a parent, or a teacher — there's a
     way to be part of Avanza STEM."
   - Card 1 — Students & Families: "Want to join a workshop? They run at
-    Clifton Public Library and Allwood Branch Library — find one near you
+    Clifton Public Library, Allwood Branch Library, Library of the Chathams,
+    and Roseland Free Public Library — find one near you
     and sign up, free." → CTA "Find a Workshop Near You" →
     `/find-a-workshop`
   - Card 2 — Schools, Teachers & Libraries: "Want Avanza STEM at your school

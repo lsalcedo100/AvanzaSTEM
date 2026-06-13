@@ -7,19 +7,19 @@ import { siteConfig } from "@/lib/site-config"
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
-    title: "Free STEM Workshops for Kids | Avanza STEM",
+    title: "The Maker Mindset Series | Avanza STEM",
     description:
-      "Explore Avanza STEM's free in-person STEM workshops for young learners, including hands-on engineering, Python coding, and responsible AI activities through community partners.",
+      "Explore Avanza STEM's Maker Mindset Series, a free three part hands on STEM workshop program for young learners covering building, coding, and responsible AI through libraries and community partners.",
   },
   es: {
-    title: "Talleres STEM gratuitos para ninos | Avanza STEM",
+    title: "La Serie Mentalidad Maker | Avanza STEM",
     description:
-      "Explora los talleres STEM presenciales y gratuitos de Avanza STEM para jovenes estudiantes, con actividades practicas de ingenieria, programacion en Python e IA responsable junto a aliados comunitarios.",
+      "Explora la Serie Mentalidad Maker de Avanza STEM, un programa gratuito de tres talleres STEM practicos para jovenes estudiantes sobre construccion, programacion e IA responsable con bibliotecas y socios comunitarios.",
   },
   zh: {
-    title: "儿童免费 STEM 工作坊 | Avanza STEM",
+    title: "创客思维系列 | Avanza STEM",
     description:
-      "了解 Avanza STEM 为年轻学生提供的免费线下 STEM 工作坊，包括与社区伙伴合作开展的工程、Python 编程和负责任 AI 实践活动。",
+      "了解 Avanza STEM 的创客思维系列，这是面向年轻学生的免费三部分动手 STEM 工作坊项目，通过图书馆和社区伙伴教授建造、编程和负责任 AI。",
   },
 }
 

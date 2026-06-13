@@ -4,7 +4,10 @@ import Link from "next/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
-import { Gallery } from "@/components/ui/gallery"
+import { Gallery, galleryImages } from "@/components/ui/gallery"
+
+const buildingWorkshopImage =
+  "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/c_crop,x_0,y_290,w_1600,h_2110/gallery-00174.jpg"
 
 export function WorkshopsPageContent() {
   const { t } = useLanguage()
@@ -13,8 +16,9 @@ export function WorkshopsPageContent() {
       week: t.workshopsPage.week1,
       title: t.workshopsPage.buildingTitle,
       description: t.workshopsPage.buildingDesc,
-      image: "/images/workshops/Building Workshop Description.jpeg",
+      image: buildingWorkshopImage,
       imageAlt: t.workshopsPage.buildingImageAlt,
+      imageLayout: "portraitFeature" as const,
       accent: "bg-avanza-purple",
     },
     {
@@ -74,7 +78,28 @@ export function WorkshopsPageContent() {
         </FadeIn>
       </section>
 
-      <section className="bg-background py-16">
+      <section className="bg-background py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <FadeIn className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">
+              {t.workshopsPage.journeyTitle}
+            </h2>
+            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+              {t.workshopsPage.journeyDesc}
+            </p>
+          </FadeIn>
+
+          <div className="mt-16 space-y-14">
+            {workshops.map((workshop, i) => (
+              <FadeIn key={workshop.title} delay={i * 60} rootMargin="0px 0px -80px 0px">
+                <WorkshopSection {...workshop} />
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-background pb-20">
         <div className="mx-auto max-w-5xl px-6">
           <FadeIn>
             <div className="rounded-lg border border-avanza-green/20 bg-card p-7 shadow-sm sm:p-9">
@@ -96,11 +121,17 @@ export function WorkshopsPageContent() {
                     >
                       {t.workshopsPage.finderLink}
                     </Link>
+                    <Link
+                      href="/host"
+                      className="inline-flex items-center justify-center rounded-lg border border-avanza-green/40 px-5 py-3 text-sm font-extrabold text-avanza-green transition-colors hover:bg-avanza-green/10"
+                    >
+                      {t.workshopsPage.hostSeriesLink}
+                    </Link>
                     <a
                       href="https://www.instagram.com/avanzastem/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-avanza-green/40 px-5 py-3 text-sm font-extrabold text-avanza-green transition-colors hover:bg-avanza-green/10"
+                      className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-3 text-sm font-extrabold text-muted-foreground transition-colors hover:border-avanza-green/40 hover:bg-avanza-green/10 hover:text-avanza-green"
                     >
                       {t.workshopsPage.followInstagram}
                     </a>
@@ -109,90 +140,6 @@ export function WorkshopsPageContent() {
               </div>
             </div>
           </FadeIn>
-        </div>
-      </section>
-
-      <section className="border-y border-border bg-secondary/40 py-12">
-        <FadeIn className="mx-auto max-w-5xl px-6">
-          <p className="text-sm font-bold uppercase tracking-wider text-avanza-green">
-            Clifton, NJ STEM programs
-          </p>
-          <h2 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">
-            Free STEM workshops in Clifton NJ library locations
-          </h2>
-          <div className="mt-4 space-y-4 text-base leading-7 text-muted-foreground">
-            <p>
-              Avanza STEM workshops are free community programs for kids and teens, commonly
-              designed for elementary and middle school learners. Past sessions have run through
-              Clifton Public Library and Allwood Branch Library, with hands-on engineering,
-              beginner Python, and responsible AI activities.
-            </p>
-            <p>
-              There are no public workshop dates scheduled right now. Families can use the{" "}
-              <Link
-                href="/find-a-workshop"
-                className="font-semibold text-foreground underline underline-offset-4"
-              >
-                workshop finder
-              </Link>{" "}
-              to see current library locations, or keep learning now with{" "}
-              <Link
-                href="/projects"
-                className="font-semibold text-foreground underline underline-offset-4"
-              >
-                STEM projects for kids
-              </Link>{" "}
-              and our in-progress{" "}
-              <Link
-                href="/curriculums"
-                className="font-semibold text-foreground underline underline-offset-4"
-              >
-                free STEM curriculum paths
-              </Link>
-              .
-            </p>
-          </div>
-          <div className="mt-6 flex flex-wrap gap-2">
-            <Link
-              href="/projects/popsicle-stick-bridge"
-              className="rounded-full border border-border bg-background px-3 py-1.5 text-sm font-semibold text-foreground hover:border-avanza-green"
-            >
-              engineering projects for kids
-            </Link>
-            <Link
-              href="/projects/my-first-python-program"
-              className="rounded-full border border-border bg-background px-3 py-1.5 text-sm font-semibold text-foreground hover:border-avanza-green"
-            >
-              Python quiz game for kids
-            </Link>
-            <Link
-              href="/projects/lego-robot-builder"
-              className="rounded-full border border-border bg-background px-3 py-1.5 text-sm font-semibold text-foreground hover:border-avanza-green"
-            >
-              LEGO SPIKE Prime Super Cleanup
-            </Link>
-          </div>
-        </FadeIn>
-      </section>
-
-      <section className="bg-background py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <FadeIn className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">
-              {t.workshopsPage.journeyTitle}
-            </h2>
-            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-              {t.workshopsPage.journeyDesc}
-            </p>
-          </FadeIn>
-
-          <div className="mt-16 space-y-14">
-            {workshops.map((workshop, i) => (
-              <FadeIn key={workshop.title} delay={i * 60} rootMargin="0px 0px -80px 0px">
-                <WorkshopSection {...workshop} />
-              </FadeIn>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -227,6 +174,25 @@ export function WorkshopsPageContent() {
                 image="/images/workshops/past-coding.jpg"
                 imageAlt={t.workshopsPage.allwoodImageAlt}
                 description={t.workshopsPage.allwoodDesc}
+              />
+            </FadeIn>
+            <FadeIn delay={200}>
+              <PastProgramCard
+                name={t.workshopsPage.chathamsLibrary}
+                badge={t.workshopsPage.completedBadge}
+                image={galleryImages[18].full}
+                imageAlt={t.workshopsPage.chathamsImageAlt}
+                imageBoxClassName="h-80 sm:h-[28rem]"
+                description={t.workshopsPage.chathamsDesc}
+              />
+            </FadeIn>
+            <FadeIn delay={300}>
+              <PastProgramCard
+                name={t.workshopsPage.roselandLibrary}
+                badge={t.workshopsPage.completedBadge}
+                image="/images/workshops/roseland-free-public-library-coding.jpeg"
+                imageAlt={t.workshopsPage.roselandImageAlt}
+                description={t.workshopsPage.roselandDesc}
               />
             </FadeIn>
           </div>
@@ -307,6 +273,7 @@ function WorkshopSection({
   noteTitle,
   image,
   imageAlt,
+  imageLayout = "standard",
   accent,
   reverse = false,
 }: {
@@ -317,23 +284,40 @@ function WorkshopSection({
   noteTitle?: string
   image: string
   imageAlt: string
+  imageLayout?: "standard" | "portraitFeature"
   accent: string
   reverse?: boolean
 }) {
+  const isPortraitFeature = imageLayout === "portraitFeature"
+
   return (
     <article className="overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-shadow duration-300 hover:shadow-md">
       <div
-        className={`grid gap-0 lg:grid-cols-2 lg:items-stretch ${
+        className={`grid gap-0 lg:items-stretch ${
+          isPortraitFeature
+            ? "lg:grid-cols-[minmax(420px,0.9fr)_minmax(0,0.75fr)]"
+            : "lg:grid-cols-2"
+        } ${
           reverse ? "lg:[&>*:first-child]:order-2" : ""
         }`}
       >
-        <div className="relative min-h-[280px] sm:min-h-[360px] lg:min-h-[460px] overflow-hidden">
+        <div
+          className={
+            isPortraitFeature
+              ? "relative aspect-[1600/2110] overflow-hidden"
+              : "relative min-h-[280px] overflow-hidden sm:min-h-[360px] lg:min-h-[460px]"
+          }
+        >
           <LightboxImage
             src={image}
             alt={imageAlt}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700 hover:scale-[1.02]"
+            className={
+              isPortraitFeature
+                ? "object-cover"
+                : "object-cover transition-transform duration-700 hover:scale-[1.02]"
+            }
           />
         </div>
 
@@ -376,6 +360,7 @@ function PastProgramCard({
   duration,
   location,
   description,
+  imageBoxClassName = "h-56 sm:h-64",
 }: {
   name: string
   badge: string
@@ -385,11 +370,12 @@ function PastProgramCard({
   duration?: string
   location?: string
   description?: string
+  imageBoxClassName?: string
 }) {
   const meta = [gradeRange, duration, location].filter(Boolean).join(" · ")
   return (
     <article className="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
-      <div className="relative h-56 w-full overflow-hidden sm:h-64">
+      <div className={`relative w-full overflow-hidden ${imageBoxClassName}`}>
         <LightboxImage
           src={image}
           alt={imageAlt}

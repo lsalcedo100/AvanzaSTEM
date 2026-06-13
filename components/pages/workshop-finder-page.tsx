@@ -50,6 +50,24 @@ const LIBRARIES: Library[] = [
     status: "active",
   },
   {
+    id: "chathams",
+    name: "Library of the Chathams",
+    city: "Chatham",
+    zip: "07928",
+    lat: 40.741,
+    lng: -74.384,
+    status: "active",
+  },
+  {
+    id: "roseland",
+    name: "Roseland Free Public Library",
+    city: "Roseland",
+    zip: "07068",
+    lat: 40.82,
+    lng: -74.309,
+    status: "active",
+  },
+  {
     id: "newark",
     name: "Newark area",
     city: "Newark",
@@ -304,9 +322,10 @@ function PromptHero({
           </p>
 
           <p className="mx-auto mt-4 max-w-xl text-sm font-semibold leading-relaxed text-avanza-dark/75">
-            Looking for free STEM workshops in Clifton NJ? Current Avanza STEM library locations
-            include Clifton Public Library and Allwood Branch Library. Public dates are not
-            scheduled right now, but families can check locations here and try{" "}
+            Looking for free STEM workshops in New Jersey? Current Avanza STEM library locations
+            include Clifton Public Library, Allwood Branch Library, Library of the Chathams,
+            and Roseland Free Public Library. Public dates are not scheduled right now, but
+            families can check locations here and try{" "}
             <Link href="/projects" className="underline underline-offset-4">
               STEM projects for kids
             </Link>{" "}
@@ -370,7 +389,7 @@ function PromptHero({
           <div className="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-foreground/75">
             <span className="inline-flex items-center gap-1.5">
               <Sparkles className="h-3 w-3" />
-              {currentSites.length} {t.home.finderCurrentCount} · Clifton, NJ
+              {currentSites.length} {t.home.finderCurrentCount} · New Jersey
             </span>
             <span className="hidden h-1 w-1 rounded-full bg-primary-foreground/40 sm:inline-block" />
             <span>Free, always</span>
