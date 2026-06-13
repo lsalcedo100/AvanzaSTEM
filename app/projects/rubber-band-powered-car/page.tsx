@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import { RubberBandPoweredCarGuide } from "@/features/projects/components/rubber-band-powered-car-guide"
 import { getProjectGuide } from "@/features/projects/data"
 import { generateProjectMetadata } from "@/features/projects/metadata"
+import { getProjectHowToJsonLd } from "@/features/projects/structured-data"
 
 export async function generateMetadata() {
   return generateProjectMetadata("rubber-band-powered-car")
@@ -9,10 +10,21 @@ export async function generateMetadata() {
 
 export default function RubberBandPoweredCarPage() {
   const project = getProjectGuide("rubber-band-powered-car")
+  const howToJsonLd = getProjectHowToJsonLd("rubber-band-powered-car")
 
   if (!project) {
     notFound()
   }
 
-  return <RubberBandPoweredCarGuide project={project} />
+  return (
+    <>
+      {howToJsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+        />
+      ) : null}
+      <RubberBandPoweredCarGuide project={project} />
+    </>
+  )
 }

@@ -34,6 +34,46 @@ export function ProjectsPageContent() {
       ? taggedProjects
       : taggedProjects.filter((p) => p.category === activeFilter)
 
+  const introLinks = [
+    { href: "/projects/popsicle-stick-bridge", label: "popsicle stick truss bridge" },
+    { href: "/projects/simple-circuit-light", label: "simple circuits" },
+    { href: "/projects/my-first-python-program", label: "first Python quiz game" },
+    { href: "/projects/baking-soda-volcano", label: "baking soda volcano" },
+    { href: "/projects/lemon-powered-batteries", label: "lemon battery" },
+    { href: "/projects/balloon-powered-car", label: "balloon powered car" },
+  ]
+
+  const learningPaths = [
+    {
+      title: "STEM projects for kids",
+      copy:
+        "Start with hands-on builds that use household materials, clear safety notes, and short explanations parents and educators can use at home or in class.",
+      href: "/projects/coke-mentos-experiment",
+      link: "coke and Mentos science project",
+    },
+    {
+      title: "Engineering projects for kids",
+      copy:
+        "Build structures and machines, then test how design choices change strength, distance, or stability.",
+      href: "/projects/popsicle-stick-bridge",
+      link: "Warren truss bridge",
+    },
+    {
+      title: "Coding projects",
+      copy:
+        "Write beginner-friendly programs with visible outcomes, including a quiz students can run and customize right away.",
+      href: "/projects/my-first-python-program",
+      link: "Python quiz game for kids",
+    },
+    {
+      title: "Science fair projects",
+      copy:
+        "Turn exciting demos into real investigations with variables, data tables, hypotheses, and comparison trials.",
+      href: "/projects/coke-mentos-experiment",
+      link: "mentos and soda science project",
+    },
+  ]
+
   return (
     <>
       <section className="border-b border-border bg-background py-16">
@@ -44,7 +84,37 @@ export function ProjectsPageContent() {
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
             {t.projectsPage.description}
           </p>
+          <div className="mt-6 flex max-w-3xl flex-wrap gap-2">
+            {introLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-full border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-avanza-green hover:text-avanza-green-dark"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </FadeIn>
+      </section>
+
+      <section className="border-b border-border bg-secondary/40 py-12">
+        <div className="mx-auto grid max-w-7xl gap-5 px-6 md:grid-cols-2 lg:grid-cols-4">
+          {learningPaths.map((path, i) => (
+            <FadeIn key={path.title} delay={i * 60}>
+              <article className="h-full rounded-md border border-border bg-background p-5">
+                <h2 className="text-base font-bold text-foreground">{path.title}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{path.copy}</p>
+                <Link
+                  href={path.href}
+                  className="mt-4 inline-flex text-sm font-semibold text-avanza-green-dark underline underline-offset-4"
+                >
+                  {path.link}
+                </Link>
+              </article>
+            </FadeIn>
+          ))}
+        </div>
       </section>
 
       <section className="border-b border-border bg-background">

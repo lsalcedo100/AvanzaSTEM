@@ -61,10 +61,10 @@ const en = {
     realWorkshopBannerAlt: "Workshop description banner",
     studentsDoWorkshopsCta: "See upcoming workshops",
     studentsDoTryAtHome: "Try these at home",
-    featuredBridge: "Build a Popsicle Stick Bridge",
-    featuredBridgeDesc: "Learn the basics of structural engineering by building your own bridge with popsicle sticks and glue.",
-    featuredCoding: "Intro to Python Coding",
-    featuredCodingDesc: "Start your coding journey with fun Python exercises designed for beginners. No experience needed!",
+    featuredBridge: "Build a Popsicle Stick Truss Bridge",
+    featuredBridgeDesc: "Use Warren truss triangles to build a popsicle stick bridge STEM project, then load test it safely.",
+    featuredCoding: "First Python Quiz Game",
+    featuredCodingDesc: "Start with a beginner Python program for kids using copy/paste quiz game code. No experience needed!",
     featuredMentos: "Coke & Mentos Experiment",
     featuredMentosDesc: "Explore chemical reactions with this classic experiment. Learn the science behind the fizzy eruption!",
     mentosImageAlt: "Coke and Mentos chemical reaction science experiment for kids",
@@ -240,9 +240,9 @@ const en = {
 
   // Curriculums page
   curriculumsPage: {
-    title: "Our Curriculums",
-    description: "Preview the structured STEM lesson paths we are building for kids in 2nd grade and up.",
-    launchBanner: "Curriculums are launching soon. Join the newsletter to be the first to know when lessons are available.",
+    title: "Free STEM Curriculum Paths for Kids - Coming Soon",
+    description: "Preview the structured STEM lesson paths we are building for kids in 2nd grade and up, then try free projects while full lessons are in development.",
+    launchBanner: "Curriculum paths are still in development. Join the newsletter for launch updates, or start with the free projects below today.",
     launchCta: "Join the Newsletter",
     howItWorks: "What's Coming",
     howItWorksDesc: "We are turning Avanza STEM workshop and project topics into guided curriculum paths.",
@@ -298,8 +298,8 @@ const en = {
 
   // Projects page
   projectsPage: {
-    title: "DIY Projects & How-Tos",
-    description: "Hands-on STEM projects you can do at home or in the classroom. Each project comes with step-by-step instructions, materials lists, and learning goals.",
+    title: "Free STEM Projects for Kids",
+    description: "Browse beginner-friendly engineering projects, science experiments, coding projects, circuits, and classroom activities for parents, students, and educators.",
     all: "All",
     engineering: "Engineering",
     science: "Science",

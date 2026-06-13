@@ -23,17 +23,17 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
   en: [
     {
       slug: "popsicle-stick-bridge",
-      title: "Popsicle Stick Bridge",
+      title: "Popsicle Stick Truss Bridge",
       category: "Engineering",
       categoryKey: "engineering",
       difficulty: "Easy",
       time: "1-2 hours",
       image: "/images/home/featured-bridge.jpg",
       description:
-        "Build a real truss bridge from popsicle sticks, then watch how triangles guide compression and tension during your load test.",
+        "Build a popsicle stick truss bridge with Warren truss triangles, then load test it to see compression and tension in action.",
       introduction: [
-        "Bridge engineers do not just glue random pieces together. They design structures that guide forces through a smart pattern of strong shapes.",
-        "This project is exciting because your popsicle sticks turn into a real truss bridge with named parts, force paths, and a load test at the end.",
+        "Bridge engineers do not just glue random pieces together. They design truss bridges that guide forces through a smart pattern of triangles.",
+        "In this step-by-step STEM project, your popsicle sticks turn into a Warren-style truss bridge with named parts, force paths, and a load test at the end.",
       ],
       why:
         "A truss bridge spreads force through triangles. The top chord often gets squeezed in compression, the bottom chord gets pulled in tension, and the diagonal web members help move the load across the whole structure.",
@@ -62,17 +62,17 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
     },
     {
       slug: "lego-robot-builder",
-      title: "LEGO Grabber Robot",
+      title: "LEGO SPIKE Prime Super Cleanup Robot Guide",
       category: "Robotics",
       categoryKey: "robotics",
       difficulty: "Medium",
       time: "2-3 hours",
       image: "/images/shared/lego-robotics.jpeg",
       description:
-        "Build a source-backed grabber robot inspired by LEGO Education's SPIKE Prime Super Cleanup lesson and test how well it picks up different objects.",
+        "Build a LEGO SPIKE Prime Super Cleanup-style grabber robot, then program, troubleshoot, and test how well it picks up different objects.",
       introduction: [
-        "This project is not just any robot. You are building a grabber-style cleanup machine inspired by a real LEGO Education lesson used to teach robotics thinking.",
-        "That makes it extra cool because you are not guessing what a robot could look like. You are following a proven build idea and learning why each part is there.",
+        "This project is not just any robot. You are building a grabber-style cleanup machine inspired by LEGO Education's SPIKE Prime Super Cleanup activity.",
+        "Avanza STEM is not affiliated with LEGO, but this guide helps students understand the compatible build idea, setup steps, code logic, and troubleshooting behind the lesson.",
       ],
       why:
         "A grabber robot mixes mechanics and programming. The base must stay balanced, the motor must transfer motion into the claw, and the code must tell the machine when to drive, grab, and release.",
@@ -100,17 +100,17 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
     },
     {
       slug: "coke-mentos-experiment",
-      title: "Coke & Mentos Experiment",
+      title: "Coke and Mentos Science Project",
       category: "Science",
       categoryKey: "science",
       difficulty: "Easy",
       time: "30 minutes",
-      image: "/images/home/coke-mentos-science-experiment-kids.png",
+      image: "/images/home/coke-mentos-science-experiment-kids.jpg",
       description:
-        "Launch a fizzy soda fountain outdoors and learn why tiny candy surfaces make gas rush out fast.",
+        "Turn the Coke and Mentos geyser into a science fair project with a hypothesis, variables, data table, and safe comparison tests.",
       introduction: [
-        "Get ready for a sky-high splash because this experiment can make soda shoot up like a rocket fountain.",
-        "It is exciting to watch, and it also teaches you a real science idea that looks almost like magic.",
+        "Get ready for a sky-high splash because this Coke and Mentos science project can make soda shoot up like a rocket fountain.",
+        "It is exciting to watch, and with careful variables and measurements, it can become a real science fair experiment instead of just a one-time demo.",
       ],
       why:
         "Soda has carbon dioxide gas dissolved inside it. Mentos candies have lots of tiny bumps that give the gas many places to escape at once, a process called nucleation, so the soda rushes out fast. Diet Coke usually works better than regular Coke because it has less sugar and is not as thick, so the bubbles can race upward more easily and make a taller geyser.",
@@ -138,17 +138,17 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
     },
     {
       slug: "my-first-python-program",
-      title: "My First Python Program",
+      title: "First Python Quiz Game for Kids",
       category: "Coding",
       categoryKey: "coding",
       difficulty: "Easy",
       time: "1 hour",
       image: "/images/home/featured-python.jpg",
       description:
-        "Write a simple quiz game and see how code can turn your ideas into something interactive.",
+        "Copy, paste, and customize a beginner Python quiz game for kids while learning print(), input(), variables, and if statements.",
       introduction: [
-        "Coding is like giving super-clear instructions to a computer so it can do something amazing for you.",
-        "This project is fun because you will create a real program that asks questions, keeps score, and talks back to the player.",
+        "Coding is like giving super-clear instructions to a computer so it can do something useful or fun for you.",
+        "This beginner Python project is built for kids and first-time coders: you will copy a starter quiz game, run it, then customize the questions and score.",
       ],
       why:
         "Computer programs follow instructions one step at a time. Python uses commands like `print()` to show messages, `input()` to collect answers, and variables to remember information such as a score.",
@@ -337,7 +337,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "engineering",
       difficulty: "Easy",
       time: "1-2 hours",
-      image: "/images/projects/Rubber Band Powered Car.png",
+      image: "/images/projects/rubber-band-powered-car.jpg",
       description:
         "A simple DIY car that moves without electricity or batteries, just the stored energy of a twisted rubber band powering the wheels and axle forward.",
       introduction: [
@@ -377,7 +377,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "Easy",
       time: "30-45 minutes",
-      image: "/images/projects/Lemon powered batteries.png",
+      image: "/images/projects/lemon-powered-batteries.jpg",
       description:
         "Turn lemons into a real battery and light up an LED by discovering how chemical energy becomes electrical energy.",
       introduction: [
@@ -414,7 +414,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "engineering",
       difficulty: "Easy",
       time: "1-2 hours",
-      image: "/images/projects/Balloon Powered Car.png",
+      image: "/images/projects/balloon-powered-car.jpg",
       description:
         "Build a car that runs on air and discover how Newton's Third Law of Motion turns a simple balloon into a powerful engine.",
       introduction: [
@@ -531,7 +531,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "Facil",
       time: "30 minutos",
-      image: "/images/home/coke-mentos-science-experiment-kids.png",
+      image: "/images/home/coke-mentos-science-experiment-kids.jpg",
       description:
         "Lanza una fuente de soda al aire libre y aprende por que la superficie de los caramelos hace que el gas escape rapidamente.",
       introduction: [
@@ -763,7 +763,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "engineering",
       difficulty: "Facil",
       time: "1-2 horas",
-      image: "/images/projects/Rubber Band Powered Car.png",
+      image: "/images/projects/rubber-band-powered-car.jpg",
       description:
         "Un auto DIY sencillo que se mueve sin electricidad ni baterias, usando solo la energia almacenada de una liga retorcida para impulsar las ruedas y el eje hacia adelante.",
       introduction: [
@@ -803,7 +803,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "Facil",
       time: "30-45 minutos",
-      image: "/images/projects/Lemon powered batteries.png",
+      image: "/images/projects/lemon-powered-batteries.jpg",
       description:
         "Convierte limones en una bateria real y enciende un LED descubriendo como la energia quimica se convierte en energia electrica.",
       introduction: [
@@ -840,7 +840,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "engineering",
       difficulty: "Facil",
       time: "1-2 horas",
-      image: "/images/projects/Balloon Powered Car.png",
+      image: "/images/projects/balloon-powered-car.jpg",
       description:
         "Construye un auto que funciona con aire y descubre como la Tercera Ley de Newton convierte un globo en un motor poderoso.",
       introduction: [
@@ -957,7 +957,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "简单",
       time: "30分钟",
-      image: "/images/home/coke-mentos-science-experiment-kids.png",
+      image: "/images/home/coke-mentos-science-experiment-kids.jpg",
       description:
         "在户外制造一股喷泉，了解为什么糖果表面的微小结构会让气体迅速释放。",
       introduction: [
@@ -1189,7 +1189,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "engineering",
       difficulty: "简单",
       time: "1-2小时",
-      image: "/images/projects/Rubber Band Powered Car.png",
+      image: "/images/projects/rubber-band-powered-car.jpg",
       description:
         "一辆不需要电力或电池的手工小车，只用扭紧的橡皮筋储存的能量推动车轮和车轴向前转动。",
       introduction: [
@@ -1229,7 +1229,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "science",
       difficulty: "简单",
       time: "30-45分钟",
-      image: "/images/projects/Lemon powered batteries.png",
+      image: "/images/projects/lemon-powered-batteries.jpg",
       description:
         "把柠檬变成真正的电池，点亮一个LED灯，探索化学能如何转化为电能。",
       introduction: [
@@ -1266,7 +1266,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "engineering",
       difficulty: "简单",
       time: "1-2小时",
-      image: "/images/projects/Balloon Powered Car.png",
+      image: "/images/projects/balloon-powered-car.jpg",
       description:
         "造一辆靠空气驱动的小车，探索牛顿第三定律如何让一个简单气球变成强力引擎。",
       introduction: [

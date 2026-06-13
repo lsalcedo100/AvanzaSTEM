@@ -34,7 +34,7 @@ const workshopsJsonLd = {
     '@type': 'Offer',
     price: '0',
     priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
+    availability: 'https://schema.org/LimitedAvailability',
     url: `${siteConfig.url}/find-a-workshop`,
   },
 }

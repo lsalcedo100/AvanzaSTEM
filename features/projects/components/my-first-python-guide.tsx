@@ -111,6 +111,20 @@ export function MyFirstPythonGuide({ project }: { project: ProjectGuide }) {
                 <p className="mt-4 text-base leading-7 text-muted-foreground">{guide.why}</p>
               </section>
 
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Python Program for Kids: Start With a Quiz Game
+                  </h2>
+                  <p className="mt-4 text-base leading-7 text-muted-foreground">
+                    A quiz is a great first Python program because it uses the ideas beginners need
+                    most: showing text, asking for input, checking an answer, and keeping score. You
+                    can copy the starter code below first, then change the questions to match sports,
+                    animals, books, science, or anything else you like.
+                  </p>
+                </section>
+              )}
+
               <section>
                 <h2 className="text-xl font-bold text-foreground">
                   {t.projectsPage.stepByStepInstructions}
@@ -155,7 +169,9 @@ export function MyFirstPythonGuide({ project }: { project: ProjectGuide }) {
               {/* Full code example */}
               {language === "en" && (
                 <section>
-                  <h2 className="text-xl font-bold text-foreground">A complete example</h2>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Copy/Paste Starter Code for a First Python Quiz Game
+                  </h2>
                   <p className="mt-2 text-sm text-muted-foreground">
                     Copy this into Replit or Trinket and run it. Then modify the question to make it
                     your own.
@@ -163,6 +179,28 @@ export function MyFirstPythonGuide({ project }: { project: ProjectGuide }) {
                   <pre className="mt-4 overflow-x-auto rounded-md border border-border bg-secondary/40 px-5 py-4 font-mono text-sm leading-7 text-foreground">
                     {CODE_EXAMPLE}
                   </pre>
+                </section>
+              )}
+
+              {language === "en" && (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
+                    How to Customize Your Beginner Python Project
+                  </h2>
+                  <ul className="mt-5 space-y-3">
+                    {[
+                      "Change the question text inside input().",
+                      "Change the correct answer inside the if statement.",
+                      "Add two more questions by copying the answer/input/if pattern.",
+                      "Print a different message for a perfect score.",
+                      "Ask a friend to play, then fix anything that feels confusing.",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground" />
+                        <p className="text-base leading-7 text-muted-foreground">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
                 </section>
               )}
             </div>

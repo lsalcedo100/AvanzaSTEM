@@ -112,6 +112,69 @@ export function WorkshopsPageContent() {
         </div>
       </section>
 
+      <section className="border-y border-border bg-secondary/40 py-12">
+        <FadeIn className="mx-auto max-w-5xl px-6">
+          <p className="text-sm font-bold uppercase tracking-wider text-avanza-green">
+            Clifton, NJ STEM programs
+          </p>
+          <h2 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">
+            Free STEM workshops in Clifton NJ library locations
+          </h2>
+          <div className="mt-4 space-y-4 text-base leading-7 text-muted-foreground">
+            <p>
+              Avanza STEM workshops are free community programs for kids and teens, commonly
+              designed for elementary and middle school learners. Past sessions have run through
+              Clifton Public Library and Allwood Branch Library, with hands-on engineering,
+              beginner Python, and responsible AI activities.
+            </p>
+            <p>
+              There are no public workshop dates scheduled right now. Families can use the{" "}
+              <Link
+                href="/find-a-workshop"
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                workshop finder
+              </Link>{" "}
+              to see current library locations, or keep learning now with{" "}
+              <Link
+                href="/projects"
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                STEM projects for kids
+              </Link>{" "}
+              and our in-progress{" "}
+              <Link
+                href="/curriculums"
+                className="font-semibold text-foreground underline underline-offset-4"
+              >
+                free STEM curriculum paths
+              </Link>
+              .
+            </p>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <Link
+              href="/projects/popsicle-stick-bridge"
+              className="rounded-full border border-border bg-background px-3 py-1.5 text-sm font-semibold text-foreground hover:border-avanza-green"
+            >
+              engineering projects for kids
+            </Link>
+            <Link
+              href="/projects/my-first-python-program"
+              className="rounded-full border border-border bg-background px-3 py-1.5 text-sm font-semibold text-foreground hover:border-avanza-green"
+            >
+              Python quiz game for kids
+            </Link>
+            <Link
+              href="/projects/lego-robot-builder"
+              className="rounded-full border border-border bg-background px-3 py-1.5 text-sm font-semibold text-foreground hover:border-avanza-green"
+            >
+              LEGO SPIKE Prime Super Cleanup
+            </Link>
+          </div>
+        </FadeIn>
+      </section>
+
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="mx-auto max-w-3xl text-center">

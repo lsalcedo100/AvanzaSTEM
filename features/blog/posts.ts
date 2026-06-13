@@ -139,7 +139,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/workshops/upcoming-python.jpg",
       imageAlt: "An Avanza STEM mentor leading a coding workshop, with students seated at laptops",
       imageCaption: "Students learn the basics of coding during an Avanza STEM workshop session.",
-      endingProject: { href: "/projects/my-first-python-program", label: "Try this project: write your first Python program" },
+      endingProject: { href: "/projects/my-first-python-program", label: "Try this project: first Python quiz game for kids" },
       endingSecondary: { href: "/workshops", label: "See upcoming workshops" },
       endingRelatedSlug: "what-is-ai-explaining-to-kids",
       sections: [
@@ -181,7 +181,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
             { type: "paragraph", text: "If your child is ready to write code, open a browser-based editor like Replit or Trinket and try this:" },
             { type: "code", title: "Try This", accent: "green", code: "name = input(\"What is your name? \")\nprint(\"Hello, \" + name + \"! Welcome to coding.\")" },
             { type: "paragraph", text: "That is a real program: it collects input and responds. Add more questions and it can become a tiny chatbot or quiz game." },
-            { type: "paragraphWithLink", before: "For a full walkthrough of this project, including how to turn it into a quiz, see our ", linkText: "My First Python Program guide", href: "/projects/my-first-python-program", after: "." },
+            { type: "paragraphWithLink", before: "For a full walkthrough of this project, including how to turn it into a quiz, see our ", linkText: "first Python quiz game guide", href: "/projects/my-first-python-program", after: "." },
           ],
         },
         {
@@ -238,13 +238,13 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/gallery-00158.jpg",
       imageAlt: "Avanza STEM mentor and students standing beside a popsicle stick bridge holding a tall stack of books",
       imageCaption: "Students test how much weight a popsicle stick bridge can hold during an Avanza STEM engineering workshop.",
-      endingProject: { href: "/projects/popsicle-stick-bridge", label: "Try this project: build a popsicle stick bridge" },
+      endingProject: { href: "/projects/popsicle-stick-bridge", label: "Try this project: build a popsicle stick truss bridge" },
       endingSecondary: { href: "/workshops", label: "See upcoming workshops" },
       endingRelatedSlug: "getting-started-with-lego-robotics",
       sections: [
         { title: "", blocks: [
           { type: "paragraph", text: "Bridge competitions come down to geometry, load distribution, and joint quality, not just how many sticks or how much glue you use." },
-          { type: "paragraphWithLink", before: "This post explains the engineering ideas behind strong bridges. For the full build guide, visit our ", linkText: "detailed project page", href: "/projects/popsicle-stick-bridge", after: "." },
+          { type: "paragraphWithLink", before: "This post explains the engineering ideas behind strong bridges. For the full build guide, visit our ", linkText: "popsicle stick truss bridge project page", href: "/projects/popsicle-stick-bridge", after: "." },
         ] },
         { title: "Why Triangles Win Every Time", blocks: [
           { type: "paragraph", text: "Squares can deform into parallelograms, but triangles hold their shape unless a member bends or breaks. That is why trusses are built from connected triangles." },
@@ -284,7 +284,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/workshops/upcoming-robotics.jpg",
       imageAlt: "Three students working together to build and program a LEGO robot",
       imageCaption: "Students collaborate on building and programming their first LEGO robot.",
-      endingProject: { href: "/projects/lego-robot-builder", label: "Try this project: build your first LEGO robot" },
+      endingProject: { href: "/projects/lego-robot-builder", label: "Try this project: LEGO SPIKE Prime Super Cleanup robot guide" },
       endingSecondary: { href: "/workshops", label: "See upcoming workshops" },
       endingRelatedSlug: "why-every-kid-should-learn-to-code",
       sections: [
@@ -318,7 +318,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
             { title: "Remote control", body: "Drive manually first, then recreate the movement with code." },
             { title: "Sorting machine", body: "Sort objects by color with a simple mechanism." },
           ] },
-          { type: "paragraphWithLink", before: "For a guided first build with step-by-step instructions, see our ", linkText: "LEGO Robot Builder project guide", href: "/projects/lego-robot-builder", after: "." },
+          { type: "paragraphWithLink", before: "For a guided first build with step-by-step instructions, see our ", linkText: "LEGO SPIKE Prime Super Cleanup robot guide", href: "/projects/lego-robot-builder", after: "." },
         ] },
         { title: "Beyond the Kit", blocks: [
           { type: "paragraph", text: "FIRST LEGO League is a natural next step for students ready for a team challenge." },
@@ -336,7 +336,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/shared/ai-workshop.jpg",
       imageAlt: "Students working at computers during an Avanza STEM AI workshop, with diagrams on their screens",
       imageCaption: "Students explore AI concepts hands-on during an Avanza STEM workshop session.",
-      endingProject: { href: "/projects/my-first-python-program", label: "Try this project: write your first Python program" },
+      endingProject: { href: "/projects/my-first-python-program", label: "Try this project: first Python quiz game for kids" },
       endingSecondary: { href: "/workshops", label: "See upcoming workshops" },
       endingRelatedSlug: "why-every-kid-should-learn-to-code",
       sections: [
@@ -371,7 +371,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
         ] },
         { title: "Responsible AI: The Part Most Tutorials Skip", blocks: [
           { type: "paragraph", text: "Kids need more than tool tips. They need to know when to verify AI output, when not to rely on it, and who is responsible when systems cause harm." },
-          { type: "paragraphWithLink", before: "If this is your child's first time building something with code, our ", linkText: "guide to writing a first Python program", href: "/projects/my-first-python-program", after: " is a good next step." },
+          { type: "paragraphWithLink", before: "If this is your child's first time building something with code, our ", linkText: "beginner Python project for kids", href: "/projects/my-first-python-program", after: " is a good next step." },
         ] },
       ],
     },

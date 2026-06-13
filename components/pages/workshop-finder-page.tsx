@@ -303,6 +303,16 @@ function PromptHero({
             {t.home.finderCurrentNote}
           </p>
 
+          <p className="mx-auto mt-4 max-w-xl text-sm font-semibold leading-relaxed text-avanza-dark/75">
+            Looking for free STEM workshops in Clifton NJ? Current Avanza STEM library locations
+            include Clifton Public Library and Allwood Branch Library. Public dates are not
+            scheduled right now, but families can check locations here and try{" "}
+            <Link href="/projects" className="underline underline-offset-4">
+              STEM projects for kids
+            </Link>{" "}
+            while waiting for the next workshop series.
+          </p>
+
           <form onSubmit={onSubmit} className="mt-10">
             <label htmlFor="finder-zip" className="sr-only">
               {t.home.finderZipLabel}

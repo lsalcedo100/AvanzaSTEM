@@ -5,9 +5,9 @@ import { siteConfig } from '@/lib/site-config'
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
-    title: 'STEM Projects for Kids - Avanza STEM',
+    title: 'Free STEM Projects for Kids: Bridges, Circuits, Python & Science Experiments | Avanza STEM',
     description:
-      'Fun DIY STEM projects for kids including building bridges, coding games, and science experiments. Free step-by-step guides for grades 2 and up.',
+      'Free beginner-friendly STEM projects for kids, parents, students, and educators, including engineering bridges, simple circuits, Python, science experiments, and more.',
   },
   es: {
     title: 'Proyectos STEM para Niños - Avanza STEM',
