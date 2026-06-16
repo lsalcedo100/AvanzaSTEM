@@ -189,21 +189,6 @@ export function WhatStudentsDoSection() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           </FadeIn>
-          <FadeIn className="mt-5 flex flex-wrap justify-center gap-2">
-            {[
-              { href: "/projects/popsicle-stick-bridge", label: "Warren truss bridge" },
-              { href: "/projects/my-first-python-program", label: "Python quiz game for kids" },
-              { href: "/projects/coke-mentos-experiment", label: "coke and Mentos science project" },
-            ].map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="rounded-full border border-border bg-background px-3 py-1.5 text-sm font-semibold text-foreground hover:border-avanza-green"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </FadeIn>
         </div>
       </div>
     </section>

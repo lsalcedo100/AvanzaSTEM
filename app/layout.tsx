@@ -39,7 +39,6 @@ const organizationJsonLd = {
   logo: `${siteConfig.url}/avanza-logo.svg`,
   description:
     'A youth-led program bringing free hands-on STEM workshops and beginner-friendly projects to students, with a special focus on Hispanic and underrepresented communities.',
-  sameAs: ['https://instagram.com/avanzastem'],
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'liam@avanzastem.org',

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { Play, Square, Terminal, Loader2, RotateCcw, AlertTriangle } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
@@ -129,11 +129,48 @@ export function PythonPlayground() {
   const pyodideLoadedRef = useRef(false)
   const onWorkerMessageRef = useRef<(msg: WorkerResponse) => void>(() => {})
   const skipNextCodeSaveRef = useRef(false)
+  const pendingCaretScrollRef = useRef<number | null>(null)
 
   const lineCount = code.split("\n").length
   const lineNumberDigits = Math.max(2, String(lineCount).length)
   const gutterWidth = `calc(${lineNumberDigits}ch + 2rem)`
   const highlightedCode = useMemo(() => highlightPythonKeywords(code), [code])
+
+  const syncEditorScrollLayers = useCallback((scrollLeft: number, scrollTop: number) => {
+    if (highlightRef.current) {
+      highlightRef.current.scrollLeft = scrollLeft
+      highlightRef.current.scrollTop = scrollTop
+    }
+    if (gutterRef.current) {
+      gutterRef.current.scrollTop = scrollTop
+    }
+  }, [])
+
+  const handleCodeChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const textarea = e.currentTarget
+      const cursorPosition = textarea.selectionStart
+      pendingCaretScrollRef.current = cursorPosition
+      setCode(textarea.value)
+      scheduleCaretScrollIntoView(textarea, syncEditorScrollLayers, cursorPosition)
+    },
+    [syncEditorScrollLayers],
+  )
+
+  useLayoutEffect(() => {
+    const cursorPosition = pendingCaretScrollRef.current
+    if (cursorPosition === null) return
+
+    pendingCaretScrollRef.current = null
+    const textarea = textareaRef.current
+    if (!textarea) return
+
+    scrollCaretIntoView(
+      textarea,
+      Math.min(cursorPosition, textarea.value.length),
+      syncEditorScrollLayers,
+    )
+  }, [code, syncEditorScrollLayers])
 
   // Restore locally saved student code once the browser APIs are available.
   useEffect(() => {
@@ -466,21 +503,21 @@ export function PythonPlayground() {
                     className="pointer-events-none absolute inset-0 m-0 overflow-hidden whitespace-pre px-4 py-4 font-mono text-[13px] leading-[1.6] text-[#d8dee9]"
                   >
                     {highlightedCode}
+                    <span className="text-transparent"> </span>
                   </pre>
                   <textarea
                     ref={textareaRef}
                     value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    onKeyDown={(e) => handleEditorKeyDown(e, textareaRef, setCode)}
+                    onChange={handleCodeChange}
+                    onKeyDown={(e) => {
+                      handleEditorKeyDown(e, textareaRef, setCode, syncEditorScrollLayers)
+                      if (!e.defaultPrevented) {
+                        scheduleCaretScrollIntoView(e.currentTarget, syncEditorScrollLayers)
+                      }
+                    }}
                     onScroll={(e) => {
                       const { scrollLeft, scrollTop } = e.currentTarget
-                      if (highlightRef.current) {
-                        highlightRef.current.scrollLeft = scrollLeft
-                        highlightRef.current.scrollTop = scrollTop
-                      }
-                      if (gutterRef.current) {
-                        gutterRef.current.scrollTop = scrollTop
-                      }
+                      syncEditorScrollLayers(scrollLeft, scrollTop)
                     }}
                     spellCheck={false}
                     autoCorrect="off"
@@ -582,6 +619,7 @@ function handleEditorKeyDown(
   e: React.KeyboardEvent<HTMLTextAreaElement>,
   ref: React.RefObject<HTMLTextAreaElement | null>,
   setValue: (next: string) => void,
+  syncScrollLayers: (scrollLeft: number, scrollTop: number) => void,
 ) {
   const ta = ref.current
   if (!ta) return
@@ -607,6 +645,7 @@ function handleEditorKeyDown(
     requestAnimationFrame(() => {
       const pos = start + 1 + indent.length
       ta.selectionStart = ta.selectionEnd = pos
+      scrollCaretIntoView(ta, pos, syncScrollLayers)
     })
     return
   }
@@ -637,6 +676,7 @@ function handleEditorKeyDown(
       requestAnimationFrame(() => {
         ta.selectionStart = segStart
         ta.selectionEnd = segEndIdx + delta
+        scrollCaretIntoView(ta, ta.selectionEnd, syncScrollLayers)
       })
       return
     }
@@ -653,6 +693,7 @@ function handleEditorKeyDown(
             lineStart,
             start - INDENT.length,
           )
+          scrollCaretIntoView(ta, ta.selectionEnd, syncScrollLayers)
         })
       }
       return
@@ -662,6 +703,7 @@ function handleEditorKeyDown(
     setValue(next)
     requestAnimationFrame(() => {
       ta.selectionStart = ta.selectionEnd = start + INDENT.length
+      scrollCaretIntoView(ta, ta.selectionEnd, syncScrollLayers)
     })
     return
   }
@@ -676,8 +718,52 @@ function handleEditorKeyDown(
       setValue(next)
       requestAnimationFrame(() => {
         ta.selectionStart = ta.selectionEnd = start - INDENT.length
+        scrollCaretIntoView(ta, ta.selectionEnd, syncScrollLayers)
       })
     }
     return
   }
+}
+
+function scrollCaretIntoView(
+  textarea: HTMLTextAreaElement,
+  cursorPosition: number,
+  syncScrollLayers: (scrollLeft: number, scrollTop: number) => void,
+) {
+  const computed = window.getComputedStyle(textarea)
+  const lineHeight = Number.parseFloat(computed.lineHeight)
+  if (!Number.isFinite(lineHeight) || lineHeight <= 0) return
+
+  const paddingTop = Number.parseFloat(computed.paddingTop) || 0
+  const paddingBottom = Number.parseFloat(computed.paddingBottom) || 0
+  const cursorLine = textarea.value.slice(0, cursorPosition).split("\n").length - 1
+  const cursorTop = paddingTop + cursorLine * lineHeight
+  const cursorBottom = cursorTop + lineHeight
+  const visibleTop = textarea.scrollTop
+  const visibleBottom = visibleTop + textarea.clientHeight - paddingBottom
+  let nextScrollTop = textarea.scrollTop
+
+  if (cursorBottom > visibleBottom) {
+    nextScrollTop = cursorBottom - textarea.clientHeight + paddingBottom
+  } else if (cursorTop < visibleTop + paddingTop) {
+    nextScrollTop = Math.max(0, cursorTop - paddingTop)
+  }
+
+  if (nextScrollTop !== textarea.scrollTop) {
+    textarea.scrollTop = nextScrollTop
+  }
+  syncScrollLayers(textarea.scrollLeft, textarea.scrollTop)
+}
+
+function scheduleCaretScrollIntoView(
+  textarea: HTMLTextAreaElement,
+  syncScrollLayers: (scrollLeft: number, scrollTop: number) => void,
+  cursorPosition?: number,
+) {
+  requestAnimationFrame(() => {
+    scrollCaretIntoView(textarea, cursorPosition ?? textarea.selectionStart, syncScrollLayers)
+    requestAnimationFrame(() => {
+      scrollCaretIntoView(textarea, textarea.selectionStart, syncScrollLayers)
+    })
+  })
 }

@@ -17,12 +17,68 @@ const MAX_NAME_LENGTH = 100
 const MAX_EMAIL_LENGTH = 254
 const MAX_VENUE_LENGTH = 140
 const MAX_MESSAGE_LENGTH = 2000
+const CONTACT_EMAIL = "liam@avanzastem.org"
+const CONTACT_MAILTO_HREF = `mailto:${CONTACT_EMAIL}`
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+type ContactFields = {
+  name: string
+  email: string
+  venue: string
+  message: string
+  website: string
+}
+
+function getContactFields(form: HTMLFormElement): ContactFields {
+  const formData = new FormData(form)
+
+  return {
+    name: String(formData.get("name") ?? "").trim(),
+    email: String(formData.get("email") ?? "").trim().toLowerCase(),
+    venue: String(formData.get("venue") ?? "").trim(),
+    message: String(formData.get("message") ?? "").trim(),
+    website: String(formData.get("hp_field") ?? ""),
+  }
+}
+
+function isValidContactSubmission({ name, email, venue, message }: ContactFields) {
+  return (
+    Boolean(name) &&
+    name.length <= MAX_NAME_LENGTH &&
+    EMAIL_PATTERN.test(email) &&
+    email.length <= MAX_EMAIL_LENGTH &&
+    Boolean(venue) &&
+    venue.length <= MAX_VENUE_LENGTH &&
+    Boolean(message) &&
+    message.length <= MAX_MESSAGE_LENGTH
+  )
+}
+
+function buildMailtoHref({ name, email, venue, message }: ContactFields) {
+  const subject = `Avanza STEM hosting inquiry from ${name || "a community partner"}`
+  const body = [
+    "Hi Avanza STEM,",
+    "",
+    "I'd like to partner or host a workshop.",
+    "",
+    `Name or organization: ${name}`,
+    `Email: ${email}`,
+    `Venue or organization: ${venue}`,
+    "",
+    "Message:",
+    message,
+  ].join("\n")
+
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
 
 export function HostPageContent() {
   const { t } = useLanguage()
 
   const [status, setStatus] = useState<FormStatus>("idle")
   const [errorMessage, setErrorMessage] = useState("")
+  const [fallbackHref, setFallbackHref] = useState("")
+  const [emailNotice, setEmailNotice] = useState("")
   const [fields, setFields] = useState({ name: "", email: "", venue: "", message: "" })
 
   const benefitCards = [
@@ -81,37 +137,68 @@ export function HostPageContent() {
     return t.hostPage.formErrorGeneral
   }
 
+  function handleDirectEmailClick() {
+    setEmailNotice(t.hostPage.emailLinkFallback)
+
+    const copyEmail = navigator.clipboard?.writeText(CONTACT_EMAIL)
+
+    if (!copyEmail) {
+      return
+    }
+
+    void copyEmail
+      .then(() => setEmailNotice(t.hostPage.emailCopiedNotice))
+      .catch(() => setEmailNotice(t.hostPage.emailLinkFallback))
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
+    const contactFields = getContactFields(e.currentTarget)
+
+    if (!isValidContactSubmission(contactFields)) {
+      setFallbackHref("")
+      setErrorMessage(t.hostPage.formErrorValidation)
+      setStatus("error")
+      return
+    }
+
     setStatus("submitting")
     setErrorMessage("")
+    setFallbackHref("")
+
+    function openEmailDraft() {
+      const mailtoHref = buildMailtoHref(contactFields)
+      setFallbackHref(mailtoHref)
+      setErrorMessage(t.hostPage.formMailtoFallback)
+      setStatus("error")
+      window.location.assign(mailtoHref)
+    }
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: String(formData.get("name") ?? ""),
-          email: String(formData.get("email") ?? ""),
-          venue: String(formData.get("venue") ?? ""),
-          message: String(formData.get("message") ?? ""),
-          website: String(formData.get("website") ?? ""),
-        }),
+        body: JSON.stringify(contactFields),
       })
 
       if (res.ok) {
         setStatus("success")
+        setFallbackHref("")
         setFields({ name: "", email: "", venue: "", message: "" })
       } else {
         const data = (await res.json().catch(() => null)) as { code?: ContactErrorCode } | null
         const code = data?.code ?? "request_failed"
+
+        if (code !== "validation_error" && res.status >= 500) {
+          openEmailDraft()
+          return
+        }
+
         setErrorMessage(getContactErrorMessage(code))
         setStatus("error")
       }
     } catch {
-      setErrorMessage(t.hostPage.formErrorGeneral)
-      setStatus("error")
+      openEmailDraft()
     }
   }
 
@@ -188,12 +275,7 @@ export function HostPageContent() {
             {venues.map((venue, i) => (
               <FadeIn key={venue.name} delay={i * 100}>
                 <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-xl font-bold text-card-foreground">{venue.name}</h3>
-                    <span className="shrink-0 rounded-full bg-avanza-green/10 px-3 py-1 text-xs font-bold text-avanza-green">
-                      {t.hostPage.completed}
-                    </span>
-                  </div>
+                  <h3 className="text-xl font-bold text-card-foreground">{venue.name}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{venue.description}</p>
                 </div>
               </FadeIn>
@@ -210,10 +292,19 @@ export function HostPageContent() {
             </h2>
             <p className="mt-4 text-lg text-primary-foreground/70">
               {t.hostPage.readyDescPrefix}{" "}
-              <a href="mailto:liam@avanzastem.org" className="text-avanza-green transition-colors hover:text-avanza-teal">
-                liam@avanzastem.org
+              <a
+                href={CONTACT_MAILTO_HREF}
+                onClick={handleDirectEmailClick}
+                className="text-avanza-green transition-colors hover:text-avanza-teal"
+              >
+                {CONTACT_EMAIL}
               </a>
             </p>
+            {emailNotice && (
+              <p className="mt-3 text-sm font-semibold text-primary-foreground/70" aria-live="polite">
+                {emailNotice}
+              </p>
+            )}
           </FadeIn>
           <FadeIn delay={100}>
             <div aria-live="polite" aria-atomic="true" className="mt-6">
@@ -224,7 +315,15 @@ export function HostPageContent() {
               )}
               {status === "error" && errorMessage && (
                 <div className="rounded-xl bg-red-500/20 px-5 py-4 text-center text-sm font-semibold text-red-400">
-                  {errorMessage}
+                  <p>{errorMessage}</p>
+                  {fallbackHref && (
+                    <a
+                      href={fallbackHref}
+                      className="mt-2 inline-flex rounded-full border border-red-400/40 px-4 py-2 text-red-100 transition-colors hover:border-red-100 hover:text-white"
+                    >
+                      {t.hostPage.formOpenEmailDraft}
+                    </a>
+                  )}
                 </div>
               )}
             </div>
@@ -236,13 +335,17 @@ export function HostPageContent() {
                 className="mt-4 flex flex-col gap-4"
               >
                 <div aria-hidden="true" className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden">
-                  <label htmlFor="host-website">Website</label>
+                  <label htmlFor="host-hp-field">Leave this field blank</label>
                   <input
-                    id="host-website"
+                    id="host-hp-field"
                     type="text"
-                    name="website"
+                    name="hp_field"
                     tabIndex={-1}
                     autoComplete="off"
+                    data-1p-ignore="true"
+                    data-lpignore="true"
+                    data-bwignore="true"
+                    data-form-type="other"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -329,8 +432,12 @@ export function HostPageContent() {
 
             <p className="mt-6 text-center text-sm text-primary-foreground/50">
               {t.hostPage.preferEmail}{" "}
-              <a href="mailto:liam@avanzastem.org" className="text-avanza-green transition-colors hover:text-avanza-teal">
-                liam@avanzastem.org
+              <a
+                href={CONTACT_MAILTO_HREF}
+                onClick={handleDirectEmailClick}
+                className="text-avanza-green transition-colors hover:text-avanza-teal"
+              >
+                {CONTACT_EMAIL}
               </a>
             </p>
           </FadeIn>

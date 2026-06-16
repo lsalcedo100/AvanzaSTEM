@@ -127,14 +127,6 @@ export function WorkshopsPageContent() {
                     >
                       {t.workshopsPage.hostSeriesLink}
                     </Link>
-                    <a
-                      href="https://www.instagram.com/avanzastem/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-3 text-sm font-extrabold text-muted-foreground transition-colors hover:border-avanza-green/40 hover:bg-avanza-green/10 hover:text-avanza-green"
-                    >
-                      {t.workshopsPage.followInstagram}
-                    </a>
                   </div>
                 </div>
               </div>
@@ -161,7 +153,6 @@ export function WorkshopsPageContent() {
             <FadeIn delay={0}>
               <PastProgramCard
                 name={t.workshopsPage.cliftonLibrary}
-                badge={t.workshopsPage.completedBadge}
                 image="/images/workshops/past-science.jpg"
                 imageAlt={t.workshopsPage.cliftonImageAlt}
                 description={t.workshopsPage.cliftonDesc}
@@ -170,7 +161,6 @@ export function WorkshopsPageContent() {
             <FadeIn delay={100}>
               <PastProgramCard
                 name={t.workshopsPage.allwoodLibrary}
-                badge={t.workshopsPage.completedBadge}
                 image="/images/workshops/past-coding.jpg"
                 imageAlt={t.workshopsPage.allwoodImageAlt}
                 description={t.workshopsPage.allwoodDesc}
@@ -179,7 +169,6 @@ export function WorkshopsPageContent() {
             <FadeIn delay={200}>
               <PastProgramCard
                 name={t.workshopsPage.chathamsLibrary}
-                badge={t.workshopsPage.completedBadge}
                 image={galleryImages[18].full}
                 imageAlt={t.workshopsPage.chathamsImageAlt}
                 imageBoxClassName="h-80 sm:h-[28rem]"
@@ -189,7 +178,6 @@ export function WorkshopsPageContent() {
             <FadeIn delay={300}>
               <PastProgramCard
                 name={t.workshopsPage.roselandLibrary}
-                badge={t.workshopsPage.completedBadge}
                 image="/images/workshops/roseland-free-public-library-coding.jpeg"
                 imageAlt={t.workshopsPage.roselandImageAlt}
                 description={t.workshopsPage.roselandDesc}
@@ -353,7 +341,6 @@ function WorkshopSection({
 
 function PastProgramCard({
   name,
-  badge,
   image,
   imageAlt,
   gradeRange,
@@ -363,7 +350,6 @@ function PastProgramCard({
   imageBoxClassName = "h-56 sm:h-64",
 }: {
   name: string
-  badge: string
   image: string
   imageAlt: string
   gradeRange?: string
@@ -385,10 +371,7 @@ function PastProgramCard({
         />
       </div>
       <div className="p-6">
-        <span className="inline-block rounded-full border border-avanza-green/40 bg-avanza-green/10 px-3 py-0.5 text-xs font-bold uppercase tracking-wider text-avanza-green">
-          {badge}
-        </span>
-        <h3 className="mt-3 text-xl font-extrabold leading-snug text-card-foreground">
+        <h3 className="text-xl font-extrabold leading-snug text-card-foreground">
           {name}
         </h3>
         {meta && (
