@@ -72,8 +72,8 @@ export default function PrivacyPage() {
                 to your inquiry.
               </li>
               <li>
-                <strong className="text-foreground">Basic site analytics:</strong> If Vercel Analytics is
-                active on this site, it collects aggregated, anonymous data such as page views and
+                <strong className="text-foreground">Basic site analytics:</strong> Vercel Analytics is
+                active on this site and collects aggregated, anonymous data such as page views and
                 country-level location. No personally identifiable information is collected through
                 analytics.
               </li>

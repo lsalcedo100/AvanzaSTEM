@@ -14,6 +14,7 @@ import {
   PostQuote,
   PostSection,
   PostSummary,
+  PostYouTube,
 } from "@/components/blog/blog-post-layout"
 import { blogAuthors } from "@/features/blog/authors"
 import { localizedBlogArticles, type BlogBlock, type BlogSlug } from "@/features/blog/posts"
@@ -41,6 +42,7 @@ export function LocalizedBlogPost({ slug }: { slug: BlogSlug }) {
       image={post.image}
       imageAlt={post.imageAlt}
       imageCaption={post.imageCaption}
+      imageFit={post.imageFit}
     >
       {isFallback && (
         <div
@@ -116,6 +118,10 @@ function BlogContentBlock({ block }: { block: BlogBlock }) {
 
   if (block.type === "quote") {
     return <PostQuote text={block.text} attribution={block.attribution} />
+  }
+
+  if (block.type === "youtube") {
+    return <PostYouTube videoId={block.videoId} title={block.title} caption={block.caption} />
   }
 
   if (block.type === "ctaLink") {

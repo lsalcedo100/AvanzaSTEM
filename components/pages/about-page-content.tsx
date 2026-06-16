@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Heart, Lightbulb, Users, ArrowRight, HandHeart } from "lucide-react"
+import { ArrowRight, HandHeart } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { LightboxImage } from "@/components/ui/lightbox-image"
@@ -9,27 +9,6 @@ import { CountUp } from "@/components/ui/count-up"
 
 export function AboutPageContent() {
   const { t } = useLanguage()
-
-  const values = [
-    {
-      icon: Heart,
-      title: t.aboutPage.accessTitle,
-      description: t.aboutPage.accessDesc,
-      accent: "bg-avanza-green",
-    },
-    {
-      icon: Lightbulb,
-      title: t.aboutPage.curiosityTitle,
-      description: t.aboutPage.curiosityDesc,
-      accent: "bg-avanza-purple",
-    },
-    {
-      icon: Users,
-      title: t.aboutPage.communityTitle,
-      description: t.aboutPage.communityDesc,
-      accent: "bg-avanza-teal",
-    },
-  ]
 
   const teamMembers = [
     {
@@ -95,32 +74,6 @@ export function AboutPageContent() {
                 />
               </div>
             </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-secondary py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <FadeIn className="text-center">
-            <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">
-              {t.aboutPage.beliefsTitle}
-            </h2>
-          </FadeIn>
-          <div className="mt-14 grid gap-8 md:grid-cols-3">
-            {values.map((card, i) => (
-              <FadeIn key={card.title} delay={i * 100}>
-                <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                  <div className={`h-1.5 w-full ${card.accent}`} />
-                  <div className="p-8">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary">
-                      <card.icon className="h-6 w-6 text-foreground" />
-                    </div>
-                    <h3 className="mt-4 text-xl font-bold text-card-foreground">{card.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{card.description}</p>
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
           </div>
         </div>
       </section>

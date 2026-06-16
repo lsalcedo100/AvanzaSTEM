@@ -16,6 +16,7 @@ type BlogPostLayoutProps = {
   image?: string
   imageAlt?: string
   imageCaption?: string
+  imageFit?: "cover" | "contain"
   children: React.ReactNode
 }
 
@@ -35,6 +36,7 @@ export function BlogPostLayout({
   image,
   imageAlt,
   imageCaption,
+  imageFit = "cover",
   children,
 }: BlogPostLayoutProps) {
   const { t } = useLanguage()
@@ -69,13 +71,13 @@ export function BlogPostLayout({
 
         {image && (
           <figure className="mt-8">
-            <div className="relative h-64 overflow-hidden rounded-xl md:h-96">
+            <div className="relative h-64 overflow-hidden rounded-xl bg-secondary md:h-96">
               <Image
                 src={image}
                 alt={imageAlt ?? title}
                 fill
                 sizes="(min-width: 768px) 768px, 100vw"
-                className="object-cover"
+                className={imageFit === "contain" ? "object-contain" : "object-cover"}
               />
             </div>
             {imageCaption && (
@@ -188,6 +190,37 @@ export function PostQuote({ text, attribution }: { text: string; attribution: st
         — {attribution}
       </footer>
     </blockquote>
+  )
+}
+
+export function PostYouTube({
+  videoId,
+  title,
+  caption,
+}: {
+  videoId: string
+  title: string
+  caption?: string
+}) {
+  return (
+    <figure className="mx-auto max-w-sm">
+      <div className="relative aspect-[9/16] overflow-hidden rounded-xl border border-border bg-secondary">
+        <iframe
+          className="absolute inset-0 h-full w-full"
+          src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0`}
+          title={title}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      </div>
+      {caption && (
+        <figcaption className="mt-2 text-sm leading-6 break-words text-muted-foreground">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
   )
 }
 
