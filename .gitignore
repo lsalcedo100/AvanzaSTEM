@@ -1,37 +1,59 @@
 # Dependencies
 node_modules/
+/.pnp
+.pnp.*
 
-# Next.js build output
+# Next.js
 .next/
 out/
+build/
+next-env.d.ts
 
-# IDE / OS files
-.DS_Store
-.vscode/
+# TypeScript
+*.tsbuildinfo
 
-# Environment variables (Add these even if you don't have them yet!)
+# Environment variables
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
 
-# Temporary files/Archives
-*.zip
+# Logs
+logs/
 *.log
-
-# Package manager logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# Testing
+# Testing and coverage
 coverage/
+playwright-report/
+test-results/
 
-# Production build folder (if using standard build tools)
-dist/
+# Tool caches and local state
+.cache/
+.eslintcache
+.parcel-cache/
+.swc/
+.turbo/
+.playwright-mcp/
+.claude/settings.local.json
 
-# TypeScript incremental build info
-*.tsbuildinfo
-.vercel
+# Deployment
+.vercel/
+.netlify/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files and archives
+*.tmp
+*.temp
+*.zip
+*.tar
+*.tar.gz
