@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
-import { Gallery, galleryImages } from "@/components/ui/gallery"
+import { Gallery, preExpansionGalleryImages } from "@/components/ui/gallery"
 
 const buildingWorkshopImage =
   "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/c_crop,x_0,y_290,w_1600,h_2110/gallery-00174.jpg"
@@ -169,7 +169,7 @@ export function WorkshopsPageContent() {
             <FadeIn delay={200}>
               <PastProgramCard
                 name={t.workshopsPage.chathamsLibrary}
-                image={galleryImages[18].full}
+                image={preExpansionGalleryImages[18].full}
                 imageAlt={t.workshopsPage.chathamsImageAlt}
                 imageBoxClassName="h-80 sm:h-[28rem]"
                 description={t.workshopsPage.chathamsDesc}

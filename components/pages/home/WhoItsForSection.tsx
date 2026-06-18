@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
-import { galleryImages } from "@/components/ui/gallery"
+import { preExpansionGalleryImages } from "@/components/ui/gallery"
 
 export function WhoItsForSection() {
   const { t } = useLanguage()
@@ -45,7 +45,7 @@ export function WhoItsForSection() {
           </FadeIn>
           <FadeIn delay={100}>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-              {galleryImages.slice(0, 8).map((img, i) => (
+              {preExpansionGalleryImages.slice(0, 8).map((img, i) => (
                 <Link
                   key={img.id}
                   href="/gallery"

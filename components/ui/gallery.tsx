@@ -13,7 +13,8 @@ import {
 import { useLanguage } from "@/components/providers/language-provider"
 
 const CLOUD_NAME = "dw4uprmkk"
-const TOTAL_IMAGES = 174
+const TOTAL_IMAGES = 217
+const PRE_EXPANSION_TOTAL_IMAGES = 174
 const INITIAL_BATCH = 30
 const BATCH_STEP = 24
 
@@ -29,7 +30,7 @@ type GalleryItem = {
   thumbnail: string
 }
 
-const tx = (num: string, transforms: string) =>
+export const tx = (num: string, transforms: string) =>
   `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${transforms}/gallery-${num}.jpg`
 
 const buildItem = (galleryIndex: number): GalleryItem => {
@@ -59,6 +60,13 @@ export const galleryImages: GalleryItem[] = Array.from(
   (_, i) => buildItem(TOTAL_IMAGES - i),
 )
 
+// Curated/preview surfaces use the old newest-first set so adding new
+// Cloudinary uploads does not silently change their chosen photos.
+export const preExpansionGalleryImages: GalleryItem[] = Array.from(
+  { length: PRE_EXPANSION_TOTAL_IMAGES },
+  (_, i) => buildItem(PRE_EXPANSION_TOTAL_IMAGES - i),
+)
+
 interface GalleryProps {
   limit?: number
 }
@@ -66,12 +74,15 @@ interface GalleryProps {
 export function Gallery({ limit }: GalleryProps) {
   const { t } = useLanguage()
   const all = useMemo(
-    () => (limit ? galleryImages.slice(0, limit) : galleryImages),
+    () =>
+      limit
+        ? preExpansionGalleryImages.slice(0, limit)
+        : galleryImages,
     [limit],
   )
 
   // Progressive batched DOM rendering. Even with native lazy-loading, mounting
-  // 174 <img> nodes up-front bloats first paint - we mount in chunks instead.
+  // every gallery <img> node up-front bloats first paint, so mount in chunks.
   const [renderCount, setRenderCount] = useState(() =>
     Math.min(all.length, INITIAL_BATCH),
   )

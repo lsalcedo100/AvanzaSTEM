@@ -1,10 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, MapPin } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
-import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
+import { HeroCarousel } from "@/components/pages/home/HeroCarousel"
 
 export function HeroSection() {
   const { t } = useLanguage()
@@ -23,7 +23,6 @@ export function HeroSection() {
               href="/find-a-workshop"
               className="group inline-flex items-center gap-3 rounded-full bg-avanza-dark px-7 py-3.5 text-base font-bold text-primary-foreground shadow-[0_12px_32px_-10px_rgba(26,26,46,0.5)] transition-all duration-300 hover:scale-[1.04] hover:shadow-[0_18px_40px_-10px_rgba(26,26,46,0.6)]"
             >
-              <MapPin className="h-4 w-4" />
               {t.home.finderTrigger}
             </Link>
             <Link
@@ -38,19 +37,8 @@ export function HeroSection() {
             {t.home.heroTrustLine}
           </p>
         </FadeIn>
-        <FadeIn className="flex-1" delay={120}>
-          <div className="overflow-hidden rounded-2xl shadow-xl ring-1 ring-avanza-dark/10">
-            <LightboxImage
-              src="/images/home/hero.avif"
-              alt={t.home.heroImageAlt}
-              width={1200}
-              height={800}
-              className="h-auto w-full object-cover"
-              priority
-              fetchPriority="high"
-              sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1280px) 48vw, 600px"
-            />
-          </div>
+        <FadeIn className="w-full md:flex-[1.15] lg:flex-[1.3]" delay={120}>
+          <HeroCarousel />
         </FadeIn>
       </div>
     </section>
