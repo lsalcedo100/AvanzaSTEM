@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Autocorrect predicts words based on patterns. Learn why it changes correct words, struggles with names and slang, and how it is related to AI language prediction."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-07-30")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-07-30",
   url: `${siteConfig.url}/blog/why-does-autocorrect-make-weird-mistakes`,
 }
 

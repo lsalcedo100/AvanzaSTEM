@@ -11,7 +11,6 @@ type BlogPostLayoutProps = {
   title: string
   category: string
   categoryColor: string
-  date: string
   readTime: string
   image?: string
   imageAlt?: string
@@ -31,7 +30,6 @@ export function BlogPostLayout({
   title,
   category,
   categoryColor,
-  date,
   readTime,
   image,
   imageAlt,
@@ -60,13 +58,9 @@ export function BlogPostLayout({
           <h1 className="mt-3 text-3xl font-extrabold leading-tight break-words text-foreground md:text-4xl">
             {title}
           </h1>
-          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-            <span>{date}</span>
-            <span aria-hidden="true">·</span>
-            <span>
-              {readTime} {t.blogPage.readSuffix}
-            </span>
-          </div>
+          <p className="mt-3 text-sm text-muted-foreground">
+            {readTime} {t.blogPage.readSuffix}
+          </p>
         </header>
 
         {image && (
@@ -190,6 +184,33 @@ export function PostQuote({ text, attribution }: { text: string; attribution: st
         — {attribution}
       </footer>
     </blockquote>
+  )
+}
+
+export function PostImage({
+  src,
+  alt,
+  caption,
+}: {
+  src: string
+  alt: string
+  caption?: string
+}) {
+  return (
+    <figure>
+      <div className="relative h-64 overflow-hidden rounded-xl bg-secondary md:h-96">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(min-width: 768px) 768px, 100vw"
+          className="object-cover"
+        />
+      </div>
+      {caption && (
+        <figcaption className="mt-2 text-sm text-muted-foreground">{caption}</figcaption>
+      )}
+    </figure>
   )
 }
 

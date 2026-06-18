@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "the-engineering-of-a-backpack" as const
 const DESCRIPTION =
-  "Your backpack solves a dozen engineering problems at once. Explore how straps, zippers, materials, and pockets are all deliberate design decisions - not accidents."
+  "Your backpack solves a dozen engineering problems at once. Explore how straps, zippers, materials, and pockets are all deliberate design decisions, not accidents."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-04-16")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Enqi Qi" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-04-16",
   url: `${siteConfig.url}/blog/the-engineering-of-a-backpack`,
 }
 

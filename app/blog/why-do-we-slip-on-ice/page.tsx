@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Ice is slippery because it has low friction, and a thin layer of water can make it even harder for your shoes to grip. Learn the science behind slipping."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-11-12")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Enqi Qi" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-11-12",
   url: `${siteConfig.url}/blog/why-do-we-slip-on-ice`,
 }
 

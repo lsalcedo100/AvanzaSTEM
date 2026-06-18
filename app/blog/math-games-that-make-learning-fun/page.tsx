@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "math-games-that-make-learning-fun" as const
 const DESCRIPTION =
-  "Six math games that turn number practice into playtime for grades 2-5. Build number sense, fractions, and logic skills - no worksheets needed."
+  "Six math games that turn number practice into playtime for grades 2-5. Build number sense, fractions, and logic skills with no worksheets needed."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-01-20")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-01-20",
   url: `${siteConfig.url}/blog/math-games-that-make-learning-fun`,
 }
 

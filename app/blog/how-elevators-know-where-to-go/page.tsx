@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Elevators use buttons, sensors, motors, counterweights, and control logic to move people safely. Learn how the whole system works behind that simple button press."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-05-21")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-05-21",
   url: `${siteConfig.url}/blog/how-elevators-know-where-to-go`,
 }
 

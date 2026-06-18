@@ -8,7 +8,7 @@ const DESCRIPTION =
   "AI makes predictions based on patterns. Learn why it can give confident but wrong answers, what hallucinations are, and how to fact-check what AI tells you."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-07-16")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-07-16",
   url: `${siteConfig.url}/blog/why-ai-sometimes-gets-things-wrong`,
 }
 

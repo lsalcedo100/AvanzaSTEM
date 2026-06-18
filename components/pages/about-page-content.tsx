@@ -176,10 +176,10 @@ export function AboutPageContent() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 text-center md:grid-cols-4">
             {[
-              { to: 70, suffix: "+", label: t.aboutPage.studentsReached },
+              { to: 120, suffix: "+", label: t.aboutPage.studentsReached },
               { to: 6, suffix: "", label: t.aboutPage.curriculumTopics },
               { to: 6, suffix: "", label: t.aboutPage.diyProjects },
-              { to: 4, suffix: "", label: t.aboutPage.workshopsHosted },
+              { to: 12, suffix: "", label: t.aboutPage.workshopsHosted },
             ].map((stat, i) => (
               <FadeIn key={stat.label} delay={i * 80}>
                 <div className="rounded-2xl border border-primary-foreground/10 p-8">

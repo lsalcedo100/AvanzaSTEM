@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "how-do-robots-know-where-they-are" as const
 const DESCRIPTION =
-  "Robots use cameras, wheel sensors, GPS, and lidar to estimate their location. Learn how robots sense, map, and navigate the world — and why they still get lost."
+  "Robots use cameras, wheel sensors, GPS, and lidar to estimate their location. Learn how robots sense, map, and navigate the world, and why they still get lost."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-09-03")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Noah Lopez" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-09-03",
   url: `${siteConfig.url}/blog/how-do-robots-know-where-they-are`,
 }
 

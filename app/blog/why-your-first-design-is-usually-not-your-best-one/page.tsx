@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Engineering improves through testing and observation, not perfect planning. See how one student group used a bridge test to understand exactly what they would improve next."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-04-09")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Logan Smith" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-04-09",
   url: `${siteConfig.url}/blog/why-your-first-design-is-usually-not-your-best-one`,
 }
 

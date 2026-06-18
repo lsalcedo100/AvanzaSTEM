@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Mars is too far away for remote control. Learn how rovers use cameras, wheels, instructions from Earth, and autonomous navigation to explore another planet."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-09-24")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Noah Lopez" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-09-24",
   url: `${siteConfig.url}/blog/how-mars-rovers-drive-without-a-driver`,
 }
 

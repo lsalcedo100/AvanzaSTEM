@@ -8,7 +8,7 @@ const DESCRIPTION =
   "A soccer ball is a carefully engineered system. Shape, air pressure, panel design, and materials all affect how it rolls, bounces, and curves through the air."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-06-04")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Noah Lopez" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-06-04",
   url: `${siteConfig.url}/blog/engineering-behind-soccer-ball`,
 }
 

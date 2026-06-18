@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "design-a-mars-rover-out-of-cardboard" as const
 const DESCRIPTION =
-  "A hands-on engineering challenge for kids: design a cardboard Mars rover with real design goals, constraints, and reflection questions - just like NASA engineers face."
+  "A hands-on engineering challenge for kids: design a cardboard Mars rover with real design goals, constraints, and reflection questions, just like NASA engineers face."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-03-19")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Noah Lopez" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-03-19",
   url: `${siteConfig.url}/blog/design-a-mars-rover-out-of-cardboard`,
 }
 

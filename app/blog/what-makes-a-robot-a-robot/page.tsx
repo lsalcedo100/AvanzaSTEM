@@ -8,7 +8,7 @@ const DESCRIPTION =
   "A robot uses sensors to notice, a controller to decide, and actuators to act. Learn the three parts that define a robot and why robots do not need to look human."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-09-17")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Noah Lopez" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-09-17",
   url: `${siteConfig.url}/blog/what-makes-a-robot-a-robot`,
 }
 

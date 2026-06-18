@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Floating and sinking depend on density, shape, and how much water an object displaces. Learn why a steel ship floats while a small rock sinks."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-11-26")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Enqi Qi" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-11-26",
   url: `${siteConfig.url}/blog/why-do-some-things-float-and-others-sink`,
 }
 

@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Factory robots weld, paint, and move car parts with precision and consistency. Learn how robotic arms are programmed, kept safe, and used alongside human workers."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-10-08")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Noah Lopez" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-10-08",
   url: `${siteConfig.url}/blog/how-factory-robots-build-cars`,
 }
 

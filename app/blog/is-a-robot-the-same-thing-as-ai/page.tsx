@@ -8,7 +8,7 @@ const DESCRIPTION =
   "A robot is a physical machine. AI is software that makes decisions. They can work together but they are different. Learn about sensors, motors, and what each part does."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-08-27")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-08-27",
   url: `${siteConfig.url}/blog/is-a-robot-the-same-thing-as-ai`,
 }
 

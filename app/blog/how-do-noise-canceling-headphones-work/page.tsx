@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Noise-canceling headphones use microphones and opposite sound waves to reduce unwanted noise before it reaches your ears. Learn the wave physics behind it."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-11-19")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-11-19",
   url: `${siteConfig.url}/blog/how-do-noise-canceling-headphones-work`,
 }
 

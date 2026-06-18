@@ -8,7 +8,7 @@ const DESCRIPTION =
   "A 20-minute design challenge for kids: find a real problem, sketch a solution, build a rough prototype, and test it. Learn the inventor loop Avanza STEM uses in workshops."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-04-02")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-04-02",
   url: `${siteConfig.url}/blog/how-to-think-like-an-inventor-in-20-minutes`,
 }
 

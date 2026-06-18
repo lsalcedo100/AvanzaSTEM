@@ -8,7 +8,7 @@ const DESCRIPTION =
   "A school bus is packed with engineering decisions. Learn how the color, seats, mirrors, turning radius, and emergency exits all work together to move kids safely."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-05-07")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Logan" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-05-07",
   url: `${siteConfig.url}/blog/engineering-inside-school-bus`,
 }
 

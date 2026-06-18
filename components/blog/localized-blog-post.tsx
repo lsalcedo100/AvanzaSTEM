@@ -8,6 +8,7 @@ import {
   PostCode,
   PostCtaLink,
   PostEndingModule,
+  PostImage,
   PostList,
   PostNumberedList,
   PostParagraph,
@@ -37,7 +38,6 @@ export function LocalizedBlogPost({ slug }: { slug: BlogSlug }) {
       title={post.title}
       category={post.category}
       categoryColor={post.categoryColor}
-      date={post.date}
       readTime={post.readTime}
       image={post.image}
       imageAlt={post.imageAlt}
@@ -122,6 +122,10 @@ function BlogContentBlock({ block }: { block: BlogBlock }) {
 
   if (block.type === "youtube") {
     return <PostYouTube videoId={block.videoId} title={block.title} caption={block.caption} />
+  }
+
+  if (block.type === "image") {
+    return <PostImage src={block.src} alt={block.alt} caption={block.caption} />
   }
 
   if (block.type === "ctaLink") {

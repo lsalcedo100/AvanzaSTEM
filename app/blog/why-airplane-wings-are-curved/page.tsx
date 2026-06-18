@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "why-airplane-wings-are-curved" as const
 const DESCRIPTION =
-  "Airplane wings are curved because shape controls airflow. Learn how the airfoil design creates lift and why the wings - not just the engines - keep a plane in the sky."
+  "Airplane wings are curved because shape controls airflow. Learn how the airfoil design creates lift and why the wings, not just the engines, keep a plane in the sky."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-05-14")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Noah Lopez" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-05-14",
   url: `${siteConfig.url}/blog/why-airplane-wings-are-curved`,
 }
 

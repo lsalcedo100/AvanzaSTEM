@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "how-to-build-the-strongest-popsicle-stick-bridge" as const
 const DESCRIPTION =
-  "Learn the engineering secrets behind a strong popsicle stick bridge. Triangles, load paths, and joints - a step-by-step guide for young engineers."
+  "Learn the engineering secrets behind a strong popsicle stick bridge. Explore triangles, load paths, and joints in this step-by-step guide for young engineers."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-02-10")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-02-10",
   url: `${siteConfig.url}/blog/how-to-build-the-strongest-popsicle-stick-bridge`,
 }
 

@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "how-roller-coasters-stay-on-track" as const
 const DESCRIPTION =
-  "Roller coasters use gravity, momentum, multi-sided wheel systems, and carefully shaped loops to stay on the track - even upside down. Here is how it all works."
+  "Roller coasters use gravity, momentum, multi-sided wheel systems, and carefully shaped loops to stay on the track, even upside down. Here is how it all works."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-06-18")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Logan" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-06-18",
   url: `${siteConfig.url}/blog/how-roller-coasters-stay-on-track`,
 }
 

@@ -6,6 +6,7 @@ import {
   ArrowUp,
   ChevronLeft,
   ChevronRight,
+  Download,
   Images,
   X,
 } from "lucide-react"
@@ -22,6 +23,7 @@ type GalleryItem = {
   thumbSrcSet: string
   blur: string
   full: string
+  download: string
   preload: string
   /** legacy alias used by homepage gallery teaser */
   thumbnail: string
@@ -47,6 +49,7 @@ const buildItem = (galleryIndex: number): GalleryItem => {
     ].join(", "),
     blur: tx(num, `${thumbRotation}e_blur:2000,q_30,f_auto,w_24,c_fill,ar_1:1,g_auto`),
     full: tx(num, `${fullRotation}f_auto,q_auto:good,w_1600`),
+    download: tx(num, `${fullRotation}fl_attachment:avanza-stem-gallery-${num},q_auto:good,w_2000`),
     preload: tx(num, `${fullRotation}f_auto,q_auto:eco,w_900`),
   }
 }
@@ -240,6 +243,7 @@ export function Gallery({ limit }: GalleryProps) {
           onPrev={prev}
           onNext={next}
           closeLabel={t.galleryPage.close}
+          downloadLabel={t.galleryPage.download ?? "Download image"}
           prevLabel={t.galleryPage.previous}
           nextLabel={t.galleryPage.next}
         />
@@ -319,6 +323,7 @@ function Lightbox({
   onPrev,
   onNext,
   closeLabel,
+  downloadLabel,
   prevLabel,
   nextLabel,
 }: {
@@ -330,6 +335,7 @@ function Lightbox({
   onPrev: () => void
   onNext: () => void
   closeLabel: string
+  downloadLabel: string
   prevLabel: string
   nextLabel: string
 }) {
@@ -353,15 +359,26 @@ function Lightbox({
       aria-modal="true"
       aria-label={alt}
     >
-      <button
-        ref={closeRef}
-        type="button"
-        onClick={onClose}
-        className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-        aria-label={closeLabel}
-      >
-        <X className="h-6 w-6" />
-      </button>
+      <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
+        <a
+          href={item.download}
+          download={`avanza-stem-gallery-${item.id}.jpg`}
+          onClick={(e) => e.stopPropagation()}
+          className="inline-flex rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          aria-label={downloadLabel}
+        >
+          <Download className="h-6 w-6" aria-hidden="true" />
+        </a>
+        <button
+          ref={closeRef}
+          type="button"
+          onClick={onClose}
+          className="rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          aria-label={closeLabel}
+        >
+          <X className="h-6 w-6" />
+        </button>
+      </div>
 
       <button
         type="button"

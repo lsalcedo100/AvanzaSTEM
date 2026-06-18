@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Chair strength comes down to weight distribution, material choice, joint quality, and shape. Learn why wobbly chairs are a warning sign and what engineers do about it."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-06-25")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Enqi Qi" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-06-25",
   url: `${siteConfig.url}/blog/why-chairs-break`,
 }
 

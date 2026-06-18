@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Manhole covers are round because the shape is safe, strong, easy to move, and impossible to drop through the hole. One design solving multiple problems at once."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-06-11")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Enqi Qi" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-06-11",
   url: `${siteConfig.url}/blog/why-manhole-covers-are-round`,
 }
 

@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Folding laundry and opening doors are simple for humans but very hard for robots. Learn why everyday tasks challenge robots and what that tells us about human ability."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-09-10")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Noah Lopez" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-09-10",
   url: `${siteConfig.url}/blog/why-robots-are-bad-at-easy-human-tasks`,
 }
 

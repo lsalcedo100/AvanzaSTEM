@@ -8,7 +8,7 @@ const DESCRIPTION =
   "AI does not search the internet or look up stored facts. It predicts likely text based on patterns. Here is what that means and why it can be wrong."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-03-26")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-03-26",
   url: `${siteConfig.url}/blog/what-is-ai-actually-doing-when-it-answers-you`,
 }
 

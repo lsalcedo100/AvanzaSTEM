@@ -21,7 +21,6 @@ export function BlogPostPage({ slug, language = "en" }: { slug: BlogSlug; langua
     description: meta.description,
     author: { "@type": "Person", name: "Liam Salcedo" },
     publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-    datePublished: meta.datePublished,
     url: `${siteConfig.url}/blog/${slug}`,
   }
 

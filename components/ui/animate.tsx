@@ -26,17 +26,18 @@ export function FadeIn({
   threshold,
 }: FadeInProps) {
   const { ref, state } = useInView({ rootMargin, threshold })
+  const revealDelay = Math.min(Math.round(delay * 0.45), 120)
 
   return (
     <Tag
       ref={ref}
       className={cn(
-        "transition-[opacity,transform] duration-700 ease-out",
-        state === "hidden" && "opacity-0 translate-y-5",
+        "transition-[opacity,transform] duration-300 ease-out",
+        state === "hidden" && "opacity-0 translate-y-2",
         state === "visible" && "opacity-100 translate-y-0",
         className
       )}
-      style={{ transitionDelay: state === "visible" ? `${delay}ms` : "0ms" }}
+      style={{ transitionDelay: state === "visible" ? `${revealDelay}ms` : "0ms" }}
     >
       {children}
     </Tag>

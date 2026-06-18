@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Video games use AI to control enemy movement, NPC choices, and difficulty. Learn how behavior rules make characters feel smart and try designing your own game AI."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-08-20")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-08-20",
   url: `${siteConfig.url}/blog/how-do-video-games-use-ai`,
 }
 

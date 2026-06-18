@@ -295,7 +295,7 @@ export function PopsicleStickBridgeGuide({ project }: { project: ProjectGuide })
                   </p>
                   <ul className="mt-5 space-y-3">
                     {[
-                      "Single-triangle bridge: replace the repeating Warren pattern with one large triangle on each side. It is faster to build but usually fails at a lower load - good for comparing against the original design.",
+                      "Single-triangle bridge: replace the repeating Warren pattern with one large triangle on each side. It is faster to build but usually fails at a lower load, which makes it good for comparing against the original design.",
                       "Three-truss bridge: add a third truss down the center of the deck to support a wider roadway, then compare how much extra weight it holds versus the two-truss version.",
                       "Double-stick members: glue two sticks together for the top and bottom chords only, keep the diagonals single, and see which joints fail first now.",
                       "Chopstick bridge: build the exact same Warren truss layout with wooden chopsticks instead of popsicle sticks. The longer chopsticks let you build a wider span, which works well for older students or a class-wide competition.",

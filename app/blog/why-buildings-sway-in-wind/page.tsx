@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Tall buildings sway on purpose. Learn why flexibility makes skyscrapers safer in wind and earthquakes, and how engineers use tuned mass dampers to reduce motion."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-05-28")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Logan" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-05-28",
   url: `${siteConfig.url}/blog/why-buildings-sway-in-wind`,
 }
 

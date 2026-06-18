@@ -136,7 +136,7 @@ export default function PrivacyPage() {
             <p className="mt-4 text-muted-foreground">
               Avanza STEM serves students as young as grade 2. We do not knowingly collect personal
               information from children under 13 without parental involvement. Our forms are intended
-              to be filled out by parents, guardians, teachers, or venue staff - not students
+              to be filled out by parents, guardians, teachers, or venue staff, not students
               themselves. If you believe a child has submitted personal information without parental
               consent, please contact us and we will delete it promptly.
             </p>

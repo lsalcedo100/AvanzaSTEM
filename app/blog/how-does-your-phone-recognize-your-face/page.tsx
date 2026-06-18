@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Your phone uses cameras, sensors, and machine learning to match face patterns, not to understand you. Learn how face recognition works and why privacy matters."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-07-23")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-07-23",
   url: `${siteConfig.url}/blog/how-does-your-phone-recognize-your-face`,
 }
 

@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Try 5 easy science experiments at home using household items. Safe, fun, and educational activities for kids in grades 2 and up."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-02-15")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-02-15",
   url: `${siteConfig.url}/blog/5-easy-science-experiments`,
 }
 

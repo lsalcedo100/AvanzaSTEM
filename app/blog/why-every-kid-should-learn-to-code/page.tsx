@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Coding teaches problem-solving, creativity, and logic. Learn how to start your child with Python programming. No prior experience needed."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-02-20")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-02-20",
   url: `${siteConfig.url}/blog/why-every-kid-should-learn-to-code`,
 }
 

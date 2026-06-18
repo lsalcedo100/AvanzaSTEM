@@ -8,7 +8,7 @@ const DESCRIPTION =
   "When a structure fails, it gives you information. Learn the engineering mindset that turns a broken build into a stronger second attempt."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-03-12")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Logan Smith" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-03-12",
   url: `${siteConfig.url}/blog/how-engineers-think-when-something-breaks`,
 }
 

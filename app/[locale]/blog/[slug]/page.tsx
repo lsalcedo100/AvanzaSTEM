@@ -24,7 +24,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, slug } = await params
   const meta = BLOG_POST_META[slug as BlogSlug]
-  return generateBlogPostMetadata(slug as BlogSlug, meta.description, meta.datePublished, locale as Language)
+  return generateBlogPostMetadata(slug as BlogSlug, meta.description, locale as Language)
 }
 
 export default async function LocaleBlogPostPage({

@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "why-robot-hands-are-so-hard-to-make" as const
 const DESCRIPTION =
-  "Gripping different objects requires movement, strength, gentleness, and touch — all at once. Learn why robot hands are one of the hardest challenges in robotics."
+  "Gripping different objects requires movement, strength, gentleness, and touch all at once. Learn why robot hands are one of the hardest challenges in robotics."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-10-01")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Noah Lopez" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-10-01",
   url: `${siteConfig.url}/blog/why-robot-hands-are-so-hard-to-make`,
 }
 

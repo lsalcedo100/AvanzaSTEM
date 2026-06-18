@@ -8,7 +8,7 @@ const DESCRIPTION =
   "When you ask AI a question it follows a process of prompts, training, and prediction. Learn each step from your question to the response and why clear prompts help."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-08-06")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-08-06",
   url: `${siteConfig.url}/blog/what-happens-when-you-ask-ai-a-question`,
 }
 

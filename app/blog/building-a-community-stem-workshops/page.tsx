@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "building-a-community-stem-workshops" as const
 const DESCRIPTION =
-  "See how free STEM workshops are changing lives in Hispanic communities in New Jersey - and how to bring one to your neighborhood."
+  "See how free STEM workshops are changing lives in Hispanic communities in New Jersey and how to bring one to your neighborhood."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-01-12")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-01-12",
   url: `${siteConfig.url}/blog/building-a-community-stem-workshops`,
 }
 

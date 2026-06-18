@@ -5,10 +5,10 @@ import { siteConfig } from "@/lib/site-config"
 
 const SLUG = "why-triangles-are-an-engineers-secret-weapon" as const
 const DESCRIPTION =
-  "The triangle is the strongest shape in engineering. Learn why triangles are used in bridges, trusses, and towers - and how to use this in your popsicle stick bridge."
+  "The triangle is the strongest shape in engineering. Learn why triangles are used in bridges, trusses, and towers, plus how to use this in your popsicle stick bridge."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-03-05")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Logan Smith" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-03-05",
   url: `${siteConfig.url}/blog/why-triangles-are-an-engineers-secret-weapon`,
 }
 

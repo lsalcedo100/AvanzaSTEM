@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Artificial intelligence explained for kids. Learn how AI learns from data, where it already lives in daily life, and how to think critically about it."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-01-28")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-01-28",
   url: `${siteConfig.url}/blog/what-is-ai-explaining-to-kids`,
 }
 

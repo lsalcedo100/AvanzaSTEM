@@ -8,7 +8,7 @@ const DESCRIPTION =
   "Your ears pop on airplanes because air pressure changes as the plane climbs or lands. Learn how your eardrum and Eustachian tubes balance the pressure."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-10-22")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-10-22",
   url: `${siteConfig.url}/blog/why-do-your-ears-pop-on-an-airplane`,
 }
 

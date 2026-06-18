@@ -8,7 +8,7 @@ const DESCRIPTION =
   "AI can be helpful and creative, but it can also be wrong. Learn how to think like a detective with AI, what topics need extra care, and how to protect your privacy."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-08-13")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Liam Salcedo" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-08-13",
   url: `${siteConfig.url}/blog/should-kids-trust-everything-ai-says`,
 }
 

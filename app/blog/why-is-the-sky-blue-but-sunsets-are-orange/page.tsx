@@ -8,7 +8,7 @@ const DESCRIPTION =
   "The sky looks blue during the day, but at sunset it turns orange or red. Learn how sunlight, air molecules, and scattering work together to create both colors."
 
 export async function generateMetadata() {
-  return generateBlogPostMetadata(SLUG, DESCRIPTION, "2026-10-15")
+  return generateBlogPostMetadata(SLUG, DESCRIPTION)
 }
 
 const blogPostJsonLd = {
@@ -18,7 +18,6 @@ const blogPostJsonLd = {
   description: DESCRIPTION,
   author: { "@type": "Person", name: "Enqi Qi" },
   publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-  datePublished: "2026-10-15",
   url: `${siteConfig.url}/blog/why-is-the-sky-blue-but-sunsets-are-orange`,
 }
 
