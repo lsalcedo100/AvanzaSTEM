@@ -198,7 +198,7 @@ const en = {
       '# Welcome to the Python sandbox!\n# Write your code here, then press Run.\n\nprint("Hello, world!")',
     // Bridge Load Demo
     bridgeEyebrow: "Engineering lab",
-    bridgeTitle: "How much can a truss hold?",
+    bridgeTitle: "How much can a truss bridge hold?",
     bridgeDesc: "Add weight to the bridge and watch how the truss spreads the load. Keep going too far, and the bridge will fail. Engineers test designs like this so real bridges stay safely below their breaking point.",
     bridgeDescShort: "Add weight to the bridge and see how much it can hold. The triangles help spread the load, but too much weight will make the bridge fail.",
     bridgeSliderLabel: "Current weight",

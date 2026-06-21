@@ -147,9 +147,10 @@
 }
 
 @keyframes bridge-load-shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-1.5px); }
-  75% { transform: translateX(1.5px); }
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(calc(var(--bridge-shake-x, 1px) * -1), calc(var(--bridge-shake-y, 2px) * -1)); }
+  50% { transform: translate(0, var(--bridge-shake-y, 2px)); }
+  75% { transform: translate(var(--bridge-shake-x, 1px), calc(var(--bridge-shake-y, 2px) * -0.55)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

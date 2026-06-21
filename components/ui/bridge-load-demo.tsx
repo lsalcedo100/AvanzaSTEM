@@ -1,44 +1,86 @@
 "use client"
 
-import { useMemo, useState, type ReactNode } from "react"
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react"
 import { Minus, Plus, RotateCcw } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { cn } from "@/lib/utils"
 
-const MAX_LOAD_KG = 50
-const BRIDGE_LIMIT_KG = 38
-const WARNING_START_KG = 27
-const DANGER_START_KG = 34
+const MIN_RANDOM_LIMIT_KG = 30
+const MAX_RANDOM_LIMIT_KG = 45
+const MIN_WARNING_GAP_KG = 8
+const MAX_WARNING_GAP_KG = 12
+const DISPLAY_HEADROOM_KG = 8
+const KG_PER_WEIGHT_BLOCK = 4
+const HYDRATION_SAFE_ATTEMPT: BridgeAttempt = {
+  bridgeLimit: MIN_RANDOM_LIMIT_KG,
+  warningStart: MIN_RANDOM_LIMIT_KG - MIN_WARNING_GAP_KG,
+  weightBlockColors: Array.from(
+    { length: Math.ceil((MIN_RANDOM_LIMIT_KG + DISPLAY_HEADROOM_KG) / KG_PER_WEIGHT_BLOCK) },
+    (_, index) => `hsl(${index * 47}, 80%, 58%)`,
+  ),
+}
 
-type BridgeStage = "safe" | "warning" | "danger" | "failed"
+type BridgeStage = "safe" | "warning" | "failed"
+type BridgeAttempt = {
+  bridgeLimit: number
+  warningStart: number
+  weightBlockColors: string[]
+}
+
+function randomInteger(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+function randomHexColor() {
+  return `#${randomInteger(0, 0xffffff).toString(16).padStart(6, "0")}`
+}
+
+function createBridgeAttempt(): BridgeAttempt {
+  const bridgeLimit = randomInteger(MIN_RANDOM_LIMIT_KG, MAX_RANDOM_LIMIT_KG)
+  const warningStart = bridgeLimit - randomInteger(MIN_WARNING_GAP_KG, MAX_WARNING_GAP_KG)
+  const blockCount = Math.ceil((bridgeLimit + DISPLAY_HEADROOM_KG) / KG_PER_WEIGHT_BLOCK)
+  const weightBlockColors = Array.from({ length: blockCount }, randomHexColor)
+
+  return { bridgeLimit, warningStart, weightBlockColors }
+}
 
 export function BridgeLoadDemo() {
   const { language, t } = useLanguage()
+  const [attempt, setAttempt] = useState<BridgeAttempt>(() => createBridgeAttempt())
   const [load, setLoad] = useState(0)
+  const [maxTestedLoad, setMaxTestedLoad] = useState(0)
   const [bestSafeLoad, setBestSafeLoad] = useState(0)
-  const [hasMappedLimit, setHasMappedLimit] = useState(false)
+
+  const { bridgeLimit, warningStart, weightBlockColors } = attempt
+  const displayMaxKg = bridgeLimit + DISPLAY_HEADROOM_KG
 
   const stage = useMemo<BridgeStage>(() => {
-    if (load > BRIDGE_LIMIT_KG) return "failed"
-    if (load >= DANGER_START_KG) return "danger"
-    if (load >= WARNING_START_KG) return "warning"
+    if (load >= bridgeLimit) return "failed"
+    if (load >= warningStart) return "warning"
     return "safe"
-  }, [load])
+  }, [bridgeLimit, load, warningStart])
 
   const failed = stage === "failed"
-  const safetyLeft = Math.max(BRIDGE_LIMIT_KG - load, 0)
-  const overLimit = Math.max(load - BRIDGE_LIMIT_KG, 0)
-  const loadRatio = Math.min(load / BRIDGE_LIMIT_KG, 1.18)
+  const hasDiscoveredFailure = maxTestedLoad >= bridgeLimit
+  const overLimit = Math.max(load - bridgeLimit, 0)
+  const safetyLeft = Math.max(bridgeLimit - load, 0)
+  const loadRatio = Math.min(load / bridgeLimit, 1.18)
 
   function updateLoad(nextLoad: number) {
-    const clampedLoad = Math.max(0, Math.min(MAX_LOAD_KG, nextLoad))
+    const clampedLoad = Math.max(0, Math.min(displayMaxKg, nextLoad))
     setLoad(clampedLoad)
-    if (clampedLoad <= BRIDGE_LIMIT_KG) {
+    setMaxTestedLoad((max) => Math.max(max, clampedLoad))
+    if (clampedLoad < bridgeLimit) {
       setBestSafeLoad((best) => Math.max(best, clampedLoad))
-    } else {
-      setHasMappedLimit(true)
     }
+  }
+
+  function resetAttempt() {
+    setAttempt(createBridgeAttempt())
+    setLoad(0)
+    setMaxTestedLoad(0)
+    setBestSafeLoad(0)
   }
 
   const explanation =
@@ -68,28 +110,14 @@ export function BridgeLoadDemo() {
       tone: "border-avanza-orange/35 bg-avanza-orange/12 text-avanza-orange-dark",
       dot: "bg-avanza-orange",
     },
-    danger: {
-      label: t.home.bridgeStatusDanger,
-      tone: "border-red-500/35 bg-red-500/10 text-red-700",
-      dot: "bg-red-500",
-    },
     failed: {
       label: t.home.bridgeStatusBroken,
       tone: "border-red-600 bg-red-600 text-white",
       dot: "bg-white",
     },
   }[stage]
-  const visibleStatusCopy =
-    hasMappedLimit || failed
-      ? statusCopy
-      : {
-          label: t.home.bridgeStatusTesting,
-          tone: "border-white/20 bg-white/10 text-white",
-          dot: "bg-white/70",
-        }
 
-  const failureMessage = formatFailureMessage(language, load, BRIDGE_LIMIT_KG)
-  const resultSummary = formatResultSummary(language, load, BRIDGE_LIMIT_KG, overLimit)
+  const resultSummary = formatResultSummary(language, load, bridgeLimit, overLimit)
 
   return (
     <section className="relative overflow-hidden bg-[#f5fbf3] py-14 md:py-16">
@@ -106,10 +134,7 @@ export function BridgeLoadDemo() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <FadeIn className="grid gap-5 lg:grid-cols-[1fr_0.72fr] lg:items-end">
           <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-avanza-orange">
-              {t.home.bridgeEyebrow}
-            </p>
-            <h2 className="mt-3 text-balance text-4xl font-extrabold leading-tight text-foreground md:text-5xl">
+            <h2 className="text-balance text-4xl font-extrabold leading-tight text-foreground md:text-5xl">
               {t.home.bridgeTitle}
             </h2>
             <p className="mt-4 hidden max-w-3xl text-lg leading-relaxed text-muted-foreground md:block">
@@ -120,7 +145,7 @@ export function BridgeLoadDemo() {
             </p>
           </div>
 
-          <div className="rounded-lg border border-avanza-dark/10 bg-white/82 p-4 shadow-[0_18px_44px_-32px_rgba(26,26,46,0.38)]">
+          <div className="rounded-lg border border-avanza-dark/10 bg-white/82 p-4 shadow-[0_18px_44px_-32px_rgba(26,26,46,0.36)]">
             <p className="text-xs font-extrabold uppercase tracking-wider text-avanza-orange-dark">
               {t.home.bridgeChallengeLabel}
             </p>
@@ -142,17 +167,22 @@ export function BridgeLoadDemo() {
                     stage={stage}
                     load={load}
                     loadRatio={loadRatio}
-                    hasMappedLimit={hasMappedLimit}
+                    bridgeLimit={bridgeLimit}
+                    warningStart={warningStart}
+                    weightBlockColors={weightBlockColors}
                   />
                 </div>
               </div>
 
               <BridgeControls
                 load={load}
+                maxTestedLoad={maxTestedLoad}
                 stage={stage}
-                hasMappedLimit={hasMappedLimit}
+                bridgeLimit={bridgeLimit}
+                warningStart={warningStart}
+                displayMaxKg={displayMaxKg}
                 onChange={updateLoad}
-                onReset={() => updateLoad(0)}
+                onReset={resetAttempt}
               />
             </div>
 
@@ -164,10 +194,10 @@ export function BridgeLoadDemo() {
                 <div
                   className={cn(
                     "inline-flex rounded-md border px-2.5 py-1 text-xs font-extrabold uppercase tracking-wider",
-                    visibleStatusCopy.tone,
+                    statusCopy.tone,
                   )}
                 >
-                  {visibleStatusCopy.label}
+                  {statusCopy.label}
                 </div>
 
                 <h3 className="mt-4 text-2xl font-extrabold leading-tight md:text-3xl">
@@ -176,31 +206,24 @@ export function BridgeLoadDemo() {
                 <p className="mt-3 text-base leading-relaxed text-white/82">
                   {explanation.body}
                 </p>
-                {failed && (
-                  <p className="mt-4 rounded-lg border border-red-300/35 bg-red-500/16 p-3 text-sm font-bold leading-relaxed text-white">
-                    {failureMessage}
-                  </p>
-                )}
               </aside>
 
-              <dl className={cn("grid gap-3 lg:grid-cols-1", failed || !hasMappedLimit ? "sm:grid-cols-3" : "sm:grid-cols-2")}>
-                {failed ? (
+              <dl className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                {hasDiscoveredFailure ? (
                   <>
                     <Stat label={t.home.bridgeStatLoad} value={`${load} kg`} />
-                    <Stat label={t.home.bridgeStatLimit} value={`${BRIDGE_LIMIT_KG} kg`} />
-                    <Stat label={t.home.bridgeStatOverLimit} value={`${overLimit} kg`} tone="danger" />
-                  </>
-                ) : hasMappedLimit ? (
-                  <>
-                    <Stat label={t.home.bridgeStatLoad} value={`${load} kg`} />
-                    <Stat label={t.home.bridgeStatLimit} value={`${BRIDGE_LIMIT_KG} kg`} />
-                    <Stat label={t.home.bridgeStatHeadroom} value={`${safetyLeft} kg`} />
+                    <Stat label={t.home.bridgeStatLimit} value={`${bridgeLimit} kg`} />
+                    {failed ? (
+                      <Stat label={t.home.bridgeStatOverLimit} value={`${overLimit} kg`} tone="danger" />
+                    ) : (
+                      <Stat label={t.home.bridgeStatHeadroom} value={`${safetyLeft} kg`} />
+                    )}
                   </>
                 ) : (
                   <>
                     <Stat label={t.home.bridgeStatLoad} value={`${load} kg`} />
-                    <Stat label={t.home.bridgeBestSafeLoad} value={`${bestSafeLoad} kg`} />
-                    <Stat label={t.home.bridgeStatLimit} value={t.home.bridgeLimitUnknown} />
+                    <Stat label={t.home.bridgeStatLimit} value="? kg" />
+                    <Stat label={t.home.bridgeStatHeadroom} value="? kg" />
                   </>
                 )}
               </dl>
@@ -223,22 +246,34 @@ export function BridgeLoadDemo() {
 
 function BridgeControls({
   load,
+  maxTestedLoad,
   stage,
-  hasMappedLimit,
+  bridgeLimit,
+  warningStart,
+  displayMaxKg,
   onChange,
   onReset,
 }: {
   load: number
+  maxTestedLoad: number
   stage: BridgeStage
-  hasMappedLimit: boolean
+  bridgeLimit: number
+  warningStart: number
+  displayMaxKg: number
   onChange: (load: number) => void
   onReset: () => void
 }) {
-  const { t } = useLanguage()
-  const progress = (load / MAX_LOAD_KG) * 100
-  const limitPosition = (BRIDGE_LIMIT_KG / MAX_LOAD_KG) * 100
+  const { language, t } = useLanguage()
+  const progress = (load / displayMaxKg) * 100
+  const revealedProgress = (maxTestedLoad / displayMaxKg) * 100
+  const warningPosition = (warningStart / displayMaxKg) * 100
+  const limitPosition = (bridgeLimit / displayMaxKg) * 100
   const failed = stage === "failed"
-  const nearLimit = hasMappedLimit && stage === "danger"
+  const warning = stage === "warning"
+  const hasDiscoveredWarning = maxTestedLoad >= warningStart
+  const hasDiscoveredFailure = maxTestedLoad >= bridgeLimit
+  const trackBackground = `linear-gradient(to right, #2ecc71 0%, #2ecc71 ${warningPosition}%, #f97316 ${warningPosition}%, #f97316 ${limitPosition}%, #ef4444 ${limitPosition}%, #ef4444 100%)`
+  const meterTooltip = formatMeterTooltip(language, load, warningStart, bridgeLimit, stage)
 
   return (
     <div className="mt-5">
@@ -265,7 +300,7 @@ function BridgeControls({
             label="1 kg"
             ariaLabel={t.home.bridgePlusOne}
             onClick={() => onChange(load + 1)}
-            disabled={load >= MAX_LOAD_KG}
+            disabled={load >= displayMaxKg}
           >
             <Plus className="h-4 w-4" aria-hidden="true" />
           </StepButton>
@@ -273,7 +308,7 @@ function BridgeControls({
             label="5 kg"
             ariaLabel={t.home.bridgePlusFive}
             onClick={() => onChange(load + 5)}
-            disabled={load >= MAX_LOAD_KG || stage === "danger" || failed}
+            disabled={load >= displayMaxKg || failed}
           >
             <Plus className="h-4 w-4" aria-hidden="true" />
           </StepButton>
@@ -298,80 +333,79 @@ function BridgeControls({
           role="meter"
           aria-label={t.home.bridgeSliderAria}
           aria-valuemin={0}
-          aria-valuemax={MAX_LOAD_KG}
+          aria-valuemax={displayMaxKg}
           aria-valuenow={load}
-          aria-valuetext={`${load} kg`}
+          aria-valuetext={meterTooltip}
           aria-describedby="bridge-load-help"
+          title={meterTooltip}
           className="relative h-5 rounded-full bg-white"
         >
           <div
             aria-hidden="true"
             className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 overflow-hidden rounded-full border border-avanza-dark/10"
             style={{
-              background: hasMappedLimit
-                ? "linear-gradient(to right, #2ecc71 0%, #2ecc71 54%, #f97316 54%, #f97316 76%, #ef4444 76%, #ef4444 100%)"
-                : "repeating-linear-gradient(to right, rgba(26,26,46,0.1) 0 2px, rgba(26,26,46,0.03) 2px 16px)",
+              background:
+                "repeating-linear-gradient(to right, rgba(26,26,46,0.1) 0 2px, rgba(26,26,46,0.03) 2px 16px)",
             }}
           />
-          {hasMappedLimit && (
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 overflow-hidden rounded-full border border-avanza-dark/10 transition-[clip-path] duration-300"
+            style={{
+              background: trackBackground,
+              clipPath: `inset(0 ${Math.max(0, 100 - revealedProgress)}% 0 0)`,
+            }}
+          />
+          {hasDiscoveredFailure && (
             <>
               <div
                 aria-hidden="true"
-                className="absolute top-1/2 h-5 w-1 -translate-y-1/2 rounded-full bg-avanza-dark shadow-sm"
+                className="absolute top-1/2 z-10 h-5 w-1 -translate-y-1/2 rounded-full bg-avanza-dark shadow-sm"
                 style={{ left: `calc(${limitPosition}% - 2px)` }}
               />
               <span
                 aria-hidden="true"
-                className="absolute -top-6 -translate-x-1/2 whitespace-nowrap rounded-md bg-avanza-dark px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white"
+                className="absolute -top-6 z-10 -translate-x-1/2 whitespace-nowrap rounded-md bg-avanza-dark px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white"
                 style={{ left: `${limitPosition}%` }}
               >
-                {BRIDGE_LIMIT_KG} kg {t.home.bridgeBreakMark}
+                {bridgeLimit} KG {t.home.bridgeBreakMark}
               </span>
             </>
           )}
-          <div
-            aria-hidden="true"
-            className={cn(
-              "absolute top-1/2 h-3 -translate-y-1/2 rounded-l-full",
-              hasMappedLimit ? "bg-white/42" : "bg-avanza-green/80",
-            )}
-            style={{ width: `${progress}%` }}
-          />
           <div
             aria-hidden="true"
             className="pointer-events-none absolute top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-avanza-dark bg-white shadow-[0_4px_12px_rgba(26,26,46,0.22)]"
             style={{ left: `${progress}%` }}
           />
         </div>
-        {hasMappedLimit ? (
-          <div className="mt-2 grid grid-cols-3 relative text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-            <span className="col-start-1">{t.home.bridgeRangeSafe}</span>
-            <span className="absolute left-[54%] -translate-x-1/2 text-center">
-              {t.home.bridgeRangeWarning}
+        <div className="relative mt-2 min-h-5 text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+          <span className="absolute left-0">{t.home.bridgeRangeSafe}</span>
+          {hasDiscoveredWarning && (
+            <span className="absolute -translate-x-1/2 text-center" style={{ left: `${warningPosition}%` }}>
+              Danger!
             </span>
-            <span className="col-start-3 text-right">{t.home.bridgeRangeFailure}</span>
-          </div>
-        ) : (
-          <div className="mt-2 flex justify-between text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-            <span>0 kg</span>
-            <span>{t.home.bridgeRangeUnmapped}</span>
-            <span>{MAX_LOAD_KG} kg</span>
-          </div>
-        )}
+          )}
+          {hasDiscoveredFailure && (
+            <span className="absolute -translate-x-1/2 text-center" style={{ left: `${limitPosition}%` }}>
+              {t.home.bridgeRangeFailure}
+            </span>
+          )}
+          <span className="absolute right-0">{displayMaxKg} kg</span>
+        </div>
         <p
           id="bridge-load-help"
           className={cn(
             "mt-3 rounded-lg border p-3 text-sm font-bold leading-relaxed",
             failed
               ? "border-red-200 bg-red-50 text-red-700"
-              : nearLimit
+              : warning
                 ? "border-avanza-orange/25 bg-avanza-orange/10 text-avanza-orange-dark"
                 : "border-avanza-green/20 bg-avanza-green/10 text-avanza-green-dark",
           )}
         >
           {failed
             ? t.home.bridgeControlFailed
-            : nearLimit
+            : warning
               ? t.home.bridgeControlNearLimit
               : t.home.bridgeControlHint}
         </p>
@@ -442,12 +476,16 @@ function BridgeSVG({
   stage,
   load,
   loadRatio,
-  hasMappedLimit,
+  bridgeLimit,
+  warningStart,
+  weightBlockColors,
 }: {
   stage: BridgeStage
   load: number
   loadRatio: number
-  hasMappedLimit: boolean
+  bridgeLimit: number
+  warningStart: number
+  weightBlockColors: string[]
 }) {
   const W = 900
   const H = 430
@@ -468,7 +506,7 @@ function BridgeSVG({
   }
 
   const lowerPoints = Array.from({ length: bays + 1 }).map((_, i) => {
-    const centerPull = failed ? Math.max(0, 1 - Math.abs(i - centerIndex) / 1.7) * 38 : 0
+    const centerPull = failed ? Math.max(0, 1 - Math.abs(i - centerIndex) / 1.7) * 40 : 0
     return {
       x: left + i * bayWidth,
       y: deckY + sagAt(i) + centerPull,
@@ -485,16 +523,28 @@ function BridgeSVG({
 
   const centerPoint = lowerPoints[centerIndex]
   const stressOpacity = stage === "safe" ? 0 : stage === "warning" ? 0.58 : 0.9
-  const shakeClass = stage === "danger" ? "animate-[bridge-load-shake_0.48s_ease-in-out_infinite] motion-reduce:animate-none" : ""
+  const warningProgress =
+    stage === "warning"
+      ? Math.max(0, Math.min((load - warningStart) / (bridgeLimit - warningStart), 1))
+      : 0
+  const shakeStyle: CSSProperties =
+    stage === "warning"
+      ? {
+          animation: `bridge-load-shake ${0.52 - warningProgress * 0.18}s ease-in-out infinite`,
+          "--bridge-shake-x": `${0.45 + warningProgress * 1.1}px`,
+          "--bridge-shake-y": `${1.2 + warningProgress * 6.8}px`,
+        } as CSSProperties
+      : {}
   const waterPath = buildWavePath(W, waterY + 29, 32, 5)
-  const waterPath2 = buildWavePath(W, waterY + 54, 38, 4)
-  const blockCount = load === 0 ? 0 : Math.min(5, Math.ceil(load / 10))
+  const waterPath2 = buildWavePath(W, waterY + 54, 36, 4)
+  const blockCount = load === 0 ? 0 : Math.min(weightBlockColors.length, Math.ceil(load / KG_PER_WEIGHT_BLOCK))
   const weightDrop = failed ? 58 : 0
 
-  function memberColor(index: number, kind: "outer" | "center" = "outer") {
+  function memberColor(index: number, kind: "outer" | "center" | "outer-diagonal" = "outer") {
     if (failed && Math.abs(index - centerIndex) <= 1.5) return "#dc2626"
-    if (stage === "danger" && Math.abs(index - centerIndex) <= 1.5) return "#ef4444"
+    if (failed && kind === "outer-diagonal") return "#f97316"
     if (stage === "warning" && kind === "center") return "#f97316"
+    if (stage === "warning" && kind === "outer-diagonal") return "#fbbf24"
     return "#1a1a2e"
   }
 
@@ -503,11 +553,7 @@ function BridgeSVG({
       viewBox={`0 0 ${W} ${H}`}
       className="h-full w-full"
       role="img"
-      aria-label={
-        hasMappedLimit
-          ? `Bridge load test. Current weight ${load} kilograms. Bridge limit ${BRIDGE_LIMIT_KG} kilograms. State ${stage}.`
-          : `Bridge load test. Current weight ${load} kilograms. State ${stage}.`
-      }
+      aria-label={`Bridge load test. Current weight ${load} kilograms. Bridge limit ${bridgeLimit} kilograms. State ${stage}.`}
     >
       <defs>
         <linearGradient id="bridgeLabSky" x1="0" y1="0" x2="0" y2="1">
@@ -552,7 +598,7 @@ function BridgeSVG({
         ))}
       </g>
 
-      <g className={shakeClass}>
+      <g className="motion-reduce:animate-none" style={shakeStyle}>
         <g className="transition-all duration-500 ease-out motion-reduce:transition-none">
           <g strokeLinecap="round" strokeLinejoin="round" fill="none">
             <polyline
@@ -587,7 +633,7 @@ function BridgeSVG({
                   y1={topPoints[i].y}
                   x2={lowerPoints[i + 1].x}
                   y2={lowerPoints[i + 1].y}
-                  stroke={memberColor(i + 0.5, central ? "center" : "outer")}
+                  stroke={memberColor(i + 0.5, central ? "center" : "outer-diagonal")}
                   strokeWidth="7"
                   opacity={failed && central ? 0.86 : 1}
                 />
@@ -602,7 +648,7 @@ function BridgeSVG({
                   y1={lowerPoints[i].y}
                   x2={topPoints[i + 1].x}
                   y2={topPoints[i + 1].y}
-                  stroke={memberColor(i + 0.5, central ? "center" : "outer")}
+                  stroke={memberColor(i + 0.5, central ? "center" : "outer-diagonal")}
                   strokeWidth="7"
                   opacity={failed && central ? 0.86 : 1}
                 />
@@ -618,7 +664,7 @@ function BridgeSVG({
                   key={`stress-${idx}`}
                   cx={lowerPoints[idx].x}
                   cy={lowerPoints[idx].y}
-                  r={stage === "danger" || failed ? 12 : 8}
+                  r={failed ? 12 : 8}
                   fill={failed ? "#ef4444" : "#f97316"}
                   opacity={0.32}
                 />
@@ -703,30 +749,24 @@ function BridgeSVG({
                       width={boxW}
                       height={boxH}
                       rx="4"
-                      fill={failed ? "#ef4444" : i % 2 === 0 ? "#f97316" : "#fbbf24"}
+                      fill={weightBlockColors[i]}
                       stroke="#1a1a2e"
                       strokeWidth="2"
                     />
-                    <path d={`M${x + 11} ${y + 4} L${x + boxW - 11} ${y + boxH - 4} M${x + boxW - 11} ${y + 4} L${x + 11} ${y + boxH - 4}`} stroke="#1a1a2e" strokeOpacity="0.18" strokeWidth="2" />
                   </g>
                 )
               })}
-              <rect
-                x={centerPoint.x - 31}
-                y={centerPoint.y - 12 - blockCount * 25}
-                width="62"
-                height="18"
-                rx="4"
-                fill="#1a1a2e"
-              />
               <text
                 x={centerPoint.x}
                 y={centerPoint.y + 1 - blockCount * 25}
                 textAnchor="middle"
                 fontFamily="monospace"
-                fontSize="12"
+                fontSize="16"
                 fontWeight="900"
                 fill="#ffffff"
+                stroke="#1a1a2e"
+                strokeWidth="2.8"
+                paintOrder="stroke"
               >
                 {load} kg
               </text>
@@ -747,14 +787,32 @@ function buildWavePath(width: number, y: number, step: number, amp: number) {
   return path
 }
 
-function formatFailureMessage(language: string, load: number, limit: number) {
+function formatMeterTooltip(language: string, load: number, warningStart: number, limit: number, stage: BridgeStage) {
   if (language === "es") {
-    return `El puente fallo con ${load} kg. Su limite seguro era ${limit} kg. Intenta de nuevo y mira que tan cerca puedes llegar sin romperlo.`
+    if (stage === "failed") {
+      return `${load} kg. El puente fallo en ${limit} kg.`
+    }
+    if (stage === "warning") {
+      return `${load} kg. La zona de advertencia empezo en ${warningStart} kg. Sigue con cuidado para encontrar el limite.`
+    }
+    return `${load} kg. Sigue agregando peso para mapear el puente.`
   }
   if (language === "zh") {
-    return `桥在 ${load} 千克时失败。安全极限是 ${limit} 千克。再试一次，看看不压断时你能多接近极限。`
+    if (stage === "failed") {
+      return `${load} 千克。桥在 ${limit} 千克时失败。`
+    }
+    if (stage === "warning") {
+      return `${load} 千克。警告区从 ${warningStart} 千克开始。继续小心测试来找到极限。`
+    }
+    return `${load} 千克。继续增加重量来测试这座桥。`
   }
-  return `The bridge failed at ${load} kg. Its safe limit was ${limit} kg. Try again and see how close you can get without breaking it.`
+  if (stage === "failed") {
+    return `${load} kg. The bridge failed at ${limit} kg.`
+  }
+  if (stage === "warning") {
+    return `${load} kg. Warning started at ${warningStart} kg. Keep testing carefully to find the limit.`
+  }
+  return `${load} kg. Keep adding weight to map the bridge.`
 }
 
 function formatResultSummary(language: string, load: number, limit: number, overLimit: number) {
