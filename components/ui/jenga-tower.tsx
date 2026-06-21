@@ -218,15 +218,6 @@ export function JengaTower() {
     <section className="relative overflow-hidden bg-[#fff8e7] py-20 md:py-24">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.45]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(26,26,46,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(26,26,46,0.06) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      />
-      <div
-        aria-hidden="true"
         className="pointer-events-none absolute -right-8 top-12 hidden h-32 w-32 rotate-[14deg] text-avanza-orange/40 lg:block"
       >
         <Sparkles className="h-full w-full" strokeWidth={1.2} />

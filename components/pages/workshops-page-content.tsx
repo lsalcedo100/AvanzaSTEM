@@ -4,10 +4,11 @@ import Link from "next/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
-import { Gallery, preExpansionGalleryImages } from "@/components/ui/gallery"
+import { Gallery, galleryImages, preExpansionGalleryImages } from "@/components/ui/gallery"
 
 const buildingWorkshopImage =
   "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/c_crop,x_0,y_290,w_1600,h_2110/gallery-00174.jpg"
+const codingThumbnailImage = galleryImages[30].full
 
 export function WorkshopsPageContent() {
   const { t } = useLanguage()
@@ -25,7 +26,7 @@ export function WorkshopsPageContent() {
       week: t.workshopsPage.week2,
       title: t.workshopsPage.codingWorkshopTitle,
       description: t.workshopsPage.codingWorkshopDesc,
-      image: "/images/workshops/Coding Workshop Description.png",
+      image: codingThumbnailImage,
       imageAlt: t.workshopsPage.codingImageAlt,
       accent: "bg-avanza-green",
       reverse: true,

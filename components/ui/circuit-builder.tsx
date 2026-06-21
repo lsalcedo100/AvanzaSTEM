@@ -276,16 +276,6 @@ export function CircuitBuilder() {
 
   return (
     <section className="relative overflow-hidden bg-[#fff7ec] py-20 md:py-24">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.4]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(26,26,46,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(26,26,46,0.06) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      />
-
       <div className="relative mx-auto max-w-6xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-bold uppercase tracking-wider text-avanza-orange">

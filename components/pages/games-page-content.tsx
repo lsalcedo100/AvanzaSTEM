@@ -11,7 +11,7 @@ import { CodePathRobot } from "@/components/ui/code-path-robot"
 import { CircuitBuilder } from "@/components/ui/circuit-builder"
 import { CatapultLab } from "@/components/ui/catapult-lab"
 import { GravitySandbox } from "@/components/ui/gravity-sandbox"
-import { LogicGatePuzzle } from "@/components/ui/logic-gate-puzzle"
+import { BooleanLogicGame } from "@/components/ui/logic-game"
 import { DensityTower } from "@/components/ui/density-tower"
 import { SortingRace } from "@/components/ui/sorting-race"
 import { MarbleRun } from "@/components/ui/marble-run"
@@ -164,7 +164,7 @@ export function GamesPageContent() {
         <CodePathRobot />
       </div>
       <div id="logic" style={{ scrollMarginTop: 96 }}>
-        <LogicGatePuzzle />
+        <BooleanLogicGame />
       </div>
       <div id="sort" style={{ scrollMarginTop: 96 }}>
         <SortingRace />

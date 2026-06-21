@@ -2,6 +2,8 @@ import type { AuthorId } from "@/features/blog/authors"
 
 const GALLERY_IMAGE_7 =
   "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/gallery-00168.jpg"
+const CODING_THUMBNAIL_IMAGE =
+  "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/gallery-00187.jpg"
 
 export type BlogBlock =
   | { type: "paragraph"; text: string }
@@ -152,7 +154,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       categoryColor: "bg-avanza-green",
       readTime: common.en.minutes.m5,
       authorId: "liam",
-      image: "/images/workshops/upcoming-python.jpg",
+      image: CODING_THUMBNAIL_IMAGE,
       imageAlt: "An Avanza STEM mentor leading a coding workshop, with students seated at laptops",
       imageCaption: "Students learn the basics of coding during an Avanza STEM workshop session.",
       endingProject: { href: "/projects/my-first-python-program", label: "Try this project: first Python quiz game for kids" },

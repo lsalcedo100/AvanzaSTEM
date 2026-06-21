@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ArrowDown, Pause, Play, RotateCcw, Sparkles } from "lucide-react"
+import { ArrowDown, Pause, Play, RotateCcw } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { cn } from "@/lib/utils"
@@ -102,13 +102,100 @@ function* selectionSort(input: number[]): Generator<SortEvent> {
   yield { type: "done", arr: a.slice() }
 }
 
-type AlgoKey = "bubble" | "insertion" | "selection" | "quick"
+function* mergeSort(input: number[]): Generator<SortEvent> {
+  const a = input.slice()
+
+  function* sort(lo: number, hi: number): Generator<SortEvent> {
+    if (hi - lo <= 1) return
+    const mid = Math.floor((lo + hi) / 2)
+    yield* sort(lo, mid)
+    yield* sort(mid, hi)
+
+    const merged: number[] = []
+    let left = lo
+    let right = mid
+
+    while (left < mid && right < hi) {
+      yield { type: "compare", indices: [left, right], arr: a.slice() }
+      if (a[left] <= a[right]) {
+        merged.push(a[left])
+        left++
+      } else {
+        merged.push(a[right])
+        right++
+      }
+    }
+    while (left < mid) {
+      merged.push(a[left])
+      left++
+    }
+    while (right < hi) {
+      merged.push(a[right])
+      right++
+    }
+
+    for (let i = 0; i < merged.length; i++) {
+      const target = lo + i
+      if (a[target] !== merged[i]) {
+        a[target] = merged[i]
+        yield { type: "swap", indices: [target], arr: a.slice() }
+      }
+    }
+  }
+
+  yield* sort(0, a.length)
+  yield { type: "done", arr: a.slice() }
+}
+
+function* heapSort(input: number[]): Generator<SortEvent> {
+  const a = input.slice()
+
+  function* heapify(length: number, root: number): Generator<SortEvent> {
+    let largest = root
+    const left = root * 2 + 1
+    const right = root * 2 + 2
+
+    if (left < length) {
+      yield { type: "compare", indices: [largest, left], arr: a.slice() }
+      if (a[left] > a[largest]) largest = left
+    }
+    if (right < length) {
+      yield { type: "compare", indices: [largest, right], arr: a.slice() }
+      if (a[right] > a[largest]) largest = right
+    }
+    if (largest !== root) {
+      const tmp = a[root]
+      a[root] = a[largest]
+      a[largest] = tmp
+      yield { type: "swap", indices: [root, largest], arr: a.slice() }
+      yield* heapify(length, largest)
+    }
+  }
+
+  for (let i = Math.floor(a.length / 2) - 1; i >= 0; i--) {
+    yield* heapify(a.length, i)
+  }
+
+  for (let end = a.length - 1; end > 0; end--) {
+    const tmp = a[0]
+    a[0] = a[end]
+    a[end] = tmp
+    yield { type: "swap", indices: [0, end], arr: a.slice() }
+    yield* heapify(end, 0)
+  }
+
+  yield { type: "done", arr: a.slice() }
+}
+
+type AlgoKey = "bubble" | "insertion" | "selection" | "quick" | "merge" | "heap"
 
 const ALGOS: Record<AlgoKey, (input: number[]) => Generator<SortEvent>> = {
   bubble: bubbleSort,
   insertion: insertionSort,
   selection: selectionSort,
   quick: quickSort,
+  merge: mergeSort,
+  heap: heapSort,
 }
 
 const ALGO_COLOR: Record<AlgoKey, string> = {
@@ -116,6 +203,8 @@ const ALGO_COLOR: Record<AlgoKey, string> = {
   insertion: "#8b5cf6",
   selection: "#06b6d4",
   quick: "#22c55e",
+  merge: "#ec4899",
+  heap: "#0f766e",
 }
 
 // Deterministic seed for SSR; replaced on client mount with a real random shuffle.
@@ -166,6 +255,8 @@ export function SortingRace() {
     insertion: emptyLane(base),
     selection: emptyLane(base),
     quick: emptyLane(base),
+    merge: emptyLane(base),
+    heap: emptyLane(base),
   }))
   const itersRef = useRef<Record<AlgoKey, Generator<SortEvent>> | null>(null)
   const lanesRef = useRef<Record<AlgoKey, LaneState>>({
@@ -173,6 +264,8 @@ export function SortingRace() {
     insertion: emptyLane(base),
     selection: emptyLane(base),
     quick: emptyLane(base),
+    merge: emptyLane(base),
+    heap: emptyLane(base),
   })
   const animRef = useRef<number | null>(null)
   const lastTickRef = useRef<number>(0)
@@ -186,6 +279,8 @@ export function SortingRace() {
       insertion: emptyLane(base),
       selection: emptyLane(base),
       quick: emptyLane(base),
+      merge: emptyLane(base),
+      heap: emptyLane(base),
     }
     lanesRef.current = fresh
     setLanes(fresh)
@@ -207,12 +302,16 @@ export function SortingRace() {
       insertion: insertionSort(base),
       selection: selectionSort(base),
       quick: quickSort(base),
+      merge: mergeSort(base),
+      heap: heapSort(base),
     }
     const fresh = {
       bubble: emptyLane(base),
       insertion: emptyLane(base),
       selection: emptyLane(base),
       quick: emptyLane(base),
+      merge: emptyLane(base),
+      heap: emptyLane(base),
     }
     lanesRef.current = fresh
     setLanes(fresh)
@@ -311,16 +410,6 @@ export function SortingRace() {
 
   return (
     <section className="relative overflow-hidden bg-[#fffaf0] py-20 md:py-24">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.4]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(26,26,46,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(26,26,46,0.05) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      />
-
       <div className="relative mx-auto max-w-6xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-bold uppercase tracking-wider text-avanza-orange">
@@ -373,7 +462,6 @@ export function SortingRace() {
               </div>
               {winner && (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-avanza-dark shadow">
-                  <Sparkles className="h-3 w-3" />
                   {t.gamesPage.sortWinner}: {algoName(t, winner)}
                 </span>
               )}
@@ -452,7 +540,7 @@ function Lane({
           <span>↔ {state.swaps}</span>
         </div>
       </div>
-      <p className="mb-2 text-[11px] font-bold text-muted-foreground">{hint}</p>
+      <p className="mb-3 text-xs font-semibold leading-relaxed text-muted-foreground">{hint}</p>
       <BarChart state={state} color={color} />
     </div>
   )
@@ -495,6 +583,8 @@ function algoName(t: ReturnType<typeof useLanguage>["t"], a: AlgoKey) {
     insertion: t.gamesPage.sortInsertion,
     selection: t.gamesPage.sortSelection,
     quick: t.gamesPage.sortQuick,
+    merge: t.gamesPage.sortMerge,
+    heap: t.gamesPage.sortHeap,
   }
   return map[a]
 }
@@ -505,6 +595,8 @@ function algoHint(t: ReturnType<typeof useLanguage>["t"], a: AlgoKey) {
     insertion: t.gamesPage.sortInsertionHint,
     selection: t.gamesPage.sortSelectionHint,
     quick: t.gamesPage.sortQuickHint,
+    merge: t.gamesPage.sortMergeHint,
+    heap: t.gamesPage.sortHeapHint,
   }
   return map[a]
 }

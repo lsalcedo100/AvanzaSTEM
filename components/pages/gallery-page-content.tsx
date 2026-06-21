@@ -1,6 +1,5 @@
 "use client"
 
-import { Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { Gallery } from "@/components/ui/gallery"
 
@@ -26,8 +25,7 @@ export function GalleryPageContent() {
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-avanza-dark/80">
             {t.galleryPage.description}
           </p>
-          <div className="mt-7 inline-flex items-center gap-2 rounded-full bg-white/25 px-4 py-1.5 text-sm font-bold text-avanza-dark backdrop-blur-sm">
-            <Sparkles className="h-4 w-4" />
+          <div className="mt-7 inline-flex items-center rounded-full bg-white/25 px-4 py-1.5 text-sm font-bold text-avanza-dark backdrop-blur-sm">
             {t.home.photoCount}
           </div>
         </div>

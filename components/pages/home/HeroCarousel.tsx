@@ -152,7 +152,7 @@ export function HeroCarousel() {
 
   return (
     <div
-      className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl bg-secondary shadow-xl ring-1 ring-avanza-dark/10"
+      className="group relative aspect-[3/2] w-full overflow-hidden rounded-2xl bg-secondary shadow-xl ring-1 ring-avanza-dark/10"
       role="region"
       aria-roledescription="carousel"
     >
@@ -177,7 +177,7 @@ export function HeroCarousel() {
         type="button"
         onClick={prev}
         aria-label={t.home.heroPrevPhoto}
-        className="absolute left-3 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-avanza-dark shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-avanza-green sm:h-11 sm:w-11"
+        className="pointer-events-none absolute left-3 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-avanza-dark opacity-0 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white focus-visible:pointer-events-auto focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-avanza-green group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 sm:h-11 sm:w-11"
       >
         <ChevronLeft className="h-5 w-5" />
       </button>
@@ -185,7 +185,7 @@ export function HeroCarousel() {
         type="button"
         onClick={next}
         aria-label={t.home.heroNextPhoto}
-        className="absolute right-3 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-avanza-dark shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-avanza-green sm:h-11 sm:w-11"
+        className="pointer-events-none absolute right-3 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-avanza-dark opacity-0 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white focus-visible:pointer-events-auto focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-avanza-green group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 sm:h-11 sm:w-11"
       >
         <ChevronRight className="h-5 w-5" />
       </button>

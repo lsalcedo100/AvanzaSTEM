@@ -6,9 +6,11 @@ import { ArrowRight } from "lucide-react"
 import { NewsletterSignup } from "@/components/blog/newsletter-signup"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
+import { galleryImages } from "@/components/ui/gallery"
 
 const galleryImage7 =
   "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/gallery-00168.jpg"
+const codingThumbnailImage = galleryImages[30].full
 
 export function BlogPageContent() {
   const { t } = useLanguage()
@@ -17,7 +19,7 @@ export function BlogPageContent() {
     title: t.blogPage.featuredTitle,
     excerpt: t.blogPage.featuredExcerpt,
     note: t.blogPage.featuredNote,
-    image: "/images/workshops/upcoming-python.jpg",
+    image: codingThumbnailImage,
     imageAlt: t.blogPage.featuredImageAlt,
     author: t.blogPage.authorLiamFounder,
     category: t.blogPage.codingCategory,

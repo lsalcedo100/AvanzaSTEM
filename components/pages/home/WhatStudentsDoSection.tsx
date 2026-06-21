@@ -6,7 +6,9 @@ import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
-import { preExpansionGalleryImages } from "@/components/ui/gallery"
+import { galleryImages, preExpansionGalleryImages } from "@/components/ui/gallery"
+
+const codingThumbnailImage = galleryImages[30].full
 
 function ProgramCard({
   image,
@@ -99,7 +101,7 @@ export function WhatStudentsDoSection() {
       description: t.home.realWorkshopBuildingShort,
     },
     {
-      image: "/images/workshops/Coding Workshop Description.png",
+      image: codingThumbnailImage,
       title: t.home.realWorkshopCoding,
       description: t.home.realWorkshopCodingShort,
     },

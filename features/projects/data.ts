@@ -45,6 +45,9 @@ export type ProjectGuide = {
   challenge: string
 }
 
+const codingThumbnailImage =
+  "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/gallery-00187.jpg"
+
 const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
   en: [
     {
@@ -169,7 +172,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "coding",
       difficulty: "Easy",
       time: "1 hour",
-      image: "/images/home/featured-python.jpg",
+      image: codingThumbnailImage,
       description:
         "Copy, paste, and customize a beginner Python quiz game for kids while learning print(), input(), variables, and if statements.",
       introduction: [
@@ -602,7 +605,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "coding",
       difficulty: "Facil",
       time: "1 hora",
-      image: "/images/home/featured-python.jpg",
+      image: codingThumbnailImage,
       description:
         "Escribe un juego de preguntas sencillo y descubre como el codigo puede convertir tus ideas en algo interactivo.",
       introduction: [
@@ -1035,7 +1038,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "coding",
       difficulty: "简单",
       time: "1小时",
-      image: "/images/home/featured-python.jpg",
+      image: codingThumbnailImage,
       description:
         "写一个简单的问答小游戏，看看代码怎样把你的想法变成可以互动的作品。",
       introduction: [
