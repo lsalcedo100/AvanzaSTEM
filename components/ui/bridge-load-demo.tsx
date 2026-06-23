@@ -12,6 +12,14 @@ const MIN_WARNING_GAP_KG = 8
 const MAX_WARNING_GAP_KG = 12
 const DISPLAY_HEADROOM_KG = 8
 const KG_PER_WEIGHT_BLOCK = 4
+
+type BridgeStage = "safe" | "warning" | "failed"
+type BridgeAttempt = {
+  bridgeLimit: number
+  warningStart: number
+  weightBlockColors: string[]
+}
+
 const HYDRATION_SAFE_ATTEMPT: BridgeAttempt = {
   bridgeLimit: MIN_RANDOM_LIMIT_KG,
   warningStart: MIN_RANDOM_LIMIT_KG - MIN_WARNING_GAP_KG,
@@ -19,13 +27,6 @@ const HYDRATION_SAFE_ATTEMPT: BridgeAttempt = {
     { length: Math.ceil((MIN_RANDOM_LIMIT_KG + DISPLAY_HEADROOM_KG) / KG_PER_WEIGHT_BLOCK) },
     (_, index) => `hsl(${index * 47}, 80%, 58%)`,
   ),
-}
-
-type BridgeStage = "safe" | "warning" | "failed"
-type BridgeAttempt = {
-  bridgeLimit: number
-  warningStart: number
-  weightBlockColors: string[]
 }
 
 function randomInteger(min: number, max: number) {
@@ -47,10 +48,15 @@ function createBridgeAttempt(): BridgeAttempt {
 
 export function BridgeLoadDemo() {
   const { language, t } = useLanguage()
-  const [attempt, setAttempt] = useState<BridgeAttempt>(() => createBridgeAttempt())
+  const [attempt, setAttempt] = useState<BridgeAttempt>(HYDRATION_SAFE_ATTEMPT)
   const [load, setLoad] = useState(0)
   const [maxTestedLoad, setMaxTestedLoad] = useState(0)
   const [bestSafeLoad, setBestSafeLoad] = useState(0)
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAttempt(createBridgeAttempt())
+  }, [])
 
   const { bridgeLimit, warningStart, weightBlockColors } = attempt
   const displayMaxKg = bridgeLimit + DISPLAY_HEADROOM_KG
