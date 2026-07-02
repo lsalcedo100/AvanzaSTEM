@@ -2,24 +2,29 @@
 
 import { Lock, CheckCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { LEVELS, SANDBOX_LEVEL_ID } from "./levels"
-import type { Progress } from "./types"
+import { SANDBOX_LEVEL_ID } from "./levels"
+import type { LogicGameCopy } from "./copy"
+import type { Level, Progress } from "./types"
 
 export function LevelSelector({
   activeLevelId,
   progress,
   isUnlocked,
   onSelect,
+  levels,
+  copy,
 }: {
   activeLevelId: number
   progress: Progress
   isUnlocked: (id: number) => boolean
   onSelect: (id: number) => void
+  levels: Level[]
+  copy: LogicGameCopy
 }) {
-  const items = [...LEVELS.map((l) => ({ id: l.id, label: `${l.id}` })), { id: SANDBOX_LEVEL_ID, label: "Sandbox" }]
+  const items = [...levels.map((l) => ({ id: l.id, label: `${l.id}` })), { id: SANDBOX_LEVEL_ID, label: copy.sandbox }]
 
   return (
-    <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Levels">
+    <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label={copy.levelsAria}>
       {items.map((item) => {
         const unlocked = isUnlocked(item.id)
         const solved = progress.levels[item.id]?.solved
@@ -44,7 +49,7 @@ export function LevelSelector({
           >
             {solved && <CheckCircle2 className="h-3.5 w-3.5 text-avanza-green" />}
             {!unlocked && <Lock className="h-3 w-3" />}
-            {item.id === SANDBOX_LEVEL_ID ? item.label : `Level ${item.label}`}
+            {item.id === SANDBOX_LEVEL_ID ? item.label : `${copy.level} ${item.label}`}
           </button>
         )
       })}

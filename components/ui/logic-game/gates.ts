@@ -1,4 +1,5 @@
 import type { GateSlot, GateType, Level } from "./types"
+import { formatLogicText, type LogicGameCopy } from "./copy"
 
 export function evalGate(type: GateType, a: number, b: number): number {
   switch (type) {
@@ -108,29 +109,30 @@ export function explainRow(
   level: Level,
   selections: Record<string, GateType | undefined>,
   result: RowResult,
+  copy: LogicGameCopy,
 ): string {
   const inputDescr = level.inputs
     .map((name, i) => {
       const label = level.truthTable.inputNames[name] ?? name
       const friendlyLabel = label.endsWith("?") ? label.slice(0, -1).toLowerCase() : label.toLowerCase()
-      const value = result.row.inputs[i] ? level.truthTable.inputOnText ?? "Yes" : level.truthTable.inputOffText ?? "No"
-      return `${friendlyLabel} is ${value}`
+      const value = result.row.inputs[i] ? level.truthTable.inputOnText ?? copy.yes : level.truthTable.inputOffText ?? copy.no
+      return formatLogicText(copy.inputState, { label: friendlyLabel, value })
     })
-    .join(" and ")
+    .join(copy.inputJoiner)
   const output = level.outputs[0]
   const outputText = output ? level.truthTable.outputs.find((o) => o.name === output.name) : undefined
-  const outName = outputText?.label ?? output?.label ?? "the output"
+  const outName = outputText?.label ?? output?.label ?? copy.output
   const lastGate = level.gates[level.gates.length - 1]
   const gateType = lastGate ? selections[lastGate.id] : undefined
 
-  if (!gateType) return `Pick a gate to see what happens when ${inputDescr}.`
+  if (!gateType) return formatLogicText(copy.pickGateRow, { inputs: inputDescr })
 
   const got = result.got[0]
   const expected = result.row.outputs[0]
-  const gotText = got ? outputText?.onText ?? "Yes" : outputText?.offText ?? "No"
-  const expectedText = expected ? outputText?.onText ?? "Yes" : outputText?.offText ?? "No"
+  const gotText = got ? outputText?.onText ?? copy.yes : outputText?.offText ?? copy.no
+  const expectedText = expected ? outputText?.onText ?? copy.yes : outputText?.offText ?? copy.no
   if (result.matches) {
-    return `Correct. When ${inputDescr}, your ${gateType} gate makes ${gotText}, matching ${outName}.`
+    return formatLogicText(copy.correctRow, { inputs: inputDescr, gate: gateType, got: gotText, output: outName })
   }
-  return `When ${inputDescr}, your ${gateType} gate makes ${gotText}, but the goal is: ${expectedText}.`
+  return formatLogicText(copy.wrongRow, { inputs: inputDescr, gate: gateType, got: gotText, expected: expectedText })
 }

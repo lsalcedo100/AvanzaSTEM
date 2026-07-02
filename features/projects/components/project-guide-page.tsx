@@ -28,7 +28,7 @@ const DEDICATED_FAQ_SLUGS = new Set(["popsicle-stick-bridge", "lego-robot-builde
  * correctly localized content and JSON-LD without duplicating page markup.
  */
 export function ProjectGuidePage({ slug, language }: { slug: string; language: Language }) {
-  const project = getProjectGuide(slug, "en")
+  const project = getProjectGuide(slug, language)
 
   if (!project) {
     notFound()

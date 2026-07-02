@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { formatLogicText, type LogicGameCopy } from "./copy"
 import type { RowResult } from "./gates"
 
 export type FeedbackState = "no-gate" | "partial" | "wrong" | "solved"
@@ -13,14 +14,14 @@ export function getFeedbackState(allSelected: boolean, results: RowResult[]): Fe
   return "partial"
 }
 
-export function FeedbackPanel({ state, results }: { state: FeedbackState; results: RowResult[] }) {
+export function FeedbackPanel({ state, results, copy }: { state: FeedbackState; results: RowResult[]; copy: LogicGameCopy }) {
   const matchCount = results.filter((r) => r.matches).length
 
   const message = {
-    "no-gate": "Pick a gate to test your circuit.",
-    partial: `${matchCount} of ${results.length} rows match. Check the rows marked Try again.`,
-    wrong: "Not quite. Compare the rows where your output differs from the target.",
-    solved: "All rows match. Your circuit works!",
+    "no-gate": copy.feedbackNoGate,
+    partial: formatLogicText(copy.feedbackPartial, { matchCount, total: results.length }),
+    wrong: copy.feedbackWrong,
+    solved: copy.feedbackSolved,
   }[state]
 
   return (

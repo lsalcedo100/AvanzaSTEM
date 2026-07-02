@@ -1,11 +1,13 @@
-export function ProgressBar({ completed, total }: { completed: number; total: number }) {
+import { formatLogicText, type LogicGameCopy } from "./copy"
+
+export function ProgressBar({ completed, total, copy }: { completed: number; total: number; copy: LogicGameCopy }) {
   const pct = Math.round((completed / total) * 100)
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-avanza-dark/60">
-        <span>Progress</span>
+        <span>{copy.progress}</span>
         <span>
-          {completed} of {total} circuits completed
+          {formatLogicText(copy.progressCount, { completed, total })}
         </span>
       </div>
       <div

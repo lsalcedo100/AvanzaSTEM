@@ -1,28 +1,30 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { GATE_INFO } from "./gates"
+import type { LogicGameCopy } from "./copy"
 import type { GateSlot, GateType } from "./types"
 
 export function GatePicker({
   slot,
   selected,
   onSelect,
+  copy,
 }: {
   slot: GateSlot
   selected: GateType | undefined
   onSelect: (gate: GateType) => void
+  copy: LogicGameCopy
 }) {
   return (
     <div className="relative z-30 flex flex-wrap items-center gap-2 rounded-2xl bg-[#fbf7ff] p-3 ring-1 ring-avanza-purple/15">
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Choose a gate">
+      <div className="flex flex-wrap gap-2" role="group" aria-label={copy.chooseGate}>
         {slot.options.map((opt) => (
           <button
             key={opt}
             type="button"
             onClick={() => onSelect(opt)}
             aria-pressed={selected === opt}
-            aria-label={`${opt}: ${GATE_INFO[opt].description}`}
+            aria-label={`${opt}: ${copy.gateInfo[opt]}`}
             className={cn(
               "group relative inline-flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-xs font-extrabold uppercase tracking-wider transition",
               selected === opt
@@ -38,7 +40,7 @@ export function GatePicker({
               <span className="mb-1 block font-mono text-[11px] font-extrabold uppercase tracking-wider text-avanza-green">
                 {opt}
               </span>
-              {GATE_INFO[opt].description}
+              {copy.gateInfo[opt]}
             </span>
           </button>
         ))}

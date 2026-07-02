@@ -88,11 +88,11 @@ export function CurriculumsPageContent() {
   ]
 
   const projectsToTry = [
-    { href: "/projects/my-first-python-program", label: "first Python quiz game" },
-    { href: "/projects/popsicle-stick-bridge", label: "popsicle stick truss bridge" },
-    { href: "/projects/simple-circuit-light", label: "simple circuit light" },
-    { href: "/projects/baking-soda-volcano", label: "baking soda volcano" },
-    { href: "/projects/lego-robot-builder", label: "LEGO SPIKE Prime Super Cleanup robot" },
+    { href: "/projects/my-first-python-program", label: t.curriculumsPage.projectChipPython },
+    { href: "/projects/popsicle-stick-bridge", label: t.curriculumsPage.projectChipBridge },
+    { href: "/projects/simple-circuit-light", label: t.curriculumsPage.projectChipCircuit },
+    { href: "/projects/baking-soda-volcano", label: t.curriculumsPage.projectChipVolcano },
+    { href: "/projects/lego-robot-builder", label: t.curriculumsPage.projectChipRobot },
   ]
 
   return (
@@ -122,11 +122,9 @@ export function CurriculumsPageContent() {
 
       <section className="border-b border-border bg-background py-12">
         <FadeIn className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-2xl font-extrabold text-foreground">Start learning now</h2>
+          <h2 className="text-2xl font-extrabold text-foreground">{t.curriculumsPage.startNowTitle}</h2>
           <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-            These free curriculum paths are useful now: start with the available lessons below, then
-            use each project guide as a classroom activity, after-school club plan, or at-home STEM
-            challenge while fuller lesson sequences continue to grow.
+            {t.curriculumsPage.startNowDesc}
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
             {projectsToTry.map((project) => (

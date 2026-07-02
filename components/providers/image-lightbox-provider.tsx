@@ -10,6 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react"
+import { useLanguage } from "@/components/providers/language-provider"
 
 type LightboxImage = {
   src: string
@@ -24,6 +25,7 @@ type ImageLightboxContextType = {
 const ImageLightboxContext = createContext<ImageLightboxContextType | undefined>(undefined)
 
 export function ImageLightboxProvider({ children }: { children: ReactNode }) {
+  const { t } = useLanguage()
   const [activeImage, setActiveImage] = useState<LightboxImage | null>(null)
 
   const closeLightbox = useCallback(() => {
@@ -74,7 +76,7 @@ export function ImageLightboxProvider({ children }: { children: ReactNode }) {
         >
           <button
             type="button"
-            aria-label="Close image"
+            aria-label={t.galleryPage.close}
             className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             onClick={closeLightbox}
           >

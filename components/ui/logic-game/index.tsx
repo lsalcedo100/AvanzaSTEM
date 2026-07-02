@@ -4,12 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { CompletionModal } from "./CompletionModal"
+import { logicGameCopy, type LogicGameCopy } from "./copy"
 import { evalAgainstTarget } from "./gates"
 import { GatePicker } from "./GatePicker"
 import { FeedbackPanel, getFeedbackState } from "./FeedbackPanel"
 import { HintPanel } from "./HintPanel"
 import { LevelSelector } from "./LevelSelector"
-import { LEVELS, SANDBOX_LEVEL_ID, TOTAL_LEVELS } from "./levels"
+import { getLogicLevels, SANDBOX_LEVEL_ID, TOTAL_LEVELS } from "./levels"
 import { MissionCard } from "./MissionCard"
 import { ProgressBar } from "./ProgressBar"
 import { SandboxChallenge } from "./SandboxChallenge"
@@ -23,13 +24,17 @@ function GuidedLevel({
   onSolved,
   onAdvance,
   hasNext,
+  levels,
+  copy,
 }: {
   levelId: number
   onSolved: (attempts: number, hintsUsed: number) => void
   onAdvance: () => void
   hasNext: boolean
+  levels: ReturnType<typeof getLogicLevels>
+  copy: LogicGameCopy
 }) {
-  const level = LEVELS.find((l) => l.id === levelId)!
+  const level = levels.find((l) => l.id === levelId)!
   const [selections, setSelections] = useState<Record<string, GateType | undefined>>({})
   const [hintsRevealed, setHintsRevealed] = useState(0)
   const [attempts, setAttempts] = useState(0)
@@ -70,7 +75,7 @@ function GuidedLevel({
         <p className="mt-1 text-sm leading-relaxed text-avanza-dark/70">{level.behaviorDescription}</p>
       </div>
 
-      <MissionCard level={level} />
+      <MissionCard level={level} copy={copy} />
 
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <div className="flex flex-col gap-4">
@@ -81,24 +86,25 @@ function GuidedLevel({
                 slot={g}
                 selected={selections[g.id]}
                 onSelect={(gate) => setSelections((p) => ({ ...p, [g.id]: gate }))}
+                copy={copy}
               />
             ))}
           </div>
 
-          <FeedbackPanel state={feedbackState} results={results} />
-          <HintPanel hints={level.hints} revealed={hintsRevealed} onReveal={() => setHintsRevealed((n) => Math.min(n + 1, level.hints.length))} />
+          <FeedbackPanel state={feedbackState} results={results} copy={copy} />
+          <HintPanel hints={level.hints} revealed={hintsRevealed} onReveal={() => setHintsRevealed((n) => Math.min(n + 1, level.hints.length))} copy={copy} />
 
           <button
             type="button"
             onClick={() => setSelections({})}
             className="inline-flex w-fit items-center gap-1.5 rounded-full bg-avanza-dark/8 px-3 py-1.5 text-xs font-bold text-avanza-dark/70 transition hover:bg-avanza-dark/15"
           >
-            Reset
+            {copy.reset}
           </button>
         </div>
 
         <div className="rounded-3xl bg-avanza-dark p-7 text-primary-foreground">
-          <TruthTable level={level} selections={selections} results={results} allSelected={allSelected} />
+          <TruthTable level={level} selections={selections} results={results} allSelected={allSelected} copy={copy} />
         </div>
       </div>
 
@@ -111,6 +117,7 @@ function GuidedLevel({
           totalRows={results.length}
           onNext={onAdvance}
           hasNext={hasNext}
+          copy={copy}
         />
       )}
     </div>
@@ -118,7 +125,9 @@ function GuidedLevel({
 }
 
 export function BooleanLogicGame() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
+  const copy = logicGameCopy[language]
+  const levels = getLogicLevels(language)
   const { progress, completeTutorial, completeLevel, isUnlocked, completedCount } = useLogicGameProgress()
   const [activeLevelId, setActiveLevelId] = useState(1)
 
@@ -149,14 +158,14 @@ export function BooleanLogicGame() {
           <div className="relative mt-12">
             <div className="relative flex flex-col gap-6 overflow-visible rounded-3xl bg-white p-5 ring-1 ring-avanza-dark/10 md:p-7">
               {!progress.tutorialDone ? (
-                <TutorialPanel onDone={completeTutorial} />
+                <TutorialPanel onDone={completeTutorial} copy={copy} />
               ) : (
                 <>
-                  <ProgressBar completed={completedCount} total={TOTAL_LEVELS} />
-                  <LevelSelector activeLevelId={activeLevelId} progress={progress} isUnlocked={isUnlocked} onSelect={setActiveLevelId} />
+                  <ProgressBar completed={completedCount} total={TOTAL_LEVELS} copy={copy} />
+                  <LevelSelector activeLevelId={activeLevelId} progress={progress} isUnlocked={isUnlocked} onSelect={setActiveLevelId} levels={levels} copy={copy} />
 
                   {activeLevelId === SANDBOX_LEVEL_ID ? (
-                    <SandboxChallenge />
+                    <SandboxChallenge copy={copy} />
                   ) : (
                     <GuidedLevel
                       key={activeLevelId}
@@ -164,6 +173,8 @@ export function BooleanLogicGame() {
                       onSolved={handleSolved(activeLevelId)}
                       onAdvance={() => setActiveLevelId(nextLevelId)}
                       hasNext={hasNext}
+                      levels={levels}
+                      copy={copy}
                     />
                   )}
                 </>

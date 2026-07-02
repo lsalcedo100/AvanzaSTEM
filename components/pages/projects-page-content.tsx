@@ -34,31 +34,11 @@ export function ProjectsPageContent() {
       ? taggedProjects
       : taggedProjects.filter((p) => p.category === activeFilter)
 
-  const learningPaths = [
-    {
-      title: "Engineering projects for kids",
-      copy: "Build structures and test strength, distance, or stability.",
-      href: "/projects/popsicle-stick-bridge",
-      link: "Warren truss bridge",
-    },
-    {
-      title: "Coding projects",
-      copy: "Write beginner-friendly programs students can run and customize.",
-      href: "/projects/my-first-python-program",
-      link: "Python quiz game for kids",
-    },
-    {
-      title: "Robotics projects for kids",
-      copy: "Build with LEGO, then plan the steps that make it move.",
-      href: "/projects/lego-robot-builder",
-      link: "LEGO robot builder",
-    },
-    {
-      title: "Science fair projects",
-      copy: "Turn demos into investigations with variables and data.",
-      href: "/projects/coke-mentos-experiment",
-      link: "mentos and soda science project",
-    },
+  const learningPathHrefs = [
+    "/projects/popsicle-stick-bridge",
+    "/projects/my-first-python-program",
+    "/projects/lego-robot-builder",
+    "/projects/coke-mentos-experiment",
   ]
 
   return (
@@ -74,52 +54,44 @@ export function ProjectsPageContent() {
         </FadeIn>
       </section>
 
-      {language === "en" && (
-        <section className="border-b border-border bg-background py-14">
-          <FadeIn className="mx-auto max-w-4xl px-6">
-            <h2 className="text-2xl font-bold text-foreground">What Is a STEM Project?</h2>
-            <p className="mt-4 text-base leading-7 text-muted-foreground">
-              A STEM project is a hands-on activity where kids design, build, test, or
-              investigate something themselves, instead of just reading about how it works.
-              Science, technology, engineering, and math show up together: a bridge build
-              uses engineering and math, a quiz game uses coding and logic, and a kitchen
-              experiment uses the scientific method from start to finish.
-            </p>
-            <p className="mt-4 text-base leading-7 text-muted-foreground">
-              The best beginner STEM projects give kids a clear goal, like building a bridge
-              that holds weight, writing a program that asks questions, or growing crystals
-              overnight. Then they can test their first attempt, see what happens, and improve it.
-            </p>
-            <p className="mt-4 text-base leading-7 text-muted-foreground">
-              Want a structured plan instead?{" "}
-              <Link
-                href="/curriculums"
-                className="font-semibold text-foreground underline underline-offset-4"
-              >
-                Browse our free curriculum paths
-              </Link>{" "}
-              or{" "}
-              <Link
-                href="/workshops"
-                className="font-semibold text-foreground underline underline-offset-4"
-              >
-                find an in-person STEM workshop
-              </Link>{" "}
-              near you.
-            </p>
-          </FadeIn>
-        </section>
-      )}
+      <section className="border-b border-border bg-background py-14">
+        <FadeIn className="mx-auto max-w-4xl px-6">
+          <h2 className="text-2xl font-bold text-foreground">{t.projectsPage.stemProjectTitle}</h2>
+          <p className="mt-4 text-base leading-7 text-muted-foreground">
+            {t.projectsPage.stemProjectP1}
+          </p>
+          <p className="mt-4 text-base leading-7 text-muted-foreground">
+            {t.projectsPage.stemProjectP2}
+          </p>
+          <p className="mt-4 text-base leading-7 text-muted-foreground">
+            {t.projectsPage.stemProjectP3Start}{" "}
+            <Link
+              href="/curriculums"
+              className="font-semibold text-foreground underline underline-offset-4"
+            >
+              {t.projectsPage.stemProjectCurriculumLink}
+            </Link>{" "}
+            {t.projectsPage.stemProjectOr}{" "}
+            <Link
+              href="/workshops"
+              className="font-semibold text-foreground underline underline-offset-4"
+            >
+              {t.projectsPage.stemProjectWorkshopLink}
+            </Link>
+            {language === "zh" ? t.projectsPage.stemProjectP3End : ` ${t.projectsPage.stemProjectP3End}`}
+          </p>
+        </FadeIn>
+      </section>
 
       <section className="border-b border-border bg-secondary/40 py-7">
         <div className="mx-auto grid max-w-7xl gap-3 px-6 md:grid-cols-2 lg:grid-cols-4">
-          {learningPaths.map((path, i) => (
+          {t.projectsPage.learningPaths.map((path, i) => (
             <FadeIn key={path.title} delay={i * 60}>
               <article className="h-full rounded-md border border-border bg-background px-4 py-3.5">
                 <h2 className="text-sm font-bold leading-5 text-foreground">{path.title}</h2>
                 <p className="mt-1 text-xs leading-5 text-muted-foreground">{path.copy}</p>
                 <Link
-                  href={path.href}
+                  href={learningPathHrefs[i] ?? "/projects"}
                   className="mt-2 inline-flex text-sm font-semibold text-avanza-green-dark underline underline-offset-4"
                 >
                   {path.link}

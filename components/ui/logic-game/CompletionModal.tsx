@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo } from "react"
+import { formatLogicText, type LogicGameCopy } from "./copy"
 import type { Level } from "./types"
 
 const CONFETTI_COLORS = ["#a78bfa", "#fb923c", "#2dd4bf", "#facc15", "#34d399", "#f472b6"]
@@ -58,6 +59,7 @@ export function CompletionModal({
   totalRows,
   onNext,
   hasNext,
+  copy,
 }: {
   level: Level
   attempts: number
@@ -66,38 +68,39 @@ export function CompletionModal({
   totalRows: number
   onNext: () => void
   hasNext: boolean
+  copy: LogicGameCopy
 }) {
   return (
     <div className="relative overflow-hidden rounded-2xl bg-avanza-dark p-5 text-white shadow-[0_28px_64px_-30px_rgba(26,26,46,0.5)]">
       <Confetti />
       <div className="relative flex flex-col gap-3">
         <div className="inline-flex w-fit items-center gap-2 rounded-full bg-avanza-green px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-avanza-dark">
-          Circuit complete!
+          {copy.circuitComplete}
         </div>
 
         <div className="flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2">
-          <span className="text-sm font-extrabold">Badge earned: {level.badge.name}</span>
+          <span className="text-sm font-extrabold">{formatLogicText(copy.badgeEarned, { badge: level.badge.name })}</span>
         </div>
 
         <dl className="grid grid-cols-3 gap-2 text-center text-xs">
           <div className="rounded-lg bg-white/5 px-2 py-2">
-            <dt className="text-white/60">Rows matched</dt>
+            <dt className="text-white/60">{copy.rowsMatched}</dt>
             <dd className="font-mono text-base font-extrabold">
               {rowsMatched}/{totalRows}
             </dd>
           </div>
           <div className="rounded-lg bg-white/5 px-2 py-2">
-            <dt className="text-white/60">Attempts</dt>
+            <dt className="text-white/60">{copy.attempts}</dt>
             <dd className="font-mono text-base font-extrabold">{attempts}</dd>
           </div>
           <div className="rounded-lg bg-white/5 px-2 py-2">
-            <dt className="text-white/60">Hints used</dt>
+            <dt className="text-white/60">{copy.hintsUsed}</dt>
             <dd className="font-mono text-base font-extrabold">{hintsUsed}</dd>
           </div>
         </dl>
 
         <div className="rounded-xl bg-white/5 px-3 py-2.5 text-sm leading-relaxed text-white/85">
-          <span className="font-extrabold text-avanza-green">What you learned: </span>
+          <span className="font-extrabold text-avanza-green">{copy.whatLearned} </span>
           {level.successExplanation}
         </div>
         <p className="text-xs leading-relaxed text-white/55">{level.realWorldConnection}</p>
@@ -108,7 +111,7 @@ export function CompletionModal({
             onClick={onNext}
             className="inline-flex w-fit items-center gap-2 self-end rounded-full bg-avanza-green px-4 py-2 text-sm font-extrabold text-avanza-dark transition hover:brightness-95"
           >
-            Next level
+            {copy.nextLevel}
           </button>
         )}
       </div>

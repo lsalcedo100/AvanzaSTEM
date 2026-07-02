@@ -7,6 +7,7 @@ import {
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
 } from "react"
+import { useLanguage } from "@/components/providers/language-provider"
 import type {
   Body as MatterBody,
   Engine as MatterEngine,
@@ -14,6 +15,7 @@ import type {
   Runner as MatterRunner,
 } from "matter-js"
 import { FadeIn } from "@/components/ui/animate"
+import type { Language } from "@/i18n/translations"
 
 const PLAYFIELD_W = 760
 const RIGHT_FALLOFF_W = 120
@@ -119,6 +121,164 @@ const LEVELS: Level[] = [
   },
 ]
 
+const JENGA_COPY: Record<Language, {
+  levels: Array<{ name: string; tip: string }>
+  initialCoach: string
+  holdCoach: string
+  lostSupport: string
+  lostSupportRebuild: string
+  continueCoach: string
+  mission: string
+  levelCount: string
+  start: string
+  nextChallenge: string
+  keepBuilding: string
+  tryAgain: string
+  rebuildTower: string
+  state: string
+  hold: string
+  stableHeight: string
+  bestHeight: string
+  target: string
+  row: string
+  rows: string
+  stability: string
+  supplyTray: string
+  notTested: string
+  closeComplete: string
+  levelComplete: string
+  greatBuild: string
+  success: string
+  rebuildThisLevel: string
+  towerCollapsed: string
+  rebuildSupport: string
+  collapseTip: string
+  phase: Record<GamePhase, string>
+  band: Record<StabilityBand, string>
+}> = {
+  en: {
+    levels: LEVELS.map((level) => ({ name: level.name, tip: level.tip })),
+    initialCoach: "Build to the goal line, then let the tower settle.",
+    holdCoach: "Hold steady. Do not move blocks during the countdown.",
+    lostSupport: "The tower lost its support path.",
+    lostSupportRebuild: "The tower lost its support path. Rebuild from a wider base.",
+    continueCoach: "Keep building from the same tower, or adjust blocks before trying the hold again.",
+    mission: "Build a tower {rows} rows tall and keep it standing for {seconds} seconds.",
+    levelCount: "Level {current} of {total}",
+    start: "Start",
+    nextChallenge: "Next Challenge",
+    keepBuilding: "Keep Building",
+    tryAgain: "Try Again",
+    rebuildTower: "Rebuild Tower",
+    state: "State",
+    hold: "Hold",
+    stableHeight: "Stable Height",
+    bestHeight: "Best Height",
+    target: "Target",
+    row: "row",
+    rows: "rows",
+    stability: "Stability",
+    supplyTray: "Supply tray",
+    notTested: "Not tested",
+    closeComplete: "Close level complete message and keep building",
+    levelComplete: "Level Complete!",
+    greatBuild: "Great build.",
+    success: "You reached {rows} stable rows and kept the tower standing for {seconds} seconds.",
+    rebuildThisLevel: "Rebuild This Level",
+    towerCollapsed: "Tower collapsed!",
+    rebuildSupport: "Rebuild the support path.",
+    collapseTip: "Try a wider bottom, keep the next block closer to center, and let the tower settle before going taller.",
+    phase: { loading: "Loading", ready: "Ready", building: "Building", holding: "Holding", success: "Complete", collapsed: "Collapsed", error: "Error" },
+    band: { stable: "Stable", wobbling: "Wobbling", danger: "Danger", collapsed: "Collapsed" },
+  },
+  es: {
+    levels: [
+      { name: "Primera torre", tip: "Solo bloques normales. Construye una torre centrada usando la bandeja." },
+      { name: "Construccion mas alta", tip: "A mayor altura, los pequenos desplazamientos importan. Mantén cada fila sobre el centro." },
+      { name: "Base estrecha", tip: "La zona de apoyo es mas angosta, asi que el centro de peso importa mas." },
+      { name: "Bloques pesados", tip: "Los bloques oscuros pesan mas. Ayudan abajo y estorban arriba." },
+      { name: "Prueba de viento", tip: "El viento empieza durante la cuenta. Una torre ancha y centrada sobrevive mejor a las rafagas." },
+    ],
+    initialCoach: "Construye hasta la linea de meta y deja que la torre se estabilice.",
+    holdCoach: "Mantenla estable. No muevas bloques durante la cuenta regresiva.",
+    lostSupport: "La torre perdio su camino de soporte.",
+    lostSupportRebuild: "La torre perdio su camino de soporte. Reconstruye con una base mas ancha.",
+    continueCoach: "Sigue construyendo desde la misma torre o ajusta bloques antes de intentar la cuenta otra vez.",
+    mission: "Construye una torre de {rows} filas y mantenla de pie durante {seconds} segundos.",
+    levelCount: "Nivel {current} de {total}",
+    start: "Empezar",
+    nextChallenge: "Siguiente reto",
+    keepBuilding: "Seguir construyendo",
+    tryAgain: "Intentar de nuevo",
+    rebuildTower: "Reconstruir torre",
+    state: "Estado",
+    hold: "Cuenta",
+    stableHeight: "Altura estable",
+    bestHeight: "Mejor altura",
+    target: "Meta",
+    row: "fila",
+    rows: "filas",
+    stability: "Estabilidad",
+    supplyTray: "Bandeja de bloques",
+    notTested: "Sin probar",
+    closeComplete: "Cerrar mensaje de nivel completado y seguir construyendo",
+    levelComplete: "Nivel completado!",
+    greatBuild: "Gran construccion.",
+    success: "Alcanzaste {rows} filas estables y mantuviste la torre de pie durante {seconds} segundos.",
+    rebuildThisLevel: "Reconstruir este nivel",
+    towerCollapsed: "La torre colapso!",
+    rebuildSupport: "Reconstruye el camino de soporte.",
+    collapseTip: "Prueba una base mas ancha, coloca el siguiente bloque mas cerca del centro y deja que la torre se estabilice antes de subir mas.",
+    phase: { loading: "Cargando", ready: "Listo", building: "Construyendo", holding: "Sosteniendo", success: "Completo", collapsed: "Colapsada", error: "Error" },
+    band: { stable: "Estable", wobbling: "Tambaleante", danger: "Peligro", collapsed: "Colapsada" },
+  },
+  zh: {
+    levels: [
+      { name: "第一座塔", tip: "只使用普通木块。从托盘中搭一个简单、居中的塔。" },
+      { name: "更高的搭建", tip: "越高时，小小的偏移越重要。让每一层尽量压在中间。" },
+      { name: "窄底座", tip: "支撑区域明显更窄，所以重心位置更关键。" },
+      { name: "重木块", tip: "颜色较深的木块更重。放在底部有帮助，放在顶部会更危险。" },
+      { name: "风力测试", tip: "倒计时阶段会开始刮风。居中、宽底的塔更能撑住风。" },
+    ],
+    initialCoach: "搭到目标线，然后让塔稳定下来。",
+    holdCoach: "保持稳定。倒计时时不要移动木块。",
+    lostSupport: "塔失去了支撑路径。",
+    lostSupportRebuild: "塔失去了支撑路径。用更宽的底座重新搭建。",
+    continueCoach: "可以继续从这座塔往上搭，或先调整木块再尝试保持倒计时。",
+    mission: "搭一座 {rows} 层高的塔，并让它站立 {seconds} 秒。",
+    levelCount: "第 {current} / {total} 关",
+    start: "开始",
+    nextChallenge: "下一项挑战",
+    keepBuilding: "继续搭建",
+    tryAgain: "再试一次",
+    rebuildTower: "重建塔",
+    state: "状态",
+    hold: "保持",
+    stableHeight: "稳定高度",
+    bestHeight: "最佳高度",
+    target: "目标",
+    row: "层",
+    rows: "层",
+    stability: "稳定性",
+    supplyTray: "木块托盘",
+    notTested: "尚未测试",
+    closeComplete: "关闭关卡完成提示并继续搭建",
+    levelComplete: "关卡完成！",
+    greatBuild: "搭得很好。",
+    success: "你达到了 {rows} 层稳定高度，并让塔站立了 {seconds} 秒。",
+    rebuildThisLevel: "重建本关",
+    towerCollapsed: "塔倒了！",
+    rebuildSupport: "重新建立支撑路径。",
+    collapseTip: "试试更宽的底部，让下一块更靠近中心，并在继续加高前等塔稳定下来。",
+    phase: { loading: "加载中", ready: "准备好", building: "搭建中", holding: "保持中", success: "完成", collapsed: "已倒塌", error: "错误" },
+    band: { stable: "稳定", wobbling: "摇晃", danger: "危险", collapsed: "已倒塌" },
+  },
+}
+
+function formatJenga(text: string, values: Record<string, string | number>) {
+  return text.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? `{${key}}`))
+}
+
 const WOOD_COLORS: Record<BlockKind, string[]> = {
   normal: ["#d98b35", "#e39a45", "#c9792d"],
   heavy: ["#9f5a2c", "#8a4a24", "#70401f"],
@@ -140,6 +300,8 @@ const initialStats: GameStats = {
 type MatterModule = typeof import("matter-js")
 
 export function JengaTower() {
+  const { language } = useLanguage()
+  const copy = JENGA_COPY[language]
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const matterRef = useRef<MatterModule | null>(null)
   const worldRef = useRef<{
@@ -153,7 +315,7 @@ export function JengaTower() {
 
   const [levelIndex, setLevelIndex] = useState(0)
   const [phase, setPhase] = useState<GamePhase>("loading")
-  const [stats, setStats] = useState<GameStats>(initialStats)
+  const [stats, setStats] = useState<GameStats>(() => ({ ...initialStats, coach: copy.initialCoach }))
   const [resetKey, setResetKey] = useState(0)
   const [completedLevelIndex, setCompletedLevelIndex] = useState<number | null>(null)
 
@@ -173,6 +335,7 @@ export function JengaTower() {
   const completedLevelIndexRef = useRef<number | null>(null)
 
   const level = LEVELS[levelIndex]
+  const levelCopy = copy.levels[levelIndex] ?? copy.levels[0]
   const targetLineRows = level.targetRows - 1
   const targetLineY = PLATFORM_Y - targetLineRows * BLOCK_H
   const supportLeft = TOWER_CENTER_X - level.supportWidth / 2
@@ -318,9 +481,9 @@ export function JengaTower() {
         band: metrics.band,
         coach:
           phaseRef.current === "holding"
-            ? "Hold steady. Do not move blocks during the countdown."
+            ? copy.holdCoach
             : metrics.band === "collapsed"
-              ? metrics.collapseReason || "The tower lost its support path. Rebuild from a wider base."
+              ? metrics.collapseReason || copy.lostSupportRebuild
               : metrics.coach,
         holdRemaining,
         centerOfMass: metrics.centerOfMass,
@@ -518,14 +681,14 @@ export function JengaTower() {
     setStats((current) => ({
       ...current,
       holdRemaining: HOLD_SECONDS,
-      coach: "Keep building from the same tower, or adjust blocks before trying the hold again.",
+      coach: copy.continueCoach,
     }))
     setPhase("building")
   }
 
   function nextLevel() {
     setLevelIndex((index) => Math.min(index + 1, LEVELS.length - 1))
-    setStats({ ...initialStats })
+    setStats({ ...initialStats, coach: copy.initialCoach })
     completedLevelIndexRef.current = null
     setCompletedLevelIndex(null)
     bestHeightRef.current = 0
@@ -688,47 +851,35 @@ export function JengaTower() {
       cancelled = true
       destroyWorldRef.current()
     }
-  }, [level, resetKey])
+  }, [copy.holdCoach, copy.lostSupportRebuild, level, resetKey])
 
-  const missionText = `Build a tower ${level.targetRows} rows tall and keep it standing for ${HOLD_SECONDS} seconds.`
-  const phaseLabel = getPhaseLabel(phase, stats.band)
+  const missionText = formatJenga(copy.mission, { rows: level.targetRows, seconds: HOLD_SECONDS })
+  const phaseLabel = getPhaseLabel(phase, stats.band, copy)
   const hasNextLevel = levelIndex < LEVELS.length - 1
   const levelCompleted = phase === "success" || completedLevelIndex === levelIndex
   const supportGuideHeight = PLATFORM_Y - targetLineY
   const primaryActionLabel =
     phase === "ready"
-      ? "Start"
+      ? copy.start
       : levelCompleted
         ? hasNextLevel
-          ? "Next Challenge"
-          : "Keep Building"
+          ? copy.nextChallenge
+          : copy.keepBuilding
         : phase === "collapsed"
-          ? "Try Again"
+          ? copy.tryAgain
           : ""
   const showPrimaryAction = phase === "ready" || levelCompleted || phase === "collapsed"
   const primaryAction = levelCompleted ? (hasNextLevel ? nextLevel : continueBuilding) : startMission
   const hasTestedTower =
     stats.bestHeight > 0 || stats.stableHeight > 0 || phase === "holding" || levelCompleted || phase === "collapsed"
   const stabilityPercent = hasTestedTower ? stats.stability : 0
-  const stabilityName = hasTestedTower ? stabilityLabel(stats.band) : "Not tested"
+  const stabilityName = hasTestedTower ? stabilityLabel(stats.band, copy) : copy.notTested
 
   return (
     <section className="relative overflow-hidden bg-[#e9f4ff] py-16 md:py-20">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-60"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(20, 94, 143, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 94, 143, 0.12) 1px, transparent 1px)",
-          backgroundSize: "36px 36px",
-        }}
-      />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <FadeIn className="max-w-4xl">
-          <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-avanza-teal-dark">
-            Avanza STEM Engineering Game
-          </p>
-          <h2 className="mt-3 text-balance text-3xl font-black leading-tight text-avanza-dark md:text-5xl">
+          <h2 className="text-balance text-3xl font-black leading-tight text-avanza-dark md:text-5xl">
             Tower Stability Lab
           </h2>
           <p className="mt-4 max-w-3xl text-base font-semibold leading-relaxed text-slate-700 md:text-lg">
@@ -740,7 +891,7 @@ export function JengaTower() {
           <FadeIn delay={80}>
             <div
               role="application"
-              aria-label="Tower Stability Lab physics stacking game"
+              aria-label={copy.stability}
               className="relative overflow-visible rounded-lg border border-sky-900/20 bg-[#0d3b66] shadow-[0_24px_60px_-32px_rgba(15,23,42,0.55)]"
               style={{ touchAction: "none" }}
             >
@@ -781,10 +932,10 @@ export function JengaTower() {
                 }}
               >
                 <span className="absolute left-4 top-3 text-[10px] font-black uppercase tracking-[0.2em] text-sky-50/85">
-                  Supply tray
+                  {copy.supplyTray}
                 </span>
                 <span className="absolute bottom-3 left-4 right-4 border-t border-sky-100/20 pt-2 text-[10px] font-black uppercase tracking-[0.14em] text-sky-50/55">
-                  Drag blocks to the platform
+                  {copy.levels[levelIndex]?.tip ?? level.tip}
                 </span>
               </div>
 
@@ -856,14 +1007,16 @@ export function JengaTower() {
                   onClose={continueBuilding}
                   onNext={nextLevel}
                   onRetry={rebuildTower}
+                  copy={copy}
                 />
               )}
 
               {phase === "collapsed" && (
                 <CollapseOverlay
-                  reason={stats.collapseReason || "The tower lost its support path."}
+                  reason={stats.collapseReason || copy.lostSupport}
                   onRetry={rebuildTower}
                   onRebuild={rebuildTower}
+                  copy={copy}
                 />
               )}
             </div>
@@ -873,9 +1026,9 @@ export function JengaTower() {
             <aside className="grid gap-4">
               <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-avanza-teal-dark">
-                  Level {levelIndex + 1} of {LEVELS.length}
+                  {formatJenga(copy.levelCount, { current: levelIndex + 1, total: LEVELS.length })}
                 </p>
-                <h3 className="mt-2 text-2xl font-black text-avanza-dark">{level.name}</h3>
+                <h3 className="mt-2 text-2xl font-black text-avanza-dark">{levelCopy.name}</h3>
                 <p className="mt-3 text-sm font-semibold leading-relaxed text-slate-700">{missionText}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {showPrimaryAction && (
@@ -892,7 +1045,7 @@ export function JengaTower() {
                     onClick={rebuildTower}
                     className="rounded-md border border-slate-300 bg-white px-4 py-3 text-sm font-black text-avanza-dark transition hover:bg-slate-50"
                   >
-                    Rebuild Tower
+                    {copy.rebuildTower}
                   </button>
                 </div>
               </section>
@@ -900,32 +1053,32 @@ export function JengaTower() {
               <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">State</p>
+                    <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">{copy.state}</p>
                     <p className="mt-1 text-xl font-black text-avanza-dark">{phaseLabel}</p>
                   </div>
                   {phase === "holding" && (
                     <div className="text-right">
-                      <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Hold</p>
+                      <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">{copy.hold}</p>
                       <p className="mt-1 text-3xl font-black text-avanza-orange">{stats.holdRemaining.toFixed(1)}s</p>
                     </div>
                   )}
                 </div>
 
                 <div className="mt-5 grid grid-cols-3 gap-3 text-center">
-                  <StatBox label="Stable Height" value={stats.stableHeight} suffix="rows" />
-                  <StatBox label="Best Height" value={stats.bestHeight} suffix="rows" />
-                  <StatBox label="Target" value={level.targetRows} suffix="rows" />
+                  <StatBox label={copy.stableHeight} value={stats.stableHeight} suffix={copy.rows} singularSuffix={copy.row} />
+                  <StatBox label={copy.bestHeight} value={stats.bestHeight} suffix={copy.rows} singularSuffix={copy.row} />
+                  <StatBox label={copy.target} value={level.targetRows} suffix={copy.rows} singularSuffix={copy.row} />
                 </div>
               </section>
 
               <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-black text-avanza-dark">Stability</p>
+                  <p className="text-sm font-black text-avanza-dark">{copy.stability}</p>
                   <p className={`text-sm font-black ${bandTextClass(stats.band)}`}>
                     {stabilityName} · {Math.round(stabilityPercent)}%
                   </p>
                 </div>
-                <div className="mt-3 h-4 overflow-hidden rounded-sm bg-slate-200" aria-label={`Stability ${Math.round(stabilityPercent)} percent, ${stabilityName}`}>
+                <div className="mt-3 h-4 overflow-hidden rounded-sm bg-slate-200" aria-label={`${copy.stability} ${Math.round(stabilityPercent)} percent, ${stabilityName}`}>
                   <div
                     className={`h-full transition-all duration-200 ${bandBarClass(stats.band)}`}
                     style={{ width: `${stabilityPercent}%` }}
@@ -1414,12 +1567,14 @@ function OutcomeOverlay({
   onClose,
   onNext,
   onRetry,
+  copy,
 }: {
   level: Level
   hasNextLevel: boolean
   onClose: () => void
   onNext: () => void
   onRetry: () => void
+  copy: (typeof JENGA_COPY)[Language]
 }) {
   return (
     <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/62 p-4 backdrop-blur-sm">
@@ -1428,19 +1583,19 @@ function OutcomeOverlay({
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close level complete message and keep building"
+          aria-label={copy.closeComplete}
           className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-md text-xl font-black text-slate-500 transition hover:bg-slate-100 hover:text-avanza-dark focus:outline-none focus:ring-2 focus:ring-avanza-orange"
         >
           x
         </button>
         <p className="text-sm font-black uppercase tracking-[0.18em] text-avanza-green-dark">
-          Level Complete!
+          {copy.levelComplete}
         </p>
         <h3 className="mt-2 text-3xl font-black text-avanza-dark">
-          Great build.
+          {copy.greatBuild}
         </h3>
         <p className="mt-3 text-sm font-bold leading-relaxed text-slate-700">
-          You reached {level.targetRows} stable rows and kept the tower standing for {HOLD_SECONDS} seconds.
+          {formatJenga(copy.success, { rows: level.targetRows, seconds: HOLD_SECONDS })}
         </p>
         <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
           <button
@@ -1448,7 +1603,7 @@ function OutcomeOverlay({
             onClick={onRetry}
             className="rounded-md bg-avanza-dark px-5 py-3 text-sm font-black text-white transition hover:bg-slate-800"
           >
-            Rebuild This Level
+            {copy.rebuildThisLevel}
           </button>
           {hasNextLevel && (
             <button
@@ -1456,7 +1611,7 @@ function OutcomeOverlay({
               onClick={onNext}
               className="rounded-md bg-avanza-orange px-5 py-3 text-sm font-black text-white transition hover:bg-avanza-orange-dark"
             >
-              Next Challenge
+              {copy.nextChallenge}
             </button>
           )}
         </div>
@@ -1469,23 +1624,25 @@ function CollapseOverlay({
   reason,
   onRetry,
   onRebuild,
+  copy,
 }: {
   reason: string
   onRetry: () => void
   onRebuild: () => void
+  copy: (typeof JENGA_COPY)[Language]
 }) {
   return (
     <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/68 p-4 backdrop-blur-sm">
       <div className="max-w-md rounded-lg bg-white p-6 text-center shadow-2xl">
         <p className="text-sm font-black uppercase tracking-[0.18em] text-destructive">
-          Tower collapsed!
+          {copy.towerCollapsed}
         </p>
         <h3 className="mt-2 text-3xl font-black text-avanza-dark">
-          Rebuild the support path.
+          {copy.rebuildSupport}
         </h3>
         <p className="mt-3 text-sm font-bold leading-relaxed text-slate-700">{reason}</p>
         <p className="mt-3 border-l-4 border-avanza-orange bg-orange-50 px-3 py-3 text-left text-sm font-bold leading-relaxed text-slate-700">
-          Try a wider bottom, keep the next block closer to center, and let the tower settle before going taller.
+          {copy.collapseTip}
         </p>
         <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
           <button
@@ -1493,14 +1650,14 @@ function CollapseOverlay({
             onClick={onRetry}
             className="rounded-md bg-avanza-orange px-5 py-3 text-sm font-black text-white transition hover:bg-avanza-orange-dark"
           >
-            Try Again
+            {copy.tryAgain}
           </button>
           <button
             type="button"
             onClick={onRebuild}
             className="rounded-md border border-slate-300 bg-white px-5 py-3 text-sm font-black text-avanza-dark transition hover:bg-slate-50"
           >
-            Rebuild Tower
+            {copy.rebuildTower}
           </button>
         </div>
       </div>
@@ -1528,8 +1685,18 @@ function Confetti() {
   )
 }
 
-function StatBox({ label, value, suffix }: { label: string; value: number; suffix: string }) {
-  const displaySuffix = value === 1 && suffix === "rows" ? "row" : suffix
+function StatBox({
+  label,
+  value,
+  suffix,
+  singularSuffix,
+}: {
+  label: string
+  value: number
+  suffix: string
+  singularSuffix: string
+}) {
+  const displaySuffix = value === 1 ? singularSuffix : suffix
 
   return (
     <div className="rounded-md bg-slate-50 p-3">
@@ -1540,22 +1707,14 @@ function StatBox({ label, value, suffix }: { label: string; value: number; suffi
   )
 }
 
-function getPhaseLabel(phase: GamePhase, band: StabilityBand) {
-  if (phase === "loading") return "Loading"
-  if (phase === "ready") return "Ready"
-  if (phase === "holding") return "Holding"
-  if (phase === "success") return "Complete"
-  if (phase === "collapsed") return "Collapsed"
-  if (phase === "error") return "Error"
-  if (band === "collapsed") return "Collapsed"
-  return band === "stable" ? "Stable" : band === "wobbling" ? "Wobbling" : "Danger"
+function getPhaseLabel(phase: GamePhase, band: StabilityBand, copy: (typeof JENGA_COPY)[Language]) {
+  if (band === "collapsed") return copy.band.collapsed
+  if (phase === "building") return copy.band[band]
+  return copy.phase[phase]
 }
 
-function stabilityLabel(band: StabilityBand) {
-  if (band === "stable") return "Stable"
-  if (band === "wobbling") return "Wobbling"
-  if (band === "collapsed") return "Collapsed"
-  return "Danger"
+function stabilityLabel(band: StabilityBand, copy: (typeof JENGA_COPY)[Language]) {
+  return copy.band[band]
 }
 
 function bandTextClass(band: StabilityBand) {

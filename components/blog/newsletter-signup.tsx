@@ -180,7 +180,7 @@ export function NewsletterSignup({
             className="mx-auto mt-10 flex max-w-4xl flex-col gap-4 sm:flex-row sm:items-center"
           >
             <div aria-hidden="true" className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden">
-              <label htmlFor={websiteId}>Website</label>
+              <label htmlFor={websiteId}>{t.blogPage.websiteField}</label>
               <input
                 id={websiteId}
                 name="website"

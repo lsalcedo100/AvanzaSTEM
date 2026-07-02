@@ -392,7 +392,7 @@ function PromptHero({
               {currentSites.length} {t.home.finderCurrentCount} · New Jersey
             </span>
             <span className="hidden h-1 w-1 rounded-full bg-primary-foreground/40 sm:inline-block" />
-            <span>Free, always</span>
+            <span>{t.home.finderFreeAlways}</span>
             <span className="hidden h-1 w-1 rounded-full bg-primary-foreground/40 sm:inline-block" />
             <span>{t.home.finderLanguageNote}</span>
           </div>

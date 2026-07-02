@@ -335,7 +335,7 @@ export function HostPageContent() {
                 className="mt-4 flex flex-col gap-4"
               >
                 <div aria-hidden="true" className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden">
-                  <label htmlFor="host-hp-field">Leave this field blank</label>
+                  <label htmlFor="host-hp-field">{t.hostPage.leaveBlank}</label>
                   <input
                     id="host-hp-field"
                     type="text"
