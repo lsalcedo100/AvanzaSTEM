@@ -181,6 +181,14 @@ type ShotSettings = {
   kind: ProjectileKind
 }
 
+type DragState = {
+  active: boolean
+  pointerId: number | null
+  moved: boolean
+  startSettings: ShotSettings | null
+  lastSettings: ShotSettings | null
+}
+
 type ObstacleHit = {
   obstacle: ObstacleState
   collision: SegmentRectHit
@@ -225,15 +233,11 @@ export function CatapultLab() {
   const completedLevelSoundIdsRef = useRef<Set<number>>(new Set())
   const previousPhaseRef = useRef<GamePhase>(game.phase)
   const progressReadyRef = useRef(false)
-  const dragRef = useRef<{
-    active: boolean
-    pointerId: number | null
-    moved: boolean
-    lastSettings: ShotSettings | null
-  }>({
+  const dragRef = useRef<DragState>({
     active: false,
     pointerId: null,
     moved: false,
+    startSettings: null,
     lastSettings: null,
   })
 
@@ -425,6 +429,14 @@ export function CatapultLab() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      const key = event.key.toLowerCase()
+
+      if (key === "escape" && dragRef.current.active) {
+        event.preventDefault()
+        cancelManualAim()
+        return
+      }
+
       const target = event.target
       if (
         target instanceof HTMLInputElement ||
@@ -435,7 +447,6 @@ export function CatapultLab() {
       }
 
       const current = gameRef.current
-      const key = event.key.toLowerCase()
       unlockAudio()
 
       if (key === "r") {
@@ -568,7 +579,7 @@ export function CatapultLab() {
     setPower(nextLevel.startPower)
     setProjectileKind(nextLevel.startProjectile ?? nextLevel.allowedProjectiles[0] ?? "standard")
     setDragPoint(null)
-    dragRef.current = { active: false, pointerId: null, moved: false, lastSettings: null }
+    dragRef.current = createIdleDragState()
     updateGame(() => createLevelState(index))
   }
 
@@ -617,6 +628,62 @@ export function CatapultLab() {
     return next
   }
 
+  function createCurrentShotSettings(): ShotSettings {
+    return { angle, power, kind: selectedProjectileKind }
+  }
+
+  function createIdleDragState(): DragState {
+    return {
+      active: false,
+      pointerId: null,
+      moved: false,
+      startSettings: null,
+      lastSettings: null,
+    }
+  }
+
+  function releaseDragPointer(pointerId: number | null) {
+    const svg = svgRef.current
+    if (pointerId === null || !svg?.hasPointerCapture(pointerId)) return
+    svg.releasePointerCapture(pointerId)
+  }
+
+  function cancelManualAim() {
+    const drag = dragRef.current
+    if (!drag.active) return
+
+    releaseDragPointer(drag.pointerId)
+
+    if (drag.startSettings) {
+      setAngle(drag.startSettings.angle)
+      setPower(drag.startSettings.power)
+      setProjectileKind(drag.startSettings.kind)
+    }
+
+    dragRef.current = createIdleDragState()
+    setDragPoint(null)
+  }
+
+  function finishManualAim() {
+    const { pointerId } = dragRef.current
+    releaseDragPointer(pointerId)
+    dragRef.current = createIdleDragState()
+    setDragPoint(null)
+  }
+
+  function isInsidePlayfield(event: PointerEvent<SVGSVGElement>) {
+    const svg = svgRef.current
+    if (!svg) return false
+
+    const rect = svg.getBoundingClientRect()
+    return (
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom
+    )
+  }
+
   function handlePointerDown(event: PointerEvent<SVGSVGElement>) {
     unlockAudio()
     if (!canAim) return
@@ -629,6 +696,7 @@ export function CatapultLab() {
       active: true,
       pointerId: event.pointerId,
       moved: false,
+      startSettings: createCurrentShotSettings(),
       lastSettings: null,
     }
     setDragPoint(world)
@@ -637,6 +705,10 @@ export function CatapultLab() {
   function handlePointerMove(event: PointerEvent<SVGSVGElement>) {
     const drag = dragRef.current
     if (!drag.active || drag.pointerId !== event.pointerId) return
+    if (!isInsidePlayfield(event)) {
+      cancelManualAim()
+      return
+    }
 
     const world = eventToWorld(event)
     const next = setAimFromWorld(world)
@@ -651,17 +723,16 @@ export function CatapultLab() {
   function handlePointerUp(event: PointerEvent<SVGSVGElement>) {
     const drag = dragRef.current
     if (!drag.active || drag.pointerId !== event.pointerId) return
+    if (!isInsidePlayfield(event)) {
+      cancelManualAim()
+      return
+    }
 
     const world = eventToWorld(event)
     const next = setAimFromWorld(world)
     const shouldFire = drag.moved || next.pullDistance > 2.2
 
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId)
-    }
-
-    dragRef.current = { active: false, pointerId: null, moved: false, lastSettings: null }
-    setDragPoint(null)
+    finishManualAim()
 
     if (shouldFire) {
       launchShot({ angle: next.angle, power: next.power, kind: selectedProjectileKind })
@@ -669,11 +740,13 @@ export function CatapultLab() {
   }
 
   function handlePointerCancel(event: PointerEvent<SVGSVGElement>) {
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId)
-    }
-    dragRef.current = { active: false, pointerId: null, moved: false, lastSettings: null }
-    setDragPoint(null)
+    if (dragRef.current.pointerId !== event.pointerId) return
+    cancelManualAim()
+  }
+
+  function handlePointerLeave(event: PointerEvent<SVGSVGElement>) {
+    if (dragRef.current.pointerId !== event.pointerId) return
+    cancelManualAim()
   }
 
   function eventToWorld(event: PointerEvent<SVGSVGElement>): Vec {
@@ -737,6 +810,7 @@ export function CatapultLab() {
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerCancel}
+                onPointerLeave={handlePointerLeave}
               >
                 <image
                   href={PLAYFIELD_BACKGROUND_SRC}

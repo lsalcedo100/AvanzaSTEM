@@ -179,6 +179,241 @@
   75% { transform: translate(var(--bridge-shake-x, 1px), calc(var(--bridge-shake-y, 2px) * -0.55)); }
 }
 
+@keyframes atom-spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes atom-spin-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+
+@keyframes atom-nucleus-pulse {
+  0% { transform: scale(0.7); opacity: 0.85; }
+  60% { transform: scale(1.25); opacity: 0.35; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes atom-nucleus-shake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-1.4px, 1px); }
+  40% { transform: translate(1.6px, -1.2px); }
+  60% { transform: translate(-1.2px, -1px); }
+  80% { transform: translate(1px, 1.4px); }
+}
+
+@keyframes atom-nucleon-jitter {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(var(--jx, 1px), var(--jy, -1px)); }
+  66% { transform: translate(calc(var(--jx, 1px) * -0.8), calc(var(--jy, -1px) * 0.8)); }
+}
+
+@keyframes atom-particle-in {
+  0% { transform: scale(2.4); opacity: 0; }
+  55% { transform: scale(0.82); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes atom-particle-out {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+@keyframes atom-burst-ring {
+  0% { transform: scale(0.35); opacity: 0.85; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+@keyframes atom-spark-fly {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--sx, 0), var(--sy, 0)) scale(0.2); opacity: 0; }
+}
+
+@keyframes atom-card-pop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+
+@keyframes atom-stable-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+  50% { box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.28); }
+}
+
+@keyframes atom-warn-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+  50% { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.32); }
+}
+
+@keyframes atom-banner-in {
+  0% { transform: translateY(-8px) scale(0.94); opacity: 0; }
+  60% { transform: translateY(0) scale(1.02); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* ---- Density Tower experiment animations ---- */
+@keyframes density-stream {
+  0% { opacity: 0; transform: translateX(-50%) scaleY(0.12); }
+  25% { opacity: 0.9; transform: translateX(-50%) scaleY(1); }
+  80% { opacity: 0.85; transform: translateX(-50%) scaleY(1); }
+  100% { opacity: 0; transform: translateX(-50%) scaleY(1); }
+}
+
+/* Falls in from above, slows, and settles — reinforces "things sink/rise to
+   their level". Ease-out gives the deceleration through the layers. */
+@keyframes density-drop {
+  0% { transform: translateY(-330px); }
+  75% { transform: translateY(3px); }
+  100% { transform: translateY(0); }
+}
+
+/* Gentle bob for objects that float on a liquid surface. */
+@keyframes density-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3.5px); }
+}
+
+@keyframes density-bubble {
+  0% { transform: translateY(2px) scale(0.5); opacity: 0; }
+  25% { opacity: 0.75; }
+  100% { transform: translateY(-42px) scale(1); opacity: 0; }
+}
+
+@keyframes density-splash {
+  0% { transform: scale(0.4); opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes density-shimmer {
+  0% { transform: translateX(-120%) skewX(-12deg); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateX(340%) skewX(-12deg); opacity: 0; }
+}
+
+@keyframes density-drain {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(18px); }
+}
+
+.density-draining {
+  animation: density-drain 460ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* ---- Density reward feedback ---- */
+/* Checkmark / correct pop. */
+@keyframes density-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  55% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.density-pop { animation: density-pop 380ms cubic-bezier(0.2, 0.8, 0.3, 1.2) both; }
+
+/* Gentle shake for an incorrect answer (never harsh). */
+@keyframes density-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  60% { transform: translateX(4px); }
+  80% { transform: translateX(-2px); }
+}
+.density-shake { animation: density-shake 0.4s ease-in-out; }
+
+/* Level-complete celebration: a burst ring + falling confetti + banner. */
+@keyframes density-confetti {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(150px) rotate(320deg); opacity: 0; }
+}
+.density-confetti-piece { animation: density-confetti 1000ms ease-in forwards; }
+
+@keyframes density-burst {
+  0% { transform: scale(0.4); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.density-burst-ring { animation: density-burst 720ms ease-out forwards; }
+
+@keyframes density-banner-pop {
+  0% { transform: translateY(-8px) scale(0.9); opacity: 0; }
+  60% { transform: translateY(0) scale(1.04); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.density-banner-pop { animation: density-banner-pop 460ms cubic-bezier(0.2, 0.8, 0.3, 1.2) both; }
+
+/* New object card reveal. */
+@keyframes density-reveal {
+  0% { transform: scale(0.5) rotate(-8deg); opacity: 0; }
+  60% { transform: scale(1.08) rotate(2deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.density-reveal { animation: density-reveal 520ms cubic-bezier(0.2, 0.8, 0.3, 1.2) both; }
+
+/* Badge unlock flip + glow. */
+@keyframes density-badge-glow {
+  0% { transform: scale(0.6) rotateY(-90deg); opacity: 0; }
+  60% { transform: scale(1.1) rotateY(10deg); }
+  100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+}
+.density-badge-glow { animation: density-badge-glow 620ms cubic-bezier(0.2, 0.8, 0.3, 1.2) both; }
+
+/* ---- Circuit Builder animations ---- */
+/* Marching dashes = current flowing along a powered wire. */
+@keyframes circuit-flow { to { stroke-dashoffset: -12; } }
+.circuit-flow-line {
+  stroke-dasharray: 3 7;
+  stroke-linecap: round;
+  animation: circuit-flow 0.7s linear infinite;
+}
+.circuit-flow-fast { animation-duration: 0.35s; }
+
+/* Battery breathes gently while the circuit is live. */
+@keyframes circuit-battery-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+}
+.circuit-battery-live {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: circuit-battery-pulse 1.9s ease-in-out infinite;
+}
+
+/* Amber halo around the break in an open circuit. */
+@keyframes circuit-break-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.55); }
+  50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0); }
+}
+.circuit-break-ring { animation: circuit-break-pulse 1.4s ease-out infinite; }
+
+/* Red warning halo on a short-circuit tile. */
+@keyframes circuit-short-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.65); }
+  50% { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+}
+.circuit-short-ring { animation: circuit-short-pulse 0.7s ease-out infinite; }
+
+/* Flickering spark for a short. */
+@keyframes circuit-spark { 0%, 100% { opacity: 0.15; } 50% { opacity: 1; } }
+.circuit-spark { animation: circuit-spark 0.35s ease-in-out infinite; }
+
+/* Success celebration. */
+@keyframes circuit-confetti {
+  0% { transform: translateY(-8px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(140px) rotate(340deg); opacity: 0; }
+}
+.circuit-confetti-piece { animation: circuit-confetti 950ms ease-in forwards; }
+
+@keyframes circuit-burst {
+  0% { transform: scale(0.4); opacity: 0.8; }
+  100% { transform: scale(2.3); opacity: 0; }
+}
+.circuit-burst-ring { animation: circuit-burst 700ms ease-out forwards; }
+
+@keyframes circuit-pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  55% { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.circuit-success-pop { animation: circuit-pop 420ms cubic-bezier(0.2, 0.8, 0.3, 1.2) both; }
+
+/* Shake to make a warning feel different from a calm success. */
+@keyframes circuit-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+.circuit-shake { animation: circuit-shake 0.4s ease-in-out; }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

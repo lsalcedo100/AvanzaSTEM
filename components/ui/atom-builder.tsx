@@ -1,14 +1,26 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
 import {
+  type CSSProperties,
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
+import {
+  AlertTriangle,
   Award,
   CheckCircle2,
+  CircleDot,
   Info,
   Lock,
   Minus,
+  MinusCircle,
   Plus,
+  PlusCircle,
   RotateCcw,
+  ShieldCheck,
   Sparkles,
   Star,
   Target,
@@ -82,6 +94,20 @@ export function AtomBuilder() {
     "Choose a mission and build the atom described.",
   )
   const [completion, setCompletion] = useState<LevelCompletion | null>(null)
+  const [anim, setAnim] = useState<{
+    token: number
+    kind: ParticleKind | null
+    delta: number
+    elementChanged: boolean
+  }>({ token: 0, kind: null, delta: 0, elementChanged: false })
+  const [discovery, setDiscovery] = useState<string | null>(null)
+  const discoveryTimer = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (discoveryTimer.current) window.clearTimeout(discoveryTimer.current)
+    }
+  }, [])
 
   function setCounts(counts: ParticleCounts) {
     setProtons(counts.protons)
@@ -135,6 +161,7 @@ export function AtomBuilder() {
     () => analyzeAtom(protons, neutrons, electrons),
     [protons, neutrons, electrons],
   )
+  const visualState = useMemo(() => getVisualState(analysis), [analysis])
   const currentLevel = useMemo(
     () => getLevelById(selectedLevelId),
     [selectedLevelId],
@@ -170,6 +197,21 @@ export function AtomBuilder() {
     if (kind === "proton") setProtons(nextValue)
     if (kind === "neutron") setNeutrons(nextValue)
     if (kind === "electron") setElectrons(nextValue)
+
+    const elementChanged =
+      afterAnalysis.atomicNumber !== beforeAnalysis.atomicNumber &&
+      afterAnalysis.elementName !== ""
+    setAnim((prev) => ({
+      token: prev.token + 1,
+      kind,
+      delta,
+      elementChanged,
+    }))
+    if (elementChanged) {
+      setDiscovery(`New element discovered: ${afterAnalysis.elementName}`)
+      if (discoveryTimer.current) window.clearTimeout(discoveryTimer.current)
+      discoveryTimer.current = window.setTimeout(() => setDiscovery(null), 2800)
+    }
 
     setChangeMessage(
       getChangeMessage(kind, delta, before, after, beforeAnalysis, afterAnalysis),
@@ -287,7 +329,22 @@ export function AtomBuilder() {
   }, [electrons])
 
   return (
-    <section className="relative overflow-hidden bg-[#fbf6ff] py-20">
+    <section className="relative overflow-hidden bg-[#fbf6ff] py-16 sm:py-20">
+      {/* Soft lab grid */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.5]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(26,26,46,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(26,26,46,0.045) 1px, transparent 1px)",
+          backgroundSize: "34px 34px",
+          maskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 40%, #000 55%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 70% at 50% 40%, #000 55%, transparent 100%)",
+        }}
+      />
+      {/* Floating particles */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.45]"
@@ -297,7 +354,7 @@ export function AtomBuilder() {
         }}
       />
 
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-bold uppercase tracking-wider text-avanza-teal">
             {t.home.atomEyebrow}
@@ -333,14 +390,94 @@ export function AtomBuilder() {
                 aria-hidden="true"
                 className="absolute -inset-2 rounded-[28px] bg-avanza-dark/8 [transform:rotate(-0.7deg)]"
               />
-              <div className="relative overflow-hidden rounded-3xl bg-white p-6 shadow-[0_28px_64px_-30px_rgba(26,26,46,0.35)] ring-1 ring-avanza-dark/10 md:p-8">
+              <div
+                className={cn(
+                  "relative overflow-hidden rounded-3xl bg-white p-4 shadow-[0_28px_64px_-30px_rgba(26,26,46,0.35)] ring-1 sm:p-6 md:p-8",
+                  visualState === "invalid"
+                    ? "ring-avanza-orange/40"
+                    : visualState === "unstable"
+                      ? "ring-avanza-purple/35"
+                      : visualState === "stable"
+                        ? "ring-avanza-green/40"
+                        : "ring-avanza-dark/10",
+                )}
+                style={
+                  reduced
+                    ? undefined
+                    : {
+                        animation:
+                          visualState === "invalid" || visualState === "unstable"
+                            ? "atom-warn-glow 1.8s ease-in-out infinite"
+                            : visualState === "stable"
+                              ? "atom-stable-glow 2.4s ease-in-out infinite"
+                              : undefined,
+                      }
+                }
+              >
+                {/* Element discovery banner */}
+                {discovery && (
+                  <div
+                    key={discovery}
+                    className="pointer-events-none absolute inset-x-3 top-3 z-10 flex items-center justify-center"
+                    role="status"
+                  >
+                    <span
+                      className="inline-flex items-center gap-1.5 rounded-full bg-avanza-dark px-4 py-2 text-xs font-extrabold text-white shadow-lg ring-1 ring-white/15 sm:text-sm"
+                      style={
+                        reduced
+                          ? undefined
+                          : { animation: "atom-banner-in 0.5s ease-out both" }
+                      }
+                    >
+                      <Sparkles className="h-4 w-4 text-avanza-green" />
+                      {discovery}
+                    </span>
+                  </div>
+                )}
                 <div className="aspect-square w-full">
                   <AtomSVG
                     protons={protons}
                     neutrons={neutrons}
                     shells={shells}
                     reduced={reduced}
+                    analysis={analysis}
+                    animToken={anim.token}
+                    animKind={anim.kind}
+                    animDelta={anim.delta}
+                    elementChanged={anim.elementChanged}
                   />
+                </div>
+
+                {/* Always-visible science feedback strip */}
+                <div
+                  className={cn(
+                    "mt-4 flex items-start gap-3 rounded-2xl p-4 ring-1",
+                    visualState === "invalid"
+                      ? "bg-avanza-orange/12 ring-avanza-orange/25"
+                      : visualState === "unstable"
+                        ? "bg-avanza-purple/10 ring-avanza-purple/25"
+                        : visualState === "stable"
+                          ? "bg-avanza-green/12 ring-avanza-green/25"
+                          : "bg-avanza-dark/5 ring-avanza-dark/10",
+                  )}
+                >
+                  <StatusIcon state={visualState} />
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-extrabold uppercase tracking-widest text-avanza-dark/60">
+                      {getStabilityStatusLabel(analysis)}
+                      {" · "}
+                      {getIonStatusLabel(analysis)}
+                    </p>
+                    <p className="mt-1 text-sm font-bold leading-relaxed text-avanza-dark">
+                      {analysis.shortExplanation}
+                    </p>
+                    {analysis.warningMessage && (
+                      <p className="mt-1.5 flex items-start gap-1.5 text-xs font-bold leading-relaxed text-avanza-orange-dark">
+                        <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                        {analysis.warningMessage}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 {mode === "challenge" && (
                   <div className="mt-5 rounded-2xl bg-avanza-dark p-4 text-white">
@@ -378,7 +515,7 @@ export function AtomBuilder() {
                 aria-hidden="true"
                 className="absolute -inset-2 rounded-[28px] bg-avanza-dark/8 [transform:rotate(0.6deg)]"
               />
-              <div className="relative flex h-full flex-col gap-5 rounded-3xl bg-avanza-dark p-7 text-primary-foreground shadow-[0_28px_64px_-30px_rgba(26,26,46,0.4)]">
+              <div className="relative flex h-full flex-col gap-5 rounded-3xl bg-avanza-dark p-5 text-primary-foreground shadow-[0_28px_64px_-30px_rgba(26,26,46,0.4)] sm:p-7">
                 {mode === "challenge" ? (
                   <ChallengePanel
                     currentLevel={currentLevel}
@@ -400,28 +537,81 @@ export function AtomBuilder() {
                   </div>
                 )}
 
-                {/* Element name card */}
-                <div className="flex items-center gap-4 rounded-2xl bg-white p-5 text-avanza-dark shadow-inner ring-1 ring-white/5">
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-avanza-purple/15 font-mono text-2xl font-extrabold text-avanza-purple">
-                    {analysis.elementSymbol || "?"}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground">
-                      {t.home.atomElementLabel}
-                    </p>
-                    <p className="truncate text-2xl font-extrabold">
-                      {analysis.elementName || t.home.atomNoElement}
-                    </p>
-                    <p className="mt-1 font-mono text-xs leading-relaxed text-muted-foreground">
-                      Atomic number: {analysis.atomicNumber} ·{" "}
-                      {t.home.atomMassNumber}: {analysis.massNumber} ·{" "}
-                      {t.home.atomCharge}: {analysis.chargeLabel}
-                    </p>
-                    {analysis.isotopeName && (
-                      <p className="mt-1 text-xs font-bold text-avanza-dark/75">
-                        {analysis.isotopeName}
+                {/* Element card */}
+                <div
+                  key={anim.elementChanged ? anim.token : "element-card"}
+                  className="rounded-2xl bg-white p-5 text-avanza-dark shadow-inner ring-1 ring-white/5"
+                  style={
+                    reduced || !anim.elementChanged
+                      ? undefined
+                      : { animation: "atom-card-pop 0.5s ease-out" }
+                  }
+                >
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={cn(
+                        "flex h-16 w-16 shrink-0 items-center justify-center rounded-xl font-mono text-2xl font-extrabold",
+                        visualState === "invalid"
+                          ? "bg-avanza-orange/15 text-avanza-orange-dark"
+                          : "bg-avanza-purple/15 text-avanza-purple",
+                      )}
+                    >
+                      {analysis.elementSymbol || "?"}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[10px] font-extrabold uppercase tracking-widest text-muted-foreground">
+                        {t.home.atomElementLabel}
                       </p>
-                    )}
+                      <p className="truncate text-2xl font-extrabold">
+                        {analysis.elementName || t.home.atomNoElement}
+                      </p>
+                      {analysis.isotopeName && (
+                        <p className="mt-0.5 truncate text-xs font-bold text-avanza-dark/70">
+                          {analysis.isotopeName}
+                        </p>
+                      )}
+                    </div>
+                    <span
+                      className={cn(
+                        "inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider",
+                        visualState === "invalid"
+                          ? "bg-avanza-orange/15 text-avanza-orange-dark"
+                          : visualState === "stable"
+                            ? "bg-avanza-green/15 text-avanza-green-dark"
+                            : visualState === "unstable"
+                              ? "bg-avanza-purple/15 text-avanza-purple-dark"
+                              : "bg-avanza-dark/8 text-avanza-dark/75",
+                      )}
+                    >
+                      <StatusIcon state={visualState} className="h-3.5 w-3.5" />
+                      {getStabilityStatusLabel(analysis)}
+                    </span>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                    <ElementStat
+                      label="Atomic no."
+                      value={analysis.atomicNumber}
+                      tooltip={TERM_TOOLTIPS.atomicNumber}
+                    />
+                    <ElementStat
+                      label={t.home.atomMassNumber}
+                      value={analysis.massNumber}
+                      tooltip={TERM_TOOLTIPS.massNumber}
+                    />
+                    <ElementStat
+                      label={t.home.atomCharge}
+                      value={analysis.chargeLabel}
+                      tooltip={TERM_TOOLTIPS.charge}
+                    />
+                    <ElementStat
+                      label="Type"
+                      value={getIonShortLabel(analysis)}
+                      tooltip={
+                        analysis.neutralIonStatus === "neutral"
+                          ? TERM_TOOLTIPS.neutralAtom
+                          : TERM_TOOLTIPS.ion
+                      }
+                    />
                   </div>
                 </div>
 
@@ -439,6 +629,7 @@ export function AtomBuilder() {
                     protons <= 0 || (mode === "challenge" && Boolean(completion))
                   }
                   dotClass="bg-avanza-orange"
+                  noun="proton"
                 />
                 <ParticleRow
                   label={t.home.atomNeutrons}
@@ -454,6 +645,7 @@ export function AtomBuilder() {
                     neutrons <= 0 || (mode === "challenge" && Boolean(completion))
                   }
                   dotClass="bg-white/70"
+                  noun="neutron"
                 />
                 <ParticleRow
                   label={t.home.atomElectrons}
@@ -469,87 +661,15 @@ export function AtomBuilder() {
                     electrons <= 0 || (mode === "challenge" && Boolean(completion))
                   }
                   dotClass="bg-avanza-teal"
+                  noun="electron"
                 />
 
                 <div className="rounded-2xl bg-white/8 p-4 text-sm leading-relaxed text-white/82 ring-1 ring-white/10">
-                  <p className="text-[10px] font-extrabold uppercase tracking-widest text-white/55">
+                  <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-widest text-white/55">
+                    <Sparkles className="h-3.5 w-3.5" />
                     What changed?
                   </p>
                   <p className="mt-1 font-bold text-white">{changeMessage}</p>
-                </div>
-
-                <div className="rounded-2xl bg-white/8 p-4 text-sm leading-relaxed text-white/82 ring-1 ring-white/10">
-                  <div className="mb-3 flex flex-wrap gap-2">
-                    <StatusBadge analysis={analysis} />
-                    <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest text-white/85">
-                      {getIonStatusLabel(analysis)}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <InfoCell label="Symbol" value={analysis.elementSymbol || "-"} />
-                    <InfoCell
-                      label="Element"
-                      value={analysis.elementName || "Not an atom"}
-                    />
-                    <InfoCell
-                      label="Atomic number"
-                      value={analysis.atomicNumber}
-                      tooltip={TERM_TOOLTIPS.atomicNumber}
-                    />
-                    <InfoCell
-                      label="Protons"
-                      value={protons}
-                      tooltip={TERM_TOOLTIPS.proton}
-                    />
-                    <InfoCell
-                      label="Neutrons"
-                      value={neutrons}
-                      tooltip={TERM_TOOLTIPS.neutron}
-                    />
-                    <InfoCell
-                      label="Electrons"
-                      value={electrons}
-                      tooltip={TERM_TOOLTIPS.electron}
-                    />
-                    <InfoCell
-                      label="Mass number"
-                      value={analysis.massNumber}
-                      tooltip={TERM_TOOLTIPS.massNumber}
-                    />
-                    <InfoCell
-                      label="Isotope"
-                      value={analysis.isotopeName || "-"}
-                      tooltip={TERM_TOOLTIPS.isotope}
-                    />
-                    <InfoCell
-                      label="Charge"
-                      value={analysis.chargeLabel}
-                      tooltip={TERM_TOOLTIPS.charge}
-                    />
-                    <InfoCell
-                      label="Atom type"
-                      value={getIonStatusLabel(analysis)}
-                      tooltip={
-                        analysis.neutralIonStatus === "neutral"
-                          ? TERM_TOOLTIPS.neutralAtom
-                          : TERM_TOOLTIPS.ion
-                      }
-                    />
-                    <InfoCell
-                      label="Status"
-                      value={getStabilityStatusLabel(analysis)}
-                      tooltip={TERM_TOOLTIPS.stableIsotope}
-                      wide
-                    />
-                  </div>
-                  <p className="mt-3 rounded-xl bg-white/8 px-3 py-2 font-bold text-white">
-                    {analysis.shortExplanation}
-                  </p>
-                  {analysis.warningMessage && (
-                    <p className="mt-3 rounded-xl bg-avanza-orange/18 px-3 py-2 font-bold text-avanza-orange">
-                      {analysis.warningMessage}
-                    </p>
-                  )}
                 </div>
 
                 <div className="mt-auto flex flex-wrap items-center justify-between gap-3">
@@ -581,6 +701,7 @@ function ParticleRow({
   incDisabled,
   decDisabled,
   dotClass,
+  noun,
 }: {
   label: string
   hint: string
@@ -591,9 +712,10 @@ function ParticleRow({
   incDisabled: boolean
   decDisabled: boolean
   dotClass: string
+  noun: string
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white/5 p-3 ring-1 ring-white/10 sm:p-4">
       <div className="flex min-w-0 items-center gap-3">
         <span className={cn("h-3 w-3 shrink-0 rounded-full shadow", dotClass)} />
         <div className="min-w-0">
@@ -605,29 +727,94 @@ function ParticleRow({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={onDec}
+        <HoldButton
+          onActivate={onDec}
           disabled={decDisabled}
-          aria-label={`${label} -1`}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 active:scale-95 disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-white/10"
+          ariaLabel={`Remove ${noun}`}
+          variant="dec"
         >
           <Minus className="h-4 w-4" />
-        </button>
-        <span className="w-10 text-center font-mono text-lg font-extrabold tabular-nums">
+        </HoldButton>
+        <span className="w-9 text-center font-mono text-xl font-extrabold tabular-nums sm:w-11">
           {count}
         </span>
-        <button
-          type="button"
-          onClick={onInc}
+        <HoldButton
+          onActivate={onInc}
           disabled={incDisabled}
-          aria-label={`${label} +1`}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-avanza-green text-avanza-dark transition-colors hover:bg-emerald-400 active:scale-95 disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-avanza-green"
+          ariaLabel={`Add ${noun}`}
+          variant="inc"
         >
           <Plus className="h-4 w-4" />
-        </button>
+        </HoldButton>
       </div>
     </div>
+  )
+}
+
+function HoldButton({
+  onActivate,
+  disabled,
+  ariaLabel,
+  variant,
+  children,
+}: {
+  onActivate: () => void
+  disabled: boolean
+  ariaLabel: string
+  variant: "inc" | "dec"
+  children: ReactNode
+}) {
+  // Keep the latest callback so hold-to-repeat always sees fresh state.
+  const activateRef = useRef(onActivate)
+  useEffect(() => {
+    activateRef.current = onActivate
+  }, [onActivate])
+  const intervalRef = useRef<number | null>(null)
+  const delayRef = useRef<number | null>(null)
+
+  const stopRepeat = () => {
+    if (intervalRef.current) {
+      window.clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
+    if (delayRef.current) {
+      window.clearTimeout(delayRef.current)
+      delayRef.current = null
+    }
+  }
+
+  useEffect(() => stopRepeat, [])
+
+  // First activation comes from onClick (keyboard + pointer). Pointer-hold only
+  // schedules the *repeat*, so validation runs on every single step.
+  const startHold = () => {
+    if (disabled) return
+    stopRepeat()
+    delayRef.current = window.setTimeout(() => {
+      intervalRef.current = window.setInterval(() => activateRef.current(), 130)
+    }, 380)
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => activateRef.current()}
+      onPointerDown={startHold}
+      onPointerUp={stopRepeat}
+      onPointerLeave={stopRepeat}
+      onPointerCancel={stopRepeat}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      title={ariaLabel}
+      className={cn(
+        "inline-flex h-11 w-11 items-center justify-center rounded-full shadow-sm transition-[transform,background-color] duration-100 active:scale-90 disabled:cursor-not-allowed disabled:opacity-30 disabled:active:scale-100",
+        variant === "inc"
+          ? "bg-avanza-green text-avanza-dark hover:bg-emerald-400 disabled:hover:bg-avanza-green"
+          : "bg-white/12 text-white hover:bg-white/22 disabled:hover:bg-white/12",
+      )}
+    >
+      {children}
+    </button>
   )
 }
 
@@ -838,64 +1025,28 @@ function StarRating({ count }: { count: number }) {
   )
 }
 
-function InfoCell({
+function InfoTooltip({
   label,
-  value,
   tooltip,
-  wide = false,
+  dark = false,
 }: {
   label: string
-  value: string | number
-  tooltip?: string
-  wide?: boolean
+  tooltip: string
+  dark?: boolean
 }) {
-  return (
-    <div
-      className={cn(
-        "rounded-xl bg-white/8 px-3 py-2 ring-1 ring-white/8",
-        wide && "col-span-2",
-      )}
-    >
-      <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-widest text-white/55">
-        {label}
-        {tooltip && <InfoTooltip label={label} tooltip={tooltip} />}
-      </p>
-      <p className="mt-1 break-words font-mono text-sm font-extrabold text-white">
-        {value}
-      </p>
-    </div>
-  )
-}
-
-function InfoTooltip({ label, tooltip }: { label: string; tooltip: string }) {
   return (
     <span
       tabIndex={0}
       title={tooltip}
       aria-label={`${label}: ${tooltip}`}
-      className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-white/12 text-white/80 ring-1 ring-white/15"
-    >
-      <Info className="h-3 w-3" />
-    </span>
-  )
-}
-
-function StatusBadge({ analysis }: { analysis: AtomAnalysis }) {
-  return (
-    <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest shadow-sm",
-        analysis.validStatus === "invalid"
-          ? "bg-avanza-orange text-avanza-dark"
-          : analysis.stabilityStatus === "stable"
-            ? "bg-avanza-green text-avanza-dark"
-            : analysis.stabilityStatus === "unstable"
-              ? "bg-avanza-purple text-white"
-              : "bg-white/12 text-white",
+        "inline-flex h-4 w-4 items-center justify-center rounded-full ring-1",
+        dark
+          ? "bg-avanza-dark/10 text-avanza-dark/70 ring-avanza-dark/15"
+          : "bg-white/12 text-white/80 ring-white/15",
       )}
     >
-      <Sparkles className="h-3 w-3" />
-      {getStabilityStatusLabel(analysis)}
+      <Info className="h-3 w-3" />
     </span>
   )
 }
@@ -913,6 +1064,78 @@ function getIonStatusLabel(analysis: AtomAnalysis): string {
   if (analysis.neutralIonStatus === "neutral") return "Neutral atom"
   if (analysis.ionChargeStatus === "cation") return "Positive ion / cation"
   return "Negative ion / anion"
+}
+
+type VisualState =
+  | "invalid"
+  | "stable"
+  | "unstable"
+  | "neutral"
+  | "cation"
+  | "anion"
+
+function getVisualState(analysis: AtomAnalysis): VisualState {
+  if (
+    analysis.neutralIonStatus === "not-an-atom" ||
+    analysis.validStatus === "invalid"
+  ) {
+    return "invalid"
+  }
+  if (analysis.stabilityStatus === "unstable") return "unstable"
+  if (analysis.neutralIonStatus === "ion") {
+    return analysis.ionChargeStatus === "cation" ? "cation" : "anion"
+  }
+  if (analysis.stabilityStatus === "stable") return "stable"
+  return "neutral"
+}
+
+function StatusIcon({
+  state,
+  className = "mt-0.5 h-5 w-5",
+}: {
+  state: VisualState
+  className?: string
+}) {
+  const base = cn("shrink-0", className)
+  if (state === "invalid")
+    return <AlertTriangle className={cn(base, "text-avanza-orange")} />
+  if (state === "stable")
+    return <ShieldCheck className={cn(base, "text-avanza-green")} />
+  if (state === "unstable")
+    return <Sparkles className={cn(base, "text-avanza-purple")} />
+  if (state === "cation")
+    return <PlusCircle className={cn(base, "text-avanza-orange")} />
+  if (state === "anion")
+    return <MinusCircle className={cn(base, "text-avanza-teal")} />
+  return <CircleDot className={cn(base, "text-avanza-dark/70")} />
+}
+
+function getIonShortLabel(analysis: AtomAnalysis): string {
+  if (analysis.neutralIonStatus === "not-an-atom") return "—"
+  if (analysis.neutralIonStatus === "neutral") return "Neutral"
+  return analysis.ionChargeStatus === "cation" ? "Cation +" : "Anion −"
+}
+
+function ElementStat({
+  label,
+  value,
+  tooltip,
+}: {
+  label: string
+  value: string | number
+  tooltip?: string
+}) {
+  return (
+    <div className="rounded-xl bg-avanza-dark/5 px-3 py-2">
+      <p className="flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest text-avanza-dark/55">
+        {label}
+        {tooltip && <InfoTooltip label={label} tooltip={tooltip} dark />}
+      </p>
+      <p className="mt-0.5 truncate font-mono text-sm font-extrabold text-avanza-dark">
+        {value}
+      </p>
+    </div>
+  )
 }
 
 function getChangeMessage(
@@ -971,24 +1194,54 @@ function getClosestGoalDistance(
   }, Number.POSITIVE_INFINITY)
 }
 
+const SHELL_RADII = [52, 74, 96, 118, 140, 162, 184]
+
 function AtomSVG({
   protons,
   neutrons,
   shells,
   reduced,
+  analysis,
+  animToken,
+  animKind,
+  animDelta,
+  elementChanged,
 }: {
   protons: number
   neutrons: number
   shells: number[]
   reduced: boolean
+  analysis: AtomAnalysis
+  animToken: number
+  animKind: ParticleKind | null
+  animDelta: number
+  elementChanged: boolean
 }) {
   const size = 400
   const cx = size / 2
   const cy = size / 2
   const nucleusR = 38
 
-  // Generate proton/neutron positions inside nucleus on a small spiral.
+  const state = getVisualState(analysis)
   const total = protons + neutrons
+  const nucleusUnstable =
+    total > 0 && (state === "invalid" || state === "unstable")
+
+  // Which nucleon was just added, so it can fly in.
+  const nucleonAdded = animDelta > 0 && (animKind === "proton" || animKind === "neutron")
+  const justAddedNucleon = nucleonAdded
+    ? animKind === "proton"
+      ? protons - 1
+      : total - 1
+    : -1
+  const nucleonRemoved =
+    animDelta < 0 && (animKind === "proton" || animKind === "neutron") && total >= 0
+
+  const electronAdded = animDelta > 0 && animKind === "electron"
+  const electronRemoved = animDelta < 0 && animKind === "electron"
+  const outerShellIdx = shells.length - 1
+
+  // Generate proton/neutron positions inside nucleus on a small spiral.
   const nucleons = Array.from({ length: total }).map((_, i) => {
     if (total === 1) return { x: cx, y: cy, kind: i < protons ? "p" : "n" }
     const angle = i * 2.4
@@ -1000,26 +1253,40 @@ function AtomSVG({
     }
   })
 
-  // Shell radii for a simplified beginner Bohr-style model.
-  const shellRadii = [52, 74, 96, 118, 140, 162, 184]
+  const glowColor =
+    state === "stable"
+      ? "rgba(46,204,113,0.4)"
+      : state === "unstable"
+        ? "rgba(139,92,246,0.4)"
+        : state === "invalid"
+          ? "rgba(249,115,22,0.42)"
+          : "rgba(249,115,22,0.3)"
+  const pulseColor = state === "invalid" ? "#f97316" : state === "stable" ? "#2ecc71" : "#8b5cf6"
 
   return (
-    <svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full" role="img" aria-label="Atom builder">
+    <svg
+      viewBox={`0 0 ${size} ${size}`}
+      className="h-full w-full"
+      role="img"
+      aria-label={`Atom diagram: ${
+        analysis.elementName ? analysis.isotopeName : "no element yet"
+      }, charge ${analysis.chargeLabel}, ${getStabilityStatusLabel(analysis)}`}
+    >
       <defs>
         <radialGradient id="atomBg" cx="50%" cy="50%" r="60%">
           <stop offset="0%" stopColor="#f6efff" />
           <stop offset="100%" stopColor="#ffffff" />
         </radialGradient>
         <radialGradient id="nucleusGlow" cx="50%" cy="50%" r="60%">
-          <stop offset="0%" stopColor="rgba(249,115,22,0.35)" />
-          <stop offset="100%" stopColor="rgba(249,115,22,0)" />
+          <stop offset="0%" stopColor={glowColor} />
+          <stop offset="100%" stopColor="rgba(0,0,0,0)" />
         </radialGradient>
       </defs>
       <rect x="0" y="0" width={size} height={size} fill="url(#atomBg)" rx="20" />
 
-      {/* Shells */}
+      {/* Electron shells */}
       {shells.map((count, idx) => {
-        const r = shellRadii[idx]
+        const r = SHELL_RADII[idx]
         return (
           <g key={idx}>
             <circle
@@ -1036,15 +1303,26 @@ function AtomSVG({
                 transformOrigin: `${cx}px ${cy}px`,
                 animation: reduced
                   ? undefined
-                  : `${idx % 2 === 0 ? "atomSpinClockwise" : "atomSpinCounter"} ${10 + idx * 4}s linear infinite`,
+                  : `${idx % 2 === 0 ? "atom-spin-cw" : "atom-spin-ccw"} ${14 + idx * 4}s linear infinite`,
               }}
             >
               {Array.from({ length: count }).map((_, i) => {
                 const angle = (i / count) * Math.PI * 2
                 const x = cx + Math.cos(angle) * r
                 const y = cy + Math.sin(angle) * r
-                return (
-                  <g key={i}>
+                const isNewest =
+                  electronAdded && idx === outerShellIdx && i === count - 1
+                const inner = (
+                  <g
+                    style={
+                      isNewest && !reduced
+                        ? {
+                            transformOrigin: `${x}px ${y}px`,
+                            animation: "atom-particle-in 0.5s ease-out both",
+                          }
+                        : undefined
+                    }
+                  >
                     <circle cx={x} cy={y} r={9} fill="#1abc9c" />
                     <text
                       x={x}
@@ -1059,64 +1337,193 @@ function AtomSVG({
                     </text>
                   </g>
                 )
+                return <g key={isNewest ? `e-${animToken}` : i}>{inner}</g>
               })}
             </g>
           </g>
         )
       })}
 
-      {/* Nucleus glow */}
-      {protons + neutrons > 0 && (
-        <circle cx={cx} cy={cy} r={nucleusR + 14} fill="url(#nucleusGlow)" />
+      {/* Electron leaving */}
+      {electronRemoved && !reduced && outerShellIdx >= 0 && (
+        <g key={`e-out-${animToken}`}>
+          <circle
+            cx={cx}
+            cy={cy - (SHELL_RADII[outerShellIdx] ?? 52)}
+            r={9}
+            fill="#1abc9c"
+            style={{
+              transformOrigin: `${cx}px ${cy - (SHELL_RADII[outerShellIdx] ?? 52)}px`,
+              animation: "atom-particle-out 0.45s ease-out both",
+            }}
+          />
+        </g>
       )}
 
-      {/* Nucleons */}
-      {nucleons.map((n, i) => (
-        <g key={i}>
+      {/* Nucleus glow + change pulse */}
+      {total > 0 && (
+        <circle cx={cx} cy={cy} r={nucleusR + 14} fill="url(#nucleusGlow)" />
+      )}
+      {total > 0 && !reduced && (
+        <circle
+          key={`pulse-${animToken}`}
+          cx={cx}
+          cy={cy}
+          r={nucleusR + 6}
+          fill="none"
+          stroke={pulseColor}
+          strokeWidth={3}
+          style={{
+            transformOrigin: `${cx}px ${cy}px`,
+            animation: "atom-nucleus-pulse 0.7s ease-out both",
+          }}
+        />
+      )}
+
+      {/* Warning outline for unstable / invalid nucleus (non-color cue too) */}
+      {nucleusUnstable && (
+        <circle
+          cx={cx}
+          cy={cy}
+          r={nucleusR + 3}
+          fill="none"
+          stroke={state === "invalid" ? "#f97316" : "#8b5cf6"}
+          strokeWidth={2.5}
+          strokeDasharray="5 5"
+        />
+      )}
+
+      {/* Nucleons (shake as a group when unstable/invalid) */}
+      <g
+        style={
+          nucleusUnstable && !reduced
+            ? {
+                transformOrigin: `${cx}px ${cy}px`,
+                animation: "atom-nucleus-shake 0.4s ease-in-out infinite",
+              }
+            : undefined
+        }
+      >
+        {nucleons.map((n, i) => {
+          const isNewest = i === justAddedNucleon
+          const jitter =
+            !reduced && total > 1
+              ? {
+                  // Deterministic per-index gentle drift.
+                  "--jx": `${(((i * 7) % 5) - 2) * 0.5}px`,
+                  "--jy": `${(((i * 3) % 5) - 2) * 0.5}px`,
+                  animation: `atom-nucleon-jitter ${2.4 + (i % 4) * 0.5}s ease-in-out infinite`,
+                } as CSSProperties
+              : undefined
+          const body = (
+            <>
+              <circle
+                cx={n.x}
+                cy={n.y}
+                r={9}
+                fill={n.kind === "p" ? "#f97316" : "#cbd5e1"}
+                stroke="#1a1a2e"
+                strokeWidth={1.2}
+              />
+              <text
+                x={n.x}
+                y={n.y + 3.5}
+                textAnchor="middle"
+                fontFamily="monospace"
+                fontSize="10"
+                fontWeight="800"
+                fill={n.kind === "p" ? "#fff" : "#1a1a2e"}
+              >
+                {n.kind === "p" ? "+" : "n"}
+              </text>
+            </>
+          )
+          return (
+            <g key={i} style={jitter}>
+              {isNewest && !reduced ? (
+                <g
+                  key={`in-${animToken}`}
+                  style={{
+                    transformOrigin: `${n.x}px ${n.y}px`,
+                    animation: "atom-particle-in 0.5s ease-out both",
+                  }}
+                >
+                  {body}
+                </g>
+              ) : (
+                body
+              )}
+            </g>
+          )
+        })}
+      </g>
+
+      {/* Nucleon leaving */}
+      {nucleonRemoved && total > 0 && !reduced && (
+        <circle
+          key={`n-out-${animToken}`}
+          cx={cx}
+          cy={cy}
+          r={9}
+          fill={animKind === "proton" ? "#f97316" : "#cbd5e1"}
+          style={{
+            transformOrigin: `${cx}px ${cy}px`,
+            animation: "atom-particle-out 0.45s ease-out both",
+          }}
+        />
+      )}
+
+      {/* Element-change burst */}
+      {elementChanged && !reduced && (
+        <g key={`burst-${animToken}`}>
           <circle
-            cx={n.x}
-            cy={n.y}
-            r={9}
-            fill={n.kind === "p" ? "#f97316" : "#cbd5e1"}
-            stroke="#1a1a2e"
-            strokeWidth={1.2}
+            cx={cx}
+            cy={cy}
+            r={nucleusR}
+            fill="none"
+            stroke="#f97316"
+            strokeWidth={3}
+            style={{
+              transformOrigin: `${cx}px ${cy}px`,
+              animation: "atom-burst-ring 0.7s ease-out both",
+            }}
           />
-          <text
-            x={n.x}
-            y={n.y + 3.5}
-            textAnchor="middle"
-            fontFamily="monospace"
-            fontSize="10"
-            fontWeight="800"
-            fill={n.kind === "p" ? "#fff" : "#1a1a2e"}
-          >
-            {n.kind === "p" ? "+" : "n"}
-          </text>
+          {Array.from({ length: 8 }).map((_, i) => {
+            const angle = (i / 8) * Math.PI * 2
+            return (
+              <circle
+                key={i}
+                cx={cx}
+                cy={cy}
+                r={4}
+                fill="#8b5cf6"
+                style={
+                  {
+                    "--sx": `${Math.cos(angle) * 60}px`,
+                    "--sy": `${Math.sin(angle) * 60}px`,
+                    animation: "atom-spark-fly 0.7s ease-out both",
+                  } as CSSProperties
+                }
+              />
+            )
+          })}
         </g>
-      ))}
+      )}
 
       {/* Empty state */}
-      {protons + neutrons === 0 && (
+      {total === 0 && (
         <text
           x={cx}
           y={cy + 4}
           textAnchor="middle"
           fontFamily="sans-serif"
-          fontSize="12"
+          fontSize="13"
           fontWeight="700"
           fill="#9ca3af"
         >
-          add a proton
+          Add a proton to begin
         </text>
       )}
-
-      <style>{`
-        @keyframes atomSpinClockwise { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes atomSpinCounter { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-        @media (prefers-reduced-motion: reduce) {
-          [style*="atomSpin"] { animation: none !important; }
-        }
-      `}</style>
     </svg>
   )
 }

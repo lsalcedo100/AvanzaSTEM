@@ -68,6 +68,14 @@ function formatLevelNumber(index: number) {
   return String(index + 1).padStart(2, "0")
 }
 
+function hasUnlimitedInventory(kind: BuildablePieceKind) {
+  return kind === "blocker"
+}
+
+function formatRemainingCount(kind: BuildablePieceKind, count: number) {
+  return hasUnlimitedInventory(kind) ? "Unlimited" : `${count} left`
+}
+
 function defaultProgress(): MarbleRunProgress {
   return {
     version: 1,
@@ -218,6 +226,11 @@ export function MarbleRun() {
   const remaining = useMemo(() => {
     return BUILD_TOOLS.reduce(
       (acc, kind) => {
+        if (hasUnlimitedInventory(kind)) {
+          acc[kind] = Number.POSITIVE_INFINITY
+          return acc
+        }
+
         acc[kind] = Math.max(0, (level.inventory[kind] ?? 0) - usedCounts[kind])
         return acc
       },
@@ -1157,7 +1170,7 @@ export function MarbleRun() {
                         <span className="min-w-0 flex-1">
                           <span className="block leading-tight">{PIECE_LABELS[kind]}</span>
                           <span className="mt-0.5 block font-mono text-[11px] font-bold opacity-70">
-                            {remaining[kind]} left
+                            {formatRemainingCount(kind, remaining[kind])}
                           </span>
                         </span>
                       </button>
