@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
+import { createLevelUpSounds, playRandomLevelUpSound } from "@/components/ui/level-up-sounds"
 import { cn } from "@/lib/utils"
 
 type Dir = 0 | 1 | 2 | 3 // 0 = up, 1 = right, 2 = down, 3 = left
@@ -382,6 +383,8 @@ export function CodePathRobot() {
   const overIndexRef = useRef<number | null>(null)
   const overDeleteRef = useRef(false)
   const starSoundsRef = useRef<HTMLAudioElement[]>([])
+  const levelUpSoundsRef = useRef<HTMLAudioElement[]>([])
+  const completedLevelSoundIdsRef = useRef<Set<number>>(new Set())
   const progressReadyRef = useRef(false)
   const restoredProgramRef = useRef<ProgramBlock[] | null>(null)
 
@@ -454,6 +457,7 @@ export function CodePathRobot() {
       audio.volume = 0.75
       return audio
     })
+    levelUpSoundsRef.current = createLevelUpSounds(0.7)
   }, [])
 
   useEffect(() => {
@@ -474,6 +478,10 @@ export function CodePathRobot() {
 
   useEffect(() => {
     if (status === "win") {
+      if (!completedLevelSoundIdsRef.current.has(level.id)) {
+        completedLevelSoundIdsRef.current.add(level.id)
+        playRandomLevelUpSound(levelUpSoundsRef.current)
+      }
       setCompletedLevels((prev) => {
         if (prev.has(level.id)) return prev
         const next = new Set(prev)

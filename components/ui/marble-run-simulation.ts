@@ -7,18 +7,19 @@ import {
   type MarbleLevel,
   MARBLE_ROWS,
   ORIENTATION_COUNTS,
+  type PipeShape,
   type PlacedPiece,
   type SimulationResult,
   type TrackPiece,
 } from "@/components/ui/marble-run-types"
 
 const FAILURE_MESSAGES = {
-  "left-board": "The marble left the board.",
-  "hit-wall": "The marble hit a wall.",
-  stopped: "The marble stopped before reaching the cup.",
-  "wrong-area": "The marble reached the wrong area.",
+  "left-board": "The marble missed the cup.",
+  "hit-wall": "The marble hit a wall here.",
+  stopped: "The pipe path is not connected.",
+  "wrong-area": "The marble missed the cup.",
   hazard: "The marble fell into a hazard.",
-  blocked: "The path is blocked.",
+  blocked: "The marble hit a wall here.",
 } as const
 
 const OPPOSITE: Record<Direction, Direction> = {
@@ -64,20 +65,65 @@ function inBounds(row: number, col: number) {
 }
 
 function pipeExit(orientation: number, entry: Direction): Direction | null {
-  const openingsByOrientation: Direction[][] = [
-    ["top", "bottom"],
-    ["left", "right"],
-    ["top", "right"],
-    ["top", "left"],
-    ["bottom", "right"],
-    ["bottom", "left"],
-  ]
-  const openings = openingsByOrientation[orientation] ?? openingsByOrientation[0]
-  if (!openings.includes(entry)) return null
-  return openings.find((opening) => opening !== entry) ?? null
+  const spec = pipeSpec(orientation)
+  if (!spec.openings.includes(entry)) return null
+  return spec.openings.find((opening) => opening !== entry) ?? null
 }
 
-function pieceExit(piece: TrackPiece, entry: Direction): Direction | null {
+function pipeSpec(orientation: number): { openings: Direction[]; shape: PipeShape } {
+  const specs: { openings: Direction[]; shape: PipeShape }[] = [
+    { openings: ["top", "bottom"], shape: "vertical" },
+    { openings: ["left", "right"], shape: "horizontal" },
+    { openings: ["top", "right"], shape: "curve" },
+    { openings: ["top", "left"], shape: "curve" },
+    { openings: ["bottom", "right"], shape: "curve" },
+    { openings: ["bottom", "left"], shape: "curve" },
+  ]
+  return specs[orientation] ?? specs[0]
+}
+
+function sampleQuadratic(from: BoardPoint, control: BoardPoint, to: BoardPoint): BoardPoint[] {
+  return [0, 0.2, 0.4, 0.6, 0.8, 1].map((t) => {
+    const a = (1 - t) * (1 - t)
+    const b = 2 * (1 - t) * t
+    const c = t * t
+    return {
+      x: a * from.x + b * control.x + c * to.x,
+      y: a * from.y + b * control.y + c * to.y,
+    }
+  })
+}
+
+function pathForPipe(row: number, col: number, entry: Direction, exit: Direction): BoardPoint[] {
+  const from = sidePoint(row, col, entry)
+  const to = sidePoint(row, col, exit)
+  const center = cellCenter(row, col)
+
+  if (OPPOSITE[entry] === exit) return [from, center, to]
+  return sampleQuadratic(from, center, to)
+}
+
+function pathForRamp(row: number, col: number, entry: Direction, exit: Direction): BoardPoint[] {
+  return [sidePoint(row, col, entry), cellCenter(row, col), sidePoint(row, col, exit)]
+}
+
+function pathForBounce(row: number, col: number, entry: Direction, exit: Direction): BoardPoint[] {
+  const from = sidePoint(row, col, entry)
+  const center = cellCenter(row, col)
+  const to = sidePoint(row, col, exit)
+  const impulse: BoardPoint =
+    exit === "right"
+      ? { x: col + 0.82, y: row + 0.28 }
+      : exit === "left"
+        ? { x: col + 0.18, y: row + 0.28 }
+        : exit === "top"
+          ? { x: col + 0.5, y: row + 0.08 }
+          : { x: col + 0.5, y: row + 0.92 }
+
+  return [from, center, impulse, to]
+}
+
+function exitForPiece(piece: TrackPiece, entry: Direction): Direction | null {
   const orientation = normalizeOrientation(piece.kind, piece.orientation)
 
   if (piece.kind === "blocker") return null
@@ -97,27 +143,95 @@ function pieceExit(piece: TrackPiece, entry: Direction): Direction | null {
     return pipeExit(orientation, entry)
   }
 
+  if (entry !== "top") return null
   const bounceExit: Direction[] = ["right", "bottom", "left", "top"]
   return bounceExit[orientation] ?? "right"
 }
 
-function segmentKindForPiece(piece: TrackPiece | null): CourseSegment["kind"] {
-  if (!piece) return "fall"
-  if (piece.kind === "bounce") return "bounce"
-  if (piece.kind === "pipe") return "pipe"
-  if (piece.kind === "ramp") return "ramp"
-  return "fall"
+function segmentForCell(
+  row: number,
+  col: number,
+  entry: Direction,
+  piece: TrackPiece | null,
+  exit: Direction,
+): CourseSegment {
+  if (!piece) {
+    return {
+      from: sidePoint(row, col, entry),
+      to: sidePoint(row, col, exit),
+      path: [sidePoint(row, col, entry), sidePoint(row, col, exit)],
+      kind: "fall",
+      row,
+      col,
+      entry,
+      exit,
+    }
+  }
+
+  if (piece.kind === "pipe") {
+    const orientation = normalizeOrientation(piece.kind, piece.orientation)
+    return {
+      from: sidePoint(row, col, entry),
+      to: sidePoint(row, col, exit),
+      path: pathForPipe(row, col, entry, exit),
+      kind: "pipe",
+      row,
+      col,
+      entry,
+      exit,
+      pipeShape: pipeSpec(orientation).shape,
+    }
+  }
+
+  if (piece.kind === "ramp") {
+    return {
+      from: sidePoint(row, col, entry),
+      to: sidePoint(row, col, exit),
+      path: pathForRamp(row, col, entry, exit),
+      kind: "ramp",
+      row,
+      col,
+      entry,
+      exit,
+    }
+  }
+
+  if (piece.kind === "bounce") {
+    return {
+      from: sidePoint(row, col, entry),
+      to: sidePoint(row, col, exit),
+      path: pathForBounce(row, col, entry, exit),
+      kind: "bounce",
+      row,
+      col,
+      entry,
+      exit,
+    }
+  }
+
+  return {
+    from: sidePoint(row, col, entry),
+    to: sidePoint(row, col, exit),
+    path: [sidePoint(row, col, entry), sidePoint(row, col, exit)],
+    kind: "fall",
+    row,
+    col,
+    entry,
+    exit,
+  }
 }
 
 function failure(
   reason: Exclude<SimulationResult, { status: "success" }>["reason"],
   segments: CourseSegment[],
+  failureCell: { row: number; col: number } | null,
 ): SimulationResult {
   return {
     status: "failure",
     reason,
     message: FAILURE_MESSAGES[reason],
     segments,
+    failureCell,
   }
 }
 
@@ -139,57 +253,55 @@ export function simulateCourse(level: MarbleLevel, placements: PlacedPiece[]): S
   let entry: Direction = "top"
 
   for (let step = 0; step < 240; step++) {
-    if (!inBounds(row, col)) return failure("left-board", segments)
+    if (!inBounds(row, col)) return failure("left-board", segments, null)
 
     const visitKey = `${row}:${col}:${entry}`
-    if (seen.has(visitKey)) return failure("stopped", segments)
+    if (seen.has(visitKey)) return failure("stopped", segments, { row, col })
     seen.add(visitKey)
 
     if (row === level.goal.row && col === level.goal.col) {
+      const from = sidePoint(row, col, entry)
+      const to = cellCenter(row, col)
       segments.push({
-        from: sidePoint(row, col, entry),
-        to: cellCenter(row, col),
+        from,
+        to,
+        path: [from, to, { x: col + 0.5, y: row + 0.72 }],
         kind: "cup",
         row,
         col,
+        entry,
       })
       return {
         status: "success",
-        message: "The marble settled into the cup.",
+        message: "The marble landed in the cup.",
         segments,
       }
     }
 
     const fixed = fixedMap.get(key(row, col))
-    if (fixed?.kind === "wall") return failure("hit-wall", segments)
-    if (fixed?.kind === "hazard") return failure("hazard", segments)
-    if (fixed?.kind === "wrong") return failure("wrong-area", segments)
+    if (fixed?.kind === "wall") return failure("hit-wall", segments, { row, col })
+    if (fixed?.kind === "hazard") return failure("hazard", segments, { row, col })
+    if (fixed?.kind === "wrong") return failure("wrong-area", segments, { row, col })
 
     const fixedPiece = fixed?.kind === "piece" ? fixed.piece : null
     const piece = fixedPiece ?? placementMap.get(key(row, col)) ?? null
-    const exit = piece ? pieceExit(piece, entry) : "bottom"
+    const exit = piece ? exitForPiece(piece, entry) : "bottom"
 
     if (!exit) {
-      return failure(piece?.kind === "blocker" ? "blocked" : "stopped", segments)
+      return failure(piece?.kind === "blocker" ? "blocked" : "stopped", segments, { row, col })
     }
 
-    segments.push({
-      from: sidePoint(row, col, entry),
-      to: sidePoint(row, col, exit),
-      kind: segmentKindForPiece(piece),
-      row,
-      col,
-    })
+    segments.push(segmentForCell(row, col, entry, piece, exit))
 
     const next = nextCell(row, col, exit)
-    if (!inBounds(next.row, next.col)) return failure("left-board", segments)
+    if (!inBounds(next.row, next.col)) return failure("left-board", segments, { row, col })
 
     row = next.row
     col = next.col
     entry = next.entry
   }
 
-  return failure("stopped", segments)
+  return failure("stopped", segments, { row, col })
 }
 
 export function countPieces(placements: PlacedPiece[]) {

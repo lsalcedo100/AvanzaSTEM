@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
+import { createLevelUpSounds, playRandomLevelUpSound } from "@/components/ui/level-up-sounds"
 import { CompletionModal } from "./CompletionModal"
 import { logicGameCopy, type LogicGameCopy } from "./copy"
 import { evalAgainstTarget } from "./gates"
@@ -130,10 +131,20 @@ export function BooleanLogicGame() {
   const levels = getLogicLevels(language)
   const { progress, completeTutorial, completeLevel, isUnlocked, completedCount } = useLogicGameProgress()
   const [activeLevelId, setActiveLevelId] = useState(1)
+  const levelUpSoundsRef = useRef<HTMLAudioElement[]>([])
+  const completedLevelSoundIdsRef = useRef<Set<number>>(new Set())
 
-  const handleSolved = (levelId: number) => (attempts: number, hintsUsed: number) => {
+  useEffect(() => {
+    levelUpSoundsRef.current = createLevelUpSounds(0.7)
+  }, [])
+
+  const handleSolved = useCallback((levelId: number, attempts: number, hintsUsed: number) => {
+    if (!completedLevelSoundIdsRef.current.has(levelId)) {
+      completedLevelSoundIdsRef.current.add(levelId)
+      playRandomLevelUpSound(levelUpSoundsRef.current)
+    }
     completeLevel(levelId, TOTAL_LEVELS, { attempts, hintsUsed })
-  }
+  }, [completeLevel])
 
   const nextLevelId = activeLevelId + 1
   const hasNext = nextLevelId <= TOTAL_LEVELS
@@ -170,7 +181,7 @@ export function BooleanLogicGame() {
                     <GuidedLevel
                       key={activeLevelId}
                       levelId={activeLevelId}
-                      onSolved={handleSolved(activeLevelId)}
+                      onSolved={(attempts, hintsUsed) => handleSolved(activeLevelId, attempts, hintsUsed)}
                       onAdvance={() => setActiveLevelId(nextLevelId)}
                       hasNext={hasNext}
                       levels={levels}

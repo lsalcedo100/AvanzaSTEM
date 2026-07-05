@@ -50,14 +50,20 @@ export type BoardPoint = {
   y: number
 }
 
+export type PipeShape = "vertical" | "horizontal" | "curve"
+
 export type SegmentKind = "fall" | "ramp" | "pipe" | "bounce" | "cup"
 
 export type CourseSegment = {
   from: BoardPoint
   to: BoardPoint
+  path: BoardPoint[]
   kind: SegmentKind
   row: number
   col: number
+  entry?: Direction
+  exit?: Direction
+  pipeShape?: PipeShape
 }
 
 export type SimulationFailureReason =
@@ -79,6 +85,7 @@ export type SimulationResult =
       reason: SimulationFailureReason
       message: string
       segments: CourseSegment[]
+      failureCell: { row: number; col: number } | null
     }
 
 export const PIECE_LABELS: Record<BuildablePieceKind, string> = {

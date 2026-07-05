@@ -30,6 +30,7 @@ import {
   type SegmentRectHit,
   type Vec,
 } from "./catapult-physics"
+import { createLevelUpSounds, playRandomLevelUpSound, stopLevelUpSounds } from "./level-up-sounds"
 
 const DEBUG_COLLISION = false
 
@@ -78,10 +79,6 @@ const WEAK_WALL_BREAK_SOUND_PATHS = [
   "/audio/freesound_community-wood-crate-destory-2-97263.mp3",
   "/audio/freesound_community-break06-36414.mp3",
   "/audio/freesound_community-table-smash-47690.mp3",
-]
-const WIN_SOUND_PATHS = [
-  "/audio/mori_sound-fx-game-winner-497166.mp3",
-  "/audio/tunetank-winner-awards-logo-484334.mp3",
 ]
 const LOSE_SOUND_PATH = "/audio/freesound_community-8bit-lose-life-sound-wav-97245.mp3"
 const CATAPULT_PROGRESS_COOKIE = "avanza_catapult_game_progress"
@@ -220,7 +217,6 @@ export function CatapultLab() {
   const winSoundsRef = useRef<HTMLAudioElement[]>([])
   const nextTargetSoundRef = useRef(0)
   const nextWeakWallBreakSoundRef = useRef(0)
-  const nextWinSoundRef = useRef(0)
   const audioUnlockedRef = useRef(false)
   const playedHitEffectIdsRef = useRef<Set<number>>(new Set())
   const playedBreakEffectIdsRef = useRef<Set<number>>(new Set())
@@ -306,12 +302,7 @@ export function CatapultLab() {
     loseAudio.volume = 0.65
     loseSoundRef.current = loseAudio
 
-    winSoundsRef.current = WIN_SOUND_PATHS.map((src) => {
-      const audio = new Audio(src)
-      audio.preload = "auto"
-      audio.volume = 0.7
-      return audio
-    })
+    winSoundsRef.current = createLevelUpSounds(0.7)
   }, [])
 
   useEffect(() => {
@@ -367,7 +358,7 @@ export function CatapultLab() {
     if (completedLevelSoundIdsRef.current.has(game.levelIndex)) return
 
     completedLevelSoundIdsRef.current.add(game.levelIndex)
-    playNextSound(winSoundsRef.current, nextWinSoundRef)
+    playRandomLevelUpSound(winSoundsRef.current)
   }, [game.levelIndex, game.phase])
 
   useEffect(() => {
@@ -584,7 +575,7 @@ export function CatapultLab() {
   function nextLevel() {
     const current = gameRef.current
     if (current.phase !== "levelComplete" || current.levelIndex >= LEVELS.length - 1) return
-    stopSounds(winSoundsRef.current)
+    stopLevelUpSounds(winSoundsRef.current)
     restartLevel(current.levelIndex + 1)
   }
 
@@ -1103,13 +1094,6 @@ function playSingleSound(sound: HTMLAudioElement | null) {
   void sound.play().catch(() => {
     // Browsers can block audio if the shot was not started by a user gesture.
   })
-}
-
-function stopSounds(sounds: HTMLAudioElement[]) {
-  for (const sound of sounds) {
-    sound.pause()
-    sound.currentTime = 0
-  }
 }
 
 function advanceGame(state: GameState, dt: number): GameState {

@@ -146,6 +146,32 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
+@keyframes marble-cell-shake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 0); }
+  40% { transform: translate(3px, 0); }
+  60% { transform: translate(-2px, 0); }
+  80% { transform: translate(2px, 0); }
+}
+
+@keyframes marble-cup-wobble {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-5deg) scale(1.08, 0.94); }
+  50% { transform: rotate(4deg) scale(0.96, 1.06); }
+  75% { transform: rotate(-2deg) scale(1.02); }
+}
+
+@keyframes marble-goal-ring {
+  0% { transform: translate(-50%, -50%) scale(0.55); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(1.45); opacity: 0; }
+}
+
+@keyframes marble-impact-pop {
+  0% { transform: scale(0.3); opacity: 0; }
+  40% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
 @keyframes bridge-load-shake {
   0%, 100% { transform: translate(0, 0); }
   25% { transform: translate(calc(var(--bridge-shake-x, 1px) * -1), calc(var(--bridge-shake-y, 2px) * -1)); }

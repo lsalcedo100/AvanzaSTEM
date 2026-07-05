@@ -48,7 +48,7 @@ export function AboutPageContent() {
     {
       name: "Logan Smith",
       role: "Website Contributor",
-      bio: "Logan helped with the technical side of the Avanza STEM website, including coding support, debugging, and improving the development workflow.",
+      bio: "Logan helped with the technical side of the Avanza STEM website, including coding support, debugging, and improving the development workflow. Taught Liam how to use Next.js and Tailwind CSS and Codex to speed up the coding process.",
       image: "/images/about/Logan Smith.png",
       imageAlt: "Photo of Logan Smith",
       imagePosition: "object-center",

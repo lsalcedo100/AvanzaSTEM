@@ -15,6 +15,7 @@ import type {
   Runner as MatterRunner,
 } from "matter-js"
 import { FadeIn } from "@/components/ui/animate"
+import { createLevelUpSounds, playRandomLevelUpSound } from "@/components/ui/level-up-sounds"
 import type { Language } from "@/i18n/translations"
 
 const PLAYFIELD_W = 760
@@ -333,6 +334,8 @@ export function JengaTower() {
   const collapseCandidateRef = useRef<{ reason: string; since: number } | null>(null)
   const bestHeightRef = useRef(0)
   const completedLevelIndexRef = useRef<number | null>(null)
+  const levelUpSoundsRef = useRef<HTMLAudioElement[]>([])
+  const completedLevelSoundIdsRef = useRef<Set<number>>(new Set())
 
   const level = LEVELS[levelIndex]
   const levelCopy = copy.levels[levelIndex] ?? copy.levels[0]
@@ -821,6 +824,17 @@ export function JengaTower() {
   useEffect(() => {
     phaseRef.current = phase
   }, [phase])
+
+  useEffect(() => {
+    levelUpSoundsRef.current = createLevelUpSounds(0.7)
+  }, [])
+
+  useEffect(() => {
+    if (phase !== "success" || completedLevelSoundIdsRef.current.has(levelIndex)) return
+
+    completedLevelSoundIdsRef.current.add(levelIndex)
+    playRandomLevelUpSound(levelUpSoundsRef.current)
+  }, [levelIndex, phase])
 
   useEffect(() => {
     completedLevelIndexRef.current = completedLevelIndex
