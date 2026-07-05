@@ -74,7 +74,7 @@ export function InteractiveLabTeasers() {
         <FadeIn className="mt-10 flex justify-center">
           <Link
             href="/games"
-            className="group inline-flex items-center gap-2 rounded-full bg-avanza-dark px-7 py-3.5 text-base font-extrabold text-primary-foreground shadow-[0_16px_36px_-18px_rgba(26,26,46,0.65)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_20px_44px_-18px_rgba(26,26,46,0.75)]"
+            className="group inline-flex items-center gap-2 rounded-lg bg-avanza-dark px-7 py-3.5 text-base font-extrabold text-primary-foreground shadow-[0_16px_36px_-18px_rgba(26,26,46,0.65)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_20px_44px_-18px_rgba(26,26,46,0.75)]"
           >
             {t.home.labsTeaserCta}
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />

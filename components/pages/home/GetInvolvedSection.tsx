@@ -33,7 +33,7 @@ export function GetInvolvedSection() {
                 </p>
                 <Link
                   href="/find-a-workshop"
-                  className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-avanza-dark transition-transform duration-200 hover:scale-[1.02]"
+                  className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-avanza-green px-6 py-3 text-sm font-bold text-avanza-dark transition-transform duration-200 hover:scale-[1.02]"
                 >
                   {t.home.findWorkshop}
                   <ArrowRight className="h-4 w-4" />
@@ -50,7 +50,7 @@ export function GetInvolvedSection() {
                 </p>
                 <Link
                   href="/host"
-                  className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-avanza-dark px-6 py-3 text-sm font-bold text-primary-foreground transition-transform duration-200 hover:scale-[1.02]"
+                  className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-avanza-dark px-6 py-3 text-sm font-bold text-primary-foreground transition-transform duration-200 hover:scale-[1.02]"
                 >
                   {t.home.trustHostCta}
                   <ArrowRight className="h-4 w-4" />
@@ -63,6 +63,7 @@ export function GetInvolvedSection() {
       <NewsletterSignup
         heading={t.home.newsletterStayInLoop}
         description={t.home.newsletterGetNotified}
+        compactRadius
       />
     </>
   )

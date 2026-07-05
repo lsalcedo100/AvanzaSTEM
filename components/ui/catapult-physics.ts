@@ -10,6 +10,10 @@ export type Rect = {
   height: number
 }
 
+export type RotatedRect = Rect & {
+  rotation?: number
+}
+
 export type ProjectileKind = "standard" | "heavy" | "light" | "bouncy"
 
 export type ProjectileSpec = {
@@ -270,6 +274,34 @@ export function segmentExpandedRectCollision(
   }
 }
 
+export function segmentExpandedRotatedRectCollision(
+  a: Vec,
+  b: Vec,
+  rect: RotatedRect,
+  radius: number,
+): SegmentRectHit {
+  const rotation = rect.rotation ?? 0
+  if (Math.abs(rotation) < EPSILON) {
+    return segmentExpandedRectCollision(a, b, rect, radius)
+  }
+
+  const center = {
+    x: rect.x + rect.width / 2,
+    y: rect.y + rect.height / 2,
+  }
+  const localA = rotateAround(a, center, -rotation)
+  const localB = rotateAround(b, center, -rotation)
+  const hit = segmentExpandedRectCollision(localA, localB, rect, radius)
+
+  if (!hit.hit) return hit
+
+  return {
+    ...hit,
+    point: rotateAround(hit.point, center, rotation),
+    normal: rotateVec(hit.normal, rotation),
+  }
+}
+
 export function reflectVelocity(velocity: Vec, normal: Vec, restitution: number): Vec {
   const normalized = normalize(normal)
   const impact = dot(velocity, normalized)
@@ -294,5 +326,21 @@ function noRectHit(point: Vec): SegmentRectHit {
     point,
     normal: { x: 0, y: 0 },
     t: Number.POSITIVE_INFINITY,
+  }
+}
+
+function rotateAround(point: Vec, center: Vec, degrees: number): Vec {
+  const translated = subtract(point, center)
+  const rotated = rotateVec(translated, degrees)
+  return add(center, rotated)
+}
+
+function rotateVec(vector: Vec, degrees: number): Vec {
+  const radians = (degrees * Math.PI) / 180
+  const cos = Math.cos(radians)
+  const sin = Math.sin(radians)
+  return {
+    x: vector.x * cos - vector.y * sin,
+    y: vector.x * sin + vector.y * cos,
   }
 }

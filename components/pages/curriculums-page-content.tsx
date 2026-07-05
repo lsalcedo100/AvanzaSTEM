@@ -87,14 +87,6 @@ export function CurriculumsPageContent() {
     },
   ]
 
-  const projectsToTry = [
-    { href: "/projects/my-first-python-program", label: t.curriculumsPage.projectChipPython },
-    { href: "/projects/popsicle-stick-bridge", label: t.curriculumsPage.projectChipBridge },
-    { href: "/projects/simple-circuit-light", label: t.curriculumsPage.projectChipCircuit },
-    { href: "/projects/baking-soda-volcano", label: t.curriculumsPage.projectChipVolcano },
-    { href: "/projects/lego-robot-builder", label: t.curriculumsPage.projectChipRobot },
-  ]
-
   return (
     <>
       {/* Hero */}
@@ -116,26 +108,6 @@ export function CurriculumsPageContent() {
             >
               {t.curriculumsPage.launchCta} <ArrowRight className="h-4 w-4" />
             </a>
-          </div>
-        </FadeIn>
-      </section>
-
-      <section className="border-b border-border bg-background py-12">
-        <FadeIn className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-2xl font-extrabold text-foreground">{t.curriculumsPage.startNowTitle}</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-            {t.curriculumsPage.startNowDesc}
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            {projectsToTry.map((project) => (
-              <Link
-                key={project.href}
-                href={project.href}
-                className="rounded-full border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-avanza-green hover:text-avanza-green-dark"
-              >
-                {project.label}
-              </Link>
-            ))}
           </div>
         </FadeIn>
       </section>

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ChevronDown } from "lucide-react"
 import { FadeIn } from "@/components/ui/animate"
 import { getProjectGuides } from "@/features/projects/data"
 import { useLanguage } from "@/components/providers/language-provider"
@@ -15,6 +15,7 @@ export function ProjectsPageContent() {
   const { language, t } = useLanguage()
   const projects = getProjectGuides(language)
   const [activeFilter, setActiveFilter] = useState<FilterTag>("all")
+  const [isStemProjectOpen, setIsStemProjectOpen] = useState(false)
 
   const filterTags: { key: FilterTag; label: string }[] = [
     { key: "all", label: t.projectsPage.all },
@@ -34,16 +35,9 @@ export function ProjectsPageContent() {
       ? taggedProjects
       : taggedProjects.filter((p) => p.category === activeFilter)
 
-  const learningPathHrefs = [
-    "/projects/popsicle-stick-bridge",
-    "/projects/my-first-python-program",
-    "/projects/lego-robot-builder",
-    "/projects/coke-mentos-experiment",
-  ]
-
   return (
     <>
-      <section className="border-b border-border bg-background py-16">
+      <section className="border-b border-blue-300 bg-gradient-to-br from-[#edf8ff] via-sky-300 to-blue-700 py-16">
         <FadeIn className="mx-auto max-w-7xl px-6">
           <h1 className="text-4xl font-bold tracking-tight text-foreground md:text-5xl">
             {t.projectsPage.title}
@@ -51,55 +45,83 @@ export function ProjectsPageContent() {
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
             {t.projectsPage.description}
           </p>
-        </FadeIn>
-      </section>
 
-      <section className="border-b border-border bg-background py-14">
-        <FadeIn className="mx-auto max-w-4xl px-6">
-          <h2 className="text-2xl font-bold text-foreground">{t.projectsPage.stemProjectTitle}</h2>
-          <p className="mt-4 text-base leading-7 text-muted-foreground">
-            {t.projectsPage.stemProjectP1}
-          </p>
-          <p className="mt-4 text-base leading-7 text-muted-foreground">
-            {t.projectsPage.stemProjectP2}
-          </p>
-          <p className="mt-4 text-base leading-7 text-muted-foreground">
-            {t.projectsPage.stemProjectP3Start}{" "}
-            <Link
-              href="/curriculums"
-              className="font-semibold text-foreground underline underline-offset-4"
-            >
-              {t.projectsPage.stemProjectCurriculumLink}
-            </Link>{" "}
-            {t.projectsPage.stemProjectOr}{" "}
-            <Link
-              href="/workshops"
-              className="font-semibold text-foreground underline underline-offset-4"
-            >
-              {t.projectsPage.stemProjectWorkshopLink}
-            </Link>
-            {language === "zh" ? t.projectsPage.stemProjectP3End : ` ${t.projectsPage.stemProjectP3End}`}
-          </p>
-        </FadeIn>
-      </section>
+          <div className="mt-10 max-w-4xl">
+            <h2 className="text-2xl font-bold text-foreground">{t.projectsPage.stemProjectTitle}</h2>
 
-      <section className="border-b border-border bg-secondary/40 py-7">
-        <div className="mx-auto grid max-w-7xl gap-3 px-6 md:grid-cols-2 lg:grid-cols-4">
-          {t.projectsPage.learningPaths.map((path, i) => (
-            <FadeIn key={path.title} delay={i * 60}>
-              <article className="h-full rounded-md border border-border bg-background px-4 py-3.5">
-                <h2 className="text-sm font-bold leading-5 text-foreground">{path.title}</h2>
-                <p className="mt-1 text-xs leading-5 text-muted-foreground">{path.copy}</p>
-                <Link
-                  href={learningPathHrefs[i] ?? "/projects"}
-                  className="mt-2 inline-flex text-sm font-semibold text-avanza-green-dark underline underline-offset-4"
+            <p
+              aria-hidden={isStemProjectOpen}
+              className={`text-base leading-7 text-muted-foreground transition-all duration-300 ease-in-out ${
+                isStemProjectOpen
+                  ? "mt-0 max-h-0 overflow-hidden opacity-0"
+                  : "mt-4 max-h-32 opacity-100"
+              }`}
+            >
+              {t.projectsPage.stemProjectPreview}{" "}
+              <button
+                type="button"
+                aria-expanded={isStemProjectOpen}
+                aria-controls="stem-project-details"
+                onClick={() => setIsStemProjectOpen((open) => !open)}
+                className="inline-flex items-center gap-1 font-semibold text-foreground underline underline-offset-4 outline-none transition-colors hover:text-avanza-green-dark focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                {t.projectsPage.stemProjectReadMore}
+                <ChevronDown className="h-4 w-4 transition-transform duration-300" aria-hidden="true" />
+              </button>
+            </p>
+
+            <div
+              id="stem-project-details"
+              aria-hidden={!isStemProjectOpen}
+              inert={!isStemProjectOpen || undefined}
+              className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${
+                isStemProjectOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+              }`}
+            >
+              <div
+                className={`overflow-hidden transition-opacity duration-500 ease-in-out ${
+                  isStemProjectOpen ? "opacity-100 delay-100" : "opacity-0"
+                }`}
+              >
+                <p className="mt-4 text-base leading-7 text-muted-foreground">
+                  {t.projectsPage.stemProjectP1}
+                </p>
+                <p className="mt-4 text-base leading-7 text-muted-foreground">
+                  {t.projectsPage.stemProjectP2}
+                </p>
+                <p className="mt-4 text-base leading-7 text-muted-foreground">
+                  {t.projectsPage.stemProjectP3Start}{" "}
+                  <Link
+                    href="/curriculums"
+                    className="font-semibold text-foreground underline underline-offset-4"
+                  >
+                    {t.projectsPage.stemProjectCurriculumLink}
+                  </Link>{" "}
+                  {t.projectsPage.stemProjectOr}{" "}
+                  <Link
+                    href="/workshops"
+                    className="font-semibold text-foreground underline underline-offset-4"
+                  >
+                    {t.projectsPage.stemProjectWorkshopLink}
+                  </Link>
+                  {language === "zh"
+                    ? t.projectsPage.stemProjectP3End
+                    : ` ${t.projectsPage.stemProjectP3End}`}
+                </p>
+                <button
+                  type="button"
+                  aria-expanded={isStemProjectOpen}
+                  aria-controls="stem-project-details"
+                  onClick={() => setIsStemProjectOpen(false)}
+                  className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-foreground underline underline-offset-4 outline-none transition-colors hover:text-avanza-green-dark focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  {path.link}
-                </Link>
-              </article>
-            </FadeIn>
-          ))}
-        </div>
+                  {t.projectsPage.stemProjectShowLess}
+                  <ChevronDown className="h-4 w-4 rotate-180 transition-transform duration-300" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
       </section>
 
       <section className="border-b border-border bg-background">
@@ -144,10 +166,10 @@ export function ProjectsPageContent() {
         </div>
       </section>
 
-      <section className="border-t border-border bg-background py-14">
-        <FadeIn className="mx-auto max-w-4xl px-6">
-          <h2 className="text-base font-bold text-foreground">{t.projectsPage.safetyFirst}</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+      <section className="bg-background py-14">
+        <FadeIn className="mx-auto max-w-4xl px-6 text-center">
+          <h2 className="text-xl font-bold text-foreground">{t.projectsPage.safetyFirst}</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-muted-foreground">
             {t.projectsPage.safetyText}
           </p>
         </FadeIn>

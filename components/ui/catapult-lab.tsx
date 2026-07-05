@@ -22,11 +22,11 @@ import {
   multiply,
   reflectVelocity,
   segmentCircleCollision,
-  segmentExpandedRectCollision,
+  segmentExpandedRotatedRectCollision,
   subtract,
   type ProjectileKind,
   type ProjectileState,
-  type Rect,
+  type RotatedRect,
   type SegmentRectHit,
   type Vec,
 } from "./catapult-physics"
@@ -221,6 +221,7 @@ export function CatapultLab() {
   const nextTargetSoundRef = useRef(0)
   const nextWeakWallBreakSoundRef = useRef(0)
   const nextWinSoundRef = useRef(0)
+  const audioUnlockedRef = useRef(false)
   const playedHitEffectIdsRef = useRef<Set<number>>(new Set())
   const playedBreakEffectIdsRef = useRef<Set<number>>(new Set())
   const playedBounceEffectIdsRef = useRef<Set<number>>(new Set())
@@ -444,6 +445,7 @@ export function CatapultLab() {
 
       const current = gameRef.current
       const key = event.key.toLowerCase()
+      unlockAudio()
 
       if (key === "r") {
         event.preventDefault()
@@ -523,6 +525,7 @@ export function CatapultLab() {
   }
 
   function launchShot(settings: ShotSettings = { angle, power, kind: selectedProjectileKind }) {
+    unlockAudio()
     const current = gameRef.current
     if (current.phase !== "aiming") return
     const currentLevel = LEVELS[current.levelIndex]
@@ -585,6 +588,37 @@ export function CatapultLab() {
     restartLevel(current.levelIndex + 1)
   }
 
+  function unlockAudio() {
+    if (audioUnlockedRef.current) return
+
+    const sounds = [
+      ...targetSoundsRef.current,
+      ...weakWallBreakSoundsRef.current,
+      bounceSoundRef.current,
+      groundHitSoundRef.current,
+      cannonFireSoundRef.current,
+      loseSoundRef.current,
+      ...winSoundsRef.current,
+    ].filter((sound): sound is HTMLAudioElement => Boolean(sound))
+
+    if (!sounds.length) return
+    audioUnlockedRef.current = true
+
+    for (const sound of sounds) {
+      const primer = sound.cloneNode() as HTMLAudioElement
+      primer.muted = true
+      primer.volume = 0
+      primer.currentTime = 0
+      void primer
+        .play()
+        .then(() => {
+          primer.pause()
+          primer.currentTime = 0
+        })
+        .catch(() => {})
+    }
+  }
+
   function setAimFromWorld(point: Vec) {
     const next = aimFromDragPoint(point)
     setAngle(next.angle)
@@ -593,6 +627,7 @@ export function CatapultLab() {
   }
 
   function handlePointerDown(event: PointerEvent<SVGSVGElement>) {
+    unlockAudio()
     if (!canAim) return
 
     const world = eventToWorld(event)
@@ -880,6 +915,7 @@ export function CatapultLab() {
               <div className="flex flex-wrap gap-2 lg:justify-end">
                 <button
                   type="button"
+                  onPointerDown={unlockAudio}
                   onClick={() => launchShot()}
                   disabled={!canAim}
                   className="border border-[#1d211c] bg-[#d96d1f] px-4 py-2 text-sm font-extrabold text-white transition hover:enabled:bg-[#c65f18] disabled:cursor-not-allowed disabled:border-[#b8bbb4] disabled:bg-[#d7d9d3] disabled:text-[#73786f]"
@@ -911,19 +947,13 @@ export function CatapultLab() {
                 />
               </div>
 
-              <div className="grid gap-3 lg:grid-cols-[1fr_1.1fr]">
+              <div className="grid gap-3">
                 <ProjectilePicker
                   allowed={level.allowedProjectiles}
                   value={selectedProjectileKind}
                   disabled={!canAim}
                   onChange={setProjectileKind}
                 />
-                <div className="border border-[#d6d8d2] bg-[#fbfcf8] px-3 py-2">
-                  <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#6d746b]">
-                    Status
-                  </p>
-                  <p className="mt-1 min-h-5 text-sm font-bold text-[#252a23]">{game.status}</p>
-                </div>
               </div>
             </div>
           </div>
@@ -1457,7 +1487,7 @@ function getObstacleHits(
       const rect = movedRect(obstacle, obstacle.movement, sceneTime)
       return {
         obstacle: { ...obstacle, ...rect },
-        collision: segmentExpandedRectCollision(from, to, rect, projectileRadius),
+        collision: segmentExpandedRotatedRectCollision(from, to, rect, projectileRadius),
       }
     })
     .filter((hit) => hit.collision.hit)
@@ -1839,18 +1869,20 @@ function Cannon({ angle, origin }: { angle: number; origin: Vec }) {
   )
 }
 
-function ObstacleBlock({ obstacle, rect }: { obstacle: ObstacleState; rect: Rect }) {
+function ObstacleBlock({ obstacle, rect }: { obstacle: ObstacleState; rect: RotatedRect }) {
   const x = toSvgX(rect)
   const y = toSvgY({ y: rect.y + rect.height })
   const width = rect.width * WORLD_SCALE
   const height = rect.height * WORLD_SCALE
+  const centerX = x + width / 2
+  const centerY = y + height / 2
   const fill =
     obstacle.kind === "weak" ? "#8d715e" : obstacle.kind === "bounce" ? "#56685a" : "#2f342d"
   const highlight =
     obstacle.kind === "weak" ? "#b4937b" : obstacle.kind === "bounce" ? "#7d927f" : "#555d50"
 
   return (
-    <g>
+    <g transform={rect.rotation ? `rotate(${-rect.rotation} ${centerX} ${centerY})` : undefined}>
       <rect
         x={x}
         y={y}

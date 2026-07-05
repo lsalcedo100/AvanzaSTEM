@@ -14,6 +14,7 @@ type NewsletterSignupProps = {
   heading?: string
   description?: string
   audienceNote?: string
+  compactRadius?: boolean
 }
 
 function getErrorMessage(
@@ -40,6 +41,7 @@ export function NewsletterSignup({
   heading,
   description,
   audienceNote,
+  compactRadius = false,
 }: NewsletterSignupProps = {}) {
   const { t } = useLanguage()
   const [email, setEmail] = useState("")
@@ -49,6 +51,7 @@ export function NewsletterSignup({
   const headingId = `${sectionId}-heading`
   const emailId = `${sectionId}-email`
   const websiteId = `${sectionId}-website`
+  const controlRadiusClass = compactRadius ? "rounded-lg" : "rounded-full"
 
   useEffect(() => {
     if (!isSuccessOpen) {
@@ -208,12 +211,12 @@ export function NewsletterSignup({
               inputMode="email"
               maxLength={MAX_EMAIL_LENGTH}
               disabled={isPending}
-              className="min-w-0 flex-1 rounded-full border-2 border-primary-foreground/20 bg-primary-foreground/12 px-7 py-4 text-lg text-primary-foreground placeholder:text-primary-foreground/55 backdrop-blur-sm transition-colors focus:border-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary-foreground/70 focus:ring-offset-2 focus:ring-offset-avanza-teal disabled:cursor-not-allowed disabled:opacity-80"
+              className={`min-w-0 flex-1 ${controlRadiusClass} border-2 border-primary-foreground/20 bg-primary-foreground/12 px-7 py-4 text-lg text-primary-foreground placeholder:text-primary-foreground/55 backdrop-blur-sm transition-colors focus:border-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary-foreground/70 focus:ring-offset-2 focus:ring-offset-avanza-teal disabled:cursor-not-allowed disabled:opacity-80`}
             />
             <button
               type="submit"
               disabled={isPending}
-              className="inline-flex justify-center rounded-full bg-primary-foreground px-10 py-4 text-lg font-bold text-avanza-green-dark shadow-lg transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-teal disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:scale-100"
+              className={`inline-flex justify-center ${controlRadiusClass} bg-primary-foreground px-10 py-4 text-lg font-bold text-avanza-green-dark shadow-lg transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-teal disabled:cursor-not-allowed disabled:opacity-80 disabled:hover:scale-100`}
             >
               {isPending ? t.blogPage.subscribing : t.blogPage.subscribe}
             </button>
@@ -260,7 +263,7 @@ export function NewsletterSignup({
             <button
               type="button"
               onClick={() => setIsSuccessOpen(false)}
-              className="mt-6 inline-flex rounded-full bg-avanza-green px-6 py-3 text-sm font-bold text-avanza-dark transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
+              className={`mt-6 inline-flex ${controlRadiusClass} bg-avanza-green px-6 py-3 text-sm font-bold text-avanza-dark transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2`}
             >
               {t.blogPage.closeSuccessDialog}
             </button>

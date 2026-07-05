@@ -104,7 +104,7 @@ const LEVELS: Level[] = [
     name: "Heavy Blocks",
     targetRows: 8,
     supportWidth: 300,
-    totalBlocks: 21,
+    totalBlocks: 20,
     tip: "Darker blocks are heavier. They help near the bottom and hurt near the top.",
     stabilityRequired: 72,
     mixedWeights: true,
@@ -189,7 +189,7 @@ const JENGA_COPY: Record<Language, {
     rebuildSupport: "Rebuild the support path.",
     collapseTip: "Try a wider bottom, keep the next block closer to center, and let the tower settle before going taller.",
     phase: { loading: "Loading", ready: "Ready", building: "Building", holding: "Holding", success: "Complete", collapsed: "Collapsed", error: "Error" },
-    band: { stable: "Stable", wobbling: "Wobbling", danger: "Danger", collapsed: "Collapsed" },
+    band: { stable: "Stable", wobbling: "Unsteady", danger: "Danger", collapsed: "Collapsed" },
   },
   es: {
     levels: [
@@ -230,7 +230,7 @@ const JENGA_COPY: Record<Language, {
     rebuildSupport: "Reconstruye el camino de soporte.",
     collapseTip: "Prueba una base mas ancha, coloca el siguiente bloque mas cerca del centro y deja que la torre se estabilice antes de subir mas.",
     phase: { loading: "Cargando", ready: "Listo", building: "Construyendo", holding: "Sosteniendo", success: "Completo", collapsed: "Colapsada", error: "Error" },
-    band: { stable: "Estable", wobbling: "Tambaleante", danger: "Peligro", collapsed: "Colapsada" },
+    band: { stable: "Estable", wobbling: "Inestable", danger: "Peligro", collapsed: "Colapsada" },
   },
   zh: {
     levels: [
@@ -271,7 +271,7 @@ const JENGA_COPY: Record<Language, {
     rebuildSupport: "重新建立支撑路径。",
     collapseTip: "试试更宽的底部，让下一块更靠近中心，并在继续加高前等塔稳定下来。",
     phase: { loading: "加载中", ready: "准备好", building: "搭建中", holding: "保持中", success: "完成", collapsed: "已倒塌", error: "错误" },
-    band: { stable: "稳定", wobbling: "摇晃", danger: "危险", collapsed: "已倒塌" },
+    band: { stable: "稳定", wobbling: "不稳", danger: "危险", collapsed: "已倒塌" },
   },
 }
 
@@ -445,8 +445,7 @@ export function JengaTower() {
           meta.used = true
         }
 
-        const fellOutOfPlay = block.position.y > CANVAS_H + 120
-        if (fellOutOfPlay && block !== selectedBodyRef.current) {
+        if (shouldDespawnBlock(block, meta, currentLevel) && block !== selectedBodyRef.current) {
           meta.dropped = true
           meta.used = false
           meta.stableSince = null
@@ -934,9 +933,6 @@ export function JengaTower() {
                 <span className="absolute left-4 top-3 text-[10px] font-black uppercase tracking-[0.2em] text-sky-50/85">
                   {copy.supplyTray}
                 </span>
-                <span className="absolute bottom-3 left-4 right-4 border-t border-sky-100/20 pt-2 text-[10px] font-black uppercase tracking-[0.14em] text-sky-50/55">
-                  {copy.levels[levelIndex]?.tip ?? level.tip}
-                </span>
               </div>
 
               <div
@@ -1123,7 +1119,12 @@ function measureTower(
   const supportRight = TOWER_CENTER_X + level.supportWidth / 2
   const placedBlocks = blocks.filter((block) => {
     const meta = blockMeta.get(block.id)
-    return Boolean(!meta?.dropped && (meta?.used || isBlockInBuildZone(block, level)))
+    return Boolean(
+      meta &&
+        !meta.dropped &&
+        !shouldDespawnBlock(block, meta, level) &&
+        (meta.used || isBlockInBuildZone(block, level)),
+    )
   })
   const buildBlocks = placedBlocks.filter((block) => block !== selectedBody && block.position.y < PLATFORM_Y + BLOCK_H * 1.25)
   const candidates = buildBlocks.filter((block) => {
@@ -1270,6 +1271,29 @@ function getBuildZoneBounds() {
     left: TOWER_CENTER_X - BUILD_ZONE_WIDTH / 2,
     right: TOWER_CENTER_X + BUILD_ZONE_WIDTH / 2,
   }
+}
+
+function shouldDespawnBlock(block: MatterBody, meta: BlockMeta, level: Level) {
+  if (meta.dropped) return false
+  if (isBlockOffScreen(block)) return true
+  return meta.used && hasFallenOffPlatform(block, level)
+}
+
+function isBlockOffScreen(block: MatterBody) {
+  return (
+    block.bounds.max.x < -RIGHT_FALLOFF_W ||
+    block.bounds.min.x > CANVAS_W + RIGHT_FALLOFF_W ||
+    block.bounds.min.y > CANVAS_H + 80 ||
+    block.bounds.max.y < -160
+  )
+}
+
+function hasFallenOffPlatform(block: MatterBody, level: Level) {
+  const platformLeft = PLATFORM_CENTER_X - (level.supportWidth + 36) / 2
+  const platformRight = PLATFORM_CENTER_X + (level.supportWidth + 36) / 2
+  const platformOverlap = horizontalOverlap(block.bounds.min.x, block.bounds.max.x, platformLeft, platformRight)
+
+  return block.bounds.min.y > PLATFORM_Y + 6 && platformOverlap < BLOCK_W * 0.12
 }
 
 function isBlockInBuildZone(block: MatterBody, level: Level) {
@@ -1453,7 +1477,7 @@ function getCoachMessage({
     return "Danger zone. Slow down and rebuild the base before going taller."
   }
   if (band === "wobbling") {
-    return "It is wobbling. Lower blocks should be wide and steady before you build up."
+    return "The tower is unsteady. Lower blocks should be wide and centered before you build up."
   }
   if (stableHeight <= 1) {
     return "Start with a wide base, then stack blocks near the center line."
@@ -1469,7 +1493,7 @@ function drawBlockDetails(
 ) {
   for (const block of blocks) {
     const meta = blockMeta.get(block.id)
-    if (!meta) continue
+    if (!meta || meta.dropped || block.render.visible === false) continue
 
     ctx.save()
     ctx.translate(block.position.x, block.position.y)

@@ -36,7 +36,7 @@ must, within seconds, answer:
   origin story: folding table, popsicle sticks, library).
 - Currently active at **Clifton Public Library** and **Allwood Branch
   Library**, Clifton, NJ.
-- Open to grades 2+ (roughly ages 7–14).
+- Open to grades 1+ (roughly ages 6–14).
 - Always free. Workshops taught in English & Spanish; site supports English,
   Spanish, and Chinese.
 - 70+ students reached, 2 completed library workshop series, 133 real
@@ -75,11 +75,11 @@ Replaces the current `app/page.tsx` (`HeroSection`, `ValuesStrip`,
 - **Copy (EN)**:
   - Headline: "Free, hands-on STEM workshops for kids — taught by students."
   - Subhead: "Avanza STEM brings free engineering, coding, and AI workshops
-    to public libraries in Clifton, NJ, for students in 2nd grade and up. No
+    to public libraries in Clifton, NJ, for students in 1st grade and up. No
     experience needed — just curiosity."
   - Primary CTA: "Find a Workshop Near You" → `/find-a-workshop`
   - Secondary CTA: "Browse DIY Projects" → `/projects`
-  - Trust line (plain text, no pills): "Always free · Grades 2+ · English &
+  - Trust line (plain text, no pills): "Always free · Grades 1+ · English &
     Spanish · Clifton, NJ"
 
 ### 2. Why We Exist (new component, e.g. `WhyWeExistSection.tsx`)
@@ -169,8 +169,8 @@ Replaces `ImpactSection` + `GalleryTeaserSection` + dead `TrustBand`.
   images from `galleryImages`) linking to `/gallery`.
 - **Copy (EN)**:
   - Heading: "Who It's For"
-  - Intro: "Avanza STEM is open to any student in 2nd grade and up (roughly
-    ages 7–14). Workshops are always free, taught in English and Spanish,
+  - Intro: "Avanza STEM is open to any student in 1st grade and up (roughly
+    ages 6–14). Workshops are always free, taught in English and Spanish,
     and held at public libraries in Clifton, NJ — open to families, schools,
     and community groups."
   - Stats (with small "As of June 2026" note):

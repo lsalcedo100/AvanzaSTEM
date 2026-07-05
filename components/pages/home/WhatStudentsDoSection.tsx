@@ -162,7 +162,7 @@ export function WhatStudentsDoSection() {
         <FadeIn className="mt-10 flex justify-center">
           <Link
             href="/workshops"
-            className="inline-flex items-center gap-2 rounded-full border-2 border-avanza-dark/15 bg-background px-6 py-3 text-sm font-bold text-avanza-dark transition-all duration-200 hover:border-avanza-dark/35 hover:bg-avanza-dark/5"
+            className="inline-flex items-center gap-2 rounded-lg border-2 border-avanza-dark/15 bg-background px-6 py-3 text-sm font-bold text-avanza-dark transition-all duration-200 hover:border-avanza-dark/35 hover:bg-avanza-dark/5"
           >
             {t.home.studentsDoWorkshopsCta}
             <ArrowUpRight className="h-4 w-4" />

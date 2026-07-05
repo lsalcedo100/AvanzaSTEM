@@ -18,6 +18,7 @@ export type TargetDefinition = {
 export type ObstacleDefinition = Rect & {
   id: string
   kind: "solid" | "weak" | "bounce"
+  rotation?: number
   movement?: Movement
 }
 
@@ -163,6 +164,7 @@ export const LEVELS: LevelDefinition[] = [
     prediction: "full",
     obstacles: [
       { id: "screen", kind: "solid", x: 56, y: 0, width: 5, height: 18 },
+      { id: "angled-screen", kind: "solid", x: 69.5, y: 25, width: 22, height: 3.2, rotation: 60 },
       { id: "bank-pad", kind: "bounce", x: 66, y: 0, width: 16, height: 2.8 },
     ],
     targets: [{ id: "bank-target", x: 91, y: 17.5, radius: 2.55 }],
@@ -574,7 +576,7 @@ export function movedPoint(base: Vec, movement: Movement | undefined, time: numb
   return { x: base.x, y: base.y + offset }
 }
 
-export function movedRect(rect: Rect, movement: Movement | undefined, time: number): Rect {
+export function movedRect<T extends Rect>(rect: T, movement: Movement | undefined, time: number): T {
   const point = movedPoint({ x: rect.x, y: rect.y }, movement, time)
   return { ...rect, x: point.x, y: point.y }
 }

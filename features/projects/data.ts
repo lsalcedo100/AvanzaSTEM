@@ -1368,6 +1368,7 @@ function orderProjectGuides(projects: ProjectGuide[]) {
 }
 
 export const projectGuides = orderProjectGuides(localizedProjectGuides.en)
+export const projectCount = projectGuides.length
 
 export function getProjectGuides(language: Language = "en") {
   return orderProjectGuides(localizedProjectGuides[language] ?? localizedProjectGuides.en)

@@ -6,6 +6,7 @@ import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { CountUp } from "@/components/ui/count-up"
+import { siteStats } from "@/features/site-stats"
 
 export function AboutPageContent() {
   const { t } = useLanguage()
@@ -33,6 +34,46 @@ export function AboutPageContent() {
     },
   ]
 
+  const contributorMembers = [
+    {
+      name: "Alejandro Villafana",
+      role: "Workshop Contributor",
+      bio: "Alejandro helped support some of Avanza STEM's earliest hands-on workshops by assisting with activities and helping students during sessions.",
+      image: "/images/about/Alejandro Villafana.png",
+      imageAlt: "Photo of Alejandro Villafana",
+      imagePosition: "object-center",
+      accent: "bg-avanza-green/20",
+      text: "text-avanza-green",
+    },
+    {
+      name: "Logan Smith",
+      role: "Website Contributor",
+      bio: "Logan helped with the technical side of the Avanza STEM website, including coding support, debugging, and improving the development workflow.",
+      image: "/images/about/Logan Smith.png",
+      imageAlt: "Photo of Logan Smith",
+      imagePosition: "object-center",
+      accent: "bg-avanza-teal/20",
+      text: "text-avanza-teal",
+    },
+    {
+      name: "Thomas Flick",
+      role: "Workshop Contributor",
+      bio: "Thomas helped support early Avanza STEM workshops by assisting with activities and helping students during sessions.",
+      image: "/images/about/Thomas Flick.jpg",
+      imageAlt: "Photo of Thomas Flick",
+      imagePosition: "object-center",
+      accent: "bg-avanza-purple/20",
+      text: "text-avanza-purple",
+    },
+  ]
+
+  const whyParagraphs = [
+    t.aboutPage.whyP1,
+    t.aboutPage.whyP2,
+    t.aboutPage.whyP3,
+    t.aboutPage.whyP4,
+  ].filter(Boolean)
+
   return (
     <>
       <section className="bg-gradient-to-br from-avanza-green to-avanza-teal py-20">
@@ -56,12 +97,14 @@ export function AboutPageContent() {
               <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">
                 {t.aboutPage.whyTitle}
               </h2>
-              <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                {t.aboutPage.whyP1}
-              </p>
-              <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-                {t.aboutPage.whyP2}
-              </p>
+              {whyParagraphs.map((paragraph, index) => (
+                <p
+                  key={paragraph}
+                  className={`${index === 0 ? "mt-6" : "mt-4"} text-lg leading-relaxed text-muted-foreground`}
+                >
+                  {paragraph}
+                </p>
+              ))}
             </FadeIn>
             <FadeIn delay={100}>
               <div className="relative h-80 overflow-hidden rounded-2xl shadow-2xl lg:h-96">
@@ -108,6 +151,33 @@ export function AboutPageContent() {
                   </p>
                 </div>
               ))}
+            </div>
+            <div className="mx-auto mt-14 max-w-5xl">
+              <div className="text-center">
+                <h3 className="text-2xl font-extrabold text-foreground">
+                  Contributors & Volunteers
+                </h3>
+              </div>
+              <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                {contributorMembers.map((member) => (
+                  <div key={member.name} className="rounded-2xl border border-border bg-card p-8 text-center shadow-sm">
+                    <div className={`relative mx-auto aspect-[4/5] w-full max-w-52 overflow-hidden rounded-xl ${member.accent}`}>
+                      <LightboxImage
+                        src={member.image}
+                        alt={member.imageAlt}
+                        fill
+                        sizes="(min-width: 1024px) 13rem, (min-width: 640px) 50vw, 13rem"
+                        className={`object-cover ${member.imagePosition}`}
+                      />
+                    </div>
+                    <h3 className="mt-4 text-xl font-bold text-card-foreground">{member.name}</h3>
+                    <p className={`text-sm font-semibold ${member.text}`}>{member.role}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      {member.bio}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
             <p className="mt-10 text-center text-base text-muted-foreground">
               {t.aboutPage.helpText}{" "}
@@ -176,10 +246,10 @@ export function AboutPageContent() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 text-center md:grid-cols-4">
             {[
-              { to: 120, suffix: "+", label: t.aboutPage.studentsReached },
-              { to: 6, suffix: "", label: t.aboutPage.curriculumTopics },
-              { to: 6, suffix: "", label: t.aboutPage.diyProjects },
-              { to: 12, suffix: "", label: t.aboutPage.workshopsHosted },
+              { ...siteStats.studentsReached, label: t.aboutPage.studentsReached },
+              { ...siteStats.curriculumTopics, label: t.aboutPage.curriculumTopics },
+              { ...siteStats.diyProjects, label: t.aboutPage.diyProjects },
+              { ...siteStats.workshopsHosted, label: t.aboutPage.workshopsHosted },
             ].map((stat, i) => (
               <FadeIn key={stat.label} delay={i * 80}>
                 <div className="rounded-2xl border border-primary-foreground/10 p-8">
