@@ -1290,6 +1290,7 @@ function AtomSVG({
         return (
           <g key={idx}>
             <circle
+              key="ring"
               cx={cx}
               cy={cy}
               r={r}
@@ -1299,6 +1300,10 @@ function AtomSVG({
               strokeDasharray="4 6"
             />
             <g
+              // Re-key on electron count so the orbit and every label's
+              // counter-rotation remount together and stay perfectly in
+              // phase — otherwise labels added later drift out of upright.
+              key={`spin-${count}`}
               style={{
                 transformOrigin: `${cx}px ${cy}px`,
                 animation: reduced
@@ -1310,6 +1315,10 @@ function AtomSVG({
                 const angle = (i / count) * Math.PI * 2
                 const x = cx + Math.cos(angle) * r
                 const y = cy + Math.sin(angle) * r
+                const electronSpinDuration = `${14 + idx * 4}s`
+                const electronLabelAnimation = reduced
+                  ? undefined
+                  : `${idx % 2 === 0 ? "atom-label-face-up-ccw" : "atom-label-face-up-cw"} ${electronSpinDuration} linear infinite`
                 const isNewest =
                   electronAdded && idx === outerShellIdx && i === count - 1
                 const inner = (
@@ -1332,6 +1341,10 @@ function AtomSVG({
                       fontSize="10"
                       fontWeight="800"
                       fill="#fff"
+                      style={{
+                        transformOrigin: `${x}px ${y}px`,
+                        animation: electronLabelAnimation,
+                      }}
                     >
                       e
                     </text>

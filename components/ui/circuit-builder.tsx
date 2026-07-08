@@ -673,7 +673,7 @@ function LevelPlay({
               <div className="flex flex-col gap-1.5">
                 <StarRow earned={solveStats?.stars ?? 3} className="h-7 w-7" />
                 <p className="text-sm font-bold text-avanza-dark/70">
-                  {t.gamesPage[STAR_REASON[solveStats?.stars ?? 3]]}
+                  {t.gamesPage[STAR_REASON[solveStats?.stars ?? 3]] as string}
                 </p>
               </div>
 
@@ -932,7 +932,7 @@ function Sandbox({ onExit }: { onExit: () => void }) {
                       )}
                     </span>
                     <span className={cn("font-bold", done ? "text-white" : "text-white/70")}>
-                      {t.gamesPage[ch.labelKey]}
+                      {t.gamesPage[ch.labelKey] as string}
                     </span>
                   </li>
                 )

@@ -49,7 +49,7 @@ type MarbleRunProgress = {
   bestPiecesByLevel: Record<string, number>
 }
 
-const BUILD_TOOLS: BuildablePieceKind[] = ["ramp", "pipe", "blocker", "bounce"]
+const BUILD_TOOLS: BuildablePieceKind[] = ["ramp", "pipe", "bounce"]
 const ROLLING_SOUND_PATH = "/audio/freesound_community-rolling-cart-002-86702.mp3"
 const PROGRESS_STORAGE_KEY = "avanza:marble-run-progress:v1"
 
@@ -1220,13 +1220,6 @@ export function MarbleRun() {
                   </ControlButton>
                 </div>
               </div>
-
-              <div className="mt-5 rounded-lg border border-[#d9c48e] bg-white/70 p-3 text-sm leading-relaxed text-[#4d5a60]">
-                <p className="font-extrabold text-[#28353c]">Workshop Notes</p>
-                <p className="mt-1">
-                  Blue is selected, green is a valid build spot, red marks trouble, and gold marks the cup.
-                </p>
-              </div>
             </aside>
           </div>
         </FadeIn>
@@ -1641,11 +1634,13 @@ function TrackPieceArtwork({
   locked?: boolean
 }) {
   const orientation = normalizeOrientation(piece.kind, piece.orientation)
+  const fillsCell = piece.kind === "blocker"
 
   return (
     <span
       className={cn(
-        "pointer-events-none absolute inset-[8%] block drop-shadow-[0_3px_2px_rgba(39,49,58,0.18)] [animation:block-pop-in_150ms_ease-out]",
+        "pointer-events-none absolute block drop-shadow-[0_3px_2px_rgba(39,49,58,0.18)] [animation:block-pop-in_150ms_ease-out]",
+        fillsCell ? "inset-0" : "inset-[8%]",
         preview && "opacity-45",
         locked && "opacity-90",
       )}
@@ -1708,8 +1703,8 @@ function PipeSvg({ orientation }: { orientation: number }) {
 function BlockerSvg() {
   return (
     <svg viewBox="0 0 48 48" className="h-full w-full">
-      <rect x="8" y="8" width="32" height="32" fill="#3d352d" stroke="#1f1a16" strokeWidth="2.5" />
-      <path d="M12 19H36M12 30H36M23 9V19M30 19V30M19 30V39" stroke="#716251" strokeWidth="1.5" />
+      <rect x="0" y="0" width="48" height="48" fill="#3d352d" stroke="#1f1a16" strokeWidth="2.5" />
+      <path d="M0 17H48M0 32H48M17 2V17M31 17V32M14 32V47" stroke="#716251" strokeWidth="1.5" />
     </svg>
   )
 }

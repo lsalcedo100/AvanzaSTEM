@@ -1452,7 +1452,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
           { type: "paragraph", text: "Ask an AI these three questions:" },
           { type: "list", items: [
             "Explain how a paper airplane flies.",
-            "Explain how a paper airplane flies like I am in 1st grade.",
+            "Explain how a paper airplane flies like I am in 2nd grade.",
             "Make up a silly story about a paper airplane that goes to Mars.",
           ] },
           { type: "paragraph", text: "Notice how the answers change. The AI is not suddenly becoming a teacher, a little kid, or a storyteller. It is changing its response based on the pattern of your prompt." },

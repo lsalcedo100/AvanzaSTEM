@@ -181,6 +181,8 @@
 
 @keyframes atom-spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes atom-spin-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+@keyframes atom-label-face-up-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes atom-label-face-up-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 
 @keyframes atom-nucleus-pulse {
   0% { transform: scale(0.7); opacity: 0.85; }

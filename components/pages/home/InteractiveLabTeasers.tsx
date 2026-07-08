@@ -10,7 +10,6 @@ type LabCard = {
   eyebrow: string
   title: string
   description: string
-  tone: string
   preview: "code" | "bridge" | "tower" | "atom"
 }
 
@@ -22,7 +21,6 @@ export function InteractiveLabTeasers() {
       eyebrow: t.home.pyEyebrow,
       title: t.home.pyTitle,
       description: t.home.pyDesc,
-      tone: "bg-avanza-green text-avanza-dark",
       preview: "code",
     },
     {
@@ -30,7 +28,6 @@ export function InteractiveLabTeasers() {
       eyebrow: t.home.bridgeEyebrow,
       title: t.home.bridgeTitle,
       description: t.home.bridgeDesc,
-      tone: "bg-avanza-orange text-avanza-dark",
       preview: "bridge",
     },
     {
@@ -38,7 +35,6 @@ export function InteractiveLabTeasers() {
       eyebrow: t.home.jengaEyebrow,
       title: t.home.jengaTitle,
       description: t.home.jengaDesc,
-      tone: "bg-avanza-purple text-white",
       preview: "tower",
     },
     {
@@ -46,7 +42,6 @@ export function InteractiveLabTeasers() {
       eyebrow: t.home.atomEyebrow,
       title: t.home.atomTitle,
       description: t.home.atomDesc,
-      tone: "bg-avanza-teal text-avanza-dark",
       preview: "atom",
     },
   ]
@@ -91,7 +86,7 @@ function LabCard({ lab, cta }: { lab: LabCard; cta: string }) {
       href={lab.href}
       className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_20px_48px_-30px_rgba(26,26,46,0.42)] ring-1 ring-avanza-dark/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_26px_58px_-30px_rgba(26,26,46,0.5)]"
     >
-      <StaticPreview type={lab.preview} tone={lab.tone} />
+      <StaticPreview type={lab.preview} />
       <div className="flex flex-1 flex-col p-6">
         <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
           {lab.eyebrow}
@@ -111,7 +106,7 @@ function LabCard({ lab, cta }: { lab: LabCard; cta: string }) {
   )
 }
 
-function StaticPreview({ type, tone }: { type: LabCard["preview"]; tone: string }) {
+function StaticPreview({ type }: { type: LabCard["preview"] }) {
   return (
     <div className="relative h-40 overflow-hidden bg-[#f6fff1]">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(26,26,46,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(26,26,46,0.06)_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -121,7 +116,6 @@ function StaticPreview({ type, tone }: { type: LabCard["preview"]; tone: string 
         {type === "tower" && <TowerPreview />}
         {type === "atom" && <AtomPreview />}
       </div>
-      <span className={`absolute right-4 top-4 h-3 w-3 rounded-full ${tone}`} />
     </div>
   )
 }
