@@ -109,10 +109,34 @@ const projectLastModified: Record<string, string> = {
 // Fallback used only if a route is added without an explicit date above.
 const fallbackLastModified = '2026-06-16'
 
+// Image sitemap entries (<image:loc>) must be absolute URLs. Content images are
+// stored either as absolute Cloudinary URLs or as site-relative paths
+// (e.g. "/images/blog/abacus.jpg"); resolve the latter against the site origin.
+// Dedupes while preserving order so the same photo isn't emitted twice.
+function absoluteImageUrls(images: readonly (string | undefined)[]): string[] {
+  const seen = new Set<string>()
+  const resolved: string[] = []
+  for (const image of images) {
+    if (!image) continue
+    const url = /^https?:\/\//.test(image) ? image : `${siteConfig.url}${image}`
+    if (seen.has(url)) continue
+    seen.add(url)
+    resolved.push(url)
+  }
+  return resolved
+}
+
 function buildRouteEntries(
   path: string,
-  options: { priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; lastModified: string },
+  options: {
+    priority: number
+    changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']
+    lastModified: string
+    images?: string[]
+  },
 ): MetadataRoute.Sitemap {
+  const images = options.images && options.images.length > 0 ? options.images : undefined
+
   if (ENGLISH_ONLY_PATHS.has(path)) {
     return [
       {
@@ -121,6 +145,7 @@ function buildRouteEntries(
         changeFrequency: options.changeFrequency,
         lastModified: options.lastModified,
         alternates: { languages: enOnlyAlternates(path) },
+        ...(images ? { images } : {}),
       },
     ]
   }
@@ -134,6 +159,7 @@ function buildRouteEntries(
     changeFrequency: options.changeFrequency,
     lastModified: options.lastModified,
     alternates,
+    ...(images ? { images } : {}),
   }))
 }
 
@@ -142,11 +168,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     buildRouteEntries(route.path, route),
   )
 
-  const blogRoutes: MetadataRoute.Sitemap = Object.keys(localizedBlogArticles.en).flatMap((slug) =>
+  const blogRoutes: MetadataRoute.Sitemap = Object.entries(localizedBlogArticles.en).flatMap(([slug, article]) =>
     buildRouteEntries(`/blog/${slug}`, {
       priority: 0.7,
       changeFrequency: 'monthly',
       lastModified: blogLastModified[slug] ?? fallbackLastModified,
+      images: absoluteImageUrls([article.image]),
     }),
   )
 
@@ -155,6 +182,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
       changeFrequency: 'monthly',
       lastModified: projectLastModified[project.slug] ?? fallbackLastModified,
+      images: absoluteImageUrls([project.image, ...(project.stepImages?.map((step) => step.src) ?? [])]),
     }),
   )
 

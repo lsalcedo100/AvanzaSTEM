@@ -1,4 +1,10 @@
 import { VALID_LANGUAGES, type Language } from "@/i18n/translations"
+import { siteConfig } from "@/lib/site-config"
+
+/** Prefixes a site-root-relative path with the origin to yield an absolute URL. */
+function absoluteUrl(path: string): string {
+  return `${siteConfig.url}${path}`
+}
 
 /**
  * URL prefixes for locale-prefixed routing. English is the default locale and
@@ -25,9 +31,9 @@ export function localizedPath(path: string, language: Language): string {
 export function languageAlternates(path: string): Record<string, string> {
   const languages: Record<string, string> = {}
   for (const language of VALID_LANGUAGES) {
-    languages[language] = localizedPath(path, language)
+    languages[language] = absoluteUrl(localizedPath(path, language))
   }
-  languages["x-default"] = localizedPath(path, "en")
+  languages["x-default"] = absoluteUrl(localizedPath(path, "en"))
   return languages
 }
 
@@ -38,5 +44,5 @@ export function languageAlternates(path: string): Record<string, string> {
  * `en` and `x-default` point at the canonical English path.
  */
 export function enOnlyAlternates(path: string): Record<string, string> {
-  return { en: path, "x-default": path }
+  return { en: absoluteUrl(path), "x-default": absoluteUrl(path) }
 }
