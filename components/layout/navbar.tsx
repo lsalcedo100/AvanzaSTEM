@@ -94,7 +94,7 @@ export function Navbar() {
 
   return (
     <nav
-      className={`sticky z-50 transition-[top,padding,background-color] duration-300 ease-out ${
+      className={`sticky z-50 transition-[top,padding,background-color] duration-300 ease-out print:hidden ${
         scrolled
           ? "top-3 bg-transparent px-3 sm:top-4 sm:px-6"
           : "top-0 bg-avanza-navbar px-0"

@@ -23,7 +23,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-green",
       borderColor: "border-avanza-green",
       progress: 65,
-      href: "/projects/my-first-python-program",
+      href: "/curriculums/intro-to-python",
     },
     {
       title: t.curriculumsPage.engineeringTitle,

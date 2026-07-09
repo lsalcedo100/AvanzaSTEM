@@ -13,7 +13,7 @@ import {
 import { useLanguage } from "@/components/providers/language-provider"
 
 const CLOUD_NAME = "dw4uprmkk"
-const TOTAL_IMAGES = 217
+const TOTAL_IMAGES = 302
 const PRE_EXPANSION_TOTAL_IMAGES = 174
 const INITIAL_BATCH = 30
 const BATCH_STEP = 24

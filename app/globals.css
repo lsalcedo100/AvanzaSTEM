@@ -426,3 +426,30 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Print styles for the Python curriculum teacher guide and student worksheets.
+   The site navbar and footer already carry `print:hidden`; these rules force a
+   clean white page and provide a page-break utility for per-lesson sections. */
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+  }
+
+  /* Utility: start this element on a fresh printed page (e.g. between lessons). */
+  .print-break-before {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  /* Avoid splitting a worksheet block awkwardly across two pages. */
+  .print-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Elements only meant for on-screen use (e.g. the Print button). */
+  .print-hidden {
+    display: none !important;
+  }
+}

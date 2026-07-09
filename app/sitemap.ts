@@ -1,9 +1,22 @@
 import type { MetadataRoute } from 'next'
 import { localizedBlogArticles } from '@/features/blog/posts'
+import {
+  introToPythonCurriculum,
+  introToPythonPath,
+  introToPythonTeacherGuidePath,
+  introToPythonWeekPath,
+  introToPythonWorksheetsPath,
+} from '@/features/curriculums/intro-to-python'
 import { projectGuides } from '@/features/projects/data'
 import { enOnlyAlternates, languageAlternates, localizedPath } from '@/lib/i18n-routes'
 import { siteConfig } from '@/lib/site-config'
 import { VALID_LANGUAGES, type Language } from '@/i18n/translations'
+
+// The Intro to Python curriculum landing and its per-week lesson pages render
+// English content at every locale, so they are treated as English-only routes.
+const introToPythonLessonPaths = introToPythonCurriculum.weeks.map((w) =>
+  introToPythonWeekPath(w.week),
+)
 
 // Routes that are only rendered in English. They remain reachable at /es and
 // /zh (middleware rewrites them to the English route), but since the visible
@@ -18,6 +31,10 @@ const ENGLISH_ONLY_PATHS = new Set([
   '/gallery',
   '/faq',
   '/privacy',
+  introToPythonPath,
+  introToPythonTeacherGuidePath,
+  introToPythonWorksheetsPath,
+  ...introToPythonLessonPaths,
 ])
 
 // lastModified dates below reflect the last meaningful content/code update for
@@ -35,6 +52,7 @@ const staticRoutes = [
   { path: '/host', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-13' },
   { path: '/gallery', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-06-13' },
   { path: '/curriculums', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-13' },
+  { path: '/curriculums/intro-to-python', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-07' },
   { path: '/faq', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-06-13' },
   { path: '/privacy', priority: 0.4, changeFrequency: 'yearly', lastModified: '2026-06-16' },
 ] as const
@@ -186,5 +204,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   )
 
-  return [...staticSitemapRoutes, ...blogRoutes, ...projectRoutes]
+  const introToPythonLessonRoutes: MetadataRoute.Sitemap = introToPythonCurriculum.weeks.flatMap((w) =>
+    buildRouteEntries(introToPythonWeekPath(w.week), {
+      priority: 0.6,
+      changeFrequency: 'monthly',
+      lastModified: '2026-07-07',
+    }),
+  )
+
+  const introToPythonResourceRoutes: MetadataRoute.Sitemap = [
+    introToPythonTeacherGuidePath,
+    introToPythonWorksheetsPath,
+  ].flatMap((path) =>
+    buildRouteEntries(path, {
+      priority: 0.5,
+      changeFrequency: 'monthly',
+      lastModified: '2026-07-07',
+    }),
+  )
+
+  return [
+    ...staticSitemapRoutes,
+    ...blogRoutes,
+    ...projectRoutes,
+    ...introToPythonLessonRoutes,
+    ...introToPythonResourceRoutes,
+  ]
 }
