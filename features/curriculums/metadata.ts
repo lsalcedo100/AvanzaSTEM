@@ -9,6 +9,34 @@ import {
   introToPythonWeekPath,
   introToPythonWorksheetsPath,
 } from "@/features/curriculums/intro-to-python"
+import {
+  engineeringFundamentalsCurriculum,
+  engineeringFundamentalsPath,
+  engineeringLessonPath,
+  engineeringTeacherGuidePath,
+  engineeringWorksheetPath,
+  getEngineeringLesson,
+} from "@/features/curriculums/engineering-fundamentals"
+import {
+  getScienceLesson,
+  scienceExperimentsCurriculum,
+  scienceExperimentsPath,
+  scienceLessonPath,
+} from "@/features/curriculums/science-experiments"
+import {
+  getMathLessonBySlug,
+  mathAdventuresCurriculum,
+  mathAdventuresPath,
+  mathLessonPath,
+} from "@/features/curriculums/math-adventures"
+import {
+  getRoboticsModule,
+  roboticsCurriculum,
+  roboticsLessonPath,
+  roboticsPath,
+  roboticsTeacherGuidePath,
+  roboticsWorksheetPath,
+} from "@/features/curriculums/robotics"
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
@@ -211,4 +239,448 @@ export function generateIntroToPythonMetadata(): Metadata {
       images: ["/images/og-default-en.png"],
     },
   }
+}
+
+export function generateMathAdventuresMetadata(): Metadata {
+  const c = mathAdventuresCurriculum
+  const title =
+    "Math Adventures: 10-Week Guided Math Course (Grades 2-5) | Avanza STEM"
+  const description =
+    "A 10-week guided math course for grades 2-5. Each week turns one big idea - number sense, operations, patterns, place value, fractions, measurement, geometry, time and money, and data - into a hands-on adventure, ending with a Build a Math City project."
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: mathAdventuresPath,
+      languages: languageAlternates(mathAdventuresPath),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${mathAdventuresPath}`,
+      siteName: siteConfig.name,
+      type: "website",
+      images: [
+        {
+          url: "/images/og-default-en.png",
+          width: 1200,
+          height: 630,
+          alt: `${c.title} curriculum`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+export function generateMathLessonMetadata(slug: string): Metadata {
+  const lesson = getMathLessonBySlug(slug)
+  if (!lesson) {
+    return { title: "Lesson not found | Avanza STEM" }
+  }
+
+  const path = mathLessonPath(slug)
+  const label = lesson.isFinalProject ? "Final Project" : `Week ${lesson.weekNumber}`
+  const title = `${label}: ${lesson.title} - Math Adventures | Avanza STEM`
+  const description = `${label} of the Math Adventures course (${mathAdventuresCurriculum.gradeRange}). ${lesson.description}`
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: languageAlternates(path),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${path}`,
+      siteName: siteConfig.name,
+      type: "article",
+      images: [
+        {
+          url: "/images/og-default-en.png",
+          width: 1200,
+          height: 630,
+          alt: `Math Adventures - ${label}: ${lesson.title}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+export function generateEngineeringFundamentalsMetadata(): Metadata {
+  const c = engineeringFundamentalsCurriculum
+  const title =
+    "Engineering Fundamentals: 6-Week Hands-On Curriculum (Grades 2-5) | Avanza STEM"
+  const description =
+    "A 6-week hands-on engineering curriculum for grades 2-5. Kids build, test, and redesign towers, bridges, machines, gliders, and a final rescue system using everyday materials - no computer needed."
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: engineeringFundamentalsPath,
+      languages: languageAlternates(engineeringFundamentalsPath),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${engineeringFundamentalsPath}`,
+      siteName: siteConfig.name,
+      type: "website",
+      images: [
+        {
+          url: "/images/og-default-en.png",
+          width: 1200,
+          height: 630,
+          alt: `${c.title} curriculum`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+export function generateEngineeringLessonMetadata(slug: string): Metadata {
+  const lesson = getEngineeringLesson(slug)
+  if (!lesson) {
+    return { title: "Lesson not found | Avanza STEM" }
+  }
+
+  const path = engineeringLessonPath(slug)
+  const label = lesson.isFinal ? "Final Challenge" : `Lesson ${lesson.order}`
+  const title = `${label}: ${lesson.title} - Engineering Fundamentals | Avanza STEM`
+  const description = `${label} of the Engineering Fundamentals curriculum (${engineeringFundamentalsCurriculum.gradeRange}). ${lesson.summary}`
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: languageAlternates(path),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${path}`,
+      siteName: siteConfig.name,
+      type: "article",
+      images: [
+        {
+          url: "/images/og-default-en.png",
+          width: 1200,
+          height: 630,
+          alt: `Engineering Fundamentals - ${label}: ${lesson.title}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+function engineeringResourceLabel(slug: string): string {
+  const lesson = getEngineeringLesson(slug)
+  if (!lesson) return "Lesson"
+  return lesson.isFinal ? "Final Challenge" : `Lesson ${lesson.order}`
+}
+
+export function generateEngineeringWorksheetMetadata(slug: string): Metadata {
+  const lesson = getEngineeringLesson(slug)
+  if (!lesson) {
+    return { title: "Worksheet not found | Avanza STEM" }
+  }
+
+  const path = engineeringWorksheetPath(slug)
+  const label = engineeringResourceLabel(slug)
+  const title = `Printable Worksheet - ${label}: ${lesson.title} | Engineering Fundamentals | Avanza STEM`
+  const description = `A printable student worksheet for ${label} of the Engineering Fundamentals curriculum: ${lesson.projectName}. Problem, materials checklist, sketch area, test results table, and reflection.`
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: languageAlternates(path),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${path}`,
+      siteName: siteConfig.name,
+      type: "article",
+      images: [
+        {
+          url: "/images/og-default-en.png",
+          width: 1200,
+          height: 630,
+          alt: `Engineering Fundamentals worksheet - ${label}: ${lesson.title}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+export function generateEngineeringTeacherGuideMetadata(slug: string): Metadata {
+  const lesson = getEngineeringLesson(slug)
+  if (!lesson) {
+    return { title: "Guide not found | Avanza STEM" }
+  }
+
+  const path = engineeringTeacherGuidePath(slug)
+  const label = engineeringResourceLabel(slug)
+  const title = `Parent & Teacher Guide - ${label}: ${lesson.title} | Engineering Fundamentals | Avanza STEM`
+  const description = `A facilitator guide for ${label} of the Engineering Fundamentals curriculum: setup, materials prep, safety notes, common failure points, questions to ask, and easier and harder versions.`
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: languageAlternates(path),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${path}`,
+      siteName: siteConfig.name,
+      type: "article",
+      images: [
+        {
+          url: "/images/og-default-en.png",
+          width: 1200,
+          height: 630,
+          alt: `Engineering Fundamentals teacher guide - ${label}: ${lesson.title}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+export function generateScienceExperimentsMetadata(): Metadata {
+  const c = scienceExperimentsCurriculum
+  const title =
+    "Science Experiments: 6-Week Hands-On Curriculum (Grades 2-4) | Avanza STEM"
+  const description =
+    "A 6-week hands-on science curriculum for grades 2-4. Kids run one safe, low-cost experiment a week - from chemical reactions to forces to living things - using the same ask, predict, test, observe, explain, improve loop real scientists use."
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: scienceExperimentsPath,
+      languages: languageAlternates(scienceExperimentsPath),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${scienceExperimentsPath}`,
+      siteName: siteConfig.name,
+      type: "website",
+      images: [
+        {
+          url: "/images/og-default-en.png",
+          width: 1200,
+          height: 630,
+          alt: `${c.title} curriculum`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+export function generateScienceLessonMetadata(slug: string): Metadata {
+  const lesson = getScienceLesson(slug)
+  if (!lesson) {
+    return { title: "Lesson not found | Avanza STEM" }
+  }
+
+  const path = scienceLessonPath(slug)
+  const label = `Week ${lesson.week}`
+  const title = `${label}: ${lesson.title} - Science Experiments | Avanza STEM`
+  const description = `${label} of the Science Experiments curriculum (${scienceExperimentsCurriculum.gradeRange}). ${lesson.bigQuestion} ${lesson.explanation}`.slice(0, 300)
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: languageAlternates(path),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${path}`,
+      siteName: siteConfig.name,
+      type: "article",
+      images: [
+        {
+          url: "/images/og-default-en.png",
+          width: 1200,
+          height: 630,
+          alt: `Science Experiments - ${label}: ${lesson.title}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Robotics & Automation                                                      */
+/* -------------------------------------------------------------------------- */
+
+function roboticsMetadata(
+  title: string,
+  description: string,
+  path: string,
+  type: "website" | "article",
+  alt: string,
+): Metadata {
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: languageAlternates(path),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${path}`,
+      siteName: siteConfig.name,
+      type,
+      images: [{ url: "/images/og-default-en.png", width: 1200, height: 630, alt }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+export function generateRoboticsMetadata(): Metadata {
+  const title = "Robotics & Automation: 8-Week Course for Kids (Grades 4-6) | Avanza STEM"
+  const description =
+    "An 8-week robotics course for grades 4-6. Learn what makes something a robot, build a base that moves, program exact instructions, add sensors, make robots react, debug for reliability, and design a robot that helps - with a robot kit, a browser simulator, or unplugged."
+  return roboticsMetadata(title, description, roboticsPath, "website", `${roboticsCurriculum.title} course`)
+}
+
+export function generateRoboticsLessonMetadata(slug: string): Metadata {
+  const courseModule = getRoboticsModule(slug)
+  if (!courseModule) return { title: "Lesson not found | Avanza STEM" }
+  const label = courseModule.isFinal ? "Final Project" : `Week ${courseModule.week}`
+  const title = `${label}: ${courseModule.title} - Robotics & Automation | Avanza STEM`
+  const description = `${label} of the Robotics & Automation course (${roboticsCurriculum.gradeRange}). ${courseModule.summary}`.slice(0, 300)
+  return roboticsMetadata(
+    title,
+    description,
+    roboticsLessonPath(slug),
+    "article",
+    `Robotics & Automation - ${label}: ${courseModule.title}`,
+  )
+}
+
+export function generateRoboticsWorksheetMetadata(slug: string): Metadata {
+  const courseModule = getRoboticsModule(slug)
+  if (!courseModule) return { title: "Worksheet not found | Avanza STEM" }
+  const label = courseModule.isFinal ? "Final Project" : `Week ${courseModule.week}`
+  const title = `Printable Worksheet - ${label}: ${courseModule.title} | Robotics & Automation | Avanza STEM`
+  const description = `A printable student worksheet for ${label} of the Robotics & Automation course: key ideas, vocabulary, activity space, testing tables, and reflection.`
+  return roboticsMetadata(
+    title,
+    description,
+    roboticsWorksheetPath(slug),
+    "article",
+    `Robotics & Automation worksheet - ${label}: ${courseModule.title}`,
+  )
+}
+
+export function generateRoboticsTeacherGuideMetadata(slug: string): Metadata {
+  const courseModule = getRoboticsModule(slug)
+  if (!courseModule) return { title: "Guide not found | Avanza STEM" }
+  const label = courseModule.isFinal ? "Final Project" : `Week ${courseModule.week}`
+  const title = `Parent & Teacher Guide - ${label}: ${courseModule.title} | Robotics & Automation | Avanza STEM`
+  const description = `A facilitator guide for ${label} of the Robotics & Automation course: setup, materials prep, facilitation, common misconceptions, questions to ask, and easier and harder versions.`
+  return roboticsMetadata(
+    title,
+    description,
+    roboticsTeacherGuidePath(slug),
+    "article",
+    `Robotics & Automation teacher guide - ${label}: ${courseModule.title}`,
+  )
+}
+
+export function generateRoboticsReviewMetadata(): Metadata {
+  const title = "Course Review - Robotics & Automation | Avanza STEM"
+  const description =
+    "Review your progress through the 8-week Robotics & Automation course: what you completed, your knowledge-check scores, and where to pick back up."
+  return roboticsMetadata(title, description, `${roboticsPath}/review`, "website", "Robotics & Automation course review")
+}
+
+export function generateRoboticsJournalMetadata(): Metadata {
+  const title = "Design Journal - Robotics & Automation | Avanza STEM"
+  const description =
+    "Your robotics design journal: saved sketches, plans, and reflections from every week of the Robotics & Automation course, ready to review or print."
+  return roboticsMetadata(title, description, `${roboticsPath}/journal`, "website", "Robotics & Automation design journal")
+}
+
+export function generateRoboticsFinalProjectMetadata(): Metadata {
+  const title = "Final Project: Design a Robot That Helps - Robotics & Automation | Avanza STEM"
+  const description =
+    "The Robotics & Automation final project: choose a mission, plan it, build or simulate a robot that uses a sensor, a loop, and a condition, test it three times, and explain how it helps."
+  return roboticsMetadata(
+    title,
+    description,
+    `${roboticsPath}/final-project`,
+    "article",
+    "Robotics & Automation final project",
+  )
 }

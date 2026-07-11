@@ -87,16 +87,21 @@ const PYTHON_BUILTINS = new Set([
   "getattr", "setattr", "callable", "repr", "all", "any", "pow", "chr", "ord",
 ])
 
-// Matches comments and strings first (so keywords inside them are left
-// alone), then bare identifiers that may be keywords or builtins.
+// Matches comments and strings first (so keywords/operators inside them are
+// left alone), then numbers, bare identifiers, and finally operators. Longer
+// operators (==, !=, <=, ...) come before their single-char forms so `==`
+// isn't split into two `=` tokens.
 const PYTHON_TOKEN_RE =
-  /#[^\n]*|"""[\s\S]*?(?:"""|$)|'''[\s\S]*?(?:'''|$)|"(?:\\.|[^"\\\n])*"?|'(?:\\.|[^'\\\n])*'?|[A-Za-z_]\w*/g
+  /#[^\n]*|"""[\s\S]*?(?:"""|$)|'''[\s\S]*?(?:'''|$)|"(?:\\.|[^"\\\n])*"?|'(?:\\.|[^'\\\n])*'?|\d+\.?\d*|\.\d+|[A-Za-z_]\w*|\*\*|\/\/|==|!=|<=|>=|<<|>>|[-+*/%=<>&|^~]/g
 
 // True if the token at `index` is accessed as an attribute (e.g. `obj.list`),
 // in which case it shouldn't be treated as a builtin.
 function isAttributeAccess(source: string, index: number): boolean {
   return index > 0 && source[index - 1] === "."
 }
+
+const PYTHON_NUMBER_RE = /^\.?\d/
+const PYTHON_OPERATOR_RE = /^(\*\*|\/\/|==|!=|<=|>=|<<|>>|[-+*/%=<>&|^~])$/
 
 function highlightPythonKeywords(source: string): React.ReactNode[] {
   const nodes: React.ReactNode[] = []
@@ -108,7 +113,29 @@ function highlightPythonKeywords(source: string): React.ReactNode[] {
     const index = match.index ?? 0
     if (index > lastIndex) nodes.push(source.slice(lastIndex, index))
 
-    if (PYTHON_KEYWORDS.has(token)) {
+    const firstChar = token[0]
+    if (firstChar === "#") {
+      // Comments stay muted.
+      nodes.push(
+        <span key={key++} className="text-[#6b7688]">
+          {token}
+        </span>,
+      )
+    } else if (firstChar === '"' || firstChar === "'") {
+      // Strings are green.
+      nodes.push(
+        <span key={key++} className="text-[#c3e88d]">
+          {token}
+        </span>,
+      )
+    } else if (PYTHON_NUMBER_RE.test(token)) {
+      // Integers and floats are blue.
+      nodes.push(
+        <span key={key++} className="text-[#82aaff]">
+          {token}
+        </span>,
+      )
+    } else if (PYTHON_KEYWORDS.has(token)) {
       nodes.push(
         <span key={key++} className="text-[#c792ea]">
           {token}
@@ -117,6 +144,20 @@ function highlightPythonKeywords(source: string): React.ReactNode[] {
     } else if (PYTHON_BUILTINS.has(token) && !isAttributeAccess(source, index)) {
       nodes.push(
         <span key={key++} className="text-[#61afef]">
+          {token}
+        </span>,
+      )
+    } else if (PYTHON_OPERATOR_RE.test(token)) {
+      // Operators like =, ==, +, - are orange.
+      nodes.push(
+        <span key={key++} className="text-[#f78c6c]">
+          {token}
+        </span>,
+      )
+    } else if (/^[A-Za-z_]/.test(token)) {
+      // Remaining identifiers (variable and function names) are lavender.
+      nodes.push(
+        <span key={key++} className="text-[#d7aefb]">
           {token}
         </span>,
       )

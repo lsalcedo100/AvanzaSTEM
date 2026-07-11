@@ -197,6 +197,11 @@ const en = {
     pyPlaceholder: "# Type your Python code here...",
     pyStarterCode:
       '# Welcome to the Python sandbox!\n# Write your code here, then press Run.\n\nprint("Hello, world!")',
+    // Standalone Python IDE page (/python-ide)
+    pyIdeBadge: "Free online Python editor",
+    pyIdeTitle: "Avanza STEM Python IDE",
+    pyIdeSubtitle:
+      "Write and run real Python right in your browser. No account, no install, no setup. Just type your code, hit Run, and see the output.",
     // Bridge Load Demo
     bridgeEyebrow: "Engineering lab",
     bridgeTitle: "How much can a truss bridge hold?",
@@ -1732,6 +1737,11 @@ const es: Translations = {
     pyPlaceholder: "# Escribe tu codigo Python aqui...",
     pyStarterCode:
       '# Bienvenido al sandbox de Python!\n# Escribe tu codigo aqui y presiona Ejecutar.\n\nprint("Hola, mundo!")',
+    // Standalone Python IDE page (/python-ide)
+    pyIdeBadge: "Editor de Python en linea gratis",
+    pyIdeTitle: "IDE de Python de Avanza STEM",
+    pyIdeSubtitle:
+      "Escribe y ejecuta Python de verdad en tu navegador. Sin cuenta, sin instalar nada. Solo escribe tu codigo, presiona Ejecutar y mira el resultado.",
     bridgeEyebrow: "Laboratorio de ingenieria",
     bridgeTitle: "Cuanto aguanta un puente de celosia?",
     bridgeDesc: "Agrega peso al puente y observa como la celosia reparte la carga. Si sigues demasiado lejos, el puente fallara. Los ingenieros prueban disenos asi para que los puentes reales se mantengan muy por debajo de su punto de ruptura.",
@@ -3258,6 +3268,11 @@ const zh: Translations = {
     pyPlaceholder: "# 在这里写你的 Python 代码...",
     pyStarterCode:
       '# 欢迎来到 Python 沙盒！\n# 在下面写代码，然后点击运行。\n\nprint("你好，世界！")',
+    // Standalone Python IDE page (/python-ide)
+    pyIdeBadge: "免费在线 Python 编辑器",
+    pyIdeTitle: "Avanza STEM Python 编辑器",
+    pyIdeSubtitle:
+      "直接在浏览器里编写并运行真正的 Python。无需账号，无需安装，无需配置。输入代码，点击运行，即可查看输出。",
     bridgeEyebrow: "工程实验室",
     bridgeTitle: "桁架桥能扛多重？",
     bridgeDesc: "给桥增加重量，观察桁架怎样分散载荷。如果继续加得太多，桥就会失败。工程师会像这样测试设计，让真实桥梁远低于断裂点。",

@@ -6,7 +6,8 @@
     "dev": "next dev -H 0.0.0.0 --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . && tsc --noEmit"
+    "lint": "eslint . && tsc --noEmit",
+    "test": "node --test \"features/curriculums/**/*.test.ts\""
   },
   "dependencies": {
     "@radix-ui/react-accordion": "1.2.12",

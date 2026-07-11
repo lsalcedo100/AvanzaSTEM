@@ -7,6 +7,30 @@ import {
   introToPythonWeekPath,
   introToPythonWorksheetsPath,
 } from '@/features/curriculums/intro-to-python'
+import {
+  engineeringFundamentalsCurriculum,
+  engineeringFundamentalsPath,
+  engineeringLessonPath,
+  engineeringTeacherGuidePath,
+  engineeringWorksheetPath,
+} from '@/features/curriculums/engineering-fundamentals'
+import {
+  scienceExperimentsCurriculum,
+  scienceExperimentsPath,
+  scienceLessonPath,
+} from '@/features/curriculums/science-experiments'
+import {
+  mathAdventuresCurriculum,
+  mathAdventuresPath,
+  mathLessonPath,
+} from '@/features/curriculums/math-adventures'
+import {
+  roboticsCurriculum,
+  roboticsLessonPath,
+  roboticsPath,
+  roboticsTeacherGuidePath,
+  roboticsWorksheetPath,
+} from '@/features/curriculums/robotics'
 import { projectGuides } from '@/features/projects/data'
 import { enOnlyAlternates, languageAlternates, localizedPath } from '@/lib/i18n-routes'
 import { siteConfig } from '@/lib/site-config'
@@ -17,6 +41,44 @@ import { VALID_LANGUAGES, type Language } from '@/i18n/translations'
 const introToPythonLessonPaths = introToPythonCurriculum.weeks.map((w) =>
   introToPythonWeekPath(w.week),
 )
+
+// The Engineering Fundamentals course and its lesson pages render English
+// content at every locale, so they are treated as English-only routes too.
+const engineeringFundamentalsLessonPaths = engineeringFundamentalsCurriculum.lessons.map((lesson) =>
+  engineeringLessonPath(lesson.slug),
+)
+
+// Printable worksheets and per-lesson teacher guides, also English-only.
+const engineeringFundamentalsResourcePaths = engineeringFundamentalsCurriculum.lessons.flatMap(
+  (lesson) => [engineeringWorksheetPath(lesson.slug), engineeringTeacherGuidePath(lesson.slug)],
+)
+
+// The Science Experiments course and its per-week lesson pages render English
+// content at every locale, so they are treated as English-only routes too.
+const scienceExperimentsLessonPaths = scienceExperimentsCurriculum.lessons.map((lesson) =>
+  scienceLessonPath(lesson.slug),
+)
+
+// The Math Adventures course and its per-week lesson pages render English
+// content at every locale, so they are treated as English-only routes too.
+const mathAdventuresLessonPaths = mathAdventuresCurriculum.lessons.map((lesson) =>
+  mathLessonPath(lesson.slug),
+)
+
+// The Robotics & Automation course, its per-week lesson pages, and per-week
+// worksheets and teacher guides render English content at every locale.
+const roboticsLessonPaths = roboticsCurriculum.modules.map((module) =>
+  roboticsLessonPath(module.slug),
+)
+const roboticsResourcePaths = roboticsCurriculum.modules.flatMap((module) => [
+  roboticsWorksheetPath(module.slug),
+  roboticsTeacherGuidePath(module.slug),
+])
+const roboticsSectionPaths = [
+  `${roboticsPath}/review`,
+  `${roboticsPath}/journal`,
+  `${roboticsPath}/final-project`,
+]
 
 // Routes that are only rendered in English. They remain reachable at /es and
 // /zh (middleware rewrites them to the English route), but since the visible
@@ -31,10 +93,22 @@ const ENGLISH_ONLY_PATHS = new Set([
   '/gallery',
   '/faq',
   '/privacy',
+  '/python-ide',
   introToPythonPath,
   introToPythonTeacherGuidePath,
   introToPythonWorksheetsPath,
   ...introToPythonLessonPaths,
+  engineeringFundamentalsPath,
+  ...engineeringFundamentalsLessonPaths,
+  ...engineeringFundamentalsResourcePaths,
+  scienceExperimentsPath,
+  ...scienceExperimentsLessonPaths,
+  mathAdventuresPath,
+  ...mathAdventuresLessonPaths,
+  roboticsPath,
+  ...roboticsLessonPaths,
+  ...roboticsResourcePaths,
+  ...roboticsSectionPaths,
 ])
 
 // lastModified dates below reflect the last meaningful content/code update for
@@ -53,7 +127,15 @@ const staticRoutes = [
   { path: '/gallery', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-06-13' },
   { path: '/curriculums', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-13' },
   { path: '/curriculums/intro-to-python', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-07' },
+  { path: '/courses/engineering-fundamentals', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-08' },
+  { path: '/courses/science-experiments', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-09' },
+  { path: '/courses/math-adventures', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-09' },
+  { path: '/courses/robotics', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-09' },
+  { path: '/courses/robotics/review', priority: 0.5, changeFrequency: 'monthly', lastModified: '2026-07-09' },
+  { path: '/courses/robotics/journal', priority: 0.5, changeFrequency: 'monthly', lastModified: '2026-07-09' },
+  { path: '/courses/robotics/final-project', priority: 0.6, changeFrequency: 'monthly', lastModified: '2026-07-09' },
   { path: '/faq', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-06-13' },
+  { path: '/python-ide', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-09' },
   { path: '/privacy', priority: 0.4, changeFrequency: 'yearly', lastModified: '2026-06-16' },
 ] as const
 
@@ -223,11 +305,69 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   )
 
+  const engineeringFundamentalsLessonRoutes: MetadataRoute.Sitemap =
+    engineeringFundamentalsCurriculum.lessons.flatMap((lesson) =>
+      buildRouteEntries(engineeringLessonPath(lesson.slug), {
+        priority: 0.6,
+        changeFrequency: 'monthly',
+        lastModified: '2026-07-08',
+      }),
+    )
+
+  const engineeringFundamentalsResourceRoutes: MetadataRoute.Sitemap =
+    engineeringFundamentalsResourcePaths.flatMap((path) =>
+      buildRouteEntries(path, {
+        priority: 0.5,
+        changeFrequency: 'monthly',
+        lastModified: '2026-07-08',
+      }),
+    )
+
+  const scienceExperimentsLessonRoutes: MetadataRoute.Sitemap =
+    scienceExperimentsCurriculum.lessons.flatMap((lesson) =>
+      buildRouteEntries(scienceLessonPath(lesson.slug), {
+        priority: 0.6,
+        changeFrequency: 'monthly',
+        lastModified: '2026-07-09',
+      }),
+    )
+
+  const mathAdventuresLessonRoutes: MetadataRoute.Sitemap =
+    mathAdventuresCurriculum.lessons.flatMap((lesson) =>
+      buildRouteEntries(mathLessonPath(lesson.slug), {
+        priority: 0.6,
+        changeFrequency: 'monthly',
+        lastModified: '2026-07-09',
+      }),
+    )
+
+  const roboticsLessonRoutes: MetadataRoute.Sitemap = roboticsCurriculum.modules.flatMap((module) =>
+    buildRouteEntries(roboticsLessonPath(module.slug), {
+      priority: 0.6,
+      changeFrequency: 'monthly',
+      lastModified: '2026-07-09',
+    }),
+  )
+
+  const roboticsResourceRoutes: MetadataRoute.Sitemap = roboticsResourcePaths.flatMap((path) =>
+    buildRouteEntries(path, {
+      priority: 0.5,
+      changeFrequency: 'monthly',
+      lastModified: '2026-07-09',
+    }),
+  )
+
   return [
     ...staticSitemapRoutes,
     ...blogRoutes,
     ...projectRoutes,
     ...introToPythonLessonRoutes,
     ...introToPythonResourceRoutes,
+    ...engineeringFundamentalsLessonRoutes,
+    ...engineeringFundamentalsResourceRoutes,
+    ...scienceExperimentsLessonRoutes,
+    ...mathAdventuresLessonRoutes,
+    ...roboticsLessonRoutes,
+    ...roboticsResourceRoutes,
   ]
 }

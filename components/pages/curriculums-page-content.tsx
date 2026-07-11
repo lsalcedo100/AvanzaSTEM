@@ -35,7 +35,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-purple",
       borderColor: "border-avanza-purple",
       progress: 40,
-      href: "/projects/popsicle-stick-bridge",
+      href: "/courses/engineering-fundamentals",
     },
     {
       title: t.curriculumsPage.scienceTitle,
@@ -47,7 +47,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-orange",
       borderColor: "border-avanza-orange",
       progress: 30,
-      href: "/projects/baking-soda-volcano",
+      href: "/courses/science-experiments",
     },
     {
       title: t.curriculumsPage.mathTitle,
@@ -59,7 +59,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-teal",
       borderColor: "border-avanza-teal",
       progress: 20,
-      href: "/projects",
+      href: "/courses/math-adventures",
     },
     {
       title: t.curriculumsPage.roboticsTitle,
@@ -71,7 +71,7 @@ export function CurriculumsPageContent() {
       color: "bg-avanza-green",
       borderColor: "border-avanza-green",
       progress: 15,
-      href: "/projects/lego-robot-builder",
+      href: "/courses/robotics",
     },
     {
       title: t.curriculumsPage.aiTitle,

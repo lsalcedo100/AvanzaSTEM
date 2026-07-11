@@ -430,10 +430,34 @@
 /* Print styles for the Python curriculum teacher guide and student worksheets.
    The site navbar and footer already carry `print:hidden`; these rules force a
    clean white page and provide a page-break utility for per-lesson sections. */
+/* Subtle graph-paper background for lab-journal sections (e.g. the experiment
+   procedure). Faint grid lines in the theme's border color, drawn over whatever
+   background color the element already has. Kept low-contrast so it reads as
+   texture, not clutter. */
+.notebook-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--border) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--border) 45%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
 @media print {
   html,
   body {
     background: #ffffff !important;
+  }
+
+  /* Graph-paper texture is on-screen only; keep printed handouts clean. */
+  .notebook-grid {
+    background-image: none !important;
+  }
+
+  /* Lab-journal textareas print as clean, writable boxes. */
+  textarea {
+    min-height: 3.5rem;
+    border: 1px solid #999 !important;
+    box-shadow: none !important;
+    resize: none;
   }
 
   /* Utility: start this element on a fresh printed page (e.g. between lessons). */
@@ -451,5 +475,26 @@
   /* Elements only meant for on-screen use (e.g. the Print button). */
   .print-hidden {
     display: none !important;
+  }
+
+  /* Certificate-only printing: when the Science Experiments completion screen
+     triggers a print, hide the whole page except the certificate block. Scoped
+     to a body class that is only present during that action, so it never affects
+     any other page or a normal print. */
+  body.printing-certificate * {
+    visibility: hidden;
+  }
+
+  body.printing-certificate #science-certificate,
+  body.printing-certificate #science-certificate * {
+    visibility: visible;
+  }
+
+  body.printing-certificate #science-certificate {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 2.5rem;
+    border: none;
   }
 }
