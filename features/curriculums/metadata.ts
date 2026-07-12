@@ -37,6 +37,17 @@ import {
   roboticsTeacherGuidePath,
   roboticsWorksheetPath,
 } from "@/features/curriculums/robotics"
+import {
+  getLesson as getIntroToAiLesson,
+  getWeek as getIntroToAiWeek,
+  introToAiCourse,
+  introToAiCompletionPath,
+  introToAiFinalAssessmentPath,
+  introToAiFinalProjectPath,
+  introToAiLessonPath,
+  introToAiPath,
+  introToAiWeekPath,
+} from "@/features/curriculums/intro-to-ai"
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
@@ -683,4 +694,95 @@ export function generateRoboticsFinalProjectMetadata(): Metadata {
     "article",
     "Robotics & Automation final project",
   )
+}
+
+/* -------------------------------------------------------------------------- */
+/* Intro to Artificial Intelligence                                           */
+/* -------------------------------------------------------------------------- */
+
+function introToAiMetadata(
+  title: string,
+  description: string,
+  path: string,
+  type: "website" | "article",
+  alt: string,
+): Metadata {
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: languageAlternates(path),
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteConfig.url}${path}`,
+      siteName: siteConfig.name,
+      type,
+      images: [{ url: "/images/og-default-en.png", width: 1200, height: 630, alt }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-default-en.png"],
+    },
+  }
+}
+
+export function generateIntroToAiMetadata(): Metadata {
+  const title = "Intro to Artificial Intelligence: 6-Week Course for Kids (Grades 5-8) | Avanza STEM"
+  const description =
+    "A six-week AI course for grades 5-8. Learn what AI is and is not, how data trains a model, how image and text AI work and where they fail, how to use AI responsibly, and design your own AI in a design studio. No coding required."
+  return introToAiMetadata(title, description, introToAiPath, "website", `${introToAiCourse.title} course`)
+}
+
+export function generateIntroToAiWeekMetadata(week: number): Metadata {
+  const courseWeek = getIntroToAiWeek(week)
+  if (!courseWeek) return generateIntroToAiMetadata()
+  const title = `Week ${courseWeek.week}: ${courseWeek.title} - Intro to Artificial Intelligence | Avanza STEM`
+  const description = `Week ${courseWeek.week} of the Intro to Artificial Intelligence course (${introToAiCourse.gradeRange}). ${courseWeek.summary}`.slice(0, 300)
+  return introToAiMetadata(
+    title,
+    description,
+    introToAiWeekPath(courseWeek.week),
+    "website",
+    `Intro to Artificial Intelligence - Week ${courseWeek.week}: ${courseWeek.title}`,
+  )
+}
+
+export function generateIntroToAiLessonMetadata(week: number, lessonSlug: string): Metadata {
+  const lesson = getIntroToAiLesson(week, lessonSlug)
+  if (!lesson) return generateIntroToAiWeekMetadata(week)
+  const title = `${lesson.title} (Week ${week}) - Intro to Artificial Intelligence | Avanza STEM`
+  const description = `${lesson.summary}`.slice(0, 300)
+  return introToAiMetadata(
+    title,
+    description,
+    introToAiLessonPath(week, lessonSlug),
+    "article",
+    `Intro to Artificial Intelligence - ${lesson.title}`,
+  )
+}
+
+export function generateIntroToAiFinalProjectMetadata(): Metadata {
+  const title = "Final Project: AI Design Studio - Intro to Artificial Intelligence | Avanza STEM"
+  const description =
+    "The Intro to AI final project: design an AI tool that helps a real group of people. Define the problem, decide whether AI fits, plan inputs and outputs, prototype, test, and plan for fairness, privacy, and human oversight."
+  return introToAiMetadata(title, description, introToAiFinalProjectPath, "article", "Intro to Artificial Intelligence final project")
+}
+
+export function generateIntroToAiFinalAssessmentMetadata(): Metadata {
+  const title = "Final Assessment - Intro to Artificial Intelligence | Avanza STEM"
+  const description =
+    "A short, self-paced check across all six weeks of the Intro to Artificial Intelligence course. No grades and nothing is sent anywhere."
+  return introToAiMetadata(title, description, introToAiFinalAssessmentPath, "website", "Intro to Artificial Intelligence final assessment")
+}
+
+export function generateIntroToAiCompletionMetadata(): Metadata {
+  const title = "Course Completion - Intro to Artificial Intelligence | Avanza STEM"
+  const description =
+    "Finish the six-week Intro to Artificial Intelligence course, review what you learned, and print a certificate of completion."
+  return introToAiMetadata(title, description, introToAiCompletionPath, "website", "Intro to Artificial Intelligence completion")
 }

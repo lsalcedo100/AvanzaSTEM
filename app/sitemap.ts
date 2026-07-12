@@ -31,6 +31,15 @@ import {
   roboticsTeacherGuidePath,
   roboticsWorksheetPath,
 } from '@/features/curriculums/robotics'
+import {
+  introToAiCourse,
+  introToAiFinalAssessmentPath,
+  introToAiFinalProjectPath,
+  introToAiCompletionPath,
+  introToAiLessonPath,
+  introToAiPath,
+  introToAiWeekPath,
+} from '@/features/curriculums/intro-to-ai'
 import { projectGuides } from '@/features/projects/data'
 import { enOnlyAlternates, languageAlternates, localizedPath } from '@/lib/i18n-routes'
 import { siteConfig } from '@/lib/site-config'
@@ -80,6 +89,19 @@ const roboticsSectionPaths = [
   `${roboticsPath}/final-project`,
 ]
 
+// The Intro to Artificial Intelligence course (hub, six weekly overviews, 18
+// lessons, and its final-project/assessment/completion sections) renders English
+// content at every locale, so it is treated as English-only too.
+const introToAiWeekPaths = introToAiCourse.weeks.map((w) => introToAiWeekPath(w.week))
+const introToAiLessonPaths = introToAiCourse.weeks.flatMap((w) =>
+  w.lessons.map((lesson) => introToAiLessonPath(w.week, lesson.slug)),
+)
+const introToAiSectionPaths = [
+  introToAiFinalProjectPath,
+  introToAiFinalAssessmentPath,
+  introToAiCompletionPath,
+]
+
 // Routes that are only rendered in English. They remain reachable at /es and
 // /zh (middleware rewrites them to the English route), but since the visible
 // content does not change per locale, we don't emit /es and /zh sitemap
@@ -109,6 +131,10 @@ const ENGLISH_ONLY_PATHS = new Set([
   ...roboticsLessonPaths,
   ...roboticsResourcePaths,
   ...roboticsSectionPaths,
+  introToAiPath,
+  ...introToAiWeekPaths,
+  ...introToAiLessonPaths,
+  ...introToAiSectionPaths,
 ])
 
 // lastModified dates below reflect the last meaningful content/code update for
@@ -134,6 +160,10 @@ const staticRoutes = [
   { path: '/courses/robotics/review', priority: 0.5, changeFrequency: 'monthly', lastModified: '2026-07-09' },
   { path: '/courses/robotics/journal', priority: 0.5, changeFrequency: 'monthly', lastModified: '2026-07-09' },
   { path: '/courses/robotics/final-project', priority: 0.6, changeFrequency: 'monthly', lastModified: '2026-07-09' },
+  { path: '/courses/intro-to-artificial-intelligence', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-11' },
+  { path: '/courses/intro-to-artificial-intelligence/final-project', priority: 0.6, changeFrequency: 'monthly', lastModified: '2026-07-11' },
+  { path: '/courses/intro-to-artificial-intelligence/final-assessment', priority: 0.5, changeFrequency: 'monthly', lastModified: '2026-07-11' },
+  { path: '/courses/intro-to-artificial-intelligence/completion', priority: 0.4, changeFrequency: 'monthly', lastModified: '2026-07-11' },
   { path: '/faq', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-06-13' },
   { path: '/python-ide', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-09' },
   { path: '/privacy', priority: 0.4, changeFrequency: 'yearly', lastModified: '2026-06-16' },
@@ -357,6 +387,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   )
 
+  const introToAiWeekRoutes: MetadataRoute.Sitemap = introToAiWeekPaths.flatMap((path) =>
+    buildRouteEntries(path, {
+      priority: 0.6,
+      changeFrequency: 'monthly',
+      lastModified: '2026-07-11',
+    }),
+  )
+
+  const introToAiLessonRoutes: MetadataRoute.Sitemap = introToAiLessonPaths.flatMap((path) =>
+    buildRouteEntries(path, {
+      priority: 0.6,
+      changeFrequency: 'monthly',
+      lastModified: '2026-07-11',
+    }),
+  )
+
   return [
     ...staticSitemapRoutes,
     ...blogRoutes,
@@ -369,5 +415,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...mathAdventuresLessonRoutes,
     ...roboticsLessonRoutes,
     ...roboticsResourceRoutes,
+    ...introToAiWeekRoutes,
+    ...introToAiLessonRoutes,
   ]
 }

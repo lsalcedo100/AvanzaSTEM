@@ -32,6 +32,11 @@ import {
 } from "./robotics.ts"
 import { parseProgram, type Program } from "./robotics-program.ts"
 
+// Re-exported so consumers of the progress module (and its tests) can import the
+// progress type from here alongside the functions that operate on it. The type
+// is authored in robotics.ts; this is a type-only re-export (erased at runtime).
+export type { RoboticsProgress } from "./robotics.ts"
+
 /* -------------------------------------------------------------------------- */
 /* Storage keys                                                               */
 /* -------------------------------------------------------------------------- */

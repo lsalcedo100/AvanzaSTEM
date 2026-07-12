@@ -9,7 +9,7 @@ export function Footer() {
   return (
     <footer className="bg-avanza-dark text-primary-foreground print:hidden">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-12 md:grid-cols-3">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-1">
             <h3 className="text-2xl font-extrabold text-primary-foreground">Avanza STEM</h3>
@@ -34,6 +34,33 @@ export function Footer() {
                 { href: "/find-a-workshop", label: t.home.finderTrigger },
                 { href: "/host", label: t.hostPage.title },
                 { href: "/faq", label: t.faqPage.title },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-primary-foreground/70 transition-colors hover:text-avanza-green"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Courses — direct links so each course landing is reachable from
+              every page (better crawl depth), including the standalone IDE. */}
+          <div>
+            <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-avanza-green">
+              {t.footer.courses}
+            </h4>
+            <ul className="space-y-2">
+              {[
+                { href: "/curriculums/intro-to-python", label: t.curriculumsPage.pythonTitle },
+                { href: "/courses/engineering-fundamentals", label: t.curriculumsPage.engineeringTitle },
+                { href: "/courses/science-experiments", label: t.curriculumsPage.scienceTitle },
+                { href: "/courses/math-adventures", label: t.curriculumsPage.mathTitle },
+                { href: "/courses/robotics", label: t.curriculumsPage.roboticsTitle },
+                { href: "/python-ide", label: t.footer.pythonIde },
               ].map((link) => (
                 <li key={link.href}>
                   <Link
