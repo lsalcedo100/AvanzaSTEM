@@ -34,7 +34,7 @@ export function CurriculumCard({
           <div className="flex h-full w-full items-center justify-center p-5">
             <JourneyDiagram variant="card" className="h-full w-full" />
           </div>
-        ) : (
+        ) : entry.image ? (
           <Image
             src={entry.image}
             alt={copy.title}
@@ -42,6 +42,10 @@ export function CurriculumCard({
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
+        ) : (
+          // No authentic photo for this course — restrained graph-paper panel
+          // rather than a stock or AI-generated image.
+          <div className="notebook-grid h-full w-full bg-secondary" aria-hidden="true" />
         )}
       </div>
 

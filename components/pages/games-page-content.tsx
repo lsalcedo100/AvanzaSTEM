@@ -80,15 +80,6 @@ export function GamesPageContent() {
               "radial-gradient(circle at 14% 18%, rgba(255,255,255,0.55) 0 5px, transparent 6px), radial-gradient(circle at 84% 26%, rgba(255,255,255,0.45) 0 4px, transparent 5px), radial-gradient(circle at 22% 78%, rgba(255,255,255,0.4) 0 4px, transparent 5px), radial-gradient(circle at 76% 84%, rgba(255,255,255,0.5) 0 5px, transparent 6px)",
           }}
         />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.18]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
         <div className="relative mx-auto w-full max-w-5xl px-6 text-center">
           <FadeIn>
             <p className="text-sm font-bold uppercase tracking-wider text-primary-foreground/80">
@@ -105,21 +96,21 @@ export function GamesPageContent() {
       </section>
 
       {/* WHAT'S HERE: grouped table of contents */}
-      <section className="bg-white py-16 md:py-20">
+      <section className="bg-white py-10 md:py-12">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="mx-auto max-w-2xl text-center">
-            <h2 className="text-balance text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
+            <h2 className="text-balance text-2xl font-extrabold leading-tight text-foreground md:text-3xl">
               {t.gamesPage.tocTitle}
             </h2>
-            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground md:text-base">
               {t.gamesPage.tocDesc}
             </p>
           </FadeIn>
-          <div className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-8">
+          <div className="mt-8 grid gap-7 lg:grid-cols-3 lg:gap-8">
             {groups.map((group, i) => (
               <FadeIn key={group.id} delay={i * 80}>
                 <div
-                  className={`h-1.5 w-12 rounded-full ${
+                  className={`h-1 w-10 rounded-full ${
                     group.id === "group-code"
                       ? "bg-avanza-purple"
                       : group.id === "group-build"
@@ -127,17 +118,17 @@ export function GamesPageContent() {
                         : "bg-avanza-teal"
                   }`}
                 />
-                <h3 className="mt-4 text-2xl font-extrabold leading-tight text-foreground md:text-3xl">
+                <h3 className="mt-3 text-xl font-extrabold leading-tight text-foreground md:text-2xl">
                   {group.name}
                 </h3>
-                <ul className="mt-5 space-y-4">
+                <ul className="mt-4 space-y-3">
                   {group.activities.map((activity) => (
                     <li key={activity.id}>
                       <a href={`#${activity.id}`} className="group block">
-                        <span className="font-bold text-foreground transition-colors group-hover:text-avanza-purple">
+                        <span className="text-sm font-bold text-foreground transition-colors group-hover:text-avanza-purple md:text-base">
                           {activity.name}
                         </span>
-                        <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                        <span className="mt-0.5 block text-sm leading-snug text-muted-foreground">
                           {activity.tagline}
                         </span>
                       </a>

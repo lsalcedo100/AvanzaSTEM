@@ -1,25 +1,25 @@
 "use client"
 
-import { NewsletterSignup } from "@/components/blog/newsletter-signup"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
-import { curriculumCatalog, resolveCurriculumCopy } from "@/features/curriculums/catalog"
+import { curriculumsInGroup, resolveCurriculumCopy } from "@/features/curriculums/catalog"
 import { Container, SectionHeader } from "@/components/pages/curriculums/section"
 import { CurriculumCard } from "@/components/pages/curriculums/curriculum-card"
 import { FeaturedCurriculum } from "@/components/pages/curriculums/featured-curriculum"
 import { CurriculumComparison } from "@/components/pages/curriculums/curriculum-comparison"
-import { LessonPreview } from "@/components/pages/curriculums/lesson-preview"
+import { CurriculumFlow } from "@/components/pages/curriculums/curriculum-flow"
 import { EducatorInfo } from "@/components/pages/curriculums/educator-info"
+import { CurriculumNewsletter } from "@/components/pages/curriculums/curriculum-newsletter"
 
 const CURRICULUM_SIGNUP_ID = "curriculum-launch-signup"
 
 /**
- * Curriculums page. Restructured (Phase: page structure) from the old
- * centered-hero + identical-grid + "How These Paths Grow" layout into an
- * intentional sequence:
+ * Curriculums page. Restructured from the old centered-hero + identical-grid +
+ * "How These Paths Grow" layout into an intentional sequence:
  *
- *   compact intro → featured path → catalog → comparison → lesson preview →
- *   parent/educator info → newsletter (moved to the bottom).
+ *   compact intro → featured course → grouped catalog (hands-on / technology) →
+ *   comparison → what you'll do (+ real lesson preview) → parent/educator FAQ →
+ *   compact newsletter.
  *
  * Section content is driven by the typed catalog (`features/curriculums/catalog`)
  * and reusable section components in `components/pages/curriculums/`. Copy lives
@@ -48,7 +48,7 @@ export function CurriculumsPageContent() {
             <p className="mt-4 text-sm text-muted-foreground">{s.heroInfoLine}</p>
             <a
               href="#curriculum-catalog"
-              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-avanza-green px-5 py-2.5 text-sm font-bold text-avanza-dark transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
+              className="mt-6 inline-flex items-center gap-2 rounded-md bg-avanza-green px-5 py-2.5 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
             >
               {s.heroCta}
             </a>
@@ -56,36 +56,40 @@ export function CurriculumsPageContent() {
         </Container>
       </section>
 
-      {/* Full catalog — placed directly after the hero so it's visible sooner */}
-      <section id="curriculum-catalog" className="scroll-mt-20 bg-background pb-16 sm:pb-20">
-        <Container>
-          <FadeIn>
-            <SectionHeader
-              title={s.catalogHeading}
-              description={s.catalogDesc}
-            />
-          </FadeIn>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {curriculumCatalog.map((entry, i) => (
-              <FadeIn key={entry.id} delay={i * 60}>
-                <CurriculumCard
-                  entry={entry}
-                  copy={resolveCurriculumCopy(entry, c)}
-                  ctaLabel={s.viewCurriculum}
-                />
-              </FadeIn>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Featured path — moved below the catalog as an editorial deep-dive */}
+      {/* Featured path — the most complete course, above the full catalog */}
       <FadeIn>
         <FeaturedCurriculum c={c} />
       </FadeIn>
 
+      {/* Full catalog, organized into two content groups with plain headings */}
+      <section id="curriculum-catalog" className="scroll-mt-20 bg-background py-16 sm:py-20">
+        <Container>
+          {[
+            { key: "hands-on" as const, heading: s.groupHandsOnHeading, desc: s.groupHandsOnDesc },
+            { key: "technology" as const, heading: s.groupTechHeading, desc: s.groupTechDesc },
+          ].map((group, gi) => (
+            <div key={group.key} className={gi > 0 ? "mt-16" : undefined}>
+              <FadeIn>
+                <SectionHeader title={group.heading} description={group.desc} />
+              </FadeIn>
+              <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {curriculumsInGroup(group.key).map((entry, i) => (
+                  <FadeIn key={entry.id} delay={i * 60}>
+                    <CurriculumCard
+                      entry={entry}
+                      copy={resolveCurriculumCopy(entry, c)}
+                      ctaLabel={s.viewCurriculum}
+                    />
+                  </FadeIn>
+                ))}
+              </div>
+            </div>
+          ))}
+        </Container>
+      </section>
+
       {/* Comparison */}
-      <section className="bg-background py-16 sm:py-20">
+      <section className="bg-secondary py-16 sm:py-20">
         <Container>
           <FadeIn>
             <SectionHeader
@@ -97,37 +101,36 @@ export function CurriculumsPageContent() {
         </Container>
       </section>
 
-      {/* Lesson preview */}
-      <section className="bg-secondary py-16 sm:py-20">
-        <Container>
-          <FadeIn>
-            <SectionHeader
-              eyebrow={s.previewEyebrow}
-              title={s.previewHeading}
-              description={s.previewDesc}
-            />
-            <LessonPreview c={c} />
-          </FadeIn>
-        </Container>
-      </section>
-
-      {/* Parent & educator info */}
+      {/* Section 1 — What you'll do in each curriculum (+ a real lesson preview) */}
       <section className="bg-background py-16 sm:py-20">
         <Container>
           <FadeIn>
             <SectionHeader
-              eyebrow={s.educatorEyebrow}
-              title={s.educatorHeading}
-              description={s.educatorDesc}
+              eyebrow={s.flowEyebrow}
+              title={s.flowHeading}
+              description={s.flowIntro}
+            />
+            <CurriculumFlow c={c} />
+          </FadeIn>
+        </Container>
+      </section>
+
+      {/* Section 2 — For parents and educators */}
+      <section className="bg-secondary py-16 sm:py-20">
+        <Container>
+          <FadeIn>
+            <SectionHeader
+              eyebrow={s.faqEyebrow}
+              title={s.faqHeading}
             />
             <EducatorInfo c={c} />
           </FadeIn>
         </Container>
       </section>
 
-      {/* Newsletter — moved to the bottom, no longer weighted at the top */}
+      {/* Compact newsletter — a smaller secondary action near the footer */}
       <FadeIn rootMargin="0px 0px -30px 0px">
-        <NewsletterSignup
+        <CurriculumNewsletter
           sectionId={CURRICULUM_SIGNUP_ID}
           heading={c.newsletterTitle}
           description={c.newsletterDesc}

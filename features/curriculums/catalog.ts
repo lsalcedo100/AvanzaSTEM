@@ -21,6 +21,13 @@ export type CurriculumId =
   | "ai"
 
 /**
+ * Content grouping for the catalog. "hands-on" = build/experiment with physical
+ * materials (Engineering, Science, Math); "technology" = code/program/AI
+ * (Python, Robotics, AI). Chosen from the courses' actual content and settings.
+ */
+export type CurriculumGroup = "hands-on" | "technology"
+
+/**
  * A single card in the curriculum catalog.
  *
  * Only the *structural, non-translated* facts live here (route, art, grade band,
@@ -33,10 +40,16 @@ export type CurriculumEntry = {
   id: CurriculumId
   /** Canonical course route. These hrefs are load-bearing — keep them exact. */
   href: string
-  /** Cover image. The AI card uses an in-course diagram instead (see illustration). */
-  image: string
+  /**
+   * Real Avanza STEM workshop/robotics photo for the card. Omitted when no
+   * authentic image exists for the course (Math) — the card then falls back to a
+   * restrained neutral treatment rather than a stock or AI-generated image.
+   */
+  image?: string
   /** AI card renders the authentic in-course JourneyDiagram instead of a photo. */
   illustration?: "ai-journey"
+  /** Which catalog group the card belongs to. */
+  group: CurriculumGroup
   gradeMin: number
   gradeMax: number
   /** Total weeks in the path; drives the "Length" column and duration filter. */
@@ -71,7 +84,9 @@ export const curriculumCatalog: CurriculumEntry[] = [
   {
     id: "python",
     href: "/curriculums/intro-to-python",
-    image: "/images/curriculums/python.jpg",
+    // Real Avanza coding-workshop photo (kids on laptops in a library).
+    image: "/images/workshops/past-coding.jpg",
+    group: "technology",
     gradeMin: 3,
     gradeMax: 6,
     weeks: 8,
@@ -83,7 +98,9 @@ export const curriculumCatalog: CurriculumEntry[] = [
   {
     id: "engineering",
     href: "/courses/engineering-fundamentals",
-    image: "/images/curriculums/engineering.jpg",
+    // Real Avanza engineering-workshop photo.
+    image: "/images/workshops/past-engineering.jpg",
+    group: "hands-on",
     gradeMin: 2,
     gradeMax: 5,
     weeks: 6,
@@ -95,7 +112,9 @@ export const curriculumCatalog: CurriculumEntry[] = [
   {
     id: "science",
     href: "/courses/science-experiments",
-    image: "/images/curriculums/science.png",
+    // Real Avanza science-workshop photo.
+    image: "/images/workshops/past-science.jpg",
+    group: "hands-on",
     gradeMin: 2,
     gradeMax: 4,
     weeks: 6,
@@ -107,7 +126,8 @@ export const curriculumCatalog: CurriculumEntry[] = [
   {
     id: "math",
     href: "/courses/math-adventures",
-    image: "/images/curriculums/math.jpg",
+    // No authentic math photo exists — card uses the neutral graph-paper treatment.
+    group: "hands-on",
     gradeMin: 2,
     gradeMax: 5,
     weeks: 10,
@@ -119,7 +139,9 @@ export const curriculumCatalog: CurriculumEntry[] = [
   {
     id: "robotics",
     href: "/courses/robotics",
-    image: "/images/curriculums/robotics.jpg",
+    // Real LEGO robotics photo already used elsewhere on the site.
+    image: "/images/shared/lego-robotics.jpeg",
+    group: "technology",
     gradeMin: 4,
     gradeMax: 6,
     weeks: 8,
@@ -131,8 +153,10 @@ export const curriculumCatalog: CurriculumEntry[] = [
   {
     id: "ai",
     href: "/courses/intro-to-artificial-intelligence",
-    image: "/images/curriculums/ai.jpg",
+    // Card uses the authentic in-course JourneyDiagram; the featured section
+    // uses the real AI-workshop photo. The AI-generated ai.jpg is not used.
     illustration: "ai-journey",
+    group: "technology",
     gradeMin: 5,
     gradeMax: 8,
     weeks: 6,
@@ -146,6 +170,19 @@ export const curriculumCatalog: CurriculumEntry[] = [
 /** The single featured entry, or the first entry as a safe fallback. */
 export const featuredCurriculum: CurriculumEntry =
   curriculumCatalog.find((entry) => entry.featured) ?? curriculumCatalog[0]
+
+/**
+ * Real Avanza STEM photo for the featured section (an actual AI workshop —
+ * already used on the blog). Kept separate from the AI card, which uses the
+ * in-course JourneyDiagram, so the two treatments read as intentionally
+ * different rather than a duplicated image.
+ */
+export const featuredImage = "/images/shared/ai-workshop.jpg"
+
+/** Catalog entries filtered to one content group, in listing order. */
+export function curriculumsInGroup(group: CurriculumGroup): CurriculumEntry[] {
+  return curriculumCatalog.filter((entry) => entry.group === group)
+}
 
 /** Resolved, locale-aware display copy for a catalog entry. */
 export type CurriculumCopy = {
