@@ -105,6 +105,14 @@ export function AboutPageContent() {
                   {paragraph}
                 </p>
               ))}
+              <div className="mt-6">
+                <p className="text-lg font-semibold text-foreground">
+                  — {t.aboutPage.whySignatureName}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {t.aboutPage.whySignatureRole}
+                </p>
+              </div>
             </FadeIn>
             <FadeIn delay={100}>
               <div className="relative h-80 overflow-hidden rounded-2xl shadow-2xl lg:h-96">

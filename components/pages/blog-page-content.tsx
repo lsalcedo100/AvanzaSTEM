@@ -6,11 +6,11 @@ import { ArrowRight } from "lucide-react"
 import { NewsletterSignup } from "@/components/blog/newsletter-signup"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
-import { galleryImages } from "@/components/ui/gallery"
+import { codingFeatureImage } from "@/components/ui/gallery"
 
 const galleryImage7 =
   "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/gallery-00168.jpg"
-const codingThumbnailImage = galleryImages[30].full
+const codingThumbnailImage = codingFeatureImage.full
 
 export function BlogPageContent() {
   const { t } = useLanguage()

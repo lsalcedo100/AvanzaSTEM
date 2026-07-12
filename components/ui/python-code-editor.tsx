@@ -15,6 +15,7 @@ import {
 import { history, historyKeymap, defaultKeymap, indentWithTab } from "@codemirror/commands"
 import {
   indentUnit,
+  indentOnInput,
   bracketMatching,
   syntaxHighlighting,
   foldGutter,
@@ -105,6 +106,10 @@ export const PythonCodeEditor = forwardRef<PythonCodeEditorHandle, PythonCodeEdi
     const hostRef = useRef<HTMLDivElement>(null)
     const viewRef = useRef<EditorView | null>(null)
     const dynamicCompartment = useMemo(() => new Compartment(), [])
+    // Whether error markers from the last run are currently shown, so we can
+    // drop them the moment the student edits (a fixed line shouldn't keep its
+    // red underline until the next run).
+    const hasDiagnosticsRef = useRef(false)
 
     // Keep the latest callbacks/values reachable from CodeMirror's long-lived
     // extensions without rebuilding the editor on every render.
@@ -149,6 +154,9 @@ export const PythonCodeEditor = forwardRef<PythonCodeEditorHandle, PythonCodeEdi
           indentUnit.of("    "),
           EditorState.tabSize.of(4),
           python(),
+          // Re-indent the current line as you type block keywords like `else:`
+          // / `elif:` (Enter-to-indent already comes from the default keymap).
+          indentOnInput(),
           pythonKeywordCompletions,
           syntaxHighlighting(pythonHighlightStyle),
           bracketMatching(),
@@ -183,7 +191,19 @@ export const PythonCodeEditor = forwardRef<PythonCodeEditorHandle, PythonCodeEdi
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
               const isExternal = update.transactions.some((tr) => tr.annotation(External))
-              if (!isExternal) onCodeChangeRef.current(update.state.doc.toString())
+              if (!isExternal) {
+                onCodeChangeRef.current(update.state.doc.toString())
+                // Editing invalidates last run's error markers - clear them so a
+                // now-correct line drops its underline. Deferred: a listener may
+                // not dispatch during an update.
+                if (hasDiagnosticsRef.current) {
+                  hasDiagnosticsRef.current = false
+                  queueMicrotask(() => {
+                    const v = viewRef.current
+                    if (v) v.dispatch(setDiagnostics(v.state, []))
+                  })
+                }
+              }
             }
             if (update.docChanged || update.selectionSet) {
               const head = update.state.selection.main.head
@@ -235,6 +255,7 @@ export const PythonCodeEditor = forwardRef<PythonCodeEditorHandle, PythonCodeEdi
         return { from: line.from, to: line.to, severity: d.severity ?? "error", message: d.message }
       })
       view.dispatch(setDiagnostics(view.state, cmDiags))
+      hasDiagnosticsRef.current = cmDiags.length > 0
     }, [diagnostics])
 
     return (

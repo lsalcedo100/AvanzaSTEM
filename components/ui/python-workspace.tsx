@@ -115,6 +115,16 @@ export function PythonWorkspace({
     runner.run(code)
   }, [runner, code])
 
+  const handleCodeChange = useCallback(
+    (next: string) => {
+      setCode(next)
+      // Once the code is edited, a previous run's error no longer applies -
+      // clear it from the terminal (the editor underline clears itself).
+      if (runner.status === "done" && runner.outcome === "error") runner.clearOutput()
+    },
+    [runner],
+  )
+
   const diagnostics = useMemo<EditorDiagnostic[]>(
     () =>
       runner.errorLine != null
@@ -176,7 +186,7 @@ export function PythonWorkspace({
         <PythonCodeEditor
           ref={editorRef}
           code={code}
-          onCodeChange={setCode}
+          onCodeChange={handleCodeChange}
           onRun={handleEditorRun}
           diagnostics={diagnostics}
           ariaLabel={t.home.pyEditorAria}

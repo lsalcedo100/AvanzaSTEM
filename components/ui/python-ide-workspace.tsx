@@ -7,11 +7,12 @@ import {
   Square,
   Loader2,
   RotateCcw,
-  ChevronDown,
   X,
   HelpCircle,
   PanelLeft,
   FileCode2,
+  Lightbulb,
+  BookOpen,
 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { cn } from "@/lib/utils"
@@ -22,6 +23,11 @@ import {
 } from "@/components/ui/python-code-editor"
 import { PythonTerminal } from "@/components/ui/python-terminal"
 import { usePythonRunner } from "@/components/ui/use-python-runner"
+import {
+  PythonIdeExamplesPanel,
+  type IdeExample,
+} from "@/components/ui/python-ide-examples-panel"
+import { PythonIdeHelpPanel } from "@/components/ui/python-ide-help-panel"
 
 // Standalone IDE keeps its own saved code so a student's work here never
 // collides with the home-page playground or a lesson editor.
@@ -29,15 +35,18 @@ const PYTHON_IDE_STORAGE_KEY = "avanza-python-ide-code"
 
 const FILE_NAME = "main.py"
 
-type Example = { id: string; label: string; code: string }
-type PendingConfirm = { type: "reset" } | { type: "example"; example: Example }
+type PendingConfirm = { type: "reset" } | { type: "example"; example: IdeExample }
 
 /**
  * The standalone Python IDE (/python-ide): a compact, application-style shell -
  * toolbar, file sidebar, editor, output panel, and status bar - built on the
  * same shared primitives as every other editor in the app
  * ({@link PythonCodeEditor}, {@link PythonTerminal}, {@link usePythonRunner}).
- * Only the chrome differs; the Python execution engine is untouched.
+ *
+ * Beginner learning support (an Examples panel, a Help panel, contextual
+ * tooltips, and a dismissible "try changing this" hint) layers on top without
+ * turning the page into a game - everything is closable so experienced users
+ * keep a clean workspace.
  */
 export function PythonIdeWorkspace() {
   const { t } = useLanguage()
@@ -47,21 +56,26 @@ export function PythonIdeWorkspace() {
   const [hasLoadedSavedCode, setHasLoadedSavedCode] = useState(false)
   const [activeExample, setActiveExample] = useState<string | null>(null)
   const [filesOpen, setFilesOpen] = useState(false)
-  const [examplesOpen, setExamplesOpen] = useState(false)
+  const [examplesPanelOpen, setExamplesPanelOpen] = useState(false)
+  const [panelExampleId, setPanelExampleId] = useState<string>("hello")
   const [helpOpen, setHelpOpen] = useState(false)
   const [pendingConfirm, setPendingConfirm] = useState<PendingConfirm | null>(null)
   const [cursor, setCursor] = useState<{ line: number; column: number }>({ line: 1, column: 1 })
+  const [tipDismissedFor, setTipDismissedFor] = useState<string | null>(null)
 
   const editorRef = useRef<PythonCodeEditorHandle>(null)
   const skipNextCodeSaveRef = useRef(false)
+  const restoreFocusRef = useRef<HTMLElement | null>(null)
 
-  const examples: Example[] = useMemo(
+  const examples: IdeExample[] = useMemo(
     () => [
-      { id: "hello", label: t.home.pyEgHello, code: t.home.pyEgHelloCode },
-      { id: "variables", label: t.home.pyEgVariables, code: t.home.pyEgVariablesCode },
-      { id: "input", label: t.home.pyEgInput, code: t.home.pyEgInputCode },
-      { id: "if", label: t.home.pyEgIf, code: t.home.pyEgIfCode },
-      { id: "loops", label: t.home.pyEgLoops, code: t.home.pyEgLoopsCode },
+      { id: "hello", label: t.home.pyEgHello, desc: t.home.pyEgHelloDesc, code: t.home.pyEgHelloCode, tip: t.home.pyEgHelloTip },
+      { id: "variables", label: t.home.pyEgVariables, desc: t.home.pyEgVariablesDesc, code: t.home.pyEgVariablesCode, tip: t.home.pyEgVariablesTip },
+      { id: "input", label: t.home.pyEgInput, desc: t.home.pyEgInputDesc, code: t.home.pyEgInputCode, tip: t.home.pyEgInputTip },
+      { id: "if", label: t.home.pyEgIf, desc: t.home.pyEgIfDesc, code: t.home.pyEgIfCode, tip: t.home.pyEgIfTip },
+      { id: "loops", label: t.home.pyEgLoops, desc: t.home.pyEgLoopsDesc, code: t.home.pyEgLoopsCode, tip: t.home.pyEgLoopsTip },
+      { id: "functions", label: t.home.pyEgFunctions, desc: t.home.pyEgFunctionsDesc, code: t.home.pyEgFunctionsCode, tip: t.home.pyEgFunctionsTip },
+      { id: "guess", label: t.home.pyEgGuess, desc: t.home.pyEgGuessDesc, code: t.home.pyEgGuessCode, tip: t.home.pyEgGuessTip },
     ],
     [t],
   )
@@ -74,6 +88,9 @@ export function PythonIdeWorkspace() {
     [t.home.pyStarterCode, examples],
   )
   const isDirty = hasLoadedSavedCode && code.trim() !== "" && !templates.has(code)
+
+  const activeTip = examples.find((e) => e.id === activeExample)?.tip ?? null
+  const showTip = activeExample !== null && activeTip !== null && tipDismissedFor !== activeExample
 
   // Restore locally saved student code once the browser APIs are available.
   useEffect(() => {
@@ -108,32 +125,25 @@ export function PythonIdeWorkspace() {
     }
   }, [code, hasLoadedSavedCode])
 
-  // Close any open menus / the mobile drawer / a confirm dialog on Escape.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return
-      setExamplesOpen(false)
-      setHelpOpen(false)
-      setFilesOpen(false)
-      setPendingConfirm(null)
-    }
-    document.addEventListener("keydown", onKey)
-    return () => document.removeEventListener("keydown", onKey)
-  }, [])
-
-  const handleCodeChange = useCallback((next: string) => {
-    setCode(next)
-    // The moment a student edits, it's no longer the pristine example.
-    setActiveExample(null)
-  }, [])
+  const handleCodeChange = useCallback(
+    (next: string) => {
+      setCode(next)
+      // The moment a student edits, it's no longer the pristine example.
+      setActiveExample(null)
+      // A finished run that ended in an error no longer describes the edited
+      // code, so clear the stale error from the terminal (the editor underline
+      // clears itself). Successful output is left alone.
+      if (runner.status === "done" && runner.outcome === "error") runner.clearOutput()
+    },
+    [runner],
+  )
 
   const performLoadExample = useCallback(
-    (example: Example) => {
+    (example: IdeExample) => {
       setCode(example.code)
       setActiveExample(example.id)
+      setTipDismissedFor(null)
       runner.clearOutput()
-      setExamplesOpen(false)
-      setFilesOpen(false)
       requestAnimationFrame(() => editorRef.current?.focus())
     },
     [runner],
@@ -155,15 +165,13 @@ export function PythonIdeWorkspace() {
   // Reset always asks first (an explicit, deliberate action). Loading an
   // example only asks when there is real work to lose.
   const requestReset = useCallback(() => {
-    setExamplesOpen(false)
     setFilesOpen(false)
     setPendingConfirm({ type: "reset" })
   }, [])
 
   const requestLoadExample = useCallback(
-    (example: Example) => {
+    (example: IdeExample) => {
       if (isDirty) {
-        setExamplesOpen(false)
         setPendingConfirm({ type: "example", example })
         return
       }
@@ -179,10 +187,55 @@ export function PythonIdeWorkspace() {
     setPendingConfirm(null)
   }, [pendingConfirm, performReset, performLoadExample])
 
+  // Dialog helpers that remember and restore focus so keyboard users land back
+  // on the control that opened the panel.
+  const openExamplesPanel = useCallback(
+    (preselectId?: string) => {
+      restoreFocusRef.current = document.activeElement as HTMLElement | null
+      setPanelExampleId(preselectId ?? activeExample ?? "hello")
+      setFilesOpen(false)
+      setExamplesPanelOpen(true)
+    },
+    [activeExample],
+  )
+  const closeExamplesPanel = useCallback(() => {
+    setExamplesPanelOpen(false)
+    restoreFocusRef.current?.focus()
+  }, [])
+  const openHelp = useCallback(() => {
+    restoreFocusRef.current = document.activeElement as HTMLElement | null
+    setHelpOpen(true)
+  }, [])
+  const closeHelp = useCallback(() => {
+    setHelpOpen(false)
+    restoreFocusRef.current?.focus()
+  }, [])
+
+  const handlePanelLoad = useCallback(
+    (example: IdeExample) => {
+      closeExamplesPanel()
+      requestLoadExample(example)
+    },
+    [closeExamplesPanel, requestLoadExample],
+  )
+
   const runCode = useCallback(() => {
     if (runner.isBusy || code.trim().length === 0) return
     runner.run(code)
   }, [runner, code])
+
+  // Close whatever is topmost on Escape.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return
+      if (pendingConfirm) return setPendingConfirm(null)
+      if (examplesPanelOpen) return closeExamplesPanel()
+      if (helpOpen) return closeHelp()
+      if (filesOpen) return setFilesOpen(false)
+    }
+    document.addEventListener("keydown", onKey)
+    return () => document.removeEventListener("keydown", onKey)
+  }, [pendingConfirm, examplesPanelOpen, helpOpen, filesOpen, closeExamplesPanel, closeHelp])
 
   const diagnostics = useMemo<EditorDiagnostic[]>(
     () =>
@@ -222,25 +275,19 @@ export function PythonIdeWorkspace() {
     }
   })()
 
-  const sidebarBody = (onNavigate?: () => void) => (
-    <SidebarContent
-      examples={examples}
-      activeExample={activeExample}
-      onSelectExample={(ex) => {
-        requestLoadExample(ex)
-        onNavigate?.()
-      }}
-      filesLabel={t.home.pyIdeFiles}
-      examplesLabel={t.home.pyIdeExamples}
-      editedLabel={t.home.pyIdeTabEdited}
-      isDirty={isDirty}
-    />
+  const sidebarBody = () => (
+    <SidebarContent filesLabel={t.home.pyIdeFiles} editedLabel={t.home.pyIdeTabEdited} isDirty={isDirty} />
   )
 
   return (
-    <div className="relative flex min-h-[calc(100dvh-4rem)] flex-col overflow-hidden rounded-lg border border-[#242838] bg-[#0f1120] text-white shadow-[0_20px_60px_-32px_rgba(6,8,20,0.7)] lg:h-[calc(100dvh-5.5rem)] lg:min-h-136">
+    <div className="py-ide relative flex min-h-[calc(100dvh-4rem)] flex-col overflow-hidden rounded-lg border border-[#242838] bg-[#0f1120] text-white shadow-[0_20px_60px_-32px_rgba(6,8,20,0.7)] lg:h-[calc(100dvh-5.5rem)] lg:min-h-136">
       {/* Toolbar */}
-      <div className="flex h-13 shrink-0 items-center gap-2 border-b border-[#242838] bg-[#161927] px-2 sm:px-3">
+      <div
+        role="toolbar"
+        aria-label={t.home.pyIdeToolbar}
+        aria-orientation="horizontal"
+        className="flex h-13 shrink-0 items-center gap-2 border-b border-[#242838] bg-[#161927] px-2 sm:px-3"
+      >
         <button
           type="button"
           onClick={() => setFilesOpen(true)}
@@ -272,101 +319,30 @@ export function PythonIdeWorkspace() {
             <span className="hidden sm:inline">{t.home.pyIdeReset}</span>
           </button>
 
-          {/* Examples dropdown (in the sidebar/drawer on small screens). */}
-          <div className="relative hidden lg:block">
-            <button
-              type="button"
-              onClick={() => setExamplesOpen((v) => !v)}
-              className="inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
-              aria-haspopup="menu"
-              aria-expanded={examplesOpen}
-              title={t.home.pyIdeTipExamples}
-            >
-              {t.home.pyIdeExamples}
-              <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", examplesOpen && "rotate-180")} />
-            </button>
-            {examplesOpen && (
-              <>
-                <button
-                  type="button"
-                  aria-hidden="true"
-                  tabIndex={-1}
-                  className="fixed inset-0 z-10 cursor-default"
-                  onClick={() => setExamplesOpen(false)}
-                />
-                <div
-                  role="menu"
-                  className="absolute right-0 top-full z-20 mt-1.5 w-52 overflow-hidden rounded-md border border-[#2b3042] bg-[#161927] py-1 shadow-xl"
-                >
-                  {examples.map((ex) => (
-                    <button
-                      key={ex.id}
-                      type="button"
-                      role="menuitem"
-                      onClick={() => requestLoadExample(ex)}
-                      className={cn(
-                        "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-white/10",
-                        activeExample === ex.id ? "text-avanza-green" : "text-white/80",
-                      )}
-                    >
-                      <FileCode2 className="h-3.5 w-3.5 shrink-0 opacity-60" />
-                      {ex.label}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
+          {/* Examples (opens the panel). */}
+          <button
+            type="button"
+            onClick={() => openExamplesPanel()}
+            aria-haspopup="dialog"
+            aria-label={t.home.pyIdeExamples}
+            title={t.home.pyIdeTipExamples}
+            className="inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <BookOpen className="h-4 w-4" />
+            <span className="hidden sm:inline">{t.home.pyIdeExamples}</span>
+          </button>
 
-          {/* Help */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setHelpOpen((v) => !v)}
-              className="inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
-              aria-haspopup="dialog"
-              aria-expanded={helpOpen}
-              aria-label={t.home.pyIdeHelp}
-              title={t.home.pyIdeTipHelp}
-            >
-              <HelpCircle className="h-4 w-4" />
-              <span className="hidden md:inline">{t.home.pyIdeHelp}</span>
-            </button>
-            {helpOpen && (
-              <>
-                <button
-                  type="button"
-                  aria-hidden="true"
-                  tabIndex={-1}
-                  className="fixed inset-0 z-10 cursor-default"
-                  onClick={() => setHelpOpen(false)}
-                />
-                <div
-                  role="dialog"
-                  aria-label={t.home.pyIdeHelpTitle}
-                  className="absolute right-0 top-full z-20 mt-1.5 w-72 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md border border-[#2b3042] bg-[#161927] p-4 shadow-xl"
-                >
-                  <p className="m-0 mb-2 text-sm font-semibold text-white">{t.home.pyIdeHelpTitle}</p>
-                  <ul className="m-0 list-none space-y-1.5 p-0 text-sm leading-relaxed text-white/70">
-                    <li>{t.home.pyIdeHelpRun}</li>
-                    <li>{t.home.pyIdeHelpStop}</li>
-                    <li>{t.home.pyIdeHelpExamples}</li>
-                    <li>{t.home.pyIdeHelpReset}</li>
-                  </ul>
-                  <p className="m-0 mt-3 border-t border-white/10 pt-2 font-mono text-xs text-white/45">
-                    {t.home.pyIdeRunShortcut}
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setHelpOpen(false)}
-                    className="mt-3 inline-flex h-8 items-center rounded-md bg-white/10 px-3 text-sm font-medium text-white transition-colors hover:bg-white/20"
-                  >
-                    {t.home.pyIdeHelpClose}
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
+          <button
+            type="button"
+            onClick={openHelp}
+            aria-haspopup="dialog"
+            aria-label={t.home.pyIdeHelp}
+            title={t.home.pyIdeTipHelp}
+            className="inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <HelpCircle className="h-4 w-4" />
+            <span className="hidden md:inline">{t.home.pyIdeHelp}</span>
+          </button>
 
           <span className="mr-0.5 hidden font-mono text-[11px] leading-none text-white/35 xl:inline">
             {t.home.pyIdeRunShortcut}
@@ -464,17 +440,36 @@ export function PythonIdeWorkspace() {
         </div>
       </div>
 
+      {/* "Try changing this" hint - compact, dismissible, never over the editor. */}
+      {showTip && (
+        <div className="flex shrink-0 items-center gap-2 border-t border-[#242838] bg-[#12141f] px-3 py-1.5 text-xs text-white/65">
+          <Lightbulb className="h-3.5 w-3.5 shrink-0 text-avanza-green/80" />
+          <span className="min-w-0 flex-1 truncate sm:whitespace-normal">
+            <span className="font-medium text-white/80">{t.home.pyExTryTitle}:</span> {activeTip}
+          </span>
+          <button
+            type="button"
+            onClick={() => setTipDismissedFor(activeExample)}
+            aria-label={t.home.pyExTipDismiss}
+            title={t.home.pyExTipDismiss}
+            className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded text-white/45 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* Status bar: only real, editor-synced information. */}
-      <div className="flex h-7 shrink-0 items-center gap-2.5 border-t border-[#242838] bg-[#161927] px-3 font-mono text-[11px] text-white/45">
+      <div className="flex h-7 shrink-0 items-center gap-2.5 border-t border-[#242838] bg-[#161927] px-3 font-mono text-[11px] text-white/55">
         <span className={cn("flex items-center gap-1.5", statusMeta.tone)}>
           <span className={cn("h-1.5 w-1.5 rounded-full", statusMeta.dot)} />
           {statusMeta.text}
         </span>
-        <span className="text-white/20" aria-hidden="true">|</span>
+        <span className="text-white/25" aria-hidden="true">|</span>
         <span className="hidden sm:inline">{t.home.pyStatusSpaces}</span>
-        <span className="hidden text-white/20 sm:inline" aria-hidden="true">|</span>
+        <span className="hidden text-white/25 sm:inline" aria-hidden="true">|</span>
         <span className="hidden sm:inline">UTF-8</span>
-        <span className="ml-auto text-white/20" aria-hidden="true">|</span>
+        <span className="ml-auto text-white/25" aria-hidden="true">|</span>
         <span>
           {t.home.pyStatusLn} {cursor.line}, {t.home.pyStatusCol} {cursor.column}
         </span>
@@ -505,10 +500,25 @@ export function PythonIdeWorkspace() {
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <div className="min-h-0 flex-1 overflow-y-auto">{sidebarBody(() => setFilesOpen(false))}</div>
+            <div className="min-h-0 flex-1 overflow-y-auto">{sidebarBody()}</div>
           </aside>
         </div>
       )}
+
+      {/* Examples panel */}
+      {examplesPanelOpen && (
+        <PythonIdeExamplesPanel
+          examples={examples}
+          selectedId={panelExampleId}
+          activeId={activeExample}
+          onSelect={setPanelExampleId}
+          onLoad={handlePanelLoad}
+          onClose={closeExamplesPanel}
+        />
+      )}
+
+      {/* Help panel */}
+      {helpOpen && <PythonIdeHelpPanel onClose={closeHelp} />}
 
       {/* Confirm dialog (reset / switch example) */}
       {pendingConfirm && (
@@ -559,31 +569,24 @@ export function PythonIdeWorkspace() {
           </div>
         </div>
       )}
+
     </div>
   )
 }
 
 function SidebarContent({
-  examples,
-  activeExample,
-  onSelectExample,
   filesLabel,
-  examplesLabel,
   editedLabel,
   isDirty,
 }: {
-  examples: Example[]
-  activeExample: string | null
-  onSelectExample: (example: Example) => void
   filesLabel: string
-  examplesLabel: string
   editedLabel: string
   isDirty: boolean
 }) {
   return (
     <nav className="flex flex-col gap-4 p-3 text-sm">
       <div>
-        <p className="m-0 px-2 pb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-white/35">
+        <p className="m-0 px-2 pb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-white/50">
           {filesLabel}
         </p>
         <div className="flex items-center gap-2 rounded-md bg-white/5 px-2.5 py-1.5 font-mono text-[13px] text-white/85">
@@ -598,28 +601,6 @@ function SidebarContent({
             />
           )}
         </div>
-      </div>
-
-      <div>
-        <p className="m-0 px-2 pb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-white/35">
-          {examplesLabel}
-        </p>
-        <ul className="m-0 flex list-none flex-col gap-0.5 p-0">
-          {examples.map((ex) => (
-            <li key={ex.id}>
-              <button
-                type="button"
-                onClick={() => onSelectExample(ex)}
-                className={cn(
-                  "w-full rounded-md px-2.5 py-2 text-left transition-colors hover:bg-white/10",
-                  activeExample === ex.id ? "bg-white/10 text-avanza-green" : "text-white/75",
-                )}
-              >
-                {ex.label}
-              </button>
-            </li>
-          ))}
-        </ul>
       </div>
     </nav>
   )

@@ -4,11 +4,11 @@ import Link from "next/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
-import { Gallery, galleryImages, preExpansionGalleryImages } from "@/components/ui/gallery"
+import { Gallery, codingFeatureImage, preExpansionGalleryImages } from "@/components/ui/gallery"
 
 const buildingWorkshopImage =
   "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/c_crop,x_0,y_290,w_1600,h_2110/gallery-00174.jpg"
-const codingThumbnailImage = galleryImages[30].full
+const codingThumbnailImage = codingFeatureImage.full
 
 export function WorkshopsPageContent() {
   const { t } = useLanguage()

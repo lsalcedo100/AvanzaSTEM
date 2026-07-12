@@ -6,9 +6,9 @@ import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
-import { galleryImages, preExpansionGalleryImages } from "@/components/ui/gallery"
+import { codingFeatureImage, preExpansionGalleryImages } from "@/components/ui/gallery"
 
-const codingThumbnailImage = galleryImages[30].full
+const codingThumbnailImage = codingFeatureImage.full
 
 function ProgramCard({
   image,

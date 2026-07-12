@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Loader2, AlertTriangle, TriangleAlert, Copy, Check, Trash2, Square, Terminal, CornerDownLeft } from "lucide-react"
+import { Loader2, AlertTriangle, TriangleAlert, Copy, Check, Trash2, Square, Terminal } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { cn } from "@/lib/utils"
 import type { PythonRunner } from "@/components/ui/use-python-runner"
@@ -186,7 +186,7 @@ export function PythonTerminal({
         )}
       >
         {!hasStarted && !hasOutput ? (
-          <p className="m-0 font-sans text-sm text-white/40">{t.home.pyTerminalEmpty}</p>
+          <p className="m-0 font-sans text-sm text-white/50">{t.home.pyTerminalEmpty}</p>
         ) : (
           <>
             {hasStarted && (
@@ -245,9 +245,8 @@ export function PythonTerminal({
                   <button
                     type="button"
                     onClick={() => onErrorLineClick(errorLine)}
-                    className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-red-500/15 px-2 py-1 font-sans text-xs font-medium text-red-200 transition-colors hover:bg-red-500/25"
+                    className="mt-2 inline-flex items-center rounded-md bg-red-500/15 px-2 py-1 font-sans text-xs font-medium text-red-200 underline decoration-red-300/40 underline-offset-2 transition-colors hover:bg-red-500/25"
                   >
-                    <CornerDownLeft className="h-3.5 w-3.5" />
                     {t.home.pyGoToLine.replace("{n}", String(errorLine))}
                   </button>
                 )}

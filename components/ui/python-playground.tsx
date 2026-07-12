@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { PythonWorkspace } from "@/components/ui/python-workspace"
@@ -48,6 +50,16 @@ export function PythonPlayground() {
             resetTo=""
             resetLabel={t.home.pyClear}
           />
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/python-ide"
+              className="inline-flex items-center gap-2 text-base font-bold text-avanza-green transition-colors hover:text-avanza-green/80"
+            >
+              {t.home.pyIdeCta}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </FadeIn>
       </div>
     </section>

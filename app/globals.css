@@ -117,6 +117,15 @@
   }
 }
 
+/* One consistent, high-contrast keyboard focus ring for the Python IDE's dark
+   custom controls (toolbar, panels, dialogs, sidebar). CodeMirror keeps its own
+   focus style. Outline (not box-shadow) so it isn't clipped by panel overflow. */
+.py-ide :is(button, a):focus-visible {
+  outline: 2px solid var(--avanza-green);
+  outline-offset: 1px;
+  border-radius: 4px;
+}
+
 @keyframes flag-wave {
   0%, 100% { transform: skewX(0deg) scaleY(1); }
   50% { transform: skewX(-6deg) scaleY(1.03); }

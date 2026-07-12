@@ -67,6 +67,12 @@ export const preExpansionGalleryImages: GalleryItem[] = Array.from(
   (_, i) => buildItem(PRE_EXPANSION_TOTAL_IMAGES - i),
 )
 
+// Pinned photo (kids gathered around a laptop) used for the "Coding" feature
+// cards — Featured Guide, Workshop Two, and the home "What students do" card.
+// Anchored to a fixed Cloudinary number, NOT an array index, so uploading new
+// gallery photos never swaps it out.
+export const codingFeatureImage: GalleryItem = buildItem(187)
+
 interface GalleryProps {
   limit?: number
 }
