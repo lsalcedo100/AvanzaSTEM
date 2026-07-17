@@ -25,7 +25,6 @@ type Activity = {
 type Group = {
   id: string
   name: string
-  description: string
   activities: Activity[]
 }
 
@@ -36,7 +35,6 @@ export function GamesPageContent() {
     {
       id: "group-code",
       name: t.gamesPage.groupCodeName,
-      description: t.gamesPage.groupCodeDesc,
       activities: [
         { id: "python", name: t.gamesPage.pythonName, tagline: t.gamesPage.pythonTagline },
         { id: "robot", name: t.gamesPage.robotName, tagline: t.gamesPage.robotTagline },
@@ -47,7 +45,6 @@ export function GamesPageContent() {
     {
       id: "group-build",
       name: t.gamesPage.groupBuildName,
-      description: t.gamesPage.groupBuildDesc,
       activities: [
         { id: "bridge", name: t.gamesPage.bridgeName, tagline: t.gamesPage.bridgeTagline },
         { id: "tower", name: t.gamesPage.towerName, tagline: t.gamesPage.towerTagline },
@@ -58,7 +55,6 @@ export function GamesPageContent() {
     {
       id: "group-science",
       name: t.gamesPage.groupScienceName,
-      description: t.gamesPage.groupScienceDesc,
       activities: [
         { id: "atom", name: t.gamesPage.atomName, tagline: t.gamesPage.atomTagline },
         { id: "circuit", name: t.gamesPage.circuitName, tagline: t.gamesPage.circuitTagline },
@@ -146,7 +142,6 @@ export function GamesPageContent() {
         id="group-code"
         accent="bg-avanza-purple"
         name={t.gamesPage.groupCodeName}
-        description={t.gamesPage.groupCodeDesc}
       />
       <div id="python" style={{ scrollMarginTop: 96 }}>
         <PythonPlayground />
@@ -166,7 +161,6 @@ export function GamesPageContent() {
         id="group-build"
         accent="bg-avanza-orange"
         name={t.gamesPage.groupBuildName}
-        description={t.gamesPage.groupBuildDesc}
       />
       <div id="bridge" style={{ scrollMarginTop: 96 }}>
         <BridgeLoadDemo />
@@ -186,7 +180,6 @@ export function GamesPageContent() {
         id="group-science"
         accent="bg-avanza-teal"
         name={t.gamesPage.groupScienceName}
-        description={t.gamesPage.groupScienceDesc}
       />
       <div id="atom" style={{ scrollMarginTop: 96 }}>
         <AtomBuilder />
@@ -227,23 +220,18 @@ function GroupIntro({
   id,
   accent,
   name,
-  description,
 }: {
   id: string
   accent: string
   name: string
-  description: string
 }) {
   return (
-    <div id={id} style={{ scrollMarginTop: 96 }} className="bg-[#fcfaf3] py-14 md:py-16">
+    <div id={id} style={{ scrollMarginTop: 96 }} className="bg-[#fcfaf3] py-8 md:py-10">
       <FadeIn className="mx-auto max-w-3xl px-6 text-center">
         <div className={`mx-auto h-1.5 w-14 rounded-full ${accent}`} />
-        <h2 className="mt-5 text-balance text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
+        <h2 className="mt-4 text-balance text-3xl font-extrabold leading-tight text-foreground md:text-4xl">
           {name}
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          {description}
-        </p>
       </FadeIn>
     </div>
   )

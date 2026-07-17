@@ -35,7 +35,7 @@ export function CurriculumsPageContent() {
       {/* Compact, left-aligned intro — a resource entrance, not a landing hero.
           Reduced height and no top newsletter box, so the catalog is reachable
           with minimal scroll (the CTA also jumps straight to it). */}
-      <section className="bg-background py-10 sm:py-12">
+      <section className="border-b border-purple-200 bg-gradient-to-br from-[#fbf7ff] via-purple-100 to-purple-300 py-10 sm:py-12">
         <Container>
           <FadeIn className="max-w-3xl">
             <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">

@@ -2,7 +2,7 @@ import { projectCount } from "@/features/projects/data"
 
 export const siteStats = {
   studentsReached: {
-    to: 120,
+    to: 150,
     suffix: "+",
   },
   curriculumTopics: {
@@ -14,7 +14,7 @@ export const siteStats = {
     suffix: "",
   },
   workshopsHosted: {
-    to: 12,
+    to: 13,
     suffix: "",
   },
 } as const
