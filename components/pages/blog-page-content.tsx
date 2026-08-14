@@ -21,7 +21,6 @@ export function BlogPageContent() {
     note: t.blogPage.featuredNote,
     image: codingThumbnailImage,
     imageAlt: t.blogPage.featuredImageAlt,
-    author: t.blogPage.authorLiamFounder,
     category: t.blogPage.codingCategory,
     href: "/blog/why-every-kid-should-learn-to-code",
   }
@@ -378,7 +377,6 @@ export function BlogPageContent() {
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {featuredPost.note}
                 </p>
-                <p className="mt-4 text-sm text-muted-foreground">{featuredPost.author}</p>
                 <span className="mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-avanza-green-dark underline underline-offset-4 group-hover:no-underline">
                   {t.blogPage.readArticle} <ArrowRight className="h-4 w-4" />
                 </span>

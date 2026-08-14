@@ -83,13 +83,13 @@ const en = {
     impactStudentsLabel: "Students reached",
     impactLibrariesValue: "13",
     impactLibrariesLabel: "Workshops held",
-    impactPhotosValue: "302",
+    impactPhotosValue: "374",
     impactPhotosLabel: "Real workshop photos",
     statsAsOf: "As of June 2026",
     viewAllPhotos: "See more photos",
     viewGalleryPhoto: "View gallery photo",
     workshopPhotoAlt: "Avanza STEM workshop photo",
-    photoCount: "302 Photos",
+    photoCount: "374 Photos",
     // Get Involved
     getInvolvedTitle: "Get Involved",
     getInvolvedSubhead: "Whether you're a student, a parent, or a teacher, there's a way to be part of Avanza STEM.",
@@ -808,8 +808,6 @@ const en = {
     post45Excerpt: "Floating and sinking depend on density, shape, weight, and how much water an object pushes out of the way.",
     post46Title: "Why Do Magnets Stick to Some Metals but Not Others?",
     post46Excerpt: "Magnets stick to some metals because of how tiny magnetic regions inside the material line up. Not all metals have the right structure for this.",
-    authorLiam: "Liam Salcedo",
-    authorLiamFounder: "Liam Salcedo, student founder",
     readTime3: "3 min",
     readTime4: "4 min",
     readTime5: "5 min",
@@ -827,7 +825,6 @@ const en = {
     fallbackNote: "This article is currently available in English only. Translations are coming soon.",
     endingTryNext: "Try This Next",
     endingRelatedGuide: "Keep Exploring",
-    endingAbout: "About the Author",
   },
 
   galleryPage: {
@@ -1750,6 +1747,8 @@ const en = {
     chathamsDesc: "This program was held at the Library of the Chathams, where we led grade school students through hands-on STEM activities designed to make engineering and science feel approachable, fun, and interactive. Students explored STEM concepts through guided building challenges, demonstrations, and collaborative problem solving.",
     roselandLibrary: "Roseland Free Public Library",
     roselandDesc: "This program was hosted at the Roseland Free Public Library, where students participated in engaging, hands-on STEM activities focused on creativity, experimentation, and teamwork. The session encouraged students to explore science and engineering ideas through interactive projects and guided demonstrations.",
+    wayneLibrary: "Wayne Public Library",
+    wayneDesc: "This program was hosted at the Wayne Public Library, where students participated in engaging, hands-on STEM activities focused on creativity, experimentation, and teamwork. The session encouraged students to explore science and engineering ideas through interactive projects and guided demonstrations.",
     buildingImageAlt: "Students learning engineering concepts during a building workshop",
     codingImageAlt: "Students practicing Python during a coding workshop",
     aiImageAlt: "Students exploring artificial intelligence concepts in a workshop",
@@ -1757,6 +1756,7 @@ const en = {
     allwoodImageAlt: "Workshop held at Allwood Branch Library",
     chathamsImageAlt: "Workshop held at the Library of the Chathams",
     roselandImageAlt: "Workshop held at Roseland Free Public Library",
+    wayneImageAlt: "Workshop held at Wayne Public Library",
   },
 
   // Footer
@@ -1848,13 +1848,13 @@ const es: Translations = {
     impactStudentsLabel: "Estudiantes alcanzados",
     impactLibrariesValue: "13",
     impactLibrariesLabel: "Talleres realizados",
-    impactPhotosValue: "302",
+    impactPhotosValue: "374",
     impactPhotosLabel: "Fotos reales de talleres",
     statsAsOf: "A junio de 2026",
     viewAllPhotos: "Ver mas fotos",
     viewGalleryPhoto: "Ver foto de galeria",
     workshopPhotoAlt: "Foto del taller Avanza STEM",
-    photoCount: "302 fotos",
+    photoCount: "374 fotos",
     // Participa
     getInvolvedTitle: "Participa",
     getInvolvedSubhead: "Ya seas estudiante, padre o madre de familia, o maestro, hay una forma de ser parte de Avanza STEM.",
@@ -2562,8 +2562,6 @@ const es: Translations = {
     post45Excerpt: "Flotar o hundirse depende de la densidad, la forma, el peso y cuánta agua desplaza un objeto.",
     post46Title: "¿Por Qué los Imanes Se Pegan a Algunos Metales y a Otros No?",
     post46Excerpt: "Los imanes se adhieren a algunos metales porque las pequeñas regiones magnéticas dentro del material se alinean. No todos los metales tienen la estructura adecuada para esto.",
-    authorLiam: "Liam Salcedo",
-    authorLiamFounder: "Liam Salcedo, fundador estudiante",
     readTime3: "3 min",
     readTime4: "4 min",
     readTime5: "5 min",
@@ -2581,7 +2579,6 @@ const es: Translations = {
     fallbackNote: "Este artículo solo está disponible en inglés por ahora. Las traducciones estarán disponibles pronto.",
     endingTryNext: "Prueba Esto Después",
     endingRelatedGuide: "Sigue Explorando",
-    endingAbout: "Sobre el Autor",
   },
 
   galleryPage: {
@@ -3504,6 +3501,8 @@ const es: Translations = {
     chathamsDesc: "Este programa se realizo en Library of the Chathams, donde guiamos a estudiantes de primaria mediante actividades STEM practicas disenadas para hacer que la ingenieria y la ciencia se sintieran accesibles, divertidas e interactivas. Los estudiantes exploraron conceptos STEM con retos de construccion guiados, demostraciones y resolucion colaborativa de problemas.",
     roselandLibrary: "Roseland Free Public Library",
     roselandDesc: "Este programa fue organizado en Roseland Free Public Library, donde los estudiantes participaron en actividades STEM practicas enfocadas en creatividad, experimentacion y trabajo en equipo. La sesion animo a los estudiantes a explorar ideas de ciencia e ingenieria mediante proyectos interactivos y demostraciones guiadas.",
+    wayneLibrary: "Wayne Public Library",
+    wayneDesc: "Este programa fue organizado en Wayne Public Library, donde los estudiantes participaron en actividades STEM practicas enfocadas en creatividad, experimentacion y trabajo en equipo. La sesion animo a los estudiantes a explorar ideas de ciencia e ingenieria mediante proyectos interactivos y demostraciones guiadas.",
     buildingImageAlt: "Estudiantes aprendiendo conceptos de ingenieria durante un taller de construccion",
     codingImageAlt: "Estudiantes practicando Python durante un taller de programacion",
     aiImageAlt: "Estudiantes explorando conceptos de inteligencia artificial en un taller",
@@ -3511,6 +3510,7 @@ const es: Translations = {
     allwoodImageAlt: "Taller realizado en la Biblioteca Allwood Branch",
     chathamsImageAlt: "Taller realizado en Library of the Chathams",
     roselandImageAlt: "Taller realizado en Roseland Free Public Library",
+    wayneImageAlt: "Taller realizado en Wayne Public Library",
   },
 
   footer: {
@@ -3601,13 +3601,13 @@ const zh: Translations = {
     impactStudentsLabel: "已服务学生",
     impactLibrariesValue: "13",
     impactLibrariesLabel: "已举办工作坊",
-    impactPhotosValue: "302",
+    impactPhotosValue: "374",
     impactPhotosLabel: "真实工作坊照片",
     statsAsOf: "截至 2026 年 6 月",
     viewAllPhotos: "查看更多照片",
     viewGalleryPhoto: "查看照片库图片",
     workshopPhotoAlt: "Avanza STEM 工作坊照片",
-    photoCount: "302 张照片",
+    photoCount: "374 张照片",
     // 参与进来
     getInvolvedTitle: "参与进来",
     getInvolvedSubhead: "无论你是学生、家长还是老师，都有适合你的方式参与 Avanza STEM。",
@@ -4303,8 +4303,6 @@ const zh: Translations = {
     post45Excerpt: "浮或沉取决于密度、形状、重量以及物体排开多少水。",
     post46Title: "为什么磁铁只吸一些金属，而不是所有金属？",
     post46Excerpt: "磁铁能吸附某些金属，是因为这些材料内部的微小磁性区域会排列对齐。并非所有金属都具备这种结构。",
-    authorLiam: "Liam Salcedo",
-    authorLiamFounder: "Liam Salcedo，学生创始人",
     readTime3: "3 分钟",
     readTime4: "4 分钟",
     readTime5: "5 分钟",
@@ -4322,7 +4320,6 @@ const zh: Translations = {
     fallbackNote: "本文目前仅提供英文版，翻译即将推出。",
     endingTryNext: "接下来试试",
     endingRelatedGuide: "继续探索",
-    endingAbout: "关于作者",
   },
 
   galleryPage: {
@@ -5239,6 +5236,8 @@ const zh: Translations = {
     chathamsDesc: "该项目在 Library of the Chathams 举办，我们带领小学学生参加动手 STEM 活动，让工程和科学变得亲近、有趣且互动。学生通过引导式建造挑战、演示和协作解决问题来探索 STEM 概念。",
     roselandLibrary: "罗瑟兰免费公共图书馆",
     roselandDesc: "该项目在 Roseland Free Public Library 举办，学生参加了注重创造力、实验和团队合作的动手 STEM 活动。课程鼓励学生通过互动项目和引导演示探索科学与工程想法。",
+    wayneLibrary: "韦恩公共图书馆",
+    wayneDesc: "该项目在 Wayne Public Library 举办，学生参加了注重创造力、实验和团队合作的动手 STEM 活动。课程鼓励学生通过互动项目和引导演示探索科学与工程想法。",
     buildingImageAlt: "学生在建造工作坊中学习工程概念",
     codingImageAlt: "学生在编程工作坊中练习 Python",
     aiImageAlt: "学生在工作坊中探索人工智能概念",
@@ -5246,6 +5245,7 @@ const zh: Translations = {
     allwoodImageAlt: "在 Allwood Branch 图书馆举办的工作坊",
     chathamsImageAlt: "在 Library of the Chathams 举办的工作坊",
     roselandImageAlt: "在 Roseland Free Public Library 举办的工作坊",
+    wayneImageAlt: "在 Wayne Public Library 举办的工作坊",
   },
 
   footer: {

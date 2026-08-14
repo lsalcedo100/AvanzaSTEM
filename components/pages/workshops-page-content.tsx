@@ -181,7 +181,19 @@ export function WorkshopsPageContent() {
                 name={t.workshopsPage.roselandLibrary}
                 image="/images/workshops/roseland-free-public-library-coding.jpeg"
                 imageAlt={t.workshopsPage.roselandImageAlt}
+                imageBoxClassName="aspect-[3794/2846]"
+                imageClassName="object-contain"
                 description={t.workshopsPage.roselandDesc}
+              />
+            </FadeIn>
+            <FadeIn delay={400}>
+              <PastProgramCard
+                name={t.workshopsPage.wayneLibrary}
+                image="/images/workshops/wayne-public-library.png"
+                imageAlt={t.workshopsPage.wayneImageAlt}
+                imageBoxClassName="aspect-[1448/1086]"
+                imageClassName="object-contain"
+                description={t.workshopsPage.wayneDesc}
               />
             </FadeIn>
           </div>
@@ -349,6 +361,7 @@ function PastProgramCard({
   location,
   description,
   imageBoxClassName = "h-56 sm:h-64",
+  imageClassName = "object-cover",
 }: {
   name: string
   image: string
@@ -358,6 +371,7 @@ function PastProgramCard({
   location?: string
   description?: string
   imageBoxClassName?: string
+  imageClassName?: string
 }) {
   const meta = [gradeRange, duration, location].filter(Boolean).join(" · ")
   return (
@@ -368,7 +382,7 @@ function PastProgramCard({
           alt={imageAlt}
           fill
           sizes="(min-width: 640px) 50vw, 100vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className={`${imageClassName} transition-transform duration-500 group-hover:scale-105`}
         />
       </div>
       <div className="p-6">

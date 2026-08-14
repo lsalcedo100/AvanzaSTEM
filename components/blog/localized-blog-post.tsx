@@ -17,7 +17,6 @@ import {
   PostSummary,
   PostYouTube,
 } from "@/components/blog/blog-post-layout"
-import { blogAuthors } from "@/features/blog/authors"
 import { localizedBlogArticles, type BlogBlock, type BlogSlug } from "@/features/blog/posts"
 
 export function LocalizedBlogPost({ slug }: { slug: BlogSlug }) {
@@ -26,8 +25,6 @@ export function LocalizedBlogPost({ slug }: { slug: BlogSlug }) {
   const localizedArticle = language !== "en" ? localizedBlogArticles[language][slug] : undefined
   const isFallback = language !== "en" && localizedArticle === undefined
   const post = localizedArticle ?? enArticle
-
-  const author = blogAuthors[post.authorId][language === "es" ? "es" : "en"]
 
   const relatedArticle =
     (language !== "en" ? localizedBlogArticles[language][post.endingRelatedSlug] : undefined) ??
@@ -67,10 +64,6 @@ export function LocalizedBlogPost({ slug }: { slug: BlogSlug }) {
         relatedLabel={t.blogPage.endingRelatedGuide}
         relatedHref={`/blog/${post.endingRelatedSlug}`}
         relatedTitle={relatedArticle.title}
-        aboutLabel={t.blogPage.endingAbout}
-        authorName={author.name}
-        authorRole={author.role}
-        authorBio={author.bio}
       />
     </BlogPostLayout>
   )

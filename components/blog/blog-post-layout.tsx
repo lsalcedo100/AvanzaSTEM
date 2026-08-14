@@ -330,10 +330,6 @@ export function PostEndingModule({
   relatedLabel,
   relatedHref,
   relatedTitle,
-  aboutLabel,
-  authorName,
-  authorRole,
-  authorBio,
 }: {
   tryNextLabel: string
   endingProject: { href: string; label: string }
@@ -341,10 +337,6 @@ export function PostEndingModule({
   relatedLabel: string
   relatedHref: string
   relatedTitle: string
-  aboutLabel: string
-  authorName: string
-  authorRole: string
-  authorBio: string
 }) {
   const { t } = useLanguage()
 
@@ -376,13 +368,6 @@ export function PostEndingModule({
         >
           {relatedTitle}
         </Link>
-      </div>
-
-      <div className="rounded-xl border border-border px-5 py-4">
-        <p className="mb-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">{aboutLabel}</p>
-        <p className="break-words font-bold text-foreground">{authorName}</p>
-        <p className="text-sm text-muted-foreground">{authorRole}</p>
-        <p className="mt-2 text-sm leading-7 break-words text-foreground/80">{authorBio}</p>
       </div>
 
       <Link
