@@ -73,6 +73,12 @@ export const preExpansionGalleryImages: GalleryItem[] = Array.from(
 // gallery photos never swaps it out.
 export const codingFeatureImage: GalleryItem = buildItem(187)
 
+// Pin any single gallery photo by its Cloudinary number for use outside the
+// gallery grid. Always prefer this over indexing into `galleryImages`, whose
+// order shifts every time new photos are uploaded.
+export const galleryPhoto = (cloudinaryNumber: number): GalleryItem =>
+  buildItem(cloudinaryNumber)
+
 interface GalleryProps {
   limit?: number
 }

@@ -4,11 +4,20 @@ import Link from "next/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
-import { Gallery, codingFeatureImage, preExpansionGalleryImages } from "@/components/ui/gallery"
+import {
+  Gallery,
+  codingFeatureImage,
+  galleryPhoto,
+  preExpansionGalleryImages,
+} from "@/components/ui/gallery"
 
 const buildingWorkshopImage =
   "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/c_crop,x_0,y_290,w_1600,h_2110/gallery-00174.jpg"
 const codingThumbnailImage = codingFeatureImage.full
+// Pinned to fixed Cloudinary numbers, not gallery positions, so future uploads
+// never swap these out from under the cards.
+const veronaWorkshopImage = galleryPhoto(319).full
+const littleFallsWorkshopImage = galleryPhoto(357).full
 
 export function WorkshopsPageContent() {
   const { t } = useLanguage()
@@ -139,10 +148,7 @@ export function WorkshopsPageContent() {
       <section className="bg-secondary py-20">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-bold uppercase tracking-wider text-avanza-green">
-              {t.workshopsPage.completedProgramsEyebrow}
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold text-foreground md:text-5xl">
+            <h2 className="text-3xl font-extrabold text-foreground md:text-5xl">
               {t.workshopsPage.pastProgramsHeadingPre}{" "}
               <span className="text-avanza-green">
                 {t.workshopsPage.pastProgramsHeadingAccent}
@@ -196,6 +202,29 @@ export function WorkshopsPageContent() {
                 description={t.workshopsPage.wayneDesc}
               />
             </FadeIn>
+            {/* Verona and Little Falls share one grid cell. As separate cells
+                Little Falls would start a new row, leaving dead space under
+                Verona while the taller Wayne card finished its row. */}
+            <div className="flex flex-col gap-8">
+              <FadeIn delay={500}>
+                <PastProgramCard
+                  name={t.workshopsPage.veronaLibrary}
+                  image={veronaWorkshopImage}
+                  imageAlt={t.workshopsPage.veronaImageAlt}
+                  description={t.workshopsPage.veronaDesc}
+                />
+              </FadeIn>
+              <FadeIn delay={600}>
+                <PastProgramCard
+                  name={t.workshopsPage.littleFallsLibrary}
+                  image={littleFallsWorkshopImage}
+                  imageAlt={t.workshopsPage.littleFallsImageAlt}
+                  imageBoxClassName="aspect-[4/3]"
+                  imageClassName="object-contain"
+                  description={t.workshopsPage.littleFallsDesc}
+                />
+              </FadeIn>
+            </div>
           </div>
         </div>
       </section>
