@@ -2,8 +2,9 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { MathAdventuresLessonContent } from "@/components/pages/math-adventures-lesson-content"
 import { MathFinalProjectContent } from "@/components/pages/math-final-project-content"
-import { getMathLessonBySlug, mathLessonSlugs } from "@/features/curriculums/math-adventures"
+import { getMathLessonBySlug, mathLessonPath, mathLessonSlugs } from "@/features/curriculums/math-adventures"
 import { generateMathLessonMetadata } from "@/features/curriculums/metadata"
+import { CourseBreadcrumbJsonLd } from "@/features/curriculums/components/course-breadcrumb-json-ld"
 
 export const dynamicParams = false
 
@@ -36,5 +37,10 @@ export default async function MathAdventuresLessonPage({
     return <MathFinalProjectContent lesson={data} />
   }
 
-  return <MathAdventuresLessonContent lesson={data} />
+  return (
+    <>
+      <CourseBreadcrumbJsonLd path={mathLessonPath(lesson)} leafName={data.title} />
+      <MathAdventuresLessonContent lesson={data} />
+    </>
+  )
 }

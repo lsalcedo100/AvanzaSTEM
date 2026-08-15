@@ -7,9 +7,14 @@ import { siteConfig } from "@/lib/site-config"
 
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
-    title: "The Maker Mindset Series | Avanza STEM",
+    // 342 impressions at avg position 4.43 but 1.75% CTR. The queries reaching
+    // this page are "free stem workshops", "stem workshops", "free workshop"
+    // and "interactive stem assemblies" - none of them the programme's own
+    // name, which is all the previous title said. The on-page H1 still reads
+    // "The Maker Mindset Series".
+    title: "Free Hands-On STEM Workshops for Libraries & Schools",
     description:
-      "Explore Avanza STEM's Maker Mindset Series, a free three part hands on STEM workshop program for young learners covering building, coding, and responsible AI through libraries and community partners.",
+      "A free three-part STEM workshop series for young learners, covering building, coding, and responsible AI. Hosted with libraries and community partners in New Jersey.",
   },
   es: {
     title: "Serie Mentes Creadoras | Avanza STEM",

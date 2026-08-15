@@ -196,7 +196,12 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
     <div className="mx-auto max-w-3xl px-6 py-12">
       <header>
         <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Week 4 lab</p>
-        <h1 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">Sensor Investigation Lab</h1>
+        {/* h2, not h1: this lab is embedded inside the Week 4 lesson page, whose
+            own h1 is the module title. Two h1 elements on one page is a
+            semantic error. All sizing comes from the utility classes below and
+            Tailwind's preflight resets heading font-size/weight to inherit, so
+            the rendered output is byte-for-byte identical. */}
+        <h2 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">Sensor Investigation Lab</h2>
         <p className="mt-4 text-sm leading-relaxed text-foreground/90">
           Place an object at different distances and try a light or a dark surface. Read the live sensor values,
           record them in your table, and pick a threshold. A sensor returns a measurement - a number - not an

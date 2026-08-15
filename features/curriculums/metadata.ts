@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
 import { type Language } from "@/i18n/translations"
-import { languageAlternates, localizedPath } from "@/lib/i18n-routes"
+import { enOnlyAlternates, languageAlternates, localizedPath } from "@/lib/i18n-routes"
 import { siteConfig } from "@/lib/site-config"
 import {
   getIntroToPythonWeek,
-  introToPythonCurriculum,
   introToPythonTeacherGuidePath,
   introToPythonWeekPath,
   introToPythonWorksheetsPath,
@@ -49,9 +48,59 @@ import {
   introToAiWeekPath,
 } from "@/features/curriculums/intro-to-ai"
 
+/*
+ * Title and description length control for the ~130 course pages.
+ *
+ * The old templates chained the leaf name, the full course name and the site
+ * name, producing titles of 80-110 characters, and prefixed each lesson's
+ * prose with "Week N of the X curriculum (Grades A-B)." before a raw
+ * `.slice(0, 300)`. The result was 119 titles over 60 characters and 96
+ * descriptions over 165, several past 390, with slices landing mid-word.
+ * Google truncates both, so the tail was never seen by a searcher and the
+ * visible part was the boilerplate rather than the lesson.
+ *
+ * These helpers cut at word and sentence boundaries and drop the least
+ * informative part first (site name, then course name). Nothing here is
+ * rendered on the page.
+ */
+const TITLE_MAX = 60
+const DESCRIPTION_MAX = 158
+
+/** Truncates at a word boundary, preferring a clean sentence end. */
+function clampDescription(text: string, max = DESCRIPTION_MAX): string {
+  const collapsed = text.replace(/\s+/g, " ").trim()
+  if (collapsed.length <= max) return collapsed
+
+  const window = collapsed.slice(0, max + 1)
+  const sentenceEnd = Math.max(window.lastIndexOf(". "), window.lastIndexOf("? "), window.lastIndexOf("! "))
+  if (sentenceEnd >= max * 0.6) return collapsed.slice(0, sentenceEnd + 1)
+
+  const wordEnd = window.lastIndexOf(" ")
+  return `${collapsed.slice(0, wordEnd > 0 ? wordEnd : max).replace(/[,;:.\s]+$/, "")}...`
+}
+
+/**
+ * Builds "<leaf> - <course>", dropping the course suffix when the pair would
+ * overflow, and finally trimming the leaf at a word boundary. The site name is
+ * never appended: Google renders it beside the title on its own.
+ */
+function clampTitle(leaf: string, courseName?: string, max = TITLE_MAX): string {
+  const trimmedLeaf = leaf.replace(/\s+/g, " ").trim()
+  if (courseName) {
+    const combined = `${trimmedLeaf} - ${courseName}`
+    if (combined.length <= max) return combined
+  }
+  if (trimmedLeaf.length <= max) return trimmedLeaf
+
+  const wordEnd = trimmedLeaf.slice(0, max + 1).lastIndexOf(" ")
+  return trimmedLeaf.slice(0, wordEnd > 0 ? wordEnd : max).replace(/[,;:.\s-]+$/, "")
+}
+
 const metadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
-    title: "Free STEM Curriculum Paths for Kids: Python, Engineering & AI | Avanza STEM",
+    // Was 79 characters and truncated in the SERP (474 impressions, avg
+    // position 1.81, 3.38% CTR).
+    title: "Free STEM Curriculum for Kids: Python, Engineering & AI",
     description:
       "Explore free STEM curriculum paths for kids in Python, engineering, science, robotics, math, and AI, with hands-on project guides to start learning now.",
   },
@@ -108,15 +157,15 @@ export function generateIntroToPythonWeekMetadata(week: number): Metadata {
   }
 
   const path = introToPythonWeekPath(week)
-  const title = `Week ${lesson.week}: ${lesson.title} - Intro to Python | Avanza STEM`
-  const description = `Week ${lesson.week} of the Intro to Python curriculum (${introToPythonCurriculum.gradeRange}). ${lesson.description}`
+  const title = clampTitle(`Week ${lesson.week}: ${lesson.title}`, "Intro to Python")
+  const description = clampDescription(lesson.description)
 
   return {
     title,
     description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(path),
+      languages: enOnlyAlternates(path),
     },
     openGraph: {
       title,
@@ -143,16 +192,16 @@ export function generateIntroToPythonWeekMetadata(week: number): Metadata {
 }
 
 export function generateIntroToPythonTeacherGuideMetadata(): Metadata {
-  const title = "Teacher & Librarian Guide: Intro to Python Curriculum | Avanza STEM"
+  const title = clampTitle("Teacher & Librarian Guide", "Intro to Python")
   const description =
-    "A facilitation guide for the 8-week Intro to Python curriculum: how to run each lesson in a library or classroom, common student mistakes, questions to ask, and offline backup activities. No coding background required."
+    "How to run each lesson of the 8-week Intro to Python curriculum in a library or classroom: common student mistakes, questions to ask, and offline backups."
 
   return {
     title,
     description,
     alternates: {
       canonical: introToPythonTeacherGuidePath,
-      languages: languageAlternates(introToPythonTeacherGuidePath),
+      languages: enOnlyAlternates(introToPythonTeacherGuidePath),
     },
     openGraph: {
       title,
@@ -179,16 +228,16 @@ export function generateIntroToPythonTeacherGuideMetadata(): Metadata {
 }
 
 export function generateIntroToPythonWorksheetsMetadata(): Metadata {
-  const title = "Printable Student Worksheets: Intro to Python Curriculum | Avanza STEM"
+  const title = clampTitle("Printable Student Worksheets", "Intro to Python")
   const description =
-    "Printable, print-friendly worksheets for each week of the Intro to Python curriculum, with the key idea, vocabulary, code planning space, a debugging question, and a reflection question."
+    "Print-friendly worksheets for every week of the Intro to Python curriculum: the key idea, vocabulary, code planning space, and a debugging question."
 
   return {
     title,
     description,
     alternates: {
       canonical: introToPythonWorksheetsPath,
-      languages: languageAlternates(introToPythonWorksheetsPath),
+      languages: enOnlyAlternates(introToPythonWorksheetsPath),
     },
     openGraph: {
       title,
@@ -217,7 +266,7 @@ export function generateIntroToPythonWorksheetsMetadata(): Metadata {
 const INTRO_TO_PYTHON_PATH = "/curriculums/intro-to-python"
 
 export function generateIntroToPythonMetadata(): Metadata {
-  const title = "Intro to Python Programming: 8-Week Beginner Curriculum (Grades 3-6) | Avanza STEM"
+  const title = clampTitle("Intro to Python: 8-Week Beginner Coding Course (Grades 3-6)")
   const description =
     "An 8-week beginner Python curriculum for grades 3-6. One concept per week, from print() and variables to loops, functions, and a final build-your-own game project."
 
@@ -226,7 +275,7 @@ export function generateIntroToPythonMetadata(): Metadata {
     description,
     alternates: {
       canonical: INTRO_TO_PYTHON_PATH,
-      languages: languageAlternates(INTRO_TO_PYTHON_PATH),
+      languages: enOnlyAlternates(INTRO_TO_PYTHON_PATH),
     },
     openGraph: {
       title,
@@ -255,16 +304,16 @@ export function generateIntroToPythonMetadata(): Metadata {
 export function generateMathAdventuresMetadata(): Metadata {
   const c = mathAdventuresCurriculum
   const title =
-    "Math Adventures: 10-Week Guided Math Course (Grades 2-5) | Avanza STEM"
+    "Math Adventures: 10-Week Course (Grades 2-5)"
   const description =
-    "A 10-week guided math course for grades 2-5. Each week turns one big idea - number sense, operations, patterns, place value, fractions, measurement, geometry, time and money, and data - into a hands-on adventure, ending with a Build a Math City project."
+    "A 10-week math course for grades 2-5. Each week turns one big idea - place value, fractions, geometry, data - into a hands-on adventure with a final project."
 
   return {
     title,
     description,
     alternates: {
       canonical: mathAdventuresPath,
-      languages: languageAlternates(mathAdventuresPath),
+      languages: enOnlyAlternates(mathAdventuresPath),
     },
     openGraph: {
       title,
@@ -298,15 +347,15 @@ export function generateMathLessonMetadata(slug: string): Metadata {
 
   const path = mathLessonPath(slug)
   const label = lesson.isFinalProject ? "Final Project" : `Week ${lesson.weekNumber}`
-  const title = `${label}: ${lesson.title} - Math Adventures | Avanza STEM`
-  const description = `${label} of the Math Adventures course (${mathAdventuresCurriculum.gradeRange}). ${lesson.description}`
+  const title = clampTitle(`${label}: ${lesson.title}`, "Math Adventures")
+  const description = clampDescription(lesson.description)
 
   return {
     title,
     description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(path),
+      languages: enOnlyAlternates(path),
     },
     openGraph: {
       title,
@@ -335,16 +384,16 @@ export function generateMathLessonMetadata(slug: string): Metadata {
 export function generateEngineeringFundamentalsMetadata(): Metadata {
   const c = engineeringFundamentalsCurriculum
   const title =
-    "Engineering Fundamentals: 6-Week Hands-On Curriculum (Grades 2-5) | Avanza STEM"
+    "Engineering Fundamentals: 6-Week Course (Grades 2-5)"
   const description =
-    "A 6-week hands-on engineering curriculum for grades 2-5. Kids build, test, and redesign towers, bridges, machines, gliders, and a final rescue system using everyday materials - no computer needed."
+    "A 6-week hands-on engineering course for grades 2-5. Build, test, and redesign towers, bridges, gliders, and machines from everyday materials - no computer."
 
   return {
     title,
     description,
     alternates: {
       canonical: engineeringFundamentalsPath,
-      languages: languageAlternates(engineeringFundamentalsPath),
+      languages: enOnlyAlternates(engineeringFundamentalsPath),
     },
     openGraph: {
       title,
@@ -378,15 +427,15 @@ export function generateEngineeringLessonMetadata(slug: string): Metadata {
 
   const path = engineeringLessonPath(slug)
   const label = lesson.isFinal ? "Final Challenge" : `Lesson ${lesson.order}`
-  const title = `${label}: ${lesson.title} - Engineering Fundamentals | Avanza STEM`
-  const description = `${label} of the Engineering Fundamentals curriculum (${engineeringFundamentalsCurriculum.gradeRange}). ${lesson.summary}`
+  const title = clampTitle(`${label}: ${lesson.title}`, "Engineering Fundamentals")
+  const description = clampDescription(lesson.summary)
 
   return {
     title,
     description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(path),
+      languages: enOnlyAlternates(path),
     },
     openGraph: {
       title,
@@ -426,15 +475,17 @@ export function generateEngineeringWorksheetMetadata(slug: string): Metadata {
 
   const path = engineeringWorksheetPath(slug)
   const label = engineeringResourceLabel(slug)
-  const title = `Printable Worksheet - ${label}: ${lesson.title} | Engineering Fundamentals | Avanza STEM`
-  const description = `A printable student worksheet for ${label} of the Engineering Fundamentals curriculum: ${lesson.projectName}. Problem, materials checklist, sketch area, test results table, and reflection.`
+  const title = clampTitle(`${label} Worksheet: ${lesson.title}`, "Engineering")
+  const description = clampDescription(
+    `Printable worksheet for ${label}, ${lesson.projectName}: the problem, a materials checklist, sketch area, test results table, and reflection questions.`,
+  )
 
   return {
     title,
     description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(path),
+      languages: enOnlyAlternates(path),
     },
     openGraph: {
       title,
@@ -468,15 +519,17 @@ export function generateEngineeringTeacherGuideMetadata(slug: string): Metadata 
 
   const path = engineeringTeacherGuidePath(slug)
   const label = engineeringResourceLabel(slug)
-  const title = `Parent & Teacher Guide - ${label}: ${lesson.title} | Engineering Fundamentals | Avanza STEM`
-  const description = `A facilitator guide for ${label} of the Engineering Fundamentals curriculum: setup, materials prep, safety notes, common failure points, questions to ask, and easier and harder versions.`
+  const title = clampTitle(`${label} Teacher Guide: ${lesson.title}`, "Engineering")
+  const description = clampDescription(
+    `Facilitator guide for ${label} of Engineering Fundamentals: setup, materials prep, safety notes, common failure points, and easier and harder versions.`,
+  )
 
   return {
     title,
     description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(path),
+      languages: enOnlyAlternates(path),
     },
     openGraph: {
       title,
@@ -505,16 +558,16 @@ export function generateEngineeringTeacherGuideMetadata(slug: string): Metadata 
 export function generateScienceExperimentsMetadata(): Metadata {
   const c = scienceExperimentsCurriculum
   const title =
-    "Science Experiments: 6-Week Hands-On Curriculum (Grades 2-4) | Avanza STEM"
+    "Science Experiments: 6-Week Course (Grades 2-4)"
   const description =
-    "A 6-week hands-on science curriculum for grades 2-4. Kids run one safe, low-cost experiment a week - from chemical reactions to forces to living things - using the same ask, predict, test, observe, explain, improve loop real scientists use."
+    "A 6-week hands-on science course for grades 2-4. One safe, low-cost experiment a week, using the ask, predict, test, observe, explain loop real scientists use."
 
   return {
     title,
     description,
     alternates: {
       canonical: scienceExperimentsPath,
-      languages: languageAlternates(scienceExperimentsPath),
+      languages: enOnlyAlternates(scienceExperimentsPath),
     },
     openGraph: {
       title,
@@ -548,15 +601,15 @@ export function generateScienceLessonMetadata(slug: string): Metadata {
 
   const path = scienceLessonPath(slug)
   const label = `Week ${lesson.week}`
-  const title = `${label}: ${lesson.title} - Science Experiments | Avanza STEM`
-  const description = `${label} of the Science Experiments curriculum (${scienceExperimentsCurriculum.gradeRange}). ${lesson.bigQuestion} ${lesson.explanation}`.slice(0, 300)
+  const title = clampTitle(`${label}: ${lesson.title}`, "Science Experiments")
+  const description = clampDescription(`${lesson.bigQuestion} ${lesson.explanation}`)
 
   return {
     title,
     description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(path),
+      languages: enOnlyAlternates(path),
     },
     openGraph: {
       title,
@@ -598,7 +651,7 @@ function roboticsMetadata(
     description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(path),
+      languages: enOnlyAlternates(path),
     },
     openGraph: {
       title,
@@ -618,9 +671,9 @@ function roboticsMetadata(
 }
 
 export function generateRoboticsMetadata(): Metadata {
-  const title = "Robotics & Automation: 8-Week Course for Kids (Grades 4-6) | Avanza STEM"
+  const title = clampTitle("Robotics & Automation: 8-Week Course (Grades 4-6)")
   const description =
-    "An 8-week robotics course for grades 4-6. Learn what makes something a robot, build a base that moves, program exact instructions, add sensors, make robots react, debug for reliability, and design a robot that helps - with a robot kit, a browser simulator, or unplugged."
+    "An 8-week robotics course for grades 4-6. Build a robot that moves, program it, add sensors, and debug it - with a kit, a browser simulator, or unplugged."
   return roboticsMetadata(title, description, roboticsPath, "website", `${roboticsCurriculum.title} course`)
 }
 
@@ -628,8 +681,8 @@ export function generateRoboticsLessonMetadata(slug: string): Metadata {
   const courseModule = getRoboticsModule(slug)
   if (!courseModule) return { title: "Lesson not found | Avanza STEM" }
   const label = courseModule.isFinal ? "Final Project" : `Week ${courseModule.week}`
-  const title = `${label}: ${courseModule.title} - Robotics & Automation | Avanza STEM`
-  const description = `${label} of the Robotics & Automation course (${roboticsCurriculum.gradeRange}). ${courseModule.summary}`.slice(0, 300)
+  const title = clampTitle(`${label}: ${courseModule.title}`, "Robotics")
+  const description = clampDescription(courseModule.summary)
   return roboticsMetadata(
     title,
     description,
@@ -643,8 +696,10 @@ export function generateRoboticsWorksheetMetadata(slug: string): Metadata {
   const courseModule = getRoboticsModule(slug)
   if (!courseModule) return { title: "Worksheet not found | Avanza STEM" }
   const label = courseModule.isFinal ? "Final Project" : `Week ${courseModule.week}`
-  const title = `Printable Worksheet - ${label}: ${courseModule.title} | Robotics & Automation | Avanza STEM`
-  const description = `A printable student worksheet for ${label} of the Robotics & Automation course: key ideas, vocabulary, activity space, testing tables, and reflection.`
+  const title = clampTitle(`${label} Worksheet: ${courseModule.title}`, "Robotics")
+  const description = clampDescription(
+    `Printable worksheet for ${label} of the Robotics & Automation course: key ideas, vocabulary, activity space, testing tables, and reflection questions.`,
+  )
   return roboticsMetadata(
     title,
     description,
@@ -658,8 +713,10 @@ export function generateRoboticsTeacherGuideMetadata(slug: string): Metadata {
   const courseModule = getRoboticsModule(slug)
   if (!courseModule) return { title: "Guide not found | Avanza STEM" }
   const label = courseModule.isFinal ? "Final Project" : `Week ${courseModule.week}`
-  const title = `Parent & Teacher Guide - ${label}: ${courseModule.title} | Robotics & Automation | Avanza STEM`
-  const description = `A facilitator guide for ${label} of the Robotics & Automation course: setup, materials prep, facilitation, common misconceptions, questions to ask, and easier and harder versions.`
+  const title = clampTitle(`${label} Teacher Guide: ${courseModule.title}`, "Robotics")
+  const description = clampDescription(
+    `Facilitator guide for ${label} of Robotics & Automation: setup, materials prep, common misconceptions, questions to ask, and easier and harder versions.`,
+  )
   return roboticsMetadata(
     title,
     description,
@@ -670,23 +727,23 @@ export function generateRoboticsTeacherGuideMetadata(slug: string): Metadata {
 }
 
 export function generateRoboticsReviewMetadata(): Metadata {
-  const title = "Course Review - Robotics & Automation | Avanza STEM"
+  const title = clampTitle("Course Review", "Robotics & Automation")
   const description =
     "Review your progress through the 8-week Robotics & Automation course: what you completed, your knowledge-check scores, and where to pick back up."
   return roboticsMetadata(title, description, `${roboticsPath}/review`, "website", "Robotics & Automation course review")
 }
 
 export function generateRoboticsJournalMetadata(): Metadata {
-  const title = "Design Journal - Robotics & Automation | Avanza STEM"
+  const title = clampTitle("Design Journal", "Robotics & Automation")
   const description =
     "Your robotics design journal: saved sketches, plans, and reflections from every week of the Robotics & Automation course, ready to review or print."
   return roboticsMetadata(title, description, `${roboticsPath}/journal`, "website", "Robotics & Automation design journal")
 }
 
 export function generateRoboticsFinalProjectMetadata(): Metadata {
-  const title = "Final Project: Design a Robot That Helps - Robotics & Automation | Avanza STEM"
+  const title = clampTitle("Capstone Brief: Design a Robot That Helps", "Robotics")
   const description =
-    "The Robotics & Automation final project: choose a mission, plan it, build or simulate a robot that uses a sensor, a loop, and a condition, test it three times, and explain how it helps."
+    "The Robotics & Automation capstone: choose a mission, plan it, build a robot that uses a sensor, a loop, and a condition, then test it three times."
   return roboticsMetadata(
     title,
     description,
@@ -712,7 +769,7 @@ function introToAiMetadata(
     description,
     alternates: {
       canonical: path,
-      languages: languageAlternates(path),
+      languages: enOnlyAlternates(path),
     },
     openGraph: {
       title,
@@ -732,17 +789,17 @@ function introToAiMetadata(
 }
 
 export function generateIntroToAiMetadata(): Metadata {
-  const title = "Intro to Artificial Intelligence: 6-Week Course for Kids (Grades 5-8) | Avanza STEM"
+  const title = clampTitle("Intro to AI: 6-Week Course for Kids (Grades 5-8)")
   const description =
-    "A six-week AI course for grades 5-8. Learn what AI is and is not, how data trains a model, how image and text AI work and where they fail, how to use AI responsibly, and design your own AI in a design studio. No coding required."
+    "A six-week AI course for grades 5-8. Learn what AI is and is not, how data trains a model, where it fails, and how to use it responsibly. No coding required."
   return introToAiMetadata(title, description, introToAiPath, "website", `${introToAiCourse.title} course`)
 }
 
 export function generateIntroToAiWeekMetadata(week: number): Metadata {
   const courseWeek = getIntroToAiWeek(week)
   if (!courseWeek) return generateIntroToAiMetadata()
-  const title = `Week ${courseWeek.week}: ${courseWeek.title} - Intro to Artificial Intelligence | Avanza STEM`
-  const description = `Week ${courseWeek.week} of the Intro to Artificial Intelligence course (${introToAiCourse.gradeRange}). ${courseWeek.summary}`.slice(0, 300)
+  const title = clampTitle(`Week ${courseWeek.week}: ${courseWeek.title}`, "Intro to AI")
+  const description = clampDescription(courseWeek.summary)
   return introToAiMetadata(
     title,
     description,
@@ -755,8 +812,8 @@ export function generateIntroToAiWeekMetadata(week: number): Metadata {
 export function generateIntroToAiLessonMetadata(week: number, lessonSlug: string): Metadata {
   const lesson = getIntroToAiLesson(week, lessonSlug)
   if (!lesson) return generateIntroToAiWeekMetadata(week)
-  const title = `${lesson.title} (Week ${week}) - Intro to Artificial Intelligence | Avanza STEM`
-  const description = `${lesson.summary}`.slice(0, 300)
+  const title = clampTitle(`${lesson.title} (Week ${week})`, "Intro to AI")
+  const description = clampDescription(lesson.summary)
   return introToAiMetadata(
     title,
     description,
@@ -767,21 +824,21 @@ export function generateIntroToAiLessonMetadata(week: number, lessonSlug: string
 }
 
 export function generateIntroToAiFinalProjectMetadata(): Metadata {
-  const title = "Final Project: AI Design Studio - Intro to Artificial Intelligence | Avanza STEM"
+  const title = clampTitle("Final Project: AI Design Studio", "Intro to AI")
   const description =
-    "The Intro to AI final project: design an AI tool that helps a real group of people. Define the problem, decide whether AI fits, plan inputs and outputs, prototype, test, and plan for fairness, privacy, and human oversight."
+    "The Intro to AI capstone: design an AI tool that helps real people. Define the problem, decide whether AI fits, prototype it, and plan for fairness and privacy."
   return introToAiMetadata(title, description, introToAiFinalProjectPath, "article", "Intro to Artificial Intelligence final project")
 }
 
 export function generateIntroToAiFinalAssessmentMetadata(): Metadata {
-  const title = "Final Assessment - Intro to Artificial Intelligence | Avanza STEM"
+  const title = clampTitle("Final Assessment", "Intro to AI")
   const description =
     "A short, self-paced check across all six weeks of the Intro to Artificial Intelligence course. No grades and nothing is sent anywhere."
   return introToAiMetadata(title, description, introToAiFinalAssessmentPath, "website", "Intro to Artificial Intelligence final assessment")
 }
 
 export function generateIntroToAiCompletionMetadata(): Metadata {
-  const title = "Course Completion - Intro to Artificial Intelligence | Avanza STEM"
+  const title = clampTitle("Course Completion", "Intro to AI")
   const description =
     "Finish the six-week Intro to Artificial Intelligence course, review what you learned, and print a certificate of completion."
   return introToAiMetadata(title, description, introToAiCompletionPath, "website", "Intro to Artificial Intelligence completion")

@@ -66,10 +66,17 @@ export function BlogPostLayout({
         {image && (
           <figure className="mt-8">
             <div className="relative h-64 overflow-hidden rounded-xl bg-secondary md:h-96">
+              {/* The hero sits directly under the title and is the Largest
+                  Contentful Paint element on all 138 blog post pages. Without
+                  `priority` next/image emits loading="lazy", so the browser
+                  only discovers it after layout - measurably delaying LCP.
+                  `priority` swaps lazy for eager plus fetchpriority="high" and
+                  a preload hint; it changes load order, never appearance. */}
               <Image
                 src={image}
                 alt={imageAlt ?? title}
                 fill
+                priority
                 sizes="(min-width: 768px) 768px, 100vw"
                 className={imageFit === "contain" ? "object-contain" : "object-cover"}
               />

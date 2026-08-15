@@ -1,8 +1,9 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { RoboticsLessonContent } from "@/components/pages/robotics-lesson-content"
-import { getRoboticsModule, roboticsModuleSlugs } from "@/features/curriculums/robotics"
+import { getRoboticsModule, roboticsLessonPath, roboticsModuleSlugs } from "@/features/curriculums/robotics"
 import { generateRoboticsLessonMetadata } from "@/features/curriculums/metadata"
+import { CourseBreadcrumbJsonLd } from "@/features/curriculums/components/course-breadcrumb-json-ld"
 
 export const dynamicParams = false
 
@@ -31,5 +32,10 @@ export default async function RoboticsLessonPage({
     notFound()
   }
 
-  return <RoboticsLessonContent module={courseModule} />
+  return (
+    <>
+      <CourseBreadcrumbJsonLd path={roboticsLessonPath(lesson)} leafName={courseModule.title} />
+      <RoboticsLessonContent module={courseModule} />
+    </>
+  )
 }

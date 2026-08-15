@@ -3,9 +3,11 @@ import { notFound } from "next/navigation"
 import { ScienceExperimentsLessonContent } from "@/components/pages/science-experiments-lesson-content"
 import {
   getScienceLesson,
+  scienceLessonPath,
   scienceLessonSlugs,
 } from "@/features/curriculums/science-experiments"
 import { generateScienceLessonMetadata } from "@/features/curriculums/metadata"
+import { CourseBreadcrumbJsonLd } from "@/features/curriculums/components/course-breadcrumb-json-ld"
 
 export const dynamicParams = false
 
@@ -34,5 +36,10 @@ export default async function ScienceExperimentsLessonPage({
     notFound()
   }
 
-  return <ScienceExperimentsLessonContent lesson={data} />
+  return (
+    <>
+      <CourseBreadcrumbJsonLd path={scienceLessonPath(lesson)} leafName={data.title} />
+      <ScienceExperimentsLessonContent lesson={data} />
+    </>
+  )
 }

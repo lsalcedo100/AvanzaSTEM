@@ -1,4 +1,11 @@
+# https://www.avanzastem.org
+#
+# Everything user-facing is crawlable, including /_next/image (the optimizer
+# endpoint serves the images referenced by the image sitemap, so blocking it
+# would remove the site from Google Images).
+
 User-agent: *
 Allow: /
+Disallow: /api/
 
 Sitemap: https://www.avanzastem.org/sitemap.xml

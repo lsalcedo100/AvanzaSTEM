@@ -3,9 +3,11 @@ import { notFound } from "next/navigation"
 import { EngineeringTeacherGuideContent } from "@/components/pages/engineering-teacher-guide-content"
 import {
   engineeringLessonSlugs,
+  engineeringTeacherGuidePath,
   getEngineeringLesson,
 } from "@/features/curriculums/engineering-fundamentals"
 import { generateEngineeringTeacherGuideMetadata } from "@/features/curriculums/metadata"
+import { CourseBreadcrumbJsonLd } from "@/features/curriculums/components/course-breadcrumb-json-ld"
 
 export const dynamicParams = false
 
@@ -34,5 +36,10 @@ export default async function EngineeringTeacherGuidePage({
     notFound()
   }
 
-  return <EngineeringTeacherGuideContent lesson={data} />
+  return (
+    <>
+      <CourseBreadcrumbJsonLd path={engineeringTeacherGuidePath(lesson)} leafName={`${data.title} teacher guide`} />
+      <EngineeringTeacherGuideContent lesson={data} />
+    </>
+  )
 }

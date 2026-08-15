@@ -1,14 +1,22 @@
 import type { Metadata } from "next"
+import { LOCALIZED_BLOG_DESCRIPTIONS } from "@/features/blog/localized-descriptions"
 import { localizedBlogArticles, type BlogSlug } from "@/features/blog/posts"
 import { type Language } from "@/i18n/translations"
 import { languageAlternates, localizedPath } from "@/lib/i18n-routes"
 import { siteConfig } from "@/lib/site-config"
 
+/** og:locale value per site language. */
+export const OG_LOCALE_BY_LANGUAGE: Record<Language, string> = {
+  en: "en_US",
+  es: "es_US",
+  zh: "zh_CN",
+}
+
 /**
- * Per-post metadata used to render BlogPosting JSON-LD and generate page
- * metadata for locale-prefixed blog post routes (app/[locale]/blog/[slug]).
- * Headline/description are kept in English (matching the canonical BlogPosting
- * schema on the English routes); only the URL and language alternates vary.
+ * Canonical English headline and meta description per post. Spanish and
+ * Chinese descriptions live in features/blog/localized-descriptions.ts and are
+ * resolved by getBlogPostDescription(); localized titles come from
+ * localizedBlogArticles.
  */
 export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: string }> = {
   "5-easy-science-experiments": {
@@ -49,7 +57,7 @@ export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: s
   "why-triangles-are-an-engineers-secret-weapon": {
     headline: "Why Triangles Are an Engineer's Secret Weapon",
     description:
-      "The triangle is the strongest shape in engineering. Learn why triangles are used in bridges, trusses, and towers, plus how to use this in your popsicle stick bridge.",
+      "The triangle is the strongest shape in engineering. Learn why bridges, trusses, and towers use them, and how to brace your own popsicle stick bridge.",
   },
   "how-engineers-think-when-something-breaks": {
     headline: "How Engineers Think When Something Breaks",
@@ -69,12 +77,12 @@ export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: s
   "how-to-think-like-an-inventor-in-20-minutes": {
     headline: "How to Think Like an Inventor in 20 Minutes",
     description:
-      "A 20-minute design challenge for kids: find a real problem, sketch a solution, build a rough prototype, and test it. Learn the inventor loop Avanza STEM uses in workshops.",
+      "A 20-minute design challenge for kids: find a real problem, sketch a solution, build a rough prototype, and test it. The inventor loop we use in workshops.",
   },
   "why-your-first-design-is-usually-not-your-best-one": {
     headline: "Why Your First Design Is Usually Not Your Best One",
     description:
-      "Engineering improves through testing and observation, not perfect planning. See how one student group used a bridge test to understand exactly what they would improve next.",
+      "Engineering improves through testing, not perfect planning. See how one student group used a bridge test to work out exactly what they would change next.",
   },
   "the-engineering-of-a-backpack": {
     headline: "The Engineering of a Backpack",
@@ -94,7 +102,7 @@ export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: s
   "why-airplane-wings-are-curved": {
     headline: "Why Are Airplane Wings Curved?",
     description:
-      "Airplane wings are curved because shape controls airflow. Learn how the airfoil design creates lift and why the wings, not just the engines, keep a plane in the sky.",
+      "Airplane wings are rounded on top and flatter underneath because that shape bends airflow and creates lift. Learn how an airfoil works and why wings keep a plane up.",
   },
   "how-elevators-know-where-to-go": {
     headline: "How Elevators Know Where to Go",
@@ -104,7 +112,7 @@ export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: s
   "why-buildings-sway-in-wind": {
     headline: "Why Do Buildings Sway in the Wind?",
     description:
-      "Tall buildings sway on purpose. Learn why flexibility makes skyscrapers safer in wind and earthquakes, and how engineers use tuned mass dampers to reduce motion.",
+      "Yes, tall buildings really do sway in the wind, and they are designed to. Learn how much skyscrapers move, why flexibility is safer, and what a tuned mass damper does.",
   },
   "engineering-behind-soccer-ball": {
     headline: "The Engineering Behind a Soccer Ball",
@@ -119,7 +127,7 @@ export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: s
   "how-roller-coasters-stay-on-track": {
     headline: "How Roller Coasters Stay on the Track",
     description:
-      "Roller coasters use gravity, momentum, multi-sided wheel systems, and carefully shaped loops to stay on the track, even upside down. Here is how it all works.",
+      "Roller coasters stay on the track using gravity, momentum, and wheels that grip the rail from three sides. Learn how they hold on even when upside down.",
   },
   "why-chairs-break": {
     headline: "Why Do Some Chairs Break and Others Don't?",
@@ -129,12 +137,12 @@ export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: s
   "hidden-engineering-water-bottle": {
     headline: "The Hidden Engineering of a Water Bottle",
     description:
-      "Single-use plastic water bottles are lightweight engineering marvels, but their PET design, cap threads, microplastics, chemical leaching concerns, and waste all come with trade-offs.",
+      "Single-use plastic bottles are lightweight engineering marvels, but their PET design, cap threads, microplastics, and waste all come with trade-offs.",
   },
   "can-ai-actually-think": {
     headline: "Can AI Actually Think?",
     description:
-      "AI can answer questions, write stories, and help you learn. But is it actually thinking? Learn how AI uses pattern recognition and why it is not the same as a human brain.",
+      "AI can answer questions, write stories, and help you learn. But is it thinking? Learn how AI uses pattern recognition and why that is not a human brain.",
   },
   "why-ai-sometimes-gets-things-wrong": {
     headline: "Why AI Sometimes Gets Things Wrong",
@@ -234,27 +242,157 @@ export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: s
   "why-do-some-things-float-and-others-sink": {
     headline: "Why Do Some Things Float and Others Sink?",
     description:
-      "Floating and sinking depend on density, shape, and how much water an object displaces. Learn why a steel ship floats while a small rock sinks.",
+      "Whether something floats or sinks comes down to density, shape, and how much water it pushes aside. Learn why a steel ship floats but a small rock sinks.",
   },
   "why-do-magnets-stick-to-some-metals-but-not-others": {
     headline: "Why Do Magnets Stick to Some Metals but Not Others?",
     description:
-      "Magnets stick to iron, steel, and nickel because tiny magnetic regions inside those metals line up. Copper and aluminum don't work the same way.",
+      "Magnets stick to iron, steel, and nickel because tiny magnetic regions inside those metals line up. Learn why copper, aluminium, and gold are not magnetic at all.",
   },
 }
 
-export function generateBlogPostMetadata(
-  slug: BlogSlug,
-  description: string,
-  language: Language = "en",
-): Metadata {
+/**
+ * Article author per post, mirroring the byline each English route already
+ * declared in its inline BlogPosting JSON-LD. Centralised so the /es and /zh
+ * variants of a post credit the same person as the English one (they
+ * previously all defaulted to "Liam Salcedo").
+ */
+export const BLOG_POST_AUTHORS: Record<BlogSlug, string> = {
+  "5-easy-science-experiments": "Liam Salcedo",
+  "building-a-community-stem-workshops": "Liam Salcedo",
+  "getting-started-with-lego-robotics": "Liam Salcedo",
+  "how-to-build-the-strongest-popsicle-stick-bridge": "Liam Salcedo",
+  "math-games-that-make-learning-fun": "Liam Salcedo",
+  "what-is-ai-explaining-to-kids": "Liam Salcedo",
+  "why-every-kid-should-learn-to-code": "Liam Salcedo",
+  "why-triangles-are-an-engineers-secret-weapon": "Logan Smith",
+  "how-engineers-think-when-something-breaks": "Logan Smith",
+  "design-a-mars-rover-out-of-cardboard": "Noah Lopez",
+  "what-is-ai-actually-doing-when-it-answers-you": "Liam Salcedo",
+  "how-to-think-like-an-inventor-in-20-minutes": "Liam Salcedo",
+  "why-your-first-design-is-usually-not-your-best-one": "Logan Smith",
+  "the-engineering-of-a-backpack": "Enqi Qi",
+  "what-makes-a-stem-workshop-fun": "Liam Salcedo",
+  "engineering-inside-school-bus": "Logan",
+  "why-airplane-wings-are-curved": "Noah Lopez",
+  "how-elevators-know-where-to-go": "Liam Salcedo",
+  "why-buildings-sway-in-wind": "Logan",
+  "engineering-behind-soccer-ball": "Noah Lopez",
+  "why-manhole-covers-are-round": "Enqi Qi",
+  "how-roller-coasters-stay-on-track": "Logan",
+  "why-chairs-break": "Enqi Qi",
+  "hidden-engineering-water-bottle": "Enqi Qi",
+  "can-ai-actually-think": "Liam Salcedo",
+  "why-ai-sometimes-gets-things-wrong": "Liam Salcedo",
+  "how-does-your-phone-recognize-your-face": "Liam Salcedo",
+  "why-does-autocorrect-make-weird-mistakes": "Liam Salcedo",
+  "what-happens-when-you-ask-ai-a-question": "Liam Salcedo",
+  "should-kids-trust-everything-ai-says": "Liam Salcedo",
+  "how-do-video-games-use-ai": "Liam Salcedo",
+  "is-a-robot-the-same-thing-as-ai": "Liam Salcedo",
+  "how-do-robots-know-where-they-are": "Noah Lopez",
+  "why-robots-are-bad-at-easy-human-tasks": "Noah Lopez",
+  "what-makes-a-robot-a-robot": "Noah Lopez",
+  "how-mars-rovers-drive-without-a-driver": "Noah Lopez",
+  "why-robot-hands-are-so-hard-to-make": "Noah Lopez",
+  "how-factory-robots-build-cars": "Noah Lopez",
+  "why-is-the-sky-blue-but-sunsets-are-orange": "Enqi Qi",
+  "why-do-your-ears-pop-on-an-airplane": "Liam Salcedo",
+  "why-does-metal-feel-colder-than-wood": "Noah Lopez",
+  "why-do-bikes-stay-balanced-when-moving": "Logan Smith",
+  "why-do-we-slip-on-ice": "Enqi Qi",
+  "how-do-noise-canceling-headphones-work": "Liam Salcedo",
+  "why-do-some-things-float-and-others-sink": "Enqi Qi",
+  "why-do-magnets-stick-to-some-metals-but-not-others": "Noah Lopez",
+}
+
+/**
+ * Publish and last-modified dates, taken from git history (first commit that
+ * added the post, and the most recent commit that touched it). Article /
+ * BlogPosting rich results require datePublished, which no post previously
+ * emitted - the Search Console "Search appearance" report was empty.
+ */
+export const BLOG_POST_DATES: Record<BlogSlug, { datePublished: string; dateModified: string }> = {
+  "5-easy-science-experiments": { datePublished: "2026-04-25", dateModified: "2026-06-17" },
+  "building-a-community-stem-workshops": { datePublished: "2026-04-25", dateModified: "2026-06-17" },
+  "getting-started-with-lego-robotics": { datePublished: "2026-04-25", dateModified: "2026-06-17" },
+  "how-to-build-the-strongest-popsicle-stick-bridge": { datePublished: "2026-04-25", dateModified: "2026-06-17" },
+  "math-games-that-make-learning-fun": { datePublished: "2026-04-25", dateModified: "2026-06-17" },
+  "what-is-ai-explaining-to-kids": { datePublished: "2026-04-25", dateModified: "2026-06-17" },
+  "why-every-kid-should-learn-to-code": { datePublished: "2026-04-25", dateModified: "2026-06-17" },
+  "why-triangles-are-an-engineers-secret-weapon": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-engineers-think-when-something-breaks": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "design-a-mars-rover-out-of-cardboard": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "what-is-ai-actually-doing-when-it-answers-you": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-to-think-like-an-inventor-in-20-minutes": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-your-first-design-is-usually-not-your-best-one": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "the-engineering-of-a-backpack": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "what-makes-a-stem-workshop-fun": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "engineering-inside-school-bus": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-airplane-wings-are-curved": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-elevators-know-where-to-go": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-buildings-sway-in-wind": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "engineering-behind-soccer-ball": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-manhole-covers-are-round": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-roller-coasters-stay-on-track": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-chairs-break": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "hidden-engineering-water-bottle": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "can-ai-actually-think": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-ai-sometimes-gets-things-wrong": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-does-your-phone-recognize-your-face": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-does-autocorrect-make-weird-mistakes": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "what-happens-when-you-ask-ai-a-question": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "should-kids-trust-everything-ai-says": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-do-video-games-use-ai": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "is-a-robot-the-same-thing-as-ai": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-do-robots-know-where-they-are": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-robots-are-bad-at-easy-human-tasks": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "what-makes-a-robot-a-robot": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-mars-rovers-drive-without-a-driver": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-robot-hands-are-so-hard-to-make": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-factory-robots-build-cars": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-is-the-sky-blue-but-sunsets-are-orange": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-do-your-ears-pop-on-an-airplane": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-does-metal-feel-colder-than-wood": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-do-bikes-stay-balanced-when-moving": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-do-we-slip-on-ice": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-do-noise-canceling-headphones-work": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-do-some-things-float-and-others-sink": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "why-do-magnets-stick-to-some-metals-but-not-others": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+}
+
+/**
+ * Resolves the meta description for a post in the requested language.
+ *
+ * Before this existed, /es/blog/* and /zh/blog/* rendered a localized <title>
+ * over the English description from BLOG_POST_META, which is what Search
+ * Console showed as ~3,300 localized impressions converting at ~0.4%.
+ */
+export function getBlogPostDescription(slug: BlogSlug, language: Language = "en"): string {
+  if (language !== "en") {
+    const localized = LOCALIZED_BLOG_DESCRIPTIONS[language]?.[slug]
+    if (localized) return localized
+  }
+  return BLOG_POST_META[slug].description
+}
+
+export function generateBlogPostMetadata(slug: BlogSlug, language: Language = "en"): Metadata {
   const article =
     (language !== "en" ? localizedBlogArticles[language][slug] : undefined) ??
     localizedBlogArticles.en[slug]
 
-  const title = `${article.title} - Avanza STEM`
+  const description = getBlogPostDescription(slug, language)
+  // The brand suffix is only worth the characters when the headline leaves
+  // room for it. Spanish headlines in particular ran past 75 characters with
+  // it appended, so the SERP truncated the headline itself; Google shows the
+  // site name next to the title regardless.
+  const title =
+    article.title.length + 14 <= 60 ? `${article.title} - Avanza STEM` : article.title
   const path = `/blog/${slug}`
   const url = `${siteConfig.url}${localizedPath(path, language)}`
+  const image = article.image ?? "/images/og-default-en.png"
+  const imageAlt = article.imageAlt ?? article.title
+  const { datePublished, dateModified } = BLOG_POST_DATES[slug]
 
   return {
     title,
@@ -267,29 +405,37 @@ export function generateBlogPostMetadata(
       title,
       description,
       url,
+      siteName: siteConfig.name,
+      locale: OG_LOCALE_BY_LANGUAGE[language],
       type: "article",
-      authors: ["Liam Salcedo"],
-      images: [{ url: "/images/og-default-en.png", width: 1200, height: 630, alt: "Avanza STEM" }],
+      publishedTime: datePublished,
+      modifiedTime: dateModified,
+      authors: [BLOG_POST_AUTHORS[slug]],
+      images: [{ url: image, alt: imageAlt }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [image],
     },
   }
 }
 
 const blogIndexMetadataByLanguage: Record<Language, { title: string; description: string }> = {
   en: {
-    title: "STEM Blog for Hispanic Students - Avanza STEM",
+    // 506 impressions at avg position 4.94 but only 0.4% CTR. The posts that
+    // actually rank are everyday engineering and science explainers ("why do
+    // buildings sway", "why are airplane wings curved"), which the previous
+    // audience-first title did not signal.
+    title: "STEM Blog: Everyday Engineering and Science Explained",
     description:
-      "STEM tips, tutorials, and how-to guides for young Hispanic students. Learn coding, science, engineering, and math in a fun and engaging way.",
+      "Short, clear answers to how things work: bridges, airplane wings, robots, magnets, and AI. Engineering and science explained for curious kids and their teachers.",
   },
   es: {
     title: "Blog STEM para Estudiantes Hispanos - Avanza STEM",
     description:
-      "Consejos STEM, ideas de actividades divertidas e inspiración para jóvenes estudiantes hispanos. Experimentos de ciencias, tutoriales de programación y proyectos de ingeniería en el blog de Avanza STEM.",
+      "Respuestas claras sobre cómo funcionan las cosas: puentes, alas de avión, robots, imanes e IA. Ingeniería y ciencia explicadas para niños curiosos y sus maestros.",
   },
   zh: {
     title: "STEM 博客 - Avanza STEM",

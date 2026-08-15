@@ -4,10 +4,12 @@ import { IntroToPythonLessonContent } from "@/components/pages/intro-to-python-l
 import {
   getIntroToPythonWeek,
   introToPythonCurriculum,
+  introToPythonWeekPath,
   introToPythonWeekSlug,
   parseIntroToPythonWeekSlug,
 } from "@/features/curriculums/intro-to-python"
 import { generateIntroToPythonWeekMetadata } from "@/features/curriculums/metadata"
+import { CourseBreadcrumbJsonLd } from "@/features/curriculums/components/course-breadcrumb-json-ld"
 
 export const dynamicParams = false
 
@@ -41,5 +43,10 @@ export default async function IntroToPythonLessonPage({
     notFound()
   }
 
-  return <IntroToPythonLessonContent week={lesson} />
+  return (
+    <>
+      <CourseBreadcrumbJsonLd path={introToPythonWeekPath(lesson.week)} leafName={lesson.title} />
+      <IntroToPythonLessonContent week={lesson} />
+    </>
+  )
 }

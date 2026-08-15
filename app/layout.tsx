@@ -8,6 +8,7 @@ import { ImageLightboxProvider } from '@/components/providers/image-lightbox-pro
 import { LanguageProvider } from '@/components/providers/language-provider'
 import { generateHomeMetadata } from '@/features/home/metadata'
 import { siteConfig } from '@/lib/site-config'
+import { publisherLogoUrl } from '@/lib/structured-data'
 
 const robotoMono = Roboto_Mono({
   subsets: ['latin'],
@@ -31,19 +32,45 @@ export function generateMetadata(): Metadata {
   }
 }
 
+// Sitewide entity graph. The Organization node carries a stable @id so other
+// schemas on the site can reference the same entity, and its logo is an
+// ImageObject (the bare URL string form is not eligible for Google's
+// organization logo treatment). The WebSite node declares the three languages
+// the site publishes in. No SearchAction is declared: the site has no search
+// endpoint, and Google retired the sitelinks searchbox result in 2024.
 const organizationJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': ['Organization', 'EducationalOrganization'],
+  '@id': `${siteConfig.url}/#organization`,
   name: siteConfig.name,
   url: siteConfig.url,
-  logo: `${siteConfig.url}/avanza-logo.svg`,
+  logo: {
+    '@type': 'ImageObject',
+    url: publisherLogoUrl,
+    width: 180,
+    height: 180,
+  },
+  image: `${siteConfig.url}/images/og-default-en.png`,
+  email: 'liam@avanzastem.org',
   description:
     'A youth-led program bringing free hands-on STEM workshops and beginner-friendly projects to students, with a special focus on Hispanic and underrepresented communities.',
+  knowsLanguage: ['en', 'es', 'zh'],
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'liam@avanzastem.org',
     contactType: 'educational program inquiries',
+    availableLanguage: ['English', 'Spanish', 'Chinese'],
   },
+}
+
+const webSiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${siteConfig.url}/#website`,
+  name: siteConfig.name,
+  url: siteConfig.url,
+  inLanguage: ['en', 'es', 'zh'],
+  publisher: { '@id': `${siteConfig.url}/#organization` },
 }
 
 export const viewport = {
@@ -61,6 +88,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
         <a
           href="#main-content"

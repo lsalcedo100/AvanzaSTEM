@@ -7,12 +7,12 @@ const metadataByLanguage: Record<Language, Pick<Metadata, "title" | "description
   en: {
     title: "Free Hands-On STEM Workshops and Projects | Avanza STEM",
     description:
-      "Avanza STEM is a youth-led program bringing free hands-on STEM workshops and beginner-friendly projects to students, with a special focus on Hispanic and underrepresented communities.",
+      "Free hands-on STEM workshops and step-by-step projects for kids, run by students. Bridges, circuits, Python, robotics, and science - all free and bilingual.",
   },
   es: {
     title: "Talleres y proyectos STEM gratuitos | Avanza STEM",
     description:
-      "Avanza STEM es un programa juvenil que ofrece talleres STEM practicos gratuitos y proyectos para principiantes, con un enfoque especial en comunidades hispanas y subrepresentadas.",
+      "Talleres STEM gratuitos y proyectos paso a paso para niños, dirigidos por estudiantes. Puentes, circuitos, Python, robótica y ciencia, gratis y en dos idiomas.",
   },
   zh: {
     title: "免费的动手 STEM 工作坊和项目 | Avanza STEM",

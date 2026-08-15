@@ -23,6 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
       url: `${siteConfig.url}/games`,
       siteName: siteConfig.name,
       type: "website",
+      images: [
+        { url: "/images/og-default-en.png", width: 1200, height: 630, alt: "Avanza STEM" },
+      ],
     },
   }
 }

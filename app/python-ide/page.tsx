@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/site-config"
 
 const title = "Avanza STEM Python IDE | Free Online Python Editor"
 const description =
-  "Write and run real Python in your browser with the free Avanza STEM Python IDE. Code editor, Run and Stop controls, and a live output terminal. No account or install required."
+  "Write and run real Python in your browser, free. Code editor, Run and Stop controls, and a live output terminal. No account, no install, nothing to download."
 
 export function generateMetadata(): Metadata {
   return {
@@ -21,11 +21,15 @@ export function generateMetadata(): Metadata {
       url: `${siteConfig.url}/python-ide`,
       siteName: siteConfig.name,
       type: "website",
+      images: [
+        { url: "/images/og-default-en.png", width: 1200, height: 630, alt: "Avanza STEM" },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: ["/images/og-default-en.png"],
     },
   }
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { IntroToAiLessonContent } from "@/components/pages/intro-to-ai/lesson-content"
-import { allLessonParams, getLesson } from "@/features/curriculums/intro-to-ai"
+import { allLessonParams, getLesson, introToAiLessonPath } from "@/features/curriculums/intro-to-ai"
 import { generateIntroToAiLessonMetadata } from "@/features/curriculums/metadata"
+import { CourseBreadcrumbJsonLd } from "@/features/curriculums/components/course-breadcrumb-json-ld"
 
 export const dynamicParams = false
 
@@ -28,5 +29,10 @@ export default async function IntroToAiLessonPage({
   const weekNum = Number(week)
   const found = getLesson(weekNum, lesson)
   if (!found) notFound()
-  return <IntroToAiLessonContent week={weekNum} lesson={found} />
+  return (
+    <>
+      <CourseBreadcrumbJsonLd path={introToAiLessonPath(weekNum, lesson)} leafName={found.title} />
+      <IntroToAiLessonContent week={weekNum} lesson={found} />
+    </>
+  )
 }

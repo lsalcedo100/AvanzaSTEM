@@ -3,9 +3,11 @@ import { notFound } from "next/navigation"
 import { EngineeringWorksheetContent } from "@/components/pages/engineering-worksheet-content"
 import {
   engineeringLessonSlugs,
+  engineeringWorksheetPath,
   getEngineeringLesson,
 } from "@/features/curriculums/engineering-fundamentals"
 import { generateEngineeringWorksheetMetadata } from "@/features/curriculums/metadata"
+import { CourseBreadcrumbJsonLd } from "@/features/curriculums/components/course-breadcrumb-json-ld"
 
 export const dynamicParams = false
 
@@ -34,5 +36,10 @@ export default async function EngineeringWorksheetPage({
     notFound()
   }
 
-  return <EngineeringWorksheetContent lesson={data} />
+  return (
+    <>
+      <CourseBreadcrumbJsonLd path={engineeringWorksheetPath(lesson)} leafName={`${data.title} worksheet`} />
+      <EngineeringWorksheetContent lesson={data} />
+    </>
+  )
 }

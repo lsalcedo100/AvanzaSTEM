@@ -1,5 +1,6 @@
 import { getProjectGuide, type ProjectGuide } from "@/features/projects/data"
 import { getBreadcrumbJsonLd } from "@/lib/structured-data"
+import { localizedPath } from "@/lib/i18n-routes"
 import { siteConfig } from "@/lib/site-config"
 import { translations, type Language } from "@/i18n/translations"
 
@@ -578,14 +579,20 @@ export function getProjectHowToJsonLd(slug: string, language: Language = "en") {
   const tools = getTools(project)
   const totalTime = getTotalTime(project.time)
 
+  // Must point at the URL this page is actually served from: at /es and /zh
+  // these both used to claim the English URL, so the localized pages described
+  // a different page than the one being rendered.
+  const url = `${siteConfig.url}${localizedPath(`/projects/${slug}`, language)}`
+
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
     name: project.title,
     description: project.description,
-    mainEntityOfPage: `${siteConfig.url}/projects/${slug}`,
+    inLanguage: language,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
     image: [absoluteUrl(project.image)],
-    url: `${siteConfig.url}/projects/${slug}`,
+    url,
     ...(totalTime ? { totalTime } : {}),
     supply: project.materials.map((material) => ({
       "@type": "HowToSupply",
@@ -602,18 +609,35 @@ export function getProjectHowToJsonLd(slug: string, language: Language = "en") {
 }
 
 /**
- * Builds FAQPage JSON-LD for a project. If the requested language has no FAQ
- * entries for this slug (translation not yet written), falls back to the
- * English entries so the page still ships valid FAQ structured data; returns
- * null only if no English entries exist either.
+ * Slugs whose guide component renders the FAQ questions and answers visibly on
+ * the page (PopsicleStickBridgeGuide and LegoRobotGuide).
+ *
+ * Google's structured data policy requires FAQPage markup to describe content
+ * the user can actually see. projectFaqs also holds entries for
+ * coke-mentos-experiment, baking-soda-volcano, elephant-toothpaste-experiment
+ * and making-oobleck, whose pages render no FAQ section, so those pages must
+ * not emit FAQPage markup. (FAQ rich results are in any case restricted to
+ * government and health sites, so nothing is lost in the SERP by dropping it.)
+ */
+const FAQ_RENDERED_SLUGS = new Set(["popsicle-stick-bridge", "lego-robot-builder"])
+
+/**
+ * Builds FAQPage JSON-LD for a project whose page renders the FAQ on screen.
+ * If the requested language has no FAQ entries for this slug (translation not
+ * yet written), falls back to the English entries, matching the fallback the
+ * guide components use when rendering; returns null if the page does not show
+ * an FAQ or no entries exist.
  */
 export function getProjectFaqJsonLd(slug: string, language: Language = "en") {
+  if (!FAQ_RENDERED_SLUGS.has(slug)) return null
+
   const faqs = projectFaqs[language]?.[slug] ?? projectFaqs.en[slug]
   if (!faqs || faqs.length === 0) return null
 
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: language,
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
