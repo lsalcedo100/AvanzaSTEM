@@ -252,10 +252,15 @@ export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: s
 }
 
 /**
- * Article author per post, mirroring the byline each English route already
- * declared in its inline BlogPosting JSON-LD. Centralised so the /es and /zh
- * variants of a post credit the same person as the English one (they
- * previously all defaulted to "Liam Salcedo").
+ * Article author per post.
+ *
+ * Seeded from the byline each English route declared in its inline BlogPosting
+ * JSON-LD, then reconciled against features/blog/authors.ts (removed in commit
+ * 991696c), which is the canonical source for these names. Three posts were
+ * credited to "Logan" in the route markup but carried authorId "logan", whose
+ * canonical name is "Logan Smith"; they now match. Centralising this also
+ * means the /es and /zh variants credit the same person as the English page -
+ * previously they all defaulted to "Liam Salcedo".
  */
 export const BLOG_POST_AUTHORS: Record<BlogSlug, string> = {
   "5-easy-science-experiments": "Liam Salcedo",
@@ -273,13 +278,13 @@ export const BLOG_POST_AUTHORS: Record<BlogSlug, string> = {
   "why-your-first-design-is-usually-not-your-best-one": "Logan Smith",
   "the-engineering-of-a-backpack": "Enqi Qi",
   "what-makes-a-stem-workshop-fun": "Liam Salcedo",
-  "engineering-inside-school-bus": "Logan",
+  "engineering-inside-school-bus": "Logan Smith",
   "why-airplane-wings-are-curved": "Noah Lopez",
   "how-elevators-know-where-to-go": "Liam Salcedo",
-  "why-buildings-sway-in-wind": "Logan",
+  "why-buildings-sway-in-wind": "Logan Smith",
   "engineering-behind-soccer-ball": "Noah Lopez",
   "why-manhole-covers-are-round": "Enqi Qi",
-  "how-roller-coasters-stay-on-track": "Logan",
+  "how-roller-coasters-stay-on-track": "Logan Smith",
   "why-chairs-break": "Enqi Qi",
   "hidden-engineering-water-bottle": "Enqi Qi",
   "can-ai-actually-think": "Liam Salcedo",

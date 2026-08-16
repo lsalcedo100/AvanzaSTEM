@@ -20,9 +20,22 @@ const nunito = Nunito({
   variable: '--font-nunito',
 })
 
+/**
+ * Sitewide metadata defaults.
+ *
+ * Deliberately omits `alternates`. Every route sets its own canonical (the
+ * home page does so via app/page.tsx), so inheriting one here changed nothing
+ * for real pages but did leak `canonical: https://www.avanzastem.org` onto the
+ * generated 404, which Next also marks `noindex`. A page that says "do not
+ * index me" and "the canonical version of me is the home page" sends Google
+ * two contradictory instructions about the home page; Search Central
+ * explicitly advises against combining the two.
+ */
 export function generateMetadata(): Metadata {
+  const { alternates: _alternates, ...defaults } = generateHomeMetadata('en')
+
   return {
-    ...generateHomeMetadata('en'),
+    ...defaults,
     metadataBase: new URL(siteConfig.url),
     icons: {
       icon: '/icon-light-32x32.png',

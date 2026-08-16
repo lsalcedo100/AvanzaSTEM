@@ -120,29 +120,41 @@ export function usePythonRunner() {
   }, [])
 
   // Create a worker for running user code. Pyodide itself isn't loaded until
-  // the worker receives its first "run" message.
-  const createWorker = useCallback(() => {
+  // the worker receives its first "run" message, unless `preload` asks it to
+  // warm up right away.
+  const createWorker = useCallback((preload = false) => {
     pyodideLoadedRef.current = false
     const worker = new Worker(new URL("./python-playground.worker.ts", import.meta.url), {
       type: "module",
     })
     worker.onmessage = (e: MessageEvent<WorkerResponse>) => onWorkerMessageRef.current(e.data)
     worker.onerror = () => onWorkerMessageRef.current({ type: "load_error", message: "" })
+    if (preload) {
+      const message: WorkerRequest = { type: "preload" }
+      worker.postMessage(message)
+    }
     return worker
   }, [])
 
   // Terminate the active worker (if any) and spin up a fresh one so the next
   // run always starts clean. This is how Stop / timeout actually halt an
   // infinite loop: the whole WASM environment is torn down.
+  //
+  // Tearing the worker down also throws away the loaded Pyodide, so if this
+  // session had already warmed up, the replacement is told to warm up again in
+  // the background. Its assets come straight from the worker's asset cache, so
+  // this costs no extra download - it just keeps the next Run instant instead
+  // of sending the student back to the "Warming up..." state.
   const resetWorker = useCallback(() => {
     clearRunTimeout()
+    const wasWarm = pyodideLoadedRef.current
     const worker = workerRef.current
     if (worker) {
       worker.onmessage = null
       worker.onerror = null
       worker.terminate()
     }
-    workerRef.current = createWorker()
+    workerRef.current = createWorker(wasWarm)
   }, [clearRunTimeout, createWorker])
 
   // Create the worker once on mount and clean it up on unmount.
@@ -210,6 +222,12 @@ export function usePythonRunner() {
         case "pyodide_ready":
           pyodideLoadedRef.current = true
           beginRunning()
+          break
+
+        // A background warm-up finished; no run is in flight, so only the
+        // "environment is warm" flag changes.
+        case "preloaded":
+          pyodideLoadedRef.current = true
           break
 
         case "stdout":

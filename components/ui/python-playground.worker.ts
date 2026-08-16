@@ -15,6 +15,133 @@ type PyodideAPI = {
 
 let pyodidePromise: Promise<PyodideAPI> | null = null
 
+// Pyodide's runtime (the loader script, the WASM binary and the stdlib
+// archive) is ~10 MB. It is immutable for a pinned version, so it is stored in
+// the Cache Storage API under a version-stamped name: every later worker -
+// after a Stop, after a timeout, after a page navigation, on a later visit -
+// reads it back from disk instead of downloading it again. That is what makes
+// "downloads once" in the UI actually true.
+const ASSET_CACHE_NAME = `avanza-pyodide-v${PYODIDE_VERSION}`
+
+let assetCachePromise: Promise<Cache | null> | null = null
+
+/**
+ * Open (once) the version-stamped asset cache, dropping caches left behind by
+ * an earlier pinned version. Resolves to `null` where Cache Storage isn't
+ * available (non-secure contexts), in which case every fetch just goes to the
+ * network as before.
+ */
+function openAssetCache(): Promise<Cache | null> {
+  if (!assetCachePromise) {
+    assetCachePromise =
+      typeof caches === "undefined"
+        ? Promise.resolve(null)
+        : (async () => {
+            const keys = await caches.keys()
+            await Promise.all(
+              keys
+                .filter((key) => key.startsWith("avanza-pyodide-v") && key !== ASSET_CACHE_NAME)
+                .map((key) => caches.delete(key)),
+            )
+            return caches.open(ASSET_CACHE_NAME)
+          })().catch(() => null)
+  }
+  return assetCachePromise
+}
+
+let cachingFetchInstalled = false
+
+/**
+ * Route Pyodide's own asset requests (WASM, stdlib zip, lockfile) through the
+ * asset cache. Pyodide fetches these itself with no hook to pass a cache into,
+ * so the worker's `fetch` is wrapped instead. Only same-version Pyodide CDN
+ * GETs are touched; everything else falls through untouched.
+ */
+function installCachingFetch() {
+  if (cachingFetchInstalled) return
+  cachingFetchInstalled = true
+
+  const scope = self as unknown as { fetch: typeof fetch }
+  const realFetch = scope.fetch.bind(self)
+
+  scope.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+    const request = input instanceof Request ? input : null
+    const url = request ? request.url : String(input)
+    const method = init?.method ?? request?.method ?? "GET"
+
+    // The loader script is verified against its pinned hash separately, so it
+    // must not be served from here unchecked.
+    const cacheable =
+      method === "GET" && url.startsWith(PYODIDE_INDEX_URL) && url !== PYODIDE_SCRIPT_URL
+    if (!cacheable) return realFetch(input, init)
+
+    const cache = await openAssetCache()
+    if (!cache) return realFetch(input, init)
+
+    const hit = await cache.match(url)
+    if (hit) return hit
+
+    const response = await realFetch(input, init)
+    // A cross-origin response is only replayable if it isn't opaque; an opaque
+    // body would break WebAssembly.instantiateStreaming on the next read.
+    if (response.ok && response.type !== "opaque") {
+      try {
+        await cache.put(url, response.clone())
+      } catch {
+        // A full or disabled storage bucket just means no caching this time.
+      }
+    }
+    return response
+  }
+}
+
+/** Base64 SHA-384 of `text`, in the same encoding SRI's `sha384-` prefix uses. */
+async function sha384Base64(text: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-384", new TextEncoder().encode(text))
+  const bytes = new Uint8Array(digest)
+  let binary = ""
+  for (const byte of bytes) binary += String.fromCharCode(byte)
+  return btoa(binary)
+}
+
+/**
+ * Return the pinned Pyodide loader script, preferring the cached copy. A cached
+ * copy is re-verified against {@link PYODIDE_SCRIPT_INTEGRITY} before use, so
+ * reading from disk keeps exactly the guarantee the SRI download gives.
+ */
+async function fetchPyodideScript(): Promise<string> {
+  const canVerify = typeof crypto !== "undefined" && !!crypto.subtle
+  const cache = canVerify ? await openAssetCache() : null
+  const expected = PYODIDE_SCRIPT_INTEGRITY.replace("sha384-", "")
+
+  if (cache) {
+    const hit = await cache.match(PYODIDE_SCRIPT_URL)
+    if (hit) {
+      const cachedText = await hit.text()
+      if ((await sha384Base64(cachedText)) === expected) return cachedText
+      await cache.delete(PYODIDE_SCRIPT_URL)
+    }
+  }
+
+  const response = await fetch(PYODIDE_SCRIPT_URL, {
+    integrity: PYODIDE_SCRIPT_INTEGRITY,
+    mode: "cors",
+    credentials: "omit",
+    referrerPolicy: "no-referrer",
+  })
+  if (!response.ok) {
+    throw new Error("Failed to load Pyodide script")
+  }
+  if (cache) {
+    try {
+      await cache.put(PYODIDE_SCRIPT_URL, response.clone())
+    } catch {
+      // Caching is best-effort; the script is already in hand either way.
+    }
+  }
+  return response.text()
+}
+
 /**
  * Fetch the pinned Pyodide script with SRI verification and execute it in
  * the worker's global scope (the same effect as `importScripts`, but with
@@ -23,16 +150,8 @@ let pyodidePromise: Promise<PyodideAPI> | null = null
 function loadPyodideInWorker(): Promise<PyodideAPI> {
   if (!pyodidePromise) {
     pyodidePromise = (async () => {
-      const response = await fetch(PYODIDE_SCRIPT_URL, {
-        integrity: PYODIDE_SCRIPT_INTEGRITY,
-        mode: "cors",
-        credentials: "omit",
-        referrerPolicy: "no-referrer",
-      })
-      if (!response.ok) {
-        throw new Error("Failed to load Pyodide script")
-      }
-      const scriptText = await response.text()
+      installCachingFetch()
+      const scriptText = await fetchPyodideScript()
       // Indirect eval runs in the worker's global scope, so this sets
       // `self.loadPyodide` just like importScripts would.
       ;(0, eval)(scriptText)
@@ -252,6 +371,15 @@ async function runCode(code: string) {
 
 self.onmessage = (e: MessageEvent<WorkerRequest>) => {
   const msg = e.data
+  if (msg.type === "preload") {
+    // Warm up in the background. A failure here is deliberately silent: the
+    // next real run calls the same (retried) loader and reports the error then.
+    void loadPyodideInWorker().then(
+      () => postMessage({ type: "preloaded" } satisfies WorkerResponse),
+      () => {},
+    )
+    return
+  }
   if (msg.type === "input") {
     const resolve = pendingInputResolve
     pendingInputResolve = null

@@ -137,21 +137,31 @@ const ENGLISH_ONLY_PATHS = new Set([
   ...introToAiSectionPaths,
 ])
 
-// lastModified dates below reflect the last meaningful content/code update for
-// each route (derived from git history at the time of writing), not a single
-// mass-applied "today" stamp. Update the relevant entry when a page's content
-// materially changes.
+// lastModified dates below reflect the last meaningful content update for each
+// route, derived from git history over the files that actually render it - not
+// a single mass-applied "today" stamp.
+//
+// Keep these honest. Google leans on <lastmod> only while it stays verifiably
+// accurate; a sitemap claiming June for a page edited in August teaches it to
+// discount the field entirely. Twelve entries here had drifted by up to two
+// months (/workshops and /gallery gained library photos and new locations on
+// 2026-08-14 while still advertising 2026-06-13).
+//
+// Refresh an entry when the page's *content* changes, not when its metadata or
+// surrounding code is refactored: the blog posts deliberately keep their
+// 2026-06-16 dates even though posts.ts was edited on 2026-08-14, because that
+// commit removed an unused authorId field and changed nothing a reader sees.
 const staticRoutes = [
-  { path: '/', priority: 1.0, changeFrequency: 'weekly', lastModified: '2026-06-13' },
-  { path: '/about', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-16' },
-  { path: '/projects', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-12' },
-  { path: '/games', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-06-13' },
-  { path: '/blog', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-06-16' },
-  { path: '/workshops', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-06-13' },
-  { path: '/find-a-workshop', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-06-13' },
-  { path: '/host', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-13' },
-  { path: '/gallery', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-06-13' },
-  { path: '/curriculums', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-13' },
+  { path: '/', priority: 1.0, changeFrequency: 'weekly', lastModified: '2026-08-14' },
+  { path: '/about', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-12' },
+  { path: '/projects', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-04' },
+  { path: '/games', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-16' },
+  { path: '/blog', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-08-14' },
+  { path: '/workshops', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-08-14' },
+  { path: '/find-a-workshop', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-08-14' },
+  { path: '/host', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-02' },
+  { path: '/gallery', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-08-14' },
+  { path: '/curriculums', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-16' },
   { path: '/curriculums/intro-to-python', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-07' },
   { path: '/courses/engineering-fundamentals', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-08' },
   { path: '/courses/science-experiments', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-09' },
@@ -165,8 +175,8 @@ const staticRoutes = [
   { path: '/courses/intro-to-artificial-intelligence/final-assessment', priority: 0.5, changeFrequency: 'monthly', lastModified: '2026-07-11' },
   { path: '/courses/intro-to-artificial-intelligence/completion', priority: 0.4, changeFrequency: 'monthly', lastModified: '2026-07-11' },
   { path: '/faq', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-06-13' },
-  { path: '/python-ide', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-09' },
-  { path: '/privacy', priority: 0.4, changeFrequency: 'yearly', lastModified: '2026-06-16' },
+  { path: '/python-ide', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-12' },
+  { path: '/privacy', priority: 0.4, changeFrequency: 'yearly', lastModified: '2026-07-02' },
 ] as const
 
 const blogLastModified: Record<string, string> = {

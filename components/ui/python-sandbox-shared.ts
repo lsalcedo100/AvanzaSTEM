@@ -11,9 +11,13 @@ export const MAX_OUTPUT_CHARS = 16000
 export type WorkerRequest =
   | { type: "run"; code: string }
   | { type: "input"; value: string }
+  /** Warm Pyodide up in the background, without running any user code. */
+  | { type: "preload" }
 
 export type WorkerResponse =
   | { type: "pyodide_ready" }
+  /** A background {@link WorkerRequest} "preload" finished successfully. */
+  | { type: "preloaded" }
   | { type: "stdout"; text: string }
   | { type: "stderr"; text: string }
   | { type: "input_request"; prompt: string }
