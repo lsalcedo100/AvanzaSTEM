@@ -101,7 +101,12 @@ export function PostSection({ title, children }: { title: string; children: Reac
       {title.trim() !== "" && (
         <h2 className="mb-3 text-xl font-extrabold break-words text-foreground">{title}</h2>
       )}
-      {children}
+      {/* The article's `space-y-6` only separates one section from the next, so
+          without this wrapper every block inside a section - paragraph, list,
+          aside - stacked with no gap at all. The heading keeps its own tighter
+          `mb-3` by sitting outside the wrapper, so it stays close to the
+          paragraph it introduces. */}
+      <div className="space-y-6">{children}</div>
     </section>
   )
 }
@@ -122,11 +127,43 @@ export function PostList({ items }: { items: string[] }) {
   )
 }
 
-const calloutColors: Record<Accent, string> = {
-  green: "border-avanza-green bg-avanza-green/8 text-avanza-green-dark",
-  orange: "border-avanza-orange bg-avanza-orange/8 text-avanza-orange-dark",
-  purple: "border-avanza-purple bg-avanza-purple/8 text-avanza-purple-dark",
-  teal: "border-avanza-teal bg-avanza-teal/8 text-avanza-teal-dark",
+/* Asides are marked by a short accent rule and an optional label rather than a
+   tinted box. The label reuses the eyebrow idiom the rest of the article
+   already relies on (category header, experiment "Materials"/"Steps"), so an
+   aside reads as part of the page's own system instead of a docs-site
+   admonition dropped into the prose. At 200+ instances across the blog, a
+   fill on every one of them turns an article into a stack of boxes. */
+const accentRule: Record<Accent, string> = {
+  green: "bg-avanza-green",
+  orange: "bg-avanza-orange",
+  purple: "bg-avanza-purple",
+  teal: "bg-avanza-teal",
+}
+
+const accentLabel: Record<Accent, string> = {
+  green: "text-avanza-green-dark",
+  orange: "text-avanza-orange-dark",
+  purple: "text-avanza-purple-dark",
+  teal: "text-avanza-teal-dark",
+}
+
+/* Padding, not margin: the article wrapper's `space-y-6` selector outranks any
+   `mt-*`/`my-*` set here, so the extra breathing room has to come from padding.
+   The rule needs visibly more space above it than below, otherwise it reads as
+   an underline of the preceding paragraph rather than the start of the aside. */
+const asideShell = "pt-4"
+
+function PostAsideMark({ title, accent }: { title?: string; accent: Accent }) {
+  return (
+    <>
+      <span className={`block h-0.75 w-12 rounded-full ${accentRule[accent]}`} aria-hidden="true" />
+      {title && (
+        <p className={`mt-2.5 text-xs font-bold uppercase tracking-wider ${accentLabel[accent]}`}>
+          {title}
+        </p>
+      )}
+    </>
+  )
 }
 
 export function PostCallout({
@@ -139,9 +176,13 @@ export function PostCallout({
   accent?: Accent
 }) {
   return (
-    <div className={`rounded-xl border-l-4 px-5 py-4 ${calloutColors[accent]}`}>
-      {title && <p className="mb-1 text-xs font-bold uppercase tracking-wider">{title}</p>}
-      <div className="text-sm leading-7 break-words text-foreground/80">{children}</div>
+    <div className={asideShell}>
+      <PostAsideMark title={title} accent={accent} />
+      {/* No font-size here: the aside inherits the article's measure so a key
+          idea never renders smaller than the paragraph it concludes. */}
+      <div className={`${title ? "mt-1.5" : "mt-2.5"} font-medium leading-7 break-words text-foreground`}>
+        {children}
+      </div>
     </div>
   )
 }
@@ -174,10 +215,14 @@ export function PostCode({
   accent?: Accent
 }) {
   return (
-    <div className={`rounded-xl border-l-4 px-5 py-4 ${calloutColors[accent]}`}>
-      {title && <p className="mb-1 text-xs font-bold uppercase tracking-wider">{title}</p>}
-      <div className="overflow-x-auto">
-        <code className="block w-max min-w-full font-mono text-sm leading-7 whitespace-pre">{code}</code>
+    <div className={asideShell}>
+      <PostAsideMark title={title} accent={accent} />
+      {/* Code keeps a surface because monospace needs a field to sit in, but a
+          neutral one: a pastel tint behind code fights the syntax it holds. */}
+      <div className="mt-3 overflow-x-auto rounded-lg border border-border bg-secondary px-4 py-3">
+        <code className="block w-max min-w-full font-mono text-sm leading-7 whitespace-pre text-foreground">
+          {code}
+        </code>
       </div>
     </div>
   )
@@ -265,22 +310,16 @@ export function PostCtaLink({
   href: string
   accent?: Accent
 }) {
-  const linkColors: Record<Accent, string> = {
-    green: "text-avanza-green-dark",
-    orange: "text-avanza-orange-dark",
-    purple: "text-avanza-purple-dark",
-    teal: "text-avanza-teal-dark",
-  }
   return (
-    <div className={`rounded-xl border-l-4 px-5 py-4 ${calloutColors[accent]}`}>
-      {title && <p className="mb-1 text-xs font-bold uppercase tracking-wider">{title}</p>}
-      <p className="text-sm leading-7 break-words text-foreground/80">{text}</p>
+    <div className={asideShell}>
+      <PostAsideMark title={title} accent={accent} />
+      <p className={`${title ? "mt-1.5" : "mt-2.5"} leading-7 break-words text-foreground`}>{text}</p>
       <Link
         href={href}
-        className={`mt-2 inline-flex items-center gap-1 text-sm font-bold underline underline-offset-4 ${linkColors[accent]}`}
+        className={`group mt-2 inline-flex items-center gap-1.5 text-sm font-bold underline underline-offset-4 ${accentLabel[accent]}`}
       >
         {linkText}
-        <ArrowRight className="h-3.5 w-3.5" />
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
       </Link>
     </div>
   )
