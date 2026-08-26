@@ -242,14 +242,11 @@ export function IntroToPythonCurriculumContent() {
  */
 function FirstProgram() {
   return (
-    <div className="overflow-hidden rounded-3xl bg-avanza-dark shadow-[0_24px_60px_-24px_rgba(26,26,46,0.55)] ring-1 ring-black/10">
-      <div className="flex items-center gap-2 border-b border-white/10 px-5 py-3">
-        <span aria-hidden className="h-3 w-3 rounded-full bg-white/20" />
-        <span aria-hidden className="h-3 w-3 rounded-full bg-white/20" />
-        <span aria-hidden className="h-3 w-3 rounded-full bg-white/20" />
-        <span className="ml-2 font-mono text-xs font-semibold text-white/50">week1.py</span>
+    <div className="overflow-hidden rounded-lg bg-avanza-dark shadow-[0_24px_60px_-28px_rgba(26,26,46,0.6)]">
+      <div className="border-b border-white/10 px-6 py-3.5">
+        <span className="font-mono text-sm font-semibold text-white/50">week1.py</span>
       </div>
-      <pre className="overflow-x-auto px-5 py-5 font-mono text-sm leading-relaxed text-white/90 sm:text-base">
+      <pre className="overflow-x-auto px-6 py-6 font-mono text-sm leading-relaxed text-white/90 sm:text-base">
         <code>
           {`name = input("What's your name? ")
 print("Hello, " + name + "!")
@@ -258,8 +255,8 @@ for i in range(3):
     print("Python is fun!")`}
         </code>
       </pre>
-      <div className="border-t border-white/10 bg-black/25 px-5 py-4 font-mono text-sm leading-relaxed text-avanza-green">
-        <p className="text-xs font-bold uppercase tracking-wider text-white/40">Output</p>
+      <div className="border-t border-white/10 bg-black/25 px-6 py-5 font-mono text-sm leading-relaxed text-avanza-green">
+        <p className="text-sm font-semibold text-white/40">Output</p>
         <p className="mt-2">Hello, Maya!</p>
         <p>Python is fun!</p>
         <p>Python is fun!</p>

@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState, useRef, useEffect, useSyncExternalStore } from "react"
-import { Menu, X, Globe } from "lucide-react"
+import { Check, Globe, Menu, X } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { type Language, languageLabels } from "@/i18n/translations"
 
@@ -143,10 +143,11 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold transition-all xl:px-4 ${focusRing} ${
+                aria-current={isActive ? "page" : undefined}
+                className={`whitespace-nowrap rounded-sm px-2.5 py-2 text-sm underline decoration-2 underline-offset-[6px] transition-colors xl:px-3 ${focusRing} ${
                   isActive
-                    ? "border-2 border-avanza-dark bg-avanza-dark/8 text-avanza-dark"
-                    : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
+                    ? "font-bold text-avanza-dark decoration-avanza-green"
+                    : "font-semibold text-avanza-dark/75 decoration-transparent hover:text-avanza-dark hover:decoration-avanza-green/60"
                 }`}
               >
                 {link.label}
@@ -159,7 +160,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setLangOpen(!langOpen)}
-              className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border-2 border-avanza-dark/25 px-3 py-1.5 text-sm font-semibold text-avanza-dark transition-colors hover:border-avanza-dark/45 hover:bg-avanza-dark/8 ${focusRing}`}
+              className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-sm px-2.5 py-2 text-sm font-semibold text-avanza-dark/75 underline decoration-2 decoration-transparent underline-offset-[6px] transition-colors hover:text-avanza-dark hover:decoration-avanza-green/60 ${focusRing}`}
               aria-label={t.nav.switchLanguage}
               aria-expanded={langOpen}
               aria-haspopup="menu"
@@ -194,7 +195,7 @@ export function Navbar() {
                   >
                     {languageLabels[lang]}
                     {language === lang && (
-                      <span className="ml-auto h-2 w-2 rounded-full bg-avanza-green" />
+                      <Check aria-hidden className="ml-auto h-4 w-4 text-avanza-green" />
                     )}
                   </button>
                 ))}
@@ -210,7 +211,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setLangOpen(!langOpen)}
-              className={`inline-flex items-center gap-1 rounded-full border border-avanza-dark/25 px-2.5 py-1.5 text-xs font-semibold text-avanza-dark ${focusRing}`}
+              className={`inline-flex items-center gap-1 rounded-sm px-1.5 py-1.5 text-xs font-bold text-avanza-dark ${focusRing}`}
               aria-label={t.nav.switchLanguage}
               aria-expanded={langOpen}
               aria-haspopup="menu"
@@ -244,7 +245,7 @@ export function Navbar() {
                   >
                     {languageLabels[lang]}
                     {language === lang && (
-                      <span className="ml-auto h-2 w-2 rounded-full bg-avanza-green" />
+                      <Check aria-hidden className="ml-auto h-4 w-4 text-avanza-green" />
                     )}
                   </button>
                 ))}
@@ -286,10 +287,11 @@ export function Navbar() {
           <Link
             href="/"
             onClick={() => setMobileOpen(false)}
-            className={`block rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-200 ${focusRing} ${
+            aria-current={mounted && pathname === "/" ? "page" : undefined}
+            className={`block border-l-2 py-3 pl-4 text-sm transition-colors duration-200 ${focusRing} ${
               mounted && pathname === "/"
-                ? "bg-avanza-dark/10 text-avanza-dark"
-                : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
+                ? "border-avanza-green font-bold text-avanza-dark"
+                : "border-transparent font-semibold text-avanza-dark/75 hover:border-avanza-dark/20 hover:text-avanza-dark"
             }`}
           >
             {t.nav.home}
@@ -303,10 +305,11 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`block rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-200 ${focusRing} ${
+                aria-current={isActive ? "page" : undefined}
+                className={`block border-l-2 py-3 pl-4 text-sm transition-colors duration-200 ${focusRing} ${
                   isActive
-                    ? "bg-avanza-dark/10 text-avanza-dark"
-                    : "text-avanza-dark/85 hover:bg-avanza-dark/8 hover:text-avanza-dark"
+                    ? "border-avanza-green font-bold text-avanza-dark"
+                    : "border-transparent font-semibold text-avanza-dark/75 hover:border-avanza-dark/20 hover:text-avanza-dark"
                 }`}
               >
                 {link.label}

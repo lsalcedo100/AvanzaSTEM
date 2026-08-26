@@ -195,7 +195,7 @@ export function EngineeringLessonList() {
                 {loaded && (
                   <p
                     className={
-                      "text-xs font-semibold uppercase tracking-wide " +
+                      "text-sm font-semibold " +
                       (lessonStatus === "completed"
                         ? "text-avanza-purple"
                         : lessonStatus === "in-progress"

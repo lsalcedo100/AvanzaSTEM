@@ -53,7 +53,7 @@ export function IntroToPythonProgress() {
               key={week.week}
               className="grid gap-x-6 gap-y-3 py-7 md:grid-cols-[5.5rem_1fr_auto]"
             >
-              <div className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              <div className="text-sm font-semibold text-muted-foreground">
                 Week {week.week}
               </div>
               <div>
@@ -67,7 +67,7 @@ export function IntroToPythonProgress() {
                   <span className="px-2 text-border">|</span>
                   {week.estimatedTime}
                 </p>
-                <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                <p className="mt-3 text-sm font-semibold text-muted-foreground">
                   {STATUS_LABEL[weekStatus]}
                 </p>
               </div>

@@ -224,7 +224,7 @@ export function RoboticsModuleList() {
                 {loaded && (
                   <p
                     className={
-                      "text-xs font-semibold uppercase tracking-wide " +
+                      "text-sm font-semibold " +
                       (moduleStatus === "completed"
                         ? "text-avanza-green-dark"
                         : moduleStatus === "in-progress"
@@ -370,7 +370,7 @@ export function RoboticsLessonGate({
     const missing = firstMissingPrerequisite(module, progress.completed)
     return (
       <div className="mx-auto max-w-3xl px-6 py-16">
-        <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+        <p className="text-sm font-semibold text-muted-foreground">
           Week {module.week}
         </p>
         <h1 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">{module.title}</h1>
@@ -613,7 +613,7 @@ export function RoboticsFinalProjectPreview() {
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h3 className="text-lg font-bold text-foreground">{fp.title}</h3>
         {loaded && (
-          <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          <span className="text-sm font-semibold text-muted-foreground">
             {unlocked ? "Available" : "Unlocks after Week 7"}
           </span>
         )}
@@ -622,7 +622,7 @@ export function RoboticsFinalProjectPreview() {
 
       <div className="mt-5 grid gap-6 sm:grid-cols-2">
         <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          <p className="text-sm font-bold text-muted-foreground">
             Example missions
           </p>
           <ul className="mt-2 space-y-1.5">
@@ -635,7 +635,7 @@ export function RoboticsFinalProjectPreview() {
           </ul>
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          <p className="text-sm font-bold text-muted-foreground">
             Core requirements
           </p>
           <ul className="mt-2 space-y-1.5">

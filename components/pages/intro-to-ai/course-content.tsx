@@ -79,7 +79,7 @@ export function IntroToAiCourseContent() {
           { label: "You need", value: "A browser" },
         ]}
         media={
-          <div className="rounded-3xl bg-white p-6 shadow-[0_24px_60px_-24px_rgba(26,26,46,0.45)] ring-1 ring-black/5 sm:p-8">
+          <div className="rounded-lg bg-white p-6 shadow-[0_24px_60px_-28px_rgba(26,26,46,0.5)] sm:p-10">
             <JourneyDiagram className="mx-auto aspect-8/3 w-full" />
           </div>
         }
@@ -305,7 +305,7 @@ function ProgressSummary({
   return (
     <div>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Your progress</h2>
+        <h2 className="text-sm font-bold text-avanza-dark/55">Your progress</h2>
         {savedLabel && <SaveState status="idle" idleHint={`Last saved ${savedLabel}`} />}
       </div>
 
@@ -352,10 +352,10 @@ function RoadmapWeek({ week, p }: { week: CourseWeek; p: ReturnType<typeof useIn
   const statusText = status === "completed" ? "Completed" : status === "in-progress" ? "In progress" : "Not started"
   const statusClass =
     status === "completed"
-      ? "border-avanza-green/40 bg-avanza-green/10 text-avanza-green-dark"
+      ? "text-avanza-green-dark"
       : status === "in-progress"
-        ? "border-avanza-orange/40 bg-avanza-orange/10 text-avanza-orange-dark"
-        : "border-border bg-secondary text-muted-foreground"
+        ? "text-avanza-orange-dark"
+        : "text-avanza-dark/45"
 
   // Not-started weeks are still available; link to the week overview. In-progress
   // links straight to the current lesson if it's in this week.
@@ -367,32 +367,26 @@ function RoadmapWeek({ week, p }: { week: CourseWeek; p: ReturnType<typeof useIn
   return (
     <Link
       href={href}
-      className="group flex items-start gap-4 rounded-lg border border-border p-4 transition-colors hover:border-avanza-green/60 hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
+      className="group flex items-start gap-5 border-t-2 border-avanza-dark/10 py-5 transition-colors hover:border-[var(--c-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
     >
       <span
-        className={`flex h-9 w-9 flex-none items-center justify-center rounded-full border text-sm font-bold ${
-          status === "completed" ? "border-avanza-green bg-avanza-green/15 text-avanza-green-dark" : "border-border text-muted-foreground"
-        }`}
         aria-hidden
+        className="font-mono text-2xl font-bold leading-none text-[var(--c-accent)]"
       >
-        {status === "completed" ? <Check className="h-4 w-4" /> : week.week}
+        {status === "completed" ? <Check className="h-6 w-6" strokeWidth={3} /> : String(week.week).padStart(2, "0")}
       </span>
       <span className="flex-1">
-        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span className="text-sm font-bold text-foreground">
-            Week {week.week}: {week.title}
-          </span>
-          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold ${statusClass}`}>
-            {statusText}
-          </span>
+        <span className="block text-lg font-extrabold text-avanza-dark underline decoration-transparent decoration-2 underline-offset-[6px] transition-colors group-hover:decoration-[var(--c-accent)]">
+          Week {week.week}: {week.title}
         </span>
-        <span className="mt-1 block text-sm text-muted-foreground">{week.subtitle}</span>
-        <span className="mt-2 block text-xs text-muted-foreground">
-          {week.estimatedTime} · {week.lessons.length} lessons · {activityCount} activities
-          {p.loaded && <span className="sr-only"> · {statusText}</span>}
+        <span className="mt-1 block text-base leading-relaxed text-avanza-dark/70">
+          {week.subtitle}
+        </span>
+        <span className="mt-2 block text-sm text-avanza-dark/50">
+          {week.estimatedTime} · {week.lessons.length} lessons · {activityCount} activities ·{" "}
+          <span className={`font-semibold ${statusClass}`}>{statusText}</span>
         </span>
       </span>
-      <ArrowRight className="mt-1 h-4 w-4 flex-none text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden />
     </Link>
   )
 }

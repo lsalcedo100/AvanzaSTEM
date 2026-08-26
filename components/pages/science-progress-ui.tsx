@@ -168,7 +168,7 @@ export function ScienceWeekList() {
             >
               <div className="flex items-baseline justify-between gap-4">
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-avanza-orange-dark">
+                  <p className="text-sm font-semibold text-avanza-orange-dark">
                     Week {lesson.week}
                   </p>
                   {loaded && (
@@ -190,13 +190,13 @@ export function ScienceWeekList() {
               <p className="mt-2 text-sm leading-relaxed text-foreground/90">{lesson.bigQuestion}</p>
               <dl className="mt-4 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
                 <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <dt className="text-sm font-semibold text-muted-foreground">
                     Experiment
                   </dt>
                   <dd className="mt-0.5 text-foreground/90">{lesson.activityTitle}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <dt className="text-sm font-semibold text-muted-foreground">
                     Main idea
                   </dt>
                   <dd className="mt-0.5 text-foreground/90">{lesson.mainConcepts[0]}</dd>
@@ -313,7 +313,7 @@ export function ScienceCompletion() {
 
   return (
     <div>
-      <p className="text-sm font-semibold uppercase tracking-wide text-avanza-orange-dark">
+      <p className="text-sm font-semibold text-avanza-orange-dark">
         After week 6
       </p>
       <h2 className="mt-2 text-xl font-bold text-foreground md:text-2xl">{c.completion.title}</h2>
@@ -323,7 +323,7 @@ export function ScienceCompletion() {
 
       {done ? (
         <div className="mt-8 rounded-lg border border-avanza-orange/40 bg-card p-6" id="science-certificate">
-          <p className="text-sm font-semibold uppercase tracking-wide text-avanza-orange-dark">
+          <p className="text-sm font-semibold text-avanza-orange-dark">
             Course complete
           </p>
           <p className="mt-2 text-lg font-bold text-foreground md:text-xl">
@@ -335,7 +335,7 @@ export function ScienceCompletion() {
             with evidence, and improving your designs.
           </p>
 
-          <h3 className="mt-6 text-sm font-bold uppercase tracking-wide text-foreground">
+          <h3 className="mt-6 text-sm font-bold text-foreground">
             Finish these sentences
           </h3>
           <ul className="mt-3 space-y-3">
@@ -359,7 +359,7 @@ export function ScienceCompletion() {
         </p>
       )}
 
-      <h3 className="mt-8 text-sm font-bold uppercase tracking-wide text-foreground">
+      <h3 className="mt-8 text-sm font-bold text-foreground">
         Look back and reflect
       </h3>
       <ul className="mt-3 space-y-2">
@@ -371,7 +371,7 @@ export function ScienceCompletion() {
         ))}
       </ul>
 
-      <h3 className="mt-8 text-sm font-bold uppercase tracking-wide text-foreground">Keep exploring</h3>
+      <h3 className="mt-8 text-sm font-bold text-foreground">Keep exploring</h3>
       <ul className="mt-3 space-y-2">
         {c.completion.nextSteps.map((step) => (
           <li key={step} className="flex gap-3 text-sm leading-relaxed text-foreground/90">

@@ -281,7 +281,7 @@ export function MathLessonPath() {
             >
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="md:pr-6">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <p className="text-sm font-semibold text-muted-foreground">
                     {lesson.isFinalProject ? "Final project" : `Week ${lesson.weekNumber}`}
                   </p>
                   <h3 className="mt-1 text-lg font-bold text-foreground">{lesson.title}</h3>
@@ -305,7 +305,7 @@ export function MathLessonPath() {
                   {loaded && (
                     <p
                       className={
-                        "inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide " +
+                        "inline-flex items-center gap-1 text-sm font-semibold " +
                         (lessonStatus === "completed"
                           ? "text-avanza-teal-dark"
                           : lessonStatus === "in-progress"

@@ -37,30 +37,30 @@ export function AboutPageContent() {
   const contributorMembers = [
     {
       name: "Alejandro Villafana",
-      role: "Workshop Contributor",
-      bio: "Alejandro helped support some of Avanza STEM's earliest hands-on workshops by assisting with activities and helping students during sessions.",
+      role: t.aboutPage.workshopContributorRole,
+      bio: t.aboutPage.alejandroBio,
       image: "/images/about/Alejandro Villafana.png",
-      imageAlt: "Photo of Alejandro Villafana",
+      imageAlt: t.aboutPage.alejandroPhotoAlt,
       imagePosition: "object-center",
       accent: "bg-avanza-green/20",
       text: "text-avanza-green",
     },
     {
       name: "Logan Smith",
-      role: "Website Contributor",
-      bio: "Logan helped with the technical side of the Avanza STEM website, including coding support, debugging, and improving the development workflow. Taught Liam how to use Next.js and Tailwind CSS and Codex to speed up the coding process.",
+      role: t.aboutPage.websiteContributorRole,
+      bio: t.aboutPage.loganBio,
       image: "/images/about/Logan Smith.png",
-      imageAlt: "Photo of Logan Smith",
+      imageAlt: t.aboutPage.loganPhotoAlt,
       imagePosition: "object-center",
       accent: "bg-avanza-teal/20",
       text: "text-avanza-teal",
     },
     {
       name: "Thomas Flick",
-      role: "Workshop Contributor",
-      bio: "Thomas helped support early Avanza STEM workshops by assisting with activities and helping students during sessions.",
+      role: t.aboutPage.workshopContributorRole,
+      bio: t.aboutPage.thomasBio,
       image: "/images/about/Thomas Flick.jpg",
-      imageAlt: "Photo of Thomas Flick",
+      imageAlt: t.aboutPage.thomasPhotoAlt,
       imagePosition: "object-center",
       accent: "bg-avanza-purple/20",
       text: "text-avanza-purple",
@@ -163,7 +163,7 @@ export function AboutPageContent() {
             <div className="mx-auto mt-14 max-w-5xl">
               <div className="text-center">
                 <h3 className="text-2xl font-extrabold text-foreground">
-                  Contributors & Volunteers
+                  {t.aboutPage.contributorsTitle}
                 </h3>
               </div>
               <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

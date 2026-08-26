@@ -12,14 +12,12 @@ import {
   ArrowLeft,
   ArrowUpRight,
   CalendarDays,
-  ChevronRight,
   MapPin,
   Search,
-  Sparkles,
+  X,
 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LIBRARIES, type Library } from "@/features/workshops/locations"
-import { FadeIn } from "@/components/ui/animate"
 
 
 const ZIP_PREFIX_LATLNG: Record<string, { lat: number; lng: number }> = {
@@ -68,16 +66,10 @@ const NJ_BOUNDS = {
 
 export function WorkshopFinderPage() {
   const { t } = useLanguage()
-  const [stage, setStage] = useState<"prompt" | "map">("prompt")
   const [zip, setZip] = useState("")
   const [submittedZip, setSubmittedZip] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [activeId, setActiveId] = useState<string | null>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (stage === "prompt") inputRef.current?.focus()
-  }, [stage])
 
   const sortedLibraries = useMemo(() => {
     if (!submittedZip) return LIBRARIES.map((lib) => ({ ...lib, miles: undefined as number | undefined }))
@@ -105,365 +97,228 @@ export function WorkshopFinderPage() {
     }
     setError(null)
     setSubmittedZip(cleaned)
-    setStage("map")
-  }
-
-  const skip = () => {
-    setError(null)
-    setSubmittedZip(null)
-    setStage("map")
-  }
-
-  const tryAnother = () => {
-    setStage("prompt")
     setActiveId(null)
-    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
+  const clearZip = () => {
+    setZip("")
+    setSubmittedZip(null)
+    setError(null)
+    setActiveId(null)
+  }
+
+  const currentSites = sortedLibraries.filter((lib) => lib.status === "active")
+  const planningAreas = sortedLibraries.filter((lib) => lib.status === "placeholder")
   const active = sortedLibraries.find((l) => l.id === activeId) ?? null
 
-  return (
-    <>
-      {stage === "prompt" ? (
-        <PromptHero
-          t={t}
-          zip={zip}
-          error={error}
-          onZipChange={(v) => {
-            const digits = v.replace(/\D/g, "").slice(0, 5)
-            setZip(digits)
-            if (error) setError(null)
-          }}
-          onSubmit={onSubmit}
-          onSkip={skip}
-          inputRef={inputRef}
-        />
-      ) : (
-        <MapView
-          t={t}
-          libraries={sortedLibraries}
-          userLatLng={userLatLng}
-          submittedZip={submittedZip}
-          activeId={activeId}
-          active={active}
-          onSelect={setActiveId}
-          onTryAnother={tryAnother}
-        />
-      )}
-    </>
-  )
-}
-
-function PromptHero({
-  t,
-  zip,
-  error,
-  onZipChange,
-  onSubmit,
-  onSkip,
-  inputRef,
-}: {
-  t: ReturnType<typeof useLanguage>["t"]
-  zip: string
-  error: string | null
-  onZipChange: (v: string) => void
-  onSubmit: (e: React.FormEvent) => void
-  onSkip: () => void
-  inputRef: React.RefObject<HTMLInputElement | null>
-}) {
-  const currentSites = LIBRARIES.filter((lib) => lib.status === "active")
+  const nearest = submittedZip ? currentSites[0] ?? null : null
 
   return (
-    <section className="relative flex min-h-[calc(100vh-80px)] items-center overflow-hidden bg-gradient-to-br from-avanza-teal via-[#1da085] to-avanza-green py-16">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-40"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 12% 20%, rgba(255,255,255,0.55) 0 5px, transparent 6px), radial-gradient(circle at 86% 28%, rgba(255,255,255,0.45) 0 4px, transparent 5px), radial-gradient(circle at 22% 78%, rgba(255,255,255,0.4) 0 4px, transparent 5px), radial-gradient(circle at 76% 84%, rgba(255,255,255,0.5) 0 5px, transparent 6px), radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0 6px, transparent 7px)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.18]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-        }}
-      />
+    <div className="bg-avanza-dark">
+      {/* Tool header — bold brand band with inline search */}
+      <header className="relative overflow-hidden bg-gradient-to-br from-avanza-teal via-[#159c81] to-avanza-green">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-white/10 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-32 left-1/4 h-80 w-80 rounded-full bg-avanza-dark/20 blur-3xl"
+        />
 
-      <div className="relative mx-auto w-full max-w-3xl px-6 text-center">
-        <FadeIn>
+        <div className="relative mx-auto w-full max-w-7xl px-6 pb-8 pt-8 sm:pb-10 sm:pt-10">
           <Link
             href="/"
-            className="mb-10 inline-flex items-center gap-1.5 rounded-full bg-white/25 px-3.5 py-1.5 text-xs font-bold text-avanza-dark backdrop-blur-sm transition-colors hover:bg-white/35"
+            className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-avanza-dark/70 transition-colors hover:text-avanza-dark"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             {t.home.finderBackToHome}
           </Link>
 
-          <span className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/35 bg-white/25 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.2em] text-avanza-dark backdrop-blur-sm">
-            <MapPin className="h-3.5 w-3.5" />
-            {t.home.finderEyebrow}
-          </span>
-
-          <h1 className="mt-7 text-balance text-5xl font-extrabold leading-[1.02] text-avanza-dark italic md:text-7xl">
-            {t.home.finderHeadline}
-          </h1>
-
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-avanza-dark/80 md:text-xl">
-            {t.home.finderSubhead}
-          </p>
-
-          <p className="mx-auto mt-5 max-w-xl rounded-2xl border border-avanza-dark/20 bg-white/25 px-4 py-3 text-sm font-semibold leading-relaxed text-avanza-dark/80 shadow-[0_12px_35px_-25px_rgba(26,26,46,0.55)] backdrop-blur-sm">
-            {t.home.finderCurrentNote}
-          </p>
-
-          <p className="mx-auto mt-4 max-w-xl text-sm font-semibold leading-relaxed text-avanza-dark/75">
-            Looking for free STEM workshops in New Jersey? Current Avanza STEM library locations
-            include Clifton Public Library, Allwood Branch Library, Library of the Chathams,
-            and Roseland Free Public Library. Public dates are not scheduled right now, but
-            families can check locations here and try{" "}
-            <Link href="/projects" className="underline underline-offset-4">
-              STEM projects for kids
-            </Link>{" "}
-            while waiting for the next workshop series.
-          </p>
-
-          <form onSubmit={onSubmit} className="mt-10">
-            <label htmlFor="finder-zip" className="sr-only">
-              {t.home.finderZipLabel}
-            </label>
-            <div className="mx-auto flex max-w-xl flex-col gap-3 sm:flex-row">
-              <div className="relative flex-1">
-                <Search
-                  aria-hidden="true"
-                  className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-avanza-dark/40"
-                />
-                <input
-                  ref={inputRef}
-                  id="finder-zip"
-                  type="text"
-                  inputMode="numeric"
-                  autoComplete="postal-code"
-                  placeholder={t.home.finderZipPlaceholder}
-                  value={zip}
-                  onChange={(e) => onZipChange(e.target.value)}
-                  className="w-full rounded-full bg-white px-14 py-5 text-center text-2xl font-extrabold tracking-[0.4em] text-avanza-dark shadow-[0_18px_50px_-15px_rgba(26,26,46,0.5)] ring-4 ring-white/30 transition-all duration-200 placeholder:tracking-normal placeholder:text-avanza-dark/30 focus:outline-none focus:ring-8 focus:ring-white/40 sm:text-3xl"
-                  aria-invalid={Boolean(error)}
-                  aria-describedby={error ? "finder-zip-error" : undefined}
-                />
-              </div>
-              <button
-                type="submit"
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-avanza-dark px-8 py-5 text-base font-extrabold text-primary-foreground shadow-[0_18px_50px_-15px_rgba(26,26,46,0.65)] transition-all duration-200 hover:scale-[1.03] hover:bg-foreground sm:text-lg"
-              >
-                {t.home.finderSubmit}
-                <ChevronRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </button>
+          <div className="mt-6 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-xl">
+              <span className="inline-flex items-center gap-2 rounded-full bg-avanza-dark/90 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-avanza-green">
+                <MapPin className="h-3.5 w-3.5" />
+                {t.home.finderEyebrow}
+              </span>
+              <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight text-avanza-dark md:text-5xl">
+                {t.home.finderHeadline}
+              </h1>
+              <p className="mt-3 max-w-md text-base leading-relaxed text-avanza-dark/75">
+                {t.home.finderSubhead}
+              </p>
             </div>
-            {error && (
-              <p
-                id="finder-zip-error"
-                role="alert"
-                className="mt-4 text-sm font-bold text-white"
+
+            {/* Search card */}
+            <form
+              onSubmit={onSubmit}
+              className="w-full max-w-md rounded-3xl bg-white/95 p-4 shadow-[0_24px_60px_-25px_rgba(26,26,46,0.65)] ring-1 ring-white/40 backdrop-blur-sm sm:p-5"
+            >
+              <label
+                htmlFor="finder-zip"
+                className="block text-[11px] font-extrabold uppercase tracking-[0.16em] text-avanza-dark/60"
               >
-                <span className="inline-flex items-center gap-2 rounded-full bg-avanza-orange px-3 py-1 shadow-md">
+                {t.home.finderZipLabel}
+              </label>
+              <div className="mt-2 flex gap-2">
+                <div className="relative flex-1">
+                  <Search
+                    aria-hidden="true"
+                    className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-avanza-dark/35"
+                  />
+                  <input
+                    id="finder-zip"
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="postal-code"
+                    placeholder={t.home.finderZipPlaceholder}
+                    value={zip}
+                    onChange={(e) => {
+                      setZip(e.target.value.replace(/\D/g, "").slice(0, 5))
+                      if (error) setError(null)
+                    }}
+                    className="w-full rounded-2xl border-2 border-avanza-dark/10 bg-secondary py-3.5 pl-11 pr-9 text-lg font-bold tracking-[0.18em] text-avanza-dark transition-colors placeholder:tracking-normal placeholder:font-medium placeholder:text-avanza-dark/30 focus:border-avanza-teal focus:bg-white focus:outline-none"
+                    aria-invalid={Boolean(error)}
+                    aria-describedby={error ? "finder-zip-error" : undefined}
+                  />
+                  {zip && (
+                    <button
+                      type="button"
+                      onClick={clearZip}
+                      aria-label="Clear"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-avanza-dark/40 transition-colors hover:bg-avanza-dark/5 hover:text-avanza-dark"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  className="shrink-0 rounded-2xl bg-avanza-dark px-5 py-3.5 text-sm font-extrabold text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:bg-foreground"
+                >
+                  {t.home.finderSubmit}
+                </button>
+              </div>
+              {error ? (
+                <p
+                  id="finder-zip-error"
+                  role="alert"
+                  className="mt-2.5 text-xs font-bold text-avanza-orange"
+                >
                   {error}
+                </p>
+              ) : (
+                <p className="mt-2.5 text-xs font-medium text-avanza-dark/55">
+                  {currentSites.length} {t.home.finderCurrentCount} · {planningAreas.length}{" "}
+                  {t.home.finderPlanningCount} · {t.home.finderFreeAlways}
+                </p>
+              )}
+            </form>
+          </div>
+
+          {nearest && (
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-avanza-dark/90 px-4 py-2 text-sm font-bold text-primary-foreground">
+              <span className="text-avanza-green">{t.home.finderResultsTitle}:</span>
+              {nearest.name}
+              {typeof nearest.miles === "number" && (
+                <span className="text-primary-foreground/60">
+                  · {nearest.miles} {t.home.finderMiles}
                 </span>
-              </p>
-            )}
-          </form>
+              )}
+            </div>
+          )}
+        </div>
+      </header>
 
-          <button
-            type="button"
-            onClick={onSkip}
-            className="mt-8 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary-foreground/80 transition-colors hover:text-primary-foreground"
+      {/* Tool body — map + results, always visible together */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr]">
+        <LeafletMap
+          libraries={sortedLibraries}
+          userLatLng={userLatLng}
+          activeId={activeId}
+          onSelect={setActiveId}
+          ariaLabel={t.home.finderMapAria}
+          loadingLabel={t.home.finderMapLoading}
+          errorLabel={t.home.finderMapError}
+          legend={{
+            active: t.home.finderLegendActive,
+            coming: t.home.finderLegendComing,
+            you: t.home.finderLegendYou,
+          }}
+          labels={{
+            noUpcomingDate: t.home.finderNoUpcomingDate,
+            planningArea: t.home.finderPlanningArea,
+            notScheduled: t.home.finderNotScheduled,
+          }}
+        />
+
+        <aside className="flex max-h-[calc(100vh-80px)] flex-col overflow-y-auto bg-[#fcfaf3] p-6 sm:p-7">
+          <p className="text-xs leading-relaxed text-avanza-dark/60">
+            {t.home.finderSelectMarker}
+          </p>
+
+          <div className="mt-6 space-y-7">
+            <LocationSection
+              title={t.home.finderCurrentSites}
+              libraries={currentSites}
+              activeId={activeId}
+              submittedZip={submittedZip}
+              onSelect={setActiveId}
+              t={t}
+            />
+
+            <LocationSection
+              title={t.home.finderInterestSites}
+              libraries={planningAreas}
+              activeId={activeId}
+              submittedZip={submittedZip}
+              onSelect={setActiveId}
+              t={t}
+            />
+          </div>
+
+          {active && (
+            <div className="mt-6 rounded-2xl bg-avanza-dark p-5 text-primary-foreground shadow-md">
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-avanza-green">
+                {active.city}
+              </p>
+              <p className="mt-1 text-base font-extrabold leading-snug">{active.name}</p>
+              <p className="mt-1 text-xs text-primary-foreground/70">
+                {t.home.finderZipShort} {active.zip}
+              </p>
+              {active.status === "active" ? (
+                <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold">
+                  <CalendarDays className="h-3 w-3" />
+                  {t.home.finderNoUpcomingDate}
+                </p>
+              ) : (
+                <div className="mt-3 space-y-1.5">
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-primary-foreground/70">
+                    {t.home.finderPlanningArea}
+                  </p>
+                  <p className="text-xs text-primary-foreground/70">
+                    {t.home.finderNotScheduled}
+                  </p>
+                </div>
+              )}
+              {typeof active.miles === "number" && (
+                <p className="mt-3 text-xs text-primary-foreground/70">
+                  {t.home.finderDistance}: {active.miles} {t.home.finderMiles}
+                </p>
+              )}
+            </div>
+          )}
+
+          <a
+            href="mailto:liam@avanzastem.org?subject=Bring%20Avanza%20STEM%20to%20our%20library"
+            className="mt-6 inline-flex items-center justify-center gap-2 rounded-2xl bg-avanza-green px-5 py-3.5 text-sm font-extrabold text-avanza-dark transition-all duration-200 hover:scale-[1.02] hover:bg-avanza-green/90"
           >
-            {t.home.finderSkip}
-            <ChevronRight className="h-3 w-3" />
-          </button>
-
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-foreground/75">
-            <span className="inline-flex items-center gap-1.5">
-              <Sparkles className="h-3 w-3" />
-              {currentSites.length} {t.home.finderCurrentCount} · New Jersey
-            </span>
-            <span className="hidden h-1 w-1 rounded-full bg-primary-foreground/40 sm:inline-block" />
-            <span>{t.home.finderFreeAlways}</span>
-            <span className="hidden h-1 w-1 rounded-full bg-primary-foreground/40 sm:inline-block" />
-            <span>{t.home.finderLanguageNote}</span>
-          </div>
-        </FadeIn>
+            {t.home.finderRequestVisit}
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+        </aside>
       </div>
-    </section>
-  )
-}
-
-function MapView({
-  t,
-  libraries,
-  userLatLng,
-  submittedZip,
-  activeId,
-  active,
-  onSelect,
-  onTryAnother,
-}: {
-  t: ReturnType<typeof useLanguage>["t"]
-  libraries: (Library & { miles?: number })[]
-  userLatLng: { lat: number; lng: number } | null
-  submittedZip: string | null
-  activeId: string | null
-  active: (Library & { miles?: number }) | null
-  onSelect: (id: string | null) => void
-  onTryAnother: () => void
-}) {
-  const currentSites = libraries.filter((lib) => lib.status === "active")
-  const planningAreas = libraries.filter((lib) => lib.status === "placeholder")
-
-  return (
-    <>
-      {/* Compact context bar */}
-      <section className="bg-avanza-dark py-6">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-3 px-6 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-3 text-primary-foreground">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-avanza-green/20 text-avanza-green">
-              <MapPin className="h-4 w-4" />
-            </span>
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary-foreground/60">
-                {submittedZip ? t.home.finderShowingFor : t.home.finderShowingAll}
-              </p>
-              <p className="text-lg font-extrabold tracking-tight">
-                {submittedZip ? `ZIP ${submittedZip}` : "New Jersey"}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={onTryAnother}
-              className="rounded-full border border-primary-foreground/25 px-4 py-2 text-xs font-bold uppercase tracking-wider text-primary-foreground/85 transition-colors hover:border-primary-foreground/55 hover:bg-primary-foreground/8"
-            >
-              {t.home.finderTryAnother}
-            </button>
-            <Link
-              href="/"
-              className="rounded-full bg-primary-foreground/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-primary-foreground/85 transition-colors hover:bg-primary-foreground/20"
-            >
-              {t.home.finderBackToHome}
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Map + side panel */}
-      <section className="bg-[#fcfaf3]">
-        <div className="grid gap-0 lg:grid-cols-[1.55fr_1fr]">
-          <LeafletMap
-            libraries={libraries}
-            userLatLng={userLatLng}
-            activeId={activeId}
-            onSelect={onSelect}
-            ariaLabel={t.home.finderMapAria}
-            loadingLabel={t.home.finderMapLoading}
-            errorLabel={t.home.finderMapError}
-            legend={{
-              active: t.home.finderLegendActive,
-              coming: t.home.finderLegendComing,
-              you: t.home.finderLegendYou,
-            }}
-            labels={{
-              noUpcomingDate: t.home.finderNoUpcomingDate,
-              planningArea: t.home.finderPlanningArea,
-              notScheduled: t.home.finderNotScheduled,
-            }}
-          />
-
-          <div className="flex flex-col gap-4 bg-white p-6 sm:p-8">
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-avanza-green">
-                {submittedZip ? t.home.finderResultsTitle : t.home.finderShowingAll}
-              </p>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {currentSites.length} {t.home.finderCurrentCount} · {planningAreas.length} {t.home.finderPlanningCount}
-              </p>
-            </div>
-
-            <p className="text-xs text-muted-foreground">
-              {t.home.finderSelectMarker}
-            </p>
-            <p className="text-xs text-avanza-green/80 font-semibold">
-              {t.home.finderListNote}
-            </p>
-
-            <div className="space-y-6">
-              <LocationSection
-                title={t.home.finderCurrentSites}
-                libraries={currentSites}
-                activeId={activeId}
-                submittedZip={submittedZip}
-                onSelect={onSelect}
-                t={t}
-              />
-
-              <LocationSection
-                title={t.home.finderInterestSites}
-                libraries={planningAreas}
-                activeId={activeId}
-                submittedZip={submittedZip}
-                onSelect={onSelect}
-                t={t}
-              />
-            </div>
-
-            <a
-              href="mailto:liam@avanzastem.org?subject=Bring%20Avanza%20STEM%20to%20our%20library"
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full border-2 border-dashed border-avanza-dark/25 px-5 py-3 text-sm font-bold text-avanza-dark transition-all duration-200 hover:border-avanza-dark/50 hover:bg-avanza-dark/5"
-            >
-              {t.home.finderRequestVisit}
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-
-            {active && (
-              <div className="rounded-2xl bg-avanza-dark p-5 text-primary-foreground shadow-md">
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-avanza-green">
-                  {active.city}
-                </p>
-                <p className="mt-1 text-base font-extrabold leading-snug">
-                  {active.name}
-                </p>
-                <p className="mt-1 text-xs text-primary-foreground/70">
-                  {t.home.finderZipShort} {active.zip}
-                </p>
-                {active.status === "active" ? (
-                  <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold">
-                    <CalendarDays className="h-3 w-3" />
-                    {t.home.finderNoUpcomingDate}
-                  </p>
-                ) : (
-                  <div className="mt-3 space-y-1.5">
-                    <p className="text-[11px] font-bold uppercase tracking-wide text-primary-foreground/70">
-                      {t.home.finderPlanningArea}
-                    </p>
-                    <p className="text-xs text-primary-foreground/70">
-                      {t.home.finderNotScheduled}
-                    </p>
-                  </div>
-                )}
-                {typeof active.miles === "number" && (
-                  <p className="mt-3 text-xs text-primary-foreground/70">
-                    {t.home.finderDistance}: {active.miles} {t.home.finderMiles}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-    </>
+    </div>
   )
 }
 
@@ -482,43 +337,45 @@ function LocationSection({
   onSelect: (id: string | null) => void
   t: ReturnType<typeof useLanguage>["t"]
 }) {
+  if (libraries.length === 0) return null
+
   return (
     <section aria-labelledby={`finder-${title.replace(/\s+/g, "-").toLowerCase()}`}>
       <h2
         id={`finder-${title.replace(/\s+/g, "-").toLowerCase()}`}
-        className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-avanza-dark/70"
+        className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-avanza-dark/50"
       >
         {title}
       </h2>
 
-      <ul className="mt-3 space-y-3" aria-label={title}>
+      <ul className="mt-3 space-y-2.5" aria-label={title}>
         {libraries.map((lib, i) => {
           const isActive = lib.id === activeId
-          const isClosest = submittedZip !== null && i === 0
+          const isClosest = submittedZip !== null && lib.status === "active" && i === 0
           const isCurrentSite = lib.status === "active"
 
           return (
             <li key={lib.id}>
               <button
                 type="button"
-                onClick={() => onSelect(lib.id)}
+                onClick={() => onSelect(isActive ? null : lib.id)}
                 aria-pressed={isActive}
-                className={`group flex w-full items-start gap-4 rounded-2xl border-2 p-4 text-left transition-all duration-200 ${
+                className={`group flex w-full items-start gap-3.5 rounded-2xl border-2 p-3.5 text-left transition-all duration-200 ${
                   isActive
-                    ? "border-avanza-green bg-avanza-green/8 shadow-[0_8px_24px_-12px_rgba(46,204,113,0.45)]"
-                    : "border-avanza-dark/10 bg-white hover:border-avanza-dark/25 hover:bg-secondary"
+                    ? "border-avanza-teal bg-avanza-teal/8 shadow-[0_8px_24px_-14px_rgba(20,156,129,0.55)]"
+                    : "border-transparent bg-white shadow-[0_1px_0_rgba(26,26,46,0.06)] hover:border-avanza-dark/15 hover:bg-secondary"
                 }`}
               >
                 <span
-                  className={`mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${
+                  className={`mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${
                     isClosest
                       ? "bg-avanza-green text-avanza-dark"
                       : isCurrentSite
                         ? "bg-avanza-orange/15 text-avanza-orange"
-                        : "bg-avanza-dark/10 text-avanza-dark/60"
+                        : "bg-avanza-dark/8 text-avanza-dark/55"
                   }`}
                 >
-                  {i + 1}
+                  {isCurrentSite ? i + 1 : "•"}
                 </span>
                 <div className="flex-1">
                   <p className="text-sm font-extrabold leading-snug text-foreground">
@@ -533,14 +390,9 @@ function LocationSection({
                       {t.home.finderNoUpcomingDate}
                     </p>
                   ) : (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      <span className="rounded-full bg-avanza-dark/5 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-avanza-dark/70">
-                        {t.home.finderPlanningArea}
-                      </span>
-                      <span className="rounded-full bg-avanza-green/10 px-2 py-0.5 text-[11px] font-bold text-avanza-green">
-                        {t.home.finderHelpBring}
-                      </span>
-                    </div>
+                    <span className="mt-2 inline-block rounded-full bg-avanza-dark/5 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-avanza-dark/60">
+                      {t.home.finderHelpBring}
+                    </span>
                   )}
                 </div>
                 {typeof lib.miles === "number" && (
@@ -558,8 +410,9 @@ function LocationSection({
 }
 
 /**
- * Loads Leaflet (JS + CSS) lazily from CDN on mount and renders an
- * interactive OSM map with custom DivIcon library pins. No npm dependency.
+ * Loads Leaflet lazily on mount and renders an interactive OpenStreetMap with
+ * custom DivIcon library pins. Uses OSM's standard tiles, which need no API key
+ * (the previous CARTO basemap stamped "API KEY REQUIRED" across every tile).
  */
 function LeafletMap({
   libraries,
@@ -620,11 +473,10 @@ function LeafletMap({
           ], { padding: [16, 16] })
 
         Lx.tileLayer(
-          "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           {
             attribution:
-              '&copy; <a href="https://openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: "abcd",
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19,
           },
         ).addTo(map)
@@ -751,7 +603,7 @@ function LeafletMap({
 
   return (
     <div
-      className="afz-map-wrap relative h-[60vh] min-h-[420px] overflow-hidden lg:h-[calc(100vh-80px-72px)]"
+      className="afz-map-wrap relative h-[45vh] min-h-[360px] overflow-hidden lg:h-[calc(100vh-80px)]"
       style={{ isolation: "isolate" }}
     >
       <div
