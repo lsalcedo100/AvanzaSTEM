@@ -1,8 +1,10 @@
 "use client"
 
+import { useLanguage } from "@/components/providers/language-provider"
+import { findAiWeek, getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
+
 import Link from "next/link"
 import { ArrowRight, Check } from "lucide-react"
-import type { CourseWeek } from "@/features/curriculums/intro-to-ai-types"
 import {
   introToAiLessonPath,
   introToAiPath,
@@ -12,7 +14,9 @@ import {
 import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { Breadcrumbs } from "@/components/pages/intro-to-ai/shared"
 
-export function IntroToAiWeekContent({ week }: { week: CourseWeek }) {
+export function IntroToAiWeekContent({ weekNumber }: { weekNumber: number }) {
+  const { language } = useLanguage()
+  const week = findAiWeek(language, weekNumber) ?? getIntroToAiCourse(language).weeks[0]
   const p = useIntroToAiProgress()
   const totalWeeks = weekNumbers().length
   const { completed, total } = p.weekCompletion(week.week)

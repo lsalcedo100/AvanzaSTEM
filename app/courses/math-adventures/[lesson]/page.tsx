@@ -34,13 +34,13 @@ export default async function MathAdventuresLessonPage({
   }
 
   if (data.isFinalProject) {
-    return <MathFinalProjectContent lesson={data} />
+    return <MathFinalProjectContent slug={lesson} />
   }
 
   return (
     <>
       <CourseBreadcrumbJsonLd path={mathLessonPath(lesson)} leafName={data.title} />
-      <MathAdventuresLessonContent lesson={data} />
+      <MathAdventuresLessonContent slug={lesson} />
     </>
   )
 }

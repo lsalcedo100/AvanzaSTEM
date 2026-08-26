@@ -1,7 +1,13 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import {
+  findEngineeringLesson,
+  getEngineeringFundamentalsCurriculum,
+} from "@/features/curriculums/engineering-fundamentals-i18n"
 import Link from "next/link"
 import { PrintButton } from "@/components/ui/print-button"
 import {
-  engineeringFundamentalsCurriculum,
   engineeringLessonPath,
   engineeringWorksheetPath,
   type EngineeringLesson,
@@ -16,8 +22,11 @@ import {
  * exact setup steps, the real ways the build fails, and the actual questions an
  * adult should ask instead of fixing the design.
  */
-export function EngineeringTeacherGuideContent({ lesson }: { lesson: EngineeringLesson }) {
-  const total = engineeringFundamentalsCurriculum.totalLessons
+export function EngineeringTeacherGuideContent({ slug }: { slug: string }) {
+  const { language } = useLanguage()
+  const c = getEngineeringFundamentalsCurriculum(language)
+  const lesson = findEngineeringLesson(language, slug) ?? c.lessons[0]
+  const total = c.totalLessons
   const label = lesson.isFinal ? "Final challenge" : `Lesson ${lesson.order} of ${total}`
   const guide = lesson.teacherGuide
 

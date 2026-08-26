@@ -26,7 +26,7 @@ const CURRICULUM_SIGNUP_ID = "curriculum-launch-signup"
  * in `t.curriculumsPage` across all three locales.
  */
 export function CurriculumsPageContent() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
   const c = t.curriculumsPage
   const s = c.sections
 
@@ -110,7 +110,7 @@ export function CurriculumsPageContent() {
               title={s.flowHeading}
               description={s.flowIntro}
             />
-            <CurriculumFlow c={c} />
+            <CurriculumFlow c={c} language={language} />
           </FadeIn>
         </Container>
       </section>

@@ -1,9 +1,7 @@
 import Link from "next/link"
-import {
-  scienceExperimentsCurriculum,
-  scienceLessonPath,
-} from "@/features/curriculums/science-experiments"
-import type { Translations } from "@/i18n/translations"
+import { scienceLessonPath } from "@/features/curriculums/science-experiments"
+import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments-i18n"
+import type { Language, Translations } from "@/i18n/translations"
 
 /**
  * Section 1 — "What you'll do in each curriculum".
@@ -13,16 +11,18 @@ import type { Translations } from "@/i18n/translations"
  *     editorial rows separated by subtle dividers — no numbered circles, icons,
  *     rounded cards, pills, badges, or connecting arrows.
  *  2. A preview of one *real* lesson, rendered straight from the Science course
- *     data (Week 1) so nothing here is placeholder content. It links to the live
- *     lesson page.
+ *     data (Week 1) so nothing here is placeholder content, in the reader's
+ *     language. It links to the live lesson page.
  */
 export function CurriculumFlow({
   c,
+  language,
 }: {
   c: Translations["curriculumsPage"]
+  language: Language
 }) {
   const s = c.sections
-  const lesson = scienceExperimentsCurriculum.lessons[0]
+  const lesson = getScienceExperimentsCurriculum(language).lessons[0]
 
   return (
     <>

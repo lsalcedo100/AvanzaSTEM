@@ -1,8 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import { useLanguage } from "@/components/providers/language-provider"
+import { getRoboticsModules } from "@/features/curriculums/robotics-i18n"
 import {
-  roboticsCurriculum,
   roboticsLessonPath,
   roboticsPath,
   type JournalPrompt,
@@ -38,7 +39,8 @@ const inputClass =
 export function RoboticsJournalContent() {
   const { loaded, progress, saveJournalEntry } = useRoboticsProgress()
 
-  const modules = [...roboticsCurriculum.modules]
+  const { language } = useLanguage()
+  const modules = [...getRoboticsModules(language)]
     .filter((m) => m.journalPrompts.length > 0)
     .sort((a, b) => a.week - b.week)
 

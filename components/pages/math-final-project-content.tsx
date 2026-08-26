@@ -1,5 +1,10 @@
 "use client"
 
+import { useLanguage } from "@/components/providers/language-provider"
+import {
+  findMathLesson,
+  getMathAdventuresCurriculum,
+} from "@/features/curriculums/math-adventures-i18n"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Check, Circle, X } from "lucide-react"
@@ -127,7 +132,10 @@ function Requirement({ met, label, detail }: { met: boolean; label: string; deta
 /* Final project page                                                         */
 /* -------------------------------------------------------------------------- */
 
-export function MathFinalProjectContent({ lesson }: { lesson: MathLesson }) {
+export function MathFinalProjectContent({ slug }: { slug: string }) {
+  const { language } = useLanguage()
+  const c = getMathAdventuresCurriculum(language)
+  const lesson = findMathLesson(language, slug) ?? c.lessons[0]
   const prev = getPreviousMathLesson(lesson.slug)
 
   const {

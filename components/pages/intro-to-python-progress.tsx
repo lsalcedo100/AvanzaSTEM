@@ -1,8 +1,9 @@
 "use client"
 
+import { useLanguage } from "@/components/providers/language-provider"
+import { getIntroToPythonCurriculum } from "@/features/curriculums/intro-to-python-i18n"
 import Link from "next/link"
 import {
-  introToPythonCurriculum,
   introToPythonWeekPath,
 } from "@/features/curriculums/intro-to-python"
 import {
@@ -24,7 +25,8 @@ const STATUS_LABEL: Record<LessonStatus, string> = {
  * the neutral default (no hydration mismatch).
  */
 export function IntroToPythonProgress() {
-  const c = introToPythonCurriculum
+  const { language } = useLanguage()
+  const c = getIntroToPythonCurriculum(language)
   const { loaded, totalWeeks, completedCount, showAll, status, isUnlocked, setShowAll, reset } =
     useIntroToPythonProgress()
 

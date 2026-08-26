@@ -7,8 +7,8 @@ import {
   MathResumeButton,
   MathTeacherControls,
 } from "@/components/pages/math-adventures-progress-ui"
+import { getMathAdventuresCurriculum } from "@/features/curriculums/math-adventures-i18n"
 import {
-  mathAdventuresCurriculum,
   mathLessonPath,
 } from "@/features/curriculums/math-adventures"
 import {
@@ -40,9 +40,9 @@ import {
  * a glance for a parent skimming the page.
  */
 export function MathAdventuresContent() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
   const ml = t.courseLanding.math
-  const c = mathAdventuresCurriculum
+  const c = getMathAdventuresCurriculum(language)
   const firstLesson = c.lessons[0]
 
   return (

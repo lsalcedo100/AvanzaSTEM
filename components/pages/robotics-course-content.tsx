@@ -1,7 +1,8 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import { roboticsCurriculum, roboticsPath } from "@/features/curriculums/robotics"
+import { getRoboticsModules } from "@/features/curriculums/robotics-i18n"
+import { roboticsPath } from "@/features/curriculums/robotics"
 import {
   RoboticsFinalProjectPreview,
   RoboticsModuleList,
@@ -27,7 +28,11 @@ import {
   courseThemes,
 } from "@/components/pages/courses/course-ui"
 
-const MODULES = [...roboticsCurriculum.modules].sort((a, b) => a.order - b.order)
+/** Course modules in the reader's language, in course order. */
+function useModules() {
+  const { language } = useLanguage()
+  return getRoboticsModules(language)
+}
 
 const ROBOTICS_PHOTO_SRCS = [
   "/images/shared/lego-robotics.jpeg",
@@ -49,9 +54,10 @@ const ROBOTICS_PHOTO_SRCS = [
  * green its simulator, block editor, and knowledge checks already use.
  */
 export function RoboticsCourseContent() {
+  const modules = useModules()
   const { t } = useLanguage()
   const rl = t.courseLanding.robotics
-  const firstModule = MODULES[0]
+  const firstModule = modules[0]
 
   return (
     <CourseShell theme={courseThemes.robotics}>
@@ -105,14 +111,14 @@ export function RoboticsCourseContent() {
         aside={
           <StatRow
             stats={[
-              { value: `${MODULES.length}`, label: rl.statMissions },
+              { value: `${modules.length}`, label: rl.statMissions },
               { value: "3", label: rl.statWays },
             ]}
           />
         }
       >
         <ol className="grid gap-x-12 border-t border-avanza-dark/10 sm:grid-cols-2 lg:grid-cols-4">
-          {MODULES.map((module, i) => (
+          {modules.map((module, i) => (
             <li
               key={module.slug}
               className="flex gap-4 border-b border-avanza-dark/10 py-5"

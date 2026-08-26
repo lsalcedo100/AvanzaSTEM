@@ -1,7 +1,10 @@
 "use client"
 
+import { useLanguage } from "@/components/providers/language-provider"
+import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
+
 import Link from "next/link"
-import { introToAiCourse, introToAiLessonPath, introToAiPath } from "@/features/curriculums/intro-to-ai"
+import { introToAiLessonPath, introToAiPath } from "@/features/curriculums/intro-to-ai"
 import { courseCompletionRequirements, finalProjectComplete } from "@/features/curriculums/intro-to-ai-progress"
 import { computeSkillStates, summarizeSkills, STATUS_LABEL, type SkillStatus } from "@/features/curriculums/intro-to-ai-skills"
 import { FINAL_REFLECTION_PROMPTS } from "@/features/curriculums/intro-to-ai-mission"
@@ -16,6 +19,7 @@ const RELATED_COURSES = [
 ]
 
 export function IntroToAiCompletionContent() {
+  const course = getIntroToAiCourse(useLanguage().language)
   const p = useIntroToAiProgress()
 
   return (
@@ -38,7 +42,8 @@ export function IntroToAiCompletionContent() {
 }
 
 function NotYet({ p }: { p: ReturnType<typeof useIntroToAiProgress> }) {
-  const reqs = courseCompletionRequirements(p.progress, introToAiCourse)
+  const course = getIntroToAiCourse(useLanguage().language)
+  const reqs = courseCompletionRequirements(p.progress, course)
   const resumeHref = introToAiLessonPath(p.resume.week, p.resume.lessonSlug)
 
   return (
@@ -88,11 +93,12 @@ const STATUS_TONE: Record<SkillStatus, string> = {
 }
 
 function Complete({ p }: { p: ReturnType<typeof useIntroToAiProgress> }) {
+  const course = getIntroToAiCourse(useLanguage().language)
   const name = p.progress.certificate.studentName
   const projectDone = finalProjectComplete(p.progress)
-  const skillStates = computeSkillStates(p.progress, introToAiCourse, projectDone)
+  const skillStates = computeSkillStates(p.progress, course, projectDone)
   const skillCounts = summarizeSkills(skillStates)
-  const weeksComplete = introToAiCourse.weeks.filter((w) => w.lessons.every((l) => p.progress.completedLessons.includes(l.id))).length
+  const weeksComplete = course.weeks.filter((w) => w.lessons.every((l) => p.progress.completedLessons.includes(l.id))).length
   const reflectionsSaved = FINAL_REFLECTION_PROMPTS.filter((r) => (p.progress.reflections[r.id] ?? "").trim().length > 0).length
 
   const printCertificate = () => {
@@ -113,7 +119,7 @@ function Complete({ p }: { p: ReturnType<typeof useIntroToAiProgress> }) {
 
         {/* Recap */}
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <Stat label="Weeks completed" value={`${weeksComplete} of ${introToAiCourse.weeks.length}`} />
+          <Stat label="Weeks completed" value={`${weeksComplete} of ${course.weeks.length}`} />
           <Stat label="Skills demonstrated" value={`${skillCounts.demonstrated} of ${skillStates.length}`} />
           <Stat label="Final project" value={projectDone ? "Complete" : "In progress"} />
         </div>
@@ -163,15 +169,15 @@ function Complete({ p }: { p: ReturnType<typeof useIntroToAiProgress> }) {
         <p className="mt-6 text-sm text-muted-foreground">This certifies that</p>
         <p className="mt-2 text-2xl font-extrabold text-foreground">{name || "________________"}</p>
         <p className="mt-4 text-sm text-muted-foreground">has completed the six-week course</p>
-        <p className="mt-1 text-xl font-bold text-foreground">{introToAiCourse.title}</p>
-        <p className="mx-auto mt-4 max-w-md text-sm text-muted-foreground">{introToAiCourse.gradeRange} · {introToAiCourse.duration}</p>
+        <p className="mt-1 text-xl font-bold text-foreground">{course.title}</p>
+        <p className="mx-auto mt-4 max-w-md text-sm text-muted-foreground">{course.gradeRange} · {course.duration}</p>
 
         <div className="mx-auto mt-6 max-w-lg text-left">
           <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Skills demonstrated</p>
           <ul className="mt-2 grid gap-1 text-sm text-foreground sm:grid-cols-2">
             {skillStates.filter((s) => s.status === "demonstrated").length > 0
               ? skillStates.filter((s) => s.status === "demonstrated").map((s) => <li key={s.skill.id}>{s.skill.label}</li>)
-              : introToAiCourse.skills.map((s) => <li key={s.id}>{s.label}</li>)}
+              : course.skills.map((s) => <li key={s.id}>{s.label}</li>)}
           </ul>
         </div>
 

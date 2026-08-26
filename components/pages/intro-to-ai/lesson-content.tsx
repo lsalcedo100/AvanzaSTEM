@@ -1,5 +1,9 @@
 "use client"
 
+import { useLanguage } from "@/components/providers/language-provider"
+import { introToAiCourse } from "@/features/curriculums/intro-to-ai"
+import { findAiLesson, findAiWeek } from "@/features/curriculums/intro-to-ai-i18n"
+
 import { useEffect } from "react"
 import Link from "next/link"
 import { ArrowLeft, ArrowRight, Check } from "lucide-react"
@@ -22,7 +26,15 @@ import { IntroToAiReflection } from "@/components/pages/intro-to-ai/reflection"
 import { IntroToAiWorkedExample } from "@/components/pages/intro-to-ai/worked-example"
 import { SaveState } from "@/components/pages/intro-to-ai/ui"
 
-export function IntroToAiLessonContent({ week, lesson }: { week: number; lesson: Lesson }) {
+export function IntroToAiLessonContent({ week, slug }: { week: number; slug: string }) {
+  const { language } = useLanguage()
+  // The route 404s unknown week/slug pairs before this renders, so the English
+  // base is only a type-level backstop - it keeps the lookup non-null so every
+  // hook below stays unconditional.
+  const lesson =
+    findAiLesson(language, week, slug) ??
+    findAiWeek(language, week)?.lessons[0] ??
+    introToAiCourse.weeks[0].lessons[0]
   const p = useIntroToAiProgress()
   const { prev, next } = lessonNeighbors(week, lesson.slug)
   const sections = lessonSections(lesson)

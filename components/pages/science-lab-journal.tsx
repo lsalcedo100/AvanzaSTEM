@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import { useLanguage } from "@/components/providers/language-provider"
 import { PrintButton } from "@/components/ui/print-button"
 
 const STORAGE_KEY = "avanza-science-experiments-journal-v1"
@@ -11,43 +12,15 @@ type JournalEntry = Record<string, string>
 type JournalStore = Record<string, JournalEntry>
 
 /**
- * The six writing prompts, in the order of the course loop. Each carries the
- * loop stage it belongs to so the journal reinforces
- * Ask -> Predict -> Test -> Observe -> Explain -> Improve.
+ * The six writing prompts, in the order of the course loop, so the journal
+ * reinforces Ask -> Predict -> Test -> Observe -> Explain -> Improve.
+ *
+ * Only the ids are fixed here: they key the saved entries, so they must stay
+ * stable and language-independent or a student switching language would lose
+ * their notes. The stage, label, and hint come from `t.courseUi.science.prompts`
+ * in the same order.
  */
-const PROMPTS = [
-  { id: "question", stage: "Ask", label: "My question", hint: "What did you want to find out?" },
-  {
-    id: "prediction",
-    stage: "Predict",
-    label: "My prediction",
-    hint: "What did you think would happen, and why?",
-  },
-  {
-    id: "changed",
-    stage: "Test",
-    label: "What I changed",
-    hint: "What one thing did you change to keep it a fair test?",
-  },
-  {
-    id: "noticed",
-    stage: "Observe",
-    label: "What I noticed",
-    hint: "What did you see, hear, or measure?",
-  },
-  {
-    id: "why",
-    stage: "Explain",
-    label: "Why I think it happened",
-    hint: "Use what you noticed as your evidence.",
-  },
-  {
-    id: "improve",
-    stage: "Improve",
-    label: "What I would improve next time",
-    hint: "What would you change to make it work better?",
-  },
-] as const
+const PROMPT_IDS = ["question", "prediction", "changed", "noticed", "why", "improve"] as const
 
 function loadStore(): JournalStore {
   if (typeof window === "undefined") return {}
@@ -79,6 +52,9 @@ function persistStore(store: JournalStore) {
  * who would rather write and draw by hand.
  */
 export function ScienceLabJournal({ slug }: { slug: string }) {
+  const { t } = useLanguage()
+  const ui = t.courseUi.science
+  const shared = t.courseUi.shared
   const [entry, setEntry] = useState<JournalEntry>({})
   const [loaded, setLoaded] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -118,7 +94,7 @@ export function ScienceLabJournal({ slug }: { slug: string }) {
   }
 
   const handleClear = () => {
-    if (!window.confirm("Clear your notes for this lesson? This cannot be undone.")) return
+    if (!window.confirm(ui.journalConfirmClear)) return
     if (timer.current) clearTimeout(timer.current)
     setEntry({})
     const store = loadStore()
@@ -132,53 +108,50 @@ export function ScienceLabJournal({ slug }: { slug: string }) {
     <section className="border-b border-border">
       <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">Lab journal</h2>
-          <PrintButton label="Print this lesson" tone="orange" />
+          <h2 className="text-xl font-bold text-foreground md:text-2xl">{ui.journalTitle}</h2>
+          <PrintButton label={shared.printLesson} tone="orange" />
         </div>
-        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          Write your own science notes as you go - they follow the same loop you used this week.
-          Notes are saved on this device only; nothing is sent anywhere. You can also print this
-          lesson and write by hand.
-        </p>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{ui.journalIntro}</p>
 
         <div className="mt-8 space-y-6">
-          {PROMPTS.map((prompt) => (
-            <div key={prompt.id} className="notebook-grid rounded-lg border border-border bg-card p-5">
-              <div className="flex flex-wrap items-baseline gap-x-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-avanza-orange-dark">
-                  {prompt.stage}
-                </span>
-                <label
-                  htmlFor={`journal-${slug}-${prompt.id}`}
-                  className="text-sm font-bold text-foreground"
-                >
-                  {prompt.label}
-                </label>
+          {PROMPT_IDS.map((id, index) => {
+            const prompt = ui.prompts[index]
+            return (
+              <div key={id} className="notebook-grid rounded-lg border border-border bg-card p-5">
+                <div className="flex flex-wrap items-baseline gap-x-2">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-avanza-orange-dark">
+                    {prompt.stage}
+                  </span>
+                  <label
+                    htmlFor={`journal-${slug}-${id}`}
+                    className="text-sm font-bold text-foreground"
+                  >
+                    {prompt.label}
+                  </label>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">{prompt.hint}</p>
+                <textarea
+                  id={`journal-${slug}-${id}`}
+                  value={entry[id] ?? ""}
+                  onChange={(event) => handleChange(id, event.target.value)}
+                  rows={3}
+                  spellCheck
+                  placeholder={shared.writeHere}
+                  className="mt-3 block w-full resize-y rounded-md border border-border bg-background px-3 py-2 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-orange"
+                />
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">{prompt.hint}</p>
-              <textarea
-                id={`journal-${slug}-${prompt.id}`}
-                value={entry[prompt.id] ?? ""}
-                onChange={(event) => handleChange(prompt.id, event.target.value)}
-                rows={3}
-                spellCheck
-                placeholder="Write here..."
-                className="mt-3 block w-full resize-y rounded-md border border-border bg-background px-3 py-2 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-orange"
-              />
-            </div>
-          ))}
+            )
+          })}
 
           {/* Drawing box - meant for the printout, but also a clear space on screen. */}
           <div className="rounded-lg border border-border bg-card p-5">
             <div className="flex flex-wrap items-baseline gap-x-2">
               <span className="text-xs font-semibold uppercase tracking-wide text-avanza-orange-dark">
-                Observe
+                {ui.drawStage}
               </span>
-              <p className="text-sm font-bold text-foreground">Draw what happened</p>
+              <p className="text-sm font-bold text-foreground">{ui.drawTitle}</p>
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Sketch your experiment or your improved design, and circle the part you changed.
-            </p>
+            <p className="mt-1 text-xs text-muted-foreground">{ui.drawHint}</p>
             <div
               aria-hidden
               className="mt-3 h-44 rounded-md border border-dashed border-border bg-background"
@@ -192,7 +165,7 @@ export function ScienceLabJournal({ slug }: { slug: string }) {
             onClick={handleClear}
             className="print-hidden mt-6 text-sm font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-orange focus-visible:ring-offset-2"
           >
-            Clear these notes
+            {ui.journalClear}
           </button>
         )}
       </div>

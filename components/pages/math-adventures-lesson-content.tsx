@@ -1,3 +1,10 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import {
+  findMathLesson,
+  getMathAdventuresCurriculum,
+} from "@/features/curriculums/math-adventures-i18n"
 import Link from "next/link"
 import {
   MathLessonComplete,
@@ -24,8 +31,11 @@ import {
  * screen-reader-friendly with no client JavaScript. Only the progress controls
  * (visit + mark-complete) are client components.
  */
-export function MathAdventuresLessonContent({ lesson }: { lesson: MathLesson }) {
-  const total = mathAdventuresCurriculum.totalWeeks
+export function MathAdventuresLessonContent({ slug }: { slug: string }) {
+  const { language } = useLanguage()
+  const c = getMathAdventuresCurriculum(language)
+  const lesson = findMathLesson(language, slug) ?? c.lessons[0]
+  const total = c.totalWeeks
   const prev = getPreviousMathLesson(lesson.slug)
   const next = getNextMathLesson(lesson.slug)
   const label = lesson.isFinalProject

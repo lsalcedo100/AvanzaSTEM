@@ -154,9 +154,13 @@ export function AboutPageContent() {
                   </div>
                   <h3 className="mt-4 text-xl font-bold text-card-foreground">{member.name}</h3>
                   <p className={`text-sm font-semibold ${member.text}`}>{member.role}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {member.bio}
-                  </p>
+                  <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+                    {member.bio.split("\n\n").map((paragraph, index) => (
+                      <p key={paragraph} className={index > 0 ? "font-semibold" : undefined}>
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -180,9 +184,13 @@ export function AboutPageContent() {
                     </div>
                     <h3 className="mt-4 text-xl font-bold text-card-foreground">{member.name}</h3>
                     <p className={`text-sm font-semibold ${member.text}`}>{member.role}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      {member.bio}
-                    </p>
+                    <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+                      {member.bio.split("\n\n").map((paragraph, index) => (
+                        <p key={paragraph} className={index > 0 ? "font-semibold" : undefined}>
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>

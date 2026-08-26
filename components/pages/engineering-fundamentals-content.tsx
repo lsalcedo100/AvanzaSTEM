@@ -6,8 +6,8 @@ import {
   EngineeringLessonList,
   EngineeringResumeButton,
 } from "@/components/pages/engineering-progress-ui"
+import { getEngineeringFundamentalsCurriculum } from "@/features/curriculums/engineering-fundamentals-i18n"
 import {
-  engineeringFundamentalsCurriculum,
   engineeringLessonPath,
 } from "@/features/curriculums/engineering-fundamentals"
 import {
@@ -31,7 +31,7 @@ import {
 /**
  * Overview page for the Engineering Fundamentals course (/courses/engineering-fundamentals).
  *
- * Reads entirely from `engineeringFundamentalsCurriculum`, so lessons, learning
+ * Reads entirely from the localized engineering curriculum, so lessons, learning
  * goals, grouped materials, and the design process all come from the data file.
  *
  * Design: the shared course kit (`components/pages/courses/course-ui`) in the
@@ -41,9 +41,9 @@ import {
  * the one real diagram and recolored to the course accent.
  */
 export function EngineeringFundamentalsContent() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
   const el = t.courseLanding.engineering
-  const c = engineeringFundamentalsCurriculum
+  const c = getEngineeringFundamentalsCurriculum(language)
   const firstLesson = c.lessons[0]
   const photoSrcs = [
     "/images/projects/popsicle-stick-bridge/cover.jpg",

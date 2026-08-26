@@ -46,7 +46,7 @@ export default async function IntroToPythonLessonPage({
   return (
     <>
       <CourseBreadcrumbJsonLd path={introToPythonWeekPath(lesson.week)} leafName={lesson.title} />
-      <IntroToPythonLessonContent week={lesson} />
+      <IntroToPythonLessonContent weekNumber={lesson.week} />
     </>
   )
 }

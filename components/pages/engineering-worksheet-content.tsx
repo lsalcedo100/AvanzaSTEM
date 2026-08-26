@@ -1,7 +1,13 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import {
+  findEngineeringLesson,
+  getEngineeringFundamentalsCurriculum,
+} from "@/features/curriculums/engineering-fundamentals-i18n"
 import Link from "next/link"
 import { PrintButton } from "@/components/ui/print-button"
 import {
-  engineeringFundamentalsCurriculum,
   engineeringLessonPath,
   engineeringTeacherGuidePath,
   type EngineeringLesson,
@@ -17,8 +23,11 @@ import {
  * uses plain foreground borders so it reads clearly on paper. The final
  * challenge gets a mission-style variant with a solution-path picker.
  */
-export function EngineeringWorksheetContent({ lesson }: { lesson: EngineeringLesson }) {
-  const total = engineeringFundamentalsCurriculum.totalLessons
+export function EngineeringWorksheetContent({ slug }: { slug: string }) {
+  const { language } = useLanguage()
+  const c = getEngineeringFundamentalsCurriculum(language)
+  const lesson = findEngineeringLesson(language, slug) ?? c.lessons[0]
+  const total = c.totalLessons
   const label = lesson.isFinal ? "Final challenge" : `Lesson ${lesson.order} of ${total}`
 
   return (

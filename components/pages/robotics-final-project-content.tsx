@@ -1,9 +1,10 @@
 "use client"
 
 import { useState } from "react"
+import { useLanguage } from "@/components/providers/language-provider"
+import { getRoboticsModules } from "@/features/curriculums/robotics-i18n"
 import Link from "next/link"
 import {
-  roboticsCurriculum,
   roboticsLessonPath,
   roboticsPath,
   type FinalProjectRequirement,
@@ -63,7 +64,8 @@ const RUBRIC_LEVELS = ["Beginning", "Developing", "Proficient", "Exemplary"]
  * are re-keyed on `loaded` so saved values appear once hydrated.
  */
 export function RoboticsFinalProjectContent() {
-  const finalModule = roboticsCurriculum.modules.find((m) => m.isFinal)
+  const { language } = useLanguage()
+  const finalModule = getRoboticsModules(language).find((m) => m.isFinal)
 
   const { loaded, progress, setFinalMissionChoice, saveFinalPlanField, saveFinalTestResults, saveFinalSelfEval } =
     useRoboticsProgress()

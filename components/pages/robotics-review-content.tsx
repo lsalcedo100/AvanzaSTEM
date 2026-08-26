@@ -1,8 +1,10 @@
 "use client"
 
+import { useMemo } from "react"
+import { useLanguage } from "@/components/providers/language-provider"
+import { getRoboticsModules } from "@/features/curriculums/robotics-i18n"
 import Link from "next/link"
 import {
-  roboticsCurriculum,
   roboticsLessonPath,
   roboticsPath,
   roboticsTeacherGuidePath,
@@ -10,21 +12,41 @@ import {
 } from "@/features/curriculums/robotics"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
 import { countStatements } from "@/features/curriculums/robotics-program"
+import type { RoboticsModule } from "@/features/curriculums/robotics"
 import type { RoboticsModuleStatus } from "@/features/curriculums/robotics-progress"
 
-const MODULES = [...roboticsCurriculum.modules].sort((a, b) => a.order - b.order)
+/** Course modules in the reader's language, in course order. */
+function useModules() {
+  const { language } = useLanguage()
+  return getRoboticsModules(language)
+}
 
-// Look-up tables so saved artifacts (keyed by stable id) can show their titles.
-const PROGRAM_SPECS = new Map(MODULES.flatMap((m) => m.savedPrograms).map((s) => [s.id, s]))
-const SIM_MISSIONS = new Map(MODULES.flatMap((m) => m.simulatorMissions).map((s) => [s.id, s]))
-const PREDICTION_PROMPTS = new Map(MODULES.flatMap((m) => m.predictionPrompts).map((p) => [p.id, p]))
-const TEST_RECORDS = new Map(MODULES.flatMap((m) => m.testRecords).map((r) => [r.id, r]))
-const DEBUG_MISSIONS = new Map(MODULES.flatMap((m) => m.debuggingMissions).map((d) => [d.id, d]))
-// Journal + knowledge-check questions carry their owning week, so entries can be grouped/labelled.
-const JOURNAL_PROMPTS = new Map(
-  MODULES.flatMap((m) => m.journalPrompts.map((p) => [p.id, { module: m, prompt: p }] as const)),
-)
-const KNOWLEDGE_CHECK_MODULES = new Map(MODULES.map((m) => [m.knowledgeCheck.id, m]))
+/**
+ * Look-up tables so saved artifacts (keyed by stable, language-independent ids)
+ * can show their titles in the reader's language. Built from the localized
+ * modules, so a student who switches language sees their own saved work
+ * relabelled rather than lost.
+ */
+function useLookups(modules: RoboticsModule[]) {
+  return useMemo(
+    () => ({
+      programSpecs: new Map(modules.flatMap((m) => m.savedPrograms).map((s) => [s.id, s])),
+      simMissions: new Map(modules.flatMap((m) => m.simulatorMissions).map((s) => [s.id, s])),
+      predictionPrompts: new Map(modules.flatMap((m) => m.predictionPrompts).map((p) => [p.id, p])),
+      testRecords: new Map(modules.flatMap((m) => m.testRecords).map((r) => [r.id, r])),
+      debugMissions: new Map(modules.flatMap((m) => m.debuggingMissions).map((d) => [d.id, d])),
+      // Journal + knowledge-check questions carry their owning week, so entries
+      // can be grouped and labelled.
+      journalPrompts: new Map(
+        modules.flatMap((m) =>
+          m.journalPrompts.map((p) => [p.id, { module: m, prompt: p }] as const),
+        ),
+      ),
+      knowledgeCheckModules: new Map(modules.map((m) => [m.knowledgeCheck.id, m])),
+    }),
+    [modules],
+  )
+}
 
 /** True when a filled test table has at least one non-empty cell. */
 function hasFilledCell(rows: string[][]): boolean {
@@ -54,9 +76,9 @@ function resolveCta(state: {
   hasProgress: boolean
   complete: boolean
   resumePath: string
-}): { href: string; label: string } {
+}, modules: RoboticsModule[]): { href: string; label: string } {
   if (!state.loaded || !state.hasProgress) {
-    return { href: roboticsLessonPath(MODULES[0].slug), label: "Start Week 1" }
+    return { href: roboticsLessonPath(modules[0].slug), label: "Start Week 1" }
   }
   if (state.complete) {
     return { href: roboticsPath, label: "You've finished the course" }
@@ -72,6 +94,16 @@ function resolveCta(state: {
  * mismatch. Matches the visual style of robotics-progress-ui.tsx.
  */
 export function RoboticsReviewContent() {
+  const modules = useModules()
+  const {
+    programSpecs,
+    simMissions,
+    predictionPrompts,
+    testRecords,
+    debugMissions,
+    journalPrompts,
+    knowledgeCheckModules,
+  } = useLookups(modules)
   const { loaded, completion, hasProgress, resume, status, progress } = useRoboticsProgress()
 
   const savedPrograms = Object.values(progress.savedPrograms)
@@ -81,27 +113,27 @@ export function RoboticsReviewContent() {
   // Saved predictions with a non-empty response, matched to their prompt text.
   const savedPredictions = Object.entries(progress.predictions)
     .filter(([, response]) => response.trim() !== "")
-    .map(([promptId, response]) => ({ promptId, response, prompt: PREDICTION_PROMPTS.get(promptId) }))
+    .map(([promptId, response]) => ({ promptId, response, prompt: predictionPrompts.get(promptId) }))
 
   // Filled test tables (at least one non-empty cell), matched to their record spec.
   const savedTestRecords = Object.values(progress.testRecords)
     .filter((record) => hasFilledCell(record.rows))
-    .map((record) => ({ record, spec: TEST_RECORDS.get(record.recordId) }))
+    .map((record) => ({ record, spec: testRecords.get(record.recordId) }))
 
   // Debugging findings the student actually wrote a revision for.
   const savedDebugFindings = Object.values(progress.debugFindings)
     .filter((finding) => finding.revisionMade.trim() !== "")
-    .map((finding) => ({ finding, mission: DEBUG_MISSIONS.get(finding.missionId) }))
+    .map((finding) => ({ finding, mission: debugMissions.get(finding.missionId) }))
 
   // Journal entries with a saved value, matched to their week + prompt.
   const savedJournalEntries = Object.values(progress.journal)
     .filter((entry) => entry.value.trim() !== "")
-    .map((entry) => ({ entry, lookup: JOURNAL_PROMPTS.get(entry.promptId) }))
+    .map((entry) => ({ entry, lookup: journalPrompts.get(entry.promptId) }))
 
   // Weeks with a saved knowledge-check attempt, so their explanations can be re-read.
   const reviewableChecks = Object.values(progress.knowledgeChecks)
-    .map((attempt) => KNOWLEDGE_CHECK_MODULES.get(attempt.checkId))
-    .filter((module): module is (typeof MODULES)[number] => module !== undefined)
+    .map((attempt) => knowledgeCheckModules.get(attempt.checkId))
+    .filter((module): module is RoboticsModule => module !== undefined)
     .sort((a, b) => a.order - b.order)
 
   const cta = resolveCta({
@@ -109,7 +141,7 @@ export function RoboticsReviewContent() {
     hasProgress,
     complete: completion.complete,
     resumePath: resume.path,
-  })
+  }, modules)
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
@@ -169,7 +201,7 @@ export function RoboticsReviewContent() {
             check scores. Start with the first week whenever you are ready.
           </p>
           <div className="mt-4">
-            <Link href={roboticsLessonPath(MODULES[0].slug)} className={greenButton}>
+            <Link href={roboticsLessonPath(modules[0].slug)} className={greenButton}>
               Start Week 1
             </Link>
           </div>
@@ -180,7 +212,7 @@ export function RoboticsReviewContent() {
       <section className="mt-8">
         <h2 className="text-lg font-bold text-foreground">Weeks</h2>
         <ul className="mt-4 space-y-3">
-          {MODULES.map((module) => {
+          {modules.map((module) => {
             const moduleStatus: RoboticsModuleStatus = loaded ? status(module) : "not-started"
             const locked = loaded && moduleStatus === "locked"
             const label = module.isFinal ? "Final project" : `Week ${module.week}: ${module.title}`
@@ -249,7 +281,7 @@ export function RoboticsReviewContent() {
         {loaded && (savedProgramAsts.length > 0 || savedPrograms.length > 0) ? (
           <ul className="mt-4 space-y-2">
             {savedProgramAsts.map((prog) => {
-              const spec = PROGRAM_SPECS.get(prog.specId)
+              const spec = programSpecs.get(prog.specId)
               const count = countStatements(prog.program)
               return (
                 <li key={`ast-${prog.specId}`} className="rounded-lg border border-border p-4 text-sm">
@@ -264,7 +296,7 @@ export function RoboticsReviewContent() {
             {savedPrograms
               .filter((prog) => !progress.savedProgramAsts[prog.specId])
               .map((prog) => {
-                const spec = PROGRAM_SPECS.get(prog.specId)
+                const spec = programSpecs.get(prog.specId)
                 return (
                   <li key={prog.specId} className="rounded-lg border border-border p-4 text-sm">
                     <p className="font-semibold text-foreground">{spec?.title ?? prog.specId}</p>
@@ -289,7 +321,7 @@ export function RoboticsReviewContent() {
         {loaded && savedSimulations.length > 0 ? (
           <ul className="mt-4 space-y-2">
             {savedSimulations.map((run) => {
-              const mission = SIM_MISSIONS.get(run.missionId)
+              const mission = simMissions.get(run.missionId)
               const label = mission?.title ?? run.missionId.replace(/-/g, " ")
               return (
                 <li key={run.specId || run.missionId} className="rounded-lg border border-border p-4 text-sm">
@@ -325,7 +357,7 @@ export function RoboticsReviewContent() {
           knowledge-check answer key). Open one and use your browser&apos;s Print option.
         </p>
         <ul className="mt-4 space-y-2">
-          {MODULES.map((module) => (
+          {modules.map((module) => (
             <li
               key={module.slug}
               className="flex flex-col gap-2 rounded-lg border border-border p-4 text-sm sm:flex-row sm:items-center sm:justify-between"
@@ -359,7 +391,7 @@ export function RoboticsReviewContent() {
           Every robotics term from the course, week by week.
         </p>
         <div className="mt-4 space-y-6">
-          {MODULES.map((module) => (
+          {modules.map((module) => (
             <div key={module.slug}>
               <h3 className="text-sm font-bold text-foreground">
                 {module.isFinal ? "Final project" : `Week ${module.week}: ${module.title}`}

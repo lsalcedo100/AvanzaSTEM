@@ -1,3 +1,10 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import {
+  findEngineeringLesson,
+  getEngineeringFundamentalsCurriculum,
+} from "@/features/curriculums/engineering-fundamentals-i18n"
 import Link from "next/link"
 import {
   EngineeringLessonComplete,
@@ -10,7 +17,6 @@ import {
 import { EngineeringDiagram } from "@/components/ui/engineering-diagrams"
 import { EngineeringMaterialComparison } from "@/components/ui/engineering-material-comparison"
 import {
-  engineeringFundamentalsCurriculum,
   engineeringFundamentalsPath,
   engineeringLessonPath,
   engineeringTeacherGuidePath,
@@ -32,8 +38,11 @@ import {
  * them fall back gracefully, so every page stays coherent. The component is pure
  * layout - no lesson text lives here.
  */
-export function EngineeringFundamentalsLessonContent({ lesson }: { lesson: EngineeringLesson }) {
-  const total = engineeringFundamentalsCurriculum.totalLessons
+export function EngineeringFundamentalsLessonContent({ slug }: { slug: string }) {
+  const { language } = useLanguage()
+  const c = getEngineeringFundamentalsCurriculum(language)
+  const lesson = findEngineeringLesson(language, slug) ?? c.lessons[0]
+  const total = c.totalLessons
   const prev = previousEngineeringLesson(lesson.slug)
   const next = nextEngineeringLesson(lesson.slug)
   const label = lesson.isFinal ? "Final challenge" : `Lesson ${lesson.order} of ${total}`
@@ -241,7 +250,7 @@ export function EngineeringFundamentalsLessonContent({ lesson }: { lesson: Engin
             Engineers plan before they build. Work through these before you pick up any tape.
           </p>
           <ol className="mt-4 space-y-2">
-            {engineeringFundamentalsCurriculum.planningPrompts.map((prompt, i) => (
+            {c.planningPrompts.map((prompt, i) => (
               <li key={prompt} className="grid grid-cols-[1.5rem_1fr] gap-3">
                 <span className="font-mono text-sm font-semibold text-muted-foreground">
                   {i + 1}

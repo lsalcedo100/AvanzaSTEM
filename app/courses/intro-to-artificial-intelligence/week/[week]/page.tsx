@@ -23,7 +23,7 @@ export default async function IntroToAiWeekPage({ params }: { params: Promise<{ 
   return (
     <>
       <CourseBreadcrumbJsonLd path={introToAiWeekPath(courseWeek.week)} leafName={`Week ${courseWeek.week}: ${courseWeek.title}`} />
-      <IntroToAiWeekContent week={courseWeek} />
+      <IntroToAiWeekContent weekNumber={courseWeek.week} />
     </>
   )
 }

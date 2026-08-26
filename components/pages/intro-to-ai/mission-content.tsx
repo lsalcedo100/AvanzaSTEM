@@ -1,5 +1,8 @@
 "use client"
 
+import { useLanguage } from "@/components/providers/language-provider"
+import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
+
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { introToAiCourse, introToAiLessonPath, introToAiPath } from "@/features/curriculums/intro-to-ai"
@@ -23,7 +26,12 @@ import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { IntroToAiKnowledgeCheck } from "@/components/pages/intro-to-ai/knowledge-check"
 import { Breadcrumbs } from "@/components/pages/intro-to-ai/shared"
 
-/** Find a lesson's week + slug by id, for "review this" links. */
+/**
+ * Find a lesson's week + slug by id, for "review this" links.
+ *
+ * Reads the English base deliberately: this only produces route parts, and week
+ * numbers and slugs are shared across locales, so there is nothing to localize.
+ */
 function lessonLocation(lessonId: string): { week: number; slug: string } | null {
   for (const w of introToAiCourse.weeks) {
     const l = w.lessons.find((x) => x.id === lessonId)
@@ -38,6 +46,7 @@ function skillReviewLink(skillId: string | undefined) {
 }
 
 export function IntroToAiFinalAssessmentContent() {
+  const course = getIntroToAiCourse(useLanguage().language)
   const p = useIntroToAiProgress()
   const saved = p.progress.assessment
   const [rec, setRec] = useState<RecommendationAnswer>(() => parseRecommendation(undefined))

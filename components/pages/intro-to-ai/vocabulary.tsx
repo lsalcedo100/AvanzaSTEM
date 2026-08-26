@@ -1,7 +1,10 @@
 "use client"
 
+import { useLanguage } from "@/components/providers/language-provider"
+import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
+
 import { useMemo, useState } from "react"
-import { introToAiCourse } from "@/features/curriculums/intro-to-ai"
+
 import type { VocabularyTerm } from "@/features/curriculums/intro-to-ai-types"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
@@ -14,11 +17,12 @@ type Grouping = "week" | "alpha"
  * it is keyboard-navigable and works without hover; fully responsive.
  */
 export function IntroToAiVocabulary() {
+  const course = getIntroToAiCourse(useLanguage().language)
   const [grouping, setGrouping] = useState<Grouping>("week")
 
   const byWeek = useMemo(
     () =>
-      introToAiCourse.weeks.map((w) => ({
+      course.weeks.map((w) => ({
         id: w.id,
         label: `Week ${w.week}: ${w.title}`,
         terms: dedupe(w.lessons.flatMap((l) => l.vocabulary)),
@@ -27,7 +31,7 @@ export function IntroToAiVocabulary() {
   )
 
   const alpha = useMemo(() => {
-    const all = dedupe(introToAiCourse.weeks.flatMap((w) => w.lessons.flatMap((l) => l.vocabulary)))
+    const all = dedupe(course.weeks.flatMap((w) => w.lessons.flatMap((l) => l.vocabulary)))
     return [...all].sort((a, b) => a.term.localeCompare(b.term))
   }, [])
 

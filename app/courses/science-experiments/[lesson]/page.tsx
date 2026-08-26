@@ -39,7 +39,7 @@ export default async function ScienceExperimentsLessonPage({
   return (
     <>
       <CourseBreadcrumbJsonLd path={scienceLessonPath(lesson)} leafName={data.title} />
-      <ScienceExperimentsLessonContent lesson={data} />
+      <ScienceExperimentsLessonContent slug={lesson} />
     </>
   )
 }

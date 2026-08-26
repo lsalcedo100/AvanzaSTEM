@@ -39,7 +39,7 @@ export default async function EngineeringWorksheetPage({
   return (
     <>
       <CourseBreadcrumbJsonLd path={engineeringWorksheetPath(lesson)} leafName={`${data.title} worksheet`} />
-      <EngineeringWorksheetContent lesson={data} />
+      <EngineeringWorksheetContent slug={lesson} />
     </>
   )
 }

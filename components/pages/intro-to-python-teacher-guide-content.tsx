@@ -1,7 +1,10 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import { getIntroToPythonCurriculum } from "@/features/curriculums/intro-to-python-i18n"
 import Link from "next/link"
 import { PrintButton } from "@/components/ui/print-button"
 import {
-  introToPythonCurriculum,
   introToPythonPath,
   introToPythonWorksheetsPath,
 } from "@/features/curriculums/intro-to-python"
@@ -13,7 +16,8 @@ import {
  * site chrome is hidden on print and each lesson starts on a fresh page.
  */
 export function IntroToPythonTeacherGuideContent() {
-  const c = introToPythonCurriculum
+  const { language } = useLanguage()
+  const c = getIntroToPythonCurriculum(language)
   const f = c.facilitator
 
   return (

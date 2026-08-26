@@ -4,7 +4,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
-import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
 import { codingFeatureImage, preExpansionGalleryImages } from "@/components/ui/gallery"
 
@@ -67,16 +66,16 @@ function ProjectCard({
       href={href}
       className="group flex h-full flex-col overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
-      <div className="relative h-44 w-full overflow-hidden">
-        <LightboxImage
+      <div className="relative h-44 w-full overflow-hidden bg-secondary">
+        <Image
           src={image}
           alt={alt ?? title}
           fill
-          buttonClassName="z-20"
+          sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
-      <div className="pointer-events-none relative z-20 flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-5">
         <h3 className="text-lg font-extrabold leading-snug text-card-foreground">
           {title}
         </h3>

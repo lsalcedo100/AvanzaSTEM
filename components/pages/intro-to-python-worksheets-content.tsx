@@ -1,7 +1,10 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import { getIntroToPythonCurriculum } from "@/features/curriculums/intro-to-python-i18n"
 import Link from "next/link"
 import { PrintButton } from "@/components/ui/print-button"
 import {
-  introToPythonCurriculum,
   introToPythonTeacherGuidePath,
   type CurriculumWeek,
 } from "@/features/curriculums/intro-to-python"
@@ -13,7 +16,8 @@ import {
  * the site chrome is hidden and each worksheet starts on a fresh page.
  */
 export function IntroToPythonWorksheetsContent() {
-  const c = introToPythonCurriculum
+  const { language } = useLanguage()
+  const c = getIntroToPythonCurriculum(language)
 
   return (
     <div className="bg-background">

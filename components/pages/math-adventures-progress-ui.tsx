@@ -3,9 +3,10 @@
 import { useEffect } from "react"
 import Link from "next/link"
 import { Lock } from "lucide-react"
+import { useLanguage } from "@/components/providers/language-provider"
+import { getMathAdventuresCurriculum } from "@/features/curriculums/math-adventures-i18n"
 import {
   getNextMathLesson,
-  mathAdventuresCurriculum,
   mathAdventuresPath,
   mathLessonPath,
   type MathLesson,
@@ -19,9 +20,19 @@ const STATUS_LABEL: Record<MathLessonStatus, string> = {
   locked: "Locked",
 }
 
-const lessons = mathAdventuresCurriculum.lessons
-const firstLesson = lessons[0]
-const finalLesson = lessons[lessons.length - 1]
+/**
+ * The course lessons in the reader's language, plus the two the CTA needs.
+ * Slugs are shared with English, so links stay stable across locales.
+ */
+function useLessons(): {
+  lessons: MathLesson[]
+  firstLesson: MathLesson
+  finalLesson: MathLesson
+} {
+  const { language } = useLanguage()
+  const lessons = getMathAdventuresCurriculum(language).lessons
+  return { lessons, firstLesson: lessons[0], finalLesson: lessons[lessons.length - 1] }
+}
 
 const tealButton =
   "inline-flex items-center justify-center rounded-md bg-avanza-teal px-5 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-avanza-teal-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -40,17 +51,20 @@ type Cta = { href: string; label: string }
  * Defaults to Week 1 before localStorage has loaded so the first render is
  * hydration-safe and always actionable.
  */
-function resolveCta(state: {
-  loaded: boolean
-  hasProgress: boolean
-  allComplete: boolean
-  resumeLesson: MathLesson | null
-}): Cta {
+function resolveCta(
+  state: {
+    loaded: boolean
+    hasProgress: boolean
+    allComplete: boolean
+    resumeLesson: MathLesson | null
+  },
+  bounds: { firstLesson: MathLesson; finalLesson: MathLesson },
+): Cta {
   if (!state.loaded || !state.hasProgress) {
-    return { href: mathLessonPath(firstLesson.slug), label: "Start Week 1" }
+    return { href: mathLessonPath(bounds.firstLesson.slug), label: "Start Week 1" }
   }
   if (state.allComplete) {
-    return { href: mathLessonPath(finalLesson.slug), label: "View final project" }
+    return { href: mathLessonPath(bounds.finalLesson.slug), label: "View final project" }
   }
   if (!state.resumeLesson) {
     return { href: mathAdventuresPath, label: "Review the course" }
@@ -78,10 +92,11 @@ function courseStatus(state: { hasProgress: boolean; allComplete: boolean }): st
  * first client render both show the neutral "Not started" state.
  */
 export function MathCourseProgress() {
+  const bounds = useLessons()
   const { loaded, hasProgress, totalWeeks, completedCount, percent, allComplete, resumeLesson } =
     useMathProgress()
 
-  const cta = resolveCta({ loaded, hasProgress, allComplete, resumeLesson })
+  const cta = resolveCta({ loaded, hasProgress, allComplete, resumeLesson }, bounds)
   const status = courseStatus({ hasProgress, allComplete })
 
   const nextLabel =
@@ -135,8 +150,9 @@ export function MathCourseProgress() {
  * call-to-action at the bottom of the hub.
  */
 export function MathResumeButton() {
+  const bounds = useLessons()
   const { loaded, hasProgress, allComplete, resumeLesson } = useMathProgress()
-  const cta = resolveCta({ loaded, hasProgress, allComplete, resumeLesson })
+  const cta = resolveCta({ loaded, hasProgress, allComplete, resumeLesson }, bounds)
 
   return (
     <Link href={cta.href} className={tealButton}>
@@ -234,6 +250,7 @@ export function MathLessonComplete({ lesson }: { lesson: MathLesson }) {
  * hydration mismatch and to keep the course reachable.
  */
 export function MathLessonPath() {
+  const { lessons } = useLessons()
   const { loaded, status } = useMathProgress()
 
   return (

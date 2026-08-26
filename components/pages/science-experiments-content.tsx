@@ -1,10 +1,8 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import {
-  scienceExperimentsCurriculum,
-  scienceLessonPath,
-} from "@/features/curriculums/science-experiments"
+import { scienceLessonPath } from "@/features/curriculums/science-experiments"
+import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments-i18n"
 import {
   ScienceCompletion,
   ScienceCourseProgress,
@@ -31,7 +29,7 @@ import {
 /**
  * Overview page for the Science Experiments course (/courses/science-experiments).
  *
- * Reads entirely from `scienceExperimentsCurriculum`, so the six-week path,
+ * Reads entirely from the localized science curriculum, so the six-week path,
  * materials, safety notes, goals, and outcomes all come from the data file.
  *
  * Design: built on the shared course kit (`components/pages/courses/course-ui`)
@@ -41,9 +39,9 @@ import {
  * materials, time, safety - one click away in the jump nav.
  */
 export function ScienceExperimentsContent() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
   const sl = t.courseLanding.science
-  const c = scienceExperimentsCurriculum
+  const c = getScienceExperimentsCurriculum(language)
   const firstLesson = c.lessons[0]
   const photoSrcs = [
     "/images/projects/baking-soda-volcano/cover.jpg",

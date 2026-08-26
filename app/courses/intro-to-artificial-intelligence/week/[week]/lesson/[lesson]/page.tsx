@@ -32,7 +32,7 @@ export default async function IntroToAiLessonPage({
   return (
     <>
       <CourseBreadcrumbJsonLd path={introToAiLessonPath(weekNum, lesson)} leafName={found.title} />
-      <IntroToAiLessonContent week={weekNum} lesson={found} />
+      <IntroToAiLessonContent week={weekNum} slug={lesson} />
     </>
   )
 }

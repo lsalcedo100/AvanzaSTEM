@@ -1,12 +1,13 @@
+"use client"
+
 import Link from "next/link"
+import { useLanguage } from "@/components/providers/language-provider"
 import {
-  nextScienceLesson,
-  previousScienceLesson,
-  scienceExperimentsCurriculum,
   scienceExperimentsPath,
   scienceLessonPath,
-  type ScienceLesson,
 } from "@/features/curriculums/science-experiments"
+import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments-i18n"
+import { formatTemplate } from "@/lib/format-template"
 import {
   ScienceLessonComplete,
   ScienceLessonVisit,
@@ -19,15 +20,25 @@ import { ScienceLabJournal } from "@/components/pages/science-lab-journal"
  * (/courses/science-experiments/[lesson]).
  *
  * This is the routing-complete lesson view: it renders the full lesson from the
- * `scienceExperimentsCurriculum` data - big question, concepts, the experiment
+ * localized science curriculum - big question, concepts, the experiment
  * and why it works, discussion, and challenges - plus prev/next navigation. It
  * intentionally stays free of progress tracking, worksheets, and teacher-guide
  * sub-routes, which are a later phase. Styling matches the course hub: a plain
  * lab-journal look with a single avanza-orange accent, no badges or emoji.
  */
-export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLesson }) {
-  const prev = previousScienceLesson(lesson.slug)
-  const next = nextScienceLesson(lesson.slug)
+export function ScienceExperimentsLessonContent({ slug }: { slug: string }) {
+  const { language, t } = useLanguage()
+  const ui = t.courseUi.science
+  const shared = t.courseUi.shared
+  const c = getScienceExperimentsCurriculum(language)
+
+  // Resolve the lesson (and its neighbours) from the localized curriculum so the
+  // prose, prev/next titles, and completion title all follow the active language.
+  // The slug comes from the route and is language-independent by design.
+  const index = c.lessons.findIndex((entry) => entry.slug === slug)
+  const lesson = index >= 0 ? c.lessons[index] : c.lessons[0]
+  const prev = index > 0 ? c.lessons[index - 1] : null
+  const next = index >= 0 && index < c.lessons.length - 1 ? c.lessons[index + 1] : null
 
   return (
     <div className="bg-background">
@@ -40,18 +51,21 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
               href={scienceExperimentsPath}
               className="font-semibold text-avanza-orange-dark underline underline-offset-2 hover:text-avanza-orange"
             >
-              Science Experiments
+              {t.courseLanding.science.title}
             </Link>
-            <span className="text-muted-foreground"> / Week {lesson.week}</span>
+            <span className="text-muted-foreground">
+              {" / "}
+              {formatTemplate(shared.weekNumber, { n: lesson.week })}
+            </span>
           </p>
           <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-avanza-orange-dark">
-            Week {lesson.week} of {scienceExperimentsCurriculum.totalLessons}
+            {formatTemplate(shared.weekOfTotal, { n: lesson.week, total: c.totalLessons })}
           </p>
           <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">{lesson.title}</h1>
 
           <div className="mt-5 border-l-4 border-avanza-orange pl-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-avanza-orange-dark">
-              Big question
+              {ui.bigQuestion}
             </p>
             <p className="mt-1 max-w-2xl text-lg font-semibold leading-snug text-foreground md:text-xl">
               {lesson.bigQuestion}
@@ -68,10 +82,10 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
 
           <div className="mt-8 rounded-md border border-border bg-secondary px-4 py-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              This week follows the science loop
+              {ui.followsLoop}
             </p>
             <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-sm font-semibold text-foreground">
-              {scienceExperimentsCurriculum.investigationLoop.map((step, i) => (
+              {c.investigationLoop.map((step, i) => (
                 <span key={step.stage} className="flex items-center gap-2">
                   {i > 0 && <span aria-hidden className="text-avanza-orange">&rarr;</span>}
                   {step.stage}
@@ -85,7 +99,7 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
       {/* The big idea */}
       <section className="border-b border-border bg-secondary">
         <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">The big idea</h2>
+          <h2 className="text-xl font-bold text-foreground md:text-2xl">{ui.bigIdea}</h2>
           <ul className="mt-6 space-y-3">
             {lesson.mainConcepts.map((concept) => (
               <li key={concept} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -98,7 +112,9 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
             {lesson.explanation}
           </p>
 
-          <h3 className="mt-8 text-sm font-bold uppercase tracking-wide text-foreground">Words to know</h3>
+          <h3 className="mt-8 text-sm font-bold uppercase tracking-wide text-foreground">
+            {ui.wordsToKnow}
+          </h3>
           <dl className="mt-3 space-y-3">
             {lesson.vocabulary.map((term) => (
               <div key={term.term} className="grid gap-1 sm:grid-cols-[10rem_1fr] sm:gap-4">
@@ -115,7 +131,7 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
         <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
           <div className="grid gap-8 sm:grid-cols-2">
             <div>
-              <h2 className="text-xl font-bold text-foreground md:text-2xl">Materials</h2>
+              <h2 className="text-xl font-bold text-foreground md:text-2xl">{shared.materials}</h2>
               <ul className="mt-4 space-y-2">
                 {lesson.materials.map((item) => (
                   <li key={item} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -129,12 +145,12 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
                   href={`${scienceExperimentsPath}#materials`}
                   className="font-semibold text-avanza-orange-dark underline underline-offset-2 hover:text-avanza-orange"
                 >
-                  See all course materials &rarr;
+                  {ui.allMaterials} &rarr;
                 </Link>
               </p>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-foreground md:text-2xl">Safety</h2>
+              <h2 className="text-xl font-bold text-foreground md:text-2xl">{shared.safety}</h2>
               <ul className="mt-4 space-y-2">
                 {lesson.safetyNotes.map((note) => (
                   <li key={note} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -148,7 +164,7 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
                   href={`${scienceExperimentsPath}#safety`}
                   className="font-semibold text-avanza-orange-dark underline underline-offset-2 hover:text-avanza-orange"
                 >
-                  See all safety notes &rarr;
+                  {ui.allSafety} &rarr;
                 </Link>
               </p>
             </div>
@@ -160,7 +176,7 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
       <section className="border-b border-border bg-secondary">
         <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
           <h2 className="text-xl font-bold text-foreground md:text-2xl">
-            Experiment: {lesson.activityTitle}
+            {ui.experimentPrefix} {lesson.activityTitle}
           </h2>
 
           <div className="mt-6">
@@ -169,17 +185,15 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
 
           <div className="mt-6 rounded-lg border-l-4 border-avanza-orange bg-card p-5">
             <h3 className="text-sm font-bold uppercase tracking-wide text-avanza-orange-dark">
-              Predict first
+              {ui.predictFirst}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-foreground/90">
-              Before you touch any materials, write down what you think will happen in this
-              experiment - and why. Making a prediction first is what turns building into science.
-              You will compare your prediction to what you actually observe.
+              {ui.predictFirstBody}
             </p>
           </div>
 
           <div className="notebook-grid mt-6 rounded-lg border border-border bg-card p-5 md:p-6">
-            <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">Steps</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">{shared.steps}</h3>
             <ol className="mt-4 space-y-4">
               {lesson.steps.map((step, i) => (
                 <li key={step} className="grid grid-cols-[1.75rem_1fr] gap-3">
@@ -194,14 +208,14 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
 
           <div className="mt-8 rounded-lg border border-border bg-card p-5">
             <h3 className="text-sm font-bold uppercase tracking-wide text-avanza-orange-dark">
-              Why it happens
+              {ui.whyItHappens}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-foreground/90">{lesson.whyItHappens}</p>
           </div>
 
           <div className="mt-6 rounded-lg border border-border bg-card p-5">
             <h3 className="text-sm font-bold uppercase tracking-wide text-avanza-orange-dark">
-              How engineers use this
+              {ui.howEngineersUse}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-foreground/90">
               {lesson.engineeringConnection}
@@ -211,7 +225,7 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
           {lesson.relatedProject && (
             <div className="mt-6 rounded-lg border border-border bg-card p-5">
               <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">
-                Related project
+                {ui.relatedProject}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-foreground/90">
                 {lesson.relatedProject.note}
@@ -232,9 +246,9 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
       {/* Talk, reflect, and go further */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">What did you notice?</h2>
+          <h2 className="text-xl font-bold text-foreground md:text-2xl">{ui.whatDidYouNotice}</h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Look back at your prediction and your results, then talk these through together.
+            {ui.whatDidYouNoticeBody}
           </p>
           <ul className="mt-4 space-y-2">
             {lesson.discussionQuestions.map((q) => (
@@ -247,7 +261,7 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
 
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             <div className="rounded-lg border border-border bg-card p-5">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">Reflect</h3>
+              <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">{shared.reflect}</h3>
               <p className="mt-2 text-sm leading-relaxed text-foreground/90">{lesson.reflectionPrompt}</p>
               <div aria-hidden className="mt-4 space-y-4">
                 <span className="block border-b border-dashed border-border" />
@@ -255,20 +269,22 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
               </div>
             </div>
             <div className="rounded-lg border border-border bg-card p-5">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">Mini challenge</h3>
+              <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
+                {ui.miniChallenge}
+              </h3>
               <p className="mt-2 text-sm leading-relaxed text-foreground/90">{lesson.miniChallenge}</p>
             </div>
           </div>
 
           <div className="mt-6 rounded-lg border border-border bg-card p-5">
             <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
-              Want to go further?
+              {ui.goFurther}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-foreground/90">{lesson.extension}</p>
           </div>
 
           <h3 className="mt-8 text-sm font-bold uppercase tracking-wide text-foreground">
-            Before you finish
+            {ui.beforeYouFinish}
           </h3>
           <ul className="mt-3 space-y-2">
             {lesson.completionChecklist.map((item) => (
@@ -301,7 +317,7 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
                 className="flex-1 rounded-lg border border-border bg-card p-4 transition-colors hover:border-avanza-orange"
               >
                 <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  &larr; Week {prev.week}
+                  &larr; {formatTemplate(shared.weekNumber, { n: prev.week })}
                 </span>
                 <span className="mt-1 block font-semibold text-foreground">{prev.title}</span>
               </Link>
@@ -314,7 +330,7 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
                 className="flex-1 rounded-lg border border-border bg-card p-4 text-right transition-colors hover:border-avanza-orange"
               >
                 <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Week {next.week} &rarr;
+                  {formatTemplate(shared.weekNumber, { n: next.week })} &rarr;
                 </span>
                 <span className="mt-1 block font-semibold text-foreground">{next.title}</span>
               </Link>
@@ -324,10 +340,10 @@ export function ScienceExperimentsLessonContent({ lesson }: { lesson: ScienceLes
                 className="flex-1 rounded-lg border border-border bg-card p-4 text-right transition-colors hover:border-avanza-orange"
               >
                 <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Finish the course &rarr;
+                  {ui.finishCourse} &rarr;
                 </span>
                 <span className="mt-1 block font-semibold text-foreground">
-                  {scienceExperimentsCurriculum.completion.title}
+                  {c.completion.title}
                 </span>
               </Link>
             )}

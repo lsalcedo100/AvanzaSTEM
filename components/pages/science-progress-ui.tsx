@@ -2,29 +2,40 @@
 
 import { useEffect } from "react"
 import Link from "next/link"
+import { useLanguage } from "@/components/providers/language-provider"
 import {
-  scienceExperimentsCurriculum,
   scienceExperimentsPath,
   scienceLessonPath,
 } from "@/features/curriculums/science-experiments"
+import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments-i18n"
 import {
   type ScienceLessonStatus,
   useScienceProgress,
 } from "@/components/ui/useScienceProgress"
+import { formatTemplate } from "@/lib/format-template"
+import type { Translations } from "@/i18n/translations"
 
-const c = scienceExperimentsCurriculum
-const lessons = c.lessons
+/**
+ * Week rows, the hub CTA, and the completion panel all need the curriculum in
+ * the reader's language. `useCourse()` bundles the localized curriculum with the
+ * two translation namespaces these components pull from.
+ */
+function useCourse() {
+  const { language, t } = useLanguage()
+  const c = getScienceExperimentsCurriculum(language)
+  return { c, lessons: c.lessons, ui: t.courseUi.science, shared: t.courseUi.shared }
+}
 
-const STATUS_LABEL: Record<ScienceLessonStatus, string> = {
-  completed: "Completed",
-  "in-progress": "In progress",
-  "not-started": "Not started",
+function statusLabel(status: ScienceLessonStatus, shared: Translations["courseUi"]["shared"]) {
+  if (status === "completed") return shared.statusCompleted
+  if (status === "in-progress") return shared.statusInProgress
+  return shared.statusNotStarted
 }
 
 const orangeButton =
   "inline-flex items-center rounded-md bg-avanza-orange px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-avanza-orange-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-orange focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 
-function lessonByWeek(week: number) {
+function lessonByWeek(lessons: ReturnType<typeof useCourse>["lessons"], week: number) {
   return lessons.find((lesson) => lesson.week === week) ?? lessons[0]
 }
 
@@ -34,20 +45,24 @@ function lessonByWeek(week: number) {
  *   - all weeks complete             -> "Review the course"
  *   - otherwise                      -> "Continue Week X"
  */
-function resolveCta(state: {
-  loaded: boolean
-  hasProgress: boolean
-  allComplete: boolean
-  currentWeek: number
-}): { slug: string; label: string } {
+function resolveCta(
+  state: {
+    loaded: boolean
+    hasProgress: boolean
+    allComplete: boolean
+    currentWeek: number
+  },
+  course: ReturnType<typeof useCourse>,
+): { slug: string; label: string } {
+  const { lessons, ui } = course
   if (!state.loaded || !state.hasProgress) {
-    return { slug: lessonByWeek(1).slug, label: "Start Week 1" }
+    return { slug: lessonByWeek(lessons, 1).slug, label: ui.startWeek1 }
   }
   if (state.allComplete) {
-    return { slug: lessonByWeek(1).slug, label: "Review the course" }
+    return { slug: lessonByWeek(lessons, 1).slug, label: ui.reviewCourse }
   }
-  const lesson = lessonByWeek(state.currentWeek)
-  return { slug: lesson.slug, label: `Continue Week ${lesson.week}` }
+  const lesson = lessonByWeek(lessons, state.currentWeek)
+  return { slug: lesson.slug, label: formatTemplate(ui.continueWeek, { n: lesson.week }) }
 }
 
 /**
@@ -57,17 +72,15 @@ function resolveCta(state: {
  * show the neutral empty state (no hydration mismatch).
  */
 export function ScienceCourseProgress() {
+  const course = useCourse()
+  const { ui } = course
   const { loaded, totalLessons, completedCount, percent, hasProgress, allComplete, currentWeek, reset } =
     useScienceProgress()
 
-  const cta = resolveCta({ loaded, hasProgress, allComplete, currentWeek })
+  const cta = resolveCta({ loaded, hasProgress, allComplete, currentWeek }, course)
 
   const handleReset = () => {
-    if (
-      window.confirm(
-        "Reset your progress for this course? Your completed weeks will be cleared. This cannot be undone.",
-      )
-    ) {
+    if (window.confirm(ui.resetConfirm)) {
       reset()
     }
   }
@@ -126,6 +139,7 @@ export function ScienceCourseProgress() {
  * yet completed) is gently marked "Recommended next" once a student has started.
  */
 export function ScienceWeekList() {
+  const { lessons, shared } = useCourse()
   const { loaded, status, currentWeek, hasProgress, allComplete } = useScienceProgress()
 
   return (
@@ -169,16 +183,16 @@ export function ScienceWeekList() {
               <div className="flex items-baseline justify-between gap-4">
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                   <p className="text-sm font-semibold text-avanza-orange-dark">
-                    Week {lesson.week}
+                    {formatTemplate(shared.weekNumber, { n: lesson.week })}
                   </p>
                   {loaded && (
                     <span className={`text-xs font-medium ${statusClass}`}>
-                      &middot; {STATUS_LABEL[lessonStatus]}
+                      &middot; {statusLabel(lessonStatus, shared)}
                     </span>
                   )}
                   {isRecommended && (
                     <span className="text-xs font-semibold text-foreground">
-                      &middot; Recommended next
+                      &middot; {shared.recommendedNext}
                     </span>
                   )}
                 </div>
@@ -212,8 +226,9 @@ export function ScienceWeekList() {
 
 /** The Start / Continue / Review button used in the hub's closing call-to-action. */
 export function ScienceResumeButton() {
+  const course = useCourse()
   const { loaded, hasProgress, allComplete, currentWeek } = useScienceProgress()
-  const cta = resolveCta({ loaded, hasProgress, allComplete, currentWeek })
+  const cta = resolveCta({ loaded, hasProgress, allComplete, currentWeek }, course)
 
   return (
     <Link href={scienceLessonPath(cta.slug)} className={orangeButton}>
@@ -244,6 +259,7 @@ export function ScienceLessonVisit({ week }: { week: number }) {
  * until progress has loaded so it never acts on stale state.
  */
 export function ScienceLessonComplete({ week }: { week: number }) {
+  const { lessons, ui, shared } = useCourse()
   const { loaded, totalLessons, isCompleted, markComplete } = useScienceProgress()
   const done = isCompleted(week)
   const next = lessons.find((l) => l.week === week + 1) ?? null
@@ -255,12 +271,10 @@ export function ScienceLessonComplete({ week }: { week: number }) {
         <div>
           <p className="text-sm font-semibold text-foreground">
             <span aria-hidden className="font-mono text-avanza-orange-dark">[{"✓"}] </span>
-            Week {week} completed
+            {formatTemplate(shared.weekCompleted, { n: week })}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {isLast
-              ? "You have finished every week of the course. Your progress is saved on this device."
-              : "Nice work. Your progress is saved on this device."}
+            {isLast ? ui.allWeeksDone : ui.niceWork} {shared.progressSavedHere}
           </p>
           <p className="mt-3 text-sm">
             {isLast ? (
@@ -268,14 +282,14 @@ export function ScienceLessonComplete({ week }: { week: number }) {
                 href={`${scienceExperimentsPath}#complete`}
                 className="font-semibold text-avanza-orange-dark underline underline-offset-2 hover:text-avanza-orange"
               >
-                Go to your course reflection
+                {ui.goToReflection}
               </Link>
             ) : next ? (
               <Link
                 href={scienceLessonPath(next.slug)}
                 className="font-semibold text-avanza-orange-dark underline underline-offset-2 hover:text-avanza-orange"
               >
-                Continue to Week {next.week}: {next.title}
+                {formatTemplate(ui.continueToWeek, { n: next.week, title: next.title })}
               </Link>
             ) : null}
           </p>
@@ -283,8 +297,7 @@ export function ScienceLessonComplete({ week }: { week: number }) {
       ) : (
         <div>
           <p className="text-sm text-muted-foreground">
-            Finished the experiment and your reflection? Mark this week complete to track your
-            progress through the {totalLessons}-week course.
+            {formatTemplate(ui.markPrompt, { total: totalLessons })}
           </p>
           <button
             type="button"
@@ -292,7 +305,7 @@ export function ScienceLessonComplete({ week }: { week: number }) {
             disabled={!loaded}
             className={`mt-3 ${orangeButton} disabled:cursor-not-allowed disabled:opacity-50`}
           >
-            Mark Week {week} complete
+            {formatTemplate(ui.markWeekN, { n: week })}
           </button>
         </div>
       )}
@@ -308,13 +321,14 @@ export function ScienceLessonComplete({ week }: { week: number }) {
  * prompts, and a clean printable certificate - no trophies or badges.
  */
 export function ScienceCompletion() {
+  const { c, ui, shared } = useCourse()
   const { loaded, allComplete, completedCount, totalLessons } = useScienceProgress()
   const done = loaded && allComplete
 
   return (
     <div>
       <p className="text-sm font-semibold text-avanza-orange-dark">
-        After week 6
+        {formatTemplate(ui.afterFinalWeek, { n: c.totalLessons })}
       </p>
       <h2 className="mt-2 text-xl font-bold text-foreground md:text-2xl">{c.completion.title}</h2>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
@@ -323,21 +337,15 @@ export function ScienceCompletion() {
 
       {done ? (
         <div className="mt-8 rounded-lg border border-avanza-orange/40 bg-card p-6" id="science-certificate">
-          <p className="text-sm font-semibold text-avanza-orange-dark">
-            Course complete
-          </p>
+          <p className="text-sm font-semibold text-avanza-orange-dark">{ui.courseComplete}</p>
           <p className="mt-2 text-lg font-bold text-foreground md:text-xl">
-            You completed the Science Experiments course.
+            {ui.courseCompleteHeading}
           </p>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-foreground/90">
-            Across six weeks you practiced the whole science loop: asking questions, making
-            predictions, testing them with fair tests, observing closely, explaining your results
-            with evidence, and improving your designs.
+            {ui.courseCompleteBody}
           </p>
 
-          <h3 className="mt-6 text-sm font-bold text-foreground">
-            Finish these sentences
-          </h3>
+          <h3 className="mt-6 text-sm font-bold text-foreground">{ui.finishSentences}</h3>
           <ul className="mt-3 space-y-3">
             {c.completion.finalPrompts.map((prompt) => (
               <li key={prompt}>
@@ -354,14 +362,12 @@ export function ScienceCompletion() {
       ) : (
         <p className="mt-6 rounded-md border border-border bg-card px-4 py-3 text-sm text-muted-foreground">
           {loaded
-            ? `You have completed ${completedCount} of ${totalLessons} weeks. Mark all six complete to unlock your course reflection and printable certificate.`
-            : "Work through all six weeks, then come back here for your course reflection."}
+            ? formatTemplate(ui.completionProgress, { done: completedCount, total: totalLessons })
+            : ui.completionLocked}
         </p>
       )}
 
-      <h3 className="mt-8 text-sm font-bold text-foreground">
-        Look back and reflect
-      </h3>
+      <h3 className="mt-8 text-sm font-bold text-foreground">{shared.lookBackReflect}</h3>
       <ul className="mt-3 space-y-2">
         {c.completion.reflectionPrompts.map((prompt) => (
           <li key={prompt} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -371,7 +377,7 @@ export function ScienceCompletion() {
         ))}
       </ul>
 
-      <h3 className="mt-8 text-sm font-bold text-foreground">Keep exploring</h3>
+      <h3 className="mt-8 text-sm font-bold text-foreground">{shared.keepExploring}</h3>
       <ul className="mt-3 space-y-2">
         {c.completion.nextSteps.map((step) => (
           <li key={step} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -390,6 +396,7 @@ export function ScienceCompletion() {
  * removes it after the dialog returns.
  */
 function CertificatePrintButton() {
+  const { t } = useLanguage()
   const handlePrint = () => {
     document.body.classList.add("printing-certificate")
     const cleanup = () => {
@@ -406,7 +413,7 @@ function CertificatePrintButton() {
       onClick={handlePrint}
       className="print-hidden inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-avanza-orange hover:text-avanza-orange-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-orange focus-visible:ring-offset-2"
     >
-      Print a certificate
+      {t.courseUi.science.printCertificate}
     </button>
   )
 }

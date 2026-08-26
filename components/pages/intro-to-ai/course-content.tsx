@@ -12,6 +12,7 @@ import {
 } from "@/features/curriculums/intro-to-ai"
 import type { CourseWeek } from "@/features/curriculums/intro-to-ai-types"
 import { useLanguage } from "@/components/providers/language-provider"
+import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
 import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { ConfirmDialog, SaveState } from "@/components/pages/intro-to-ai/ui"
 import { IntroToAiVocabulary } from "@/components/pages/intro-to-ai/vocabulary"
@@ -33,9 +34,6 @@ import {
   courseThemes,
 } from "@/components/pages/courses/course-ui"
 
-const c = introToAiCourse
-const TOTAL_LESSONS = c.weeks.reduce((n, w) => n + w.lessons.length, 0)
-
 const AI_PHOTO_SRCS = [
   "/images/workshops/AI Workshop Description.JPG",
   "/images/shared/ai-workshop.jpg",
@@ -45,7 +43,9 @@ const AI_PHOTO_SRCS = [
 type WeekStatus = "completed" | "in-progress" | "not-started"
 
 export function IntroToAiCourseContent() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
+  const c = getIntroToAiCourse(language)
+  const totalLessons = c.weeks.reduce((n, w) => n + w.lessons.length, 0)
   const al = t.courseLanding.ai
   const p = useIntroToAiProgress()
   const started = p.loaded && p.percent > 0
@@ -120,7 +120,7 @@ export function IntroToAiCourseContent() {
         aside={
           <StatRow
             stats={[
-              { value: `${TOTAL_LESSONS}`, label: al.statLessons },
+              { value: `${totalLessons}`, label: al.statLessons },
               { value: "0", label: al.statCode },
             ]}
           />
@@ -235,13 +235,17 @@ function ProgressSummary({
   resumeHref: string
   resumeTitle?: string
 }) {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
   const al = t.courseLanding.ai
+  const totalLessons = getIntroToAiCourse(language).weeks.reduce(
+    (n, w) => n + w.lessons.length,
+    0,
+  )
   const savedLabel = p.savedAt ? formatSaved(p.savedAt) : null
   const percentText = al.percentCompleteTpl.replace("{percent}", String(p.percent))
   const lessonsText = al.lessonsCountTpl
     .replace("{done}", String(completedLessons))
-    .replace("{total}", String(TOTAL_LESSONS))
+    .replace("{total}", String(totalLessons))
   return (
     <div>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -339,9 +343,9 @@ function RoadmapWeek({ week, p }: { week: CourseWeek; p: ReturnType<typeof useIn
 }
 
 function FinalProjectPreview() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
   const al = t.courseLanding.ai
-  const fp = c.finalProject
+  const fp = getIntroToAiCourse(language).finalProject
   const required = fp.requirements
     .map((r, i) => ({ r, label: al.requirementLabels[i] }))
     .filter(({ r }) => r.required)

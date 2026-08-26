@@ -1,9 +1,9 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
+import { getIntroToPythonCurriculum } from "@/features/curriculums/intro-to-python-i18n"
 import { IntroToPythonProgress } from "@/components/pages/intro-to-python-progress"
 import {
-  introToPythonCurriculum,
   introToPythonTeacherGuidePath,
   introToPythonWeekPath,
   introToPythonWorksheetsPath,
@@ -39,9 +39,9 @@ import {
  * coding session - the two things a kid and a parent each want to see.
  */
 export function IntroToPythonCurriculumContent() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
   const pl = t.courseLanding.python
-  const c = introToPythonCurriculum
+  const c = getIntroToPythonCurriculum(language)
   const photoSrcs = [
     "/images/workshops/past-coding.jpg",
     "/images/workshops/roseland-free-public-library-coding.jpeg",

@@ -1,3 +1,10 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import {
+  findPythonWeek,
+  getIntroToPythonCurriculum,
+} from "@/features/curriculums/intro-to-python-i18n"
 import Link from "next/link"
 import { PythonWorkspace } from "@/components/ui/python-workspace"
 import {
@@ -5,7 +12,6 @@ import {
   IntroToPythonLessonGate,
 } from "@/components/pages/intro-to-python-lesson-progress"
 import {
-  introToPythonCurriculum,
   introToPythonPath,
   introToPythonTeacherGuidePath,
   introToPythonWeekPath,
@@ -19,8 +25,11 @@ import {
  * vocabulary, starter code, challenges, reflection, and teacher notes - comes
  * from the data, so this component is pure layout.
  */
-export function IntroToPythonLessonContent({ week }: { week: CurriculumWeek }) {
-  const total = introToPythonCurriculum.totalWeeks
+export function IntroToPythonLessonContent({ weekNumber }: { weekNumber: number }) {
+  const { language } = useLanguage()
+  const c = getIntroToPythonCurriculum(language)
+  const week = findPythonWeek(language, weekNumber) ?? c.weeks[0]
+  const total = c.totalWeeks
   const prev = week.week > 1 ? week.week - 1 : null
   const next = week.week < total ? week.week + 1 : null
 

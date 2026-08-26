@@ -1,5 +1,7 @@
 "use client"
 
+import { useLanguage } from "@/components/providers/language-provider"
+import { getRoboticsModules } from "@/features/curriculums/robotics-i18n"
 import { useEffect } from "react"
 import Link from "next/link"
 import {
@@ -16,7 +18,11 @@ import type {
   RoboticsRemainingTime,
 } from "@/features/curriculums/robotics-progress"
 
-const MODULES = [...roboticsCurriculum.modules].sort((a, b) => a.order - b.order)
+/** Course modules in the reader's language, in course order. */
+function useModules() {
+  const { language } = useLanguage()
+  return getRoboticsModules(language)
+}
 
 const STATUS_LABEL: Record<RoboticsModuleStatus, string> = {
   completed: "Completed",
@@ -35,15 +41,18 @@ const outlineButton =
   "inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-avanza-green-dark transition-colors hover:border-avanza-green hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
 
 /** The main Start / Continue / Review call-to-action, derived from live progress. */
-function resolveCta(state: {
-  loaded: boolean
-  hasProgress: boolean
-  complete: boolean
-  resumePath: string
-  resumeModuleId: string
-}): { href: string; label: string } {
+function resolveCta(
+  state: {
+    loaded: boolean
+    hasProgress: boolean
+    complete: boolean
+    resumePath: string
+    resumeModuleId: string
+  },
+  modules: ReturnType<typeof useModules>,
+): { href: string; label: string } {
   if (!state.loaded || !state.hasProgress) {
-    return { href: roboticsLessonPath(MODULES[0].slug), label: "Start Week 1" }
+    return { href: roboticsLessonPath(modules[0].slug), label: "Start Week 1" }
   }
   if (state.complete) {
     return { href: roboticsReviewPath, label: "Review the course" }
@@ -64,6 +73,7 @@ function resolveCta(state: {
  * empty state - no hydration mismatch. Mirrors the other courses' progress UI.
  */
 export function RoboticsCourseProgress() {
+  const modules = useModules()
   const { loaded, completion, hasProgress, resume } = useRoboticsProgress()
   const cta = resolveCta({
     loaded,
@@ -71,7 +81,7 @@ export function RoboticsCourseProgress() {
     complete: completion.complete,
     resumePath: resume.path,
     resumeModuleId: resume.moduleId,
-  })
+  }, modules)
 
   return (
     <div className="rounded-lg border border-border bg-card p-5 md:p-6">
@@ -119,6 +129,7 @@ export function RoboticsCourseProgress() {
 
 /** A lighter Start / Continue / Review button used in the closing call-to-action. */
 export function RoboticsResumeButton() {
+  const modules = useModules()
   const { loaded, hasProgress, completion, resume } = useRoboticsProgress()
   const cta = resolveCta({
     loaded,
@@ -126,7 +137,7 @@ export function RoboticsResumeButton() {
     complete: completion.complete,
     resumePath: resume.path,
     resumeModuleId: resume.moduleId,
-  })
+  }, modules)
   return (
     <Link href={cta.href} className={greenButton}>
       {cta.label}
@@ -165,11 +176,12 @@ function formatRemaining(remaining: RoboticsRemainingTime): string {
  * progress loads, every week is shown open so the page is usable without JS/state.
  */
 export function RoboticsModuleList() {
+  const modules = useModules()
   const { loaded, status, progress } = useRoboticsProgress()
 
   return (
     <ol className="mt-8 space-y-4">
-      {MODULES.map((module) => {
+      {modules.map((module) => {
         const moduleStatus = loaded ? status(module) : "not-started"
         const locked = moduleStatus === "locked"
         const noun = module.isFinal ? "final project" : "lesson"
@@ -509,6 +521,7 @@ export function RoboticsLessonComplete({ module }: { module: RoboticsModule }) {
  * mismatch.
  */
 export function RoboticsResumeArea() {
+  const modules = useModules()
   const { loaded, completion, hasProgress, resume, remaining } = useRoboticsProgress()
   const current = getRoboticsModuleById(resume.moduleId)
   const stepLabel =
@@ -543,9 +556,9 @@ export function RoboticsResumeArea() {
       {!started && (
         <div className="mt-5">
           <p className="text-sm leading-relaxed text-muted-foreground">
-            New here? Start with Week 1 - it needs no kit and takes about {MODULES[0].estimatedTime}.
+            New here? Start with Week 1 - it needs no kit and takes about {modules[0].estimatedTime}.
           </p>
-          <Link href={roboticsLessonPath(MODULES[0].slug)} className={`mt-4 ${greenButton}`}>
+          <Link href={roboticsLessonPath(modules[0].slug)} className={`mt-4 ${greenButton}`}>
             Begin course
           </Link>
         </div>
@@ -599,8 +612,9 @@ export function RoboticsResumeArea() {
  * unlocked yet. The locked/available state comes from the real unlock rules.
  */
 export function RoboticsFinalProjectPreview() {
+  const modules = useModules()
   const { loaded, isUnlocked, progress } = useRoboticsProgress()
-  const finalModule = MODULES.find((m) => m.isFinal)
+  const finalModule = modules.find((m) => m.isFinal)
   const fp = finalModule?.finalProject
   if (!finalModule || !fp) return null
 

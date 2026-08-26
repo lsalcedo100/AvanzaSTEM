@@ -2,8 +2,9 @@
 
 import { useEffect } from "react"
 import Link from "next/link"
+import { useLanguage } from "@/components/providers/language-provider"
+import { getEngineeringFundamentalsCurriculum } from "@/features/curriculums/engineering-fundamentals-i18n"
 import {
-  engineeringFundamentalsCurriculum,
   engineeringFundamentalsPath,
   engineeringLessonPath,
   type EngineeringLesson,
@@ -19,9 +20,13 @@ const STATUS_LABEL: Record<LessonProgressStatus, string> = {
   "not-started": "Not started",
 }
 
-const lessons = engineeringFundamentalsCurriculum.lessons
+/** The course lessons in the reader's language. */
+function useLessons(): EngineeringLesson[] {
+  const { language } = useLanguage()
+  return getEngineeringFundamentalsCurriculum(language).lessons
+}
 
-function lessonByOrder(order: number): EngineeringLesson {
+function lessonByOrder(lessons: EngineeringLesson[], order: number): EngineeringLesson {
   return lessons.find((lesson) => lesson.order === order) ?? lessons[0]
 }
 
@@ -31,19 +36,22 @@ function lessonByOrder(order: number): EngineeringLesson {
  *   - all lessons complete           -> "Review course" (back to the first lesson)
  *   - otherwise                      -> "Continue Lesson X" / the final challenge
  */
-function resolveCta(state: {
-  loaded: boolean
-  hasProgress: boolean
-  allComplete: boolean
-  currentOrder: number
-}): { slug: string; label: string } {
+function resolveCta(
+  state: {
+    loaded: boolean
+    hasProgress: boolean
+    allComplete: boolean
+    currentOrder: number
+  },
+  lessons: EngineeringLesson[],
+): { slug: string; label: string } {
   if (!state.loaded || !state.hasProgress) {
-    return { slug: lessonByOrder(1).slug, label: "Start Lesson 1" }
+    return { slug: lessonByOrder(lessons, 1).slug, label: "Start Lesson 1" }
   }
   if (state.allComplete) {
-    return { slug: lessonByOrder(1).slug, label: "Review course" }
+    return { slug: lessonByOrder(lessons, 1).slug, label: "Review course" }
   }
-  const lesson = lessonByOrder(state.currentOrder)
+  const lesson = lessonByOrder(lessons, state.currentOrder)
   return {
     slug: lesson.slug,
     label: lesson.isFinal ? "Continue to the final challenge" : `Continue Lesson ${lesson.order}`,
@@ -60,10 +68,11 @@ const purpleButton =
  * first client render both show the neutral empty state (no hydration mismatch).
  */
 export function EngineeringCourseProgress() {
+  const lessons = useLessons()
   const { loaded, totalLessons, completedCount, percent, hasProgress, allComplete, currentOrder, reset } =
     useEngineeringProgress()
 
-  const cta = resolveCta({ loaded, hasProgress, allComplete, currentOrder })
+  const cta = resolveCta({ loaded, hasProgress, allComplete, currentOrder }, lessons)
 
   const handleReset = () => {
     if (
@@ -128,8 +137,9 @@ export function EngineeringCourseProgress() {
  * closing call-to-action further down the overview.
  */
 export function EngineeringResumeButton() {
+  const lessons = useLessons()
   const { loaded, hasProgress, allComplete, currentOrder } = useEngineeringProgress()
-  const cta = resolveCta({ loaded, hasProgress, allComplete, currentOrder })
+  const cta = resolveCta({ loaded, hasProgress, allComplete, currentOrder }, lessons)
 
   return (
     <Link href={engineeringLessonPath(cta.slug)} className={purpleButton}>
@@ -144,6 +154,7 @@ export function EngineeringResumeButton() {
  * ("Open" / "Continue" / "Review") reflect saved progress once it has loaded.
  */
 export function EngineeringLessonList() {
+  const lessons = useLessons()
   const { loaded, status } = useEngineeringProgress()
 
   return (
@@ -243,8 +254,9 @@ export function EngineeringLessonVisit({ order }: { order: number }) {
  * Disabled until progress has loaded so it never acts on stale state.
  */
 export function EngineeringLessonComplete({ order }: { order: number }) {
+  const lessons = useLessons()
   const { loaded, totalLessons, isCompleted, markComplete } = useEngineeringProgress()
-  const lesson = lessonByOrder(order)
+  const lesson = lessonByOrder(lessons, order)
   const next = lessons.find((l) => l.order === order + 1) ?? null
   const done = isCompleted(order)
 
