@@ -38,21 +38,26 @@ export async function generateMetadata(): Promise<Metadata> {
  * me", "free stem workshops", "reverse engineering classes near me") at 271
  * impressions and average position 3.15, but shipped no structured data at all.
  *
- * Only `active` libraries are described. The six `placeholder` entries are
+ * Only real venues are described: `upcoming` libraries with scheduled sessions
+ * and `active` libraries we have already run at. The `placeholder` entries are
  * planning areas rather than venues ("Newark area"), and the page labels them
  * that way; emitting them as Places would assert locations that do not exist.
  * The libraries are third-party public venues, so they are modelled as Place,
  * not as a LocalBusiness belonging to Avanza STEM.
  */
+const describedLibraries = LIBRARIES.filter(
+  (library) => library.status !== "placeholder",
+)
+
 const workshopLocationsJsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Avanza STEM workshop locations",
   description:
-    "Public libraries in New Jersey where Avanza STEM currently runs free hands-on STEM workshops.",
+    "Public libraries in New Jersey where Avanza STEM runs free hands-on STEM workshops.",
   url: `${siteConfig.url}/find-a-workshop`,
-  numberOfItems: LIBRARIES.filter((library) => library.status === "active").length,
-  itemListElement: LIBRARIES.filter((library) => library.status === "active").map(
+  numberOfItems: describedLibraries.length,
+  itemListElement: describedLibraries.map(
     (library, index) => ({
       "@type": "ListItem",
       position: index + 1,

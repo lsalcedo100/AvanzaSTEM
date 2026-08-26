@@ -12,12 +12,18 @@ import {
   ArrowLeft,
   ArrowUpRight,
   CalendarDays,
+  Globe,
   MapPin,
   Search,
   X,
 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
-import { LIBRARIES, type Library } from "@/features/workshops/locations"
+import {
+  INTERNATIONAL_PARTNERS,
+  LIBRARIES,
+  type Library,
+  type PartnerCountry,
+} from "@/features/workshops/locations"
 
 
 const ZIP_PREFIX_LATLNG: Record<string, { lat: number; lng: number }> = {
@@ -64,8 +70,35 @@ const NJ_BOUNDS = {
   northEast: { lat: 41.45, lng: -73.85 },
 }
 
+const DATE_LOCALES: Record<string, string> = {
+  en: "en-US",
+  es: "es-ES",
+  zh: "zh-CN",
+}
+
+/** Parse a YYYY-MM-DD string as local midnight (avoids UTC day-shift). */
+function parseISODate(iso: string) {
+  const [y, m, d] = iso.split("-").map(Number)
+  return new Date(y, (m ?? 1) - 1, d ?? 1)
+}
+
+function formatSessionDate(iso: string, language: string) {
+  return parseISODate(iso).toLocaleDateString(DATE_LOCALES[language] ?? "en-US", {
+    month: "short",
+    day: "numeric",
+  })
+}
+
+/** The first session that has not happened yet, or null once the series is done. */
+function nextSession(sessions: string[] | undefined) {
+  if (!sessions?.length) return null
+  const start = new Date()
+  start.setHours(0, 0, 0, 0)
+  return sessions.find((iso) => parseISODate(iso) >= start) ?? null
+}
+
 export function WorkshopFinderPage() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [zip, setZip] = useState("")
   const [submittedZip, setSubmittedZip] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -107,11 +140,15 @@ export function WorkshopFinderPage() {
     setActiveId(null)
   }
 
+  const upcomingSites = sortedLibraries.filter((lib) => lib.status === "upcoming")
   const currentSites = sortedLibraries.filter((lib) => lib.status === "active")
   const planningAreas = sortedLibraries.filter((lib) => lib.status === "placeholder")
   const active = sortedLibraries.find((l) => l.id === activeId) ?? null
 
-  const nearest = submittedZip ? currentSites[0] ?? null : null
+  // Nearest real venue (upcoming or already-hosted), used for the result chip.
+  const nearest = submittedZip
+    ? sortedLibraries.find((lib) => lib.status !== "placeholder") ?? null
+    : null
 
   return (
     <div className="bg-avanza-dark">
@@ -209,8 +246,8 @@ export function WorkshopFinderPage() {
                 </p>
               ) : (
                 <p className="mt-2.5 text-xs font-medium text-avanza-dark/55">
-                  {currentSites.length} {t.home.finderCurrentCount} · {planningAreas.length}{" "}
-                  {t.home.finderPlanningCount} · {t.home.finderFreeAlways}
+                  {upcomingSites.length} {t.home.finderUpcomingCount} · {currentSites.length}{" "}
+                  {t.home.finderCurrentCount} · {t.home.finderFreeAlways}
                 </p>
               )}
             </form>
@@ -237,10 +274,12 @@ export function WorkshopFinderPage() {
           userLatLng={userLatLng}
           activeId={activeId}
           onSelect={setActiveId}
+          language={language}
           ariaLabel={t.home.finderMapAria}
           loadingLabel={t.home.finderMapLoading}
           errorLabel={t.home.finderMapError}
           legend={{
+            upcoming: t.home.finderLegendUpcoming,
             active: t.home.finderLegendActive,
             coming: t.home.finderLegendComing,
             you: t.home.finderLegendYou,
@@ -249,6 +288,8 @@ export function WorkshopFinderPage() {
             noUpcomingDate: t.home.finderNoUpcomingDate,
             planningArea: t.home.finderPlanningArea,
             notScheduled: t.home.finderNotScheduled,
+            nextSession: t.home.finderNextSession,
+            tentative: t.home.finderTentative,
           }}
         />
 
@@ -259,12 +300,23 @@ export function WorkshopFinderPage() {
 
           <div className="mt-6 space-y-7">
             <LocationSection
+              title={t.home.finderUpcomingSites}
+              libraries={upcomingSites}
+              activeId={activeId}
+              submittedZip={submittedZip}
+              onSelect={setActiveId}
+              t={t}
+              language={language}
+            />
+
+            <LocationSection
               title={t.home.finderCurrentSites}
               libraries={currentSites}
               activeId={activeId}
               submittedZip={submittedZip}
               onSelect={setActiveId}
               t={t}
+              language={language}
             />
 
             <LocationSection
@@ -274,7 +326,10 @@ export function WorkshopFinderPage() {
               submittedZip={submittedZip}
               onSelect={setActiveId}
               t={t}
+              language={language}
             />
+
+            <InternationalSection t={t} />
           </div>
 
           {active && (
@@ -286,7 +341,43 @@ export function WorkshopFinderPage() {
               <p className="mt-1 text-xs text-primary-foreground/70">
                 {t.home.finderZipShort} {active.zip}
               </p>
-              {active.status === "active" ? (
+              {active.status === "upcoming" ? (
+                <div className="mt-3 space-y-2">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-avanza-purple/25 px-2.5 py-1 text-[11px] font-bold text-white">
+                      <CalendarDays className="h-3 w-3" />
+                      {t.home.finderSeriesNote}
+                    </span>
+                    {active.tentative && (
+                      <span className="rounded-full bg-avanza-orange/25 px-2.5 py-1 text-[11px] font-bold text-white">
+                        {t.home.finderTentative}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-primary-foreground/60">
+                      {t.home.finderSessionsHeading}
+                    </p>
+                    <ul className="mt-1 flex flex-wrap gap-1.5">
+                      {active.sessions?.map((iso) => {
+                        const isNext = iso === nextSession(active.sessions)
+                        return (
+                          <li
+                            key={iso}
+                            className={`rounded-lg px-2 py-1 text-[11px] font-bold ${
+                              isNext
+                                ? "bg-avanza-green text-avanza-dark"
+                                : "bg-white/10 text-primary-foreground/80"
+                            }`}
+                          >
+                            {formatSessionDate(iso, language)}
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              ) : active.status === "active" ? (
                 <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold">
                   <CalendarDays className="h-3 w-3" />
                   {t.home.finderNoUpcomingDate}
@@ -329,6 +420,7 @@ function LocationSection({
   submittedZip,
   onSelect,
   t,
+  language,
 }: {
   title: string
   libraries: (Library & { miles?: number })[]
@@ -336,6 +428,7 @@ function LocationSection({
   submittedZip: string | null
   onSelect: (id: string | null) => void
   t: ReturnType<typeof useLanguage>["t"]
+  language: string
 }) {
   if (libraries.length === 0) return null
 
@@ -351,8 +444,10 @@ function LocationSection({
       <ul className="mt-3 space-y-2.5" aria-label={title}>
         {libraries.map((lib, i) => {
           const isActive = lib.id === activeId
-          const isClosest = submittedZip !== null && lib.status === "active" && i === 0
+          const isClosest = submittedZip !== null && lib.status !== "placeholder" && i === 0
+          const isUpcoming = lib.status === "upcoming"
           const isCurrentSite = lib.status === "active"
+          const upcomingNext = isUpcoming ? nextSession(lib.sessions) : null
 
           return (
             <li key={lib.id}>
@@ -370,21 +465,35 @@ function LocationSection({
                   className={`mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${
                     isClosest
                       ? "bg-avanza-green text-avanza-dark"
-                      : isCurrentSite
-                        ? "bg-avanza-orange/15 text-avanza-orange"
-                        : "bg-avanza-dark/8 text-avanza-dark/55"
+                      : isUpcoming
+                        ? "bg-avanza-purple/15 text-avanza-purple"
+                        : isCurrentSite
+                          ? "bg-avanza-orange/15 text-avanza-orange"
+                          : "bg-avanza-dark/8 text-avanza-dark/55"
                   }`}
                 >
-                  {isCurrentSite ? i + 1 : "•"}
+                  {lib.status === "placeholder" ? "•" : i + 1}
                 </span>
                 <div className="flex-1">
-                  <p className="text-sm font-extrabold leading-snug text-foreground">
+                  <p className="flex items-center gap-2 text-sm font-extrabold leading-snug text-foreground">
                     {lib.name}
+                    {isUpcoming && lib.tentative && (
+                      <span className="rounded bg-avanza-orange/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-avanza-orange-dark">
+                        {t.home.finderTentative}
+                      </span>
+                    )}
                   </p>
                   <p className="mt-0.5 text-xs text-muted-foreground">
                     {lib.city}, NJ · {t.home.finderZipShort} {lib.zip}
                   </p>
-                  {isCurrentSite ? (
+                  {isUpcoming ? (
+                    <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-avanza-purple/10 px-2 py-0.5 text-[11px] font-bold text-avanza-purple-dark">
+                      <CalendarDays className="h-3 w-3" />
+                      {upcomingNext
+                        ? `${t.home.finderNextSession}: ${formatSessionDate(upcomingNext, language)}`
+                        : t.home.finderSeriesNote}
+                    </p>
+                  ) : isCurrentSite ? (
                     <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-avanza-green/10 px-2 py-0.5 text-[11px] font-bold text-avanza-green">
                       <CalendarDays className="h-3 w-3" />
                       {t.home.finderNoUpcomingDate}
@@ -409,6 +518,74 @@ function LocationSection({
   )
 }
 
+const COUNTRY_ORDER: PartnerCountry[] = ["EC", "PE", "CO"]
+
+/**
+ * Partner libraries abroad, in planning conversations. Purely a list, grouped by
+ * country — these have no coordinates and never appear on the NJ map.
+ */
+function InternationalSection({
+  t,
+}: {
+  t: ReturnType<typeof useLanguage>["t"]
+}) {
+  const countryName: Record<PartnerCountry, string> = {
+    EC: t.home.finderCountryEcuador,
+    PE: t.home.finderCountryPeru,
+    CO: t.home.finderCountryColombia,
+  }
+
+  const groups = COUNTRY_ORDER.map((code) => ({
+    code,
+    name: countryName[code],
+    partners: INTERNATIONAL_PARTNERS.filter((p) => p.country === code),
+  })).filter((g) => g.partners.length > 0)
+
+  if (groups.length === 0) return null
+
+  return (
+    <section aria-labelledby="finder-international">
+      <div className="flex items-center gap-2">
+        <Globe className="h-3.5 w-3.5 text-avanza-teal" />
+        <h2
+          id="finder-international"
+          className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-avanza-dark/50"
+        >
+          {t.home.finderInternationalTitle}
+        </h2>
+      </div>
+      <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+        {t.home.finderInternationalNote}
+      </p>
+
+      <div className="mt-3 space-y-4">
+        {groups.map((group) => (
+          <div key={group.code}>
+            <p className="text-[11px] font-bold uppercase tracking-wide text-avanza-dark/45">
+              {group.name}
+            </p>
+            <ul className="mt-2 space-y-2">
+              {group.partners.map((partner) => (
+                <li
+                  key={partner.id}
+                  className="flex items-start justify-between gap-3 rounded-2xl border-2 border-transparent bg-white p-3.5 shadow-[0_1px_0_rgba(26,26,46,0.06)]"
+                >
+                  <p className="text-sm font-bold leading-snug text-foreground">
+                    {partner.name}
+                  </p>
+                  <span className="mt-0.5 shrink-0 rounded-full bg-avanza-teal/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-avanza-teal-dark">
+                    {t.home.finderPlannedBadge}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 /**
  * Loads Leaflet lazily on mount and renders an interactive OpenStreetMap with
  * custom DivIcon library pins. Uses OSM's standard tiles, which need no API key
@@ -419,6 +596,7 @@ function LeafletMap({
   userLatLng,
   activeId,
   onSelect,
+  language,
   ariaLabel,
   loadingLabel,
   errorLabel,
@@ -429,11 +607,18 @@ function LeafletMap({
   userLatLng: { lat: number; lng: number } | null
   activeId: string | null
   onSelect: (id: string | null) => void
+  language: string
   ariaLabel: string
   loadingLabel: string
   errorLabel: string
-  legend: { active: string; coming: string; you: string }
-  labels: { noUpcomingDate: string; planningArea: string; notScheduled: string }
+  legend: { upcoming: string; active: string; coming: string; you: string }
+  labels: {
+    noUpcomingDate: string
+    planningArea: string
+    notScheduled: string
+    nextSession: string
+    tentative: string
+  }
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<unknown>(null)
@@ -519,7 +704,11 @@ function LeafletMap({
     libraries.forEach((lib) => {
       const isActive = lib.id === activeId
       const tone =
-        lib.status === "active" ? "#f97316" : "#1a1a2e"
+        lib.status === "upcoming"
+          ? "#8b5cf6"
+          : lib.status === "active"
+            ? "#f97316"
+            : "#1a1a2e"
       const html = `
         <div class="afz-pin ${isActive ? "afz-pin--active" : ""}" style="--pin-tone:${tone}">
           <div class="afz-pin__shadow"></div>
@@ -546,11 +735,23 @@ function LeafletMap({
           onSelectRef.current(lib.id)
         }
       })
+      const upcomingNext = lib.status === "upcoming" ? nextSession(lib.sessions) : null
+      const statusLine =
+        lib.status === "upcoming"
+          ? {
+              color: "#6d28d9",
+              text: upcomingNext
+                ? `${labels.nextSession}: ${formatSessionDate(upcomingNext, language)}${lib.tentative ? ` (${labels.tentative})` : ""}`
+                : labels.tentative,
+            }
+          : lib.status === "active"
+            ? { color: "#2ecc71", text: labels.noUpcomingDate }
+            : { color: "#1a1a2e", text: labels.planningArea }
       const popupHtml = `
         <div style="min-width:180px;font-family:inherit">
           <p style="margin:0;font-weight:800;font-size:13px;color:#1a1a2e">${escapeHtml(lib.name)}</p>
           <p style="margin:2px 0 0;font-size:11px;color:#6b7280">${escapeHtml(lib.city)}, NJ &middot; ZIP ${escapeHtml(lib.zip)}</p>
-          <p style="margin:6px 0 0;font-size:11px;font-weight:700;color:${lib.status === "active" ? "#2ecc71" : "#1a1a2e"}">${escapeHtml(lib.status === "active" ? labels.noUpcomingDate : labels.planningArea)}</p>
+          <p style="margin:6px 0 0;font-size:11px;font-weight:700;color:${statusLine.color}">${escapeHtml(statusLine.text)}</p>
           ${lib.status === "placeholder" ? `<p style="margin:2px 0 0;font-size:11px;color:#6b7280">${escapeHtml(labels.notScheduled)}</p>` : ""}
         </div>`
       marker.bindPopup(popupHtml, {
@@ -589,7 +790,7 @@ function LeafletMap({
         duration: 0.8,
       })
     }
-  }, [libraries, userLatLng, activeId, status, labels])
+  }, [libraries, userLatLng, activeId, status, labels, language])
 
   // Open popup of the active marker
   useEffect(() => {
@@ -619,6 +820,10 @@ function LeafletMap({
 
       {/* Legend */}
       <div className="pointer-events-none absolute bottom-4 left-4 z-5 flex flex-wrap items-center gap-3 rounded-full bg-white/95 px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground shadow-md backdrop-blur-sm">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="inline-block h-2.5 w-2.5 rounded-full bg-avanza-purple" />
+          {legend.upcoming}
+        </span>
         <span className="inline-flex items-center gap-1.5">
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-avanza-orange" />
           {legend.active}
