@@ -6,7 +6,7 @@ import type { Translations } from "@/i18n/translations"
  * A compact, practical Q&A. Every answer is grounded in real site behaviour:
  * no login/account exists, progress is saved in the browser via localStorage
  * hooks, technology paths run in the browser while hands-on paths use common
- * materials, and the site UI ships in English/Spanish/Chinese (lesson content
+ * materials, and the site UI ships in English/Spanish/Chinese/Portuguese (lesson content
  * is English). Rendered as a semantic definition list, no interactive controls.
  */
 export function EducatorInfo({

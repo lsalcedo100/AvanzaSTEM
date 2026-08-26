@@ -40,43 +40,43 @@ export const LIQUIDS: Record<
     density: 0.92,
     color: "#fde68a",
     emoji: "🫒",
-    nameLoc: { en: "Oil", es: "Aceite", zh: "油" },
+    nameLoc: { en: "Oil", es: "Aceite", zh: "油", pt: "Óleo" },
   },
   water: {
     density: 1.0,
     color: "#7dd3fc",
     emoji: "💧",
-    nameLoc: { en: "Water", es: "Agua", zh: "水" },
+    nameLoc: { en: "Water", es: "Agua", zh: "水", pt: "Água" },
   },
   milk: {
     density: 1.03,
     color: "#fafafa",
     emoji: "🥛",
-    nameLoc: { en: "Milk", es: "Leche", zh: "牛奶" },
+    nameLoc: { en: "Milk", es: "Leche", zh: "牛奶", pt: "Leite" },
   },
   saltwater: {
     density: 1.1,
     color: "#a5f3fc",
     emoji: "🌊",
-    nameLoc: { en: "Saltwater", es: "Agua salada", zh: "盐水" },
+    nameLoc: { en: "Saltwater", es: "Agua salada", zh: "盐水", pt: "Água salgada" },
   },
   syrup: {
     density: 1.36,
     color: "#fcd34d",
     emoji: "🍯",
-    nameLoc: { en: "Corn syrup", es: "Jarabe de maíz", zh: "玉米糖浆" },
+    nameLoc: { en: "Corn syrup", es: "Jarabe de maíz", zh: "玉米糖浆", pt: "Xarope de milho" },
   },
   honey: {
     density: 1.42,
     color: "#d97706",
     emoji: "🍯",
-    nameLoc: { en: "Honey", es: "Miel", zh: "蜂蜜" },
+    nameLoc: { en: "Honey", es: "Miel", zh: "蜂蜜", pt: "Mel" },
   },
   mercury: {
     density: 13.5,
     color: "#cbd5e1",
     emoji: "⚪",
-    nameLoc: { en: "Mercury", es: "Mercurio", zh: "水银" },
+    nameLoc: { en: "Mercury", es: "Mercurio", zh: "水银", pt: "Mercúrio" },
   },
 }
 
@@ -226,6 +226,7 @@ export const ORDER_EXPLAIN: Loc = {
   en: "Liquids sort themselves by density: the lightest floats to the top and the densest sinks to the bottom.",
   es: "Los líquidos se ordenan por densidad: el más ligero flota arriba y el más denso se hunde al fondo.",
   zh: "液体会按密度分层：最轻的浮在最上面，最重的沉到最底部。",
+  pt: "Os líquidos se organizam por densidade: o mais leve sobe ao topo e o mais denso afunda até o fundo.",
 }
 
 // ---------------------------------------------------------------------------
@@ -244,11 +245,12 @@ export type DensityLevel = {
 export const LEVELS: DensityLevel[] = [
   {
     id: 1,
-    titleLoc: { en: "Sink or Float", es: "Se hunde o flota", zh: "沉还是浮" },
+    titleLoc: { en: "Sink or Float", es: "Se hunde o flota", zh: "沉还是浮", pt: "Afunda ou flutua" },
     goalLoc: {
       en: "Drop each object into plain water. Will it float on top or sink to the bottom?",
       es: "Deja caer cada objeto en agua. ¿Flotará arriba o se hundirá al fondo?",
       zh: "把每个物体放进清水里。它会浮在上面还是沉到底？",
+      pt: "Solte cada objeto na água pura. Ele vai flutuar por cima ou afundar até o fundo?",
     },
     rounds: [
       { type: "sinkFloat", objectId: "cork" },
@@ -259,11 +261,12 @@ export const LEVELS: DensityLevel[] = [
   },
   {
     id: 2,
-    titleLoc: { en: "Oil vs Water", es: "Aceite vs agua", zh: "油与水" },
+    titleLoc: { en: "Oil vs Water", es: "Aceite vs agua", zh: "油与水", pt: "Óleo x água" },
     goalLoc: {
       en: "Oil floats on water because it's less dense. Where will each object come to rest?",
       es: "El aceite flota sobre el agua porque es menos denso. ¿Dónde quedará cada objeto?",
       zh: "油比水轻，会浮在水面上。每个物体会停在哪里？",
+      pt: "O óleo flutua sobre a água porque é menos denso. Onde cada objeto vai parar?",
     },
     rounds: [
       { type: "layer", objectId: "cork", liquids: ["oil", "water"] },
@@ -274,12 +277,13 @@ export const LEVELS: DensityLevel[] = [
   },
   {
     id: 3,
-    titleLoc: { en: "Build a Density Tower", es: "Construye una torre de densidad", zh: "搭建密度塔" },
+    titleLoc: { en: "Build a Density Tower", es: "Construye una torre de densidad", zh: "搭建密度塔", pt: "Monte uma torre de densidade" },
     tower: true,
     goalLoc: {
       en: "Pour three liquids in. Which order will they stack, lightest on top?",
       es: "Vierte tres líquidos. ¿En qué orden se apilan, el más ligero arriba?",
       zh: "倒入三种液体。它们会怎样分层，最轻的在上面？",
+      pt: "Despeje três líquidos. Em que ordem eles vão se empilhar, com o mais leve em cima?",
     },
     rounds: [
       { type: "order", liquids: ["water", "oil", "honey"] },
@@ -289,11 +293,12 @@ export const LEVELS: DensityLevel[] = [
   },
   {
     id: 4,
-    titleLoc: { en: "Predict the Layer", es: "Predice la capa", zh: "预测所在层" },
+    titleLoc: { en: "Predict the Layer", es: "Predice la capa", zh: "预测所在层", pt: "Preveja a camada" },
     goalLoc: {
       en: "The tube has oil, water, and honey. Predict which layer each object settles on.",
       es: "El tubo tiene aceite, agua y miel. Predice en qué capa se queda cada objeto.",
       zh: "管里有油、水和蜂蜜。预测每个物体会停在哪一层。",
+      pt: "O tubo tem óleo, água e mel. Preveja em qual camada cada objeto vai parar.",
     },
     rounds: [
       { type: "layer", objectId: "cork", liquids: ["oil", "water", "honey"] },
@@ -304,11 +309,12 @@ export const LEVELS: DensityLevel[] = [
   },
   {
     id: 5,
-    titleLoc: { en: "Mass ÷ Volume", es: "Masa ÷ volumen", zh: "质量 ÷ 体积" },
+    titleLoc: { en: "Mass ÷ Volume", es: "Masa ÷ volumen", zh: "质量 ÷ 体积", pt: "Massa ÷ volume" },
     goalLoc: {
       en: "Density = mass ÷ volume. Work out the density of each object.",
       es: "Densidad = masa ÷ volumen. Calcula la densidad de cada objeto.",
       zh: "密度 = 质量 ÷ 体积。算出每个物体的密度。",
+      pt: "Densidade = massa ÷ volume. Calcule a densidade de cada objeto.",
     },
     rounds: [
       { type: "calc", objectId: "cork" },
@@ -320,11 +326,12 @@ export const LEVELS: DensityLevel[] = [
   },
   {
     id: 6,
-    titleLoc: { en: "Mystery Materials", es: "Materiales misteriosos", zh: "神秘材料" },
+    titleLoc: { en: "Mystery Materials", es: "Materiales misteriosos", zh: "神秘材料", pt: "Materiais misteriosos" },
     goalLoc: {
       en: "Two secret materials! Predict what they do, then discover what they are.",
       es: "¡Dos materiales secretos! Predice qué hacen y luego descubre qué son.",
       zh: "两种神秘材料！先预测它们的表现，再揭晓它们是什么。",
+      pt: "Dois materiais secretos! Preveja o que eles fazem e depois descubra o que são.",
     },
     rounds: [
       { type: "sinkFloat", objectId: "mysteryA" },
@@ -335,11 +342,12 @@ export const LEVELS: DensityLevel[] = [
   },
   {
     id: 7,
-    titleLoc: { en: "Engineering Materials", es: "Materiales de ingeniería", zh: "工程材料" },
+    titleLoc: { en: "Engineering Materials", es: "Materiales de ingeniería", zh: "工程材料", pt: "Materiais de engenharia" },
     goalLoc: {
       en: "Metals on mercury! Most metals sink in water — but mercury is far denser.",
       es: "¡Metales sobre mercurio! Casi todos los metales se hunden en agua, pero el mercurio es mucho más denso.",
       zh: "金属遇上水银！大多数金属在水里会沉——但水银的密度大得多。",
+      pt: "Metais no mercúrio! A maioria dos metais afunda na água, mas o mercúrio é bem mais denso.",
     },
     rounds: [
       { type: "layer", objectId: "aluminum", liquids: ["water", "mercury"] },
@@ -350,11 +358,12 @@ export const LEVELS: DensityLevel[] = [
   },
   {
     id: 8,
-    titleLoc: { en: "Expert Challenge", es: "Reto experto", zh: "专家挑战" },
+    titleLoc: { en: "Expert Challenge", es: "Reto experto", zh: "专家挑战", pt: "Desafio para especialistas" },
     goalLoc: {
       en: "Everything you've learned, all mixed together. Ready, scientist?",
       es: "Todo lo que aprendiste, mezclado. ¿List@, científic@?",
       zh: "把你学到的全部混在一起。准备好了吗，小科学家？",
+      pt: "Tudo o que você aprendeu, misturado. Preparado, cientista?",
     },
     rounds: [
       { type: "calc", objectId: "ring" },

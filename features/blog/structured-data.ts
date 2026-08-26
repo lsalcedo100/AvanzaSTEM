@@ -16,7 +16,7 @@ import { absoluteImageUrl, getBreadcrumbJsonLd, publisherLogoUrl } from "@/lib/s
  * Replaces the per-route inline objects, which were missing datePublished,
  * dateModified, image, mainEntityOfPage, inLanguage and a publisher logo (so no
  * post was eligible for an Article rich result), and which hardcoded the
- * English URL even when rendered at /es or /zh.
+ * English URL even when rendered at /es, /zh or /pt.
  */
 export function getBlogPostingJsonLd(slug: BlogSlug, language: Language = "en") {
   const article =

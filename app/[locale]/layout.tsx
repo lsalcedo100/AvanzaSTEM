@@ -10,7 +10,7 @@ export function generateStaticParams() {
   return LOCALIZED_LANGUAGES.map((locale) => ({ locale }))
 }
 
-// Only "es" and "zh" are valid here - "en" lives at the unprefixed routes.
+// Only "es", "zh" and "pt" are valid here - "en" lives at the unprefixed routes.
 export const dynamicParams = false
 
 export default async function LocaleLayout({

@@ -14,7 +14,7 @@ export const WATER_DENSITY = 1.0
 
 /** A localized string bundle. Mirrors the pattern used by circuit-levels so
  *  game content can live beside the code instead of bloating translations. */
-export type Loc = { en: string; es: string; zh: string }
+export type Loc = { en: string; es: string; zh: string; pt: string }
 
 /** density = mass ÷ volume, rounded to 2 decimals (kid-friendly). */
 export function computeDensity(mass: number, volume: number): number {

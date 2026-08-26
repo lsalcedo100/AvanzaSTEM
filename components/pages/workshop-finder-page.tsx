@@ -21,6 +21,7 @@ import { useLanguage } from "@/components/providers/language-provider"
 import {
   INTERNATIONAL_PARTNERS,
   LIBRARIES,
+  type InternationalPartner,
   type Library,
   type PartnerCountry,
 } from "@/features/workshops/locations"
@@ -70,10 +71,19 @@ const NJ_BOUNDS = {
   northEast: { lat: 41.45, lng: -73.85 },
 }
 
+/**
+ * Web Mercator repeats the world every 360° of longitude. Leaflet only draws a
+ * marker on the primary copy, so when the user zooms out and the globe wraps,
+ * we add a copy of every marker at each of these longitude offsets to fill the
+ * repeated worlds on both sides (enough to cover a wide viewport at min zoom).
+ */
+const WORLD_COPY_OFFSETS = [-1080, -720, -360, 0, 360, 720, 1080]
+
 const DATE_LOCALES: Record<string, string> = {
   en: "en-US",
   es: "es-ES",
   zh: "zh-CN",
+  pt: "pt-BR",
 }
 
 /** Parse a YYYY-MM-DD string as local midnight (avoids UTC day-shift). */
@@ -271,6 +281,7 @@ export function WorkshopFinderPage() {
       <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr]">
         <LeafletMap
           libraries={sortedLibraries}
+          internationalPartners={INTERNATIONAL_PARTNERS}
           userLatLng={userLatLng}
           activeId={activeId}
           onSelect={setActiveId}
@@ -282,6 +293,7 @@ export function WorkshopFinderPage() {
             upcoming: t.home.finderLegendUpcoming,
             active: t.home.finderLegendActive,
             coming: t.home.finderLegendComing,
+            planned: t.home.finderPlannedBadge,
             you: t.home.finderLegendYou,
           }}
           labels={{
@@ -290,6 +302,12 @@ export function WorkshopFinderPage() {
             notScheduled: t.home.finderNotScheduled,
             nextSession: t.home.finderNextSession,
             tentative: t.home.finderTentative,
+            planned: t.home.finderPlannedBadge,
+          }}
+          countryNames={{
+            EC: t.home.finderCountryEcuador,
+            PE: t.home.finderCountryPeru,
+            CO: t.home.finderCountryColombia,
           }}
         />
 
@@ -593,6 +611,7 @@ function InternationalSection({
  */
 function LeafletMap({
   libraries,
+  internationalPartners,
   userLatLng,
   activeId,
   onSelect,
@@ -602,8 +621,10 @@ function LeafletMap({
   errorLabel,
   legend,
   labels,
+  countryNames,
 }: {
   libraries: (Library & { miles?: number })[]
+  internationalPartners: InternationalPartner[]
   userLatLng: { lat: number; lng: number } | null
   activeId: string | null
   onSelect: (id: string | null) => void
@@ -611,19 +632,31 @@ function LeafletMap({
   ariaLabel: string
   loadingLabel: string
   errorLabel: string
-  legend: { upcoming: string; active: string; coming: string; you: string }
+  legend: {
+    upcoming: string
+    active: string
+    coming: string
+    planned: string
+    you: string
+  }
   labels: {
     noUpcomingDate: string
     planningArea: string
     notScheduled: string
     nextSession: string
     tentative: string
+    planned: string
   }
+  countryNames: Record<PartnerCountry, string>
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<unknown>(null)
   const leafletRef = useRef<unknown>(null)
+  // id -> the primary (offset 0) marker, used to open the active popup.
   const markersRef = useRef<Map<string, unknown>>(new Map())
+  // Every leaflet marker currently on the map, including wrapped-world copies,
+  // international pins and the user pin. Held flat so we can clear them all.
+  const allMarkersRef = useRef<unknown[]>([])
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading")
 
   // Stable callback for marker clicks so it sees fresh `onSelect`.
@@ -694,12 +727,59 @@ function LeafletMap({
     const map = mapRef.current as any
     if (!L || !map) return
 
-    // Wipe previous markers
-    markersRef.current.forEach((m) => {
+    // Wipe previous markers (primaries + every wrapped-world copy).
+    allMarkersRef.current.forEach((m) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ;(m as any).remove()
     })
+    allMarkersRef.current = []
     markersRef.current.clear()
+
+    // Add a marker at every world-copy offset; return the primary (offset 0).
+    const addWrapped = (
+      lat: number,
+      lng: number,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      icon: any,
+      opts: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        markerOptions?: Record<string, any>
+        onClick?: () => void
+        popupHtml?: string
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ): any => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let primary: any = null
+      WORLD_COPY_OFFSETS.forEach((offset) => {
+        const marker = L.marker([lat, lng + offset], {
+          icon,
+          ...opts.markerOptions,
+        }).addTo(map)
+        if (opts.onClick) {
+          marker.on("click", opts.onClick)
+          marker.on("keypress", (e: { originalEvent: KeyboardEvent }) => {
+            if (e.originalEvent.key === "Enter" || e.originalEvent.key === " ") {
+              opts.onClick?.()
+            }
+          })
+        }
+        if (opts.popupHtml) {
+          marker.bindPopup(opts.popupHtml, { closeButton: false, offset: [0, -4] })
+        }
+        allMarkersRef.current.push(marker)
+        if (offset === 0) primary = marker
+      })
+      return primary
+    }
+
+    const pinHtml = (tone: string, active: boolean) => `
+        <div class="afz-pin ${active ? "afz-pin--active" : ""}" style="--pin-tone:${tone}">
+          <div class="afz-pin__shadow"></div>
+          <div class="afz-pin__head">
+            <span></span>
+          </div>
+        </div>`
 
     libraries.forEach((lib) => {
       const isActive = lib.id === activeId
@@ -709,31 +789,12 @@ function LeafletMap({
           : lib.status === "active"
             ? "#f97316"
             : "#1a1a2e"
-      const html = `
-        <div class="afz-pin ${isActive ? "afz-pin--active" : ""}" style="--pin-tone:${tone}">
-          <div class="afz-pin__shadow"></div>
-          <div class="afz-pin__head">
-            <span></span>
-          </div>
-        </div>`
       const icon = L.divIcon({
         className: "",
-        html,
+        html: pinHtml(tone, isActive),
         iconSize: [32, 42],
         iconAnchor: [16, 38],
         popupAnchor: [0, -32],
-      })
-      const marker = L.marker([lib.lat, lib.lng], {
-        icon,
-        keyboard: true,
-        title: lib.name,
-        riseOnHover: true,
-      }).addTo(map)
-      marker.on("click", () => onSelectRef.current(lib.id))
-      marker.on("keypress", (e: { originalEvent: KeyboardEvent }) => {
-        if (e.originalEvent.key === "Enter" || e.originalEvent.key === " ") {
-          onSelectRef.current(lib.id)
-        }
       })
       const upcomingNext = lib.status === "upcoming" ? nextSession(lib.sessions) : null
       const statusLine =
@@ -754,11 +815,33 @@ function LeafletMap({
           <p style="margin:6px 0 0;font-size:11px;font-weight:700;color:${statusLine.color}">${escapeHtml(statusLine.text)}</p>
           ${lib.status === "placeholder" ? `<p style="margin:2px 0 0;font-size:11px;color:#6b7280">${escapeHtml(labels.notScheduled)}</p>` : ""}
         </div>`
-      marker.bindPopup(popupHtml, {
-        closeButton: false,
-        offset: [0, -4],
+      const primary = addWrapped(lib.lat, lib.lng, icon, {
+        markerOptions: { keyboard: true, title: lib.name, riseOnHover: true },
+        onClick: () => onSelectRef.current(lib.id),
+        popupHtml,
       })
-      markersRef.current.set(lib.id, marker)
+      markersRef.current.set(lib.id, primary)
+    })
+
+    // International partners — planned, teal, not part of the NJ selection flow.
+    internationalPartners.forEach((partner) => {
+      const icon = L.divIcon({
+        className: "",
+        html: pinHtml("#1abc9c", false),
+        iconSize: [32, 42],
+        iconAnchor: [16, 38],
+        popupAnchor: [0, -32],
+      })
+      const popupHtml = `
+        <div style="min-width:180px;font-family:inherit">
+          <p style="margin:0;font-weight:800;font-size:13px;color:#1a1a2e">${escapeHtml(partner.name)}</p>
+          <p style="margin:2px 0 0;font-size:11px;color:#6b7280">${escapeHtml(countryNames[partner.country])}</p>
+          <p style="margin:6px 0 0;font-size:11px;font-weight:700;color:#0f766e">${escapeHtml(labels.planned)}</p>
+        </div>`
+      addWrapped(partner.lat, partner.lng, icon, {
+        markerOptions: { title: partner.name, riseOnHover: true },
+        popupHtml,
+      })
     })
 
     // User pin (separate, never selected)
@@ -769,28 +852,45 @@ function LeafletMap({
         iconSize: [22, 22],
         iconAnchor: [11, 11],
       })
-      const userMarker = L.marker([userLatLng.lat, userLatLng.lng], {
-        icon: userIcon,
-        interactive: false,
-        keyboard: false,
-      }).addTo(map)
-      markersRef.current.set("__user", userMarker)
+      addWrapped(userLatLng.lat, userLatLng.lng, userIcon, {
+        markerOptions: { interactive: false, keyboard: false },
+      })
     }
+  }, [
+    libraries,
+    internationalPartners,
+    userLatLng,
+    activeId,
+    status,
+    labels,
+    language,
+    countryNames,
+  ])
 
-    // Auto-frame: prioritize user → first 3 libs, else fit all
+  // Auto-frame the New Jersey venues (or the user's area). Kept separate from
+  // marker rendering so selecting a pin does not yank the view back — important
+  // once the user has zoomed out to see the international partners.
+  useEffect(() => {
+    if (status !== "ready") return
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const L = leafletRef.current as any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const map = mapRef.current as any
+    if (!L || !map) return
+
     const targets =
       userLatLng !== null
         ? [userLatLng, ...libraries.slice(0, 3).map((l) => ({ lat: l.lat, lng: l.lng }))]
         : libraries.map((l) => ({ lat: l.lat, lng: l.lng }))
-    if (targets.length > 0) {
-      const bounds = L.latLngBounds(targets.map((p) => [p.lat, p.lng]))
-      map.flyToBounds(bounds, {
-        padding: [40, 40],
-        maxZoom: userLatLng ? 11 : 9,
-        duration: 0.8,
-      })
-    }
-  }, [libraries, userLatLng, activeId, status, labels, language])
+    if (targets.length === 0) return
+
+    const bounds = L.latLngBounds(targets.map((p) => [p.lat, p.lng]))
+    map.flyToBounds(bounds, {
+      padding: [40, 40],
+      maxZoom: userLatLng ? 11 : 9,
+      duration: 0.8,
+    })
+  }, [libraries, userLatLng, status])
 
   // Open popup of the active marker
   useEffect(() => {
@@ -831,6 +931,10 @@ function LeafletMap({
         <span className="inline-flex items-center gap-1.5">
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-avanza-dark" />
           {legend.coming}
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="inline-block h-2.5 w-2.5 rounded-full bg-avanza-teal" />
+          {legend.planned}
         </span>
         {userLatLng && (
           <span className="inline-flex items-center gap-1.5">

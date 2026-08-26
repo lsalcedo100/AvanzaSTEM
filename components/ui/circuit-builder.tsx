@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/circuit-levels"
 import { createLevelUpSounds, playRandomLevelUpSound } from "@/components/ui/level-up-sounds"
 import { type SolveResult, useCircuitProgress } from "@/components/ui/useCircuitProgress"
+import { type Language } from "@/i18n/translations"
 import { cn } from "@/lib/utils"
 
 // Sandbox (free-play) board: a fully wired starter loop the player can rebuild.
@@ -342,7 +343,7 @@ function LevelSelect({
   onBack,
 }: {
   progress: ReturnType<typeof useCircuitProgress>
-  language: "en" | "es" | "zh"
+  language: Language
   onPlay: (level: Level) => void
   onBack: () => void
 }) {
@@ -440,7 +441,7 @@ function LevelPlay({
   onNext,
 }: {
   level: Level
-  language: "en" | "es" | "zh"
+  language: Language
   progress: ReturnType<typeof useCircuitProgress>
   onExit: () => void
   onNext: (next: Level) => void
@@ -1439,7 +1440,7 @@ function HintPanel({
   t,
 }: {
   hints: [Loc, Loc, Loc]
-  language: "en" | "es" | "zh"
+  language: Language
   shown: number
   onReveal: () => void
   t: ReturnType<typeof useLanguage>["t"]

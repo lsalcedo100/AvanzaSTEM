@@ -57,11 +57,12 @@ const ratio = (have: number, need: number) => Math.min(1, have / need)
 export const BADGES: Badge[] = [
   {
     id: "floatFinder",
-    nameLoc: { en: "Float Finder", es: "Buscaflotes", zh: "浮沉侦探" },
+    nameLoc: { en: "Float Finder", es: "Buscaflotes", zh: "浮沉侦探", pt: "Caça-boias" },
     descLoc: {
       en: "Make 5 correct sink-or-float predictions.",
       es: "Acierta 5 predicciones de flota o se hunde.",
       zh: "正确预测 5 次沉浮。",
+      pt: "Acerte 5 previsões de afunda ou flutua.",
     },
     emoji: "🎈",
     accent: "bg-sky-100 text-sky-700",
@@ -70,11 +71,12 @@ export const BADGES: Badge[] = [
   },
   {
     id: "densityDetective",
-    nameLoc: { en: "Density Detective", es: "Detective de densidad", zh: "密度侦探" },
+    nameLoc: { en: "Density Detective", es: "Detective de densidad", zh: "密度侦探", pt: "Detetive da densidade" },
     descLoc: {
       en: "Make 10 correct predictions of any kind.",
       es: "Acierta 10 predicciones de cualquier tipo.",
       zh: "任意类型共答对 10 次。",
+      pt: "Acerte 10 previsões de qualquer tipo.",
     },
     emoji: "🔍",
     accent: "bg-violet-100 text-violet-700",
@@ -83,11 +85,12 @@ export const BADGES: Badge[] = [
   },
   {
     id: "layerMaster",
-    nameLoc: { en: "Layer Master", es: "Maestro de capas", zh: "分层大师" },
+    nameLoc: { en: "Layer Master", es: "Maestro de capas", zh: "分层大师", pt: "Mestre das camadas" },
     descLoc: {
       en: "Score perfectly on a density tower level.",
       es: "Logra un puntaje perfecto en un nivel de torre de densidad.",
       zh: "在密度塔关卡中拿到满分。",
+      pt: "Faça a pontuação máxima em um nível de torre de densidade.",
     },
     emoji: "🏆",
     accent: "bg-amber-100 text-amber-700",
@@ -96,11 +99,12 @@ export const BADGES: Badge[] = [
   },
   {
     id: "formulaPro",
-    nameLoc: { en: "Formula Pro", es: "Pro de la fórmula", zh: "公式高手" },
+    nameLoc: { en: "Formula Pro", es: "Pro de la fórmula", zh: "公式高手", pt: "Craque da fórmula" },
     descLoc: {
       en: "Nail 5 correct density calculations.",
       es: "Resuelve 5 cálculos de densidad correctos.",
       zh: "正确计算 5 次密度。",
+      pt: "Acerte 5 cálculos de densidade.",
     },
     emoji: "🧮",
     accent: "bg-teal-100 text-teal-700",
@@ -109,11 +113,12 @@ export const BADGES: Badge[] = [
   },
   {
     id: "labExplorer",
-    nameLoc: { en: "Lab Explorer", es: "Explorador de laboratorio", zh: "实验室探险家" },
+    nameLoc: { en: "Lab Explorer", es: "Explorador de laboratorio", zh: "实验室探险家", pt: "Explorador de laboratório" },
     descLoc: {
       en: "Test 10 different objects.",
       es: "Prueba 10 objetos diferentes.",
       zh: "测试 10 种不同的物体。",
+      pt: "Teste 10 objetos diferentes.",
     },
     emoji: "🧪",
     accent: "bg-emerald-100 text-emerald-700",
@@ -122,11 +127,12 @@ export const BADGES: Badge[] = [
   },
   {
     id: "streakScientist",
-    nameLoc: { en: "Streak Scientist", es: "Científico en racha", zh: "连胜科学家" },
+    nameLoc: { en: "Streak Scientist", es: "Científico en racha", zh: "连胜科学家", pt: "Cientista em série" },
     descLoc: {
       en: "Get 5 correct answers in a row.",
       es: "Consigue 5 respuestas correctas seguidas.",
       zh: "连续答对 5 次。",
+      pt: "Acerte 5 respostas seguidas.",
     },
     emoji: "⚡",
     accent: "bg-orange-100 text-orange-700",

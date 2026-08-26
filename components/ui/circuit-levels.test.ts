@@ -204,8 +204,8 @@ scenario("A parallel goal rejects a series solution", () => {
   })
   const parallelLevel = {
     id: 0,
-    title: { en: "", es: "", zh: "" },
-    goal: { en: "", es: "", zh: "" },
+    title: { en: "", es: "", zh: "", pt: "" },
+    goal: { en: "", es: "", zh: "", pt: "" },
     tools: [] as never[],
     targetParts: 99,
     success: { minLit: 2, requireType: "parallel" as const },

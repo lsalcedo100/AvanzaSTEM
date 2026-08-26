@@ -21,6 +21,11 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
     description:
       "了解 Avanza STEM，一个由青年主导的志愿项目，为学生带来免费的动手 STEM 工作坊和适合初学者的项目。",
   },
+  pt: {
+    title: "Sobre nós | Avanza STEM",
+    description:
+      "Conheça a Avanza STEM, um programa de voluntariado juvenil que leva oficinas de STEM práticas e gratuitas e projetos para iniciantes aos estudantes.",
+  },
 }
 
 export async function generateMetadata(): Promise<Metadata> {

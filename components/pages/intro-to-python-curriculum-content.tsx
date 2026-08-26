@@ -1,3 +1,6 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
 import { IntroToPythonProgress } from "@/components/pages/intro-to-python-progress"
 import {
   introToPythonCurriculum,
@@ -36,86 +39,69 @@ import {
  * coding session - the two things a kid and a parent each want to see.
  */
 export function IntroToPythonCurriculumContent() {
+  const { t } = useLanguage()
+  const pl = t.courseLanding.python
   const c = introToPythonCurriculum
-  const finalWeek = c.weeks[c.weeks.length - 1]
+  const photoSrcs = [
+    "/images/workshops/past-coding.jpg",
+    "/images/workshops/roseland-free-public-library-coding.jpeg",
+    "/images/projects/my-first-python-program/cover.jpeg",
+  ]
 
   return (
     <CourseShell theme={courseThemes.python}>
       <CourseHero
-        eyebrow={c.subtitle}
-        title={c.title}
-        lead={c.description}
-        facts={[
-          { label: "Ages", value: c.gradeRange },
-          { label: "Length", value: `${c.totalWeeks} weeks` },
-          { label: "Per session", value: c.estimatedTimePerWeek },
-          { label: "You need", value: "A browser" },
-        ]}
+        eyebrow={pl.heroEyebrow}
+        title={pl.title}
+        lead={pl.lead}
+        facts={pl.facts}
         media={<FirstProgram />}
-        mediaCaption="Week 1, minute 5: your kid's first program runs and prints something back."
-        note={`${c.requirement}. Nothing to install, no account, and no cost.`}
+        mediaCaption={pl.mediaCaption}
+        note={pl.note}
       >
         <CourseActions>
-          <CourseButton href={introToPythonWeekPath(1)}>Start Week 1</CourseButton>
-          <CourseTextLink href="/games">Try the playground first</CourseTextLink>
+          <CourseButton href={introToPythonWeekPath(1)}>{pl.startBtn}</CourseButton>
+          <CourseTextLink href="/games">{pl.playgroundBtn}</CourseTextLink>
         </CourseActions>
       </CourseHero>
 
       <CourseJumpNav
+        label={t.courseLanding.onThisPage}
         items={[
-          { href: "#weeks", label: "The 8 weeks" },
-          { href: "#lesson-shape", label: "How a lesson works" },
-          { href: "#final-project", label: "Final project" },
-          { href: "#grown-ups", label: "For grown-ups" },
-          { href: "#resources", label: "Guides & worksheets" },
+          { href: "#weeks", label: pl.jumpNav[0] },
+          { href: "#lesson-shape", label: pl.jumpNav[1] },
+          { href: "#final-project", label: pl.jumpNav[2] },
+          { href: "#grown-ups", label: pl.jumpNav[3] },
+          { href: "#resources", label: pl.jumpNav[4] },
         ]}
       />
 
       {/* Outcomes. */}
       <CourseSection
         tone="tint"
-        eyebrow="What students learn"
-        title="Real code, from the very first week"
-        lead={c.summary}
+        eyebrow={pl.outcomesEyebrow}
+        title={pl.outcomesTitle}
+        lead={pl.outcomesLead}
         aside={
           <StatRow
             stats={[
-              { value: `${c.totalWeeks}`, label: "Weekly projects" },
-              { value: "0", label: "Setup steps" },
+              { value: `${c.totalWeeks}`, label: pl.statWeeklyProjects },
+              { value: "0", label: pl.statSetupSteps },
             ]}
           />
         }
       >
-        <CheckGrid items={c.outcomes} />
+        <CheckGrid items={pl.outcomes} />
       </CourseSection>
 
       {/* Real photos of the course being taught. */}
-      <CourseSection
-        eyebrow="In the room"
-        title="This is what a session looks like"
-        lead="Avanza runs this curriculum in public libraries and community rooms. It works the same way at a kitchen table."
-      >
+      <CourseSection eyebrow={pl.photosEyebrow} title={pl.photosTitle} lead={pl.photosLead}>
         <PhotoBand
-          photos={[
-            {
-              src: "/images/workshops/past-coding.jpg",
-              alt: "Students coding on laptops at an Avanza STEM workshop in a library",
-              caption:
-                "Kids work at their own pace, on whatever laptop or Chromebook is in the room.",
-            },
-            {
-              src: "/images/workshops/roseland-free-public-library-coding.jpeg",
-              alt: "An Avanza STEM coding session running at Roseland Free Public Library",
-              caption:
-                "A volunteer or a parent can lead a session - the lesson page does the teaching.",
-            },
-            {
-              src: "/images/projects/my-first-python-program/cover.jpeg",
-              alt: "A first Python program on screen, printing a message",
-              caption:
-                "Every week ends with a program that runs and does something the student chose.",
-            },
-          ]}
+          photos={pl.photos.map((photo, i) => ({
+            src: photoSrcs[i],
+            alt: photo.alt,
+            caption: photo.caption,
+          }))}
         />
       </CourseSection>
 
@@ -123,26 +109,15 @@ export function IntroToPythonCurriculumContent() {
       <CourseSection
         id="lesson-shape"
         tone="dark"
-        eyebrow="The rhythm"
-        title="Every week follows the same five steps"
-        lead="So students always know what is coming, and a facilitator always knows what happens next."
+        eyebrow={pl.lessonShapeEyebrow}
+        title={pl.lessonShapeTitle}
+        lead={pl.lessonShapeLead}
       >
-        <StepFlow
-          dark
-          steps={c.lessonFlow.map((step) => ({
-            title: step.title,
-            description: step.description,
-          }))}
-        />
+        <StepFlow dark steps={pl.lessonFlow} />
       </CourseSection>
 
       {/* Weeks + progress. */}
-      <CourseSection
-        id="weeks"
-        eyebrow="The path"
-        title={`${c.totalWeeks} weeks, ${c.totalWeeks} programs`}
-        lead="One concept per week. Each week ends with a project students build and run themselves - complete a lesson to unlock the next one."
-      >
+      <CourseSection id="weeks" eyebrow={pl.weeksEyebrow} title={pl.weeksTitle} lead={pl.weeksLead}>
         <IntroToPythonProgress />
       </CourseSection>
 
@@ -150,34 +125,22 @@ export function IntroToPythonCurriculumContent() {
       <CourseSection
         id="final-project"
         tone="tint"
-        eyebrow={`Week ${c.totalWeeks} - Capstone`}
-        title={finalWeek.projectName}
-        lead={finalWeek.description}
+        eyebrow={pl.finalEyebrow}
+        title={pl.finalTitle}
+        lead={pl.finalLead}
       >
         <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr]">
           <div>
-            <p className="text-base leading-relaxed text-avanza-dark/80">
-              Instead of learning a new idea, students combine everything from the program -
-              variables, input, conditionals, loops, functions, lists, and randomness - to design
-              and build their own Python mini game.
-            </p>
-            <p className="mt-4 text-base leading-relaxed text-avanza-dark/80">
-              They start from a short plan, add one feature at a time, and test as they go. The
-              result is a small game that is entirely their own, and proof they can get from a blank
-              file to a working program.
-            </p>
+            <p className="text-base leading-relaxed text-avanza-dark/80">{pl.finalP1}</p>
+            <p className="mt-4 text-base leading-relaxed text-avanza-dark/80">{pl.finalP2}</p>
             <div className="mt-6">
               <CourseTextLink href={introToPythonWeekPath(c.totalWeeks)}>
-                View the final lesson
+                {pl.finalLink}
               </CourseTextLink>
             </div>
           </div>
 
-          <Callout title="It really runs">
-            Python runs right in the browser tab - the same code, the same errors, and the same
-            satisfaction as running it on a real machine. Students can share the finished game by
-            handing over the code they wrote.
-          </Callout>
+          <Callout title={pl.finalCalloutTitle}>{pl.finalCalloutBody}</Callout>
         </div>
       </CourseSection>
 
@@ -185,50 +148,45 @@ export function IntroToPythonCurriculumContent() {
       <CourseSection
         id="grown-ups"
         tone="paper"
-        eyebrow="For grown-ups"
-        title="You do not need to know how to code"
-        lead="Every lesson runs in the browser with no setup, so this works as a library coding club, an after-school or weekend workshop, classroom enrichment, or self-paced learning at home."
+        eyebrow={pl.grownupsEyebrow}
+        title={pl.grownupsTitle}
+        lead={pl.grownupsLead}
       >
-        <CheckGrid columns={2} items={c.format} />
+        <CheckGrid columns={2} items={pl.format} />
         <div className="mt-8">
-          <Callout title="What each student needs">
-            {c.facilitator.studentNeeds.join(". ")}.
-          </Callout>
+          <Callout title={pl.studentNeedsTitle}>{pl.studentNeeds}</Callout>
         </div>
       </CourseSection>
 
       {/* Resources. */}
       <CourseSection
         id="resources"
-        eyebrow="Resources"
-        title="Everything a facilitator needs"
-        lead="Each lesson is self-contained and includes teacher notes on pacing and common mistakes, so a facilitator does not need a programming background to lead it."
+        eyebrow={pl.resourcesEyebrow}
+        title={pl.resourcesTitle}
+        lead={pl.resourcesLead}
       >
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <ResourceCard
             href={introToPythonTeacherGuidePath}
-            title="Teacher & librarian guide"
-            description="How to run each session, what to explain, the mistakes students make, and offline backup activities."
+            title={pl.resourceCards[0].title}
+            description={pl.resourceCards[0].description}
           />
           <ResourceCard
             href={introToPythonWorksheetsPath}
-            title="Printable worksheets"
-            description="Paper versions of every week, for students working away from a screen."
+            title={pl.resourceCards[1].title}
+            description={pl.resourceCards[1].description}
           />
           <ResourceCard
             href="/games"
-            title="Python playground"
-            description="A free-form editor for experimenting between lessons, with no lesson attached."
+            title={pl.resourceCards[2].title}
+            description={pl.resourceCards[2].description}
           />
         </div>
       </CourseSection>
 
-      <CourseClosing
-        title="Ready to write the first line?"
-        description={`Start with Week 1 and work through all ${c.totalWeeks} weeks at your own pace. Your progress is saved on this device - no sign-in, no cost.`}
-      >
+      <CourseClosing title={pl.closingTitle} description={pl.closingDesc} backLabel={t.courseLanding.backToCurriculums}>
         <CourseButton href={introToPythonWeekPath(1)} className="bg-avanza-green text-avanza-dark">
-          Start Week 1
+          {pl.closingBtn}
         </CourseButton>
       </CourseClosing>
     </CourseShell>

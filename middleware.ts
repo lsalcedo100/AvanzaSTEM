@@ -8,11 +8,11 @@ const LOCALE_SEGMENTS = new Set(
 /**
  * Paths handled natively by the static app/[locale] route tree
  * (home, /projects, /projects/[slug], /blog, /blog/[slug], /curriculums).
- * Requests to /es or /zh under these paths are passed through unchanged so
+ * Requests to /es, /zh or /pt under these paths are passed through unchanged so
  * Next.js resolves them directly via app/[locale]/... (statically
  * pre-rendered via generateStaticParams).
  *
- * All other /es and /zh paths (about, faq, gallery, games, host, workshops,
+ * All other /es, /zh and /pt paths (about, faq, gallery, games, host, workshops,
  * find-a-workshop, privacy, etc.) are not yet migrated to app/[locale] and
  * fall back to the legacy rewrite below: they are served by the unprefixed
  * English route with an `x-locale` header, which getLanguage() reads via

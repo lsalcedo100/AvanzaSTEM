@@ -129,6 +129,7 @@ export type LocalizedBlogArticles = {
   en: Record<BlogSlug, BlogArticle>
   es: Partial<Record<BlogSlug, BlogArticle>>
   zh: Partial<Record<BlogSlug, BlogArticle>>
+  pt: Partial<Record<BlogSlug, BlogArticle>>
 }
 
 const common = {
@@ -140,6 +141,9 @@ const common = {
   },
   zh: {
     minutes: { m3: "3 分钟", m4: "4 分钟", m5: "5 分钟", m6: "6 分钟", m7: "7 分钟" },
+  },
+  pt: {
+    minutes: { m3: "3 min", m4: "4 min", m5: "5 min", m6: "6 min", m7: "7 min" },
   },
 }
 
@@ -2459,6 +2463,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
   },
   es: {},
   zh: {},
+  pt: {},
 }
 
 localizedBlogArticles.es = {
@@ -6361,6 +6366,2108 @@ localizedBlogArticles.zh = {
       { title: "核心思想", blocks: [
         { type: "paragraph", text: "磁铁能吸住某些金属，是因为那些金属内部有能跟磁场对齐的微小磁性区域。铁、钢、镍和钴被吸得很牢。铜和铝不行，它们的内部结构排不出那种队。" },
         { type: "callout", accent: "orange", text: "所以磁铁死活贴不住某块金属的时候，磁铁没坏。只是那块金属不属于会被吸引的那一类。" },
+      ] },
+    ],
+  },
+}
+
+localizedBlogArticles.pt = {
+  "why-every-kid-should-learn-to-code": {
+    ...localizedBlogArticles.en["why-every-kid-should-learn-to-code"],
+    title: "Por Que Toda Criança Deveria Aprender a Programar (e Como Começar)",
+    category: "Programação",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um mentor da Avanza STEM conduzindo uma oficina de programação, com estudantes em frente a notebooks",
+    imageCaption: "Estudantes aprendem os fundamentos da programação durante uma oficina da Avanza STEM.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Uma coisa surpreende muita gente: programar está virando uma habilidade básica, no mesmo nível de ler e escrever. E, mesmo assim, um monte de criança termina a escola sem escrever uma única linha de código." },
+        { type: "paragraph", text: "A gente viu isso acontecer na Biblioteca Pública de Clifton. Um estudante escreveu um programa que fazia exatamente uma coisa: imprimir a palavra \"Olá\". Depois passou vinte minutos enchendo o programa de perguntas novas, piadas ruins e efeitos sonoros. Ninguém pediu. Ele tinha acabado de descobrir que conseguia construir coisas e não quis mais parar." },
+      ] },
+      { title: "Não É Só Sobre Código", blocks: [
+        { type: "paragraph", text: "Eis o que quase ninguém diz em voz alta: a meta não é transformar toda criança em programadora. A meta é o que programar faz com o jeito de pensar delas." },
+        { type: "list", items: ["Quebrar um problema enorme em pedaços que dá para resolver", "Perceber quando você já viu algo exatamente igual antes", "Ignorar o ruído e focar no que importa", "Testar uma ideia, vê-la falhar e caçar o motivo"] },
+        { type: "paragraph", text: "Os engenheiros usam essas quatro jogadas. Cientistas, escritores e quem abre um negócio também. Uma criança caçando um erro em um laço de Python está treinando exatamente o que vai precisar quando um experimento falhar ou um trabalho em grupo desandar." },
+      ] },
+      { title: "Qual É a Melhor Idade para Começar?", blocks: [
+        { type: "numbered", items: [
+          { title: "5 a 7 anos: lógica visual e sem tela", body: "Jogos de tabuleiro e apps como o ScratchJr ensinam a colocar passos em ordem, e ninguém precisa encostar em um teclado ainda." },
+          { title: "8 a 11 anos: blocos", body: "O Scratch permite montar jogos e animações de verdade. Sem precisar escrever código, não há barreira, então elas vão direto para a construção." },
+          { title: "12 anos ou mais: linguagens de texto", body: "O Python se lê quase como inglês, os profissionais o usam todos os dias e ele é uma excelente primeira linguagem de verdade." },
+        ] },
+      ] },
+      { title: "Como Começar em Casa", blocks: [
+        { type: "list", items: ["Crie uma conta gratuita no Scratch e deixe a criança explorar", "Assistam a um tutorial curto juntos e depois saia de perto", "Peça para ela explicar em voz alta o que o programa dela faz", "Deixe a criança travar. Destravar é a habilidade inteira", "Faça uma festa com o que ela construir, mesmo que seja pequenininho"] },
+      ] },
+      { title: "Um Primeiro Programa em Python", blocks: [
+        { type: "paragraph", text: "Se seu filho já está pronto para escrever código de verdade, abra um editor no navegador como Replit ou Trinket e digite isto:" },
+        { type: "code", title: "Teste Isto", accent: "green", code: "nome = input(\"Qual é o seu nome? \")\nprint(\"Olá, \" + nome + \"! Bem-vindo à programação.\")" },
+        { type: "paragraph", text: "Isso é um programa de verdade. Ele faz uma pergunta, escuta e responde. Acrescente mais algumas perguntas e, de repente, você tem um chatbot ou um jogo de perguntas." },
+        { type: "paragraphWithLink", before: "Quer o guia completo, incluindo como transformar isso em um quiz? Veja nosso ", linkText: "guia do Meu Primeiro Programa em Python", href: "/projects/my-first-python-program", after: "." },
+      ] },
+      { title: "O Quadro Completo", blocks: [
+        { type: "paragraph", text: "Os estudantes hispânicos estão sub-representados na computação, e isso não tem nada a ver com capacidade. Tem a ver com quem recebe acesso, quem vê aquilo de perto e a quem dizem para seguir em frente." },
+        { type: "paragraph", text: "A Avanza STEM existe para abrir portas que nunca deveriam ter sido fechadas." },
+        { type: "quote", text: "Ele chegou em casa e quis logo me mostrar o programa que escreveu. Ficou acrescentando linhas o resto da noite.", attribution: "Mãe de um estudante em uma oficina de programação na Biblioteca de Clifton" },
+        { type: "ctaLink", title: "Experimente uma Oficina Gratuita", text: "Se seu filho quiser experimentar uma oficina de programação gratuita e presencial, nós levamos todos os materiais e ele pode chegar sem nenhuma experiência.", linkText: "Ver próximas oficinas", href: "/workshops", accent: "teal" },
+      ] },
+    ],
+  },
+  "5-easy-science-experiments": {
+    ...localizedBlogArticles.en["5-easy-science-experiments"],
+    title: "5 Experimentos de Ciências Fáceis Para Fazer em Casa",
+    category: "Ciências",
+    imageAlt: "Um ovo coberto de bolhas de dióxido de carbono durante uma reação química de cozinha",
+    imageCaption: "Bolhas de dióxido de carbono se formam durante uma reação química de cozinha, o mesmo tipo de reação presente em vários destes experimentos.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Você não precisa de jaleco e definitivamente não precisa de equipamento caro. A melhor ciência caseira funciona com vinagre, papel-toalha e o refrigerante que estiver na geladeira." },
+        { type: "paragraph", text: "Cada experimento abaixo traz materiais, passos e uma explicação em português simples, para você conversar com seu filho sobre o que ele acabou de ver." },
+        { type: "summary", timeLabel: "Tempo necessário", time: "30 a 45 minutos para os cinco", ageLabel: "Idade recomendada", age: "A partir de 5 anos, com ajuda de um adulto para os menores", supervisionLabel: "Supervisão de adulto", supervision: "Sim, principalmente no experimento do Ovo na Garrafa, que usa fogo", learnLabel: "O que vão aprender", learn: "reações químicas, pressão dos gases, densidade e capilaridade", safetyLabel: "Aviso de segurança", safety: "Um adulto deve acender o fósforo e supervisionar de perto o experimento do ovo" },
+      ] },
+      { title: "", blocks: [{ type: "experiments", items: [
+        { number: 1, title: "Vulcão de Bicarbonato e Vinagre", category: "Química", materialsLabel: "Materiais", stepsLabel: "Passos", scienceLabel: "A Ciência", materials: ["1/2 xícara de bicarbonato de sódio", "1 xícara de vinagre branco", "Detergente", "Corante (opcional)", "Um copo ou pote"], steps: ["Coloque o bicarbonato no copo.", "Aperte um pouco de detergente e pingue algumas gotas de corante.", "Despeje o vinagre e tire a mão rápido.", "Veja a espuma escalar para fora do copo."], science: "O bicarbonato e o vinagre reagem no instante em que se encostam e soltam dióxido de carbono. O detergente prende todo esse gás em bolhas, e isso transforma um simples borbulhar em uma erupção." },
+        { number: 2, title: "Uvas-Passas Dançarinas", category: "Física", materialsLabel: "Materiais", stepsLabel: "Passos", scienceLabel: "A Ciência", materials: ["Um copo transparente", "Água com gás ou refrigerante claro", "Um punhado de uvas-passas"], steps: ["Encha o copo com água com gás.", "Jogue algumas uvas-passas.", "Continue olhando. Elas levam um minuto para começar a se mexer."], science: "As bolhas de dióxido de carbono se agarram nas rugas de cada passa e a levam até o topo. Lá em cima elas estouram, a passa afunda e a viagem começa de novo." },
+        { number: 3, title: "Lâmpada de Lava Caseira", category: "Química e física", materialsLabel: "Materiais", stepsLabel: "Passos", scienceLabel: "A Ciência", materials: ["Uma garrafa transparente", "Óleo vegetal", "Água", "Comprimidos efervescentes", "Corante"], steps: ["Encha uns três quartos da garrafa com óleo.", "Complete com água e algumas gotas de corante.", "Quebre um pedacinho do comprimido e jogue dentro."], science: "O óleo e a água se recusam a misturar, então ficam em camadas. O comprimido gera bolhas de gás que agarram a água colorida, puxam para cima e soltam para ela cair de novo." },
+        { number: 4, title: "Cromatografia em Papel", category: "Química", materialsLabel: "Materiais", stepsLabel: "Passos", scienceLabel: "A Ciência", materials: ["Papel-toalha ou filtro de café", "Canetinhas laváveis", "Um copo de água", "Tesoura"], steps: ["Corte uma tira fina de papel.", "Faça um ponto bem grosso de canetinha perto da borda de baixo.", "Mergulhe só a borda de baixo na água, deixando o ponto seco.", "Espere e veja uma cor se dividir em várias."], science: "Aquela única cor de canetinha, na verdade, é uma mistura de vários pigmentos. A água os arrasta para cima e, como uns viajam mais rápido que outros, eles se separam em faixas." },
+        { number: 5, title: "O Ovo na Garrafa", category: "Física", materialsLabel: "Materiais", stepsLabel: "Passos", scienceLabel: "A Ciência", materials: ["Um ovo cozido e descascado", "Uma garrafa de vidro", "Um pedaço pequeno de papel", "Fósforos, com supervisão de um adulto"], steps: ["Um adulto acende o papel e o solta dentro da garrafa.", "Coloque o ovo sobre a boca da garrafa, com a ponta fina para baixo.", "Afaste-se e veja a garrafa engolir o ovo."], science: "A chama esquenta o ar dentro da garrafa. Ao esfriar, esse ar ocupa menos espaço e a pressão lá dentro cai, então o ar de fora empurra o ovo pelo gargalo sem nenhum esforço." },
+      ] }] },
+      { title: "Fazer a Ideia Ficar", blocks: [
+        { type: "paragraph", text: "Quando o experimento acabar, peça para seu filho desenhar o que aconteceu e escrever uma frase explicando por quê. Dizer em voz alta é o que transforma um momento legal em algo que ele realmente entendeu." },
+        { type: "paragraphWithLink", before: "Quer mais sobre o Vulcão de Bicarbonato e Vinagre? Nosso ", linkText: "guia completo do projeto", href: "/projects/baking-soda-volcano", after: " traz fotos e o que fazer quando não sai como esperado." },
+        { type: "callout", title: "Conexão com Nossas Oficinas", accent: "teal", text: "Em uma oficina, os estudantes discutiram quase dez minutos sobre por que as uvas-passas continuavam subindo e descendo. Isso é mais tempo do que levou para preparar o experimento. Essa discussão é exatamente o objetivo." },
+      ] },
+    ],
+  },
+  "how-to-build-the-strongest-popsicle-stick-bridge": {
+    ...localizedBlogArticles.en["how-to-build-the-strongest-popsicle-stick-bridge"],
+    title: "Como Construir a Ponte de Palitos Mais Forte",
+    category: "Engenharia",
+    imageAlt: "Mentor e estudantes da Avanza STEM ao lado de uma ponte de palitos que sustenta uma pilha alta de livros",
+    imageCaption: "Estudantes testam quanto peso uma ponte de palitos aguenta durante uma oficina de engenharia da Avanza STEM.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Concursos de pontes quase nunca são vencidos por quem usou mais palitos ou mais cola. Eles são vencidos por três coisas: a geometria, para onde o peso viaja e o quanto suas emendas estão bem-feitas." },
+        { type: "paragraphWithLink", before: "Aqui a gente vai entrar na engenharia por trás de uma ponte que aguenta. Se o que você quer é o passo a passo, pule direto para a nossa ", linkText: "página detalhada do projeto", href: "/projects/popsicle-stick-bridge", after: "." },
+      ] },
+      { title: "Por Que os Triângulos Sempre Ganham", blocks: [
+        { type: "paragraph", text: "Empurre um quadrado e ele desaba de lado até virar um losango. Empurre um triângulo e não acontece nada, a não ser que algo realmente entorte ou quebre. Essa é a razão inteira de as treliças serem feitas de triângulos." },
+        { type: "callout", title: "Ideia-Chave", accent: "purple", text: "Coloque um palito na diagonal de uma armação quadrada e você acabou de criar dois triângulos. Esse único palito pode multiplicar quanto peso a estrutura inteira aguenta." },
+      ] },
+      { title: "Entendendo os Caminhos de Carga", blocks: [
+        { type: "list", items: ["O tabuleiro divide o peso entre as duas treliças laterais", "As treliças levam essa força até os apoios", "O banzo inferior é esticado, e os engenheiros chamam isso de tração", "O banzo superior é comprimido, e isso é compressão", "As diagonais passam a força de uma parte da ponte para a seguinte"] },
+        { type: "paragraph", text: "Os melhores projetos reforçam justamente os pontos que mais trabalham, em vez de colar palitos por todo lado só para ver o que gruda." },
+      ] },
+      { title: "As Cinco Diferenças entre Pontes Fortes e Fracas", blocks: [
+        { type: "numbered", items: [
+          { title: "Emendas bem-feitas", body: "A cola cede antes da madeira. Faça emendas limpas e deixe todas secarem por completo." },
+          { title: "Duas treliças laterais iguais", body: "Se um lado sair mais desleixado, ele recebe mais carga e cede primeiro." },
+          { title: "Contraventamento superior", body: "As peças cruzadas de cima impedem que as laterais abram para fora e entortem." },
+          { title: "Um tabuleiro decente", body: "Um tabuleiro que divide o peso entre as duas treliças ganha de jogar toda a carga em um ponto só." },
+          { title: "Triângulos alternados", body: "Triângulos sobrepostos dão à força um caminho limpo até os apoios." },
+        ] },
+      ] },
+      { title: "Erros Comuns Para Evitar", blocks: [
+        { type: "list", items: ["Afogar tudo em cola", "Construir as duas treliças ao mesmo tempo em vez de copiar duas vezes um gabarito que já funcionou", "Pular o contraventamento lateral", "Testar antes de a cola secar por completo", "Colar palitos a esmo sem saber onde está o ponto fraco de verdade"] },
+      ] },
+      { title: "O Desafio da Relação Resistência-Peso", blocks: [
+        { type: "paragraph", text: "Pese sua ponte. Depois divida o peso que ela aguentou pelo peso dela. Esse número é a sua nota de engenharia de verdade." },
+        { type: "paragraph", text: "Nas nossas oficinas, as pontes dos estudantes costumam pesar menos de 50 gramas e aguentam entre 2 e 7 quilos antes de ceder. Isso é mais de 50 vezes o próprio peso." },
+        { type: "quote", text: "A gente começou a colocar palitos só onde quebrou da última vez, não em todo lugar. Foi aí que nossa ponte realmente ficou mais forte.", attribution: "Estudante em uma oficina de construção de pontes da Avanza STEM" },
+        { type: "callout", accent: "purple", text: "Na nossa oficina, a nota é a relação resistência-peso, e essa regra sozinha muda o jeito como os estudantes constroem desde o primeiro palito." },
+      ] },
+    ],
+  },
+  "getting-started-with-lego-robotics": {
+    ...localizedBlogArticles.en["getting-started-with-lego-robotics"],
+    title: "Começando na Robótica LEGO: Guia para Pais",
+    category: "Robótica",
+    imageAlt: "Um kit de robótica LEGO preparado para uma construção de iniciante",
+    imageCaption: "A robótica LEGO pode ser uma boa porta de entrada, em casa, para a engenharia e a programação.",
+    endingSecondary: { href: "/projects", label: "Explorar mais projetos de STEM" },
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "A robótica LEGO entrega às crianças engenharia e programação ao mesmo tempo. Os motores giram, os sensores detectam coisas e o código que elas acabaram de escrever move algo no mesmo cômodo em que estão sentadas." },
+        { type: "paragraph", text: "Em uma primeira construção, uma equipe pode gastar o encontro inteiro só tentando fazer o robô andar reto. Parece uma tarde perdida. Quase sempre é o melhor aprendizado do dia." },
+      ] },
+      { title: "Por Que É Diferente do LEGO Comum", blocks: [
+        { type: "paragraph", text: "O LEGO comum deixa você com um modelo bonito que fica parado. A robótica deixa você com algo que se move, detecta e reage, tudo controlado por um hub programável." },
+        { type: "callout", title: "A Grande Ideia", accent: "green", text: "A robótica transforma o erro em enigma. Quando o robô faz a coisa errada, ele está te dizendo algo sobre o seu projeto ou o seu código, e agora é com você descobrir o quê." },
+      ] },
+      { title: "Qual Kit de Robótica LEGO Combina com Seu Filho?", blocks: [
+        { type: "numbered", items: [
+          { title: "LEGO SPIKE Essential (6 a 10 anos)", body: "Um kit de entrada guiado e baseado em blocos, feito para iniciantes pequenos." },
+          { title: "LEGO SPIKE Prime (10 a 14 anos)", body: "O kit que muitas escolas usam. Mais sensores, mais motores e espaço para crescer rumo a projetos grandes." },
+          { title: "LEGO Mindstorms Robot Inventor", body: "Descontinuado, mas ainda dá para achar. Flexível, potente e vale a pena se você encontrar uma boa oferta." },
+        ] },
+      ] },
+      { title: "O Que Seu Filho Vai Aprender de Verdade", blocks: [
+        { type: "list", items: ["Como as máquinas de verdade se movem: engrenagens, eixos e alavancas", "Lógica de sensores, ou como um robô decide o que fazer em seguida", "Programar passo a passo, e pensar em se isto então aquilo", "Projetar, testar, quebrar e redesenhar", "Trabalhar em equipe e explicar uma ideia de um jeito que outra pessoa entenda"] },
+        { type: "quote", text: "O robô ficava dando voltas, e no fim era uma roda frouxa. Quando descobrimos, sentimos que tínhamos consertado algo de verdade.", attribution: "Estudante testando um projeto de robótica LEGO" },
+      ] },
+      { title: "Dicas para Pais Que Não São Engenheiros", blocks: [
+        { type: "paragraph", text: "Você não precisa das respostas. Você precisa de boas perguntas. Estas quatro fazem quase todo o trabalho:" },
+        { type: "list", items: ["O que você queria que ele fizesse?", "O que ele fez em vez disso?", "O que você mudaria primeiro?", "Você consegue fazer ele fazer algo completamente diferente?"] },
+      ] },
+      { title: "Primeiros Projetos Para Testar", blocks: [
+        { type: "numbered", items: [
+          { title: "Seguidor de linha", body: "Use o sensor de cor para perseguir uma tira de fita preta pelo chão." },
+          { title: "Desviador de obstáculos", body: "Use o sensor de distância para virar antes de bater na parede." },
+          { title: "Controle remoto", body: "Dirija o robô na mão primeiro e depois tente recriar o mesmo percurso com código." },
+          { title: "Máquina de separar", body: "Monte algo que separe objetos por cor e deixe cada um no monte certo." },
+        ] },
+        { type: "paragraphWithLink", before: "Quer uma primeira construção guiada, com instruções passo a passo? Experimente nosso ", linkText: "guia do projeto Robô LEGO com Garra", href: "/projects/lego-robot-builder", after: "." },
+      ] },
+      { title: "Além do Kit", blocks: [
+        { type: "paragraph", text: "Quando um estudante já estiver com fome de um desafio em equipe de verdade, a FIRST LEGO League é a próxima parada natural." },
+        { type: "ctaLink", title: "Construa Seu Primeiro Robô", text: "Comece com um projeto guiado de LEGO SPIKE Prime que passa pela construção, pelo código e pelo que fazer quando ainda nada funciona.", linkText: "Ver o guia do robô", href: "/projects/lego-robot-builder", accent: "green" },
+      ] },
+    ],
+  },
+  "what-is-ai-explaining-to-kids": {
+    ...localizedBlogArticles.en["what-is-ai-explaining-to-kids"],
+    title: "O Que É IA? Explicando Inteligência Artificial Para Crianças",
+    category: "IA",
+    imageAlt: "Estudantes trabalhando em computadores durante uma oficina de IA da Avanza STEM, com diagramas nas telas",
+    imageCaption: "Estudantes exploram conceitos de IA na prática durante um encontro de oficina da Avanza STEM.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "A IA escolhe o próximo vídeo, organiza o feed, responde ao assistente de voz e arruma o e-mail sem ninguém pedir. A maioria das crianças usa IA o dia inteiro, anos antes de alguém se dar ao trabalho de explicar o que ela é." },
+        { type: "paragraph", text: "Saber como a IA funciona hoje conta como alfabetização. E há duas perguntas que vale a pena ensinar: com o que essa coisa aprendeu? e qual ponto de vista ficou de fora?" },
+      ] },
+      { title: "Comece pelo Que as Crianças Já Sabem", blocks: [
+        { type: "callout", accent: "teal", text: "Quando o Spotify enfia uma música nova na sua playlist, como você acha que ele escolheu justo aquela?" },
+        { type: "paragraph", text: "Essa pergunta leva direto à busca de padrões, que é o motor de quase toda IA. A gente faz essa pergunta no começo das nossas oficinas, antes de explicar qualquer coisa, e os estudantes quase sempre chegam perto da resposta real. É exatamente esse o ponto." },
+      ] },
+      { title: "Um Jeito Simples de Explicar Como a IA Aprende", blocks: [
+        { type: "paragraph", text: "A IA aprende igual a uma criança pequena que descobre o que é um cachorro: vendo muitos e muitos cachorros. Dê a um modelo exemplos rotulados suficientes e ele começa a captar o padrão sozinho." },
+        { type: "callout", title: "O Termo Técnico", accent: "green", text: "Isso se chama aprendizado supervisionado. Supervisionado só quer dizer que cada exemplo de treinamento veio com a resposta certa junto." },
+      ] },
+      { title: "Tipos de IA Que Vale a Pena Explicar Para as Crianças", blocks: [
+        { type: "numbered", items: [
+          { title: "Reconhecimento de imagens", body: "Desbloqueio facial, marcação de fotos e médicos lendo exames." },
+          { title: "Sistemas de recomendação", body: "O que decide o que Netflix, Spotify e YouTube colocam na sua frente." },
+          { title: "Modelos de linguagem", body: "Sistemas que escrevem texto prevendo quais palavras costumam vir depois." },
+          { title: "IA de videogame", body: "Programas que melhoram jogando milhões de partidas e aprendendo com o que deu certo." },
+        ] },
+      ] },
+      { title: "O Que a IA Não Consegue Fazer (e Por Que Isso Importa)", blocks: [
+        { type: "list", items: ["Ela só conhece padrões parecidos com os do treinamento. Mostre algo novo e ela está chutando", "Qualquer viés que estivesse nos dados sai do outro lado igualzinho", "Ela pode estar completamente errada e ainda assim soar muito confiante", "Ela persegue o número que você mandou perseguir, mesmo que esse não seja o objetivo real"] },
+        { type: "paragraph", text: "Ensinar uma criança a ter o hábito de perguntar com o que um sistema foi treinado é uma das ferramentas de raciocínio mais úteis que você pode dar a ela." },
+      ] },
+      { title: "Atividade Prática: Treine Seu Próprio Classificador de Imagens", blocks: [
+        { type: "list", items: ["Entre em teachablemachine.withgoogle.com", "Crie duas classes de imagens, por exemplo joinha para cima e joinha para baixo", "Treine com fotos da sua própria câmera", "Teste com uma pose que ele nunca viu", "Depois compare o que acontece com 5 fotos de exemplo e com 50"] },
+        { type: "callout", accent: "teal", text: "Em uns dez minutos você já passou por coleta de dados, treinamento, previsão e pelo motivo de a qualidade dos dados decidir tudo." },
+        { type: "quote", text: "Treinei para diferenciar minha mão da mão do meu amigo, e ele continuava errando até a gente usar mais fotos. Foi aí que eu realmente entendi.", attribution: "Estudante em uma oficina de IA da Avanza STEM" },
+      ] },
+      { title: "IA Responsável: A Parte Que Quase Ninguém Explica", blocks: [
+        { type: "paragraph", text: "As crianças precisam de mais do que uma lista de truques. Precisam saber quando conferir o que a IA disse, quando não se apoiar nela de jeito nenhum e quem responde quando um desses sistemas causa dano real." },
+        { type: "paragraphWithLink", before: "Se for a primeira vez que seu filho vai construir algo com código, nosso ", linkText: "guia para escrever um primeiro programa em Python", href: "/projects/my-first-python-program", after: " é um próximo passo sólido." },
+      ] },
+    ],
+  },
+  "math-games-that-make-learning-fun": {
+    ...localizedBlogArticles.en["math-games-that-make-learning-fun"],
+    title: "Jogos de Matemática Que Deixam o Aprendizado Divertido",
+    category: "Matemática",
+    imageAlt: "Um ábaco de madeira colorido, uma ferramenta para desenvolver o senso numérico",
+    imageCaption: "Um ábaco de madeira, uma das muitas ferramentas simples que ajudam a desenvolver o senso numérico antes de qualquer folha de exercícios.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "A ansiedade com matemática quase sempre começa do mesmo jeito: folhas de exercícios, um cronômetro correndo e caneta vermelha. Os jogos usam exatamente as mesmas habilidades, só que ninguém fica com dor de barriga." },
+        { type: "paragraph", text: "Estes aqui são para o 2º ao 5º ano, e quase nenhum precisa de mais do que um baralho ou um par de dados." },
+        { type: "summary", timeLabel: "Tempo necessário", time: "10 a 20 minutos por jogo", ageLabel: "Idade recomendada", age: "2º ao 5º ano (7 a 11 anos)", supervisionLabel: "Supervisão de adulto", supervision: "Não, as crianças podem jogar sozinhas ou com a família", learnLabel: "O que vão aprender", learn: "senso numérico, cálculo mental, frações e estimativa" },
+      ] },
+      { title: "", blocks: [{ type: "games", items: [
+        { title: "Guerra dos Números", gradeRange: "2º ao 4º ano", description: "Um jogo de cartas que constrói senso numérico rapidinho.", howToPlayLabel: "Como Jogar", whyItWorksLabel: "Por Que Funciona", howToPlay: ["Tire as figuras ou defina um valor para elas.", "Divida o baralho inteiro em partes iguais.", "Os dois jogadores viram uma carta.", "A carta mais alta leva as duas.", "Quer multiplicação? Cada um vira duas cartas e multiplica."], whyItWorks: "As crianças praticam muito e nunca parece dever de casa." },
+        { title: "101 e Fora", gradeRange: "3º ao 5º ano", description: "Um jogo de dados sobre soma mental e saber a hora de parar.", howToPlayLabel: "Como Jogar", whyItWorksLabel: "Por Que Funciona", howToPlay: ["Comece do 0.", "Jogue dois dados.", "Some os dois, ou use um como dezena e outro como unidade.", "Chegue o mais perto de 101 que você tiver coragem, sem passar."], whyItWorks: "Essa única decisão obriga a pensar de verdade em valor posicional." },
+        { title: "Pizza de Frações", gradeRange: "3º ao 5º ano", description: "Um jogo em que as frações viram algo que dá para pegar na mão.", howToPlayLabel: "Como Jogar", whyItWorksLabel: "Por Que Funciona", howToPlay: ["Corte círculos de papel em fatias de frações.", "Cada um, na sua vez, pega uma fatia.", "Dispute quem completa exatamente um círculo inteiro.", "Se uma fatia fizer você passar, perde a vez."], whyItWorks: "Mexer em peças de verdade constrói uma intuição de frações equivalentes que nenhuma folha de exercícios consegue." },
+        { title: "Número-Alvo", gradeRange: "4º ao 5º ano", description: "Um quebra-cabeça mental com mais de um caminho certo.", howToPlayLabel: "Como Jogar", whyItWorksLabel: "Por Que Funciona", howToPlay: ["Escolha cinco algarismos.", "Escolha um número-alvo.", "Use as operações que quiser para chegar nele.", "Comparem as respostas e vejam quem achou um atalho."], whyItWorks: "Mostra em silêncio que um problema de matemática pode ter vários caminhos certos." },
+        { title: "Vinte Perguntas Matemáticas", gradeRange: "2º ao 5º ano", description: "Um jogo de adivinhação que entra com o vocabulário matemático pela porta dos fundos.", howToPlayLabel: "Como Jogar", whyItWorksLabel: "Por Que Funciona", howToPlay: ["Pense em um número e não conte.", "O outro jogador faz perguntas matemáticas de sim ou não.", "Tente acertar com o menor número de perguntas possível."], whyItWorks: "Palavras como par, primo e múltiplo de repente importam, porque saber o que significam faz você ganhar." },
+        { title: "Pote da Estimativa", gradeRange: "2º ao 4º ano", description: "Um desafio semanal de adivinhação que praticamente se cuida sozinho.", howToPlayLabel: "Como Jogar", whyItWorksLabel: "Por Que Funciona", howToPlay: ["Encha um pote com objetos pequenos.", "Cada um escreve a própria estimativa.", "Contem tudo juntos mais para o fim da semana.", "Ganha quem chegar mais perto."], whyItWorks: "Chutar sem nada em jogo é exatamente como o senso numérico cresce." },
+      ] }] },
+      { title: "Uma Observação Sobre a Prática Cronometrada", blocks: [
+        { type: "paragraph", text: "A fluência vem de ver a mesma matemática de novo e de novo em um lugar onde errar não custa nada. Os jogos fazem isso. As provas cronometradas fazem o contrário." },
+        { type: "paragraphWithLink", before: "Quer mais? Vários desses jogos e outras atividades estão na nossa ", linkText: "página de atividades", href: "/games", after: "." },
+        { type: "list", items: ["Comece pelo jogo que já chamou a atenção do seu filho", "Jogue com ele, não contra ele", "Deixe ele ganhar algumas no começo", "Pergunte o que ele acha antes de corrigir qualquer coisa", "Pare enquanto ele ainda quiser mais uma rodada"] },
+        { type: "callout", title: "Para os Pais", accent: "orange", text: "Nas noites de matemática em família, os jogos que sempre se repetem são os que deixam uma criança ganhar de um adulto de forma limpa. Guerra dos Números e 101 e Fora fazem exatamente isso." },
+        { type: "quote", text: "Minha filha pediu para jogar 101 e Fora três noites seguidas. Nunca contei que aquilo era treino de matemática.", attribution: "Mãe em uma noite de matemática em família da Avanza STEM" },
+      ] },
+    ],
+  },
+  "building-a-community-stem-workshops": {
+    ...localizedBlogArticles.en["building-a-community-stem-workshops"],
+    title: "Construindo Comunidade: Como as Oficinas de STEM Mudam Vidas",
+    category: "Comunidade",
+    imageAlt: "Famílias e estudantes reunidos na biblioteca para um evento comunitário da Avanza STEM",
+    imageCaption: "Famílias se reúnem na biblioteca para uma série de oficinas comunitárias da Avanza STEM.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "A parte mais difícil de começar a Avanza STEM foi acreditar que chegar em uma biblioteca com uma caixa de materiais e um notebook poderia servir para alguma coisa." },
+        { type: "paragraph", text: "Depois rodamos programas na Clifton Public Library, na Allwood Branch Library, na Library of the Chathams e na Roseland Free Public Library, e mais de 70 estudantes passaram por lá. Agora a gente sabe por que isso importa. As crianças saem daquelas salas sabendo que o STEM também é delas." },
+      ] },
+      { title: "Como É uma Oficina na Prática", blocks: [
+        { type: "paragraph", text: "Hoje a gente conduz uma série de três semanas: engenharia, depois programação, depois IA. Cada encontro é gratuito e ninguém precisa de experiência para entrar." },
+        { type: "paragraph", text: "Os estudantes constroem coisas, escrevem Python e treinam modelos simples de IA. No caminho, a gente liga cada atividade a uma ideia usada por engenheiros e cientistas de verdade." },
+      ] },
+      { title: "Por Que as Bibliotecas São o Lugar Certo", blocks: [
+        { type: "paragraph", text: "As bibliotecas já fizeram a parte difícil. As pessoas confiam nelas, elas estão abertas para todo mundo e o aprendizado gratuito é a razão de existirem." },
+        { type: "list", items: ["Ninguém paga para entrar", "As crianças já conhecem o prédio e se sentem seguras ali", "A biblioteca tem uma relação de verdade com o bairro", "As salas e a tecnologia aguentam um encontro bagunçado de construção", "Chegam estudantes de escolas bem diferentes"] },
+      ] },
+      { title: "O Que a Gente Já Viu na Sala", blocks: [
+        { type: "paragraph", text: "Os melhores momentos são os pequenos. Uma criança acrescentando em silêncio uma quinta pergunta ao jogo dela em Python. Uma família percebendo que um programa desses acontece a dez minutos de caminhada de casa. Dois estudantes discutindo por que alguma coisa deu certo." },
+        { type: "quote", text: "Uma mãe contou que a filha pediu para voltar na semana seguinte antes de o encontro acabar. Foi aí que a gente soube que estava funcionando.", attribution: "Bibliotecária da Unidade Allwood" },
+        { type: "paragraph", text: "Leve a curiosidade de uma criança a sério uma única vez e é bem provável que ela saia atrás de mais." },
+      ] },
+      { title: "O Problema da Representatividade e Por Que Ele É Nossa Responsabilidade", blocks: [
+        { type: "paragraph", text: "Os estudantes hispânicos seguem sub-representados no STEM, e os motivos são chatos e resolvíveis: pouca exposição, poucos mentores, pouco incentivo, pouco acesso." },
+        { type: "callout", title: "A Lacuna Que Queremos Fechar", accent: "purple", text: "Ver alguém parecido com você fazendo o trabalho muda quem se sente convidado ao STEM. Isso não é um detalhe. É quase o problema inteiro." },
+      ] },
+      { title: "Como Levar uma Oficina Para a Sua Comunidade", blocks: [
+        { type: "numbered", items: [
+          { title: "Encontre um lugar", body: "Bibliotecas, centros comunitários, igrejas e escolas funcionam. Comece por quem já conhece as suas famílias." },
+          { title: "Fale com a gente", body: "A gente conversa sobre o plano de atividades, os materiais e como espalhar a notícia." },
+          { title: "Divulgue localmente", body: "Grupos comunitários, cartazes e parceiros do bairro chegam a famílias que uma publicação online nunca alcança." },
+          { title: "Continue aparecendo", body: "A confiança se constrói um encontro por vez, e vale a espera." },
+        ] },
+      ] },
+      { title: "O Que Vem a Seguir", blocks: [
+        { type: "paragraph", text: "Queremos chegar a mais unidades de bibliotecas e centros comunitários, e queremos que o modelo seja tão simples que outras pessoas consigam tocá-lo sozinhas." },
+        { type: "ctaLink", title: "Leve uma Oficina Para a Sua Comunidade", text: "Quer trazer um programa de STEM gratuito para a sua biblioteca, escola ou centro comunitário?", linkText: "Fale com a gente para receber uma oficina", href: "/host", accent: "purple" },
+        { type: "ctaLink", text: "Prefere ver primeiro como é um encontro de verdade?", linkText: "Ver próximas oficinas", href: "/workshops", accent: "purple" },
+      ] },
+    ],
+  },
+  "why-triangles-are-an-engineers-secret-weapon": {
+    ...localizedBlogArticles.en["why-triangles-are-an-engineers-secret-weapon"],
+    title: "Por Que os Triângulos São a Arma Secreta dos Engenheiros?",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Estudantes examinando uma ponte de palitos de picolé pronta em uma oficina de engenharia da Avanza STEM",
+    imageCaption: "Estudantes em uma oficina da Avanza STEM inspecionam uma ponte treliçada. Os triângulos do projeto não são decoração; são a razão de a ponte aguentar o peso.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Em toda oficina de engenharia que a gente dá, algum estudante olha para a ponte que aguentou mais peso e faz a mesma pergunta: por que essa aí funciona? A resposta sempre volta para uma única forma. O triângulo." },
+        { type: "paragraph", text: "E isto não é uma regra para decorar e esquecer. Quando você entende por que os triângulos são especiais, não consegue mais deixar de vê-los. Pontes, torres, quadros de bicicleta, telhados, montanhas-russas. Eles estão escondidos em tudo." },
+      ] },
+      { title: "O Problema com os Quadrados", blocks: [
+        { type: "paragraph", text: "Imagine um quadrado montado com quatro palitos e fita. Empurre um canto e tudo se deita até virar um losango. Os engenheiros chamam isso de deformação, e acontece porque as quatro junções podem girar." },
+        { type: "callout", title: "A Diferença Principal", accent: "purple", text: "Um triângulo tem três lados e três cantos, e não existe jeito de achatá-lo em outra forma sem entortar ou quebrar um lado. É isso que significa ser rígido." },
+        { type: "paragraph", text: "Então o quadrado é a forma errada para sustentar peso e o triângulo é a certa. Essa é a história inteira em duas frases." },
+      ] },
+      { title: "O Que Acontece Quando Você Acrescenta uma Diagonal", blocks: [
+        { type: "paragraph", text: "Agora teste isto. Pegue aquele mesmo quadrado bambo e coloque um palito na diagonal, atravessando o meio. Você acabou de fazer dois triângulos, e a armação passa de trêmula a sólida." },
+        { type: "paragraph", text: "O palito extra não é só reforço. Ele divide o quadrado em duas formas que não podem se deformar, e de repente o painel inteiro fica rígido. Os estudantes das nossas oficinas sentem isso no segundo em que colocam a diagonal. O painel que antes entortava agora se defende." },
+        { type: "callout", accent: "purple", text: "A distância entre uma armação fraca e uma forte pode ser um único palito na diagonal. Isso é triangulação, e é esse o truque inteiro." },
+      ] },
+      { title: "Por Que os Triângulos Aparecem em Todo Lugar na Engenharia", blocks: [
+        { type: "paragraph", text: "Depois que você sabe o que procurar, começa a flagrar triângulos fazendo trabalho estrutural por toda parte." },
+        { type: "list", items: [
+          "Pontes treliçadas: uma cadeia inteira de triângulos ligados levando a carga de uma ponta à outra",
+          "A Torre Eiffel: uma malha de triângulos que permite a ela balançar com o vento em vez de quebrar",
+          "Quadros de bicicleta: olhe o quadro principal e você está vendo um triângulo",
+          "Tesouras de telhado: o formato de \"A\" de um telhado inclinado é um triângulo segurando tudo",
+          "Guindastes de obra: aquele braço comprido é uma treliça triangular levantando pesos absurdos",
+          "Montanhas-russas: os apoios triangulados aguentam os passageiros sacudindo a cada mudança de direção",
+        ] },
+      ] },
+      { title: "A Ciência por Trás: Como as Forças Andam pelos Triângulos", blocks: [
+        { type: "numbered", items: [
+          { title: "Os triângulos transformam forças em puxões e apertos", body: "Empurre um triângulo para baixo e cada elemento é esticado (tração) ou comprimido (compressão). Nada entorta. E entortar é o que quebra as coisas." },
+          { title: "Os três lados dividem o trabalho", body: "Um quadrado joga toda a tensão nos cantos. Um triângulo distribui a força por cada lado ao mesmo tempo." },
+          { title: "A forma se recusa a mudar", body: "Enquanto nenhum elemento falhar, um triângulo carregado fica exatamente como você o construiu. Um quadrado não consegue prometer isso." },
+        ] },
+      ] },
+      { title: "Teste Você Mesmo", blocks: [
+        { type: "paragraph", text: "Você não precisa de laboratório. Pegue quatro palitos de picolé e fita e veja acontecer em uns dois minutos." },
+        { type: "list", items: [
+          "Cole quatro palitos pelas pontas até formar um quadrado. Empurre um canto e veja tudo se deitar.",
+          "Coloque um quinto palito na diagonal, atravessando o meio. Empurre o mesmo canto. Quase não mexe.",
+          "Agora monte um triângulo simples com três palitos e sinta como ele é sólido.",
+          "Encadeie vários triângulos em fila e descubra quanto peso dá para sustentar.",
+        ] },
+        { type: "callout", accent: "purple", text: "Nas nossas oficinas, as vencedoras são sempre feitas de uma sequência ligada de triângulos. Os estudantes que entendem o porquê constroem pontes mais fortes e, quando uma quebra, já sabem onde procurar." },
+      ] },
+      { title: "O Que Isso Significa Para a Sua Ponte", blocks: [
+        { type: "paragraphWithLink", before: "Pronto para construir uma e quer o passo a passo? Nosso ", linkText: "guia do projeto de ponte de palitos", href: "/projects/popsicle-stick-bridge", after: " leva você por uma ponte treliçada inteira usando tudo o que está acima." },
+        { type: "ctaLink", title: "Construa uma Ponte Treliçada", text: "Nas nossas oficinas de engenharia, os estudantes constroem pontes de palitos e depois empilham peso em cima até alguma coisa finalmente ceder.", linkText: "Ver próximas oficinas", href: "/workshops", accent: "purple" },
+      ] },
+    ],
+  },
+  "how-engineers-think-when-something-breaks": {
+    ...localizedBlogArticles.en["how-engineers-think-when-something-breaks"],
+    title: "Como os Engenheiros Pensam Quando Algo Quebra",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Estudantes testando uma ponte que falhou, com livros, durante uma oficina de engenharia da Avanza STEM",
+    imageCaption: "Uma estrutura que acabou de falhar não é uma perda. É informação. Os estudantes examinam onde e por que ela quebrou antes de pensar na próxima melhoria.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Alguma coisa quebra em quase toda oficina que a gente dá. Uma ponte entorta sob os livros. Uma torre cai assim que entra mais um bloco. Um rover de papelão capota no primeiro percurso. E o interessante é isto: o estudante que construiu quase sempre sabe o que aconteceu antes de alguém dizer uma palavra." },
+        { type: "paragraph", text: "Aquele estalo de \"ah, quebrou bem na emenda porque eu colei com pressa\" é a melhor coisa do encontro inteiro. Nada fracassou. Você acabou de receber informação." },
+        { type: "youtube", videoId: "xPp8R64YEHQ", title: "Como os engenheiros pensam quando algo quebra", caption: "Um olhar rápido sobre a mentalidade que os engenheiros usam quando um projeto falha." },
+      ] },
+      { title: "A Primeira Pergunta Que um Engenheiro Faz", blocks: [
+        { type: "paragraph", text: "Quando algo quebra, um engenheiro não pergunta \"o que eu fiz de errado?\". Ele pergunta algo bem melhor: onde quebrou e o que isso está me dizendo?" },
+        { type: "paragraph", text: "Uma ponte que parte no meio acabou de te dizer que o meio era a parte mais fraca. Uma emenda que se abre acabou de te dizer que aquela ligação não aguentava. A quebra está basicamente deixando recados para a próxima construção." },
+        { type: "callout", title: "Olhar de Engenheiro", accent: "purple", text: "Uma estrutura que quebrou é útil. Uma estrutura que ninguém testou não diz absolutamente nada." },
+      ] },
+      { title: "O Ciclo de Melhoria", blocks: [
+        { type: "paragraph", text: "Os engenheiros dão voltas de propósito. O ciclo de projeto não é uma linha reta da ideia até o sucesso. Ele funciona assim:" },
+        { type: "numbered", items: [
+          { title: "Defina o objetivo", body: "Seja específico. Sustentar 2 quilos? Vencer 30 centímetros? Pesar o mínimo humanamente possível? Objetivo vago, resultado vago." },
+          { title: "Construa uma primeira versão", body: "Não persiga a perfeição. Persiga algo que dê para testar. Você quer algo em que possa colocar peso nos próximos dez minutos." },
+          { title: "Teste de verdade", body: "Coloque a carga real em cima. Imaginar como teria ido não é um teste." },
+          { title: "Observe o que falhou", body: "Não só que quebrou, mas exatamente onde e como. Esse detalhe são os seus dados." },
+          { title: "Mude uma coisa só", body: "Mude três de uma vez e você nunca vai saber qual delas salvou a construção." },
+          { title: "Teste de novo", body: "Mais uma volta. Cada rodada entrega mais do que a anterior." },
+        ] },
+      ] },
+      { title: "Como Isso Aparece nas Oficinas da Avanza STEM", blocks: [
+        { type: "paragraph", text: "Em um encontro de pontes, quase todos os grupos constroem uma vez e testam uma vez. Já basta. Quando a ponte começa a entortar, depois a torcer e enfim cede, a sala inteira consegue ver qual parte estava trabalhando mais." },
+        { type: "paragraph", text: "O momento de verdade vem depois. Onde falhou? Por que bem ali? Se você construísse outra amanhã, o que reforçaria primeiro?" },
+        { type: "callout", accent: "purple", text: "Uma única construção basta para aprender a mentalidade inteira: projete, teste com honestidade, estude a bagunça e diga em voz alta o que a versão dois faria diferente." },
+      ] },
+      { title: "A Regra da Mudança Única", blocks: [
+        { type: "paragraph", text: "Esta importa mais do que os estudantes esperam. Depois que algo quebra, mude exatamente uma coisa antes de testar de novo." },
+        { type: "paragraph", text: "Digamos que sua ponte quebre e você a reconstrua com emendas melhores E uma treliça diferente E mais reforço. Talvez ela aguente mais. E daí? Você não faz ideia de qual mudança resolveu, então não pode usar nenhuma na próxima vez. Você não aprendeu. Você teve sorte." },
+        { type: "callout", accent: "purple", text: "Mude uma coisa. Teste. Observe. Depois mude a seguinte. É assim que os engenheiros descobrem o que funciona de verdade." },
+      ] },
+      { title: "Esse Raciocínio Funciona em Todo Lugar", blocks: [
+        { type: "paragraph", text: "Nada disso vale só para estruturas. Observar, supor, testar, melhorar. O mesmo ciclo aparece pela sua vida inteira:" },
+        { type: "list", items: [
+          "Ciências: um experimento que dá errado está te dizendo algo específico sobre a sua montagem ou a sua hipótese",
+          "Programação: uma falha te entrega uma mensagem de erro. Leia antes de mexer em uma única linha",
+          "Matemática: uma resposta errada aponta a que passo voltar. Não é um veredito sobre você",
+          "Esportes: um arremesso errado é informação sobre a sua postura ou o seu tempo, não motivo para desistir",
+        ] },
+        { type: "ctaLink", title: "Participe de uma Oficina de Engenharia Gratuita", text: "Nas nossas oficinas de engenharia, os estudantes constroem algo, quebram de propósito e usam o que veem para melhorar a próxima versão.", linkText: "Ver próximas oficinas", href: "/workshops", accent: "purple" },
+      ] },
+    ],
+  },
+  "design-a-mars-rover-out-of-cardboard": {
+    ...localizedBlogArticles.en["design-a-mars-rover-out-of-cardboard"],
+    title: "Projete um Rover de Marte com Papelão",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Estudantes trabalhando em um desafio de projeto de engenharia em uma oficina da Avanza STEM",
+    imageCaption: "Os desafios de engenharia da Avanza STEM começam com um enunciado de projeto e restrições, e terminam com um teste de verdade.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Os rovers da NASA trabalham a mais de 200 milhões de quilômetros da oficina mais próxima. Uma roda racha, um sensor morre, e não tem ninguém lá fora para consertar. Nunca. Toda decisão de projeto é tomada pensando nisso." },
+        { type: "paragraph", text: "Hoje você não vai construir para 200 milhões de quilômetros. Mas os limites são os mesmos: os materiais que você achar, um peso que não dá para passar, terreno horrível e um rover que precisa funcionar de verdade quando alguém testar na sua frente." },
+      ] },
+      { title: "O Enunciado da Missão", blocks: [
+        { type: "callout", title: "Sua Missão", accent: "purple", text: "Construa um rover de Marte com papelão, fita e o que houver por perto. Ele precisa carregar alguma coisa, atravessar terreno irregular e sobreviver a uma queda. O relógio marca 45 minutos. Comece." },
+      ] },
+      { title: "O Que Você Precisa", blocks: [
+        { type: "list", items: [
+          "Papelão (caixas de cereal, caixas de entrega, qualquer papelão plano)",
+          "Fita silver tape ou fita crepe",
+          "Tesoura",
+          "Tubos de papelão (rolos de papel-toalha ou papel higiênico)",
+          "Canudos",
+          "Copinhos de papel",
+          "Opcional: colchetes de latão, elásticos, uma régua",
+        ] },
+      ] },
+      { title: "Seus Objetivos de Projeto", blocks: [
+        { type: "paragraph", text: "Os engenheiros de verdade são avaliados por requisitos específicos, não por boas intenções. Estes são os seus:" },
+        { type: "numbered", items: [
+          { title: "Carregue uma carga útil", body: "Equilibre em cima um copinho com 3 moedas ou 3 pedrinhas. Se virar, a missão falhou." },
+          { title: "Atravesse o terreno", body: "Role sobre uma folha de caderno amassada sem atolar nem parar." },
+          { title: "Sobreviva à queda", body: "Solte da altura do seu joelho. Ele precisa ficar inteiro e continuar rodando." },
+          { title: "Extra: o braço", body: "Coloque algo que se estenda para fora do corpo, como o braço de um rover, e que possa descer até o chão enquanto o rover fica parado." },
+        ] },
+      ] },
+      { title: "Suas Restrições de Projeto", blocks: [
+        { type: "paragraph", text: "Todo trabalho real de engenharia vem com regras que você não escolheu. Trabalhar dentro delas é o trabalho inteiro. Aqui estão as suas:" },
+        { type: "list", items: [
+          "Precisa caber em uma caixa de sapato",
+          "Nada de cola quente. Só fita e colchetes",
+          "As rodas precisam ser redondas. Redondas de verdade, não mais ou menos redondas",
+          "45 minutos no relógio",
+          "Antes de testar, você precisa explicar uma decisão que tomou e por quê",
+        ] },
+      ] },
+      { title: "Perguntas de Engenharia Para Pensar Antes de Construir", blocks: [
+        { type: "numbered", items: [
+          { title: "Quantas rodas?", body: "Quatro ganham de três em estabilidade, mas cada roda a mais é mais peso e mais uma coisa que pode quebrar. Os rovers de verdade usam seis, cada uma montada para se mover sozinha. Assim uma pedra só não vira o veículo inteiro." },
+          { title: "Onde está o peso?", body: "Peso em cima, capota fácil. Peso embaixo, fica firme. Deixe as partes pesadas o mais perto do chão que der." },
+          { title: "Qual é a largura da bitola?", body: "A distância entre as rodas da esquerda e da direita se chama bitola. Mais larga é mais difícil de virar de lado. Mais estreita passa por lugares apertados. Escolha o seu problema." },
+          { title: "O que acontece quando uma roda pega um buraco?", body: "Com um eixo rígido, um buraco só levanta aquele lado inteiro do rover. Os rovers de verdade usam suspensão rocker-bogie para cada roda se mover sozinha. E agora a pergunta divertida: dá para imitar isso com papelão e fita?" },
+        ] },
+      ] },
+      { title: "Teste e Depois Faça Estas Perguntas", blocks: [
+        { type: "list", items: [
+          "Ele capotou no teste de carga? Onde estava todo o peso?",
+          "O papel amassado travou o rover? Uma roda afundou ou o corpo arrastou?",
+          "Ele sobreviveu à queda? E, se não, o que cedeu primeiro?",
+          "Se alguém te desse mais dez minutos, qual única coisa você mudaria?",
+        ] },
+        { type: "paragraph", text: "Escreva as respostas ou desenhe. Essa folha é a diferença entre uma primeira construção e uma segunda que seja realmente melhor." },
+        { type: "quote", text: "Um estudante colocou uma rampa na frente do rover dele usando uma tira de papelão dobrada. Disse que era para empurrar as pedras do caminho. Perguntei se ele tinha visto isso em um rover de verdade. Ele disse que não, que só achou que ia ajudar. Esse é o tipo certo de raciocínio.", attribution: "Noah López, mentor da Avanza STEM" },
+      ] },
+      { title: "A Ligação com o Rover de Verdade", blocks: [
+        { type: "paragraph", text: "O Perseverance, o rover que está rodando por Marte agora mesmo, pesa cerca de 1.025 quilos e anda sobre seis rodas que se movem de forma independente. Ele carrega câmeras, um microfone, uma broca e um helicóptero inteiro chamado Ingenuity. Cada peça precisou ser leve o bastante para decolar, resistente o bastante para sobreviver ao pouso e confiável o bastante para continuar trabalhando por anos sem ninguém para ajudar." },
+        { type: "paragraph", text: "Distribuição de peso, número de rodas, altura livre do solo, carga útil. É exatamente sobre isso que os engenheiros de rover da NASA discutem. Você está respondendo às mesmas perguntas. A única diferença é o orçamento." },
+        { type: "ctaLink", title: "Experimente a Engenharia Pessoalmente", text: "Nas nossas oficinas, os estudantes encaram desafios de projeto como este e descobrem rapidinho se a construção deles aguenta.", linkText: "Ver próximas oficinas", href: "/workshops", accent: "purple" },
+      ] },
+    ],
+  },
+  "what-is-ai-actually-doing-when-it-answers-you": {
+    ...localizedBlogArticles.en["what-is-ai-actually-doing-when-it-answers-you"],
+    title: "O Que a IA Está Fazendo de Verdade Quando Te Responde?",
+    category: "IA",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um gráfico de inteligência artificial brilhando sobre um tablet, com linhas de rede digital ao fundo",
+    imageCaption: "Nas oficinas de IA da Avanza STEM, os estudantes aprendem a se perguntar o que uma IA está fazendo de verdade, não só se a resposta parece certa.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Você digita uma pergunta em um chat de IA e três segundos depois já tem um parágrafo inteiro ali. O que acabou de acontecer? A maioria das pessoas acha que ela buscou na internet, ou pegou a resposta de um banco de dados gigante, ou consultou um conhecimento guardado em algum lugar. Nenhuma dessas está certa." },
+        { type: "paragraph", text: "O que realmente aconteceu é mais estranho. A IA previu qual texto deveria vir em seguida, palavra por palavra, usando padrões que absorveu de uma montanha de textos. Só isso. E, sinceramente, isso é mais interessante do que a versão que as pessoas imaginam." },
+      ] },
+      { title: "É Mais Parecido com o Corretor Automático do Que com um Buscador", blocks: [
+        { type: "callout", accent: "teal", text: "Pense no corretor automático do seu celular. Ele adivinha a sua próxima palavra pelo que costuma aparecer em mensagens como a sua. Um modelo de linguagem faz uma versão disso, só que absurdamente mais sofisticada." },
+        { type: "paragraph", text: "Quando uma IA escreve uma resposta para você, ela não está tirando algo de uma prateleira. Está calculando qual palavra tem mais chance de vir em seguida, dado tudo o que veio antes, e depois faz isso de novo, e de novo, até terminar." },
+        { type: "paragraph", text: "É por isso que ela responde tão rápido. Ela não está ali raciocinando sobre o seu problema como você faria. Está rodando um cálculo de padrões velocíssimo, repetidas vezes." },
+      ] },
+      { title: "Como a IA Aprendeu o Que Dizer", blocks: [
+        { type: "numbered", items: [
+          { title: "Ela leu uma quantidade absurda de texto", body: "Artigos, livros, sites, código, tudo. Isso deu a ela bilhões de exemplos de como as pessoas usam a linguagem de verdade." },
+          { title: "Ela encontrou padrões", body: "Não regras que alguém escreveu. Padrões estatísticos: depois desta combinação de palavras, estas outras costumam aparecer. Os padrões ficam emaranhados demais para explicar em uma frase, mas padrões é tudo o que eles são." },
+          { title: "Pessoas deram notas", body: "Pessoas reais avaliaram quais respostas eram mais úteis, mais precisas e mais adequadas. O modelo se ajustou com base nesse retorno." },
+          { title: "Agora ela te responde", body: "Você pergunta algo e ela usa todos esses padrões para produzir um texto com cara de resposta útil, baseado nas respostas úteis que viu durante o treinamento." },
+        ] },
+      ] },
+      { title: "Por Que Ela Pode Soar Certa e Estar Errada", blocks: [
+        { type: "paragraph", text: "Aqui está o detalhe. A IA gera texto estatisticamente provável, não texto verificado. Então ela pode te entregar algo confiante, bem escrito e completamente falso. Chamam isso de alucinação: a IA diz algo que não é verdade com o mesmo tom que usa para o que é." },
+        { type: "list", items: [
+          "Ela não sabe o que não sabe",
+          "Ela pode misturar nomes, datas ou eventos parecidos de situações totalmente diferentes",
+          "Ela produz o que soa plausível, não o que foi verificado",
+          "Ela não consegue ir checar algo no meio da frase para se corrigir",
+        ] },
+        { type: "callout", title: "A Versão Honesta", accent: "teal", text: "Uma IA que admite \"não tenho certeza disso\" é mais útil que uma que soa convencida toda vez. Faça perguntas de acompanhamento. Confira o que realmente importa." },
+      ] },
+      { title: "Para Que a IA Serve de Verdade", blocks: [
+        { type: "paragraph", text: "Conhecer os limites é o que permite usá-la bem, em vez de acreditar cegamente ou nunca encostar nela." },
+        { type: "list", items: [
+          "Explicar a mesma ideia de cinco jeitos diferentes até um finalmente fazer sentido para você",
+          "Cuspir esquemas, rascunhos e exemplos em segundos",
+          "Resumir temas bem cobertos naquilo em que ela treinou",
+          "Jogar opções na sua frente quando você travou",
+          "Editar e reescrever algo que você já fez",
+          "Escrever código que depois você roda e testa",
+        ] },
+        { type: "paragraph", text: "Quando a resposta precisa ser comprovadamente correta, como um dado específico, uma pergunta médica ou qualquer coisa jurídica, vá confirmar em uma fonte de verdade. Sempre." },
+      ] },
+      { title: "Um Bom Hábito: Peça Para Ela Se Explicar", blocks: [
+        { type: "paragraph", text: "Da próxima vez que uma IA te der uma resposta, mande uma pergunta de acompanhamento: \"como você sabe disso?\" ou \"onde posso conferir?\". O que volta diz muita coisa." },
+        { type: "callout", accent: "teal", text: "Nas nossas oficinas de IA, os estudantes escolhem uma resposta e tentam conferi-la. O objetivo não é ensinar que a IA é ruim. É lê-la como você leria qualquer fonte, com o cérebro ligado." },
+        { type: "quote", text: "Perguntei sobre um cientista e ela errou a data da descoberta em trinta anos. Eu teria acreditado se a gente não tivesse conferido. Agora eu confiro as coisas.", attribution: "Estudante em uma oficina de IA da Avanza STEM" },
+      ] },
+      { title: "O Que Isso Significa Para Crianças e Famílias", blocks: [
+        { type: "paragraph", text: "As crianças vão crescer com essas ferramentas de qualquer jeito. Saber mais ou menos o que elas fazem, e o que definitivamente não fazem, muda como as crianças leem cada resposta que recebem." },
+        { type: "list", items: [
+          "Use a IA mais para chuva de ideias e rascunhos do que para cravar dados exatos",
+          "Qualquer coisa importante, confirme com uma segunda fonte",
+          "Desconfie quando ela soar confiante demais e faça uma pergunta de acompanhamento",
+          "Lembre-se de que ela nem sempre erra. Só que também nem sempre acerta",
+        ] },
+        { type: "paragraphWithLink", before: "Quer o básico de como a IA aprende com dados e quais tipos existem? Comece pelo nosso guia anterior: ", linkText: "O Que É IA? Explicando Inteligência Artificial Para Crianças", href: "/blog/what-is-ai-explaining-to-kids", after: "." },
+        { type: "ctaLink", title: "Aprenda Sobre IA Pessoalmente", text: "Nas nossas oficinas de IA, os estudantes montam sistemas simples, caçam os erros que eles cometem e conversam sobre o que encontraram.", linkText: "Ver próximas oficinas", href: "/workshops", accent: "teal" },
+      ] },
+    ],
+  },
+  "how-to-think-like-an-inventor-in-20-minutes": {
+    ...localizedBlogArticles.en["how-to-think-like-an-inventor-in-20-minutes"],
+    title: "Como Pensar Como um Inventor em 20 Minutos",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Uma criança pensando, com pontos de interrogação e uma lâmpada acesa desenhados acima",
+    imageCaption: "Nas oficinas da Avanza STEM, os estudantes partem direto para construir alguma coisa e depois descobrem o que melhorar a partir dali.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Quase toda invenção que você conseguir lembrar começou com alguém de saco cheio. O zíper existe porque os cadarços viviam desamarrando. Os post-its saíram de uma cola tão fraca que não servia para nada. O velcro nasceu de um senhor caminhando pelo campo e tirando carrapichos do cachorro." },
+        { type: "paragraph", text: "Nenhum deles sentou com a intenção de inventar algo. Eles notaram algo que incomodava e fizeram uma pergunta: e se existisse um jeito melhor de fazer isso?" },
+      ] },
+      { title: "O Ciclo do Inventor", blocks: [
+        { type: "paragraph", text: "Sem laboratório, sem kit especial, sem permissão de ninguém. Quatro passos e uns vinte minutos já bastam." },
+        { type: "numbered", items: [
+          { title: "Encontre um problema", body: "Procure algo pequeno e irritante. Uma porta que fecha sozinha. Um carregador que nunca fica encaixado. Um zíper que trava sempre no mesmo dente. Frustrações minúsculas ganham das enormes, porque dá para testar a solução de uma minúscula." },
+          { title: "Desenhe uma solução", body: "Desenhe o conserto. Mesmo que seja uma forma torta em uma folha de caderno, vale. Você não está fazendo arte. Está deixando a sua ideia específica o bastante para alguém discutir com você." },
+          { title: "Monte um protótipo rápido", body: "O que estiver por perto serve: papel, fita, papelão, elásticos. Não precisa ficar bonito. Precisa poder ser testado." },
+          { title: "Teste", body: "Agora tente quebrar. Se ele sobreviver à primeira tentativa sem suar, o seu teste foi fraco demais. Ache o ponto fraco. Parabéns, esse é o seu próximo problema." },
+        ] },
+      ] },
+      { title: "Como Achar Problemas Que Valem a Pena Resolver", blocks: [
+        { type: "paragraph", text: "O primeiro passo é o que trava quase todo mundo, e não é por falta de problemas no mundo. É porque todos nós viramos especialistas em ignorar pequenos incômodos em vez de notá-los." },
+        { type: "callout", accent: "purple", text: "Nas nossas oficinas, damos aos estudantes um minuto em silêncio para andar pela sala e anotar três coisas que poderiam funcionar melhor. Quase todos voltam com pelo menos duas." },
+        { type: "list", items: [
+          "O que demora muito mais do que deveria?",
+          "O que quebra com mais frequência do que deveria?",
+          "O que você sempre acaba carregando de um jeito desconfortável?",
+          "O que você faz todo dia e queria não precisar fazer?",
+        ] },
+        { type: "paragraph", text: "Depois escolha o menor da sua lista. Um problema que cabe nas suas mãos é muito mais fácil de resolver do que um do tamanho de uma cidade." },
+      ] },
+      { title: "Por Que Desenhar Importa Antes de Construir", blocks: [
+        { type: "paragraph", text: "Um desenho não é uma imagem. É uma decisão. No instante em que você coloca no papel, precisa se comprometer: a dobradiça vai aqui, este lado abre, a pegada tem mais ou menos este tamanho." },
+        { type: "paragraph", text: "Esse compromisso é o que deixa a ideia testável. Sem desenho, você vai ajustando no caminho, o que funciona, mas é mais lento e você nunca percebe quando a realidade se afastou do plano. Com desenho, dá para ver a diferença." },
+        { type: "callout", title: "Uma Regra", accent: "purple", text: "Não encoste em nenhum material até ter desenhado pelo menos uma versão. O desenho não precisa ser bom. Só precisa existir." },
+      ] },
+      { title: "O Que Conta Como Protótipo", blocks: [
+        { type: "paragraph", text: "Um protótipo é a versão mais rápida da sua ideia que dá para testar de verdade. Não é um produto. Não é para ser bonito. O único trabalho dele é te ensinar algo que você ainda não sabia." },
+        { type: "list", items: [
+          "Fita em vez de cola, porque você vai desmontar em cinco minutos",
+          "Use a forma mais simples que teste a única coisa que te interessa",
+          "Construa para responder a uma pergunta: a dobradiça aguenta? encaixa? desliza?",
+          "Se levar mais de 10 minutos, você está complicando demais",
+        ] },
+      ] },
+      { title: "O Desafio do Inventor de 20 Minutos", blocks: [
+        { type: "summary", timeLabel: "Tempo", time: "20 minutos no total", ageLabel: "Ideal para", age: "Crianças a partir de 8 anos", supervisionLabel: "Materiais", supervision: "Papel, fita adesiva, papelão, tesoura, elásticos, o que você encontrar", learnLabel: "O que você pratica", learn: "Identificação de problemas, raciocínio de projeto, prototipagem rápida e iteração" },
+        { type: "callout", title: "Teste Isto Agora", accent: "purple", text: "Coloque um timer de 20 minutos. Encontre um problema no cômodo. Desenhe um conserto. Monte uma versão tosca. Teste uma vez. E anote a única coisa que você mudaria com dez minutos a mais." },
+        { type: "quote", text: "Ele decidiu resolver o fato de o lápis dele sempre cair da mesa. Prendeu com fita uma bordinha de papelão na beirada. Funcionou. Depois começou a perguntar o que mais dava para consertar.", attribution: "Mentor da Avanza STEM em uma oficina de engenharia" },
+      ] },
+    ],
+  },
+  "why-your-first-design-is-usually-not-your-best-one": {
+    ...localizedBlogArticles.en["why-your-first-design-is-usually-not-your-best-one"],
+    title: "Por Que Seu Primeiro Projeto Quase Nunca É o Melhor",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Um estudante examinando uma estrutura que acabou de desabar durante um teste de carga em uma oficina da Avanza STEM",
+    imageCaption: "O momento em que uma ponte desaba não é o fim do encontro. Costuma ser o começo do aprendizado de verdade.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Em quase toda oficina de engenharia nossa, as pontes caem. E as crianças que as construíram quase sempre fazem a mesma cara. Não de derrota. De quem está pensando." },
+        { type: "paragraph", text: "Essa cara é como a iteração se sente por dentro. Mesmo quando não sobra tempo para reconstruir, o teste reconfigura completamente o jeito como elas enxergam o próprio projeto." },
+      ] },
+      { title: "O Mito do Projeto Pronto", blocks: [
+        { type: "paragraph", text: "Existe uma ideia de que bons projetos saem de uma pessoa muito inteligente pensando bastante antes de encostar em qualquer coisa. A engenharia não funciona assim. Escrever também não, nem música, nem basicamente nada que valha a pena." },
+        { type: "paragraph", text: "Os projetos melhoram batendo de frente com a realidade. Você não chega a uma ponte mais forte pensando de uma cadeira. Você constrói uma, coloca peso, vê o que quebra e agora sabe algo que antes não sabia." },
+        { type: "callout", title: "A Ideia Central", accent: "purple", text: "Seu primeiro projeto não é um produto. É um palpite. O teste é como você descobre se o palpite prestava." },
+      ] },
+      { title: "Um Exemplo Real da Oficina", blocks: [
+        { type: "paragraph", text: "Em um encontro de pontes na Biblioteca Pública de Clifton, um grupo terminou a ponte de palitos, começou a empilhar livros em cima e viu um lado inteiro torcer antes de a coisa finalmente ceder." },
+        { type: "numbered", items: [
+          { title: "A primeira pista: torceu de lado", body: "Antes de qualquer coisa quebrar, eles notaram que um lado inclinava mais que o outro. Esse foi o sinal. O problema não era só peso demais. O apoio estava desigual." },
+          { title: "O ponto fraco: sem escora diagonal", body: "As laterais deles eram retângulos compridos e abertos em vez de triângulos. Coloque peso suficiente e esses retângulos simplesmente mudam de forma, e a ponte inteira amolece." },
+          { title: "O conserto rápido: um reforço bem direcionado", body: "Com os minutos que sobraram, eles escoraram na diagonal o lado mais fraco e conversaram sobre onde ficariam as escoras gêmeas na versão dois." },
+          { title: "A conclusão: o teste deu a eles um projeto melhor", body: "Eles nunca reconstruíram a ponte inteira, e não precisava. Um teste honesto disse exatamente o que a próxima precisa suportar." },
+        ] },
+        { type: "quote", text: "Falhou bem onde a gente não colocou o reforço de cola quente", attribution: "Mônica, estudante em uma oficina de engenharia da Avanza STEM" },
+      ] },
+      { title: "Por Que Recomeçar Não É Começar do Zero", blocks: [
+        { type: "paragraph", text: "Mudar algo depois de um teste não é recomeçar. Você leva junto uma informação a que o seu primeiro projeto nunca teve acesso." },
+        { type: "callout", accent: "purple", text: "Iterar nem sempre significa reconstruir tudo antes de o encontro acabar. Às vezes é um ajuste inteligente, um desenho melhor ou uma anotação clara rabiscada para a próxima vez." },
+        { type: "paragraph", text: "E é esse o detalhe dos engenheiros experientes. Eles não necessariamente acertam mais na primeira tentativa. Eles são muito melhores em ler o que a primeira tentativa está dizendo." },
+      ] },
+      { title: "A Regra da Mudança Única", blocks: [
+        { type: "paragraph", text: "Quando algo falha e você ainda tem tempo de consertar, mude exatamente uma coisa antes de testar de novo. Parece fácil. Não é, porque todo o seu instinto quer consertar tudo de uma vez." },
+        { type: "paragraph", text: "Mudou três coisas e a versão seguinte aguentou mais? Ótimo, mas qual delas resolveu? Você não faz ideia. Foi sorte, e sorte não passa para a próxima construção." },
+        { type: "list", items: [
+          "Escolha a mudança que ataca exatamente o que falhou",
+          "Faça essa única mudança, se o relógio permitir",
+          "Teste de novo do mesmo jeito, para a comparação significar alguma coisa",
+          "Anote o que aconteceu, ou o que você quer tentar depois",
+          "Deixe essa anotação guiar o próximo projeto",
+        ] },
+        { type: "ctaLink", title: "Construa Algo e Teste", text: "Nas nossas oficinas de engenharia, os estudantes constroem uma estrutura, colocam peso até ela falhar e descobrem o que a bagunça está dizendo.", linkText: "Ver próximas oficinas", href: "/workshops", accent: "purple" },
+      ] },
+    ],
+  },
+  "the-engineering-of-a-backpack": {
+    ...localizedBlogArticles.en["the-engineering-of-a-backpack"],
+    title: "A Engenharia de Uma Mochila",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Uma fileira de mochilas mostrando tamanhos, materiais, alças, zíperes e disposição de bolsos diferentes",
+    imageCaption: "As mochilas são engenharia do dia a dia: a distribuição do peso, os materiais, os zíperes, as alças e os bolsos precisam funcionar juntos.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "A bolsa que você está carregando nos ombros agora mesmo está resolvendo, em silêncio, uma dúzia de problemas de engenharia. As alças tiram o peso das suas mãos. O painel acolchoado distribui a pressão pelas suas costas. Os zíperes abrem e fecham milhares de vezes e, de algum jeito, continuam funcionando. O tecido é resistente, leve, quase impermeável e barato o bastante para um estudante conseguir pagar." },
+        { type: "paragraph", text: "Nada disso é acaso. Alguém sentou com cada um desses problemas, discutiu, testou um conserto e depois testou de novo." },
+      ] },
+      { title: "O Problema da Distribuição do Peso", blocks: [
+        { type: "paragraph", text: "Carregue 5 quilos em uma mão por um quarteirão e seu braço morre. Carregue os mesmos 5 quilos nas costas e você quase nem nota. Isso não é resistência, é física. Uma bolsa pendurada na sua mão cria um braço de alavanca, que multiplica o quanto seus músculos precisam trabalhar. Uma mochila encosta esse peso na sua coluna e, de repente, a conta fica muito mais amigável." },
+        { type: "paragraph", text: "Aquelas alças fazem mais do que segurar a bolsa. Uma alça mais larga distribui exatamente o mesmo peso por mais superfície, então a pressão em cada ponto cai. Os sapatos de neve usam a mesma ideia. O acolchoamento também ajuda, porque ele amassa um pouco e nivela a carga em vez de cravar em uma linha só." },
+        { type: "callout", title: "Ordem de Carga por Peso", accent: "purple", text: "O pesado vai o mais colado nas suas costas possível e o leve vai para fora. Isso mantém o centro de massa junto da sua coluna, em vez de te puxar para a frente e detonar a sua lombar." },
+      ] },
+      { title: "Como Funciona um Zíper", blocks: [
+        { type: "paragraph", text: "Olhe um zíper de perto e você vai ver duas fileiras de dentes viradas uma para a outra. Cada dente tem uma saliência de um lado e um encaixe do outro. Quando você puxa o cursor, ele alinha cada dente para que a saliência de um lado caia no encaixe do outro. Clique. Clique. Clique." },
+        { type: "paragraph", text: "É por isso que um zíper fechado parece tão firme. Aqueles dentes entrelaçados se recusam a se separar e se recusam a deslizar de lado. No sentido contrário, o cursor enfia uma pequena cunha entre as fileiras e vai soltando os dentes aos pares." },
+        { type: "list", items: [
+          "Zíperes de metal duram mais, mas pesam mais",
+          "Zíperes de espiral de plástico são mais leves e acompanham costuras curvas",
+          "A YKK fabrica a maioria dos zíperes do mundo, e você vai ver esse logo em quase toda bolsa decente",
+          "Eles quase sempre falham porque o cursor abriu demais, e um aperto suave com alicate às vezes ressuscita o zíper",
+        ] },
+      ] },
+      { title: "Materiais e Escolhas", blocks: [
+        { type: "paragraph", text: "Não existe tecido perfeito para mochila. Cada opção troca peso por durabilidade por resistência à água por preço, e alguém teve que decidir." },
+        { type: "numbered", items: [
+          { title: "Náilon", body: "Resistente, leve e aguenta arranhões. A maioria das mochilas caras usa náilon porque ele sobrevive anos sem quase pesar nada." },
+          { title: "Poliéster", body: "Um pouco mais pesado que o náilon, mais barato e não desbota tão rápido no sol. É disso que quase toda mochila escolar é feita." },
+          { title: "Lona", body: "Dura e pesada, mas bebe água. Perfeita para ir andando à escola, péssima escolha para uma trilha na chuva." },
+          { title: "Ripstop", body: "Um tecido com uma grade de fios de reforço embutida. Se rasgar, a grade trava o rasgo na hora. Você vê isso em mochilas de alto desempenho." },
+        ] },
+        { type: "paragraph", text: "E aqui vai o que quase ninguém sabe: a resistência à água vem de um revestimento no lado de dentro do tecido, não do tecido em si. Esse revestimento se desgasta com os anos, e é por isso que uma mochila velha molha mesmo parecendo perfeita por fora." },
+      ] },
+      { title: "O Sistema de Bolsos", blocks: [
+        { type: "paragraph", text: "Ninguém espalhou aqueles bolsos a esmo. Cada um é uma aposta que alguém fez sobre como você carrega as suas coisas." },
+        { type: "list", items: [
+          "O compartimento principal é dimensionado para cadernos, uma capa de notebook ou um moletom dobrado",
+          "O bolso da frente guarda o que você pega toda hora e não quer solto por aí",
+          "Os bolsos laterais têm formato de garrafa porque essa forma está em todo lugar e é fácil de prever",
+          "O bolsinho de cima é para o que você precisa sem abrir a mochila inteira",
+          "O organizador interno pressupõe que você carrega canetas, chaves e um celular",
+        ] },
+        { type: "callout", title: "Teste Isto", accent: "purple", text: "Avalie a sua própria mochila como um engenheiro faria. De 1 a 5 em distribuição de peso, qualidade do zíper, tecido e resistência à água, arranjo dos bolsos e como as alças ficam depois de dez minutos andando. E agora a pergunta de verdade: o que você consertaria primeiro?" },
+      ] },
+    ],
+  },
+  "what-makes-a-stem-workshop-fun": {
+    ...localizedBlogArticles.en["what-makes-a-stem-workshop-fun"],
+    title: "O Que Deixa Uma Oficina de STEM Divertida?",
+    category: "Comunidade",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Estudantes e famílias construindo, testando e conversando ativamente em uma oficina comunitária da Avanza STEM",
+    imageCaption: "Uma oficina em que as crianças falam, constroem e debatem está funcionando. Uma sala silenciosa geralmente não está.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Se os estudantes estão sentados quietos vendo um adulto demonstrar algo, isso não é uma oficina de STEM. É uma apresentação. E as apresentações, até as boas, já foram esquecidas no café da manhã do dia seguinte." },
+        { type: "paragraph", text: "Por isso a gente coloca tanto trabalho no desenho do encontro quanto no conteúdo. O que as crianças fazem naquela sala ganha de qualquer coisa que a gente possa dizer a elas." },
+      ] },
+      { title: "A Diferença entre Ativo e Passivo", blocks: [
+        { type: "paragraph", text: "Aprendizado passivo é olhar, escutar, receber. Ativo é construir, testar, discutir, quebrar algo e consertar. A pesquisa sobre qual dos dois fica na cabeça não chega nem perto de ser disputada." },
+        { type: "paragraph", text: "Mas ter as mãos ocupadas não é a mesma coisa que pensar. Uma criança pode colar palitos no piloto automático por trinta minutos. O truque é desenhar a atividade para que o fazer obrigue a pensar." },
+        { type: "callout", accent: "purple", text: "Nas nossas oficinas, ninguém assiste a um mentor construir uma ponte. Os estudantes recebem materiais, uma meta de peso e uns 30 minutos. A frustração, a discussão com o colega sobre o projeto, o momento em que a ponte aguenta muito mais do que eles esperavam: é ali que o aprendizado acontece de verdade." },
+      ] },
+      { title: "Como a Gente Desenha as Atividades da Avanza STEM", blocks: [
+        { type: "paragraph", text: "Antes de uma atividade entrar em um encontro, ela precisa sobreviver a quatro perguntas." },
+        { type: "numbered", items: [
+          { title: "Existe um teste de verdade?", body: "Se os estudantes não conseguem descobrir se a ideia deles funcionou, não é um desafio de projeto, é um trabalho de artes. Cada atividade termina com um veredito. A ponte aguenta? O rover atravessa? O código roda?" },
+          { title: "Ela pode falhar de um jeito interessante?", body: "Uma falha útil é um recurso, não um defeito. Se algo só funciona ou desaba sem motivo claro, não há o que iterar. As melhores falhas são tão específicas que o estudante sabe exatamente o que consertar." },
+          { title: "Existe mais de um caminho?", body: "Um desafio com uma única resposta certa vira uma corrida. Um com várias abordagens boas deixa os estudantes tomarem decisões de verdade e depois compararem resultados com a mesa do lado." },
+          { title: "Eles estão conversando entre si?", body: "Dois estudantes discutindo se acrescentam outra diagonal ou reforçam a emenda não estão distraídos. Estão fazendo engenharia." },
+        ] },
+      ] },
+      { title: "O Que os Estudantes Realmente Fazem nas Nossas Oficinas", blocks: [
+        { type: "paragraph", text: "Em um encontro de 60 minutos, um estudante costuma passar por cinco ou seis coisas diferentes:" },
+        { type: "list", items: [
+          "Ouvir um enunciado de dois minutos com o objetivo e as restrições, e nada mais",
+          "Discutir o projeto com o colega antes de encostar em qualquer material",
+          "Construir a versão um e testar, quase sempre vendo a coisa falhar",
+          "Fazer uma mudança específica com base no que acabou de ver",
+          "Testar de novo e descobrir se aquela mudança realmente ajudou",
+          "Contar ao grupo o que aprendeu. Não o que construiu. O que descobriu",
+        ] },
+        { type: "paragraph", text: "Esse último passo é o que quase toda oficina pula. No segundo em que um estudante precisa colocar aquilo em palavras, ele descobre se entendeu ou se só teve sorte." },
+      ] },
+      { title: "Por Que Barulho Costuma Ser um Bom Sinal", blocks: [
+        { type: "paragraph", text: "Uma sala calada deixa os adultos confortáveis. Quase sempre significa que os estudantes desligaram. Quando as crianças estão falando por cima umas das outras, até discutindo, aquela sala está pensando." },
+        { type: "quote", text: "Achei que estavam se dispersando de tanto barulho em cima do assunto do zíper. Mas aí eu escutei e, na verdade, eles estavam debatendo se o atrito era maior por fora ou por dentro da curva. É exatamente isso que a gente queria.", attribution: "Mentor da Avanza STEM depois de um encontro de ciências" },
+        { type: "paragraph", text: "Naquele momento, o trabalho do mentor não é mandar ninguém calar a boca. É soltar uma pergunta que deixe a discussão mais afiada." },
+      ] },
+      { title: "As Três Coisas Que Sempre Incluímos", blocks: [
+        { type: "numbered", items: [
+          { title: "Um teste de verdade com um resultado de verdade", body: "Nada de \"muito bem, pessoal\". Um passou ou não passou, contra o objetivo que a gente disse em voz alta no começo." },
+          { title: "Um jeito específico de falhar", body: "Se tudo funciona na primeira tentativa, ninguém descobriu onde estavam os limites." },
+          { title: "Tempo para dizer o que descobriram", body: "Construir sem reflexão é pura atividade. A reflexão é onde a coisa fixa." },
+        ] },
+        { type: "ctaLink", title: "Venha Ver uma Oficina", text: "Nossas oficinas são gratuitas, práticas e abertas a todo mundo. Você pode chegar sem nunca ter construído nada na vida.", linkText: "Ver próximas oficinas", href: "/workshops", accent: "purple" },
+      ] },
+    ],
+  },
+  "engineering-inside-school-bus": {
+    ...localizedBlogArticles.en["engineering-inside-school-bus"],
+    title: "A Engenharia Secreta Dentro de Um Ônibus Escolar",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um ônibus escolar amarelo mostrando a cor de segurança característica, espelhos grandes e sinalização de saída de emergência",
+    imageCaption: "A engenharia não está só em laboratórios e fábricas. Ela está embalada em cada veículo em que você anda, inclusive no ônibus escolar.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Um ônibus escolar parece a coisa mais simples do mundo. Caixa amarela enorme, fileiras de bancos, luzes piscando, um motor que se ouve a dois quarteirões. Mas quase toda peça daquele ônibus é a resposta a uma pergunta que alguém teve que resolver: como transportar um monte de crianças e entregar todas inteiras?" },
+        { type: "paragraph", text: "Quando você sabe o que procurar, o ônibus deixa de ser chato. Vamos desmontá-lo." },
+      ] },
+      { title: "Por Que os Ônibus Escolares São Amarelos?", blocks: [
+        { type: "paragraph", text: "Ninguém escolheu aquele amarelo porque ficava bonito. Escolheram porque o seu olho o captura na luz da manhã, no reflexo chapado da tarde e sob um céu cinza. Os projetistas de segurança queriam uma cor que os motoristas percebessem antes mesmo de notar que perceberam." },
+        { type: "paragraph", text: "Agora some as luzes piscando, o braço com a placa de pare e o tamanho absurdo. Tudo diz a mesma frase: reduza a velocidade, tem criança aqui. O ônibus é projetado para ser impossível de ignorar." },
+      ] },
+      { title: "Os Bancos São Ferramentas de Segurança", blocks: [
+        { type: "paragraph", text: "Aqueles bancos parecem simplórios, mas fazem um trabalho sério. A maioria dos ônibus usa um truque chamado compartimentação: bancos altos, bem acolchoados e colados uns nos outros de propósito. Se o ônibus frear forte, o encosto da frente segura você como uma parede acolchoada." },
+        { type: "paragraph", text: "Por baixo, as estruturas são feitas para sobreviver a buracos, curvas fechadas e uns dez anos de estudantes subindo em cima. Um banco de ônibus não é um móvel. É parte do sistema de segurança." },
+      ] },
+      { title: "Por Que o Motorista Consegue Ver Tanta Coisa?", blocks: [
+        { type: "paragraph", text: "O motorista precisa acompanhar a via, as crianças, a porta, a calçada e cada carro em volta, tudo ao mesmo tempo. É por isso que os espelhos parecem quase cômicos de tão grandes. Alguns cobrem o que vem atrás. Outros ficam angulados para pegar o ponto cego bem na frente do para-choque, onde uma criança pequena pode sumir por completo." },
+        { type: "paragraph", text: "A visibilidade é um dos problemas mais difíceis em um veículo desse tamanho. Os engenheiros estão basicamente inventando jeitos de o motorista enxergar em volta do próprio ônibus." },
+      ] },
+      { title: "Fazer um Veículo Gigante Virar", blocks: [
+        { type: "paragraph", text: "Um ônibus é muito mais comprido que um carro, o que transforma cada curva em um problema de matemática. Os engenheiros chamam isso de raio de giro: quanto espaço um veículo precisa para dar a volta. Em uma rua estreita, um ônibus precisa de muito mais que o carro da sua família." },
+        { type: "paragraph", text: "Então, quando um motorista abre bastante antes de virar, ele não está se exibindo. Está obedecendo à geometria." },
+      ] },
+      { title: "As Saídas de Emergência Estão em Todo Lugar", blocks: [
+        { type: "paragraph", text: "Conte as saídas na próxima vez que entrar. Porta da frente, porta traseira de emergência, escotilhas no teto, janelas que empurram para fora. A boa engenharia não planeja para o dia normal. Planeja para o dia em que nada sai normal." },
+        { type: "callout", title: "Por Que Tantas Saídas?", accent: "purple", text: "E se a porta da frente estiver bloqueada? E se o ônibus ficar tombado? E se quarenta crianças precisarem sair em menos de um minuto? Os engenheiros fazem essas perguntas muito antes de alguém viver isso." },
+      ] },
+      { title: "Teste Isto: Projete Seu Próprio Ônibus Mais Seguro", blocks: [
+        { type: "paragraph", text: "Pegue papel e desenhe o seu próprio ônibus. Coloque espelhos, saídas, arranjo dos bancos, luzes, placas, janelas, espaço de carga. E aqui vai a regra: para cada parte que você desenhar, precisa dizer qual problema ela resolve." },
+        { type: "callout", title: "A Pergunta do Engenheiro", accent: "purple", text: "Os engenheiros não perguntam \"está bonito?\". Eles perguntam \"o que isto faz e qual problema resolve?\". Passe essa pergunta por cada linha do seu desenho e veja o que sobrevive." },
+      ] },
+      { title: "Reflexão Final", blocks: [
+        { type: "paragraph", text: "Da próxima vez que um ônibus escolar passar, olhe de verdade. A cor, os espelhos, os bancos, as saídas, até o jeito como ele faz a esquina. Cada uma dessas coisas é uma decisão que alguém tomou de propósito. Aquele ônibus é engenharia sobre rodas." },
+      ] },
+    ],
+  },
+  "why-airplane-wings-are-curved": {
+    ...localizedBlogArticles.en["why-airplane-wings-are-curved"],
+    title: "Por Que as Asas dos Aviões São Curvas?",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um Boeing 777-200 da United Airlines em voo, com as asas de perfil aerodinâmico curvadas e as winglets levantadas bem visíveis",
+    imageCaption: "As asas dos aviões não são tábuas planas. O formato de perfil aerodinâmico cria a diferença de pressão que tira do chão um avião de cem toneladas.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "As asas têm talvez o trabalho mais doido de toda a engenharia. Um Boeing 777 cheio pesa cerca de 135 toneladas, e duas asas convencem essa coisa a subir para o céu. Pense um pouco nisso. Como algo tão pesado decola?" },
+        { type: "paragraph", text: "Quase toda a resposta está escondida na forma." },
+      ] },
+      { title: "As Asas Não São Planas", blocks: [
+        { type: "paragraph", text: "Olhe uma asa de perfil alguma vez. Não é uma tábua. A parte de cima é curvada e a de baixo fica bem mais plana. Os engenheiros chamam isso de perfil aerodinâmico, e ele existe por um único motivo: mexer com o ar de um jeito bem específico." },
+        { type: "paragraph", text: "Quando o avião avança, o ar se divide e escoa em volta da asa. Esse formato deixa o ar de cima com pressão menor que o de baixo. Mais pressão embaixo, menos pressão em cima, e a asa recebe um empurrão para cima. Esse empurrão é a sustentação." },
+      ] },
+      { title: "A Sustentação Não É Mágica", blocks: [
+        { type: "paragraph", text: "A sustentação não é um truque esperto e definitivamente não é mágica. Uma asa funciona porque muda para onde o ar vai. Ao cortar o céu, a asa joga uma montanha de ar para baixo. A terceira lei de Newton diz que toda ação tem uma reação igual e contrária, então, se a asa empurra ar para baixo, o ar empurra a asa para cima. Duas coisas acontecem ao mesmo tempo:" },
+        { type: "numbered", items: [
+          { title: "Ela cria uma diferença de pressão", body: "O ar que passa por cima da curva vai mais rápido, e a pressão ali cai abaixo da de baixo." },
+          { title: "Ela joga ar para baixo", body: "A asa redireciona o fluxo para o chão, e a reação empurra o avião para o céu." },
+        ] },
+      ] },
+      { title: "Por Que o Avião Precisa de Velocidade?", blocks: [
+        { type: "paragraph", text: "Um avião parado na pista não vai a lugar nenhum, por melhores que sejam as asas dele. As asas precisam de ar passando por cima para fazer qualquer coisa. Vá mais rápido, mova mais ar, ganhe mais sustentação." },
+        { type: "paragraph", text: "É esse o ponto inteiro daquela corrida comprida pela pista. Os motores empurram o avião para a frente, o ar começa a correr sobre as asas e, em uma velocidade exata, a sustentação enfim ganha do peso. As rodas se soltam do chão." },
+      ] },
+      { title: "O Que São os Flaps?", blocks: [
+        { type: "paragraph", text: "Olhe a asa na decolagem ou no pouso e você vai ver pedaços que deslizam para fora e se inclinam para baixo. Esses são os flaps e os slats, e eles mudam o formato da asa em pleno voo para espremer mais sustentação em baixa velocidade." },
+        { type: "paragraph", text: "Isso importa porque decolar e pousar são justamente os momentos em que o avião não pode ir rápido. Ninguém quer um jato voando a 800 quilômetros por hora perto do chão, então os engenheiros colocaram partes móveis na asa." },
+      ] },
+      { title: "Teste Isto: Experimento com Papel", blocks: [
+        { type: "paragraph", text: "Pegue duas folhas de papel. Dobre uma em um aviãozinho básico e deixe a outra plana. Lance as duas do mesmo jeito. O aviãozinho vai a algum lugar. A folha plana esvoaça e morre. Mesmo papel, mesmo lançamento, forma completamente diferente." },
+        { type: "callout", title: "A Forma Importa", accent: "purple", text: "Os engenheiros testam formatos de asa em túneis de vento, em simulações e, por fim, em voos de verdade. Uma mudança que você taparia com o polegar pode alterar bastante a sustentação que uma asa gera." },
+      ] },
+      { title: "Reflexão Final", blocks: [
+        { type: "paragraph", text: "As asas são curvas porque a forma controla o ar, o ar cria sustentação e a sustentação ganha da gravidade. Então, da próxima vez que um avião passar acima de você, não dê todo o crédito aos motores. Aquelas asas são ferramentas de precisão transformando ar em movimento e em uma saída do chão." },
+      ] },
+    ],
+  },
+  "how-elevators-know-where-to-go": {
+    ...localizedBlogArticles.en["how-elevators-know-where-to-go"],
+    title: "Como os Elevadores Sabem Para Onde Ir",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "O interior de um elevador moderno com botões de andar iluminados e paredes metálicas polidas",
+    imageCaption: "Por trás daquele simples toque de botão existe um sistema de sensores, motores, contrapesos e lógica que move pessoas entre andares com segurança.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Você aperta um botão. As portas fecham. Alguma coisa zumbe. Trinta segundos depois você sai exatamente no andar que queria. Parece nada. Na verdade é uma máquina rodando sensores, motores, cabos, contrapesos e um monte de lógica, tudo para ninguém precisar pensar nisso." },
+        { type: "paragraph", text: "Então, como essa coisa sabe para onde você quer ir?" },
+      ] },
+      { title: "O Botão Envia um Pedido", blocks: [
+        { type: "paragraph", text: "Apertar o botão não controla o motor. Você não está dirigindo. Está enviando um pedido ao sistema de controle, que é basicamente o cérebro dele, e esse cérebro já está acompanhando:" },
+        { type: "list", items: [
+          "Em qual andar a cabine está neste momento",
+          "Todos os botões que alguém apertou",
+          "Para onde ela já está indo",
+          "Se as portas estão abertas ou fechadas",
+          "Se tem alguma coisa presa na porta",
+        ] },
+        { type: "paragraph", text: "Ele nunca chuta. Cada movimento sai dessa lista." },
+      ] },
+      { title: "Os Sensores Dizem ao Elevador Onde Ele Está", blocks: [
+        { type: "paragraph", text: "Um elevador precisa saber a própria posição dentro do poço, então há sensores rastreando a cabine no percurso inteiro. Essas leituras dizem quando começar a frear, quando parar e se ele realmente ficou no nível do piso." },
+        { type: "paragraph", text: "Essa última importa mais do que parece. Uma cabine que para cinco centímetros acima vira um tropeço para todo mundo que sai. É por isso que eles são projetados para chegar com precisão de milímetros." },
+      ] },
+      { title: "Os Motores Fazem o Trabalho Pesado", blocks: [
+        { type: "paragraph", text: "Um motor elétrico gira uma polia, a polia puxa os cabos e os cabos puxam a cabine. Até aí, simples. Mas aqui vem a sacada: quase todo elevador pendura um contrapeso na outra ponta. A cabine sobe, o contrapeso desce. A cabine desce, o contrapeso sobe." },
+        { type: "paragraph", text: "Esse equilíbrio significa que o motor não está brigando contra o peso inteiro de uma cabine cheia. Parece mais uma gangorra do que um guindaste, e economiza uma quantidade enorme de energia." },
+      ] },
+      { title: "O Elevador Usa Lógica Simples", blocks: [
+        { type: "paragraph", text: "Digamos que a cabine esteja no andar 1 e as pessoas apertem 3, 5 e 2. Ele não atende na ordem em que os pedidos chegaram. Ele sobe e pega o 2, depois o 3, depois o 5, varrendo em uma direção só. Zero viagens desperdiçadas, ninguém esperando eternamente." },
+        { type: "paragraph", text: "Em prédios muito altos isso fica bem mais esperto. Alguns sistemas perguntam para qual andar você vai antes de você entrar, e agrupam as pessoas por destino para cada cabine fazer menos paradas." },
+      ] },
+      { title: "A Segurança Vem Primeiro", blocks: [
+        { type: "paragraph", text: "Um elevador é carregado de sistemas de segurança. Sensores na porta para ela não fechar no seu braço. Freios que travam a cabine se ela se mover quando não deve. Redundâncias que assumem o controle quando uma peça falha. Alguém já imaginou tudo o que poderia dar errado para que você nunca precise imaginar." },
+      ] },
+      { title: "Teste Isto: Jogo de Lógica do Elevador", blocks: [
+        { type: "paragraph", text: "Agora você é o controlador. Desenhe um prédio de 6 andares e coloque a cabine no andar 2. Alguém no 5 quer descer. Alguém no 1 quer subir. Alguém que já está dentro apertou o 4. Em que ordem você atende?" },
+        { type: "callout", title: "Não Existe Uma Única Resposta Certa", accent: "purple", text: "Aqui não há solução perfeita, e é esse o ponto. Os engenheiros equilibram velocidade, justiça, segurança e consumo de energia ao mesmo tempo. Qual deles você está disposto a sacrificar?" },
+      ] },
+      { title: "Reflexão Final", blocks: [
+        { type: "paragraph", text: "Um elevador não sabe nada do jeito que você sabe as coisas. Ele lê sensores, roda lógica e gira motores. Da próxima vez que você entrar em um, lembre que existe um sistema inteiro trabalhando em silêncio dentro das paredes, e a única coisa que você teve que fazer foi apertar um botão." },
+      ] },
+    ],
+  },
+  "why-buildings-sway-in-wind": {
+    ...localizedBlogArticles.en["why-buildings-sway-in-wind"],
+    title: "Por Que os Prédios Balançam com o Vento?",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "O arranha-céu Taipei 101 erguendo-se sobre o horizonte de Taipé, um dos exemplos mais estudados de projeto de prédio resistente ao vento",
+    imageCaption: "O Taipei 101 é projetado para se flexionar de propósito. Com ventos fortes de tufão, o topo pode oscilar quase um metro, e é exatamente isso que o mantém em pé.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Fique perto do topo de um arranha-céu em um dia de vento e você vai sentir o piso se mover embaixo de você. Pouquinho. Seu cérebro vai gritar na hora que tem algo errado. Seu cérebro está errado. Esse movimento é o projeto funcionando, e um prédio que consegue oscilar um pouco costuma ser mais seguro do que um que se recusa a ceder." },
+      ] },
+      { title: "O Vento Empurra os Prédios", blocks: [
+        { type: "paragraph", text: "O vento parece nada quando bate no seu rosto. Jogue-o contra uma parede de vidro de 60 andares e ele vira uma força bem séria. Quanto mais alto você constrói, mais dessa força você captura. Então os engenheiros precisam responder a perguntas incômodas antes de o primeiro concreto ser lançado: com que força o vento bate aqui, quão alto vamos, qual forma captura menos, quanto o prédio vai se mover e se as pessoas lá dentro vão passar mal." },
+        { type: "paragraph", text: "Um arranha-céu não está só se sustentando. Ele está em uma briga permanente contra o ar em movimento." },
+      ] },
+      { title: "Ser Flexível Pode Ser Mais Seguro", blocks: [
+        { type: "paragraph", text: "Dobre um graveto seco e ele estala limpo. Dobre um galho vivo e ele simplesmente acompanha o movimento. Os prédios funcionam igual. Faça um rígido demais e um vento forte ou um terremoto não têm para onde mandar essa energia, então ela se acumula dentro da estrutura até algo ceder." },
+        { type: "paragraph", text: "Um prédio que consegue se flexionar absorve parte dessa energia e distribui o resto. Dobrar, aqui, não é fraqueza. É o plano." },
+      ] },
+      { title: "Os Terremotos Também Sacodem os Prédios", blocks: [
+        { type: "paragraph", text: "O vento empurra o prédio de lado, por fora. Um terremoto ataca por baixo. O solo se move, a base do prédio se move junto, e tudo lá em cima precisa descobrir o que fazer a respeito." },
+        { type: "paragraph", text: "Os engenheiros revidam com estruturas resistentes, ligações flexíveis, amortecedores e fundações feitas para deslizar ou isolar. A meta quase nunca é deixar o prédio perfeitamente parado. A meta é ele continuar em pé e todo mundo lá dentro continuar vivo." },
+      ] },
+      { title: "Alguns Prédios Têm Amortecedores Gigantes", blocks: [
+        { type: "paragraph", text: "Alguns arranha-céus escondem um peso enorme perto do topo, chamado amortecedor de massa sintonizado. Imagine um pêndulo do tamanho de um cômodo. Quando o prédio se inclina para um lado, o amortecedor balança para o outro e cancela o movimento." },
+        { type: "callout", accent: "purple", text: "É um contragolpe gigante instalado dentro do prédio. Você não vê da calçada, mas, em um dia de vento, é por causa dele que ninguém lá em cima passa mal." },
+        { type: "image", src: "/images/blog/Ball in the middle of Taipei 101.jpg", alt: "A esfera amortecedora dourada de 660 toneladas suspensa dentro do Taipei 101, visível do mirante", caption: "A esfera amortecedora dourada de 660 toneladas do Taipei 101 fica pendurada perto do 88º andar. Quando o vento empurra o prédio para um lado, esse pêndulo balança na direção oposta e cancela o movimento que as pessoas sentiriam lá dentro." },
+      ] },
+      { title: "A Forma Também Importa", blocks: [
+        { type: "paragraph", text: "A forma de um prédio muda como o vento viaja em volta dele. Cantos vivos, faces planas, perfis altos e magros: cada um lida com o ar de um jeito. É por isso que os engenheiros constroem modelos em escala e os colocam em túneis de vento para ver o que o ar faz de verdade." },
+        { type: "paragraph", text: "Depois eles ajustam. Arredondam os cantos, abrem vãos que atravessam a torre, torcem o perfil inteiro. Quando um arranha-céu parece estranho, aquela forma quase sempre está fazendo um trabalho." },
+      ] },
+      { title: "Teste Isto: Teste da Torre de Papel", blocks: [
+        { type: "paragraph", text: "Construa duas torres de papel. Uma rígida e reta, a outra um pouco frouxa e elástica. Agora sopre nelas, ou bata na mesa. Qual cai primeiro? Qual dobra bastante e volta?" },
+        { type: "callout", title: "O Que os Engenheiros Estudam", accent: "purple", text: "Essa é uma versão pequenininha da pergunta real. Nunca é só \"ele vai ficar em pé?\". É \"o que ele faz quando alguma coisa o empurra?\"" },
+      ] },
+      { title: "Reflexão Final", blocks: [
+        { type: "paragraph", text: "Os prédios oscilam porque o vento e os terremotos os empurram, e um pouco de movimento é justamente como uma estrutura sobrevive a esse empurrão. Então, quando um arranha-céu se desloca alguns centímetros em uma tempestade, ninguém errou. Alguém fez o trabalho direito." },
+      ] },
+    ],
+  },
+  "engineering-behind-soccer-ball": {
+    ...localizedBlogArticles.en["engineering-behind-soccer-ball"],
+    title: "A Engenharia Por Trás de Uma Bola de Futebol",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m6,
+    imageAlt: "Uma bola de futebol moderna mostrando o desenho dos gomos e a textura da superfície",
+    imageCaption: "As bolas de futebol modernas são sistemas de precisão. Cada camada, formato de gomo e textura de superfície é projetada para otimizar o voo, a transferência de energia e a estabilidade aerodinâmica.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "A bola que está na sua garagem é uma peça de engenharia mais séria do que parece. As bolas antigas eram de couro, e o couro bebe água, então, no segundo tempo de um jogo com chuva, os jogadores basicamente chutavam um tijolo molhado. As bolas de hoje são feitas de ciência dos materiais, geometria de gomos e tecnologia de fábrica que não existia vinte anos atrás." },
+      ] },
+      { title: "A Anatomia de 4 Camadas", blocks: [
+        { type: "paragraph", text: "Abra uma bola oficial de jogo e você vai encontrar quatro camadas, cada uma ali por um motivo:" },
+        { type: "list", items: [
+          "Câmara: o balão do centro, geralmente de borracha butílica ou látex, que guarda o ar. O butil segura a pressão por mais tempo. O látex tem toque mais macio e quica melhor. Os fabricantes escolhem o próprio veneno.",
+          "Revestimento: camadas de poliéster e algodão trançados enroladas em volta da câmara. É isso que mantém a bola redonda depois de dez mil chutes, em vez de ela virar um ovo aos poucos.",
+          "Amortecimento de espuma: uma camada de poliuretano ou EVA embaixo da capa. Ela amassa no impacto e volta, devolvendo mais da sua energia ao chute.",
+          "Capa: o couro sintético de fora. Ele se recusa a absorver água, então a bola pesa o mesmo no minuto 90 e no minuto 1, e a textura dela é projetada para agarrar o ar.",
+        ] },
+      ] },
+      { title: "Desenho dos Gomos e Aerodinâmica", blocks: [
+        { type: "paragraph", text: "A mudança mais visível são os gomos. Aquela bola clássica de 32 gomos com pentágonos pretos tinha costuras por todo lado, e cada costura é arrasto. As bolas modernas se viram com 6 ou 8 gomos, o que corta muito o comprimento total de costura." },
+        { type: "paragraph", text: "E elas nem são mais costuradas. Calor e cola de alta frequência unem os gomos em algo quase sem costura e totalmente impermeável. Os engenheiros modelam o escoamento do ar com o mesmo software de simulação usado para projetar aviões. E aquelas bolinhas e ranhuras na superfície? Não são enfeite. Elas controlam a camada de ar grudada na bola, e é isso que faz um chute forte voar reto em vez de dançar para todo lado." },
+      ] },
+      { title: "Equilíbrio Dinâmico e o Efeito Magnus", blocks: [
+        { type: "paragraph", text: "Toda bola oficial precisa passar em um teste de equilíbrio dinâmico, o que significa que o peso dela está tão bem distribuído que ela gira sem oscilar. Se isso der errado, a bola se move de forma imprevisível, os jogadores odeiam e a marca é destruída na internet." },
+        { type: "paragraph", text: "Se der certo, você destrava o efeito Magnus. Chute a bola fora do centro e ela gira. Um lado dessa superfície girando acompanha o ar, o outro briga contra ele. Esse desequilíbrio cria uma força lateral de verdade que curva a trajetória em pleno voo. Toda falta que dá a volta na barreira é essa força fazendo o trabalho dela." },
+        { type: "callout", title: "O Efeito Magnus em Ação", accent: "purple", text: "A mesma física faz uma bola curva no beisebol quebrar e uma direita com topspin no tênis mergulhar. Gire a bola, bagunce a pressão do ar em volta dela, e a bola vai para um lugar onde não tinha motivo para ir." },
+      ] },
+      { title: "Tecnologia Integrada", blocks: [
+        { type: "paragraph", text: "As bolas de elite não são mais só couro e ar. Algumas hoje levam um sensor suspenso dentro delas, sobre a própria estrutura, rastreando o movimento em três dimensões e reportando 500 vezes por segundo. Onde a bola está, com que velocidade ela vai, o instante exato em que uma chuteira encostou nela." },
+        { type: "paragraph", text: "Esse sinal é o que torna possível o impedimento semiautomático e a tecnologia da linha do gol, capaz de dizer em milissegundos se a bola inteira cruzou a linha. A bola já é parte da equipe de arbitragem." },
+      ] },
+      { title: "Reflexão Final", blocks: [
+        { type: "paragraph", text: "Uma bola de futebol não é só algo que você chuta. É um sistema em camadas em que ciência dos materiais, dinâmica dos fluidos e sensores precisam cooperar. Todo chute incrível que você já viu começou com alguém projetando a bola." },
+      ] },
+    ],
+  },
+  "why-manhole-covers-are-round": {
+    ...localizedBlogArticles.en["why-manhole-covers-are-round"],
+    title: "Por Que as Tampas de Bueiro São Redondas?",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Uma tampa de bueiro de ferro fundido no asfalto da cidade, mostrando o formato circular e a textura antiderrapante da superfície",
+    imageCaption: "As tampas de bueiro são redondas porque um círculo não consegue cair dentro de um buraco do mesmo tamanho, não importa como você o gire.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Uma tampa de bueiro parece o objeto mais chato do planeta. Tampa pesada de metal, na rua, os carros passam por cima. Só isso, né? Pois é um enigma famoso de engenharia, e faz décadas que ele aparece em entrevistas de emprego. Então, por que ela é redonda?" },
+      ] },
+      { title: "Uma Tampa Redonda Não Cai no Próprio Buraco", blocks: [
+        { type: "paragraph", text: "Esta é a resposta que todo mundo conhece, e ela é genuinamente elegante. Gire um círculo na direção que quiser e ele mede o mesmo de lado a lado. Então uma tampa redonda fisicamente não consegue cair em um buraco redondo do mesmo tamanho. Ela simplesmente não passa." },
+        { type: "paragraph", text: "Agora tente isso com um quadrado. A diagonal de um quadrado é mais comprida que os lados, então, se você inclinar no ângulo certo, a tampa desce direto pelo buraco. E tem gente trabalhando lá embaixo. Ninguém quer uma placa de ferro de 100 quilos caindo em cima, então o círculo ganha." },
+      ] },
+      { title: "Tampas Redondas São Mais Fáceis de Mover", blocks: [
+        { type: "paragraph", text: "Essas coisas são pesadíssimas. Algumas pesam mais que a pessoa que as move. Mas um círculo rola. Um trabalhador consegue colocá-la de pé e tocá-la pela rua como se fosse um pneu. Tente isso com um quadrado e você tem quatro cantos brigando com você o caminho inteiro." },
+        { type: "paragraph", text: "Os engenheiros pensam nas pessoas que vão conviver com o projeto. A forma é só uma parte. Alguém precisa levantar isso, mover, substituir e fazer tudo de novo daqui a quinze anos." },
+      ] },
+      { title: "O Buraco Também É Redondo", blocks: [
+        { type: "paragraph", text: "Olhe dentro do buraco e você vai notar que o poço também é redondo. Formas redondas distribuem a pressão por igual, que é a mesma razão de os canos serem redondos e não quadrados. Buraco redondo, tampa redonda. A forma da tampa acompanha a forma do que ela está tampando." },
+      ] },
+      { title: "Não Precisa Alinhar", blocks: [
+        { type: "paragraph", text: "Solte uma tampa redonda sobre um buraco redondo de qualquer ângulo e ela encaixa. Sempre. Com um quadrado você precisa girar e alinhar cantos enquanto carrega algo que pesa o mesmo que você. Os círculos economizam tempo e eliminam um jeito inteiro de errar." },
+      ] },
+      { title: "Resistente e Simples", blocks: [
+        { type: "paragraph", text: "Aquela tampa aguenta carros, caminhões, chuva, neve, calor, gelo e uns vinte anos de tudo isso. Ser redonda distribui o peso por igual em vez de concentrá-lo nos cantos. E o padrão texturizado de cima também não é decoração. Ele está ali para pneus e sapatos agarrarem metal molhado." },
+      ] },
+      { title: "Teste Isto: Teste de Formas", blocks: [
+        { type: "paragraph", text: "Recorte um círculo de papel e um quadrado de papel. Em outra folha, recorte os buracos correspondentes. Agora tente passar cada tampa pelo próprio buraco em todos os ângulos que conseguir imaginar. Uma vai passar. A outra, nunca." },
+        { type: "callout", title: "Um Projeto, Muitas Soluções", accent: "purple", text: "Esse teste de papel é exatamente o motivo de os engenheiros amarem essa forma. Segura, resistente, fácil de mover, fácil de repor, tudo ao mesmo tempo. Um único projeto resolvendo cinco problemas em silêncio é quase o melhor que a engenharia consegue oferecer." },
+      ] },
+      { title: "Reflexão Final", blocks: [
+        { type: "paragraph", text: "As tampas redondas são seguras, resistentes, roláveis e impossíveis de colocar errado. Isso é uma forma só fazendo cinco trabalhos. Da próxima vez que você passar por cima de uma, dê outra olhada. Aquele círculo de metal é mais esperto do que parece." },
+      ] },
+    ],
+  },
+  "how-roller-coasters-stay-on-track": {
+    ...localizedBlogArticles.en["how-roller-coasters-stay-on-track"],
+    title: "Como as Montanhas-Russas Ficam Presas no Trilho",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Uma montanha-russa com descidas íngremes e loopings contra um céu claro, mostrando o projeto do trilho que mantém os passageiros a bordo com segurança",
+    imageCaption: "As montanhas-russas permanecem no trilho porque os engenheiros projetam a gravidade, o impulso e os sistemas de rodas multidirecionais para trabalharem juntos.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "As montanhas-russas parecem estar trapaceando. Elas sobem uma ladeira impossível, se jogam no vazio, te atiram para o lado e te colocam de cabeça para baixo enquanto seu estômago registra uma reclamação formal. Então, por que o trem nunca sai dos trilhos? Gravidade, impulso, umas rodas muito engenhosas e um monte de engenheiros que realmente não queriam que você caísse." },
+      ] },
+      { title: "A Gravidade Começa o Passeio", blocks: [
+        { type: "paragraph", text: "Aquela subida lenta e barulhenta do começo é o passeio inteiro se carregando. Uma corrente ou um motor arrasta o trem até o topo e, uma vez lá, o trem tem uma conta bancária de energia só por estar alto. Os engenheiros chamam isso de energia potencial." },
+        { type: "paragraph", text: "Depois o trilho some debaixo dos seus pés e a gravidade gasta até o último centavo. A energia guardada vira velocidade, que é energia cinética. Aquela primeira descida não é só para gritar. Ela está pagando por todo o resto do passeio." },
+      ] },
+      { title: "O Impulso Mantém Tudo em Movimento", blocks: [
+        { type: "paragraph", text: "Agora o trem está em movimento, e coisas em movimento querem continuar em movimento. Isso é impulso, e é o que leva você pelas ladeiras seguintes, pelas curvas e pelos loopings." },
+        { type: "paragraph", text: "Mas o atrito e a resistência do ar estão te roubando o tempo todo. Então os projetistas precisam acertar uma janela bem estreita: velocidade suficiente para chegar em casa, não tanta a ponto de o passeio ficar perigoso. Devagar demais e o trem para de cabeça para baixo. Rápido demais e as forças ficam feias." },
+      ] },
+      { title: "As Rodas Fazem Mais do Que Você Imagina", blocks: [
+        { type: "paragraph", text: "O trem não está só apoiado sobre o trilho como um carro na estrada. Olhe embaixo de um deles alguma vez e você vai encontrar três conjuntos de rodas fazendo três trabalhos diferentes:" },
+        { type: "list", items: [
+          "Rodas de rolagem, que ficam em cima do trilho",
+          "Rodas laterais, que pressionam por fora e mantêm o trem alinhado nas curvas",
+          "Rodas de retenção por baixo do trilho, agarrando de baixo para o trem não se soltar quando você está de cabeça para baixo",
+        ] },
+        { type: "paragraph", text: "Então, durante um looping, a montanha-russa não está esperando educadamente a gravidade cooperar. Ela está fisicamente abraçada ao trilho por três direções." },
+      ] },
+      { title: "Por Que Você Não Cai?", blocks: [
+        { type: "paragraph", text: "Barras de colo, cintos, travas sobre os ombros. Qual delas você recebe depende do que o passeio está prestes a fazer com você. Uma montanha-russa familiar tranquila só precisa de uma barra. Qualquer coisa que te deixe de cabeça para baixo recebe algo bem mais sério." },
+        { type: "paragraph", text: "E o objetivo do projeto é meio trapaceiro. Os engenheiros querem que você sinta que está mal se segurando, enquanto na verdade você está extremamente preso ao banco. Uma boa montanha-russa parece imprudente e é exatamente o contrário." },
+      ] },
+      { title: "Os Loopings Não São Círculos Perfeitos", blocks: [
+        { type: "paragraph", text: "Aqui vai um detalhe que quase ninguém nota. Os loopings não são círculos. Eles têm formato de gota esticada, largos embaixo e apertados em cima. Um círculo de verdade te esmagaria com força lá embaixo e depois te deixaria lento demais no topo." },
+        { type: "paragraph", text: "O formato de gota distribui essas forças para o seu corpo aguentar. Parece uma decisão estética. Na verdade é um plano de resgate para o seu pescoço." },
+      ] },
+      { title: "Teste Isto: Montanha-Russa de Bolinha", blocks: [
+        { type: "paragraph", text: "Papel, papelão, fita e uma bolinha de gude. Construa uma pista com uma ladeira e uma curva. E agora sabote. Faça a primeira ladeira baixa demais. Faça a curva fechada demais. Deixe a pista cheia de calombos. Cada falha diz exatamente o que consertar." },
+        { type: "callout", title: "As Mesmas Perguntas, em Escala Menor", accent: "purple", text: "Esses são os mesmos testes que os engenheiros de montanha-russa rodam, menos alguns milhões de dólares. Toda vez que a sua bolinha sai voando ou morre no meio da ladeira, ela acabou de te entregar dados." },
+      ] },
+      { title: "Reflexão Final", blocks: [
+        { type: "paragraph", text: "O trem fica no trilho porque cada peça foi projetada para mantê-lo ali. A gravidade dá a velocidade, o impulso leva até o fim, as rodas agarram por três lados, as travas mantêm você no lugar e o formato do trilho controla o que o seu corpo sente. A emoção é totalmente real. A matemática por baixo também." },
+      ] },
+    ],
+  },
+  "why-chairs-break": {
+    ...localizedBlogArticles.en["why-chairs-break"],
+    title: "Por Que Algumas Cadeiras Quebram e Outras Não?",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Estudantes construindo uma ponte de palitos de picolé, testando emendas e distribuição de carga, os mesmos princípios estruturais que valem para as cadeiras",
+    imageCaption: "Cadeiras e pontes compartilham os mesmos problemas de engenharia: as junções, os caminhos de carga e a escolha dos materiais determinam se elas aguentam ou falham.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Uma cadeira tem exatamente um trabalho. Sustentar você. E mesmo assim as cadeiras quebram o tempo todo. Pés que estalam, encostos que racham, parafusos que vão afrouxando sozinhos, assentos que aos poucos viram rede. Por que uma cadeira sobrevive a uma década de maus-tratos e outra desiste em um ano? Engenharia, de cima a baixo." },
+      ] },
+      { title: "As Cadeiras Precisam Lidar com Forças", blocks: [
+        { type: "paragraph", text: "Você senta e o seu peso empurra direto o assento. Essa força precisa viajar pela estrutura, descer pelos pés e chegar ao chão. Distribua bem e a cadeira nem se abala. Jogue tudo em uma única junção fraca e alguma coisa vai rachar." },
+        { type: "paragraph", text: "Isso é a distribuição do peso, e é o jogo inteiro. Uma boa cadeira não só aguenta peso. Ela leva esse peso de você até o piso sem drama." },
+      ] },
+      { title: "Os Materiais Importam", blocks: [
+        { type: "paragraph", text: "Madeira, plástico, metal, tecido, ou uma mistura dos quatro. Cada um tem o próprio jeito de falhar. A madeira é forte até a fibra correr na direção errada e ela lascar. O plástico é leve e barato até ficar fino demais e trincar. O metal é duro até ficar fino demais, e aí simplesmente entorta." },
+        { type: "paragraph", text: "Os projetistas escolhem pensando em custo, resistência, conforto, peso e como fica no catálogo. As melhores cadeiras usam o material certo em cada ponto específico. Ninguém ganha fazendo tudo com o material mais resistente que existe." },
+      ] },
+      { title: "As Junções Costumam Ser a Parte Mais Fraca", blocks: [
+        { type: "paragraph", text: "As cadeiras quase nunca quebram no meio de uma peça maciça de madeira. Elas se abrem onde duas peças se encontram. Esses pontos de ligação são as junções, e um pé pode se prender ao assento com parafusos, cola, pinos, cantoneiras ou um encaixe entalhado." },
+        { type: "paragraph", text: "Junções fracas, cadeira fraca. É por isso que um bambeio é um aviso. Bambear significa que algo está se mexendo que nunca deveria se mexer, e só vai piorar." },
+      ] },
+      { title: "A Forma Pode Deixar Uma Cadeira Mais Resistente", blocks: [
+        { type: "paragraph", text: "Vire uma cadeira resistente de cabeça para baixo e você provavelmente vai encontrar barras ligando os pés. Esses travessões impedem que os pés abram sob a carga. Outros projetos chegam ao mesmo lugar com plástico curvado, estruturas soldadas ou triângulos escancarados." },
+        { type: "callout", accent: "purple", text: "Triângulos de novo. Pelo mesmo motivo de sustentarem pontes e torres: eles se recusam a mudar de forma. Uma cadeira pode ficar muito mais forte só pela geometria, sem um grama de material a mais." },
+      ] },
+      { title: "Os Testes Importam", blocks: [
+        { type: "paragraph", text: "Antes de uma cadeira chegar à loja, tem máquina maltratando ela. Empilham peso, inclinam para trás, deixam cair e sentam nela milhares de vezes seguidas. Porque a vida real é pior que qualquer laboratório. As pessoas se balançam em dois pés, se torcem, se jogam de uma vez, arrastam cadeiras pelo chão e empilham de seis em seis." },
+        { type: "paragraph", text: "Aguentar uma vez é fácil. Aguentar a vez número dez mil é o desafio de verdade." },
+      ] },
+      { title: "Teste Isto: Desafio da Cadeira de Papel", blocks: [
+        { type: "paragraph", text: "Construa com papel e fita uma cadeira capaz de sustentar algo real, como um livro ou um brinquedo. Depois construa mais três. Pés retos, pés dobrados, escoras triangulares, tubos de papel enrolado. Carregue uma por uma e veja qual se recusa a ceder." },
+        { type: "callout", title: "O Que Você Vai Descobrir", accent: "purple", text: "Você vai descobrir bem rápido que a forma e as junções importam tanto quanto o material. Um projeto simples com junções limpas costuma esmagar um projeto elegante mal colado." },
+      ] },
+      { title: "Reflexão Final", blocks: [
+        { type: "paragraph", text: "As cadeiras quebram quando as forças não têm para onde ir. Elas duram quando alguém escolheu materiais inteligentes, uma forma inteligente e junções que aguentam. Parece um móvel qualquer, mas toda vez que suporta o seu peso, aquela cadeira está fazendo engenharia." },
+      ] },
+    ],
+  },
+  "hidden-engineering-water-bottle": {
+    ...localizedBlogArticles.en["hidden-engineering-water-bottle"],
+    title: "A Engenharia Escondida de Uma Garrafa de Água",
+    category: "Engenharia",
+    readTime: common.pt.minutes.m6,
+    imageAlt: "Uma garrafa plástica transparente mostrando as laterais com frisos, o gargalo com rosca e o projeto estrutural da base",
+    imageCaption: "Uma garrafa de água descartável pesa poucos gramas mas contém milhares de vezes o próprio peso em líquido. Cada friso, rosca e espessura de parede tem um motivo de ser.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Uma garrafa de água descartável pode ser o objeto menos impressionante que você vai tocar hoje. Ela guarda água. Você bebe. Você joga fora. Mas olhe para ela como um problema de materiais e a coisa fica meio ridícula." },
+        { type: "paragraph", text: "Essa garrafa pesa poucos gramas. Ela sobrevive a uma fábrica, a um caminhão, a um depósito, a um cooler, à sua mochila e a uma queda no concreto. Se tiver refrigerante, ainda tem gás empurrando cada parede para fora. Além disso tudo, ela precisa manter a água limpa, vedar sem vazar, ficar boa na mão e custar quase nada um bilhão de vezes seguidas." },
+        { type: "callout", title: "O Grande Dilema", accent: "purple", text: "Tudo o que torna esta garrafa leve, resistente e barata é também o que a transforma em um problema de lixo. Grande engenharia, final incômodo." },
+      ] },
+      { title: "A Façanha de Engenharia", blocks: [
+        { type: "paragraph", text: "Quase todas são feitas de PET, sigla de politereftalato de etileno. O PET é transparente, leve, fácil de moldar e surpreendentemente resistente para o peso que tem. Essa combinação é o que permite fazer paredes tão finas que amassam na sua mão sem a garrafa se desfazer na prateleira." },
+        { type: "numbered", items: [
+          { title: "Leve e resistente", body: "Uma garrafa de PET carrega milhares de vezes o próprio peso em água. Esticar o plástico durante a moldagem alinha as longas cadeias de polímero lá dentro, e esse alinhamento responde por boa parte da resistência." },
+          { title: "Fina, mas ciente da pressão", body: "Aqueles frisos, curvas e a base de formato estranho são todos estruturais. As garrafas de refrigerante recebem a geometria mais cuidadosa de todas, porque o gás preso empurra o tempo todo para fora, em cada centímetro." },
+          { title: "Rápida de fabricar", body: "As máquinas aquecem uma pré-forma de PET parecida com um tubo de ensaio, sopram dentro de um molde, enchem, tampam e rotulam mais rápido do que você leva para ler esta frase. Essa velocidade é quase toda a razão de a água engarrafada estar em todo lugar." },
+        ] },
+      ] },
+      { title: "A Forma Não É Aleatória", blocks: [
+        { type: "paragraph", text: "Uma garrafa precisa ser fácil de segurar, empilhável e rígida o bastante para não dobrar quando você a levanta. Aquelas ranhuras no meio não são estilo. Elas dão aos seus dedos algo em que se apoiar, o que importa muito quando as mãos estão molhadas." },
+        { type: "paragraph", text: "A forma também decide como a garrafa lida com a pressão. Uma garrafa perfeitamente lisa e de parede fina amassa assim que você aperta. Coloque frisos e a mesma quantidade de plástico fica visivelmente mais rígida. Menos material, mesmo trabalho." },
+      ] },
+      { title: "A Física da Tampa", blocks: [
+        { type: "paragraph", text: "Olhe o gargalo da garrafa. Aqueles frisos em espiral são roscas, e a tampa tem roscas que se encaixam por dentro. Quando você gira, as roscas puxam a tampa para baixo em vez de só fazê-la girar." },
+        { type: "paragraph", text: "Esse puxão para baixo aperta um anel de vedação contra a borda. O que você quer é uma vedação hermética, tão apertada que impede vazamentos, mantém o gás dentro e deixa o ar e as bactérias de fora." },
+        { type: "paragraph", text: "E aquela tampinha é uma máquina simples, da mesma família de uma rampa ou de um parafuso. Ela transforma um giro fácil em um aperto forte para baixo. Tirar mais força do que você colocou é exatamente para isso que as máquinas simples existem." },
+      ] },
+      { title: "Por Que o Plástico É Mais Grosso em Alguns Lugares?", blocks: [
+        { type: "paragraph", text: "Passe os dedos por uma garrafa de cima a baixo e a espessura muda. A base precisa ser robusta para ficar de pé e aguentar uma queda. O gargalo precisa ser sólido para a tampa morder. As laterais podem se dar ao luxo de ser finas, então são." },
+        { type: "paragraph", text: "Isso são engenheiros equilibrando resistência, custo, conforto e desperdício ao mesmo tempo. Fina demais e ela amassa na sua mão. Grossa demais e você acabou de desperdiçar plástico um bilhão de vezes. Um bom projeto coloca material exatamente onde está o esforço e em nenhum outro lugar." },
+      ] },
+      { title: "A Abertura Importa", blocks: [
+        { type: "paragraph", text: "Faça a abertura pequena demais e beber vira um incômodo. Faça grande demais e você derrama na camisa. As garrafas reutilizáveis são largas para caber gelo e para você conseguir lavar por dentro. As descartáveis são estreitas, porque só precisam sobreviver a um uso e ninguém vai esfregá-las." },
+        { type: "paragraph", text: "Até aquele buraco foi decisão de alguém." },
+      ] },
+      { title: "Rótulos e Pegada", blocks: [
+        { type: "paragraph", text: "O rótulo enrolado no meio faz dois trabalhos. Marca, claro, mas também acrescenta atrito bem onde a sua mão vai. As garrafas reutilizáveis levam isso mais longe, com capas de borracha, plástico texturizado ou metal com pintura eletrostática. Uma garrafa que escorrega da mão molhada é um projeto que falhou, principalmente para crianças ou para alguém no meio de uma trilha." },
+      ] },
+      { title: "Os Dilemas e as Preocupações de Saúde", blocks: [
+        { type: "paragraph", text: "Resolver um problema com elegância não significa que você resolveu todos os problemas. As garrafas de uso único trazem uma conta ambiental real, e os pesquisadores ainda estão descobrindo o que todas aquelas partículas minúsculas de plástico significam para nós." },
+        { type: "numbered", items: [
+          { title: "Partículas de microplástico e nanoplástico", body: "A microscopia nova detecta partículas que os métodos antigos nem enxergavam. Uma equipe da Columbia e da Rutgers contou uma média de cerca de 240.000 partículas de plástico detectáveis por litro na água engarrafada que analisou, e a maioria era de nanoplásticos." },
+          { title: "Atrito da tampa", body: "Toda vez que você gira uma tampa, rosca de plástico raspa em rosca de plástico. Pesquisas revisadas por pares mostram que esse atrito solta mais partículas de microplástico bem na abertura." },
+          { title: "Migração de substâncias", body: "Calor, sol, meses de armazenamento ou reutilizar uma garrafa feita para uma viagem só aumentam a preocupação de o plástico se degradar e os aditivos dele passarem para a água. Os cientistas seguem estudando o que exatamente isso faz com as pessoas." },
+          { title: "Impacto ambiental", body: "O PET pode ser reciclado. Boa parte não é. As garrafas que viram lixo ficam em aterros, rios e oceanos por muitíssimo tempo." },
+        ] },
+        { type: "callout", title: "A Engenharia Envolve Escolhas", accent: "purple", text: "Uma garrafa descartável é excelente em ser leve, vedada, resistente e barata. É péssima em desaparecer quando você termina de usar." },
+      ] },
+      { title: "Como Reduzir a Exposição ao Plástico", blocks: [
+        { type: "paragraph", text: "Ninguém precisa entrar em pânico aqui, e uma garrafa de plástico ainda é melhor do que não ter água limpa. Mas, se você quiser diminuir o plástico do dia a dia, as mudanças são bem fáceis." },
+        { type: "list", items: [
+          "Leve uma garrafa de vidro ou aço inoxidável para a sua água do dia a dia.",
+          "Não deixe garrafas de plástico cozinhando em um carro quente nem sob sol direto.",
+          "Pule o costume de reencher uma garrafa que foi feita para um uso só.",
+          "Coloque um filtro certificado em casa, se a água da sua torneira é segura mas você quer tranquilidade extra.",
+          "Recicle o PET onde a sua cidade aceitar, e use estações de reabastecimento quando encontrar.",
+        ] },
+      ] },
+      { title: "Teste Isto: Análise de Projeto de Garrafa", blocks: [
+        { type: "paragraph", text: "Pegue uma garrafa descartável e uma reutilizável e coloque lado a lado. Compare a tampa, a textura da pegada, o formato da base, a espessura da parede, o tamanho da abertura, o quanto cada uma amassa fácil, o quanto elas ficam estáveis em pé e como você lavaria cada uma." },
+        { type: "callout", title: "Não Existe Resposta Perfeita", accent: "purple", text: "Nenhuma delas ganha de vez, e essa é a lição. Uma garrafa de trilha é feita para sobreviver. A de uma criança é feita para não derramar. A descartável é feita para não custar nada. Enxergar esses dilemas é o trabalho." },
+      ] },
+      { title: "Reflexão Final", blocks: [
+        { type: "paragraph", text: "Uma garrafa de água é um projeto de engenharia completo disfarçado de recipiente. Guardar líquido, não vazar, caber em uma mão, ficar de pé, sobreviver a uma queda, desperdiçar o mínimo de material possível. Também é um lembrete de que decisões de projeto continuam tendo consequências muito depois de o produto sair das suas mãos." },
+        { type: "paragraph", text: "Da próxima vez que você tomar um gole, dedique dois segundos à garrafa. Tem muito mais pensamento ali do que alguém queria que você notasse." },
+      ] },
+    ],
+  },
+  "can-ai-actually-think": {
+    ...localizedBlogArticles.en["can-ai-actually-think"],
+    title: "A IA Consegue Mesmo Pensar?",
+    category: "IA",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Uma visualização abstrata da inteligência artificial, com um cérebro digital ou padrão de rede neural representando aprendizado de máquina e reconhecimento de padrões",
+    imageCaption: "A IA consegue reconhecer padrões e gerar respostas, mas isso é diferente de pensar como os humanos pensam. Ela prevê; não compreende.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Digite \"me explique buracos negros como se eu tivesse 10 anos\" em uma IA e três segundos depois você tem uma resposta sólida. Peça uma história, ajuda com matemática, uma imagem, uma ideia para a feira de ciências, e ela simplesmente entrega. Realmente parece que alguma coisa lá dentro está pensando." },
+        { type: "paragraph", text: "Então vale a pena perguntar: está? E a resposta honesta é não, não como você." },
+        { type: "paragraph", text: "A IA faz coisas genuinamente impressionantes, mas não existe um cérebro lá dentro. Não há sentimentos. Não há lembranças da própria vida. Não há imaginação como a sua. Ela não tem ideia real de como o mundo é. O que ela tem é um talento incrível para detectar padrões." },
+      ] },
+      { title: "O Que É Reconhecimento de Padrões?", blocks: [
+        { type: "paragraph", text: "Reconhecer padrões é só notar o que se repete, e você faz isso o tempo todo. Nuvens escuras se juntam, um trovão soa longe, o vento levanta, e antes de decidir qualquer coisa o seu cérebro já disse \"chuva\". Ninguém te ensinou. Você já viu esse filme." },
+        { type: "paragraph", text: "A IA faz o mesmo truque em uma escala absurda. Imagine ler milhares de livros, artigos, sites e conversas. Com o tempo você começaria a notar quais palavras andam juntas, quais respostas costumam seguir quais perguntas e quais ideias sempre aparecem lado a lado." },
+        { type: "paragraph", text: "É esse o assunto inteiro. A IA absorve padrões de dados e depois os usa para adivinhar o que vem em seguida quando você pergunta algo. Ela soa inteligente porque os padrões que aprendeu vieram de gente inteligente escrevendo coisas. Soar inteligente e pensar são dois trabalhos diferentes." },
+      ] },
+      { title: "Em Que o Pensamento Humano É Diferente?", blocks: [
+        { type: "paragraph", text: "Você faz muito mais do que casar padrões. Você se pergunta coisas. Você se importa com as pessoas. Você se confunde, se empolga, fica nervoso, orgulhoso, curioso. Você decide que algo importa para você. Você muda de ideia por causa de uma tarde que ficou marcada. Você percebe quando algo é injusto, ou quando seu amigo está mal e não fala." },
+        { type: "paragraph", text: "A IA não faz nada disso. Digamos que a sua ponte de palitos desabe. Você sente no estômago. Depois pensa, talvez o centro precisasse de mais apoio, e começa a desenhar a versão dois. Lógica, memória, emoção, criatividade e experiência disparando ao mesmo tempo." },
+        { type: "paragraph", text: "Pergunte a uma IA por que a ponte caiu e ela vai dar uma resposta decente sobre triângulos e distribuição de peso. Mas ela nunca viu a ponte cair. Ela não se importou. Nada daquele momento a mudou, e amanhã ela não vai lembrar." },
+      ] },
+      { title: "A IA Entende o Que Diz?", blocks: [
+        { type: "paragraph", text: "Ela consegue te explicar um vulcão. Consegue escrever um poema sobre uma tartaruga. Consegue te contar dos anéis de Saturno. Nada disso significa que ela entenda qualquer uma dessas coisas como você." },
+        { type: "paragraph", text: "Pense no corretor automático do seu celular. Você escreve \"vou para a\" e ele oferece loja, escola, casa. Seu celular não faz ideia de como está a sua tarde. Ele está adivinhando a próxima palavra." },
+        { type: "callout", accent: "teal", text: "A IA está fazendo uma versão muito mais sofisticada dessa mesma jogada. Ela prevê palavras, frases e ideias a partir de padrões. É exatamente por isso que ela pode cravar uma resposta e, trinta segundos depois, dizer algo completamente estranho." },
+      ] },
+      { title: "Um Exemplo Simples", blocks: [
+        { type: "paragraph", text: "Pergunte a uma IA: um peixe consegue andar de bicicleta? Uma pessoa riria e diria que não, peixes não têm pernas e bicicletas precisam de terra firme. A IA provavelmente também diria que não. Mas não porque imaginou um peixe cambaleando pela rua. Ela está rodando padrões de linguagem e fatos que absorveu." },
+        { type: "paragraph", text: "Agora inverta: escreva uma história engraçada sobre um peixe andando de bicicleta. De repente você tem uma história. Ela mudou do modo fatos para o modo história porque reconheceu que formato de resposta você queria. Útil, e também um alerta. Como você pergunta muda o que você recebe." },
+      ] },
+      { title: "Então, a IA É Inteligente?", blocks: [
+        { type: "paragraph", text: "Em algumas coisas, com certeza. Ela encontra padrões rapidíssimo, organiza informação bagunçada, faz chuva de ideias com você às 11 da noite, explica um tema de cinco jeitos, resume, escreve código, traduz idiomas e ajuda as pessoas a aprender." },
+        { type: "paragraph", text: "Em outras coisas, nem perto. Ela não faz ideia do que é ser criança, pisar na bola na frente dos outros, ajudar um amigo, ganhar alguma coisa ou sentir aquele orgulho específico quando o que você construiu enfim funciona. Ela não tem bom senso. E pode estar completamente errada soando completamente segura. É uma ferramenta, não um substituto do seu cérebro." },
+      ] },
+      { title: "Pense na IA Como uma Supercalculadora de Palavras", blocks: [
+        { type: "paragraph", text: "Uma calculadora arrasa na matemática. Mas ela não faz ideia de por que você precisa da resposta, se você digitou os números errados, nem se o resultado faz algum sentido na vida real. Ela só calcula." },
+        { type: "paragraph", text: "A IA é a mesma ideia, só que trabalha com palavras, imagens, código e padrões em vez de só números. Ela pode te ajudar a pensar. Não deveria estar pensando por você." },
+      ] },
+      { title: "Teste Isto", blocks: [
+        { type: "paragraph", text: "Vá e faça estas três coisas com uma IA, uma atrás da outra:" },
+        { type: "list", items: [
+          "Explique como um aviãozinho de papel voa.",
+          "Explique como um aviãozinho de papel voa como se eu estivesse no 2º ano.",
+          "Invente uma história engraçada sobre um aviãozinho de papel que vai a Marte.",
+        ] },
+        { type: "paragraph", text: "Repare o quanto as respostas mudam. A IA não virou professora, depois criança, depois contadora de histórias. Ela só casou o padrão do que você pediu. É esse o assunto inteiro em três perguntas." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "A IA não pensa como você. Ela detecta padrões, prevê o que vem em seguida e monta respostas com o que aprendeu dos dados. Isso é poderoso e genuinamente divertido de usar. Mas você continua trazendo coisas que ela não tem: compreensão real, criatividade de verdade, critério, sentimentos e responsabilidade pelo que você fizer com a resposta." },
+        { type: "callout", accent: "teal", text: "A IA pode te ajudar a pensar. Seu cérebro continua sendo a melhor ferramenta da sala, e é ele que precisa decidir o que vem depois." },
+      ] },
+    ],
+  },
+  "why-ai-sometimes-gets-things-wrong": {
+    ...localizedBlogArticles.en["why-ai-sometimes-gets-things-wrong"],
+    title: "Por Que a IA Às Vezes Erra",
+    category: "IA",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Uma representação visual da IA produzindo um resultado incorreto ou confuso, ilustrando o conceito de alucinação e erro da IA",
+    imageCaption: "A IA não sabe as coisas do jeito que as pessoas sabem. Ela prevê, e às vezes as previsões dela estão erradas com toda a confiança.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "A IA responde rápido. Dinossauros, um conto curto, um erro no seu código, uma ideia para a feira de ciências. Às vezes a resposta é excelente. Às vezes ela soa excelente. Nem sempre é a mesma coisa." },
+        { type: "paragraph", text: "O que levanta uma pergunta justa: se essa tecnologia é tão avançada, por que ela continua errando? Porque a IA não sabe as coisas do jeito que você sabe. Ela prevê, com base em padrões. Quase sempre acerta. Às vezes sai pela tangente." },
+      ] },
+      { title: "A IA Pode Chutar Errado", blocks: [
+        { type: "paragraph", text: "Toda vez que você pergunta algo, a IA está montando uma resposta com o formato da sua pergunta. Ela se apoia em padrões de uma montanha de exemplos e prevê quais palavras vêm depois. Então, mesmo quando soa segura demais, ela está fazendo um palpite muito bem informado." },
+        { type: "paragraph", text: "Pergunte qual é a montanha mais alta do mundo e ela diz Everest sem problema. Esse dado aparece em todo lugar. Mas fique muito específico, pergunte algo obscuro, e talvez ela não tenha padrões sólidos de onde puxar. Em vez de te avisar, ela pode produzir algo que soa certo. Esse é o modo de falha número um: ela responde quando deveria dar de ombros." },
+      ] },
+      { title: "O Que É uma Alucinação?", blocks: [
+        { type: "paragraph", text: "Quando uma IA inventa algo e te entrega como se fosse fato, as pessoas chamam isso de alucinação. Ela não está vendo coisas. Ela gerou uma resposta com o formato da verdade, mas sem nada dentro." },
+        { type: "paragraph", text: "Coisas que a IA já inventou com toda a tranquilidade:" },
+        { type: "list", items: [
+          "Um título de livro que não existe",
+          "Uma data errada por décadas",
+          "Uma citação que ninguém jamais disse",
+          "Um dado científico que soa completamente razoável e é falso",
+          "Uma fonte com um link bem convincente que não leva a lugar nenhum",
+        ] },
+        { type: "callout", accent: "teal", text: "O perigoso é o tom. Uma alucinação chega com exatamente a mesma confiança de uma resposta certa. É por isso que você continua conferindo o que importa." },
+      ] },
+      { title: "Dados Ruins Podem Levar a Respostas Ruins", blocks: [
+        { type: "paragraph", text: "A IA aprende com dados, e dados significam o texto, as imagens e os números com que a alimentaram. Parte disso está desatualizada. Parte é enviesada. Parte conta metade da história. Parte está simplesmente errada. Aprenda padrões de uma pilha bagunçada e você vai repetir parte da bagunça." },
+        { type: "paragraph", text: "Imagine estudar por um caderno em que metade das páginas está certa e a outra metade tem respostas erradas anotadas. Se você nunca confere, vai aprender o errado com toda a confiança e nem perceber. A IA está na mesma situação, só que o caderno dela é do tamanho da internet." },
+      ] },
+      { title: "A IA Nem Sempre Entende a Pergunta", blocks: [
+        { type: "paragraph", text: "Às vezes o problema não é a IA. É a pergunta. Se alguém chegasse e perguntasse \"qual é o tamanho?\", você diria \"o tamanho de quê?\". Uma IA muitas vezes só escolhe um significado e vai, e, se escolheu errado, tudo o que vem depois está errado." },
+        { type: "paragraph", text: "É por isso que o jeito de perguntar importa tanto. \"Me fale sobre energia\" não dá nada com que trabalhar. \"Explique a diferença entre energia renovável e não renovável para uma criança do 4º ano\" dá um alvo. Mesma ferramenta, resposta radicalmente diferente." },
+      ] },
+      { title: "A IA Pode Confundir Coisas Parecidas", blocks: [
+        { type: "paragraph", text: "Os padrões são a força dela e também a fraqueza. Duas figuras históricas com nomes parecidos se fundem em uma pessoa só. O título de um filme troca de lugar com o de um livro. Uma explicação científica usa palavras que soam certas mas descrevem algo levemente diferente." },
+        { type: "paragraph", text: "Isso acontece porque a IA não está olhando para o mundo. Está olhando para textos sobre o mundo. E alguns sistemas nem conhecem o que aconteceu recentemente, então, para descobertas novas, mudanças de regras ou qualquer coisa no noticiário, vá conferir uma fonte atual." },
+      ] },
+      { title: "Como Você Pode Conferir as Respostas da IA?", blocks: [
+        { type: "callout", title: "Uma Regra Simples", accent: "teal", text: "A IA é ajudante, não a palavra final. Tudo o que envolver escola, segurança, saúde ou notícias se confere antes de usar." },
+        { type: "paragraph", text: "Faça algumas perguntas a você mesmo. De onde essa informação teria vindo? Consigo encontrar isso em algum lugar em que confio? Isso bate com o que meu professor disse? E a mais importante: isso faz sentido de verdade?" },
+        { type: "paragraph", text: "Três conferências rápidas funcionam bem. Faz sentido? Uma fonte confiável confirma? Um professor, um pai ou uma pessoa especialista concordaria? Se falhar em qualquer uma das três, reduza muito a velocidade." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "A IA erra porque chuta, porque os dados de treinamento dela eram imperfeitos, porque a sua pergunta foi vaga, porque ela misturou duas coisas parecidas ou porque nunca viu a informação mais nova. Nada disso a torna inútil. Só significa que você continua no volante." },
+        { type: "callout", accent: "teal", text: "A IA pode te ajudar a aprender mais rápido e a pensar em voz alta. Seu trabalho é continuar fazendo uma pergunta: como eu sei que isso é verdade?" },
+      ] },
+    ],
+  },
+  "how-does-your-phone-recognize-your-face": {
+    ...localizedBlogArticles.en["how-does-your-phone-recognize-your-face"],
+    title: "Como Seu Celular Reconhece Seu Rosto?",
+    category: "IA",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Uma tela de iPhone mostrando a configuração do Face ID com um escaneamento facial em andamento, ilustrando como o celular mapeia a geometria do rosto",
+    imageCaption: "O Face ID mapeia milhares de pontos do seu rosto e os compara com um modelo 3D guardado, usando o mesmo tipo de reconhecimento de padrões que está no coração da IA moderna.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Você levanta o celular, olha para ele e a tela abre. Sem senha, sem digitar, sem pensar. Realmente parece meio mágico." },
+        { type: "paragraph", text: "Mas o seu celular não está dizendo \"ah, é você\". Ele não te conhece como os seus amigos conhecem. O que ele faz é acionar câmeras e sensores, transformar o seu rosto em um padrão de números e conferir se esse padrão parece suficientemente com o que está guardado." },
+      ] },
+      { title: "Seu Rosto Tem Padrões", blocks: [
+        { type: "paragraph", text: "Seu rosto é cheio de medidas. A distância entre os olhos. A inclinação do nariz. Onde fica o queixo em relação às maçãs do rosto. Junte todas essas distâncias e você tem uma combinação que quase ninguém mais tem." },
+        { type: "paragraph", text: "Seu celular tem uma dessas combinações guardada. Quando você olha para ele, ele monta uma nova e compara as duas. Se são parecidas o bastante, você entra. É basicamente um joguinho de combinar caríssimo acontecendo em menos de um segundo." },
+      ] },
+      { title: "O Que Acontece Quando Você Configura?", blocks: [
+        { type: "paragraph", text: "Lembra que a configuração pede para você girar a cabeça em círculo? Existe um motivo. Seu rosto não parece igual de todos os ângulos nem com toda luz. Sol direto, cômodo escuro, óculos no rosto, óculos fora." },
+        { type: "paragraph", text: "O celular está juntando vistas suficientes para montar um padrão que sobreviva a tudo isso. Pule essa parte e você ficaria trancado do lado de fora toda vez que sentasse na sombra." },
+      ] },
+      { title: "As Câmeras e os Sensores Ajudam", blocks: [
+        { type: "paragraph", text: "Uma câmera comum só tira uma foto plana. Alguns celulares acrescentam sensores que medem profundidade, ou seja, o quão longe cada parte do seu rosto está da lente. Essa é a diferença entre um rosto e a foto de um rosto." },
+        { type: "paragraph", text: "Pense no desenho de um cubo comparado a um cubo de verdade em cima da mesa. Mesmo contorno, completamente diferentes em três dimensões. Detectar profundidade é por que um celular se recusa a desbloquear com uma foto impressa." },
+      ] },
+      { title: "Onde Entra o Aprendizado de Máquina?", blocks: [
+        { type: "paragraph", text: "O aprendizado de máquina é a parte da IA em que o computador descobre padrões a partir de exemplos, em vez de seguir regras que alguém escreveu. No desbloqueio facial, é o que ensina ao celular quais padrões são seus e o quanto eles podem mudar." },
+        { type: "paragraph", text: "Porque você muda. Você sorri, inclina a cabeça, coloca um boné, faz um corte de cabelo do qual se arrepende. O aprendizado de máquina é o que impede o celular de surtar a cada pequena mudança." },
+      ] },
+      { title: "Por Que a Privacidade Importa", blocks: [
+        { type: "paragraph", text: "Aqui vem a parte incômoda. Uma senha e um rosto não são o mesmo tipo de segredo. Se roubarem a sua senha, você faz outra em trinta segundos. Ninguém nunca conseguiu um rosto novo." },
+        { type: "callout", accent: "teal", text: "Então empresas, escolas e aplicativos que lidam com dados faciais precisam ser extremamente cuidadosos, e deveriam dizer o que coletam, onde isso fica e quem pode ver. Se um aplicativo quiser escanear o seu rosto, é uma boa hora para ir perguntar a um adulto." },
+      ] },
+      { title: "O Reconhecimento Facial Pode Errar?", blocks: [
+        { type: "paragraph", text: "O tempo todo. Ele se recusa a desbloquear quando deveria. Desiste com pouca luz. E, mais sério: alguns sistemas funcionaram visivelmente pior para certos grupos de pessoas, geralmente porque os rostos com que eles treinaram não eram diversos o bastante." },
+        { type: "paragraph", text: "É exatamente por isso que nós, humanos, precisamos continuar testando isso, corrigindo e decidindo onde essa tecnologia deve e não deve ser usada." },
+      ] },
+      { title: "Teste Este Experimento Mental", blocks: [
+        { type: "paragraph", text: "Imagine que você está projetando o sistema de desbloqueio facial. O que ele deveria fazer quando:" },
+        { type: "list", items: [
+          "O cômodo está completamente escuro?",
+          "A pessoa está de óculos escuros?",
+          "Alguém levanta uma foto do dono?",
+          "Dois gêmeos idênticos tentam abrir o mesmo celular?",
+          "A criança que configurou já tem três anos a mais?",
+        ] },
+        { type: "paragraph", text: "Cada um desses é um problema real que alguém teve que resolver, e as respostas brigam entre si. Precisão, segurança, justiça e privacidade nem sempre querem a mesma coisa." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Seu celular conhece o seu rosto como um padrão, não como uma pessoa. As câmeras e os sensores juntam os dados, o aprendizado de máquina decide o que conta como correspondência, e as regras de segurança tomam a decisão final de abrir ou não." },
+        { type: "callout", accent: "teal", text: "Antes de deixar um aplicativo escanear o seu rosto, faça as duas perguntas que importam: para onde isso vai e quem pode ver?" },
+      ] },
+    ],
+  },
+  "why-does-autocorrect-make-weird-mistakes": {
+    ...localizedBlogArticles.en["why-does-autocorrect-make-weird-mistakes"],
+    title: "Por Que o Corretor Automático Comete Erros Estranhos?",
+    category: "IA",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Estudantes em uma oficina de IA da Avanza STEM discutindo como funcionam os sistemas de previsão",
+    imageCaption: "O corretor automático e a IA compartilham a mesma ideia central: os dois preveem o que deveria vir em seguida com base nos padrões da linguagem.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "O corretor automático é genuinamente útil quase sempre. Você digita 'pra' e ele vira 'para' caladinho. Você escreve a toda velocidade, some uma letra, e ninguém percebe." },
+        { type: "paragraph", text: "E aí tem as outras vezes. Você vai mandar algo perfeitamente normal e o seu celular enfia uma palavra sem sentido e te deixa em situação ridícula. Por que ele faz isso? Porque o corretor automático está prevendo palavras. Ele não faz ideia do que você quis dizer." },
+      ] },
+      { title: "O Corretor Automático É uma Ferramenta de Previsão", blocks: [
+        { type: "paragraph", text: "Ele pega o que você escreveu e adivinha a palavra que você queria. Você escreve 'definitvamente' e ele chega em 'definitivamente', porque as duas estão a duas teclas de distância." },
+        { type: "paragraph", text: "Por baixo, ele roda várias perguntas ao mesmo tempo. Qual palavra real mais se parece com essa grafia? Qual palavra costuma vir depois da anterior? O que essa pessoa escreve o tempo todo? Qual é a frase mais provável aqui? Essas perguntas acertam constantemente. E, de vez em quando, erram de forma espetacular." },
+      ] },
+      { title: "Os Computadores Não Entendem Palavras Como as Pessoas", blocks: [
+        { type: "paragraph", text: "Quando você lê a palavra 'cachorro', alguma coisa acontece na sua cabeça. Pelo, latido, um cachorro específico que você conhece, talvez um que já te derrubou. Você entende porque conviveu com cachorros." },
+        { type: "paragraph", text: "O corretor automático não conviveu com nada. Ele nunca conheceu um cachorro, nunca entendeu uma piada, não faz ideia de por que o seu amigo escreve o nome dele daquele jeito. Ele vê letras e probabilidades. É por isso que ele sobrescreve com toda a confiança uma palavra que você escreveu certo. Ele não está te contradizendo. Só achou que outra palavra era mais provável." },
+      ] },
+      { title: "Nomes e Gírias Confundem o Corretor", blocks: [
+        { type: "paragraph", text: "Os nomes acabam com ele. Seu amigo escreve o nome dele de um jeito incomum. Seu bairro ou seu time não estão no dicionário. O corretor vê algo que não reconhece e gentilmente troca por algo que reconhece, e assim o nome de uma pessoa vira um substantivo aleatório." },
+        { type: "paragraph", text: "E aí tem tudo o que as pessoas inventam de propósito. Piadas internas, gírias, apelidos, uma palavra que o seu grupo criou mês passado. O corretor não tem categoria para nada disso, então ele achata o que você escreveu para a opção mais sem graça que encontrar." },
+      ] },
+      { title: "Por Que Ele Às Vezes Melhora?", blocks: [
+        { type: "paragraph", text: "Talvez você tenha notado que o seu celular acaba desistindo e deixa você usar uma palavra. Isso porque muitos sistemas de correção automática se adaptam a você. Escreva o mesmo nome vezes suficientes e ele para de brigar." },
+        { type: "paragraph", text: "É aprendizado de máquina fazendo o trabalho dele em escala pequena. Ele nota os seus hábitos e se ajusta. Também cria um modo de falha muito engraçado: cometa o mesmo erro de digitação vezes suficientes e o seu celular decide que aquele erro agora está certo." },
+      ] },
+      { title: "O Corretor Automático e a IA São Parentes", blocks: [
+        { type: "paragraph", text: "O corretor automático não é um chatbot de IA, mas eles são primos. Os dois são máquinas de previsão. O corretor prevê uma palavra. Um chatbot prevê parágrafos inteiros. Nenhum dos dois entende a linguagem como você." },
+        { type: "callout", accent: "teal", text: "Uma pessoa pode parar e perguntar \"espera, como assim?\". Ela capta o sarcasmo, o humor, o que você não disse. Um computador precisa inferir tudo isso a partir de padrões, e às vezes infere errado." },
+      ] },
+      { title: "Experimente", blocks: [
+        { type: "paragraph", text: "Escreva uma frase ridícula cheia de palavras inventadas, nomes e gírias, e observe o que o seu celular tenta fazer com ela. Depois fique curioso: por que ele escolheu aquela substituição? Foi pela grafia? Por uma expressão comum? Por algo que você escreveu semana passada?" },
+        { type: "paragraph", text: "Isso é cabeça de engenheiro. Não pare em \"deu errado\". Corra atrás do porquê." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "O corretor automático fica estranho porque prevê padrões em vez de entender significado. Ele te salva de erros de digitação, aprende as suas manias e, de vez em quando, afunda uma mensagem perfeitamente boa." },
+        { type: "callout", accent: "teal", text: "O corretor automático é o assistente. Você é o editor. Leia uma vez antes de apertar enviar." },
+      ] },
+    ],
+  },
+  "what-happens-when-you-ask-ai-a-question": {
+    ...localizedBlogArticles.en["what-happens-when-you-ask-ai-a-question"],
+    title: "O Que Acontece Quando Você Faz Uma Pergunta à IA?",
+    category: "IA",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um estudante em uma oficina de IA da Avanza STEM digitando uma pergunta e lendo a resposta da IA",
+    imageCaption: "O que acontece entre a sua pergunta e a resposta da IA é mais interessante do que parece. É tudo instrução, padrões e previsão.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Escrever para uma IA parece mandar mensagem para um robô rapidíssimo e muito lido. Você manda \"por que o céu é azul?\" e alguns segundos depois já tem uma explicação completa esperando. Mas o que aconteceu de verdade naquele intervalo?" },
+        { type: "paragraph", text: "Nada lá dentro acordou para meditar sobre a sua pergunta. O que aconteceu foi um processo: instrução, treinamento, padrões, previsão. Vamos passo a passo." },
+      ] },
+      { title: "Passo 1: Você Dá uma Instrução à IA", blocks: [
+        { type: "paragraph", text: "A instrução é o que você escreveu. Ela pode ser preguiçosa, como \"explique a gravidade\", ou pode dar algo com que trabalhar, como \"explique a gravidade para uma criança do terceiro ano usando um exemplo do parquinho\"." },
+        { type: "callout", accent: "teal", text: "A segunda recebe uma resposta muito melhor, porque você disse para quem ela é e em torno do que construí-la. Uma instrução é como dar orientações a um colega de equipe. Orientações vagas, resultados vagos." },
+      ] },
+      { title: "Passo 2: A IA Destrincha as Suas Palavras", blocks: [
+        { type: "paragraph", text: "A IA divide a sua instrução em pedaços e olha as palavras, a ordem em que chegaram e o formato que elas fazem juntas." },
+        { type: "paragraph", text: "Digamos que você peça \"explique a fotossíntese para crianças\". Ela detecta três sinais. \"Explique\" significa que você quer ensino, não uma lista. \"Fotossíntese\" é o tema. \"Para crianças\" define o nível de leitura. Essas três pistas moldam tudo o que vem depois." },
+      ] },
+      { title: "Passo 3: A IA Usa o Que Aprendeu Durante o Treinamento", blocks: [
+        { type: "paragraph", text: "Muito antes de você chegar, aquele modelo passou por um treinamento, o que significa que processou uma quantidade de texto de dar vertigem. Artigos, perguntas, respostas, explicações, histórias, código, tudo." },
+        { type: "paragraph", text: "Ele não memorizou nada disso. Ele absorveu padrões. Quais palavras viajam juntas. Como uma boa explicação costuma ser construída. Quais fatos costumam aparecer lado a lado. Como cada estilo de escrita soa. É a esses padrões que ele recorre quando você pergunta algo que ele nunca viu." },
+      ] },
+      { title: "Passo 4: A IA Prevê uma Resposta", blocks: [
+        { type: "paragraph", text: "Agora ela começa a escrever, e faz isso prevendo o que deve vir em seguida, pedaço por pedaço. Não existe uma resposta pronta em uma gaveta. Pergunte \"por que as plantas precisam de luz do sol?\" e ela prevê que uma boa resposta provavelmente inclui energia, alimento, folhas e fotossíntese, e constrói nessa direção." },
+        { type: "paragraph", text: "É por isso que a mesma pergunta pode render uma linha, um texto longo, um poema, um questionário ou um guia numerado. Você está guiando a previsão." },
+      ] },
+      { title: "Passo 5: A Resposta Aparece", blocks: [
+        { type: "paragraph", text: "O texto chega à sua tela parecendo polido e muito confiante. Não esqueça como ele foi fabricado." },
+        { type: "paragraph", text: "Aquela resposta não veio de alguém que viveu algo, abriu um livro didático ou pesou o que realmente importa aqui. Veio de uma ferramenta montando padrões. Às vezes é exatamente o que você precisava. Às vezes precisa de uma segunda olhada." },
+      ] },
+      { title: "Por Que Instruções Claras Ajudam", blocks: [
+        { type: "paragraph", text: "Instrução mais afiada, resposta mais afiada. Sempre. Troque \"me fale sobre robôs\" por \"explique a diferença entre robôs e IA para uma criança do quarto ano, com exemplos\". Troque \"ajuda com ciências\" por \"me dê três ideias de feira de ciências sobre ímãs usando coisas que eu tenho em casa\"." },
+        { type: "paragraph", text: "Dê a ela um trabalho claro e ela fará um trabalho claro." },
+      ] },
+      { title: "Experimente", blocks: [
+        { type: "paragraph", text: "Pergunte a mesma coisa de três jeitos e veja o que muda:" },
+        { type: "list", items: [
+          "Explique a eletricidade.",
+          "Explique a eletricidade usando um exemplo de um tobogã aquático.",
+          "Explique a eletricidade em cinco frases para uma criança do terceiro ano.",
+        ] },
+        { type: "paragraph", text: "Coloque as três respostas lado a lado. O tema nunca mudou. A sua instrução fez todo o trabalho." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Você dá uma instrução. A IA lê, se apoia em padrões do treinamento, prevê o que vem depois e monta uma resposta com isso. Parece que ela pensa. É previsão. O que a torna poderosa e também falível." },
+        { type: "callout", accent: "teal", text: "A IA pode te entregar uma resposta. Entendê-la continua sendo o seu trabalho. Fique curioso, escreva instruções melhores e confira as respostas que contam." },
+      ] },
+    ],
+  },
+  "should-kids-trust-everything-ai-says": {
+    ...localizedBlogArticles.en["should-kids-trust-everything-ai-says"],
+    title: "As Crianças Devem Confiar em Tudo o Que a IA Diz?",
+    category: "IA",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Estudantes em uma oficina de IA da Avanza STEM discutindo quando confiar e quando conferir as respostas da IA",
+    imageCaption: "Saber quando confiar na IA e quando conferi-la é uma das habilidades mais importantes que os estudantes podem aprender nas oficinas de IA da Avanza STEM.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "A IA é útil mesmo. Ela desembaraça problemas de dever de casa, joga ideias para projetos, escreve histórias, responde perguntas à meia-noite e nunca se cansa de você perguntar de novo. É meio tutora, meio bibliotecária e meio parceira de chuva de ideias, tudo empilhado em uma coisa só." },
+        { type: "paragraph", text: "Então você deveria acreditar em tudo? Não. Nem perto. Útil e correto são duas coisas diferentes, e é nesse intervalo que as pessoas se queimam." },
+      ] },
+      { title: "A IA Pode Soar Confiante Mesmo Estando Errada", blocks: [
+        { type: "paragraph", text: "Esta é a parte traiçoeira. A IA nunca soa insegura. Ela responde com calma, usa palavras impressionantes, divide tudo em seções bem arrumadas com títulos. Parece algo escrito por alguém que definitivamente sabe." },
+        { type: "callout", accent: "teal", text: "Uma resposta arrumada não é uma resposta certa. A IA confunde dados e às vezes os inventa por completo. Quando ela inventa assim, as pessoas chamam de alucinação." },
+      ] },
+      { title: "Pense Como Detetive", blocks: [
+        { type: "paragraph", text: "Usar bem a IA significa agir como detetive. Um detetive não aceita a primeira pista do jeito que ela veio. Ele cutuca, procura provas que sustentem aquilo e vê se a história se mantém de pé." },
+        { type: "paragraph", text: "Então, quando uma resposta chegar, rode esta lista:" },
+        { type: "list", items: [
+          "Isso faz sentido de verdade?",
+          "De onde essa informação teria vindo?",
+          "Consigo encontrar isso em algum lugar em que eu confio?",
+          "Faz diferença se isso estiver errado?",
+          "Essa aqui deveria passar por um adulto?",
+        ] },
+        { type: "paragraph", text: "O objetivo nunca é ter medo da IA. O objetivo é ser a pessoa mais esperta da conversa." },
+      ] },
+      { title: "Algumas Perguntas Pedem Mais Cuidado", blocks: [
+        { type: "paragraph", text: "Um monte de resposta de IA não traz risco nenhum. Peça uma história ridícula sobre um dragão obcecado por panquecas e ninguém precisa conferir as panquecas. Vá se divertir." },
+        { type: "paragraph", text: "Outros temas merecem cuidado de verdade. Reduza bastante a velocidade com qualquer coisa sobre:" },
+        { type: "list", items: [
+          "Saúde e segurança",
+          "Dinheiro",
+          "Notícias e acontecimentos atuais",
+          "Trabalhos escolares em que a precisão importa",
+          "Problemas pessoais",
+          "Informação privada",
+          "Qualquer coisa que possa afetar outra pessoa",
+        ] },
+        { type: "paragraph", text: "Em qualquer um desses, a IA pode ser um ponto de partida. Ela nunca deveria ser a sua única fonte." },
+      ] },
+      { title: "Pergunte a um Adulto de Confiança", blocks: [
+        { type: "paragraph", text: "Quando algo que a IA disse não fechar, vá falar com uma pessoa de verdade. Um pai, uma mãe, um professor, uma bibliotecária, um treinador, quem quer que possa ajudar você a pensar em voz alta." },
+        { type: "paragraph", text: "A IA sabe informação geral. Ela não sabe da sua vida, da sua família, da sua escola nem do que aconteceu ontem. Um adulto de confiança sabe. Isso faz muita diferença quando o conselho toca o seu corpo, os seus sentimentos, as suas amizades, a sua segurança ou uma decisão que você não pode desfazer." },
+      ] },
+      { title: "Não Compartilhe Informações Privadas", blocks: [
+        { type: "paragraph", text: "Mais uma regra, e esta não é negociável. Informação privada fica fora do chat. Isso inclui:" },
+        { type: "list", items: [
+          "Seu nome completo",
+          "Seu endereço de casa ou da escola",
+          "Senhas",
+          "Números de telefone",
+          "Fotos pessoais",
+          "Informações privadas da sua família",
+          "Qualquer coisa que te deixaria desconfortável se estranhos vissem",
+        ] },
+        { type: "paragraph", text: "Cada aplicativo lida com as suas informações de um jeito bem diferente, e quase nunca dá para saber qual é qual olhando de fora. Se você não consegue ver para onde algo vai, não mande. Pergunte primeiro a um adulto." },
+      ] },
+      { title: "Bons Jeitos de as Crianças Usarem a IA", blocks: [
+        { type: "paragraph", text: "Usada direito, essa coisa é uma vantagem real. Experimente pedir que ela:" },
+        { type: "list", items: [
+          "Explique um tema confuso com palavras mais simples",
+          "Dê problemas de matemática para praticar",
+          "Ajude a gerar ideias para projetos de ciências",
+          "Faça perguntas para você antes de uma prova",
+          "Sugira perguntas para fazer a um professor",
+          "Ajude a organizar o roteiro de uma história",
+          "Explique erros de programação",
+          "Dê exemplos de como algo funciona",
+        ] },
+        { type: "paragraph", text: "A melhor coisa que você pode fazer com a IA não é copiar. É entender algo que você não entendia uma hora atrás. É essa a conquista inteira." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Não acredite em tudo o que a IA diz. Ela é útil, criativa, rápida e às vezes está redondamente errada, e entrega as quatro coisas exatamente com o mesmo tom de voz." },
+        { type: "callout", accent: "teal", text: "As pessoas que usam bem a IA não acreditam nela automaticamente. Elas pensam, conferem e a contradizem. Trate a IA como ferramenta, não como chefe do seu cérebro." },
+      ] },
+    ],
+  },
+  "how-do-video-games-use-ai": {
+    ...localizedBlogArticles.en["how-do-video-games-use-ai"],
+    title: "Como os Videogames Usam IA?",
+    category: "IA",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Uma cena de videogame com personagens e cenários movidos por regras de comportamento de IA que controlam movimento e tomada de decisão",
+    imageCaption: "A IA dos jogos não é do tipo ficção científica. É um manual de regras que diz aos personagens quando perseguir, fugir, patrulhar ou reagir ao jogador.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Conhece aquele momento em que um inimigo te vê e sai correndo atrás? Ou quando o jogo fica mais difícil bem na hora em que você começa a melhorar? Nada disso é sorte. É IA, e ela está rodando no fundo de quase todo jogo em que você encosta." },
+        { type: "paragraph", text: "A IA dos jogos move personagens, toma decisões, reage a você e monta o desafio. É o que faz um mundo parecer que notou a sua chegada. Mas não é a mesma coisa que a IA com que você conversa. Nos jogos, IA geralmente significa um conjunto de regras de comportamento que, somadas, dão algo que parece inteligente." },
+      ] },
+      { title: "O Que É a IA dos Jogos?", blocks: [
+        { type: "paragraph", text: "A IA dos jogos é o que controla todos os personagens que você não está controlando. Inimigos, companheiros, animais, aldeões, monstros, corredores rivais, o lojista que repete a mesma fala sempre. Todos são NPCs, sigla para personagens não jogáveis, o que só significa que o jogo cuida deles em vez de uma pessoa." },
+        { type: "paragraph", text: "A IA toma as decisões deles. O inimigo avança ou mantém a posição? Seu companheiro te segue no túnel? O carro rival freia antes daquela curva? O lojista levanta a cabeça quando você passa? Cada uma dessas coisas é uma regra que alguém escreveu." },
+      ] },
+      { title: "Movimento dos Inimigos", blocks: [
+        { type: "paragraph", text: "O movimento é o clássico. Imagine um jogo de labirinto com um monstro te caçando. Esse monstro precisa atravessar o labirinto sem se trancar em um canto para sempre, o que significa que os projetistas dão a ele um algoritmo, um conjunto de instruções passo a passo para achar o caminho." },
+        { type: "paragraph", text: "As regras podem ser surpreendentemente simples:" },
+        { type: "list", items: [
+          "Se o jogador estiver perto, persiga.",
+          "Se o jogador estiver longe, patrulhe a área.",
+          "Se houver uma parede, vire.",
+          "Se a vida estiver baixa, fuja.",
+          "Fique de olho em um baú do tesouro.",
+        ] },
+        { type: "paragraph", text: "Cinco regras assim e de repente o monstro parece estar caçando você de propósito." },
+      ] },
+      { title: "Decisões dos NPCs e Dificuldade", blocks: [
+        { type: "paragraph", text: "Os NPCs também decidem coisas, e os bons lembram o que você fez. Um aldeão te agradece por algo que você fez duas horas atrás. Um guarda se recusa a sair do lugar porque você nunca achou a chave. Por baixo, o jogo só está checando condições: se isso aconteceu, então faça aquilo." },
+        { type: "paragraph", text: "Alguns jogos também ajustam a dificuldade em silêncio enquanto você joga. Fácil demais e você enjoa. Difícil demais e você joga o controle longe. Então os inimigos aceleram, os enigmas apertam, ou aparece uma dica depois de você passar dez minutos travado na mesma sala. Eles estavam te gerenciando o tempo todo." },
+      ] },
+      { title: "A IA dos Jogos Pode Ser Simples ou Complexa", blocks: [
+        { type: "paragraph", text: "Boa parte da IA dos jogos mal é IA. Um guarda andando de um lado para o outro em uma rota fixa. Um peixe nadando em círculo. Continua contando, continua fazendo um trabalho, mas não é exatamente um gênio." },
+        { type: "paragraph", text: "Outros jogos vão até o fundo. Os personagens reagem ao som, à luz, a decisões que você tomou uma hora atrás, a um mundo que não para de mudar. Mas ninguém está atrás da inteligência máxima. Estão atrás de diversão, e esses não são o mesmo alvo." },
+      ] },
+      { title: "Por Que Não Fazer Inimigos Perfeitos?", blocks: [
+        { type: "paragraph", text: "Se os projetistas conseguem deixar a IA inteligente, por que não fazer inimigos invencíveis? Porque esse jogo seria insuportável. Imagine um jogo de futebol em que o goleiro defende absolutamente tudo, ou um de corrida em que o computador nunca erra uma curva. Você fecha em quatro minutos." },
+        { type: "callout", accent: "teal", text: "A boa IA de jogo é feita para te desafiar, não para te humilhar. Os projetistas a deixam pior do que poderia ser, de propósito. Os inimigos hesitam antes de atacar, erram de vez em quando, telegrafam o golpe grande. Tudo isso existe para você ter chance de reagir e melhorar." },
+      ] },
+      { title: "Tente Projetar a Sua Própria IA de Jogo", blocks: [
+        { type: "paragraph", text: "Dá para fazer isso agora mesmo, sem escrever código. Você está projetando um monstro para um jogo de labirinto. Quais regras ele segue?" },
+        { type: "list", items: [
+          "Andar aleatoriamente até ver o jogador.",
+          "Perseguir o jogador se ele estiver perto.",
+          "Parar de perseguir depois de 10 segundos.",
+          "Fugir se o jogador pegar um power-up.",
+          "Ficar de olho em um baú do tesouro.",
+        ] },
+        { type: "paragraph", text: "Cinco regras e você já tem uma criatura com personalidade. Da próxima vez que jogar alguma coisa, pare para observar um NPC por trinta segundos. Veja se consegue deduzir quais regras ele está seguindo. Quando você começa a enxergar, não consegue mais parar." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Os jogos usam IA para cuidar de inimigos, NPCs, dificuldade e movimento. Pode ser um punhado de regras simples ou um sistema genuinamente complicado. Em qualquer caso, o trabalho dela é fazer o mundo reagir a você." },
+        { type: "callout", accent: "teal", text: "A melhor IA de jogo quase nunca é a mais inteligente. É a que dá a melhor briga." },
+      ] },
+    ],
+  },
+  "is-a-robot-the-same-thing-as-ai": {
+    ...localizedBlogArticles.en["is-a-robot-the-same-thing-as-ai"],
+    title: "Um Robô É a Mesma Coisa Que IA?",
+    category: "IA",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Um gráfico comparando um robô físico de um lado com um cérebro de IA ou rede neural do outro, mostrando que são coisas diferentes",
+    imageCaption: "Um robô é uma máquina física. A IA é um software que aprende padrões. São coisas diferentes e nem sempre andam juntas.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Os filmes fizeram isso com a gente. Os robôs andam por aí, conversam, fazem planos e de vez em quando decidem dominar o planeta. Então é completamente razoável achar que robô e IA significam a mesma coisa." },
+        { type: "paragraph", text: "Não significam. Um robô é uma máquina que faz coisas no mundo físico. A IA é um software que reconhece padrões e faz previsões. Às vezes eles se juntam. Mas um monte de robô não tem nada de IA, e quase toda IA nunca teve corpo na vida." },
+      ] },
+      { title: "O Que É um Robô?", blocks: [
+        { type: "paragraph", text: "Um robô é uma máquina que detecta, se move ou faz um trabalho. Alguns lembram vagamente a gente. A maioria não lembra nada. Você provavelmente esteve perto de vários hoje:" },
+        { type: "list", items: [
+          "Um aspirador robô",
+          "Um braço de fábrica que monta carros",
+          "Um drone",
+          "Um rover de Marte",
+          "Um robô de brinquedo",
+          "Uma máquina usada em cirurgias",
+        ] },
+        { type: "paragraph", text: "Os robôs trazem hardware físico: motores, rodas, braços, câmeras, sensores, garras. É esse o ponto inteiro. Um robô encosta no mundo real." },
+      ] },
+      { title: "O Que É IA?", blocks: [
+        { type: "paragraph", text: "IA significa inteligência artificial, e quer dizer software que dá conta de tarefas que a gente achava que exigiam uma mente. Detectar padrões, prever o que vem depois, escrever texto, classificar imagens, traduzir idiomas, decidir qual vídeo você vê em seguida." },
+        { type: "paragraph", text: "Nada disso precisa de corpo. Um chatbot vive inteiramente dentro do software. Ele pode escrever um texto sobre lápis para você e não consegue levantar um lápis, a não ser que alguém o conecte a um robô. A IA é a parte que decide. O robô é a parte que faz." },
+      ] },
+      { title: "O Que São Sensores e Motores?", blocks: [
+        { type: "paragraph", text: "Os sensores são como uma máquina fica sabendo de alguma coisa. Você tem visão, audição e tato. Um robô tem uma câmera para ver, um microfone para ouvir, um sensor de contato para sentir uma batida, um sensor de distância para frear antes da parede, um termômetro para medir calor." },
+        { type: "paragraph", text: "Os motores são como ele se move. Girar uma roda, levantar um braço, abrir uma garra, girar uma articulação. Se os sensores são os sentidos, os motores são os músculos. E, como músculos, eles não decidem nada sozinhos. Alguém precisa dizer o que fazer." },
+      ] },
+      { title: "Um Robô Sem IA", blocks: [
+        { type: "paragraph", text: "Um monte de robô funciona praticamente sem IA. Imagine um robozinho perseguindo uma tira de fita preta pelo chão. Sensor de luz embaixo. Vê a linha, avança. Sai da linha, corrige." },
+        { type: "paragraph", text: "Parece esperto. Não é. Ele está seguindo duas regras com sensores e motores, e vai seguir para sempre sem aprender absolutamente nada." },
+      ] },
+      { title: "IA Sem um Robô", blocks: [
+        { type: "paragraph", text: "Agora ao contrário. Uma IA te ajuda a escrever um poema. Ela tem palavras, e só. Sem rodas, sem braços, sem câmera. Ela não consegue atravessar o cômodo, nem empilhar um bloco, nem te passar uma garrafa de água." },
+        { type: "paragraph", text: "Isso é IA sem robô junto. Brilhante com informação, completamente presa no computador." },
+      ] },
+      { title: "Um Robô Com IA", blocks: [
+        { type: "paragraph", text: "E aí tem a combinação, e um carro autônomo é o exemplo óbvio. Câmeras e sensores vigiam a estrada, as placas, as faixas, os outros carros, a pessoa prestes a descer da calçada. A IA transforma tudo isso em uma decisão sobre o que fazer no próximo meio segundo." },
+        { type: "callout", accent: "teal", text: "Aqui o corpo e o cérebro enfim trabalham em equipe. O robô detecta, a IA decide, os motores agem. Esse ciclo roda centenas de vezes por segundo." },
+      ] },
+      { title: "Experimente", blocks: [
+        { type: "paragraph", text: "Olhe em volta de onde você está agora. Encontre algo que seja um robô. Encontre algo que use IA. Encontre algo que seja só um computador fazendo coisa de computador." },
+        { type: "list", items: [
+          "Uma calculadora é uma ferramenta de computação, não IA.",
+          "Um aspirador robô é um robô, e dos simples.",
+          "Um assistente de voz é IA sem corpo.",
+          "Uma impressora é uma máquina com partes móveis, mas ninguém realmente chama de robô.",
+        ] },
+        { type: "paragraph", text: "Encaixar as coisas nessas caixinhas é exatamente como os engenheiros pensam sobre tecnologia, e fica fácil rapidinho." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Um robô e uma IA são duas coisas diferentes. Um é uma máquina que se move pelo mundo físico. A outra é um software que encontra padrões e toma decisões. Junte os dois e você consegue algo impressionante. Separados, cada um continua útil." },
+        { type: "callout", accent: "teal", text: "Da próxima vez que alguém se gabar de um \"robô inteligente\", faça a pergunta de três partes: qual parte é o robô, qual é a IA e quais sensores estão alimentando isso?" },
+      ] },
+    ],
+  },
+  "how-do-robots-know-where-they-are": {
+    ...localizedBlogArticles.en["how-do-robots-know-where-they-are"],
+    title: "Como os Robôs Sabem Onde Estão?",
+    category: "Robótica",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um robô usando câmeras e sensores para escanear e mapear o ambiente em volta para navegar",
+    imageCaption: "Os robôs constroem uma imagem do ambiente usando câmeras, lidar e software de mapeamento, e a atualizam constantemente enquanto se movem.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Tente andar pelo corredor da sua escola de olhos fechados. Você aguenta quatro ou cinco passos antes de raspar em uma parede, em uma carteira ou na mochila de alguém. Se mover pelo espaço sem se machucar exige, no fim das contas, um fluxo constante de pistas." },
+        { type: "paragraph", text: "Os robôs estão presos ao mesmo problema, só que começam do zero. Um robô não sabe onde está. Ele precisa deduzir com sensores, câmeras, contagem de rodas, mapas e muita matemática. Junte pistas, faça a melhor estimativa, mova-se e confira a estimativa de novo." },
+      ] },
+      { title: "Os Robôs Também Precisam de Sentidos", blocks: [
+        { type: "paragraph", text: "Você tem visão, audição, tato e equilíbrio. Um robô tem sensores, e cada um detecta exatamente um tipo de coisa. Uns medem distância, outros captam objetos, outros acompanham a velocidade, outros descobrem para onde algo está apontando." },
+        { type: "list", items: [
+          "Câmeras: para ver paredes, caminhos, pessoas, placas ou obstáculos",
+          "Rodas: para medir quanto o robô já percorreu",
+          "GPS: para estimar a localização ao ar livre",
+          "Lidar: para escanear a área com luz laser",
+          "Sensores ultrassônicos: para rebater ondas de som nos objetos",
+          "Giroscópios: para detectar giros ou inclinações",
+        ] },
+        { type: "paragraph", text: "Nenhum sensor sozinho conta a história inteira. A câmera detecta uma porta. O contador de rodas diz que você andou um metro e meio. O sensor de distância insiste que há uma parede bem ali. Empilhe tudo e uma posição começa a aparecer." },
+      ] },
+      { title: "Contar as Voltas das Rodas", blocks: [
+        { type: "paragraph", text: "O truque mais simples do livro é contar voltas de roda. Saia da porta da sala, conte três metros de giros e você pode afirmar que está a três metros da porta. Os engenheiros chamam isso de odometria. Você faz exatamente a mesma coisa quando conta os seus passos no escuro." },
+        { type: "callout", accent: "green", text: "Mas e se uma roda patinar em um piso escorregadio? E se o chão for inclinado? Um erro de um centímetro vira um erro de meio metro depois de voltas suficientes. Esse desvio é exatamente por que um robô nunca confia em um sensor só." },
+      ] },
+      { title: "Usar Câmeras Como Olhos", blocks: [
+        { type: "paragraph", text: "As câmeras deixam um robô enxergar em volta. Um aspirador distingue pés de cadeira e rodapés. Um carro autônomo lê faixas e semáforos. Um rover de Marte estuda rochas e desvia de terreno que engoliria uma roda." },
+        { type: "paragraph", text: "Mas uma câmera não vê como você vê. Você olha para uma cadeira e simplesmente sabe. Um robô recebe uma grade de pixels coloridos e precisa deduzir bordas, formas, sombras e padrões antes de conseguir chamar aquilo de cadeira. Depois a luz muda. Depois alguma coisa se coloca na frente. Depois alguém vira a cadeira e a silhueta é outra. Cada um desses casos precisa ser treinado." },
+      ] },
+      { title: "Construir um Mapa", blocks: [
+        { type: "paragraph", text: "Os robôs bons vão desenhando enquanto andam. Um aspirador começa em um cômodo desconhecido e aos poucos descobre onde estão as paredes, onde está o sofá e quais caminhos ficam livres. Com esse mapa, ele para de quicar feito pinball e passa a limpar em linhas eficientes." },
+        { type: "paragraph", text: "Você faz exatamente a mesma coisa em um prédio novo. No primeiro dia você anda perdido. No terceiro você já sabe que a escada fica ao lado da entrada, a quadra no fim do corredor, a biblioteca virando a esquina. Os robôs constroem o mesmo mapa mental, só que com sensores e código no lugar da memória." },
+        { type: "callout", accent: "green", text: "A versão mais difícil é fazer as duas coisas ao mesmo tempo: desenhar o mapa enquanto descobre onde você está dentro do mapa que ainda está desenhando. Duas incógnitas, um problema, e um dos grandes enigmas da robótica." },
+      ] },
+      { title: "Por Que os Robôs Ainda se Perdem", blocks: [
+        { type: "paragraph", text: "Eles se perdem o tempo todo. Uma roda patina. Um sensor cospe lixo. Alguém move o sofá. A luz apaga. Uma sacola acaba na frente da câmera. Dois corredores parecem idênticos e o robô escolhe o errado." },
+        { type: "paragraph", text: "É por isso que um robô nunca faz um palpite e se casa com ele. Ele confere de novo, e de novo, atualizando a estimativa toda vez que chega informação nova. Que é exatamente o que você faz andando por um museu, olhando placas, conferindo o mapa, olhando em volta, corrigindo." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Os robôs encontram a própria posição juntando pistas e combinando tudo. Câmeras, contagem de rodas, GPS, lasers, sensores de movimento. Tudo alimenta uma única estimativa viva de onde estou e para onde vou em seguida." },
+        { type: "callout", accent: "green", text: "Da próxima vez que você vir um robô atravessar um cômodo, lembre que ele não está só rolando. Ele está detectando, estimando, conferindo e corrigindo, várias vezes por segundo, o caminho inteiro." },
+      ] },
+    ],
+  },
+  "why-robots-are-bad-at-easy-human-tasks": {
+    ...localizedBlogArticles.en["why-robots-are-bad-at-easy-human-tasks"],
+    title: "Por Que os Robôs Têm Dificuldade com Tarefas Fáceis?",
+    category: "Robótica",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um robô se atrapalhando para realizar uma tarefa física simples que uma pessoa faria sem esforço e sem pensar",
+    imageCaption: "Tarefas que levam uma fração de segundo para uma pessoa, como pegar uma camiseta amassada, podem exigir anos de engenharia para um robô só chegar perto.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Dobrar roupa não é nada. Você pega uma camiseta, sacode, acha as mangas, dobra, pronto. Provavelmente estava pensando em outra coisa o tempo inteiro." },
+        { type: "paragraph", text: "Para um robô, dobrar roupa é quase um pesadelo. O mesmo vale para abrir uma porta, pegar um brinquedo do chão, amarrar um cadarço ou servir cereal sem espalhar pela bancada. Esses estão entre os problemas em aberto mais difíceis da robótica." },
+        { type: "paragraph", text: "O que é estranho, porque os robôs montam carros, dirigem em Marte e arremessam peças que esmagariam uma pessoa. Então, como uma meia derrota um robô? Porque o mundo real não fica parado nem mantém a forma." },
+      ] },
+      { title: "Os Humanos São Melhores do Que a Gente Imagina", blocks: [
+        { type: "paragraph", text: "Seu corpo faz coisas ridículas o tempo todo e nunca se gaba delas. Você estica a mão para pegar um lápis e na hora sabe onde ele está, mais ou menos quanto pesa, com que força apertar e como posicionar os dedos, mesmo que ele esteja de lado, meio embaixo de um caderno e pendurado na beira da mesa." },
+        { type: "paragraph", text: "Um robô precisa moer cada um desses passos. Ver o lápis. Deduzir que o lápis é um objeto separado da mesa em que está. Escolher onde segurar. Planejar um caminho de braço que não derrube a garrafa de água. Apertar o suficiente para levantar e não a ponto de quebrar. São cinco problemas difíceis para um lápis só." },
+        { type: "callout", accent: "green", text: "Você faz parecer sem esforço porque passou anos ligando olhos, mãos, músculos e cérebro. Um robô começa esse treinamento do zero." },
+      ] },
+      { title: "Coisas Moles São Difíceis", blocks: [
+        { type: "paragraph", text: "Qualquer coisa flexível é o pior dia de um robô. Uma camiseta se recusa a ter uma forma só. Ela dobra, amontoa, torce e desaba em um bolo que não parece nada com uma camiseta. Uma toalha se dobra sobre si mesma. Uma meia se esconde dentro de outra meia como se fizesse de propósito." },
+        { type: "paragraph", text: "Objetos rígidos são bem mais gentis. Um bloco de metal continua sendo um bloco. Uma caixa de plástico tem bordas que dá para achar. Uma caneca parece uma caneca. O tecido muda de forma toda vez que se mexe, então um robô não pode simplesmente decorar como uma camiseta é. Ele precisa entender como o tecido se comporta, e esse é um problema genuinamente brutal." },
+      ] },
+      { title: "Abrir Portas Não É Tão Simples", blocks: [
+        { type: "paragraph", text: "Conte as portas que você abriu esta semana. Maçanetas redondas, alavancas, portas de correr, barras de empurrar, puxadores, portas corta-fogo pesadíssimas, telas que batem atrás de você. Todas diferentes." },
+        { type: "paragraph", text: "Você chega e simplesmente sabe o que fazer. Um robô precisa localizar a maçaneta, deduzir para onde ela se move, alinhar a garra, aplicar a força certa e dar um passo para trás ou para a frente enquanto puxa ou empurra. Empurre quando era para puxar e falhou. Segure em um ângulo levemente errado e falhou. Dois segundos da sua vida são o projeto de pesquisa de outra pessoa." },
+      ] },
+      { title: "O Mundo Não Fica Parado", blocks: [
+        { type: "paragraph", text: "Os robôs de fábrica são incríveis em repetir porque o mundo deles nunca muda. A peça aparece no mesmo lugar, no mesmo segundo, toda vez. O braço roda o mesmo movimento. Nada surpreende ninguém." },
+        { type: "paragraph", text: "Sua casa é o oposto de uma fábrica. A mochila está no chão hoje e na cadeira amanhã. O brinquedo está de cabeça para baixo. O cachorro se mexeu. Se o seu lápis rolar para baixo de uma cadeira, você se abaixa, empurra a cadeira, contorna uma sacola e pega, sem tomar uma única decisão consciente. Esse tipo de improviso continua sendo uma das maiores paredes da robótica." },
+      ] },
+      { title: "Pegar Coisas Exige Julgamento", blocks: [
+        { type: "paragraph", text: "Você ajusta a sua pegada automaticamente e nunca pensou nisso. Um ovo recebe uma mão completamente diferente da de um martelo. Um copo de papel recebe dedos diferentes dos de uma bola de beisebol. Pressão diferente, pontos de contato diferentes, tudo diferente." },
+        { type: "paragraph", text: "Um robô precisa acertar isso de propósito. Suave demais e o objeto cai. Forte demais e ele quebra. Segure pelo lado errado e ele torce na garra. E piora quando o objeto é brilhante, transparente, mole, minúsculo, pesado, de formato estranho ou já está se movendo. É por isso que as garras são um dos campos mais movimentados de toda a indústria." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Os robôs são extraordinários. O mundo em que eles precisam operar é extraordinariamente bagunçado. O que é fácil para você é fácil porque você é absurdamente bom em detectar, equilibrar, tocar, ajustar e aprender com cada erro que já cometeu." },
+        { type: "callout", accent: "green", text: "Então, da próxima vez que você dobrar uma camiseta, abrir uma porta ou tirar algo de uma sacola, dê um segundo de crédito a si mesmo. Os engenheiros ainda estão tentando alcançar as suas mãos." },
+      ] },
+    ],
+  },
+  "what-makes-a-robot-a-robot": {
+    ...localizedBlogArticles.en["what-makes-a-robot-a-robot"],
+    title: "O Que Faz de um Robô um Robô?",
+    category: "Robótica",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Um robô com sensores, motores e articulações visíveis, ilustrando os três componentes essenciais: detectar, processar, agir",
+    imageCaption: "Um robô precisa detectar o ambiente, processar essa informação e agir fisicamente. Os três juntos definem o que faz de uma máquina um robô.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Teste rápido. Torradeira: robô? Carrinho de controle remoto? Máquina de vendas? Caixa de som inteligente? Aspirador robô? A maioria das pessoas responde essas cinco de jeitos diferentes, o que já diz que a palavra anda bem solta." },
+        { type: "paragraph", text: "Aqui está a linha de verdade. Um robô detecta o mundo, decide algo e age de acordo. Isso significa que quase todos têm três partes: sensores, um controlador e atuadores. Ou, em bom português: nota, pensa, se move." },
+      ] },
+      { title: "Parte 1: Os Sensores Ajudam os Robôs a Notar", blocks: [
+        { type: "paragraph", text: "Um robô não consegue reagir a um mundo que não consegue detectar, então primeiro ele precisa de sensores. Cada um capta um tipo de sinal:" },
+        { type: "list", items: ["Luz", "Distância", "Som", "Toque", "Temperatura", "Movimento", "Direção", "Cor", "Pressão"] },
+        { type: "paragraph", text: "Um aspirador robô usa esses sensores para achar paredes, desviar de degraus e detectar sujeira. Um carro autônomo usa para acompanhar a pista, as placas, outros carros e pessoas. Um braço de fábrica usa para confirmar que a peça está mesmo onde deveria. Tire os sensores e um robô vira uma pessoa tentando atravessar um cômodo sem visão, sem audição e sem tato." },
+      ] },
+      { title: "Parte 2: Os Controladores Ajudam os Robôs a Decidir", blocks: [
+        { type: "paragraph", text: "O controlador é onde as decisões acontecem. Não é exatamente um cérebro. É mais a parte que executa as instruções, e essas instruções podem ser quase risíveis de tão simples ou bem avançadas." },
+        { type: "paragraph", text: "Um robô segue uma única regra: se o sensor vir uma parede, vire à esquerda. Outro combina uma câmera, um mapa que ele mesmo construiu e um programa de rotas para escolher o caminho mais seguro por um cômodo cheio de coisas. Os controladores vão de um chip do tamanho de uma unha a um processador sério. Em qualquer caso, o trabalho é o mesmo. Leia os sensores, escolha o que acontece em seguida." },
+        { type: "callout", accent: "green", text: "Detectar. Decidir. Agir. Esse ciclo de três passos roda repetidamente, e talvez seja a ideia mais importante de toda a robótica." },
+      ] },
+      { title: "Parte 3: Os Atuadores Ajudam os Robôs a se Mover", blocks: [
+        { type: "paragraph", text: "Os atuadores são as partes que de fato fazem alguma coisa. Os motores são os mais comuns. Eles giram rodas, movem braços, giram engrenagens, abrem garras, rodam articulações." },
+        { type: "paragraph", text: "Um braço de fábrica tem um motor em cada articulação. Uma mão robótica pode usar motores minúsculos ou puxar cabos como tendões. Um drone tem quatro motores girando hélices só para ficar no ar. Tire os atuadores e você tem uma máquina que detecta tudo, decide tudo e não faz absolutamente nada." },
+      ] },
+      { title: "Um Robô Precisa Parecer uma Pessoa?", blocks: [
+        { type: "paragraph", text: "De jeito nenhum, e este é o mito que os filmes plantaram na cabeça de todo mundo. Não é preciso ter rosto. Não é preciso ter braços, pernas nem olhos. A forma segue o trabalho, sempre." },
+        { type: "list", items: [
+          "Um aspirador pequeno", "Um rover", "Um braço mecânico", "Um drone", "Um submarino", "Um carrinho de entrega", "Uma máquina dentro de uma fábrica",
+        ] },
+        { type: "callout", accent: "green", text: "Todo bom projeto de robô começa com uma pergunta: o que essa coisa precisa fazer de verdade? Responda e a forma, os sensores e o movimento saem sozinhos." },
+      ] },
+      { title: "Um Carrinho de Controle Remoto É um Robô?", blocks: [
+        { type: "paragraph", text: "Geralmente não, e eis o porquê. Você está tomando cada decisão. Você dirige, ele vira. Isso é uma máquina te obedecendo. Mas coloque um sensor nesse mesmo carrinho e deixe que ele desvie de um obstáculo sozinho, e ele acabou de cruzar a linha. A tomada de decisão é a linha. Uma máquina que só segue ordens é uma máquina. Um robô decide pelo menos um pouco por conta própria." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Um robô não é só uma máquina que se move. Ele junta informação com sensores, processa instruções com um controlador e age por meio de atuadores. Não é preciso rosto humano nem voz. Por baixo de tudo, um único ciclo:" },
+        { type: "callout", accent: "green", text: "Detectar. Decidir. Agir. Todo o resto da robótica é uma variação dessas três palavras." },
+      ] },
+    ],
+  },
+  "how-mars-rovers-drive-without-a-driver": {
+    ...localizedBlogArticles.en["how-mars-rovers-drive-without-a-driver"],
+    title: "Como os Rovers de Marte Dirigem Sem Motorista?",
+    category: "Robótica",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um rover de Marte navegando pelo terreno rochoso e avermelhado da superfície marciana sem motorista humano, guiado por câmeras e software de bordo",
+    imageCaption: "Os rovers de Marte dirigem sozinhos porque um sinal vindo da Terra leva até 24 minutos em um só sentido. Não há tempo para um humano reagir aos obstáculos.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Agora mesmo, enquanto você lê isto, existem robôs rodando por Marte. Eles atravessam a superfície de outro planeta, estudam rochas, tiram fotos e mandam tudo de volta. Ninguém está ao volante. Não há um astronauta por perto com um controle. Não há ninguém naquele planeta, ponto." },
+        { type: "paragraph", text: "Então, como um rover dirige sozinho? Tudo se resume a distância, câmeras, rodas, planejamento cuidadoso e uma quantidade quase irracional de paciência." },
+      ] },
+      { title: "Marte Está Muito Longe", blocks: [
+        { type: "paragraph", text: "Marte está a milhões de quilômetros, e os sinais de rádio, por mais rápidos que sejam, levam tempo real para atravessar esse vão. Dependendo de onde os dois planetas estão nas órbitas, uma mensagem pode levar vários minutos em cada direção." },
+        { type: "paragraph", text: "Então ninguém está dirigindo isso como um videogame. Imagine o rover indo em direção a uma rocha em que ele não deveria encostar. Um engenheiro na Terra nem vai ver o problema por dez minutos, e o comando de parada leva outros dez para voltar. A essa altura o rover já está preso há vinte minutos." },
+      ] },
+      { title: "O Rover Recebe Instruções", blocks: [
+        { type: "paragraph", text: "Um rover não acorda e escolhe uma direção. Aqui na Terra, equipes revisam as imagens e os dados que ele mandou durante a noite, estudam a paisagem e escolhem alvos que valham a viagem. Uma rocha interessante. Uma faixa de solo. Uma crista. Uma rota que não engula uma roda." },
+        { type: "paragraph", text: "Depois eles enviam um plano: dirija até este ponto, fotografe aquilo, perfure aqui, rode este instrumento. Mas, por causa do atraso, o plano não consegue cobrir tudo. O rover precisa dar conta de surpresas sozinho." },
+      ] },
+      { title: "As Câmeras São os Olhos do Rover", blocks: [
+        { type: "paragraph", text: "Os rovers são cobertos de câmeras, e cada conjunto tem um trabalho. Umas olham para a frente para planejar os próximos metros. Outras vigiam o solo logo abaixo das rodas. Outras tiram panorâmicas amplas. E outras fazem aproximações para os cientistas estudarem uma rocha sem nunca encostar nela." },
+        { type: "paragraph", text: "Essas imagens também são como ele detecta problemas: uma pedra grande, uma inclinação forte, um buraco, areia em que ele poderia afundar. Marte não é um estacionamento. É poeira, pedras, cristas e crateras, e um rover atolado fica atolado para sempre." },
+      ] },
+      { title: "Rodas Projetadas Para Outro Planeta", blocks: [
+        { type: "paragraph", text: "As rodas de um rover são feitas para um terreno que ninguém testou pessoalmente. Elas precisam escalar rochas, sacudir a poeira, carregar o rover inteiro e sobreviver a um frio brutal sem nenhuma manutenção, nunca." },
+        { type: "paragraph", text: "Furou o pneu da sua bicicleta? Alguém conserta. Rachou uma roda em Marte? Engenheiros em outro planeta redesenham o jeito de o rover dirigir para contornar o dano. É exatamente por isso que os rovers se movem tão devagar e com tanto cuidado. Ninguém está atrás de recorde de velocidade. Estão atrás de continuar explorando." },
+      ] },
+      { title: "O Rover Consegue Evitar Alguns Problemas", blocks: [
+        { type: "paragraph", text: "Os rovers rodam navegação autônoma, ou seja, dirigem parte do trajeto sozinhos. A Terra diz: vá até aquele ponto. No caminho, o rover confere a própria câmera. Se detectar uma rocha feia ou uma inclinação de que não gosta, ele contorna ou simplesmente para e espera." },
+        { type: "callout", accent: "green", text: "Nada disso é pensar. É código fazendo uma listinha de perguntas repetidamente. O caminho está livre? Aquilo é um obstáculo? Consigo contornar? Paro e chamo a base?" },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Um rover de Marte dirige sem motorista combinando instruções vindas da Terra, câmeras que leem o terreno, rodas feitas para um planeta hostil e software que sabe a hora de frear. Não dá para dirigir ao vivo porque o universo é grande demais para isso." },
+        { type: "paragraph", text: "Cada giro lento daquelas rodas é parte de algo maior: explorar um lugar onde nenhum ser humano jamais pisou." },
+      ] },
+    ],
+  },
+  "why-robot-hands-are-so-hard-to-make": {
+    ...localizedBlogArticles.en["why-robot-hands-are-so-hard-to-make"],
+    title: "Por Que as Mãos dos Robôs São Tão Difíceis de Fazer?",
+    category: "Robótica",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Uma mão robótica mecânica mostrando as articulações dos dedos e os sensores, tentando reproduzir a versatilidade de uma mão humana",
+    imageCaption: "Uma mão humana consegue segurar uma uva sem amassar e uma barra de peso sem soltar. Reproduzir esse alcance em um robô é um dos problemas mais difíceis da engenharia.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Pare e olhe para a sua mão. Abra. Feche. Toque o polegar em cada ponta de dedo, em ordem. Pegue um lápis, tamborile na mesa e depois segure alguma coisa como se ela pudesse quebrar. Você acabou de executar movimentos que laboratórios inteiros ainda tentam copiar." },
+        { type: "paragraph", text: "As mãos estão entre as coisas mais difíceis de toda a engenharia. As mãos robóticas ficam impressionantes em vídeo, e fazer com que elas realmente funcionem como a sua é brutalmente difícil. Uma mão não é uma garra. Ela é flexível, sensível, forte, delicada e ligada direto a um cérebro muito bom." },
+      ] },
+      { title: "Os Dedos São Complicados", blocks: [
+        { type: "paragraph", text: "Sua mão é lotada de partes móveis. Cada dedo tem várias articulações. Seu polegar se move em uma direção que os outros não conseguem, que é exatamente por que você consegue pinçar qualquer coisa. Seu punho gira, dobra e se ajusta para dar a tudo isso o ângulo certo." },
+        { type: "paragraph", text: "Para copiar isso, uma mão robótica precisa de articulações, motores, engrenagens, cabos, materiais que dobrem direito e um sistema de controle que coordene tudo junto. Fazer um único dedo se mover com suavidade já é um projeto. Fazer cinco cooperarem é outro nível completamente." },
+      ] },
+      { title: "A Força da Pegada É Complicada", blocks: [
+        { type: "paragraph", text: "Você nunca decide o quanto apertar. Simplesmente acontece. Uma batata frita recebe quase nada. A alça de uma mochila cheia recebe um punho. Um lápis fica no meio do caminho, e você chegou lá sem um único pensamento." },
+        { type: "paragraph", text: "Um robô precisa calcular. Aperte demais e ele amassa o que pegou. Aperte de menos e escorrega. Segure pelo lado errado e o objeto se solta no meio do caminho. E cada objeto é um problema diferente, porque um copo liso, uma bola de tênis felpuda, uma esponja molhada e uma colher de metal se comportam de jeitos diferentes na mesma garra." },
+      ] },
+      { title: "O Tato Importa", blocks: [
+        { type: "paragraph", text: "Sua mão é forrada de sensores. Pressão, textura, temperatura, deslizamento, dor. Quando um copo começa a escorregar, você sente e aperta antes de perceber conscientemente que alguma coisa estava acontecendo." },
+        { type: "paragraph", text: "As mãos robóticas também precisam desse retorno, e imitar o tato humano é extremamente difícil. O robô precisa saber se está encostando no objeto, com que força está pressionando, se a coisa está escorregando, se é mole ou rígida e se está prestes a partir tudo ao meio. Sem isso, a mão está chutando. Chutar significa coisas caídas e quebradas." },
+      ] },
+      { title: "As Mãos Humanas São Boas com Objetos Estranhos", blocks: [
+        { type: "paragraph", text: "Pense no alcance. Uma moeda, um sanduíche, uma garrafa de água, um cadarço, uma bola de basquete, uma bola de papel amassado. Nenhum se parece com os outros. Uns são minúsculos, outros enormes, uns escorregadios, e alguns literalmente mudam de forma assim que você encosta. Sua mão dá conta de todos sem reclamar." },
+        { type: "paragraph", text: "As mãos robóticas amam o previsível. Dê a uma delas um único tipo de peça para levantar em uma fábrica e ela vai fazer isso melhor que qualquer humano, para sempre. Mas uma mão que consiga segurar quase qualquer coisa que você passar? Isso ainda é um problema em aberto." },
+      ] },
+      { title: "As Mãos Robóticas Nem Sempre Precisam Parecer Humanas", blocks: [
+        { type: "paragraph", text: "E aqui vem a virada: a melhor mão robótica muitas vezes não se parece nada com uma mão. Algumas são garras de dois dedos. Outras são ventosas. Outras são tentáculos de borracha macia que se enrolam no que tocam. Algumas são só um ímã, porque as peças são de aço e um ímã funciona perfeitamente." },
+        { type: "callout", accent: "green", text: "Os engenheiros escolhem o projeto pelo trabalho, não pela anatomia. Uma mão robótica deve combinar com o problema que enfrenta, não com o formato do que você tem na ponta do braço." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "As mãos robóticas são difíceis porque segurar é difícil. Uma mão útil precisa de movimento, força, delicadeza, tato, controle preciso e a capacidade de lidar com objetos moles, escorregadios, minúsculos ou com formato de nada em particular." },
+        { type: "paragraph", text: "Suas mãos são tão boas nisso que você parou de notar completamente. Cada cadarço que você amarra, cada saco que você abre com um puxão, cada bola que você pega no ar é um movimento que os engenheiros ainda estão perseguindo. É isso que faz deste um dos problemas mais interessantes da robótica." },
+      ] },
+    ],
+  },
+  "how-factory-robots-build-cars": {
+    ...localizedBlogArticles.en["how-factory-robots-build-cars"],
+    title: "Como os Robôs de Fábrica Montam Carros?",
+    category: "Robótica",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Braços robóticos em uma linha de montagem de carros soldando e montando painéis de carroceria com precisão",
+    imageCaption: "Os robôs de fábrica não são de uso geral. Cada braço é programado com precisão para uma tarefa específica, executada milhares de vezes sem variação.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Um carro é milhares de peças fingindo ser um objeto só. Portas, bancos, rodas, vidros, quilômetros de fio, luzes, um motor e uma quantidade enorme de peças que você nunca vai ver, a menos que algo dê errado. Juntar tudo isso é um trabalho gigantesco." },
+        { type: "paragraph", text: "Então as fábricas modernas entregam a velocidade, a força, a precisão e a repetição aos robôs. Quase nenhum se parece com uma pessoa. A maioria parece braços mecânicos enormes parafusados no chão, movendo-se com uma exatidão meio perturbadora." },
+      ] },
+      { title: "Os Robôs de Fábrica São Excelentes em Repetição", blocks: [
+        { type: "paragraph", text: "Fazer a mesma coisa com perfeição, de novo e de novo, é o único trabalho em que os robôs realmente ganham da gente. Montar carros é cheio disso. A mesma peça, colocada igual, soldada no mesmo ponto, milhares de vezes. Um braço robótico acerta essa marca sempre. Ele não fica entediado, não se distrai numa sexta-feira, não esquece o passo quatro." },
+        { type: "callout", accent: "green", text: "Se uma solda vai em um ponto exato de cada chassi, o robô coloca ali. O carro um e o carro nove mil saem idênticos." },
+      ] },
+      { title: "Soldar a Carroceria do Carro", blocks: [
+        { type: "paragraph", text: "A soldagem é a grande. Ela usa calor para fundir peças de metal em uma estrutura só, e a carroceria de um carro precisa ser forte o bastante para proteger pessoas em uma batida. Os braços de solda se movem rápido, acertam as mesmas coordenadas toda vez e alcançam cantos onde uma pessoa teria que se contorcer." },
+        { type: "paragraph", text: "Nada disso roda sozinho. Engenheiros, técnicos e trabalhadores projetam os sistemas, programam, monitoram, consertam e inspecionam os resultados. O robô faz o movimento repetido. As pessoas são donas do processo." },
+      ] },
+      { title: "Pintar com Precisão", blocks: [
+        { type: "paragraph", text: "Pintar parece fácil até você tentar. Tinta demais e escorre. Tinta de menos e a cobertura fica fina e fraca. A camada precisa ficar uniforme em um capô curvo, um teto plano e uma porta com uma dobra. Os robôs conseguem porque varrem a pistola com o mesmo padrão controlado, na mesma distância, toda vez, e o seu braço não consegue." },
+      ] },
+      { title: "Mover Peças Pesadas", blocks: [
+        { type: "paragraph", text: "As peças de carro ficam pesadas rápido. Os robôs levantam, carregam e posicionam sem esforço. Um braço encaixa uma porta no lugar. Outro sistema leva peças pela linha. Carregar algo pesado e desajeitado quatrocentas vezes por turno destrói corpos humanos, então aqui o robô está protegendo pessoas, não substituindo." },
+      ] },
+      { title: "Segurança e Programação", blocks: [
+        { type: "paragraph", text: "Essas máquinas são fortes e rápidas, o que faz da segurança um problema de engenharia por si só. Quase todos os robôs industriais ficam dentro de áreas cercadas, com sensores e luzes de aviso, e o braço desliga no instante em que uma pessoa cruza a linha. As máquinas novas chamadas cobots, ou robôs colaborativos, trazem sistemas de segurança extras para poderem trabalhar bem ao lado das pessoas." },
+        { type: "paragraph", text: "E nenhum robô chega sabendo montar um carro. Alguém programa cada movimento: para onde ir, com que velocidade, quando acionar a ferramenta, quanta força aplicar e o que fazer no instante em que algo dá errado. O chão de uma fábrica são robôs, esteiras, câmeras, ferramentas e pessoas coreografados em um processo longuíssimo." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Os robôs de fábrica soldam, pintam, carregam peças e repetem movimentos precisos até o turno acabar. Eles não têm forma humana porque nunca foi essa a intenção. Um robô de solda e um de pintura parecem completamente diferentes porque estão resolvendo problemas completamente diferentes." },
+        { type: "callout", accent: "green", text: "Essa é a lição de verdade de uma fábrica de carros. Você não projeta um robô para ele ficar bonito. Projeta para matar um problema específico. Faça isso algumas centenas de vezes e milhares de peças soltas viram algo que sai dirigindo." },
+      ] },
+    ],
+  },
+  "why-is-the-sky-blue-but-sunsets-are-orange": {
+    ...localizedBlogArticles.en["why-is-the-sky-blue-but-sunsets-are-orange"],
+    title: "Por Que o Céu É Azul mas o Pôr do Sol É Alaranjado?",
+    category: "Ciências",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Um céu que passa do azul profundo no alto para tons quentes de laranja e rosa perto do horizonte no fim da tarde",
+    imageCaption: "A mesma atmosfera que espalha a luz azul pelo céu do dia redireciona tons mais quentes até os seus olhos no fim da tarde.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Olhe para cima às duas da tarde e o céu está azul. Olhe de novo três horas depois e esse mesmo céu está pegando fogo em laranja, vermelho e rosa." },
+        { type: "paragraph", text: "Nada foi trocado. Mesmo sol, mesmo ar, você parado no mesmo quintal. A única coisa diferente é o caminho que a luz do sol faz até os seus olhos, e acontece que isso muda tudo." },
+      ] },
+      { title: "A Luz do Sol Não É de Uma Cor Só", blocks: [
+        { type: "paragraph", text: "A luz do sol parece branca, mas essa cor é mentirosa. Na verdade são todas as cores ao mesmo tempo, apertadas em um único feixe. Um arco-íris que ainda não foi desembrulhado." },
+        { type: "paragraph", text: "Vermelho, laranja, amarelo, verde, azul, índigo, violeta. Cada um viaja como onda, e as ondas não têm o mesmo tamanho. O vermelho e o laranja têm ondas longas e preguiçosas. O azul e o violeta têm ondas curtas e apertadas. Essa diferença de tamanho é a razão inteira de o céu fazer o que faz." },
+      ] },
+      { title: "O Ar Não Está Vazio", blocks: [
+        { type: "paragraph", text: "O céu parece que não tem nada lá em cima. Na verdade ele é cheio de moléculas, pequenas demais para enxergar, e a luz do sol está batendo nelas sem parar no caminho todo para baixo." },
+        { type: "paragraph", text: "Quando a luz encontra uma dessas moléculas, parte dela é espalhada, o que só significa que ela quica em uma direção nova em vez de seguir reto. E aqui está a chave: as ondas curtas se espalham muito mais facilmente do que as longas. O azul quica. O vermelho, na maior parte, segue em frente." },
+        { type: "paragraph", text: "Então, durante o dia, a luz azul é jogada por toda a atmosfera e depois chega aos seus olhos de todas as direções ao mesmo tempo. Quando você olha um céu vazio, não está vendo o sol. Está vendo luz azul espalhada chegando de todo lado." },
+      ] },
+      { title: "Por Que o Céu Não É Roxo?", blocks: [
+        { type: "paragraph", text: "Ótima pergunta, porque o violeta se espalha ainda mais que o azul. Três coisas jogam contra ele. O sol emite menos violeta para começar, parte é absorvida no alto da atmosfera, e os seus olhos são simplesmente muito mais sensíveis ao azul do que ao violeta." },
+        { type: "paragraph", text: "O violeta está lá em cima fazendo a parte dele. O azul só ganha a votação." },
+      ] },
+      { title: "O Que Muda no Fim da Tarde?", blocks: [
+        { type: "paragraph", text: "No fim da tarde o sol baixa, então a luz dele não chega mais até você em linha reta de cima. Ela chega de lado, o que significa atravessar um trecho muito mais longo de atmosfera para te alcançar." },
+        { type: "paragraph", text: "Imagine uma lanterna apontada para baixo através de um copo de água contra a mesma lanterna apontada de lado, ao longo do copo. Muito mais material para atravessar. Nesse caminho longo, quase todo o azul é espalhado para outro lado antes de chegar em você. O que sobrevive à viagem é vermelho, laranja e amarelo, que é exatamente o que você vê." },
+      ] },
+      { title: "Por Que Alguns Fins de Tarde São Mais Coloridos?", blocks: [
+        { type: "paragraph", text: "Existem fins de tarde esquecíveis e existem aqueles que fazem o bairro inteiro parar para pegar o celular. A diferença geralmente é o que está flutuando lá em cima. Poeira, gotas de água, fumaça e poluição mudam como a luz quica." },
+        { type: "paragraph", text: "As nuvens também funcionam como telas de projeção. Com o sol baixo, a luz vermelha e laranja bate na parte de baixo das nuvens e as acende. É por isso que os melhores fins de tarde aparecem logo depois de uma tempestade, quando o ar está limpo e ainda sobraram nuvens rondando." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "O céu é azul porque o azul se espalha com facilidade e chega até você de todas as direções. O fim de tarde fica laranja porque a luz em ângulo baixo atravessa tanto ar que o azul é arrancado antes de chegar." },
+        { type: "callout", accent: "orange", text: "Então um céu azul e um pôr do sol selvagem são a mesma física em configurações diferentes. Você está vendo a luz do sol negociar com a atmosfera em tempo real." },
+      ] },
+    ],
+  },
+  "why-do-your-ears-pop-on-an-airplane": {
+    ...localizedBlogArticles.en["why-do-your-ears-pop-on-an-airplane"],
+    title: "Por Que Seus Ouvidos Tampam no Avião?",
+    category: "Ciências",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Uma vista de dentro da cabine de um avião durante a subida, ilustrando a mudança de pressão que faz os ouvidos estalarem",
+    imageCaption: "Os tímpanos se flexionam quando a pressão do ar externa muda mais rápido do que o seu corpo consegue equilibrar. É esse o estalo que você sente na decolagem e no pouso.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Você conhece a sensação. O avião começa a subir, seus ouvidos entopem e tudo soa abafado como se tivessem enfiado algodão neles, e então, do nada: poc." },
+        { type: "paragraph", text: "É desconfortável e meio assustador na primeira vez. Seus ouvidos não têm nada de errado. Eles estão resolvendo um problema de pressão do único jeito que conhecem." },
+      ] },
+      { title: "O Ar Tem Pressão", blocks: [
+        { type: "paragraph", text: "O ar parece nada, mas há uma coluna inteira empilhada acima da sua cabeça pressionando você neste momento. No nível do mar essa coluna é alta e pesada, então a pressão é alta. Suba e há menos ar em cima, então a pressão cai." },
+        { type: "paragraph", text: "Um avião decolando está te levando para um ar mais rarefeito. Pousar te traz de volta ao ar denso. As cabines são pressurizadas para ninguém desmaiar, mas a pressão lá dentro ainda muda enquanto você sobe e desce. Seus ouvidos definitivamente notam." },
+      ] },
+      { title: "Seu Tímpano Sente a Diferença", blocks: [
+        { type: "paragraph", text: "Seu tímpano é uma película fina de tecido esticada pelo seu canal auditivo, e ela vibra quando o som bate. É assim que ouvir funciona. Agora o importante: há ar dos dois lados. Ar externo no canal, e uma bolsa vedada de ar atrás, no seu ouvido médio." },
+        { type: "paragraph", text: "Tudo parece normal quando esses dois lados estão equilibrados. Mas, quando a pressão de fora cai rápido, o ar atrás do seu tímpano não acompanhou, então ele empurra para fora e estica a película. Esse esticão é a sensação entupida, cheia e meio horrível." },
+      ] },
+      { title: "A Tuba Auditiva Ajuda a Resolver", blocks: [
+        { type: "paragraph", text: "Seu corpo já vem com a solução instalada. É um canal estreito chamado tuba auditiva, que vai do seu ouvido médio até o fundo da garganta. Ele fica quase sempre fechado. Engula, boceje ou masque algo e ele abre por um segundo." },
+        { type: "paragraph", text: "Nesse segundo, o ar entra ou sai e os dois lados se igualam. Essa liberação é o poc. Seu corpo acabou de equalizar a pressão e você sentiu acontecer." },
+      ] },
+      { title: "Por Que o Pouso Pode Ser Pior Que a Decolagem", blocks: [
+        { type: "paragraph", text: "O pouso costuma doer mais, e há um motivo. Na descida, a pressão da cabine sobe, então agora o lado de fora empurra mais forte que o de dentro e o seu ouvido médio precisa puxar ar para acompanhar." },
+        { type: "paragraph", text: "Se as suas tubas auditivas ficarem teimosas, os tímpanos afundam para dentro em vez de equilibrar, e esse beliscão dói de verdade. Também é por isso que voar gripado é uma tortura. Nariz e garganta entupidos significam que esses canais quase não abrem." },
+      ] },
+      { title: "Por Que Engolir ou Bocejar Ajuda", blocks: [
+        { type: "paragraph", text: "Engolir e bocejar movem os músculos bem ao lado desses canais, e é isso que os abre. Por isso mascar chiclete, beber água em goles ou forçar um bocejo durante a decolagem e o pouso funciona. Você está acionando na mão um sistema que o seu corpo normalmente roda sozinho." },
+        { type: "paragraph", text: "Também é por isso que os bebês choram nos aviões. Eles sentem a pressão, não fazem ideia do que é e não conseguem resolver de propósito. O choro move a garganta e a boca deles, e destampa os ouvidos de qualquer jeito. Eles resolveram o problema por acidente." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Seus ouvidos estalam porque a pressão do ar muda mais rápido do que o seu ouvido médio consegue acompanhar. O tímpano leva a tensão e as tubas auditivas equilibram tudo de novo." },
+        { type: "callout", accent: "orange", text: "Aquele pequeno poc é o seu corpo rodando um ajuste de pressão. Sensação estranha, engenharia excelente." },
+      ] },
+    ],
+  },
+  "why-does-metal-feel-colder-than-wood": {
+    ...localizedBlogArticles.en["why-does-metal-feel-colder-than-wood"],
+    title: "Por Que o Metal Parece Mais Frio Que a Madeira?",
+    category: "Ciências",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Objetos de metal e de madeira lado a lado em temperatura ambiente, ilustrando que eles parecem diferentes mesmo estando na mesma temperatura",
+    imageCaption: "Metal e madeira na mesma temperatura parecem completamente diferentes porque o metal conduz o calor da sua mão muito mais rápido. A sensação é velocidade, não temperatura.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Vá encostar no pé de uma cadeira de metal e depois em uma mesa de madeira no mesmo cômodo. O metal parece frio. A madeira quase parece morna. Agora a parte que quebra a cabeça das pessoas: os dois estão na mesma temperatura. Os dois passaram o dia inteiro naquele cômodo." },
+        { type: "paragraph", text: "Então, o que você está sentindo de verdade? Não é temperatura. É velocidade." },
+      ] },
+      { title: "Sua Mão Está Quente", blocks: [
+        { type: "paragraph", text: "Você é a coisa mais quente de quase todo cômodo em que entra. Sua pele fica lá pelos 32 °C enquanto o cômodo está mais perto de 21 °C. Encoste em qualquer coisa mais fria que você e o calor começa a sair na hora da sua mão para aquele objeto." },
+        { type: "paragraph", text: "E aqui vem a virada. Seus nervos não conseguem medir a temperatura de um objeto. Eles só conseguem medir a que velocidade o calor está escapando da sua pele. Escape rápido, o seu cérebro reporta frio. Escape lento, o seu cérebro dá de ombros." },
+      ] },
+      { title: "O Metal Move o Calor Rapidamente", blocks: [
+        { type: "paragraph", text: "O metal é um condutor térmico fantástico, ou seja, o calor o atravessa quase sem resistência. Encoste nele e o calor do seu corpo não só entra no metal, como continua correndo para longe do ponto de contato. Esse ponto nunca esquenta, então o calor continua saindo de você. Sua pele esfria rápido e o seu cérebro grita frio." },
+        { type: "paragraph", text: "A madeira é péssima em conduzir calor e, neste caso, péssima é ótimo. O calor se arrasta para dentro da madeira e fica quase todo bem embaixo dos seus dedos. Aquele pedacinho esquenta até igualar a sua mão em segundos e, quando iguala, o dreno para. Mesma temperatura do metal, experiência completamente diferente." },
+      ] },
+      { title: "Mesma Temperatura, Sensação Diferente", blocks: [
+        { type: "paragraph", text: "Este é um dos melhores truques de ciência do dia a dia que existem: o que algo parece e em que temperatura ele está são dois fatos separados. Uma colher de metal e uma de madeira na mesma gaveta estão em temperaturas idênticas. Pegue uma depois da outra e você vai jurar que não." },
+        { type: "callout", accent: "orange", text: "Seu tato não é um termômetro. É um detector de fluxo de calor. Duas coisas exatamente na mesma temperatura podem parecer radicalmente diferentes conforme a velocidade com que tiram calor de você." },
+      ] },
+      { title: "Por Que Isso Importa no Projeto?", blocks: [
+        { type: "paragraph", text: "Os engenheiros usam isso o tempo todo. Uma frigideira de metal é ótima justamente porque o calor a atravessa da boca do fogão até a comida. Infelizmente o calor também sobe pelo cabo, e é por isso que quase toda frigideira tem uma pegada de plástico, borracha ou madeira parafusada na ponta." },
+        { type: "paragraph", text: "Um casaco de inverno faz o trabalho oposto. Ele prende ar, o ar é péssimo em mover calor, e assim o calor do seu corpo fica com você. Enquanto isso, um escorregador de metal em pleno verão vira um perigo, porque o metal enfia calor em você com a mesma eficiência com que tira. Um banco de madeira sob o mesmo sol fica de boa." },
+      ] },
+      { title: "E no Frio?", blocks: [
+        { type: "paragraph", text: "Segure um corrimão de metal em pleno inverno e dói de verdade. Não é porque o metal está mais frio que a madeira ao lado dele. É porque o metal arranca o calor da sua pele tão rápido que os seus nervos registram aquilo como dor. O metal não está mais frio. Ele só é melhor em roubar de você." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "O metal parece mais frio porque move o calor para longe de você mais rápido. A madeira parece mais morna porque não faz isso. Então, da próxima vez que você disser que algo está frio, saiba o que está realmente reportando: não uma temperatura, mas a velocidade com que o calor está saindo da sua mão." },
+      ] },
+    ],
+  },
+  "why-do-bikes-stay-balanced-when-moving": {
+    ...localizedBlogArticles.en["why-do-bikes-stay-balanced-when-moving"],
+    title: "Por Que a Bicicleta Se Equilibra Quando Está em Movimento?",
+    category: "Ciências",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Uma pessoa pedalando uma bicicleta em movimento, demonstrando o equilíbrio e a física que mantêm duas rodas estáveis em movimento",
+    imageCaption: "Uma bicicleta em movimento resiste à inclinação graças às forças giroscópicas, à geometria da direção e às pequenas correções constantes do seu cérebro, todas trabalhando juntas de forma invisível.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "No papel, uma bicicleta não tinha por que ficar em pé. Duas rodas magrinhas, um quadro estreito e uma pessoa em cima de tudo isso. Tente se equilibrar em uma sem se mover e você vai ao chão em segundos. Comece a rolar e de repente não custa nada." },
+        { type: "paragraph", text: "Então, o que muda? Não é uma coisa só. Movimento, direção, geometria do quadro e o seu cérebro fazendo correções que você nunca nota, tudo empilhado." },
+      ] },
+      { title: "Equilíbrio É Manter o Centro Sobre as Rodas", blocks: [
+        { type: "paragraph", text: "Tudo tem um centro de massa, o único ponto em que todo o peso se equilibra. Para você e a bicicleta continuarem em pé, esse ponto combinado precisa ficar sobre a linha das rodas. Deixe que ele se desloque demais para um lado e a gravidade assume." },
+        { type: "paragraph", text: "Parado, você quase não tem como consertar isso. Dá para sacudir o guidão, jogar o peso ou colocar um pé no chão. Rolando, você tem uma opção muito melhor: virar as rodas de volta para debaixo de você." },
+      ] },
+      { title: "As Bicicletas Viram Para o Lado da Queda", blocks: [
+        { type: "paragraph", text: "Aqui está a parte genuinamente estranha. Quando a bicicleta começa a cair para a esquerda, a roda dianteira vira para a esquerda. Não para o lado contrário da queda, para dentro da queda. E isso traz a bicicleta inteira de volta para debaixo do seu centro de massa, o que te coloca de pé de novo." },
+        { type: "paragraph", text: "Você faz isso o tempo todo e não faz ideia. A cada segundo que você rola, seus braços estão fazendo correções de direção pequenas demais para sentir. Seu cérebro, seus braços e a bicicleta estão rodando um ciclo de equilíbrio juntos, e nada disso chega à sua mente consciente." },
+      ] },
+      { title: "As Rodas Também Ajudam", blocks: [
+        { type: "paragraph", text: "As rodas girando têm momento angular, ou seja, elas resistem a mudar de direção. Isso dá alguma estabilidade extra a uma bicicleta em movimento. Mas não é o principal. Já construíram bicicletas que cancelam completamente o efeito giroscópico e elas continuam se equilibrando. A geometria do quadro faz mais trabalho que as rodas." },
+      ] },
+      { title: "O Projeto da Bicicleta Facilita o Equilíbrio", blocks: [
+        { type: "paragraph", text: "Olhe o garfo dianteiro de qualquer bicicleta. Ele é inclinado para a frente, não reto de cima a baixo. Esse ângulo cria algo chamado trail, e o trail é o que faz a roda dianteira querer se alinhar com a direção em que a bicicleta vai. É a mesma razão de a rodinha de um carrinho de supermercado girar sozinha para te seguir." },
+        { type: "paragraph", text: "Os engenheiros se obcecam com isso. Mude alguns graus no ângulo do garfo ou troque o tamanho da roda e a mesma bicicleta passa de estável e calma a nervosa e respondona." },
+      ] },
+      { title: "Por Que É Mais Difícil Andar Devagar?", blocks: [
+        { type: "paragraph", text: "Ir devagar tira as suas opções. Menos velocidade significa que virar o guidão faz menos efeito, então cada inclinação demora mais para ser corrigida e cada balanço cresce antes de você conseguir pegar. É por isso que ir em linha reta em velocidade de caminhada é genuinamente difícil, e por isso um iniciante nervoso de repente se sente firme assim que pedala um pouco mais forte." },
+      ] },
+      { title: "Por Que uma Bicicleta Não Fica em Pé Sozinha?", blocks: [
+        { type: "paragraph", text: "Porque uma bicicleta parada não consegue se virar de volta para debaixo de nada. Ela começa a inclinar, a gravidade puxa mais forte, e não há movimento disponível para deslocar as rodas para o lado e salvar a situação. Sem descanso, parede, pé ou rodinhas, ela vai ao chão." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Uma bicicleta em movimento fica em pé porque a direção, o impulso, as rodas girando, a geometria do quadro e as suas próprias correções minúsculas estão todos trabalhando o problema ao mesmo tempo." },
+        { type: "callout", accent: "orange", text: "Você não está se equilibrando em uma bicicleta. Você está caindo um pouquinho em todas as direções e se segurando, centenas de vezes por minuto, sem nunca notar. É isso que é andar de bicicleta de verdade." },
+      ] },
+    ],
+  },
+  "why-do-we-slip-on-ice": {
+    ...localizedBlogArticles.en["why-do-we-slip-on-ice"],
+    title: "Por Que a Gente Escorrega no Gelo?",
+    category: "Ciências",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Um close de uma superfície congelada mostrando a textura lisa e brilhante que reduz drasticamente o atrito sob os pés",
+    imageCaption: "O gelo é escorregadio porque uma fina camada quase líquida na superfície reduz o atrito a quase zero, então os seus sapatos quase não têm em que se agarrar.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Calçada: problema nenhum. Gelo: traição total. Em um segundo você está andando normal, no outro o seu pé foi embora sem você, seus braços estão fazendo algo desesperado e você está negociando com a física." },
+        { type: "paragraph", text: "Então, o que torna o gelo tão pior que todo o resto? Tudo se resume a atrito, à própria superfície, à temperatura e ao que acontece no vão finíssimo entre o seu sapato e o chão." },
+      ] },
+      { title: "O Atrito Ajuda Você a Andar", blocks: [
+        { type: "paragraph", text: "O atrito é a força que briga contra o deslizamento, e andar funciona inteiramente por causa dele. A cada passo você empurra para trás contra o chão e o atrito te empurra para a frente. Sem atrito não há empurrão, não há caminhada. Seu pé simplesmente vai embora." },
+        { type: "paragraph", text: "O asfalto seco é áspero em uma escala que você não enxerga, e toda essa aspereza dá à sua sola onde morder. O gelo é liso nessa mesma escala, então não há nada para morder." },
+      ] },
+      { title: "O Gelo Tem uma Superfície Escorregadia", blocks: [
+        { type: "paragraph", text: "O gelo parece um bloco sólido, mas a superfície em si se comporta de um jeito estranho. Em muitas condições existe um filme incrivelmente fino de água em cima, e é esse filme que transforma o ruim em catastrófico." },
+        { type: "paragraph", text: "Então o seu sapato não está agarrando um chão sólido. Está deslizando sobre gelo liso em cima de uma camada microscópica de água fazendo exatamente o trabalho que o óleo faz dentro de um motor. A natureza está te lubrificando de propósito." },
+      ] },
+      { title: "A Temperatura Importa", blocks: [
+        { type: "paragraph", text: "Nem todo gelo quer te derrubar do mesmo jeito. O gelo perto do ponto de fusão é o pior, porque aquela camada aguada se forma com facilidade. O gelo muito frio, aquele que range sob os pés, pode até escorregar menos, porque há menos líquido em cima." },
+        { type: "paragraph", text: "Não leia isso como seguro. O gelo frio também vai te derrubar. A temperatura só muda o jeito como isso acontece." },
+      ] },
+      { title: "Os Sapatos Também Importam", blocks: [
+        { type: "paragraph", text: "Seus sapatos são metade da equação. Uma sola lisa e gasta não tem com o que trabalhar. Um desenho profundo crava na neve e em superfícies irregulares e compra aderência, que é exatamente por que as botas de inverno têm padrões agressivos moldados embaixo. Mas seja honesto: em gelo realmente liso, até as boas botas perdem. Simplesmente não há em que se agarrar." },
+      ] },
+      { title: "Por Que a Gente Desliza Tão Rápido?", blocks: [
+        { type: "paragraph", text: "Pouco atrito significa que quase nada segura o seu pé depois que ele começa. No asfalto, um escorregãozinho morre no atrito em dois ou três centímetros. No gelo, o escorregão continua e continua, e uma perda minúscula de equilíbrio vira uma viagem inteira não planejada." },
+      ] },
+      { title: "O Gelo É um Desafio de Projeto", blocks: [
+        { type: "paragraph", text: "Existem profissões inteiras brigando com isso. Equipes de estrada, urbanistas, engenheiros de pneus, projetistas de botas, gente que constrói superfícies esportivas. O sal derrete o gelo. A areia joga aspereza por cima. Os pneus abrem canais para tirar água e lama do ponto de contato. Ferramentas diferentes, um único objetivo: recuperar alguma aderência." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Você escorrega no gelo porque o gelo quase não tem atrito. A superfície lisa, aquele filme de água, a temperatura e o que você tem nos pés decidem quanta aderência você recebe." },
+        { type: "callout", accent: "orange", text: "Andar é um truque de atrito que você faz desde que tinha um ano. O gelo é a única superfície que se recusa a cumprir a parte dela do trato." },
+      ] },
+    ],
+  },
+  "how-do-noise-canceling-headphones-work": {
+    ...localizedBlogArticles.en["how-do-noise-canceling-headphones-work"],
+    title: "Como Funcionam os Fones com Cancelamento de Ruído?",
+    category: "Ciências",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um par de fones com cancelamento de ruído com um diagrama mostrando como as ondas antirruído cancelam as ondas sonoras que chegam",
+    imageCaption: "Os fones com cancelamento de ruído usam um microfone para detectar o som que chega e depois reproduzem exatamente a onda oposta para cancelá-lo antes que ele alcance os seus ouvidos.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Coloque um bom fone com cancelamento de ruído em uma cabine de avião rugindo e aperte o botão. O barulho do motor não some aos poucos. Ele desaparece, de uma vez, como se alguém tivesse desligado o mundo da tomada. A primeira vez que isso acontece é genuinamente esquisito." },
+        { type: "paragraph", text: "Não é o acolchoamento grosso fazendo o trabalho. Aqueles fones estão brigando contra o som com mais som, e funciona por causa de como as ondas se comportam." },
+      ] },
+      { title: "O Som É uma Onda", blocks: [
+        { type: "paragraph", text: "Som é ar sendo empurrado para lá e para cá. Alguém fala, as cordas vocais vibram, e essas vibrações empurram e puxam o ar até formar ondas que atravessam o cômodo e sacodem os seus tímpanos." },
+        { type: "paragraph", text: "Cada onda sonora tem cristas e vales, como uma linha ondulada se movendo pelo ar. Sons altos têm ondas grandes. Sons baixos têm ondas pequenas." },
+      ] },
+      { title: "Ondas Opostas Podem se Cancelar", blocks: [
+        { type: "paragraph", text: "Agora a parte que torna tudo isso possível. Duas ondas podem se somar e ficar mais fortes, mas também podem brigar. Se uma empurra o ar para a frente no exato instante em que a outra puxa para trás, elas se cancelam. Crista contra vale e não sobra nada." },
+        { type: "paragraph", text: "É esse o truque inteiro. Os fones geram uma onda que é o espelho perfeito do ruído que vem na sua direção. As duas se encontram ao lado do seu ouvido e se apagam quase por completo. Os cientistas chamam isso de interferência destrutiva." },
+      ] },
+      { title: "Os Fones Primeiro Escutam", blocks: [
+        { type: "paragraph", text: "Antes de cancelar qualquer coisa, eles precisam ouvir. Microfones minúsculos na parte de fora de cada concha captam o que houver em volta de você: o zumbido do motor, o chacoalhar do trem, o ar-condicionado. A eletrônica lá dentro analisa essa onda e constrói a oposta em uma fração de milissegundo. Depois os mesmos alto-falantes que tocam a sua música tocam baixinho o antirruído." },
+        { type: "paragraph", text: "Você nunca escuta esse antirruído como som. Você só escuta o ruído original ficar pequenininho." },
+      ] },
+      { title: "Por Que Eles Funcionam Melhor com Sons Constantes", blocks: [
+        { type: "paragraph", text: "Sons constantes e zumbidos são o alvo fácil. Motores de avião, ventiladores, ar-condicionado, o chacoalhar de um trem. Eles se repetem, então são fáceis de prever, e prever é quase a batalha inteira." },
+        { type: "paragraph", text: "Sons repentinos são um pesadelo. Um cachorro latindo, uma palma, alguém gritando o seu nome. Quando o sistema termina de analisar, o som já chegou ao seu ouvido. Então os fones abaixam um pouco e deixam o resto passar. É por isso que o mundo fica mais silencioso e nunca fica totalmente mudo." },
+      ] },
+      { title: "Cancelamento de Ruído Passivo x Ativo", blocks: [
+        { type: "paragraph", text: "Duas coisas diferentes acontecem ao mesmo tempo. A redução passiva é física: almofadas grossas vedando contra a sua cabeça, bloqueando som à moda antiga. O cancelamento ativo é o sistema de microfone e onda oposta. Os bons fones fazem os dois, e é essa combinação que transforma uma cabine de avião em uma biblioteca." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Os fones com cancelamento de ruído escutam o barulho à sua volta, constroem o oposto exato e tocam isso dentro do seu ouvido. As duas ondas se encontram, se cancelam, e um bom pedaço do ruído deixa de existir." },
+        { type: "callout", accent: "orange", text: "Não são protetores de ouvido chiques. São engenheiros de som minúsculos amarrados na sua cabeça, rodando a matemática milhares de vezes por segundo." },
+      ] },
+    ],
+  },
+  "why-do-some-things-float-and-others-sink": {
+    ...localizedBlogArticles.en["why-do-some-things-float-and-others-sink"],
+    title: "Por Que Algumas Coisas Flutuam e Outras Afundam?",
+    category: "Ciências",
+    readTime: common.pt.minutes.m4,
+    imageAlt: "Estudantes experimentando flutuação e água em uma oficina de ciências da Avanza STEM",
+    imageCaption: "Flutuar não é só uma questão de ser leve. Tem a ver com peso, forma e quanta água é deslocada.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Jogue uma pedra em um lago e acabou. Jogue uma bola de praia e ela volta quicando. Certo, faz sentido. Agora me explique o navio de carga de aço de 200.000 toneladas parado em cima da mesma água. Aço não flutua. Só que aparentemente flutua." },
+        { type: "paragraph", text: "A palavra para o que está acontecendo aqui é empuxo e, assim que a ficha cai, o navio deixa de ser estranho." },
+      ] },
+      { title: "A Água Empurra Para Cima", blocks: [
+        { type: "paragraph", text: "A água não é uma coisa passiva onde você joga objetos. Ela empurra de volta. Coloque qualquer coisa na água e a água a empurra para cima, e esse empurrão tem nome: força de empuxo. Enquanto isso, a gravidade puxa para baixo. Quem ganhar decide tudo. O empuxo dá conta de igualar o peso? Flutua. A gravidade ganha? Vai para o fundo." },
+      ] },
+      { title: "Os Objetos Empurram a Água do Caminho", blocks: [
+        { type: "paragraph", text: "Aqui fica interessante. Qualquer coisa que você coloca na água precisa empurrar água para o lado para abrir espaço. Esse empurrão se chama deslocamento e, quanto mais água você desloca, com mais força a água empurra de volta. Ou seja, a forma não é um detalhe. A forma é o jogo inteiro." },
+      ] },
+      { title: "A Densidade É uma Grande Pista", blocks: [
+        { type: "paragraph", text: "A densidade é quanta matéria está apertada em um determinado espaço. Uma pedra é densa: muita matéria enfiada em pouco volume. Uma bola de isopor não: quase só ar com um pouco de plástico segurando tudo. Mais denso que a água, você geralmente afunda. Menos denso, geralmente flutua. Geralmente. A forma pode virar o jogo inteiro." },
+      ] },
+      { title: "Por Que um Navio de Aço Consegue Flutuar?", blocks: [
+        { type: "paragraph", text: "O aço é muito mais denso que a água, e uma bola maciça de aço afunda como a pedra. Mas um navio não é aço maciço. É uma casca fina de aço envolvendo um volume enorme de ar, e essa forma desloca uma quantidade brutal de água." },
+        { type: "paragraph", text: "Conte o ar e a densidade média do navio fica abaixo da densidade da água. É esse o truque legal, e por isso ele flutua. Abra um buraco no casco e a água substitui o ar. A densidade média passa da água. E aí o navio vai para baixo, exatamente como a pedra." },
+      ] },
+      { title: "Por Que os Navios Têm Fundos Largos?", blocks: [
+        { type: "paragraph", text: "Porque largo significa mais água deslocada, e mais água deslocada significa um empurrão maior para cima. Uma canoa, um cargueiro e um navio de cruzeiro não se parecem em nada, mas cada um desses cascos foi moldado em torno da mesma matemática de flutuação. Quem projeta algo que flutua está equilibrando peso, forma, estabilidade e materiais ao mesmo tempo." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "As coisas flutuam quando a água empurrando para cima consegue igualar o peso puxando para baixo. A densidade te leva parte do caminho. A forma decide o resto." },
+        { type: "callout", accent: "orange", text: "Uma pedrinha afunda porque é densa e quase não desloca nada. Um navio de cruzeiro flutua porque a forma dele joga um oceano de água para o lado. Flutuar nunca foi sobre ser leve. É sobre quanta água você consegue tirar do caminho." },
+      ] },
+    ],
+  },
+  "why-do-magnets-stick-to-some-metals-but-not-others": {
+    ...localizedBlogArticles.en["why-do-magnets-stick-to-some-metals-but-not-others"],
+    title: "Por Que os Ímãs Grudam em Alguns Metais e em Outros Não?",
+    category: "Ciências",
+    readTime: common.pt.minutes.m5,
+    imageAlt: "Um ímã atraindo limalha de ferro que se alinha e revela as linhas do campo magnético invisível que sai dos polos",
+    imageCaption: "Os ímãs grudam no ferro e no aço porque os pequenos domínios magnéticos dentro desses metais se alinham com o campo externo. No cobre ou no alumínio, eles não conseguem.",
+    sections: [
+      { title: "", blocks: [
+        { type: "paragraph", text: "Os ímãs parecem ter uma regra só. Eles grudam na geladeira, pegam clipes, se prendem no metal. Fácil. Depois você encosta um no papel-alumínio, ou em uma moeda, ou em uma lata de refrigerante, e não acontece absolutamente nada. Tudo isso é metal. E aí?" },
+        { type: "paragraph", text: "A resposta está acontecendo bem lá embaixo, no nível das partículas dentro do material." },
+      ] },
+      { title: "Os Ímãs Têm Campos Invisíveis", blocks: [
+        { type: "paragraph", text: "Todo ímã é cercado por um campo que você não vê mas consegue sentir. Aproxime-o de um clipe e o clipe pula. Aproxime-o de outro ímã e você sente o empurrão invisível antes de eles se tocarem. Esse campo é mais forte nas pontas, os polos, que chamamos de norte e sul." },
+        { type: "paragraph", text: "Opostos se atraem, iguais se repelem. Vire um ímã e os mesmos dois objetos passam de se agarrar a brigar. Mesmos ímãs, comportamento oposto, e a única coisa que mudou foi a direção." },
+      ] },
+      { title: "Nem Todo Metal É Magnético", blocks: [
+        { type: "paragraph", text: "A grande confusão é achar que metal significa magnético. Não é verdade. O ferro é fortemente magnético. O aço geralmente é, porque é quase todo ferro. O níquel e o cobalto também entram na lista. Mas alumínio, cobre, ouro, prata e latão? Um ímã de geladeira não vai nem se importar. São metais perfeitamente bons que só não fazem esse truque específico." },
+      ] },
+      { title: "Pequenas Regiões Magnéticas", blocks: [
+        { type: "paragraph", text: "Dentro de um material magnético existem zonas microscópicas chamadas domínios. Imagine cada uma como uma setinha apontando para alguma direção magnética. Em um pedaço de ferro não magnetizado, essas setas apontam para todo lado, então os puxõezinhos delas se cancelam e o ferro não faz nada." },
+        { type: "paragraph", text: "Aproxime um ímã e as setas começam a girar para o alinhamento. Consiga que um número suficiente aponte na mesma direção e o pedaço inteiro de metal é atraído. É isso que acontece quando um clipe gruda de uma vez em um ímã. Você não acrescentou magnetismo. Você organizou o que já estava lá dentro." },
+      ] },
+      { title: "Por Que o Cobre Não Gruda?", blocks: [
+        { type: "paragraph", text: "O cobre tem elétrons fazendo a parte deles, igual ao ferro. O que ele não tem é uma estrutura que permita que todos esses efeitos magnéticos minúsculos se alinhem e se somem. Sem esse alinhamento não há nada em que o ímã se agarre. O alumínio, o ouro e quase todos os outros metais estão no mesmo barco. Os ingredientes estão lá. A arrumação, não." },
+      ] },
+      { title: "E o Aço?", blocks: [
+        { type: "paragraph", text: "O aço é ferro com outros elementos misturados, geralmente carbono. Como tem ferro, quase todo aço é magnético. Mas não todo, e isso confunde as pessoas. Certos aços inoxidáveis mal respondem a um ímã, porque o jeito como os átomos deles estão arrumados é diferente. É por isso que um ímã gruda de uma vez em uma peça de aço e escorrega de outra que parece idêntica." },
+      ] },
+      { title: "Os Ímãs São Úteis Porque São Seletivos", blocks: [
+        { type: "paragraph", text: "Serem tão exigentes é exatamente o que os torna úteis. As usinas de reciclagem passam ímãs gigantes sobre a esteira para arrancar ferro e aço de uma corrente misturada em uma única passada. Os motores elétricos transformam magnetismo em movimento. Os alto-falantes transformam sinais elétricos em som com um ímã e uma bobina. Uma bússola lê o campo magnético do planeta inteiro. Isso não é truque de geladeira. É tecnologia que sustenta o mundo." },
+      ] },
+      { title: "A Grande Ideia", blocks: [
+        { type: "paragraph", text: "Os ímãs grudam nos metais cujos domínios internos conseguem se alinhar com um campo magnético. O ferro, o aço, o níquel e o cobalto conseguem. O cobre e o alumínio não, porque a estrutura deles não permite esse alinhamento." },
+        { type: "callout", accent: "orange", text: "Então, quando um ímã escorrega de um objeto de metal, não há nada quebrado. Aquele metal simplesmente não é do tipo magnético, e agora você já sabe por quê." },
       ] },
     ],
   },

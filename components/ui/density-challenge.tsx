@@ -41,11 +41,11 @@ import {
 import { type useDensitySound } from "@/components/ui/density-sound"
 import { isoDay, useDensityProgress } from "@/components/ui/useDensityProgress"
 import { useReducedMotion } from "@/components/ui/useReducedMotion"
+import { type Language } from "@/i18n/translations"
 import { cn } from "@/lib/utils"
 
 type Progress = ReturnType<typeof useDensityProgress>
 type Sound = ReturnType<typeof useDensitySound>
-type Language = "en" | "es" | "zh"
 
 type View =
   | { kind: "menu" }

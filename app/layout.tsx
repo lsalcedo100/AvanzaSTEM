@@ -48,7 +48,7 @@ export function generateMetadata(): Metadata {
 // Sitewide entity graph. The Organization node carries a stable @id so other
 // schemas on the site can reference the same entity, and its logo is an
 // ImageObject (the bare URL string form is not eligible for Google's
-// organization logo treatment). The WebSite node declares the three languages
+// organization logo treatment). The WebSite node declares the four languages
 // the site publishes in. No SearchAction is declared: the site has no search
 // endpoint, and Google retired the sitelinks searchbox result in 2024.
 const organizationJsonLd = {
@@ -67,12 +67,12 @@ const organizationJsonLd = {
   email: 'liam@avanzastem.org',
   description:
     'A youth-led program bringing free hands-on STEM workshops and beginner-friendly projects to students, with a special focus on Hispanic and underrepresented communities.',
-  knowsLanguage: ['en', 'es', 'zh'],
+  knowsLanguage: ['en', 'es', 'zh', 'pt'],
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'liam@avanzastem.org',
     contactType: 'educational program inquiries',
-    availableLanguage: ['English', 'Spanish', 'Chinese'],
+    availableLanguage: ['English', 'Spanish', 'Chinese', 'Portuguese'],
   },
 }
 
@@ -82,7 +82,7 @@ const webSiteJsonLd = {
   '@id': `${siteConfig.url}/#website`,
   name: siteConfig.name,
   url: siteConfig.url,
-  inLanguage: ['en', 'es', 'zh'],
+  inLanguage: ['en', 'es', 'zh', 'pt'],
   publisher: { '@id': `${siteConfig.url}/#organization` },
 }
 

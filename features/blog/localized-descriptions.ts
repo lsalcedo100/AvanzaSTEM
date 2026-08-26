@@ -1,7 +1,7 @@
 import type { BlogSlug } from "@/features/blog/posts"
 
 /**
- * Spanish and Chinese meta descriptions for blog posts.
+ * Spanish, Chinese and Portuguese meta descriptions for blog posts.
  *
  * Search Console (6 months to 2026-08-13) showed the /es/blog/* and /zh/blog/*
  * routes taking ~3,300 impressions at an average position around 7 but a
@@ -9,11 +9,12 @@ import type { BlogSlug } from "@/features/blog/posts"
  * <title> above an English <meta name="description">, so the SERP snippet was
  * in the wrong language for the searcher. These are translations of the
  * English descriptions in BLOG_POST_META, kept to roughly 150 characters for
- * Spanish and 45-55 characters for Chinese so they survive snippet truncation.
+ * Spanish and Portuguese and 45-55 characters for Chinese so they survive
+ * snippet truncation.
  *
  * Only the meta description changes; no on-page copy is affected.
  */
-export const LOCALIZED_BLOG_DESCRIPTIONS: Record<"es" | "zh", Record<BlogSlug, string>> = {
+export const LOCALIZED_BLOG_DESCRIPTIONS: Record<"es" | "zh" | "pt", Record<BlogSlug, string>> = {
   es: {
     "5-easy-science-experiments":
       "Prueba 5 experimentos de ciencia fáciles en casa con materiales que ya tienes. Actividades seguras, divertidas y educativas para niños de 2.º grado en adelante.",
@@ -201,5 +202,99 @@ export const LOCALIZED_BLOG_DESCRIPTIONS: Record<"es" | "zh", Record<BlogSlug, s
       "浮起还是下沉取决于密度、形状，以及物体排开多少水。了解为什么钢铁做的船会浮，而一块小石头会沉。",
     "why-do-magnets-stick-to-some-metals-but-not-others":
       "磁铁能吸住铁、钢和镍，因为这些金属内部的微小磁畴会排列整齐。铜和铝则不一样。了解其中原因。",
+  },
+  pt: {
+    "5-easy-science-experiments":
+      "Faça 5 experimentos de ciências fáceis em casa com materiais que você já tem. Atividades seguras, divertidas e educativas para crianças a partir do 2º ano.",
+    "building-a-community-stem-workshops":
+      "Descubra como as oficinas de STEM gratuitas estão mudando vidas em comunidades hispânicas de Nova Jersey e como levar uma para o seu próprio bairro.",
+    "getting-started-with-lego-robotics":
+      "Os kits de robótica LEGO são uma ótima porta de entrada para o STEM. Veja qual kit escolher, o que seu filho vai aprender e como começar em casa passo a passo.",
+    "how-to-build-the-strongest-popsicle-stick-bridge":
+      "Conheça os segredos de engenharia de uma ponte forte de palitos de picolé: triângulos, caminhos de carga e emendas, em um guia passo a passo para jovens.",
+    "math-games-that-make-learning-fun":
+      "Seis jogos que transformam a prática de matemática em diversão, do 2º ao 5º ano. Desenvolva senso numérico, frações e lógica sem folhas de exercícios.",
+    "what-is-ai-explaining-to-kids":
+      "A inteligência artificial explicada para crianças. Veja como a IA aprende com dados, onde ela já está no dia a dia e como pensar sobre ela com senso crítico.",
+    "why-every-kid-should-learn-to-code":
+      "Programar ensina resolução de problemas, criatividade e lógica. Veja como iniciar seu filho no Python passo a passo, sem nenhuma experiência prévia.",
+    "why-triangles-are-an-engineers-secret-weapon":
+      "O triângulo é a forma mais firme da engenharia. Descubra por que pontes, treliças e torres usam triângulos, e como aplicar isso na sua ponte de palitos.",
+    "how-engineers-think-when-something-breaks":
+      "Quando uma estrutura falha, ela te dá informação. Conheça a mentalidade de engenharia que transforma uma construção quebrada em uma segunda tentativa melhor.",
+    "design-a-mars-rover-out-of-cardboard":
+      "Um desafio de engenharia para crianças: projete um rover de Marte de papelão com objetivos, restrições e perguntas reais, como os engenheiros da NASA.",
+    "what-is-ai-actually-doing-when-it-answers-you":
+      "A IA não busca na internet nem consulta dados guardados: ela prevê o texto provável a partir de padrões. Veja o que isso significa e por que ela pode errar.",
+    "how-to-think-like-an-inventor-in-20-minutes":
+      "Um desafio de criação de 20 minutos para crianças: ache um problema real, desenhe uma solução, monte um protótipo e teste, como nas oficinas da Avanza.",
+    "why-your-first-design-is-usually-not-your-best-one":
+      "A engenharia melhora com testes e observação, não com planos perfeitos. Veja como um grupo de estudantes usou um teste de ponte para saber o que melhorar.",
+    "the-engineering-of-a-backpack":
+      "Sua mochila resolve uma dúzia de problemas de engenharia ao mesmo tempo. Explore como alças, zíperes, materiais e bolsos são decisões de projeto.",
+    "what-makes-a-stem-workshop-fun":
+      "Um olhar dos bastidores sobre como a Avanza STEM planeja atividades para que os estudantes construam, testem e descubram, em vez de só olhar e escutar.",
+    "engineering-inside-school-bus":
+      "Um ônibus escolar é cheio de decisões de engenharia. Descubra como a cor, os bancos, os espelhos e as saídas de emergência protegem as crianças.",
+    "why-airplane-wings-are-curved":
+      "As asas dos aviões são curvas porque a forma controla o fluxo de ar. Descubra como o perfil aerodinâmico cria sustentação e mantém o avião no céu.",
+    "how-elevators-know-where-to-go":
+      "Os elevadores usam botões, sensores, motores, contrapesos e lógica de controle para transportar pessoas com segurança. Veja o que há por trás do botão.",
+    "why-buildings-sway-in-wind":
+      "Sim, os prédios altos balançam com o vento, e eles são projetados assim. Descubra quanto eles se movem e por que a flexibilidade os deixa mais seguros.",
+    "engineering-behind-soccer-ball":
+      "Uma bola de futebol é um sistema cuidadosamente projetado. A forma, a pressão do ar, os gomos e os materiais mudam como ela rola, quica e faz curva.",
+    "why-manhole-covers-are-round":
+      "As tampas de bueiro são redondas porque essa forma é segura, resistente, fácil de mover e impossível de cair no buraco. Um desenho, vários problemas.",
+    "how-roller-coasters-stay-on-track":
+      "As montanhas-russas usam gravidade, impulso, rodas que agarram o trilho por três lados e curvas bem projetadas para não sair, mesmo de cabeça para baixo.",
+    "why-chairs-break":
+      "A resistência de uma cadeira depende da distribuição do peso, do material, da qualidade das junções e da forma. Veja por que uma cadeira bamba é um alerta.",
+    "hidden-engineering-water-bottle":
+      "As garrafas plásticas descartáveis são maravilhas leves da engenharia, mas o projeto em PET, a rosca da tampa e os microplásticos têm um custo.",
+    "can-ai-actually-think":
+      "A IA responde perguntas, escreve histórias e ajuda a aprender. Mas será que ela pensa? Descubra como ela usa reconhecimento de padrões e no que isso difere.",
+    "why-ai-sometimes-gets-things-wrong":
+      "A IA faz previsões com base em padrões. Descubra por que ela dá respostas confiantes mas erradas, o que são alucinações e como conferir o que ela diz.",
+    "how-does-your-phone-recognize-your-face":
+      "Seu celular usa câmeras, sensores e aprendizado de máquina para comparar padrões do rosto, não para entender você. Veja como funciona e por que a privacidade importa.",
+    "why-does-autocorrect-make-weird-mistakes":
+      "O corretor automático prevê palavras por padrões. Descubra por que ele troca palavras certas, se atrapalha com nomes e gírias, e como isso se liga à IA.",
+    "what-happens-when-you-ask-ai-a-question":
+      "Quando você faz uma pergunta à IA, ela segue um processo de instrução, treinamento e previsão. Conheça cada etapa e por que perguntas claras ajudam.",
+    "should-kids-trust-everything-ai-says":
+      "A IA pode ser útil e criativa, mas também pode errar. Aprenda a pensar como detetive com a IA, quais assuntos pedem cuidado e como proteger sua privacidade.",
+    "how-do-video-games-use-ai":
+      "Os videogames usam IA para mover inimigos, decidir as ações dos NPCs e ajustar a dificuldade. Descubra como as regras os fazem parecer inteligentes.",
+    "is-a-robot-the-same-thing-as-ai":
+      "Um robô é uma máquina física; a IA é um software que decide. Eles podem trabalhar juntos, mas são diferentes. Conheça sensores, motores e o papel de cada parte.",
+    "how-do-robots-know-where-they-are":
+      "Os robôs usam câmeras, sensores nas rodas, GPS, lidar e mais para estimar a própria posição. Descubra como eles percebem, mapeiam e navegam pelo mundo.",
+    "why-robots-are-bad-at-easy-human-tasks":
+      "Dobrar roupa e abrir portas é simples para as pessoas e muito difícil para os robôs. Descubra por que as tarefas do dia a dia desafiam a robótica.",
+    "what-makes-a-robot-a-robot":
+      "Um robô percebe com sensores, decide com um controlador e age com atuadores. Conheça as três partes que definem um robô e por que ele não precisa ser humanoide.",
+    "how-mars-rovers-drive-without-a-driver":
+      "Marte está longe demais para controle remoto. Descubra como os rovers usam câmeras, rodas, instruções vindas da Terra e navegação autônoma.",
+    "why-robot-hands-are-so-hard-to-make":
+      "Segurar objetos diferentes exige movimento, força, delicadeza e tato ao mesmo tempo. Descubra por que as mãos robóticas são um dos maiores desafios da robótica.",
+    "how-factory-robots-build-cars":
+      "Os robôs de fábrica soldam, pintam e movem peças com precisão. Descubra como os braços robóticos são programados e como eles trabalham ao lado das pessoas.",
+    "why-is-the-sky-blue-but-sunsets-are-orange":
+      "O céu parece azul de dia, mas no fim da tarde fica laranja ou vermelho. Descubra como a luz do sol, o ar e o espalhamento criam as duas cores.",
+    "why-do-your-ears-pop-on-an-airplane":
+      "Os ouvidos tampam no avião porque a pressão do ar muda na subida e na descida. Descubra como o tímpano e a tuba auditiva equilibram a pressão.",
+    "why-does-metal-feel-colder-than-wood":
+      "O metal e a madeira podem estar na mesma temperatura, mas o metal parece mais frio porque rouba calor mais rápido. É assim que funciona a condução térmica.",
+    "why-do-bikes-stay-balanced-when-moving":
+      "As bicicletas se equilibram pelo movimento, pela direção, pelo desenho das rodas e pelas correções de quem pedala. Conheça a física por trás disso.",
+    "why-do-we-slip-on-ice":
+      "O gelo escorrega porque tem pouco atrito, e uma fina camada de água dificulta ainda mais a aderência dos sapatos. Descubra a ciência do escorregão.",
+    "how-do-noise-canceling-headphones-work":
+      "Os fones com cancelamento de ruído usam microfones e ondas sonoras opostas para reduzir o barulho antes que ele chegue aos ouvidos. Veja a física por trás.",
+    "why-do-some-things-float-and-others-sink":
+      "Flutuar ou afundar depende da densidade, da forma e de quanta água o objeto desloca. Descubra por que um navio de aço flutua e uma pedrinha afunda.",
+    "why-do-magnets-stick-to-some-metals-but-not-others":
+      "Os ímãs grudam no ferro, no aço e no níquel porque as regiões magnéticas deles se alinham. Cobre e alumínio não funcionam assim. Descubra o motivo.",
   },
 }

@@ -26,6 +26,11 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
     description:
       "了解 Avanza STEM 的小小创客系列，这是面向年轻学生的免费三部分动手 STEM 工作坊项目，通过图书馆和社区伙伴教授建造、编程和负责任 AI。",
   },
+  pt: {
+    title: "Série Mentes Criadoras | Avanza STEM",
+    description:
+      "Conheça a Série Mentes Criadoras da Avanza STEM, um programa gratuito de três oficinas práticas de STEM para jovens estudantes sobre construção, programação e IA responsável, com bibliotecas e parceiros comunitários.",
+  },
 }
 
 export async function generateMetadata(): Promise<Metadata> {

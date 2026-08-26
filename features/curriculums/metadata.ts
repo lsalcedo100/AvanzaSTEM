@@ -114,6 +114,11 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
     description:
       "预览 Avanza STEM 正在开发的课程主题，包括面向年轻学生的 Python、工程、科学、数学、机器人和 AI 课程。",
   },
+  pt: {
+    title: "Currículo de STEM Gratuito para Crianças: Python, Engenharia e IA",
+    description:
+      "Explore trilhas gratuitas de currículo de STEM para crianças em Python, engenharia, ciências, robótica, matemática e IA, com guias de projeto práticos para começar agora.",
+  },
 }
 
 export function generateCurriculumsMetadata(language: Language = "en"): Metadata {

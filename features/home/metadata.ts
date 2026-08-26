@@ -19,18 +19,25 @@ const metadataByLanguage: Record<Language, Pick<Metadata, "title" | "description
     description:
       "Avanza STEM 是一个由青年主导的项目，为学生带来免费的动手 STEM 工作坊和适合初学者的项目，特别关注西班牙裔和代表性不足的社区。",
   },
+  pt: {
+    title: "Oficinas e projetos de STEM gratuitos | Avanza STEM",
+    description:
+      "Oficinas de STEM gratuitas e projetos passo a passo para crianças, conduzidos por estudantes. Pontes, circuitos, Python, robótica e ciências, tudo de graça e em mais de um idioma.",
+  },
 }
 
 const ogImageByLanguage: Record<Language, string> = {
   en: "/images/og-default-en.png",
   es: "/images/og-default-es.png",
   zh: "/images/og-default-zh.png",
+  pt: "/images/og-default-pt.png",
 }
 
 const ogLocaleByLanguage: Record<Language, string> = {
   en: "en_US",
   es: "es_US",
   zh: "zh_CN",
+  pt: "pt_BR",
 }
 
 export function generateHomeMetadata(language: Language): Metadata {

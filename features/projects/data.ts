@@ -1348,6 +1348,439 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
         "你的车能跑更远吗？试试换更大的轮子、让车身更轻、把气球接口封得更严，或者和另一组比赛，看谁的设计跑得更远。",
     },
   ],
+  pt: [
+    {
+      slug: "popsicle-stick-bridge",
+      title: "Ponte de Palitos de Picolé",
+      category: "Engenharia",
+      categoryKey: "engineering",
+      difficulty: "Fácil",
+      time: "1 a 2 horas",
+      image: "/images/home/featured-bridge.jpg",
+      description:
+        "Construa uma ponte treliçada com palitos de picolé e veja como os triângulos conduzem a compressão e a tração durante o seu teste de carga.",
+      introduction: [
+        "Engenheiros de pontes não colam peças a esmo. Eles projetam estruturas que conduzem as forças por um padrão inteligente de formas firmes.",
+        "Este projeto é empolgante porque seus palitos de picolé viram uma ponte de verdade, com partes, caminhos de força e um teste de carga no final.",
+      ],
+      why:
+        "Uma ponte treliçada distribui a força pelos triângulos. O banzo superior costuma ficar comprimido, o banzo inferior costuma ficar sob tração e as peças diagonais ajudam a levar a carga por toda a estrutura.",
+      materials: [
+        "60 palitos de picolé ou mais",
+        "Pistola de cola quente e bastões de cola",
+        "Uma régua",
+        "Um marcador ou caneta",
+        "Tesoura ou alicate de corte resistente",
+        "Dois apoios firmes para o teste, como cadeiras ou mesas",
+        "Pesos para testar, como livros ou anilhas de academia",
+      ],
+      steps: [
+        "Marque uns 16 palitos nos pontos de um quarto, para as emendas ficarem alinhadas.",
+        "Corte 4 desses palitos ao meio e use-os para emendar palitos inteiros em 2 trilhos longos.",
+        "Monte a primeira treliça lateral com 4 triângulos e depois acrescente mais 3 triângulos alternados entre eles.",
+        "Vire a treliça, cole o trilho superior e reforce os triângulos com outra camada de palitos.",
+        "Repita o mesmo padrão para fazer uma segunda treliça lateral igual.",
+        "Deixe as duas laterais endurecerem e depois ligue-as com peças transversais, mantendo a ponte em esquadro.",
+        "Acrescente escoras diagonais, deixe a cola firmar e teste a ponte devagar entre dois apoios.",
+      ],
+      safety:
+        "Peça ajuda de um adulto com a pistola de cola quente e na hora de cortar os palitos. A cola recém-saída e o bico ficam bem quentes, e o teste deve ser feito devagar, para que os pesos ou os pés não escorreguem.",
+      challenge:
+        "Tente manter o mesmo padrão de treliça usando menos palitos e depois compare quanto peso a ponte mais leve consegue sustentar.",
+    },
+    {
+      slug: "lego-robot-builder",
+      title: "Robô LEGO com Garra",
+      category: "Robótica",
+      categoryKey: "robotics",
+      difficulty: "Médio",
+      time: "2 a 3 horas",
+      image: "/images/shared/lego-robotics.jpeg",
+      description:
+        "Construa um robô com garra inspirado na aula Super Cleanup da LEGO Education e teste como ele recolhe objetos diferentes.",
+      introduction: [
+        "Este não é um robô qualquer. Você está construindo uma máquina de limpeza com garra inspirada em uma aula real da LEGO Education usada para ensinar raciocínio robótico.",
+        "Isso deixa tudo ainda mais legal, porque você não está chutando como um robô poderia ser. Você está seguindo uma ideia testada e entendendo por que cada parte está ali.",
+      ],
+      why:
+        "Um robô com garra combina mecânica e programação. A base precisa se manter equilibrada, o motor precisa transferir movimento para a garra e o código precisa dizer à máquina quando avançar, agarrar e soltar.",
+      materials: [
+        "Kit LEGO Education SPIKE Prime #45678 ou um kit de robótica LEGO parecido",
+        "Hub SPIKE Prime",
+        "1 motor angular grande",
+        "1 sensor de força",
+        "Vigas Technic, pinos, eixos e rodas",
+        "Objetos pequenos para testar, como papel amassado, uma maçã ou bolinha e um bloco",
+      ],
+      steps: [
+        "Abra a aula oficial Super Cleanup e os manuais de montagem antes de começar.",
+        "Organize o hub, o motor, o sensor, as rodas, as vigas, os pinos e os eixos em grupos fáceis de ver.",
+        "Monte primeiro a base larga com rodas, para o robô se manter equilibrado.",
+        "Acrescente a torre da frente e o suporte do braço com garra.",
+        "Instale o motor, o sensor e as pinças da frente para o robô conseguir segurar objetos.",
+        "Carregue uma rotina simples de limpeza que diga ao robô quando agarrar, andar e soltar.",
+        "Faça testes justos com objetos diferentes e compare o que funciona melhor.",
+      ],
+      safety:
+        "Mantenha as peças pequenas de LEGO longe de irmãos menores e de animais, porque elas podem causar engasgo. Peça ajuda de um adulto para carregar o hub, conectar os cabos e lidar com as partes ligadas à bateria.",
+      challenge:
+        "Compare dois formatos diferentes de garra e anote qual funciona melhor com objetos redondos, macios ou rígidos.",
+    },
+    {
+      slug: "coke-mentos-experiment",
+      title: "Experimento de Coca-Cola e Mentos",
+      category: "Ciências",
+      categoryKey: "science",
+      difficulty: "Fácil",
+      time: "30 minutos",
+      image: "/images/home/coke-mentos-science-experiment-kids.jpg",
+      description:
+        "Lance um chafariz de refrigerante ao ar livre e descubra por que a superfície das balas faz o gás escapar tão rápido.",
+      introduction: [
+        "Prepare-se para uma bagunça enorme, porque este experimento pode fazer o refrigerante subir feito um chafariz-foguete.",
+        "É empolgante de ver e ainda ensina uma ideia científica de verdade que quase parece mágica.",
+      ],
+      why:
+        "O refrigerante tem gás dióxido de carbono dissolvido. Os Mentos têm muitas rugosidades minúsculas que dão ao gás vários lugares para escapar ao mesmo tempo, um processo chamado nucleação, e é por isso que o refrigerante sai tão rápido. A Coca-Cola Zero costuma funcionar melhor que a comum porque tem menos açúcar e é menos encorpada, então as bolhas sobem com mais facilidade e formam um gêiser mais alto.",
+      materials: [
+        "1 garrafa de dois litros de Coca-Cola Zero ou outro refrigerante",
+        "1 pacote de Mentos",
+        "Um espaço aberto ao ar livre",
+        "Óculos de proteção",
+        "Uma folha de papel ou uma ficha de cartolina",
+        "Opcional: um tubo ou rolo de papel para soltar os Mentos juntos",
+      ],
+      steps: [
+        "Vá para fora, em um lugar aberto como a garagem ou o quintal, e coloque os óculos de proteção.",
+        "Ponha a garrafa de refrigerante em um chão plano, onde ela não caia.",
+        "Abra a garrafa e prepare os Mentos o mais rápido que conseguir.",
+        "Empilhe 5 ou 6 Mentos em um tubo de papel ou segure-os sobre a abertura com uma ficha embaixo.",
+        "Puxe a ficha para que todos os Mentos caiam ao mesmo tempo.",
+        "Afaste-se na hora e veja o chafariz de refrigerante subir.",
+        "Conversem sobre o que aconteceu e meçam qual refrigerante ou qual quantidade de Mentos gerou o maior gêiser.",
+      ],
+      safety:
+        "Faça este experimento só ao ar livre e afaste-se assim que os Mentos caírem. Nunca aponte a garrafa para pessoas e não beba o refrigerante depois do experimento.",
+      challenge:
+        "Teste dois refrigerantes diferentes e compare qual produz o chafariz mais alto.",
+    },
+    {
+      slug: "my-first-python-program",
+      title: "Meu Primeiro Programa em Python",
+      category: "Programação",
+      categoryKey: "coding",
+      difficulty: "Fácil",
+      time: "1 hora",
+      image: codingThumbnailImage,
+      description:
+        "Escreva um jogo de perguntas simples e descubra como o código transforma suas ideias em algo interativo.",
+      introduction: [
+        "Programar é como dar instruções superclaras a um computador para ele fazer algo incrível por você.",
+        "Este projeto é divertido porque você vai criar um programa de verdade, que faz perguntas, guarda a pontuação e responde ao jogador.",
+      ],
+      why:
+        "Os programas seguem instruções passo a passo. O Python usa comandos como `print()` para mostrar mensagens, `input()` para receber respostas e variáveis para lembrar informações, como a pontuação.",
+      materials: [
+        "Um computador ou tablet com acesso à internet",
+        "Um site ou aplicativo de Python, como Replit ou Trinket",
+        "Papel para planejar suas perguntas",
+        "Um teclado",
+        "Curiosidade e paciência",
+      ],
+      steps: [
+        "Abra um editor de Python para iniciantes online e comece um projeto novo.",
+        "Escreva uma linha com `print()` para dar as boas-vindas ao jogador.",
+        "Crie uma variável chamada score e deixe-a em 0 para contar os pontos.",
+        "Use `input()` para fazer uma pergunta e guardar a resposta em uma variável.",
+        "Acrescente um `if` para conferir se a resposta está certa.",
+        "Aumente a pontuação quando o jogador acertar e mostre o novo valor com `print()`.",
+        "Execute seu programa, teste e corrija os erros até funcionar direitinho.",
+      ],
+      safety:
+        "Use apenas sites de programação confiáveis e peça permissão a um adulto antes de criar contas. Não coloque seu nome real, endereço nem senhas dentro do programa ou em conversas.",
+      challenge:
+        "Acrescente três perguntas em vez de uma e faça o jogo mostrar uma mensagem especial se o jogador tirar a pontuação máxima.",
+    },
+    {
+      slug: "baking-soda-volcano",
+      title: "Vulcão de Bicarbonato",
+      category: "Ciências",
+      categoryKey: "science",
+      difficulty: "Fácil",
+      time: "1 hora",
+      image: "/images/projects/baking-soda-volcano/cover.jpg",
+      description:
+        "Construa um minivulcão e provoque uma erupção espumosa com a clássica reação entre um ácido e uma base.",
+      introduction: [
+        "Os vulcões estão entre as maravilhas naturais mais impressionantes da Terra, e agora você pode construir um na sua própria mesa.",
+        "Este projeto é empolgante porque você mistura ingredientes, cria uma erupção e vê a química em ação.",
+      ],
+      why:
+        "O bicarbonato é uma base e o vinagre é um ácido. Quando eles se misturam, produzem um gás novo chamado dióxido de carbono, e esse gás forma a espuma borbulhante que transborda como se fosse lava.",
+      materials: [
+        "Bicarbonato de sódio",
+        "Vinagre",
+        "Uma garrafa ou copo pequeno de plástico",
+        "Massinha, argila ou papel-alumínio",
+        "Detergente",
+        "Corante alimentício",
+        "Uma bandeja para facilitar a limpeza",
+      ],
+      steps: [
+        "Coloque a garrafa no centro de uma bandeja, para a bagunça ficar em um lugar só.",
+        "Monte o formato do vulcão em volta da garrafa com argila, massinha ou papel-alumínio, mas deixe a abertura livre.",
+        "Coloque 2 ou 3 colheres de sopa de bicarbonato dentro da garrafa.",
+        "Acrescente um pouco de detergente e algumas gotas de corante.",
+        "Despeje o vinagre na garrafa e veja a lava espumosa subir e transbordar.",
+        "Observe as bolhas de perto e conversem sobre o gás que está se formando dentro da garrafa.",
+        "Enxágue a bandeja e tente de novo com quantidades diferentes, para ver como a erupção muda.",
+      ],
+      safety:
+        "Mantenha a mistura longe dos olhos e lave as mãos depois do experimento. Peça ajuda de um adulto antes de usar corante, porque ele mancha roupa e mesa.",
+      challenge:
+        "Experimente mudar a quantidade de bicarbonato ou de vinagre e descubra qual receita produz a maior erupção.",
+    },
+    {
+      slug: "simple-circuit-light",
+      title: "Luz com Circuito Simples",
+      category: "Engenharia",
+      categoryKey: "engineering",
+      difficulty: "Médio",
+      time: "45 a 60 minutos",
+      image: "/images/projects/simple-circuit-light/cover.jpg",
+      description:
+        "Monte um circuito de LED de verdade em uma protoboard, com um resistor, jumpers e um suporte de pilhas pequeno.",
+      introduction: [
+        "Acender uma luz parece a coisa mais comum do mundo, mas dentro daquele cliquezinho existe um caminho inteiro por onde a corrente elétrica passa.",
+        "Neste projeto você vai montar um circuito de eletrônica para iniciantes em uma protoboard, que permite conectar peças sem solda.",
+        "Você também vai colocar um resistor em série com o LED. O resistor é importante porque limita a corrente para o LED não queimar.",
+      ],
+      why:
+        "A corrente sai do lado positivo da pilha, passa por um jumper, atravessa o resistor, entra pela perna comprida do LED, sai pela perna curta e volta ao lado negativo da pilha. O resistor e o LED estão em série porque a corrente passa primeiro por uma peça e depois pela outra, no mesmo laço. Se o LED estiver invertido, a corrente não passa direito e ele pode não acender.",
+      materials: [
+        "1 protoboard pequena, sem solda",
+        "1 LED",
+        "1 resistor de 220 a 330 ohms",
+        "1 suporte de pilhas de baixa tensão, como 2 pilhas AA com fios vermelho e preto",
+        "3 jumpers",
+        "Opcional: um interruptor pequeno para um desafio extra",
+      ],
+      steps: [
+        "Coloque a protoboard na sua frente. Encontre o trilho positivo vermelho (+), o trilho negativo azul (-) e as fileiras centrais onde as peças se conectam.",
+        "Com o suporte de pilhas desligado ou desconectado, ligue o fio vermelho da pilha ao trilho + e o fio preto ao trilho -.",
+        "Coloque uma ponta do resistor no trilho +. Coloque a outra ponta em uma fileira vazia da protoboard, por exemplo a fileira 10.",
+        "Posicione o LED de modo que a perna mais comprida, chamada anodo, fique na mesma fileira da ponta do resistor. Coloque a perna mais curta, chamada catodo, em outra fileira.",
+        "Use um jumper para ligar a fileira da perna curta do LED ao trilho -. Agora o resistor e o LED estão em um único caminho, em série.",
+        "Conecte a pilha ou ligue o suporte. O LED deve acender quando a corrente sai do +, passa pelo resistor, passa pelo LED e volta ao -.",
+        "Se o LED não acender, desconecte a pilha primeiro e depois inverta o LED ou confira se cada peça está na fileira certa.",
+      ],
+      stepImages: [
+        {
+          step: 6,
+          src: "/images/projects/simple-circuit-light/step-6-lit-circuit.jpg",
+          alt: "Passo 6: LED aceso no circuito da protoboard, com a perna comprida (anodo) e a perna curta (catodo) indicadas onde se ligam ao resistor e ao trilho negativo",
+        },
+      ],
+      safety:
+        "Use apenas pilhas pequenas, de baixa tensão, e nunca ligue seu circuito a uma tomada. Sempre coloque o resistor antes de acender o LED e desconecte a pilha antes de mexer nas peças.",
+      challenge:
+        "Coloque um interruptor pequeno em série com o resistor e o LED para abrir e fechar o circuito. Você também pode comparar como o LED muda com um resistor de 220 ohms e com um de 330 ohms.",
+    },
+    {
+      slug: "elephant-toothpaste-experiment",
+      title: "Experimento da Pasta de Dente de Elefante",
+      category: "Ciências",
+      categoryKey: "science",
+      difficulty: "Médio",
+      time: "30 minutos",
+      image: "/images/projects/elephant-toothpaste-experiment/cover.jpg",
+      description:
+        "Veja uma torre enorme de espuma sair de uma garrafa quando o peróxido de hidrogênio se decompõe e libera oxigênio em uma reação exotérmica espetacular.",
+      introduction: [
+        "A pasta de dente de elefante tem esse nome porque a espuma que dispara é tão grande que pareceria ser de um elefante. Mas não é só uma explosão bonita: é uma reação química de verdade que você consegue controlar.",
+        "Este experimento mostra como os catalisadores aceleram as reações, por que há liberação de calor quando as substâncias mudam e como o gás oxigênio transforma um líquido em uma montanha gigante de espuma bem na sua frente.",
+      ],
+      why:
+        "O peróxido de hidrogênio se decompõe naturalmente em água e gás oxigênio, mas faz isso muito devagar sozinho. Acrescentar um catalisador, como fermento biológico misturado com água morna, dá um atalho à reação e faz tudo acontecer quase na hora. O gás oxigênio escapa tão rápido que fica preso no detergente, criando milhares de bolhas empilhadas em uma espuma grossa. A reação também é exotérmica, ou seja, libera calor, que dá para sentir ao tocar a espuma com cuidado depois que ela para.",
+      materials: [
+        "1/2 xícara de peróxido de hidrogênio a 6% ou 12% (encontrado em lojas de produtos de beleza)",
+        "1 envelope de fermento biológico seco",
+        "3 colheres de sopa de água morna",
+        "Um pouco de detergente",
+        "Algumas gotas de corante alimentício",
+        "Uma garrafa plástica de 500 ml ou maior, ou uma proveta",
+        "Uma bandeja ou assadeira para facilitar a limpeza",
+        "Óculos de proteção e luvas",
+      ],
+      steps: [
+        "Coloque os óculos de proteção e as luvas antes de manusear o peróxido de hidrogênio.",
+        "Ponha a garrafa no centro da bandeja, para a espuma ficar contida.",
+        "Acrescente o detergente e algumas gotas de corante direto na garrafa.",
+        "Despeje o peróxido de hidrogênio na garrafa e balance de leve para misturar.",
+        "Em um copo à parte, misture o envelope de fermento com a água morna por uns 30 segundos, até dissolver.",
+        "Despeje rapidamente a mistura de fermento na garrafa e afaste-se em seguida.",
+        "Veja a espuma disparar para cima e note o calor que ela solta quando você a toca com cuidado depois que tudo parar.",
+        "Conversem sobre o que aconteceu: qual foi o catalisador, de onde veio o calor e o que havia dentro de todas aquelas bolhas.",
+      ],
+      safety:
+        "Peça sempre a um adulto para manusear e despejar o peróxido de hidrogênio, já que ele pode irritar a pele e os olhos. Use óculos de proteção e luvas durante todo o experimento. A espuma fica morna e é segura de tocar depois que a reação para por completo, mas não deixe o líquido encostar nos olhos nem na pele durante a reação. Descarte a espuma e o líquido que sobrar pelo ralo, com bastante água.",
+      challenge:
+        "Teste duas concentrações diferentes de peróxido de hidrogênio: a de 3% da farmácia e a de 6% ou mais de uma loja de beleza, e compare até onde cada torre de espuma cresce.",
+    },
+    {
+      slug: "making-oobleck",
+      title: "Fazendo Oobleck",
+      category: "Ciências",
+      categoryKey: "science",
+      difficulty: "Fácil",
+      time: "20 minutos",
+      image: "/images/projects/making-oobleck/cover.jpg",
+      description:
+        "Misture só dois ingredientes para criar uma substância misteriosa que escorre como líquido mas endurece quando você aperta, e descubra a ciência dos fluidos não newtonianos.",
+      introduction: [
+        "O oobleck leva o nome de uma gosma de uma história do Dr. Seuss, e é tão estranho e imprevisível quanto parece. Ele escorre entre os dedos feito água, mas na hora em que você aperta ou bate, endurece feito pedra.",
+        "Esta atividade explora uma classe fascinante de materiais chamada fluidos não newtonianos, e você só precisa de dois ingredientes e alguns minutos para fazer uma tigela cheia de ciência para segurar nas próprias mãos.",
+      ],
+      why:
+        "A maioria dos líquidos, como água e suco, escorre na mesma velocidade não importa com que força você empurre. O oobleck é diferente porque é um fluido não newtoniano, ou seja, a viscosidade dele, que é o quanto ele é grosso ou ralo, muda conforme a pressão. Quando você empurra ou bate no oobleck rapidamente, as partículas de amido de milho travam umas nas outras e ele se comporta como sólido. Quando a pressão passa, as partículas se soltam e ele volta a escorrer como líquido. Essa propriedade se chama espessamento por cisalhamento, e os engenheiros estudam materiais parecidos para coisas como coletes à prova de balas e tapa-buracos.",
+      materials: [
+        "2 xícaras de amido de milho",
+        "1 xícara de água",
+        "Algumas gotas de corante alimentício (opcional)",
+        "Uma tigela grande para misturar",
+        "Uma colher ou espátula",
+        "Uma bandeja com bordas para conter a bagunça",
+      ],
+      steps: [
+        "Coloque o amido de milho na tigela grande.",
+        "Acrescente o corante à água, se quiser que o oobleck fique colorido.",
+        "Despeje a água devagar sobre o amido, mexendo enquanto isso; não coloque tudo de uma vez.",
+        "Continue misturando até o oobleck ficar sem pelotinhas secas e parecer estranho de mexer.",
+        "Tente cutucar a superfície rapidamente com o dedo, depois afunde o dedo devagar e note a diferença.",
+        "Pegue um punhado e aperte com força, depois abra a mão e deixe escorrer.",
+        "Conversem sobre o que vocês notam: quando ele parece sólido? Quando ele escorre feito líquido?",
+      ],
+      safety:
+        "O oobleck é feito com ingredientes seguros para o contato com a pele, mas pode sujar bastante. Evite jogá-lo pelo ralo, porque o amido pode se acumular dentro dos canos e entupir. Em vez disso, deixe o oobleck que sobrar secar por completo na bandeja e depois raspe e jogue no lixo. Lave as tigelas e as mãos com água morna e deixe qualquer resíduo secar antes de raspar.",
+      challenge:
+        "Experimente mudar a proporção de amido e água, acrescentando um pouco mais de cada um, e note como a textura muda. Você também pode colocar um saquinho com oobleck sobre uma caixa de som e ver a gosma dançar quando você toca uma música com bastante grave.",
+    },
+    {
+      slug: "rubber-band-powered-car",
+      title: "Carrinho Movido a Elástico",
+      category: "Engenharia",
+      categoryKey: "engineering",
+      difficulty: "Fácil",
+      time: "1 a 2 horas",
+      image: "/images/projects/rubber-band-powered-car.jpg",
+      description:
+        "Um carrinho caseiro simples que anda sem eletricidade nem pilhas, usando só a energia guardada em um elástico torcido para empurrar as rodas e o eixo para a frente.",
+      introduction: [
+        "Um carrinho movido a elástico é um dos projetos mais satisfatórios, porque você faz todo o trabalho: enrola, solta em uma superfície plana e vê a física cuidar do resto.",
+        "Dá para montar com materiais de casa e depois começar a ajustar: troque o elástico, as rodas ou o peso do carrinho e observe exatamente como cada mudança afeta a distância percorrida.",
+      ],
+      why:
+        "O elástico guarda energia quando é torcido ou enrolado. Ao soltar o carrinho, o elástico desenrola e transfere essa energia guardada para as rodas ou para o eixo. Isso transforma energia potencial em energia cinética, que é a energia do movimento. O carrinho funciona melhor em uma superfície lisa e plana, e os estudantes podem melhorar o projeto trocando o elástico, as rodas, o comprimento ou o peso do carrinho.",
+      materials: [
+        "Papelão, EVA ou outro material leve para o corpo do carrinho",
+        "4 rodas, como tampinhas de garrafa, círculos de papelão ou rodinhas de brinquedo",
+        "2 palitos de madeira, lápis ou canudos para os eixos",
+        "Pedaços de canudo para segurar os eixos no lugar",
+        "1 ou 2 elásticos",
+        "Fita adesiva, cola e tesoura",
+        "Opcional: rodas ou elásticos de tamanhos diferentes para testar melhorias",
+      ],
+      steps: [
+        "Monte o corpo principal do carrinho usando papelão, EVA ou outro material leve.",
+        "Cole pedaços de canudo embaixo do corpo do carrinho para segurar os eixos.",
+        "Passe os palitos, lápis ou canudos pelos suportes dos eixos.",
+        "Cole as rodas com cuidado nas pontas de cada eixo, conferindo se elas giram bem.",
+        "Prenda uma ponta do elástico no corpo do carrinho e a outra ponta no eixo traseiro.",
+        "Torça ou enrole o elástico girando as rodas traseiras ou o eixo para trás.",
+        "Coloque o carrinho em uma superfície lisa e plana.",
+        "Solte o carrinho e veja-o avançar com a energia do elástico.",
+      ],
+      safety:
+        "Peça ajuda de um adulto com a tesoura e os palitos pontudos. Mantenha o elástico longe do rosto ao enrolar, porque ele pode estalar de volta. Não aponte o carrinho para ninguém ao soltá-lo.",
+      challenge:
+        "Seu carrinho consegue ir mais longe? Teste um elástico mais forte ou mais grosso, rodas de tamanhos diferentes ou um corpo mais comprido ou mais curto. Veja se um carrinho mais leve vai mais longe que um mais pesado e dispute com outra equipe para ver qual projeto ganha.",
+    },
+    {
+      slug: "lemon-powered-batteries",
+      title: "Pilhas de Limão",
+      category: "Ciências",
+      categoryKey: "science",
+      difficulty: "Fácil",
+      time: "30 a 45 minutos",
+      image: "/images/projects/lemon-powered-batteries.jpg",
+      description:
+        "Transforme limões em uma pilha de verdade e acenda um LED descobrindo como a energia química vira energia elétrica.",
+      introduction: [
+        "Você sabia que um limão pode acender uma luz? Parece impossível, mas o suco de limão tem ácido, capaz de iniciar uma reação química entre dois metais diferentes e produzir uma correntinha elétrica.",
+        "Este projeto mostra como as pilhas de verdade funcionam, por que os cientistas combinam metais diferentes e para que servem os eletrólitos, com algo que você acha na sua cozinha.",
+      ],
+      why:
+        "Uma pilha de limão funciona graças a uma reação química entre dois metais diferentes e o suco ácido do limão. O prego de zinco e a peça de cobre funcionam como eletrodos, enquanto o suco de limão funciona como eletrólito. Os elétrons vão do zinco para o cobre pelos fios, criando uma correntinha elétrica. Um limão sozinho pode não gerar energia suficiente, então ligar vários limões em série aumenta a tensão total.",
+      materials: [
+        "2 a 4 limões",
+        "Moedas de cobre, fio de cobre ou tiras de cobre",
+        "Pregos de zinco ou pregos galvanizados (lixados de leve para limpar a superfície)",
+        "Fios com garras jacaré",
+        "Um LED pequeno, um relógio digital ou um voltímetro",
+        "Papel-toalha para a limpeza",
+      ],
+      steps: [
+        "Role os limões de leve sobre a mesa para soltar o suco por dentro.",
+        "Espete um prego de zinco e uma peça de cobre em cada limão, conferindo se eles não se encostam.",
+        "Ligue a peça de cobre de um limão ao prego de zinco do limão seguinte usando as garras jacaré.",
+        "Continue ligando os limões em série, se estiver usando vários.",
+        "Ligue as duas pontas livres da corrente a um LED, a um reloginho digital ou a um voltímetro.",
+        "Veja se o aparelho liga ou quanta tensão os limões produzem.",
+      ],
+      safety:
+        "O suco de limão é ácido e pode arder se cair nos olhos, então lave as mãos depois de mexer com limões cortados. Peça ajuda de um adulto para espetar os pregos e ligar os fios. Não coloque os fios nem as garras na boca.",
+      challenge:
+        "Você consegue acender um LED com mais de um limão? Tente acrescentar mais limões e veja o que muda. Troque o limão por uma batata, uma laranja ou uma maçã e compare qual fruta produz mais tensão.",
+    },
+    {
+      slug: "balloon-powered-car",
+      title: "Carrinho Movido a Balão",
+      category: "Engenharia",
+      categoryKey: "engineering",
+      difficulty: "Fácil",
+      time: "1 a 2 horas",
+      image: "/images/projects/balloon-powered-car.jpg",
+      description:
+        "Construa um carrinho que anda com ar e descubra como a Terceira Lei de Newton transforma um balão em um motor potente.",
+      introduction: [
+        "Um carrinho movido a balão usa o ar que sai do balão para se empurrar para a frente. Quando o ar escapa para trás pelo canudo, o carrinho avança. Isso é a Terceira Lei de Newton em ação.",
+        "Dá para montar com materiais recicláveis de casa e depois testar como pequenas mudanças no projeto, como o tamanho das rodas, o peso do carrinho ou o quanto o balão está bem vedado, fazem o carrinho ir mais longe.",
+      ],
+      why:
+        "Quando o balão está cheio, ele guarda energia potencial na borracha esticada e no ar comprimido. Ao soltar o balão, o ar escapa para trás pelo canudo. Esse empurrão para trás cria uma reação igual e contrária que impulsiona o carrinho para a frente. A energia potencial guardada vira energia cinética, que é a energia do movimento.",
+      materials: [
+        "Um pedaço pequeno de papelão rígido ou uma garrafa PET para o corpo do carrinho",
+        "4 tampinhas de garrafa para as rodas",
+        "2 palitos de madeira ou canudos resistentes para os eixos",
+        "4 pedaços curtos de canudo para segurar os eixos",
+        "1 balão",
+        "1 canudo",
+        "Fita adesiva, tesoura e cola",
+      ],
+      steps: [
+        "Cole pedaços de canudo embaixo do corpo do carrinho para segurar os eixos.",
+        "Passe os palitos ou canudos pelos suportes dos eixos.",
+        "Cole as tampinhas nas pontas de cada eixo para fazer as rodas.",
+        "Encaixe um canudo no balão e prenda com fita, para o ar não vazar.",
+        "Cole o motor de balão e canudo em cima do carrinho, com o canudo apontando para trás.",
+        "Encha o balão, aperte o canudo, coloque o carrinho em uma superfície plana e solte.",
+      ],
+      safety:
+        "Peça ajuda de um adulto com a tesoura e os palitos pontudos. Coloque o carrinho em uma superfície plana e segura antes de soltar, e mantenha os dedos longe das rodas e dos eixos girando durante o teste.",
+      challenge:
+        "Seu carrinho consegue ir mais longe? Tente rodas maiores, deixe o corpo do carrinho mais leve, faça uma ligação de balão mais bem vedada ou dispute com outra equipe para ver qual projeto ganha.",
+    },
+  ],
 }
 
 const projectDisplayOrder = new Map(

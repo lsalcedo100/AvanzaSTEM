@@ -11,6 +11,7 @@ import {
   introToAiWeekPath,
 } from "@/features/curriculums/intro-to-ai"
 import type { CourseWeek } from "@/features/curriculums/intro-to-ai-types"
+import { useLanguage } from "@/components/providers/language-provider"
 import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { ConfirmDialog, SaveState } from "@/components/pages/intro-to-ai/ui"
 import { IntroToAiVocabulary } from "@/components/pages/intro-to-ai/vocabulary"
@@ -35,28 +36,17 @@ import {
 const c = introToAiCourse
 const TOTAL_LESSONS = c.weeks.reduce((n, w) => n + w.lessons.length, 0)
 
+const AI_PHOTO_SRCS = [
+  "/images/workshops/AI Workshop Description.JPG",
+  "/images/shared/ai-workshop.jpg",
+  "/images/workshops/past-coding.jpg",
+]
+
 type WeekStatus = "completed" | "in-progress" | "not-started"
 
-const COURSE_PROMISE = [
-  "Identify what AI is and is not",
-  "Organize data and train simple models",
-  "Test image-classification systems",
-  "Build a rule-based chatbot and a recommendation system",
-  "Investigate bias, privacy, and misinformation",
-  "Design a responsible AI helper",
-]
-
-const MATERIALS = [
-  { label: "A web browser", note: "on a school Chromebook, tablet, or laptop" },
-  { label: "A keyboard, mouse, or touchscreen", note: "" },
-  { label: "A notebook or printed worksheet", note: "optional" },
-  { label: "Built-in fictional datasets", note: "included — no downloads" },
-  { label: "A camera or image upload", note: "optional, only in some later activities" },
-  { label: "No microphone required", note: "" },
-  { label: "No external AI account required", note: "" },
-]
-
 export function IntroToAiCourseContent() {
+  const { t } = useLanguage()
+  const al = t.courseLanding.ai
   const p = useIntroToAiProgress()
   const started = p.loaded && p.percent > 0
   const completedLessons = c.weeks.reduce(
@@ -69,43 +59,39 @@ export function IntroToAiCourseContent() {
   return (
     <CourseShell theme={courseThemes.ai}>
       <CourseHero
-        eyebrow="6-week AI course · Grades 5-8"
-        title={c.title}
-        lead={c.subtitle}
-        facts={[
-          { label: "Ages", value: c.gradeRange },
-          { label: "Length", value: `${c.totalWeeks} weeks` },
-          { label: "Total time", value: c.estimatedTotalTime },
-          { label: "You need", value: "A browser" },
-        ]}
+        eyebrow={al.heroEyebrow}
+        title={al.title}
+        lead={al.lead}
+        facts={al.facts}
         media={
           <div className="rounded-lg bg-white p-6 shadow-[0_24px_60px_-28px_rgba(26,26,46,0.5)] sm:p-10">
             <JourneyDiagram className="mx-auto aspect-8/3 w-full" />
           </div>
         }
-        mediaCaption="Six weeks from &ldquo;what even is AI?&rdquo; to designing a responsible AI helper of your own."
-        note="No coding required. No camera, no microphone, and no external AI account."
+        mediaCaption={al.mediaCaption}
+        note={al.note}
       >
         <CourseActions>
           <CourseButton href={resumeHref}>
-            {started ? `Continue Week ${p.resume.week}` : "Begin the course"}
+            {started ? al.continueWeekTpl.replace("{n}", String(p.resume.week)) : al.beginBtn}
           </CourseButton>
-          <CourseTextLink href="#roadmap">See the six weeks</CourseTextLink>
+          <CourseTextLink href="#roadmap">{al.seeWeeksBtn}</CourseTextLink>
         </CourseActions>
         {started && resumeLesson && (
           <p className="mt-4 text-sm font-semibold text-avanza-dark/70">
-            Next up: <span className="text-avanza-dark">{resumeLesson.title}</span>
+            {al.nextUpLabel} <span className="text-avanza-dark">{resumeLesson.title}</span>
           </p>
         )}
       </CourseHero>
 
       <CourseJumpNav
+        label={t.courseLanding.onThisPage}
         items={[
-          { href: "#roadmap", label: "The 6 weeks" },
-          { href: "#outcomes", label: "What you'll learn" },
-          { href: "#final-project", label: "Final project" },
-          { href: "#vocabulary", label: "Vocabulary" },
-          { href: "#notes", label: "Your notes" },
+          { href: "#roadmap", label: al.jumpNav[0] },
+          { href: "#outcomes", label: al.jumpNav[1] },
+          { href: "#final-project", label: al.jumpNav[2] },
+          { href: "#vocabulary", label: al.jumpNav[3] },
+          { href: "#notes", label: al.jumpNav[4] },
         ]}
       />
 
@@ -128,66 +114,39 @@ export function IntroToAiCourseContent() {
       {/* What students do, and what they can do afterwards. */}
       <CourseSection
         id="outcomes"
-        eyebrow="What you'll do"
-        title="You don't read about AI. You take it apart."
-        lead="Every week students train, test, and break a real system - then work out why it behaved the way it did."
+        eyebrow={al.outcomesEyebrow}
+        title={al.outcomesTitle}
+        lead={al.outcomesLead}
         aside={
           <StatRow
             stats={[
-              { value: `${TOTAL_LESSONS}`, label: "Lessons" },
-              { value: "0", label: "Lines of code" },
+              { value: `${TOTAL_LESSONS}`, label: al.statLessons },
+              { value: "0", label: al.statCode },
             ]}
           />
         }
       >
-        <CheckGrid items={COURSE_PROMISE} />
+        <CheckGrid items={al.coursePromise} />
 
-        <h3 className="mt-14 text-2xl font-extrabold text-avanza-dark">
-          What you&apos;ll be able to do by the end
-        </h3>
+        <h3 className="mt-14 text-2xl font-extrabold text-avanza-dark">{al.byEndTitle}</h3>
         <div className="mt-6">
-          <CheckGrid items={c.learningOutcomes} />
+          <CheckGrid items={al.learningOutcomes} />
         </div>
       </CourseSection>
 
       {/* Real AI workshop photos. */}
-      <CourseSection
-        tone="tint"
-        eyebrow="In the room"
-        title="Avanza teaches this in person, too"
-        lead="The course is the same one Avanza runs as a workshop in public libraries - the browser version just lets you do it at your own pace."
-      >
+      <CourseSection tone="tint" eyebrow={al.photosEyebrow} title={al.photosTitle} lead={al.photosLead}>
         <PhotoBand
-          photos={[
-            {
-              src: "/images/workshops/AI Workshop Description.JPG",
-              alt: "An Avanza STEM instructor presenting an artificial intelligence workshop to students",
-              caption:
-                "Week 1 starts with the question every kid actually asks: what counts as AI?",
-            },
-            {
-              src: "/images/shared/ai-workshop.jpg",
-              alt: "Students taking part in an Avanza STEM artificial intelligence workshop",
-              caption:
-                "Students sort data, train a model, and find out where it gets things wrong.",
-            },
-            {
-              src: "/images/workshops/past-coding.jpg",
-              alt: "Students working on laptops at an Avanza STEM workshop",
-              caption:
-                "Everything runs in a browser tab on a Chromebook, tablet, or laptop.",
-            },
-          ]}
+          photos={al.photos.map((photo, i) => ({
+            src: AI_PHOTO_SRCS[i],
+            alt: photo.alt,
+            caption: photo.caption,
+          }))}
         />
       </CourseSection>
 
       {/* Roadmap. */}
-      <CourseSection
-        id="roadmap"
-        eyebrow="The path"
-        title="Six weeks, six systems"
-        lead="Every week is open - jump ahead to preview, or follow the path in order."
-      >
+      <CourseSection id="roadmap" eyebrow={al.roadmapEyebrow} title={al.roadmapTitle} lead={al.roadmapLead}>
         <ol className="grid gap-4 lg:grid-cols-2">
           {c.weeks.map((w) => (
             <li key={w.id}>
@@ -198,25 +157,15 @@ export function IntroToAiCourseContent() {
       </CourseSection>
 
       {/* Final project. */}
-      <CourseSection
-        id="final-project"
-        tone="band"
-        eyebrow="Capstone"
-        title="Design a responsible AI helper"
-        lead={c.finalProject.overview}
-      >
+      <CourseSection id="final-project" tone="band" eyebrow={al.finalEyebrow} title={al.finalTitle} lead={al.finalLead}>
         <FinalProjectPreview />
       </CourseSection>
 
       {/* What you need. */}
-      <CourseSection
-        tone="tint"
-        eyebrow="What you need"
-        title="Almost certainly, you already have it"
-      >
+      <CourseSection tone="tint" eyebrow={al.needEyebrow} title={al.needTitle}>
         <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr]">
           <ul className="grid gap-x-10 border-t border-avanza-dark/10 sm:grid-cols-2">
-            {MATERIALS.map((m) => (
+            {al.materials.map((m) => (
               <li
                 key={m.label}
                 className="flex gap-4 border-b border-avanza-dark/10 py-4"
@@ -235,35 +184,19 @@ export function IntroToAiCourseContent() {
           </ul>
 
           <div className="space-y-5">
-            <Callout title="Nothing to install">
-              Every activity runs in the browser using datasets built into the course. There is
-              nothing to download and no external AI service involved.
-            </Callout>
-            <Callout title="Nothing leaves the device">
-              Progress, notes, and answers are saved only in this browser. No account, no personal
-              information, and nothing sent anywhere.
-            </Callout>
+            <Callout title={al.calloutInstallTitle}>{al.calloutInstallBody}</Callout>
+            <Callout title={al.calloutDeviceTitle}>{al.calloutDeviceBody}</Callout>
           </div>
         </div>
       </CourseSection>
 
       {/* Vocabulary. */}
-      <CourseSection
-        id="vocabulary"
-        eyebrow="Reference"
-        title="Vocabulary"
-        lead="Every key term from the course, defined in language a fifth grader can actually use."
-      >
+      <CourseSection id="vocabulary" eyebrow={al.vocabularyEyebrow} title={al.vocabularyTitle} lead={al.vocabularyLead}>
         <IntroToAiVocabulary />
       </CourseSection>
 
       {/* Notes. */}
-      <CourseSection
-        id="notes"
-        tone="paper"
-        eyebrow="Your work"
-        title="Notes & reflections"
-      >
+      <CourseSection id="notes" tone="paper" eyebrow={al.notesEyebrow} title={al.notesTitle}>
         <div className="max-w-3xl">
           <IntroToAiNotes progress={p} />
           <div className="mt-8">
@@ -273,15 +206,16 @@ export function IntroToAiCourseContent() {
       </CourseSection>
 
       <CourseClosing
-        title={started ? "Pick up where you left off" : "Ready to find out how AI actually works?"}
+        title={started ? al.closingStartedTitle : al.closingTitle}
         description={
           started
-            ? `You are ${p.percent}% through the course. Your notes and answers are saved on this device.`
-            : "Start with Week 1 and work through all six weeks at your own pace. No account, no cost, nothing to install."
+            ? al.closingStartedDescTpl.replace("{percent}", String(p.percent))
+            : al.closingDesc
         }
+        backLabel={t.courseLanding.backToCurriculums}
       >
         <CourseButton href={resumeHref} className="bg-avanza-green text-avanza-dark">
-          {started ? `Continue Week ${p.resume.week}` : "Begin the course"}
+          {started ? al.continueWeekTpl.replace("{n}", String(p.resume.week)) : al.beginBtn}
         </CourseButton>
       </CourseClosing>
     </CourseShell>
@@ -301,12 +235,18 @@ function ProgressSummary({
   resumeHref: string
   resumeTitle?: string
 }) {
+  const { t } = useLanguage()
+  const al = t.courseLanding.ai
   const savedLabel = p.savedAt ? formatSaved(p.savedAt) : null
+  const percentText = al.percentCompleteTpl.replace("{percent}", String(p.percent))
+  const lessonsText = al.lessonsCountTpl
+    .replace("{done}", String(completedLessons))
+    .replace("{total}", String(TOTAL_LESSONS))
   return (
     <div>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-sm font-bold text-avanza-dark/55">Your progress</h2>
-        {savedLabel && <SaveState status="idle" idleHint={`Last saved ${savedLabel}`} />}
+        <h2 className="text-sm font-bold text-avanza-dark/55">{al.progressTitle}</h2>
+        {savedLabel && <SaveState status="idle" idleHint={al.lastSavedTpl.replace("{x}", savedLabel)} />}
       </div>
 
       <div
@@ -315,24 +255,24 @@ function ProgressSummary({
         aria-valuenow={p.percent}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-valuetext={`${p.percent}% complete, ${completedLessons} of ${TOTAL_LESSONS} lessons`}
+        aria-valuetext={`${percentText}, ${lessonsText}`}
       >
         <div className="h-full rounded-full bg-avanza-green" style={{ width: `${p.percent}%` }} />
       </div>
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-foreground">
-          <span className="font-bold">{p.percent}% complete</span>
-          <span className="text-muted-foreground"> · {completedLessons} of {TOTAL_LESSONS} lessons</span>
+          <span className="font-bold">{percentText}</span>
+          <span className="text-muted-foreground"> · {lessonsText}</span>
           {resumeTitle && (
-            <span className="text-muted-foreground"> · Current: Week {p.resume.week}, {resumeTitle}</span>
+            <span className="text-muted-foreground"> · {al.currentTpl.replace("{n}", String(p.resume.week)).replace("{title}", resumeTitle)}</span>
           )}
         </p>
         <Link
           href={resumeHref}
           className="inline-flex items-center gap-1 text-sm font-semibold text-avanza-green-dark hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 rounded"
         >
-          Continue <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+          {al.continueLink} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
         </Link>
       </div>
     </div>
@@ -340,6 +280,8 @@ function ProgressSummary({
 }
 
 function RoadmapWeek({ week, p }: { week: CourseWeek; p: ReturnType<typeof useIntroToAiProgress> }) {
+  const { t } = useLanguage()
+  const al = t.courseLanding.ai
   const { completed, total } = p.weekCompletion(week.week)
   const status: WeekStatus =
     p.loaded && completed === total && total > 0
@@ -349,7 +291,8 @@ function RoadmapWeek({ week, p }: { week: CourseWeek; p: ReturnType<typeof useIn
         : "not-started"
   const activityCount = week.lessons.filter((l) => l.activity).length
 
-  const statusText = status === "completed" ? "Completed" : status === "in-progress" ? "In progress" : "Not started"
+  const statusText = status === "completed" ? al.statusCompleted : status === "in-progress" ? al.statusInProgress : al.statusNotStarted
+  const weekCopy = al.weeks[week.week - 1]
   const statusClass =
     status === "completed"
       ? "text-avanza-green-dark"
@@ -377,13 +320,17 @@ function RoadmapWeek({ week, p }: { week: CourseWeek; p: ReturnType<typeof useIn
       </span>
       <span className="flex-1">
         <span className="block text-lg font-extrabold text-avanza-dark underline decoration-transparent decoration-2 underline-offset-[6px] transition-colors group-hover:decoration-[var(--c-accent)]">
-          Week {week.week}: {week.title}
+          {al.weekLabelTpl.replace("{n}", String(week.week)).replace("{title}", weekCopy.title)}
         </span>
         <span className="mt-1 block text-base leading-relaxed text-avanza-dark/70">
-          {week.subtitle}
+          {weekCopy.subtitle}
         </span>
         <span className="mt-2 block text-sm text-avanza-dark/50">
-          {week.estimatedTime} · {week.lessons.length} lessons · {activityCount} activities ·{" "}
+          {al.weekMetaTpl
+            .replace("{time}", week.estimatedTime)
+            .replace("{lessons}", String(week.lessons.length))
+            .replace("{activities}", String(activityCount))}{" "}
+          ·{" "}
           <span className={`font-semibold ${statusClass}`}>{statusText}</span>
         </span>
       </span>
@@ -392,24 +339,28 @@ function RoadmapWeek({ week, p }: { week: CourseWeek; p: ReturnType<typeof useIn
 }
 
 function FinalProjectPreview() {
+  const { t } = useLanguage()
+  const al = t.courseLanding.ai
   const fp = c.finalProject
-  const required = fp.requirements.filter((r) => r.required)
+  const required = fp.requirements
+    .map((r, i) => ({ r, label: al.requirementLabels[i] }))
+    .filter(({ r }) => r.required)
   return (
     <div>
       <div className="grid gap-x-12 gap-y-10 lg:grid-cols-2">
         <div>
           <h3 className="border-b-2 border-[var(--c-accent)] pb-2 text-base font-extrabold text-avanza-dark">
-            Your project will include
+            {al.projectIncludeHeading}
           </h3>
           <ul className="mt-4 space-y-3">
-            {required.map((r) => (
+            {required.map(({ r, label }) => (
               <li key={r.id} className="flex gap-3 text-base leading-relaxed text-avanza-dark/85">
                 <Check
                   className="mt-1 h-4 w-4 flex-none text-[var(--c-accent-dark)]"
                   strokeWidth={3}
                   aria-hidden
                 />
-                {r.label}
+                {label}
               </li>
             ))}
           </ul>
@@ -417,14 +368,14 @@ function FinalProjectPreview() {
 
         <div>
           <h3 className="border-b-2 border-[var(--c-accent)] pb-2 text-base font-extrabold text-avanza-dark">
-            Choose a direction
+            {al.chooseDirectionHeading}
           </h3>
           <ul className="mt-4 space-y-4">
-            {fp.choices.map((choice) => (
+            {fp.choices.map((choice, i) => (
               <li key={choice.id}>
-                <p className="font-bold text-avanza-dark">{choice.name}</p>
+                <p className="font-bold text-avanza-dark">{al.choices[i].name}</p>
                 <p className="mt-0.5 text-sm leading-relaxed text-avanza-dark/70">
-                  {choice.scenario}
+                  {al.choices[i].scenario}
                 </p>
               </li>
             ))}
@@ -437,33 +388,30 @@ function FinalProjectPreview() {
           href={`${introToAiPath}/final-project`}
           className="text-base font-bold text-avanza-dark underline decoration-[var(--c-accent)] decoration-2 underline-offset-[6px] transition-all hover:decoration-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
         >
-          Open the project studio
+          {al.openStudioLink}
         </Link>
-        <p className="text-sm text-avanza-dark/60">
-          You can preview the project any time — you&apos;ll build it in Week 6.
-        </p>
+        <p className="text-sm text-avanza-dark/60">{al.previewNote}</p>
       </div>
     </div>
   )
 }
 
 function ManageProgress({ p }: { p: ReturnType<typeof useIntroToAiProgress> }) {
+  const { t } = useLanguage()
+  const al = t.courseLanding.ai
   const [dialogOpen, setDialogOpen] = useState(false)
   const [announce, setAnnounce] = useState("")
 
   const confirmReset = () => {
     p.reset()
     setDialogOpen(false)
-    setAnnounce("Your progress for this course has been reset.")
+    setAnnounce(al.resetAnnounce)
   }
 
   return (
     <div className="rounded-lg border border-border p-5">
-      <h2 className="text-sm font-bold text-foreground">Manage your progress</h2>
-      <p className="mt-1 text-xs text-muted-foreground">
-        Your progress, notes, and answers are saved only in this browser on this device. Nothing is sent anywhere, and no personal
-        information is required.
-      </p>
+      <h2 className="text-sm font-bold text-foreground">{al.manageTitle}</h2>
+      <p className="mt-1 text-xs text-muted-foreground">{al.manageBody}</p>
 
       <div className="mt-4 flex flex-wrap items-center gap-4">
         <button
@@ -472,13 +420,13 @@ function ManageProgress({ p }: { p: ReturnType<typeof useIntroToAiProgress> }) {
           disabled={!p.loaded}
           className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:border-avanza-orange hover:text-avanza-orange-dark disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
         >
-          Reset course progress
+          {al.resetBtn}
         </button>
         <SaveState status={p.saveStatus} idleHint="" />
       </div>
 
       <details className="mt-5 border-t border-border pt-4">
-        <summary className="cursor-pointer text-sm font-semibold text-foreground">For teachers</summary>
+        <summary className="cursor-pointer text-sm font-semibold text-foreground">{al.forTeachers}</summary>
         <label className="mt-3 flex items-center gap-3 text-sm text-muted-foreground">
           <input
             type="checkbox"
@@ -487,7 +435,7 @@ function ManageProgress({ p }: { p: ReturnType<typeof useIntroToAiProgress> }) {
             onChange={(e) => p.setUnlock(e.target.checked)}
             className="h-4 w-4 rounded border-border text-avanza-green focus-visible:ring-avanza-green"
           />
-          <span>Mark the course as unlocked for demos (also unlocks the completion page).</span>
+          <span>{al.unlockLabel}</span>
         </label>
       </details>
 
@@ -499,10 +447,10 @@ function ManageProgress({ p }: { p: ReturnType<typeof useIntroToAiProgress> }) {
       <ConfirmDialog
         open={dialogOpen}
         destructive
-        title="Reset course progress?"
-        description="This erases your saved progress, notes, reflections, knowledge-check answers, final-project plan, and certificate for the Intro to Artificial Intelligence course on this device. Progress for other courses is not affected. This cannot be undone."
-        confirmLabel="Reset this course"
-        cancelLabel="Cancel"
+        title={al.dialogTitle}
+        description={al.dialogDesc}
+        confirmLabel={al.dialogConfirm}
+        cancelLabel={al.dialogCancel}
         onConfirm={confirmReset}
         onCancel={() => setDialogOpen(false)}
       />

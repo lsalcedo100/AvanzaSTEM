@@ -110,6 +110,11 @@ const projectsIndexMetadataByLanguage: Record<Language, { title: string; descrip
     description:
       "为儿童提供免费的动手 STEM 项目：搭建桥梁、制作电路灯、用 Python 编程、发射火山等。为西班牙裔学生提供的分步指南。",
   },
+  pt: {
+    title: "Projetos de STEM Gratuitos para Crianças: Pontes, Circuitos e Python",
+    description:
+      "Projetos de STEM gratuitos e passo a passo para crianças, pais e professores: pontes treliçadas, circuitos simples, programas em Python, carrinhos a elástico e experimentos de feira de ciências.",
+  },
 }
 
 export function generateProjectsIndexMetadata(language: Language = "en"): Metadata {

@@ -201,44 +201,60 @@ export type InternationalPartner = {
   id: string
   name: string
   country: PartnerCountry
+  lat: number
+  lng: number
 }
 
 /**
  * Libraries and cultural institutions abroad that are in planning conversations
  * to run the Maker Mindset Series in their communities. These are not New
- * Jersey venues and carry no coordinates: the finder lists them in a dedicated
- * "international partners" section and never plots them on the NJ map or ranks
- * them by ZIP distance. Ordered strongest-interest first within each country.
+ * Jersey venues: the finder lists them in a dedicated "international partners"
+ * section and plots them on the map (visible when the user zooms out), but they
+ * are excluded from the New Jersey auto-framing and ZIP distance ranking.
+ * Ordered strongest-interest first within each country. District-level
+ * coordinates are used where an exact venue could not be geocoded.
  */
 export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
   {
     id: "llano-grande",
     name: "Biblioteca Municipal de Llano Grande",
     country: "EC",
+    lat: -0.112,
+    lng: -78.4448,
   },
   {
     id: "bnp-gestion-cultural",
     name: "Biblioteca Nacional del Perú – Gestión Cultural",
     country: "PE",
+    lat: -12.0878,
+    lng: -77.0051,
   },
   {
     id: "san-isidro-infantil",
     name: "Biblioteca Infantil de San Isidro",
     country: "PE",
+    lat: -12.0979,
+    lng: -77.0354,
   },
   {
     id: "carmen-checa-la-victoria",
     name: "Estación de Biblioteca Pública “Carmen Checa de Silva” – La Victoria",
     country: "PE",
+    lat: -12.074,
+    lng: -77.0182,
   },
   {
     id: "rimac",
     name: "Estación Biblioteca Pública Rímac",
     country: "PE",
+    lat: -12.0203,
+    lng: -77.0355,
   },
   {
     id: "red-nacional-colombia",
     name: "Red Nacional de Bibliotecas Públicas de Colombia",
     country: "CO",
+    lat: 4.6096,
+    lng: -74.0685,
   },
 ]

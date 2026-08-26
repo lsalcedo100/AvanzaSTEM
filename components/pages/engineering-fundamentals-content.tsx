@@ -1,3 +1,6 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
 import {
   EngineeringCourseProgress,
   EngineeringLessonList,
@@ -6,7 +9,6 @@ import {
 import {
   engineeringFundamentalsCurriculum,
   engineeringLessonPath,
-  type EngineeringDesignStep,
 } from "@/features/curriculums/engineering-fundamentals"
 import {
   Callout,
@@ -39,75 +41,59 @@ import {
  * the one real diagram and recolored to the course accent.
  */
 export function EngineeringFundamentalsContent() {
+  const { t } = useLanguage()
+  const el = t.courseLanding.engineering
   const c = engineeringFundamentalsCurriculum
   const firstLesson = c.lessons[0]
+  const photoSrcs = [
+    "/images/projects/popsicle-stick-bridge/cover.jpg",
+    "/images/workshops/upcoming-bridge-building.jpg",
+    "/images/projects/simple-circuit-light/cover.jpg",
+  ]
 
   return (
     <CourseShell theme={courseThemes.engineering}>
       <CourseHero
-        eyebrow="6-week engineering course"
-        title={c.title}
-        lead={c.subtitle}
-        facts={[
-          { label: "Ages", value: c.gradeRange },
-          { label: "Length", value: `${c.totalLessons} lessons` },
-          { label: "Per lesson", value: c.estimatedTimePerLesson },
-          { label: "You need", value: "Paper & tape" },
-        ]}
+        eyebrow={el.heroEyebrow}
+        title={el.title}
+        lead={el.lead}
+        facts={el.facts}
         media={{
           src: "/images/workshops/past-engineering.jpg",
           alt: "Students building a structure together at an Avanza STEM engineering workshop",
         }}
-        mediaCaption="Six challenges. Build it, test it, watch it fail, make it better."
-        note="No computer, no kit, and no engineering background needed."
+        mediaCaption={el.mediaCaption}
+        note={el.note}
       >
         <CourseActions>
-          <CourseButton href={engineeringLessonPath(firstLesson.slug)}>Start Lesson 1</CourseButton>
-          <CourseTextLink href="#builds">See what you&apos;ll build</CourseTextLink>
+          <CourseButton href={engineeringLessonPath(firstLesson.slug)}>{el.startBtn}</CourseButton>
+          <CourseTextLink href="#builds">{el.buildsBtn}</CourseTextLink>
         </CourseActions>
       </CourseHero>
 
       <CourseJumpNav
+        label={t.courseLanding.onThisPage}
         items={[
-          { href: "#builds", label: "What you'll build" },
-          { href: "#lessons", label: "The 6 lessons" },
-          { href: "#process", label: "How it works" },
-          { href: "#materials", label: "Materials" },
-          { href: "#grown-ups", label: "For grown-ups" },
+          { href: "#builds", label: el.jumpNav[0] },
+          { href: "#lessons", label: el.jumpNav[1] },
+          { href: "#process", label: el.jumpNav[2] },
+          { href: "#materials", label: el.jumpNav[3] },
+          { href: "#grown-ups", label: el.jumpNav[4] },
         ]}
       />
 
       {/* The builds - photos first, because the builds are the whole pitch. */}
-      <CourseSection
-        id="builds"
-        tone="tint"
-        eyebrow="The builds"
-        title="Six things you'll actually make"
-        lead="Every lesson ends with something you can hold, load up, knock over, and rebuild better. All of it comes from paper, cardboard, tape, and string."
-      >
+      <CourseSection id="builds" tone="tint" eyebrow={el.buildsEyebrow} title={el.buildsTitle} lead={el.buildsLead}>
         <PhotoBand
-          photos={[
-            {
-              src: "/images/projects/popsicle-stick-bridge/cover.jpg",
-              alt: "A bridge built from popsicle sticks spanning between two supports",
-              caption:
-                "Bridges and towers: find out how shape - not strength - carries the weight.",
-            },
-            {
-              src: "/images/workshops/upcoming-bridge-building.jpg",
-              alt: "Students testing a hand-built bridge at an Avanza STEM building workshop",
-              caption: "Load testing with coins and washers, then redesigning what buckled.",
-            },
-            {
-              src: "/images/projects/simple-circuit-light/cover.jpg",
-              alt: "A simple hand-built circuit lighting a small bulb",
-              caption: "Machines and mechanisms that move, lift, and light up when you build them right.",
-            },
-          ]}
+          photos={el.photos.map((photo, i) => ({
+            src: photoSrcs[i],
+            alt: photo.alt,
+            caption: photo.caption,
+          }))}
         />
 
         <ol className="mt-12 grid gap-x-12 border-t border-avanza-dark/10 sm:grid-cols-2 lg:grid-cols-3">
-          {c.lessons.map((lesson) => (
+          {c.lessons.map((lesson, i) => (
             <li
               key={lesson.slug}
               className="flex gap-5 border-b border-avanza-dark/10 py-6"
@@ -119,8 +105,8 @@ export function EngineeringFundamentalsContent() {
                 {lesson.isFinal ? "06" : String(lesson.order).padStart(2, "0")}
               </span>
               <div>
-                <p className="text-lg font-extrabold text-avanza-dark">{lesson.projectName}</p>
-                <p className="mt-1.5 text-sm leading-relaxed text-avanza-dark/70">{lesson.title}</p>
+                <p className="text-lg font-extrabold text-avanza-dark">{el.lessons[i].projectName}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-avanza-dark/70">{el.lessons[i].title}</p>
               </div>
             </li>
           ))}
@@ -129,29 +115,23 @@ export function EngineeringFundamentalsContent() {
 
       {/* Learning goals. */}
       <CourseSection
-        eyebrow="What students learn"
-        title="Engineering is a way of thinking, not a subject"
-        lead={c.summary}
+        eyebrow={el.goalsEyebrow}
+        title={el.goalsTitle}
+        lead={el.goalsLead}
         aside={
           <StatRow
             stats={[
-              { value: `${c.totalLessons}`, label: "Hands-on builds" },
-              { value: "$0", label: "Special equipment" },
+              { value: `${c.totalLessons}`, label: el.statBuilds },
+              { value: "$0", label: el.statEquipment },
             ]}
           />
         }
       >
-        <CheckGrid items={c.learningGoals} />
+        <CheckGrid items={el.learningGoals} />
       </CourseSection>
 
       {/* Lesson list + progress. */}
-      <CourseSection
-        id="lessons"
-        tone="tint"
-        eyebrow="The path"
-        title="Six lessons, in order"
-        lead="Each one teaches an engineering idea, then puts it to work in a build you test and improve. Your progress saves on this device - no account needed."
-      >
+      <CourseSection id="lessons" tone="tint" eyebrow={el.lessonsEyebrow} title={el.lessonsTitle} lead={el.lessonsLead}>
         <div className="mb-10 max-w-2xl">
           <EngineeringCourseProgress />
         </div>
@@ -159,70 +139,30 @@ export function EngineeringFundamentalsContent() {
       </CourseSection>
 
       {/* The design process, on dark. */}
-      <CourseSection
-        id="process"
-        tone="dark"
-        eyebrow="The method"
-        title="The loop real engineers use"
-        lead="Students do not aim for a perfect first try. They build something testable, find out what fails, and improve it. The loop repeats until the design meets the challenge."
-      >
+      <CourseSection id="process" tone="dark" eyebrow={el.processEyebrow} title={el.processTitle} lead={el.processLead}>
         <div className="grid items-center gap-12 lg:grid-cols-[320px_1fr]">
-          <DesignProcessDiagram steps={c.designProcess} />
-          <StepFlow
-            dark
-            columns={2}
-            steps={c.designProcess.map((step) => ({
-              title: step.title,
-              description: step.description,
-            }))}
-          />
+          <DesignProcessDiagram steps={el.designProcess} ariaLabel={el.diagramAria} />
+          <StepFlow dark columns={2} steps={el.designProcess} />
         </div>
       </CourseSection>
 
       {/* Materials. */}
-      <CourseSection
-        id="materials"
-        eyebrow="Shopping list"
-        title="What to have on hand"
-        lead="Everything is common and low-cost. Gather what you can and add the rest over time - no lesson is blocked by one missing item."
-      >
-        <MaterialsGrid groups={c.materialGroups} />
+      <CourseSection id="materials" eyebrow={el.materialsEyebrow} title={el.materialsTitle} lead={el.materialsLead}>
+        <MaterialsGrid groups={el.materialGroups} />
         <div className="mt-8">
-          <Callout title="Good to know">
-            {c.materialsNote}
-          </Callout>
+          <Callout title={el.materialsNoteTitle}>{el.materialsNote}</Callout>
         </div>
       </CourseSection>
 
       {/* Parents and teachers. */}
-      <CourseSection
-        id="grown-ups"
-        tone="paper"
-        eyebrow="For grown-ups"
-        title="You do not need an engineering background"
-        lead="The hardest part of running this course is resisting the urge to fix the design yourself. Here is what makes the lessons work."
-      >
-        <CheckGrid
-          columns={2}
-          items={[
-            "Let students test imperfect designs. A design that fails a test is not a mistake - it is the information used to improve it.",
-            'Ask questions instead of fixing the build. "What happened when you tested it?" teaches more than handing over the answer.',
-            "Every lesson ends with reflection and a redesign, so students practice improving their own work.",
-            "Each lesson links to a printable student worksheet and a parent & teacher guide with setup, safety notes, and questions to ask.",
-          ]}
-        />
+      <CourseSection id="grown-ups" tone="paper" eyebrow={el.grownupsEyebrow} title={el.grownupsTitle} lead={el.grownupsLead}>
+        <CheckGrid columns={2} items={el.parentNotes} />
         <div className="mt-8">
-          <Callout title="Where this fits">
-            {c.requirement}. It works as a library club, an after-school program, classroom
-            enrichment, or a weekend project at the kitchen table.
-          </Callout>
+          <Callout title={el.whereFitsTitle}>{el.whereFits}</Callout>
         </div>
       </CourseSection>
 
-      <CourseClosing
-        title="Ready to build something?"
-        description={`Start with the ${firstLesson.projectName} and work through all six lessons at your own pace. Your progress is saved on this device.`}
-      >
+      <CourseClosing title={el.closingTitle} description={el.closingDesc} backLabel={t.courseLanding.backToCurriculums}>
         <EngineeringResumeButton />
       </CourseClosing>
     </CourseShell>
@@ -234,7 +174,13 @@ export function EngineeringFundamentalsContent() {
  * real diagram on the page - kept from the original build, but recolored to the
  * course accent and sized to sit beside the step cards on a dark band.
  */
-function DesignProcessDiagram({ steps }: { steps: EngineeringDesignStep[] }) {
+function DesignProcessDiagram({
+  steps,
+  ariaLabel,
+}: {
+  steps: { title: string }[]
+  ariaLabel: string
+}) {
   const size = 300
   const cx = size / 2
   const cy = size / 2
@@ -267,7 +213,7 @@ function DesignProcessDiagram({ steps }: { steps: EngineeringDesignStep[] }) {
     <svg
       viewBox={`0 0 ${size} ${size}`}
       role="img"
-      aria-label="The design process is a loop: ask, imagine, plan, create, test, improve, and repeat."
+      aria-label={ariaLabel}
       className="mx-auto w-full max-w-80 text-[var(--c-accent)]"
     >
       <defs>

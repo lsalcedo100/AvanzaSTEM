@@ -10,12 +10,13 @@ export const OG_LOCALE_BY_LANGUAGE: Record<Language, string> = {
   en: "en_US",
   es: "es_US",
   zh: "zh_CN",
+  pt: "pt_BR",
 }
 
 /**
- * Canonical English headline and meta description per post. Spanish and
- * Chinese descriptions live in features/blog/localized-descriptions.ts and are
- * resolved by getBlogPostDescription(); localized titles come from
+ * Canonical English headline and meta description per post. Spanish, Chinese
+ * and Portuguese descriptions live in features/blog/localized-descriptions.ts
+ * and are resolved by getBlogPostDescription(); localized titles come from
  * localizedBlogArticles.
  */
 export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: string }> = {
@@ -446,6 +447,11 @@ const blogIndexMetadataByLanguage: Record<Language, { title: string; description
     title: "STEM 博客 - Avanza STEM",
     description:
       "为西班牙裔学生和家庭提供 STEM 技巧、有趣活动创意和灵感。Avanza STEM 博客上的科学实验、编程教程和工程项目。",
+  },
+  pt: {
+    title: "Blog de STEM: Engenharia e Ciência do Dia a Dia - Avanza STEM",
+    description:
+      "Respostas curtas e claras sobre como as coisas funcionam: pontes, asas de avião, robôs, ímãs e IA. Engenharia e ciência explicadas para crianças curiosas e seus professores.",
   },
 }
 

@@ -33,7 +33,7 @@ export type CurriculumGroup = "hands-on" | "technology"
  * Only the *structural, non-translated* facts live here (route, art, grade band,
  * length, setting, featured flag). All display strings are resolved from the
  * active locale via {@link resolveCurriculumCopy} so the listing keeps working
- * in en/es/zh. This replaces the old inline array in the page component and adds
+ * in en/es/zh/pt. This replaces the old inline array in the page component and adds
  * the numeric fields the comparison + future filters need.
  */
 export type CurriculumEntry = {

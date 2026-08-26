@@ -812,6 +812,15 @@ function formatMeterTooltip(language: string, load: number, warningStart: number
     }
     return `${load} 千克。继续增加重量来测试这座桥。`
   }
+  if (language === "pt") {
+    if (stage === "failed") {
+      return `${load} kg. A ponte falhou em ${limit} kg.`
+    }
+    if (stage === "warning") {
+      return `${load} kg. A zona de atenção começou em ${warningStart} kg. Continue com cuidado para achar o limite.`
+    }
+    return `${load} kg. Continue adicionando peso para descobrir o limite da ponte.`
+  }
   if (stage === "failed") {
     return `${load} kg. The bridge failed at ${limit} kg.`
   }
@@ -827,6 +836,9 @@ function formatResultSummary(language: string, load: number, limit: number, over
   }
   if (language === "zh") {
     return `你测试了 ${load} 千克，但桥的极限是 ${limit} 千克。这超出了 ${overLimit} 千克。`
+  }
+  if (language === "pt") {
+    return `Você testou ${load} kg, mas o limite da ponte era ${limit} kg. Isso foi ${overLimit} kg acima do limite.`
   }
   return `You're testing ${load} kg, but the bridge limit was ${limit} kg. You're ${overLimit} kg over what the bridge can hold.`
 }

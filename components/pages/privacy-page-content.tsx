@@ -193,6 +193,65 @@ const privacyCopy: Record<Language, {
       },
     ],
   },
+  pt: {
+    eyebrow: "Jurídico",
+    title: "Política de privacidade",
+    updated: "Última atualização: 7 de junho de 2026",
+    deletionSubject: "Pedido de exclusão de dados",
+    sections: [
+      {
+        title: "Quem somos",
+        paragraphs: [
+          "A Avanza STEM é um programa educativo gratuito que oferece oficinas de STEM para estudantes jovens, com foco nas comunidades hispânicas de Nova Jersey. Este site é mantido por Liam Salcedo. Se você tiver dúvidas sobre esta política, escreva para {email}.",
+        ],
+      },
+      {
+        title: "O que coletamos",
+        paragraphs: [
+          "Coletamos apenas as informações que você nos dá diretamente. Não coletamos nada automaticamente, além de dados básicos e anônimos de análise do site.",
+          "Não coletamos dados de pagamento, documentos oficiais nem informações pessoais sensíveis. Não usamos cookies de rastreamento nem redes de publicidade de terceiros.",
+          "Para reduzir spam e abuso, nossos formulários também usam um campo oculto antispam e limites de envio por endereço IP. Esses dados de prevenção de abuso não são adicionados às assinaturas nem às mensagens de contato.",
+        ],
+        bullets: [
+          { label: "Assinaturas da newsletter:", text: "Se você assinar nossa newsletter, coletamos o e-mail do pai, da mãe, do responsável ou do professor que você informar. Você pode cancelar a assinatura a qualquer momento, é só escrever para a gente." },
+          { label: "Mensagens de contato e pedidos para receber oficinas:", text: "Se você preencher nosso formulário de contato ou de parceria, coletamos seu nome, e-mail, nome do espaço ou da instituição e a mensagem que você escrever. Usamos essas informações apenas para responder ao seu pedido." },
+          { label: "Análise básica do site:", text: "O Vercel Analytics está ativo neste site e coleta dados agregados e anônimos, como visualizações de página e localização por país. A análise não coleta informações que identifiquem você pessoalmente." },
+        ],
+      },
+      {
+        title: "Como usamos suas informações",
+        bullets: [
+          { text: "Para responder às mensagens ou aos pedidos de parceria que você nos enviar." },
+          { text: "Para enviar novidades da Avanza STEM, se você assinou a newsletter." },
+          { text: "Para entender como o site é usado e poder melhorá-lo, usando apenas dados anônimos." },
+        ],
+        paragraphs: ["Nunca vendemos, alugamos nem compartilhamos suas informações pessoais com terceiros para fins de marketing."],
+      },
+      {
+        title: "Como guardamos suas informações",
+        paragraphs: [
+          "Os formulários chegam até nós pelo Resend, um serviço de e-mail transacional. Suas informações são transmitidas de forma segura e não ficam armazenadas nos nossos servidores, além do que o Resend mantém nos registros de entrega de e-mail.",
+          "Este site é hospedado na Vercel. Você pode consultar as práticas de privacidade da Vercel em vercel.com/legal/privacy-policy.",
+        ],
+      },
+      {
+        title: "Privacidade de crianças",
+        paragraphs: ["A Avanza STEM atende estudantes a partir do 2º ano. Não coletamos intencionalmente informações pessoais de menores de 13 anos sem a participação de um pai, mãe ou responsável. Nossos formulários são pensados para pais, responsáveis, professores ou equipe do local, e não para serem preenchidos por estudantes sozinhos. Se você acredita que uma criança enviou informações pessoais sem o consentimento da família, fale com a gente e vamos apagá-las imediatamente."],
+      },
+      {
+        title: "Seus direitos e exclusão de dados",
+        paragraphs: ["Você pode nos pedir a exclusão de qualquer informação pessoal que tenhamos sobre você, a qualquer momento. Para isso, escreva para {email} com o assunto \"Pedido de exclusão de dados\"."],
+      },
+      {
+        title: "Mudanças nesta política",
+        paragraphs: ["Se fizermos mudanças importantes nesta política, vamos atualizar a data de \"Última atualização\" no começo desta página. Recomendamos revisitar esta página de vez em quando."],
+      },
+      {
+        title: "Contato",
+        paragraphs: ["Para qualquer dúvida ou pedido relacionado à privacidade, fale com a gente pelo {email}."],
+      },
+    ],
+  },
 }
 
 function paragraphWithEmail(text: string) {

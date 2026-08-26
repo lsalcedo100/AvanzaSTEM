@@ -525,6 +525,176 @@ export const projectFaqs: Record<Language, Partial<Record<string, ProjectFaq[]>>
       },
     ],
   },
+  pt: {
+    "popsicle-stick-bridge": [
+      {
+        question: "Qual é o melhor projeto de ponte de palitos de picolé para iniciantes?",
+        answer:
+          "Uma ponte tipo Warren (com triângulos repetidos) é uma boa opção para iniciantes porque os triângulos distribuem o peso de forma clara e são mais fáceis de medir do que projetos curvos ou com ângulos complicados.",
+      },
+      {
+        question: "Como se faz uma ponte treliçada com palitos de picolé?",
+        answer:
+          "Primeiro monte duas treliças laterais iguais, ligue-as com peças transversais, acrescente escoras diagonais, deixe cada emenda de cola secar por completo e depois faça um teste de carga lento no centro.",
+      },
+      {
+        question: "Por que um triângulo deixa a ponte mais forte?",
+        answer:
+          "Os triângulos resistem a mudar de forma. Isso ajuda a força a percorrer os palitos em vez de deixar a estrutura se deformar em um losango frágil.",
+      },
+      {
+        question: "Quanto peso uma ponte de palitos de picolé aguenta?",
+        answer:
+          "Uma ponte feita com capricho costuma aguentar muitas vezes o próprio peso, mas o resultado depende da qualidade dos palitos, das emendas de cola, do comprimento da ponte, do tempo de secagem e de como a carga é colocada.",
+      },
+      {
+        question: "Como transformo isto em um projeto de feira de ciências ou de sala de aula?",
+        answer:
+          "Mantenha o comprimento da ponte, os materiais e o método de teste iguais e depois compare uma mudança de projeto por vez, como usar menos palitos, acrescentar reforços extras ou mudar o padrão da treliça.",
+      },
+    ],
+    "lego-robot-builder": [
+      {
+        question: "O que é o robô Super Cleanup do LEGO SPIKE Prime?",
+        answer:
+          "Super Cleanup é uma atividade do LEGO Education SPIKE Prime em que os estudantes constroem e programam um robô com garra capaz de agarrar, mover e soltar objetos.",
+      },
+      {
+        question: "Este é um projeto de robótica para iniciantes?",
+        answer:
+          "Sim. Ele funciona muito bem para iniciantes quando os estudantes montam a base primeiro, testam o motor e o sensor antes de acrescentar a garra e dividem a missão em pequenos passos de código.",
+      },
+      {
+        question: "O que os estudantes devem testar depois de montar o robô?",
+        answer:
+          "Os estudantes devem testar objetos diferentes, formatos de garra, velocidades de motor e posições de soltura, e depois anotar quais decisões de projeto deixam o robô de limpeza mais confiável.",
+      },
+      {
+        question: "Preciso do kit oficial LEGO SPIKE Prime?",
+        answer:
+          "O guia foi escrito para o kit LEGO Education SPIKE Prime #45678 ou um kit de robótica LEGO parecido que inclua um hub, motor, rodas, vigas, pinos e um mecanismo simples de garra.",
+      },
+    ],
+    "coke-mentos-experiment": [
+      {
+        question: "O que é o experimento de Coca-Cola e Mentos?",
+        answer:
+          "O experimento de Coca-Cola e Mentos é uma atividade prática em que soltar balas Mentos em uma garrafa de refrigerante provoca um gêiser de espuma que sobe rapidamente, e os estudantes podem transformá-lo em um projeto de feira de ciências de verdade, com hipótese, variáveis e medições.",
+      },
+      {
+        question: "Por que a reação entre os Mentos e o refrigerante acontece tão rápido?",
+        answer:
+          "As balas Mentos têm milhares de covinhas ásperas na superfície. Essas covinhas dão às bolhas de dióxido de carbono dissolvido vários lugares para se formar ao mesmo tempo, um processo chamado nucleação, então o gás escapa do refrigerante quase na hora e empurra o líquido para fora da garrafa.",
+      },
+      {
+        question:
+          "É melhor usar Coca-Cola Zero ou Coca-Cola comum no projeto de Mentos e Coca-Cola?",
+        answer:
+          "A Coca-Cola Zero costuma produzir um gêiser mais alto porque tem menos açúcar e uma textura mais leve, o que deixa as bolhas de dióxido de carbono subirem e escaparem com mais facilidade do que na Coca-Cola comum.",
+      },
+      {
+        question: "É seguro fazer o experimento de Coca-Cola e Mentos em casa?",
+        answer:
+          "Sim, desde que seja feito ao ar livre, em chão plano, com óculos de proteção, e que todo mundo se afaste no momento em que os Mentos caírem. Nunca aponte a garrafa para pessoas e não beba o refrigerante depois.",
+      },
+      {
+        question: "Como transformo o experimento de Coca-Cola e Mentos em um projeto de feira de ciências?",
+        answer:
+          "Escolha uma variável para testar por vez, como o tipo de refrigerante, a quantidade de Mentos, a temperatura do refrigerante ou o tamanho da garrafa, mantenha todo o resto igual e depois anote a altura do gêiser de cada tentativa em uma tabela de dados para comparar os resultados.",
+      },
+    ],
+    "baking-soda-volcano": [
+      {
+        question: "Quais materiais de casa preciso para um vulcão de bicarbonato?",
+        answer:
+          "Você precisa de bicarbonato de sódio, vinagre, uma garrafa ou copo pequeno de plástico e material para modelar, como massinha ou papel-alumínio, para dar forma ao vulcão, além de detergente e corante alimentício para uma erupção mais espumosa e colorida.",
+      },
+      {
+        question: "É seguro as crianças fazerem um vulcão de bicarbonato em casa?",
+        answer:
+          "Sim. O bicarbonato de sódio e o vinagre são ingredientes seguros e de uso alimentar. Mantenha a mistura longe dos olhos, lave as mãos depois e peça ajuda de um adulto se usar corante alimentício, porque ele mancha roupas e superfícies.",
+      },
+      {
+        question: "Qual é a reação química dentro de um vulcão de bicarbonato?",
+        answer:
+          "O bicarbonato de sódio é uma base e o vinagre é um ácido. Quando eles se juntam, reagem e produzem gás dióxido de carbono, e esse gás forma a espuma borbulhante que sai da garrafa como lava.",
+      },
+      {
+        question: "Como se limpa depois da erupção de um vulcão de bicarbonato?",
+        answer:
+          "Trabalhe sobre uma bandeja ou assadeira para conter a espuma e depois lave a bandeja, a garrafa e os materiais do vulcão com água. O líquido que sobra é uma mistura suave e não tóxica de água, sal e bicarbonato dissolvido, que pode ir pelo ralo sem problema.",
+      },
+      {
+        question: "O que as crianças aprendem com o experimento do vulcão de bicarbonato?",
+        answer:
+          "As crianças veem uma reação real entre ácido e base que produz um gás novo, praticam medir ingredientes e podem ampliar a atividade para um teste justo, mudando a quantidade de bicarbonato ou vinagre e comparando o tamanho de cada erupção.",
+      },
+    ],
+    "elephant-toothpaste-experiment": [
+      {
+        question: "O experimento da pasta de dente de elefante é seguro para crianças?",
+        answer:
+          "Dá para fazer com segurança sob supervisão de um adulto. Um adulto deve manusear e despejar o peróxido de hidrogênio, e todos devem usar óculos de proteção e luvas. A espuma fica morna, mas é segura de tocar depois que a reação para por completo.",
+      },
+      {
+        question: "Quais ingredientes você precisa para a pasta de dente de elefante?",
+        answer:
+          "Você precisa de peróxido de hidrogênio (a 6% ou 12%, de uma loja de produtos de beleza), fermento biológico seco, água morna, detergente, corante alimentício, uma garrafa plástica e uma bandeja para conter a espuma.",
+      },
+      {
+        question: "Por que a pasta de dente de elefante faz tanta espuma tão rápido?",
+        answer:
+          "O fermento funciona como catalisador e faz o peróxido de hidrogênio se decompor em água e oxigênio quase na hora, em vez de devagar. O oxigênio fica preso no detergente, criando uma torre enorme de espuma, e a reação libera calor enquanto acontece.",
+      },
+      {
+        question: "O que o experimento da pasta de dente de elefante ensina sobre química?",
+        answer:
+          "Ele mostra como os catalisadores aceleram reações químicas, como os gases podem ficar presos e formar espuma e como as reações exotérmicas liberam calor, que os estudantes conseguem sentir depois na espuma morna.",
+      },
+      {
+        question: "Como se limpa a espuma da pasta de dente de elefante?",
+        answer:
+          "Depois que a espuma esfriar e assentar, jogue-a com o líquido que sobrou pelo ralo, com bastante água. Limpe a bandeja e a garrafa e lave as mãos e todos os utensílios usados.",
+      },
+      {
+        question: "Dá para fazer a pasta de dente de elefante em casa ou só na sala de aula?",
+        answer:
+          "Funciona bem nos dois lugares. Em casa, faça ao ar livre ou dentro do box do banheiro, para limpar com facilidade, sempre com um adulto supervisionando. Na sala de aula, é uma ótima demonstração, com o professor manuseando o peróxido de hidrogênio e os estudantes observando a uma distância segura.",
+      },
+    ],
+    "making-oobleck": [
+      {
+        question: "Quais ingredientes você precisa para fazer oobleck?",
+        answer:
+          "O oobleck precisa de só dois ingredientes: 2 xícaras de amido de milho e 1 xícara de água, além de corante alimentício opcional. Misture devagar em uma tigela até a textura ficar estranha de mexer.",
+      },
+      {
+        question: "É seguro as crianças tocarem e brincarem com o oobleck?",
+        answer:
+          "Sim. O oobleck é feito de amido de milho e água, ingredientes de uso alimentar, então é seguro tocar e apertar. O principal cuidado é com a bagunça, já que ele pode pingar e se espalhar se não ficar contido em uma bandeja.",
+      },
+      {
+        question: "Por que o oobleck se comporta como sólido e como líquido?",
+        answer:
+          "O oobleck é um fluido não newtoniano, ou seja, a espessura dele muda conforme a pressão que recebe. Uma batida ou um aperto rápido faz as partículas de amido travarem umas nas outras e ele parece sólido, enquanto uma pressão suave deixa as partículas deslizarem e ele escorre como líquido.",
+      },
+      {
+        question: "O que fazer oobleck ensina às crianças sobre ciência?",
+        answer:
+          "Apresenta a ideia de que nem todo líquido se comporta igual sob pressão, uma propriedade chamada espessamento por cisalhamento. As crianças conseguem ligar isso a usos reais da engenharia, como materiais projetados para coletes à prova de balas ou para tapar buracos no asfalto.",
+      },
+      {
+        question: "Como se limpa o oobleck sem entupir o ralo?",
+        answer:
+          "Nunca jogue o oobleck na pia, porque o amido pode se acumular nos canos. Em vez disso, deixe o oobleck que sobrou secar por completo na bandeja, depois raspe os pedaços secos e jogue no lixo antes de lavar a tigela e as mãos.",
+      },
+      {
+        question: "Fazer oobleck é uma boa atividade para casa ou para a sala de aula?",
+        answer:
+          "Sim, para os dois. Leva cerca de 20 minutos, usa ingredientes que a maioria das cozinhas já tem e funciona bem como atividade rápida de ciências em casa ou como estação de sala de aula para explorar fluidos não newtonianos.",
+      },
+    ],
+  },
 }
 
 const howToEligibleSlugs = new Set([
