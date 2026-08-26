@@ -1,4 +1,3 @@
-import Link from "next/link"
 import {
   EngineeringCourseProgress,
   EngineeringLessonList,
@@ -6,224 +5,234 @@ import {
 } from "@/components/pages/engineering-progress-ui"
 import {
   engineeringFundamentalsCurriculum,
+  engineeringLessonPath,
   type EngineeringDesignStep,
 } from "@/features/curriculums/engineering-fundamentals"
+import {
+  Callout,
+  CheckGrid,
+  CourseButton,
+  CourseActions,
+  CourseClosing,
+  CourseHero,
+  CourseJumpNav,
+  CourseSection,
+  CourseShell,
+  CourseTextLink,
+  MaterialsGrid,
+  PhotoBand,
+  StatRow,
+  StepFlow,
+  courseThemes,
+} from "@/components/pages/courses/course-ui"
 
 /**
  * Overview page for the Engineering Fundamentals course (/courses/engineering-fundamentals).
  *
- * Reads entirely from `engineeringFundamentalsCurriculum`. All repeated content
- * (lessons, learning goals, grouped materials, design process) comes from the
- * data file rather than being hardcoded here. The design is deliberately a real
- * course syllabus - not a gamified education page: no pills, badges, achievement
- * icons, emoji, mascots, or glossy illustrations. The one diagram is a plain
- * blueprint-style SVG of the design-process loop.
+ * Reads entirely from `engineeringFundamentalsCurriculum`, so lessons, learning
+ * goals, grouped materials, and the design process all come from the data file.
+ *
+ * Design: the shared course kit (`components/pages/courses/course-ui`) in the
+ * purple "blueprint" palette. The page leads with the builds themselves,
+ * because what convinces a nine-year-old (and their parent) is seeing the
+ * bridge, not reading about load tolerance. The design-process ring is kept as
+ * the one real diagram and recolored to the course accent.
  */
 export function EngineeringFundamentalsContent() {
   const c = engineeringFundamentalsCurriculum
-
-  const heroDetails = [
-    c.gradeRange,
-    `${c.totalLessons} lessons`,
-    `${c.estimatedTimePerLesson} per lesson`,
-    "Beginner-friendly",
-    "No special tools needed",
-  ]
+  const firstLesson = c.lessons[0]
 
   return (
-    <div className="bg-background">
-      {/* 1. Course hero */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-14 md:py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            6-week engineering course
-          </p>
-          <h1 className="mt-3 text-3xl font-extrabold text-foreground md:text-5xl">
-            {c.title}
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground/90 md:text-lg">
-            {c.subtitle}
-          </p>
+    <CourseShell theme={courseThemes.engineering}>
+      <CourseHero
+        eyebrow="6-week engineering course"
+        title={c.title}
+        lead={c.subtitle}
+        facts={[
+          { label: "Ages", value: c.gradeRange },
+          { label: "Length", value: `${c.totalLessons} lessons` },
+          { label: "Per lesson", value: c.estimatedTimePerLesson },
+          { label: "You need", value: "Paper & tape" },
+        ]}
+        media={{
+          src: "/images/workshops/past-engineering.jpg",
+          alt: "Students building a structure together at an Avanza STEM engineering workshop",
+        }}
+        mediaCaption="Six challenges. Build it, test it, watch it fail, make it better."
+        note="No computer, no kit, and no engineering background needed."
+      >
+        <CourseActions>
+          <CourseButton href={engineeringLessonPath(firstLesson.slug)}>Start Lesson 1</CourseButton>
+          <CourseTextLink href="#builds">See what you&apos;ll build</CourseTextLink>
+        </CourseActions>
+      </CourseHero>
 
-          <ul className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-            {heroDetails.map((detail, i) => (
-              <li key={detail} className="flex items-center gap-3">
-                {i > 0 && <span aria-hidden className="text-border">|</span>}
-                <span className="font-medium text-foreground">{detail}</span>
-              </li>
-            ))}
-          </ul>
+      <CourseJumpNav
+        items={[
+          { href: "#builds", label: "What you'll build" },
+          { href: "#lessons", label: "The 6 lessons" },
+          { href: "#process", label: "How it works" },
+          { href: "#materials", label: "Materials" },
+          { href: "#grown-ups", label: "For grown-ups" },
+        ]}
+      />
 
-          <div className="mt-10">
-            <EngineeringCourseProgress />
-          </div>
-        </div>
-      </section>
+      {/* The builds - photos first, because the builds are the whole pitch. */}
+      <CourseSection
+        id="builds"
+        tone="tint"
+        eyebrow="The builds"
+        title="Six things you'll actually make"
+        lead="Every lesson ends with something you can hold, load up, knock over, and rebuild better. All of it comes from paper, cardboard, tape, and string."
+      >
+        <PhotoBand
+          photos={[
+            {
+              src: "/images/projects/popsicle-stick-bridge/cover.jpg",
+              alt: "A bridge built from popsicle sticks spanning between two supports",
+              caption:
+                "Bridges and towers: find out how shape - not strength - carries the weight.",
+            },
+            {
+              src: "/images/workshops/upcoming-bridge-building.jpg",
+              alt: "Students testing a hand-built bridge at an Avanza STEM building workshop",
+              caption: "Load testing with coins and washers, then redesigning what buckled.",
+            },
+            {
+              src: "/images/projects/simple-circuit-light/cover.jpg",
+              alt: "A simple hand-built circuit lighting a small bulb",
+              caption: "Machines and mechanisms that move, lift, and light up when you build them right.",
+            },
+          ]}
+        />
 
-      {/* 2. What students will learn */}
-      <section className="border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">
-            What students will learn
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            By the end of the course, every student can:
-          </p>
-          <ul className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
-            {c.learningGoals.map((goal) => (
-              <li key={goal} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
-                <span aria-hidden className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-purple" />
-                <span>{goal}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* 3. Course lesson list */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">Course lessons</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Six lessons in order. Each one teaches an engineering idea, then puts it to work in a
-            hands-on build you test and improve.
-          </p>
-
-          <EngineeringLessonList />
-        </div>
-      </section>
-
-      {/* 4. Materials for the full course */}
-      <section className="border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">
-            Materials for the full course
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Everything is common and low-cost. Gather what you can and add the rest over time.
-          </p>
-
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            {c.materialGroups.map((group) => (
-              <div key={group.label} className="rounded-lg border border-border bg-card p-5">
-                <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
-                  {group.label}
-                </h3>
-                <ul className="mt-3 space-y-2">
-                  {group.items.map((item) => (
-                    <li
-                      key={item}
-                      className="flex gap-3 text-sm leading-relaxed text-foreground/90"
-                    >
-                      <span
-                        aria-hidden
-                        className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-purple"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <p className="mt-6 rounded-md border border-border bg-card px-4 py-3 text-sm font-medium text-foreground">
-            {c.materialsNote}
-          </p>
-        </div>
-      </section>
-
-      {/* 5. How the course works */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">How the course works</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Every lesson runs on the same six-step loop that real engineers use. Students do not aim
-            for a perfect first try - they build something testable, see what fails, and improve it.
-            The loop repeats until the design meets the challenge.
-          </p>
-
-          <div className="mt-10 grid items-center gap-10 md:grid-cols-[300px_1fr]">
-            <DesignProcessDiagram steps={c.designProcess} />
-
-            <ol className="space-y-4">
-              {c.designProcess.map((step, i) => (
-                <li key={step.title} className="grid grid-cols-[2rem_1fr] gap-3">
-                  <span className="font-mono text-sm font-semibold text-muted-foreground">
-                    {i + 1}
-                  </span>
-                  <div>
-                    <p className="font-semibold text-foreground">{step.title}</p>
-                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                      {step.description}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Parent / teacher guide preview */}
-      <section className="border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">
-            For parents and teachers
-          </h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            You do not need an engineering background to run this course. A few things make the
-            lessons work well:
-          </p>
-          <ul className="mt-6 space-y-3">
-            {[
-              "Lessons work best when students are allowed to test imperfect designs. A design that fails a test is not a mistake - it is the information used to improve it.",
-              "Ask questions instead of fixing the design too early. \"What happened when you tested it?\" teaches more than handing a student the answer.",
-              "Every lesson ends with reflection and a redesign, so students practice improving their own work.",
-              "Each lesson links to a printable student worksheet and a parent/teacher guide with setup, safety notes, and questions to ask.",
-            ].map((point) => (
-              <li key={point} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
-                <span
-                  aria-hidden
-                  className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-purple"
-                />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* 7. Closing call to action */}
-      <section>
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">Ready to build?</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Start with the Paper Tower Challenge and work through all six lessons at your own pace.
-            Your progress is saved on this device.
-          </p>
-          <div className="mt-6">
-            <EngineeringResumeButton />
-          </div>
-          <p className="mt-6 text-sm">
-            <Link
-              href="/curriculums"
-              className="font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
+        <ol className="mt-12 grid gap-x-12 border-t border-avanza-dark/10 sm:grid-cols-2 lg:grid-cols-3">
+          {c.lessons.map((lesson) => (
+            <li
+              key={lesson.slug}
+              className="flex gap-5 border-b border-avanza-dark/10 py-6"
             >
-              Back to all curriculums
-            </Link>
-          </p>
+              <span
+                aria-hidden
+                className="font-mono text-2xl font-bold leading-none text-[var(--c-accent)]"
+              >
+                {lesson.isFinal ? "06" : String(lesson.order).padStart(2, "0")}
+              </span>
+              <div>
+                <p className="text-lg font-extrabold text-avanza-dark">{lesson.projectName}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-avanza-dark/70">{lesson.title}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </CourseSection>
+
+      {/* Learning goals. */}
+      <CourseSection
+        eyebrow="What students learn"
+        title="Engineering is a way of thinking, not a subject"
+        lead={c.summary}
+        aside={
+          <StatRow
+            stats={[
+              { value: `${c.totalLessons}`, label: "Hands-on builds" },
+              { value: "$0", label: "Special equipment" },
+            ]}
+          />
+        }
+      >
+        <CheckGrid items={c.learningGoals} />
+      </CourseSection>
+
+      {/* Lesson list + progress. */}
+      <CourseSection
+        id="lessons"
+        tone="tint"
+        eyebrow="The path"
+        title="Six lessons, in order"
+        lead="Each one teaches an engineering idea, then puts it to work in a build you test and improve. Your progress saves on this device - no account needed."
+      >
+        <div className="mb-10 max-w-2xl">
+          <EngineeringCourseProgress />
         </div>
-      </section>
-    </div>
+        <EngineeringLessonList />
+      </CourseSection>
+
+      {/* The design process, on dark. */}
+      <CourseSection
+        id="process"
+        tone="dark"
+        eyebrow="The method"
+        title="The loop real engineers use"
+        lead="Students do not aim for a perfect first try. They build something testable, find out what fails, and improve it. The loop repeats until the design meets the challenge."
+      >
+        <div className="grid items-center gap-12 lg:grid-cols-[320px_1fr]">
+          <DesignProcessDiagram steps={c.designProcess} />
+          <StepFlow
+            dark
+            columns={2}
+            steps={c.designProcess.map((step) => ({
+              title: step.title,
+              description: step.description,
+            }))}
+          />
+        </div>
+      </CourseSection>
+
+      {/* Materials. */}
+      <CourseSection
+        id="materials"
+        eyebrow="Shopping list"
+        title="What to have on hand"
+        lead="Everything is common and low-cost. Gather what you can and add the rest over time - no lesson is blocked by one missing item."
+      >
+        <MaterialsGrid groups={c.materialGroups} />
+        <div className="mt-8">
+          <Callout title="Good to know">
+            {c.materialsNote}
+          </Callout>
+        </div>
+      </CourseSection>
+
+      {/* Parents and teachers. */}
+      <CourseSection
+        id="grown-ups"
+        tone="paper"
+        eyebrow="For grown-ups"
+        title="You do not need an engineering background"
+        lead="The hardest part of running this course is resisting the urge to fix the design yourself. Here is what makes the lessons work."
+      >
+        <CheckGrid
+          columns={2}
+          items={[
+            "Let students test imperfect designs. A design that fails a test is not a mistake - it is the information used to improve it.",
+            'Ask questions instead of fixing the build. "What happened when you tested it?" teaches more than handing over the answer.',
+            "Every lesson ends with reflection and a redesign, so students practice improving their own work.",
+            "Each lesson links to a printable student worksheet and a parent & teacher guide with setup, safety notes, and questions to ask.",
+          ]}
+        />
+        <div className="mt-8">
+          <Callout title="Where this fits">
+            {c.requirement}. It works as a library club, an after-school program, classroom
+            enrichment, or a weekend project at the kitchen table.
+          </Callout>
+        </div>
+      </CourseSection>
+
+      <CourseClosing
+        title="Ready to build something?"
+        description={`Start with the ${firstLesson.projectName} and work through all six lessons at your own pace. Your progress is saved on this device.`}
+      >
+        <EngineeringResumeButton />
+      </CourseClosing>
+    </CourseShell>
   )
 }
 
 /**
- * A plain blueprint-style diagram of the six-step design loop: numbered nodes
- * arranged in a ring with arrows showing the cycle. Deliberately minimal - thin
- * strokes and a monospace feel, like a classroom handout, not decorative art.
- * Node numbers correspond to the ordered step list beside it.
+ * The six-step design loop as a ring of numbered nodes with arrows. The one
+ * real diagram on the page - kept from the original build, but recolored to the
+ * course accent and sized to sit beside the step cards on a dark band.
  */
 function DesignProcessDiagram({ steps }: { steps: EngineeringDesignStep[] }) {
   const size = 300
@@ -259,7 +268,7 @@ function DesignProcessDiagram({ steps }: { steps: EngineeringDesignStep[] }) {
       viewBox={`0 0 ${size} ${size}`}
       role="img"
       aria-label="The design process is a loop: ask, imagine, plan, create, test, improve, and repeat."
-      className="mx-auto w-full max-w-75 text-muted-foreground"
+      className="mx-auto w-full max-w-80 text-[var(--c-accent)]"
     >
       <defs>
         <marker
@@ -294,8 +303,8 @@ function DesignProcessDiagram({ steps }: { steps: EngineeringDesignStep[] }) {
             cx={point.x}
             cy={point.y}
             r={nodeR}
-            fill="var(--card)"
-            stroke="currentColor"
+            fill="var(--c-accent)"
+            stroke="var(--c-accent)"
             strokeWidth={1.5}
           />
           <text
@@ -304,8 +313,8 @@ function DesignProcessDiagram({ steps }: { steps: EngineeringDesignStep[] }) {
             textAnchor="middle"
             fontFamily="ui-monospace, monospace"
             fontSize="12"
-            fontWeight="600"
-            fill="var(--muted-foreground)"
+            fontWeight="700"
+            fill="#ffffff"
           >
             {i + 1}
           </text>
@@ -314,8 +323,8 @@ function DesignProcessDiagram({ steps }: { steps: EngineeringDesignStep[] }) {
             y={point.y + 12}
             textAnchor="middle"
             fontSize="11"
-            fontWeight="600"
-            fill="var(--foreground)"
+            fontWeight="700"
+            fill="#ffffff"
           >
             {steps[i].title}
           </text>

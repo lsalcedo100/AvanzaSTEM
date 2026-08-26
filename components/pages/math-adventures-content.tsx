@@ -1,242 +1,246 @@
-import Link from "next/link"
 import {
   MathCourseProgress,
   MathLessonPath,
   MathResumeButton,
   MathTeacherControls,
 } from "@/components/pages/math-adventures-progress-ui"
-import { mathAdventuresCurriculum } from "@/features/curriculums/math-adventures"
+import {
+  mathAdventuresCurriculum,
+  mathLessonPath,
+} from "@/features/curriculums/math-adventures"
+import {
+  Callout,
+  CheckGrid,
+  CourseButton,
+  CourseActions,
+  CourseClosing,
+  CourseHero,
+  CourseJumpNav,
+  CourseSection,
+  CourseShell,
+  CourseTextLink,
+  StatRow,
+  StepFlow,
+  courseThemes,
+} from "@/components/pages/courses/course-ui"
 
 /**
  * Overview / hub page for the Math Adventures course (/courses/math-adventures).
  *
- * Reads entirely from `mathAdventuresCurriculum`. Every week, topic, and detail
- * comes from the data file rather than being hardcoded here, so the hub and the
- * lesson pages stay in sync. The design follows the existing course hubs
- * (Engineering, Science): a real guided-course syllabus, not a gamified page -
- * no achievement badges, mascots, emoji, or heavy gradients. The one visual is a
- * plain number line standing in for the ten-week path, matching the course's
- * math theme without decoration for its own sake.
+ * Reads entirely from `mathAdventuresCurriculum`, so every week, topic, and
+ * detail comes from the data file and the hub stays in sync with the lessons.
+ *
+ * Design: the shared course kit (`components/pages/courses/course-ui`) in the
+ * teal palette. This is the one course with no authentic workshop photography,
+ * so instead of reaching for a stock image the cover is a built visual - the
+ * ten topic tiles the course actually covers - which doubles as the syllabus at
+ * a glance for a parent skimming the page.
  */
 export function MathAdventuresContent() {
   const c = mathAdventuresCurriculum
-
-  const heroDetails = [
-    c.gradeRange,
-    `${c.totalWeeks} weeks`,
-    `${c.estimatedTimePerLesson} per lesson`,
-    "Self-paced",
-    "No computer required",
-  ]
+  const firstLesson = c.lessons[0]
+  const finalLesson = c.lessons.find((lesson) => lesson.isFinalProject) ?? c.lessons[c.lessons.length - 1]
 
   return (
-    <div className="bg-background">
-      {/* 1. Course hero + progress summary */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-14 md:py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            10-week guided math course
-          </p>
-          <h1 className="mt-3 text-3xl font-extrabold text-foreground md:text-5xl">{c.title}</h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground/90 md:text-lg">
-            {c.description}
-          </p>
+    <CourseShell theme={courseThemes.math}>
+      <CourseHero
+        eyebrow="10-week guided math course"
+        title={c.title}
+        lead="Ten weeks that turn the math kids already meet at school into something they build, play, and argue about - ending with a whole paper city they design themselves."
+        facts={[
+          { label: "Ages", value: c.gradeRange },
+          { label: "Length", value: `${c.totalWeeks} weeks` },
+          { label: "Per week", value: c.estimatedTimePerLesson },
+          { label: "You need", value: "Paper & dice" },
+        ]}
+        media={<TopicTiles topics={c.topics} />}
+        mediaCaption="Ten big ideas, one per week, each one turned into an adventure."
+        note="No computer required, and nothing to buy beyond a ruler and some paper."
+      >
+        <CourseActions>
+          <CourseButton href={mathLessonPath(firstLesson.slug)}>Start Week 1</CourseButton>
+          <CourseTextLink href="#final-project">See the final project</CourseTextLink>
+        </CourseActions>
+      </CourseHero>
 
-          <ul className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-            {heroDetails.map((detail, i) => (
-              <li key={detail} className="flex items-center gap-3">
-                {i > 0 && (
-                  <span aria-hidden className="text-border">
-                    |
-                  </span>
-                )}
-                <span className="font-medium text-foreground">{detail}</span>
-              </li>
-            ))}
-          </ul>
+      <CourseJumpNav
+        items={[
+          { href: "#weeks", label: "The 10 weeks" },
+          { href: "#week-shape", label: "How a week works" },
+          { href: "#final-project", label: "Final project" },
+          { href: "#grown-ups", label: "For grown-ups" },
+        ]}
+      />
 
-          <div className="mt-10">
-            <MathCourseProgress />
-          </div>
+      {/* What the course covers. */}
+      <CourseSection
+        tone="tint"
+        eyebrow="What you'll cover"
+        title="From reading numbers to running a city"
+        lead={c.description}
+        aside={
+          <StatRow
+            stats={[
+              { value: `${c.totalWeeks}`, label: "Weekly adventures" },
+              { value: "0", label: "Screens required" },
+            ]}
+          />
+        }
+      >
+        <CheckGrid
+          items={c.lessons.map((lesson) => `Week ${lesson.weekNumber} - ${lesson.theme}`)}
+        />
+      </CourseSection>
+
+      {/* The ten weeks + progress. */}
+      <CourseSection
+        id="weeks"
+        eyebrow="The path"
+        title="Ten weeks, in order"
+        lead="Each week teaches one idea, then puts it to work in an on-screen activity and an off-screen challenge. Work at your own pace - your progress saves on this device."
+      >
+        <div className="mb-10 max-w-2xl">
+          <MathCourseProgress />
         </div>
-      </section>
+        <MathLessonPath />
+      </CourseSection>
 
-      {/* 2. What you'll cover */}
-      <section className="border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">What you&apos;ll cover</h2>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Ten topics, one per week, each building on the last - from reading numbers to running a
-            whole math city.
-          </p>
-          <ul className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
-            {c.topics.map((topic) => (
-              <li
-                key={topic}
-                className="flex gap-3 text-sm leading-relaxed text-foreground/90"
-              >
-                <span
-                  aria-hidden
-                  className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-teal"
-                />
-                <span>{topic}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {/* The shape of a week, on dark. */}
+      <CourseSection
+        id="week-shape"
+        tone="dark"
+        eyebrow="The rhythm"
+        title="Every week follows the same six beats"
+        lead={`So students always know what is coming. A full week takes about ${c.estimatedTimePerLesson} and splits comfortably across a few short sittings.`}
+      >
+        <StepFlow dark steps={WEEK_STRUCTURE} />
+      </CourseSection>
 
-      {/* 3. Week-by-week lesson path */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">The 10-week path</h2>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Work through the weeks in order at your own pace. Each week teaches one idea, then puts
-            it to work in an activity and a hands-on challenge. The last week combines everything
-            into a final project.
-          </p>
-
-          <NumberLinePath total={c.totalWeeks} />
-
-          <MathLessonPath />
-        </div>
-      </section>
-
-      {/* 4. How each week works */}
-      <section className="border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">How each week works</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Every week follows the same rhythm, so students always know what to expect. A full week
-            takes about {c.estimatedTimePerLesson} and can be split across a few short sessions.
-          </p>
-
-          <ol className="mt-8 space-y-4">
-            {WEEK_STRUCTURE.map((part, i) => (
-              <li key={part.title} className="grid grid-cols-[2rem_1fr] gap-3">
-                <span className="font-mono text-sm font-semibold text-muted-foreground">
-                  {i + 1}
-                </span>
-                <div>
-                  <p className="font-semibold text-foreground">{part.title}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    {part.description}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* 5. For parents and teachers */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">For parents and teachers</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            You do not need to be a math teacher to run this course. A few things make the weeks work
-            well:
-          </p>
-          <ul className="mt-6 space-y-3">
-            {PARENT_NOTES.map((note) => (
-              <li key={note} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
-                <span
-                  aria-hidden
-                  className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-teal"
-                />
-                <span>{note}</span>
-              </li>
-            ))}
-          </ul>
-
-          <MathTeacherControls />
-        </div>
-      </section>
-
-      {/* 6. Final project preview */}
-      <section className="border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Week 10 &middot; Final project
-          </p>
-          <h2 className="mt-2 text-xl font-bold text-foreground md:text-2xl">
-            {c.finalProjectTitle}
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-foreground/90">
-            {c.finalProjectDescription}
-          </p>
-          <div className="mt-6 rounded-lg border border-border bg-card p-5">
-            <p className="text-sm font-semibold text-foreground">
-              Skills the final project pulls together
+      {/* Final project. */}
+      <CourseSection
+        id="final-project"
+        tone="tint"
+        eyebrow={`Week ${c.totalWeeks} - Final project`}
+        title={c.finalProjectTitle}
+        lead={c.finalProjectDescription}
+      >
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
+          <div>
+            <p className="border-b-2 border-[var(--c-accent)] pb-2 text-base font-extrabold text-avanza-dark">
+              Math the city pulls together
             </p>
-            <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+            <ul className="mt-4 grid gap-x-10 sm:grid-cols-2">
               {FINAL_PROJECT_SKILLS.map((skill) => (
-                <li key={skill} className="flex items-center gap-2">
-                  <span aria-hidden className="h-1 w-4 flex-none rounded-full bg-avanza-teal" />
-                  <span>{skill}</span>
+                <li
+                  key={skill}
+                  className="border-b border-avanza-dark/10 py-2.5 text-base font-medium text-avanza-dark/85"
+                >
+                  {skill}
                 </li>
               ))}
             </ul>
+            <p className="mt-6 text-base leading-relaxed text-avanza-dark/75">
+              Students present the finished city and explain the math behind three of its features -
+              which is where you find out how much actually stuck.
+            </p>
           </div>
-        </div>
-      </section>
 
-      {/* 7. Closing call to action */}
-      <section>
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">Ready to start?</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Begin with Week 1: Number Detectives and work through all ten weeks at your own pace.
-            Your progress is saved on this device.
-          </p>
-          <div className="mt-6">
-            <MathResumeButton />
-          </div>
-          <p className="mt-6 text-sm">
-            <Link
-              href="/curriculums"
-              className="font-semibold text-avanza-teal-dark underline underline-offset-2 hover:text-avanza-teal"
-            >
-              Back to all curriculums
-            </Link>
-          </p>
+          <Callout title="It is a real presentation">
+            The city is built on paper, on a grid, with measured buildings, a bakery that sells in
+            fractions, and a bank that makes change. Nothing is simulated and nothing is graded by a
+            computer - a grown-up listens while the child explains their reasoning.
+          </Callout>
         </div>
-      </section>
+      </CourseSection>
+
+      {/* Parents and teachers. */}
+      <CourseSection
+        id="grown-ups"
+        tone="paper"
+        eyebrow="For grown-ups"
+        title="You do not need to be a math teacher"
+        lead="You need about an hour a week and a willingness to ask questions instead of correcting steps. Here is what makes the weeks work."
+      >
+        <CheckGrid columns={2} items={PARENT_NOTES} />
+        <div className="mt-8">
+          <Callout title="Running this for a group?">
+            Weeks unlock in order by default so students follow the path. If you are teaching a
+            class or reviewing the course, you can open every week at once below.
+          </Callout>
+        </div>
+        <div className="mt-8">
+          <MathTeacherControls />
+        </div>
+      </CourseSection>
+
+      <CourseClosing
+        title="Ready for Week 1?"
+        description={`Begin with ${firstLesson.title} and work through all ten weeks at your own pace, ending with ${finalLesson.title}. Your progress is saved on this device.`}
+      >
+        <MathResumeButton />
+      </CourseClosing>
+    </CourseShell>
+  )
+}
+
+/**
+ * The course cover for a course with no authentic photography: the ten topics
+ * as bright tiles, numbered by week. Honest about what the course is (a
+ * syllabus you can read in three seconds) rather than a stock photo of a child
+ * at a whiteboard.
+ */
+function TopicTiles({ topics }: { topics: string[] }) {
+  return (
+    <div className="rounded-lg bg-white px-7 py-8 shadow-[0_24px_60px_-28px_rgba(26,26,46,0.5)] sm:px-9 sm:py-10">
+      <p className="text-sm font-bold text-[var(--c-accent-dark)]">The ten weeks</p>
+      <ol className="mt-5 grid gap-x-10 border-t border-avanza-dark/10 sm:grid-cols-2">
+        {topics.map((topic, i) => (
+          <li
+            key={topic}
+            className="flex items-baseline gap-4 border-b border-avanza-dark/10 py-3"
+          >
+            <span aria-hidden className="font-mono text-sm font-bold text-[var(--c-accent)]">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span className="text-base font-bold leading-snug text-avanza-dark">{topic}</span>
+          </li>
+        ))}
+      </ol>
     </div>
   )
 }
 
-/** What every week contains - shown in the "How each week works" section. */
+/** What every week contains - shown in the "How a week works" section. */
 const WEEK_STRUCTURE = [
   {
-    title: "Explanation",
+    title: "A story hook",
     description:
-      "A short story hook and a clear main lesson that introduces the week's idea in plain language.",
+      "A short story and a clear main lesson that introduces the week's idea in plain language.",
   },
   {
     title: "Worked examples",
     description:
-      "Practice problems solved step by step, so students see the reasoning, not just the answer.",
+      "Practice problems solved step by step, so students see the reasoning and not just the answer.",
   },
   {
-    title: "Interactive activity",
+    title: "An interactive activity",
     description:
-      "A hands-on, on-screen activity - a number line, a fraction model, a graph builder - that makes the idea concrete.",
+      "A number line, a fraction model, a graph builder - something on screen that makes the idea concrete.",
   },
   {
-    title: "Hands-on challenge",
+    title: "A hands-on challenge",
     description:
-      "An off-screen build or game using cheap, common materials, so learning leaves the screen.",
+      "An off-screen build or game using cheap, common materials, so the learning leaves the screen.",
   },
   {
-    title: "Checkpoint",
+    title: "A checkpoint",
     description:
       "Quick self-check questions and a reflection prompt that asks students to explain their thinking.",
   },
   {
-    title: "Extension",
+    title: "An extension",
     description:
-      "A tougher challenge problem and an optional stretch task for students who want to go further.",
+      "A tougher challenge problem and an optional stretch task for students who want to keep going.",
   },
 ]
 
@@ -247,6 +251,7 @@ const PARENT_NOTES = [
   "Every week uses common, low-cost materials - paper, coins, a ruler, dice - and never needs a computer to complete.",
   "Each week ends with a checkpoint and a reflection question, so students practice explaining their own reasoning.",
   "Progress is saved on this device as students complete each week - no account or sign-in is needed.",
+  "Weeks build on each other, so the order matters more than the pace. Slow is fine; skipping is not.",
 ]
 
 /** The course strands the Week 10 project combines. */
@@ -259,73 +264,3 @@ const FINAL_PROJECT_SKILLS = [
   "Operations",
   "Logic",
 ]
-
-/**
- * A plain number line standing in for the ten-week path: evenly spaced ticks
- * numbered 1-10, with the final week marked as the endpoint. Deliberately
- * minimal - thin strokes and monospace numerals, like a classroom handout, not
- * decorative art. Purely illustrative, so it is hidden from assistive tech.
- */
-function NumberLinePath({ total }: { total: number }) {
-  // A narrower viewBox keeps the numerals legible when the SVG scales down to
-  // phone widths (a wide viewBox would shrink the labels to a few pixels).
-  const width = 460
-  const height = 66
-  const marginX = 22
-  const y = 28
-  const step = (width - marginX * 2) / (total - 1)
-  const ticks = Array.from({ length: total }, (_, i) => ({
-    x: marginX + i * step,
-    label: i + 1,
-    isFinal: i === total - 1,
-  }))
-
-  return (
-    <svg
-      viewBox={`0 0 ${width} ${height}`}
-      role="img"
-      aria-label={`A number line marking the ${total} weeks of the course, from Week 1 to Week ${total}.`}
-      className="mt-8 w-full text-muted-foreground"
-    >
-      <line
-        x1={marginX}
-        y1={y}
-        x2={width - marginX}
-        y2={y}
-        stroke="currentColor"
-        strokeWidth={1.5}
-      />
-      {ticks.map((tick) => (
-        <g key={tick.label}>
-          <line
-            x1={tick.x}
-            y1={y - 6}
-            x2={tick.x}
-            y2={y + 6}
-            stroke="currentColor"
-            strokeWidth={1.5}
-          />
-          <circle
-            cx={tick.x}
-            cy={y}
-            r={tick.isFinal ? 5 : 3}
-            fill={tick.isFinal ? "var(--avanza-teal)" : "var(--card)"}
-            stroke={tick.isFinal ? "var(--avanza-teal)" : "currentColor"}
-            strokeWidth={1.5}
-          />
-          <text
-            x={tick.x}
-            y={y + 26}
-            textAnchor="middle"
-            fontFamily="ui-monospace, monospace"
-            fontSize="15"
-            fontWeight="600"
-            fill="var(--foreground)"
-          >
-            {tick.label}
-          </text>
-        </g>
-      ))}
-    </svg>
-  )
-}

@@ -16,6 +16,21 @@ import { ConfirmDialog, SaveState } from "@/components/pages/intro-to-ai/ui"
 import { IntroToAiVocabulary } from "@/components/pages/intro-to-ai/vocabulary"
 import { IntroToAiNotes } from "@/components/pages/intro-to-ai/notes"
 import { JourneyDiagram } from "@/components/pages/intro-to-ai/journey-diagram"
+import {
+  Callout,
+  CheckGrid,
+  CourseButton,
+  CourseActions,
+  CourseClosing,
+  CourseHero,
+  CourseJumpNav,
+  CourseSection,
+  CourseShell,
+  CourseTextLink,
+  PhotoBand,
+  StatRow,
+  courseThemes,
+} from "@/components/pages/courses/course-ui"
 
 const c = introToAiCourse
 const TOTAL_LESSONS = c.weeks.reduce((n, w) => n + w.lessons.length, 0)
@@ -52,147 +67,224 @@ export function IntroToAiCourseContent() {
   const resumeHref = introToAiLessonPath(p.resume.week, p.resume.lessonSlug)
 
   return (
-    <div className="bg-background">
-      {/* A. Introduction + D. Primary action */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-14 md:py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Course · Grades 5–8</p>
-          <h1 className="mt-3 text-3xl font-extrabold text-foreground md:text-5xl">{c.title}</h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground/90 md:text-lg">{c.subtitle}</p>
-
-          <ul className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-            {[c.gradeRange, `${c.totalWeeks} weeks`, c.estimatedTotalTime, "No coding required", "Browser-based", "No camera or microphone", "Built-in datasets"].map(
-              (fact, i) => (
-                <li key={fact} className="flex items-center gap-3">
-                  {i > 0 && <span aria-hidden className="text-border">|</span>}
-                  <span className="font-medium text-foreground">{fact}</span>
-                </li>
-              ),
-            )}
-          </ul>
-
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link
-              href={resumeHref}
-              className="inline-flex items-center gap-2 rounded-md bg-avanza-green px-6 py-3 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
-            >
-              {started ? `Continue Week ${p.resume.week}` : "Begin Course"}
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-            {started && resumeLesson && (
-              <span className="text-sm text-muted-foreground">
-                Next up: <span className="font-medium text-foreground">{resumeLesson.title}</span>
-              </span>
-            )}
+    <CourseShell theme={courseThemes.ai}>
+      <CourseHero
+        eyebrow="6-week AI course · Grades 5-8"
+        title={c.title}
+        lead={c.subtitle}
+        facts={[
+          { label: "Ages", value: c.gradeRange },
+          { label: "Length", value: `${c.totalWeeks} weeks` },
+          { label: "Total time", value: c.estimatedTotalTime },
+          { label: "You need", value: "A browser" },
+        ]}
+        media={
+          <div className="rounded-3xl bg-white p-6 shadow-[0_24px_60px_-24px_rgba(26,26,46,0.45)] ring-1 ring-black/5 sm:p-8">
+            <JourneyDiagram className="mx-auto aspect-8/3 w-full" />
           </div>
+        }
+        mediaCaption="Six weeks from &ldquo;what even is AI?&rdquo; to designing a responsible AI helper of your own."
+        note="No coding required. No camera, no microphone, and no external AI account."
+      >
+        <CourseActions>
+          <CourseButton href={resumeHref}>
+            {started ? `Continue Week ${p.resume.week}` : "Begin the course"}
+          </CourseButton>
+          <CourseTextLink href="#roadmap">See the six weeks</CourseTextLink>
+        </CourseActions>
+        {started && resumeLesson && (
+          <p className="mt-4 text-sm font-semibold text-avanza-dark/70">
+            Next up: <span className="text-avanza-dark">{resumeLesson.title}</span>
+          </p>
+        )}
+      </CourseHero>
 
-          <div className="mt-10 rounded-lg border border-border bg-card p-5">
-            <JourneyDiagram className="mx-auto aspect-[8/3] w-full max-w-xl" />
-          </div>
-        </div>
-      </section>
+      <CourseJumpNav
+        items={[
+          { href: "#roadmap", label: "The 6 weeks" },
+          { href: "#outcomes", label: "What you'll learn" },
+          { href: "#final-project", label: "Final project" },
+          { href: "#vocabulary", label: "Vocabulary" },
+          { href: "#notes", label: "Your notes" },
+        ]}
+      />
 
-      {/* F. Progress summary */}
+      {/* Progress summary, once there is any. */}
       {started && (
-        <section className="border-b border-border bg-secondary/30">
-          <div className="mx-auto max-w-3xl px-6 py-8">
-            <ProgressSummary p={p} completedLessons={completedLessons} resumeHref={resumeHref} resumeTitle={resumeLesson?.title} />
+        <section className="border-b border-border bg-[var(--c-tint)]">
+          <div className="mx-auto max-w-7xl px-6 py-8">
+            <div className="max-w-2xl">
+              <ProgressSummary
+                p={p}
+                completedLessons={completedLessons}
+                resumeHref={resumeHref}
+                resumeTitle={resumeLesson?.title}
+              />
+            </div>
           </div>
         </section>
       )}
 
-      {/* B. Course promise + C. Learning goals */}
-      <section className="border-b border-border">
-        <div className="mx-auto grid max-w-3xl gap-10 px-6 py-14 md:grid-cols-2">
-          <div>
-            <h2 className="text-xl font-bold text-foreground">What you&apos;ll do</h2>
-            <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-foreground/90">
-              {COURSE_PROMISE.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-foreground">What you&apos;ll be able to do</h2>
-            <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-foreground/90">
-              {c.learningOutcomes.map((o, i) => (
-                <li key={i}>{o}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
+      {/* What students do, and what they can do afterwards. */}
+      <CourseSection
+        id="outcomes"
+        eyebrow="What you'll do"
+        title="You don't read about AI. You take it apart."
+        lead="Every week students train, test, and break a real system - then work out why it behaved the way it did."
+        aside={
+          <StatRow
+            stats={[
+              { value: `${TOTAL_LESSONS}`, label: "Lessons" },
+              { value: "0", label: "Lines of code" },
+            ]}
+          />
+        }
+      >
+        <CheckGrid items={COURSE_PROMISE} />
 
-      {/* E. Six-week roadmap */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-14">
-          <h2 className="text-xl font-bold text-foreground">Six-week roadmap</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Every week is open — jump ahead to preview, or follow the path in order.
-          </p>
-          <ol className="mt-6 space-y-3">
-            {c.weeks.map((w) => (
-              <li key={w.id}>
-                <RoadmapWeek week={w} p={p} />
-              </li>
-            ))}
-          </ol>
+        <h3 className="mt-14 text-2xl font-extrabold text-avanza-dark">
+          What you&apos;ll be able to do by the end
+        </h3>
+        <div className="mt-6">
+          <CheckGrid items={c.learningOutcomes} />
         </div>
-      </section>
+      </CourseSection>
 
-      {/* J. Final-project preview */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-14">
-          <FinalProjectPreview />
-        </div>
-      </section>
+      {/* Real AI workshop photos. */}
+      <CourseSection
+        tone="tint"
+        eyebrow="In the room"
+        title="Avanza teaches this in person, too"
+        lead="The course is the same one Avanza runs as a workshop in public libraries - the browser version just lets you do it at your own pace."
+      >
+        <PhotoBand
+          photos={[
+            {
+              src: "/images/workshops/AI Workshop Description.JPG",
+              alt: "An Avanza STEM instructor presenting an artificial intelligence workshop to students",
+              caption:
+                "Week 1 starts with the question every kid actually asks: what counts as AI?",
+            },
+            {
+              src: "/images/shared/ai-workshop.jpg",
+              alt: "Students taking part in an Avanza STEM artificial intelligence workshop",
+              caption:
+                "Students sort data, train a model, and find out where it gets things wrong.",
+            },
+            {
+              src: "/images/workshops/past-coding.jpg",
+              alt: "Students working on laptops at an Avanza STEM workshop",
+              caption:
+                "Everything runs in a browser tab on a Chromebook, tablet, or laptop.",
+            },
+          ]}
+        />
+      </CourseSection>
 
-      {/* G. Materials */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-14">
-          <h2 className="text-xl font-bold text-foreground">What you need</h2>
-          <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+      {/* Roadmap. */}
+      <CourseSection
+        id="roadmap"
+        eyebrow="The path"
+        title="Six weeks, six systems"
+        lead="Every week is open - jump ahead to preview, or follow the path in order."
+      >
+        <ol className="grid gap-4 lg:grid-cols-2">
+          {c.weeks.map((w) => (
+            <li key={w.id}>
+              <RoadmapWeek week={w} p={p} />
+            </li>
+          ))}
+        </ol>
+      </CourseSection>
+
+      {/* Final project. */}
+      <CourseSection
+        id="final-project"
+        tone="band"
+        eyebrow="Capstone"
+        title="Design a responsible AI helper"
+        lead={c.finalProject.overview}
+      >
+        <FinalProjectPreview />
+      </CourseSection>
+
+      {/* What you need. */}
+      <CourseSection
+        tone="tint"
+        eyebrow="What you need"
+        title="Almost certainly, you already have it"
+      >
+        <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr]">
+          <ul className="grid gap-x-10 border-t border-avanza-dark/10 sm:grid-cols-2">
             {MATERIALS.map((m) => (
-              <li key={m.label} className="flex items-start gap-2 text-sm text-foreground/90">
-                <Check className="mt-0.5 h-4 w-4 flex-none text-avanza-green-dark" aria-hidden />
-                <span>
-                  {m.label}
-                  {m.note && <span className="text-muted-foreground"> — {m.note}</span>}
+              <li
+                key={m.label}
+                className="flex gap-4 border-b border-avanza-dark/10 py-4"
+              >
+                <Check
+                  className="mt-1 h-4 w-4 flex-none text-[var(--c-accent)]"
+                  strokeWidth={3}
+                  aria-hidden
+                />
+                <span className="text-base leading-relaxed text-avanza-dark/85">
+                  <span className="font-bold text-avanza-dark">{m.label}</span>
+                  {m.note && <span className="text-avanza-dark/60"> - {m.note}</span>}
                 </span>
               </li>
             ))}
           </ul>
-        </div>
-      </section>
 
-      {/* H. Vocabulary reference */}
-      <section id="vocabulary" className="scroll-mt-20 border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-14">
-          <h2 className="text-xl font-bold text-foreground">Vocabulary reference</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Every key term from the course, with kid-friendly definitions.</p>
-          <div className="mt-6">
-            <IntroToAiVocabulary />
+          <div className="space-y-5">
+            <Callout title="Nothing to install">
+              Every activity runs in the browser using datasets built into the course. There is
+              nothing to download and no external AI service involved.
+            </Callout>
+            <Callout title="Nothing leaves the device">
+              Progress, notes, and answers are saved only in this browser. No account, no personal
+              information, and nothing sent anywhere.
+            </Callout>
           </div>
         </div>
-      </section>
+      </CourseSection>
 
-      {/* I. Notes */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-14">
-          <h2 className="text-xl font-bold text-foreground">Notes &amp; reflections</h2>
-          <div className="mt-4">
-            <IntroToAiNotes progress={p} />
+      {/* Vocabulary. */}
+      <CourseSection
+        id="vocabulary"
+        eyebrow="Reference"
+        title="Vocabulary"
+        lead="Every key term from the course, defined in language a fifth grader can actually use."
+      >
+        <IntroToAiVocabulary />
+      </CourseSection>
+
+      {/* Notes. */}
+      <CourseSection
+        id="notes"
+        tone="paper"
+        eyebrow="Your work"
+        title="Notes & reflections"
+      >
+        <div className="max-w-3xl">
+          <IntroToAiNotes progress={p} />
+          <div className="mt-8">
+            <ManageProgress p={p} />
           </div>
         </div>
-      </section>
+      </CourseSection>
 
-      {/* K. Reset + teacher controls */}
-      <section>
-        <div className="mx-auto max-w-3xl px-6 py-10">
-          <ManageProgress p={p} />
-        </div>
-      </section>
-    </div>
+      <CourseClosing
+        title={started ? "Pick up where you left off" : "Ready to find out how AI actually works?"}
+        description={
+          started
+            ? `You are ${p.percent}% through the course. Your notes and answers are saved on this device.`
+            : "Start with Week 1 and work through all six weeks at your own pace. No account, no cost, nothing to install."
+        }
+      >
+        <CourseButton href={resumeHref} className="bg-avanza-green text-avanza-dark">
+          {started ? `Continue Week ${p.resume.week}` : "Begin the course"}
+        </CourseButton>
+      </CourseClosing>
+    </CourseShell>
   )
 }
 
@@ -310,37 +402,52 @@ function FinalProjectPreview() {
   const required = fp.requirements.filter((r) => r.required)
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl font-bold text-foreground">Final project preview</h2>
-        <Link
-          href={`${introToAiPath}/final-project`}
-          className="inline-flex items-center gap-1 text-sm font-semibold text-avanza-green-dark hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 rounded"
-        >
-          Open the project studio <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-        </Link>
-      </div>
-      <p className="mt-3 text-sm leading-relaxed text-foreground/90">{fp.overview}</p>
-      <p className="mt-2 text-xs text-muted-foreground">You can preview the project any time — you&apos;ll build it in Week 6.</p>
-
-      <div className="mt-6 grid gap-6 md:grid-cols-2">
+      <div className="grid gap-x-12 gap-y-10 lg:grid-cols-2">
         <div>
-          <h3 className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Your project will include</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-foreground/90">
+          <h3 className="border-b-2 border-[var(--c-accent)] pb-2 text-base font-extrabold text-avanza-dark">
+            Your project will include
+          </h3>
+          <ul className="mt-4 space-y-3">
             {required.map((r) => (
-              <li key={r.id}>{r.label}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Choose a direction</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-foreground/90">
-            {fp.choices.map((choice) => (
-              <li key={choice.id}>
-                <span className="font-medium text-foreground">{choice.name}</span> — {choice.scenario}
+              <li key={r.id} className="flex gap-3 text-base leading-relaxed text-avanza-dark/85">
+                <Check
+                  className="mt-1 h-4 w-4 flex-none text-[var(--c-accent-dark)]"
+                  strokeWidth={3}
+                  aria-hidden
+                />
+                {r.label}
               </li>
             ))}
           </ul>
         </div>
+
+        <div>
+          <h3 className="border-b-2 border-[var(--c-accent)] pb-2 text-base font-extrabold text-avanza-dark">
+            Choose a direction
+          </h3>
+          <ul className="mt-4 space-y-4">
+            {fp.choices.map((choice) => (
+              <li key={choice.id}>
+                <p className="font-bold text-avanza-dark">{choice.name}</p>
+                <p className="mt-0.5 text-sm leading-relaxed text-avanza-dark/70">
+                  {choice.scenario}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <Link
+          href={`${introToAiPath}/final-project`}
+          className="text-base font-bold text-avanza-dark underline decoration-[var(--c-accent)] decoration-2 underline-offset-[6px] transition-all hover:decoration-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
+        >
+          Open the project studio
+        </Link>
+        <p className="text-sm text-avanza-dark/60">
+          You can preview the project any time — you&apos;ll build it in Week 6.
+        </p>
       </div>
     </div>
   )

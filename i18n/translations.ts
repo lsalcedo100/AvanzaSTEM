@@ -42,7 +42,7 @@ const en = {
     // Why We Exist
     whyExistTitle: "Why Avanza STEM Exists",
     whyExistP1: "Avanza STEM started with a folding table, a box of popsicle sticks, and a few kids at a local library who'd never built anything before. Three hours later, they had bridges strong enough to hold textbooks, and they were already asking when the next workshop was.",
-    whyExistP2: "We started Avanza STEM because too many STEM programs are expensive, far away, or not offered in Spanish, and that shuts kids out, including in our own community. Avanza STEM is youth-led, free, and focused on reaching Hispanic and underrepresented students in Clifton, NJ.",
+    whyExistP2: "We started Avanza STEM because too many STEM programs are expensive, far away, or not offered in Spanish, and that shuts kids out, including in our own community. Avanza STEM is youth-led, free, and focused on reaching Hispanic and underrepresented students across New Jersey, and we're growing beyond it, expanding to other states like California and to countries like Ecuador and Peru.",
     whyExistImageAlt: "Students building during a hands-on workshop at a Clifton public library",
     whyExistLink: "Read our full story",
     valuesAccessTitle: "Access for All",
@@ -1813,7 +1813,7 @@ const es: Translations = {
     // Por que existimos
     whyExistTitle: "Por Que Existe Avanza STEM",
     whyExistP1: "Avanza STEM comenzo con una mesa plegable, una caja de palitos de helado y unos ninos en una biblioteca local que nunca habian construido nada. Tres horas despues, tenian puentes lo bastante fuertes para sostener libros de texto, y ya preguntaban cuando seria el proximo taller.",
-    whyExistP2: "Empezamos Avanza STEM porque muchos programas STEM son caros, estan lejos o no se ofrecen en espanol, y eso deja fuera a muchos ninos, incluso en nuestra propia comunidad. Avanza STEM esta dirigido por jovenes, es gratuito y se enfoca en llegar a estudiantes hispanos y de comunidades subrepresentadas en Clifton, NJ.",
+    whyExistP2: "Empezamos Avanza STEM porque muchos programas STEM son caros, estan lejos o no se ofrecen en espanol, y eso deja fuera a muchos ninos, incluso en nuestra propia comunidad. Avanza STEM esta dirigido por jovenes, es gratuito y se enfoca en llegar a estudiantes hispanos y de comunidades subrepresentadas en todo Nueva Jersey, y estamos creciendo mas alla, expandiendonos a otros estados como California y a paises como Ecuador y Peru.",
     whyExistImageAlt: "Estudiantes construyendo durante un taller practico en una biblioteca publica de Clifton",
     whyExistLink: "Lee nuestra historia completa",
     valuesAccessTitle: "Acceso Para Todos",
@@ -3572,7 +3572,7 @@ const zh: Translations = {
     // 我们为什么存在
     whyExistTitle: "Avanza STEM 为什么存在",
     whyExistP1: "Avanza STEM 起步于一张折叠桌、一盒冰棒棍，以及当地图书馆里几个从没动手做过东西的孩子。三个小时后，他们做出了能承受教科书重量的桥梁，并且已经在问下一次工作坊是什么时候。",
-    whyExistP2: "我们创办 Avanza STEM，是因为很多 STEM 项目要么收费高，要么离家远，要么没有西班牙语版本，这让很多孩子被挡在门外，包括我们自己的社区。Avanza STEM 由青年主导、完全免费，专注于服务新泽西州 Clifton 的西班牙裔和代表性不足的学生。",
+    whyExistP2: "我们创办 Avanza STEM，是因为很多 STEM 项目要么收费高，要么离家远，要么没有西班牙语版本，这让很多孩子被挡在门外，包括我们自己的社区。Avanza STEM 由青年主导、完全免费，专注于服务新泽西州各地的西班牙裔和代表性不足的学生，而且我们正在向更远的地方扩展，进入加利福尼亚等其他州以及厄瓜多尔和秘鲁等国家。",
     whyExistImageAlt: "学生在 Clifton 公共图书馆的动手工作坊中搭建作品",
     whyExistLink: "阅读我们的完整故事",
     valuesAccessTitle: "人人都能参与",

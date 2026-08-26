@@ -1,4 +1,3 @@
-import Link from "next/link"
 import {
   scienceExperimentsCurriculum,
   scienceLessonPath,
@@ -9,282 +8,231 @@ import {
   ScienceResumeButton,
   ScienceWeekList,
 } from "@/components/pages/science-progress-ui"
+import {
+  Callout,
+  CheckGrid,
+  CourseButton,
+  CourseActions,
+  CourseClosing,
+  CourseHero,
+  CourseJumpNav,
+  CourseSection,
+  CourseShell,
+  CourseTextLink,
+  MaterialsGrid,
+  PhotoBand,
+  StepFlow,
+  courseThemes,
+} from "@/components/pages/courses/course-ui"
 
 /**
  * Overview page for the Science Experiments course (/courses/science-experiments).
  *
  * Reads entirely from `scienceExperimentsCurriculum`, so the six-week path,
- * materials, safety notes, goals, and outcomes all come from the data file
- * rather than being hardcoded here. The design is deliberately a science
- * notebook / lab journal: plain ruled sections, warm paper-toned surfaces, small
- * text labels instead of pill badges, and a single accent color (avanza-orange).
- * No gamified badges, emoji labels, glossy gradients, or floating cards.
+ * materials, safety notes, goals, and outcomes all come from the data file.
+ *
+ * Design: built on the shared course kit (`components/pages/courses/course-ui`)
+ * in the orange "lab notebook" palette. Kids and parents read this page, so it
+ * leads with a real photo of an Avanza science session, shows the messy fun of
+ * the actual experiments, and keeps the practical answers a parent needs -
+ * materials, time, safety - one click away in the jump nav.
  */
 export function ScienceExperimentsContent() {
   const c = scienceExperimentsCurriculum
   const firstLesson = c.lessons[0]
 
-  const heroDetails = [
-    c.gradeRange,
-    `${c.totalLessons} weeks`,
-    `${c.estimatedTimePerLesson} per lesson`,
-    "No lab or computer needed",
-  ]
-
   return (
-    <div className="bg-background">
-      {/* 1. Course hero */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-14 md:py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-avanza-orange-dark">
-            6-week science course
-          </p>
-          <h1 className="mt-3 text-3xl font-extrabold text-foreground md:text-5xl">
-            {c.title}
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground/90 md:text-lg">
-            {c.subtitle}
-          </p>
+    <CourseShell theme={courseThemes.science}>
+      <CourseHero
+        eyebrow="6-week science course"
+        title={c.title}
+        lead={c.subtitle}
+        facts={[
+          { label: "Ages", value: c.gradeRange },
+          { label: "Length", value: `${c.totalLessons} weeks` },
+          { label: "Per week", value: c.estimatedTimePerLesson },
+          { label: "You need", value: "Kitchen supplies" },
+        ]}
+        media={{
+          src: "/images/workshops/past-science.jpg",
+          alt: "Students running a hands-on science experiment at an Avanza STEM workshop",
+        }}
+        mediaCaption="Every week is one real experiment you can run on a kitchen table."
+        note="No lab, no computer, and no science background needed."
+      >
+        <CourseActions>
+          <CourseButton href={scienceLessonPath(firstLesson.slug)}>Start Week 1</CourseButton>
+          <CourseTextLink href="#materials">What you&apos;ll need</CourseTextLink>
+        </CourseActions>
+      </CourseHero>
 
-          <ul className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-            {heroDetails.map((detail, i) => (
-              <li key={detail} className="flex items-center gap-3">
-                {i > 0 && <span aria-hidden className="text-border">|</span>}
-                <span className="font-medium text-foreground">{detail}</span>
-              </li>
-            ))}
-          </ul>
+      <CourseJumpNav
+        items={[
+          { href: "#experiments", label: "The experiments" },
+          { href: "#weeks", label: "6-week path" },
+          { href: "#materials", label: "Materials" },
+          { href: "#safety", label: "Safety" },
+          { href: "#grown-ups", label: "For grown-ups" },
+        ]}
+      />
 
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            <Link
-              href={scienceLessonPath(firstLesson.slug)}
-              className="inline-flex items-center rounded-md bg-avanza-orange px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-avanza-orange-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-orange focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              Start Week 1
-            </Link>
-            <a
-              href="#materials"
-              className="inline-flex items-center rounded-md border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-avanza-orange hover:text-avanza-orange-dark"
-            >
-              View materials
-            </a>
-            <a
-              href="#safety"
-              className="inline-flex items-center rounded-md border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-avanza-orange hover:text-avanza-orange-dark"
-            >
-              Safety notes
-            </a>
-          </div>
+      {/* What the course actually looks like, in real photos. */}
+      <CourseSection
+        id="experiments"
+        tone="tint"
+        eyebrow="See it first"
+        title="The kind of science you'll be doing"
+        lead="Real reactions, real messes, real results - not worksheets. These are experiments from Avanza sessions and projects that pair with the course."
+      >
+        <PhotoBand
+          photos={[
+            {
+              src: "/images/projects/baking-soda-volcano/cover.jpg",
+              alt: "A baking soda and vinegar volcano erupting with orange foam",
+              caption:
+                "Week 2 chemistry: mix two safe ingredients and watch a brand-new gas appear.",
+            },
+            {
+              src: "/images/projects/making-oobleck/cover.jpg",
+              alt: "Hands squeezing oobleck, a cornstarch and water mixture",
+              caption:
+                "Week 3 matter: a goo that acts solid when you hit it and liquid when you let go.",
+            },
+            {
+              src: "/images/projects/elephant-toothpaste-experiment/cover.jpg",
+              alt: "A tall column of foam erupting from a bottle in the elephant toothpaste experiment",
+              caption:
+                "Reactions can be fast, foamy, and completely explainable once you know why.",
+            },
+          ]}
+        />
+      </CourseSection>
 
-          <div className="mt-10">
-            <ScienceCourseProgress />
-          </div>
+      {/* Course purpose + goals. */}
+      <CourseSection
+        eyebrow="What this course is for"
+        title="Kids stop guessing and start investigating"
+        lead={c.summary}
+      >
+        <CheckGrid items={c.goals} />
+      </CourseSection>
+
+      {/* The investigation loop, on a dark band so it reads as the big idea. */}
+      <CourseSection
+        tone="dark"
+        eyebrow="The method"
+        title="Every week runs on the same loop"
+        lead="This is the loop real scientists use. Nobody aims for a perfect first try - you predict, test, see what happens, and improve."
+      >
+        <StepFlow
+          dark
+          steps={c.investigationLoop.map((step) => ({
+            title: step.stage,
+            description: step.description,
+          }))}
+        />
+      </CourseSection>
+
+      {/* The six weeks + progress. */}
+      <CourseSection
+        id="weeks"
+        eyebrow="The path"
+        title={`${c.totalLessons} weeks, ${c.totalLessons} big questions`}
+        lead="Each week opens with a question, answers it with one hands-on experiment, and ends with what you figured out. Work at your own pace - your progress saves on this device."
+      >
+        <div className="mb-10 max-w-2xl">
+          <ScienceCourseProgress />
         </div>
-      </section>
+        <ScienceWeekList />
+      </CourseSection>
 
-      {/* 2. Course goals */}
-      <section className="border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">What this course is for</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            {c.summary}
-          </p>
-          <ul className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
-            {c.goals.map((goal) => (
-              <li key={goal} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
-                <span aria-hidden className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-orange" />
-                <span>{goal}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {/* Outcomes. */}
+      <CourseSection
+        tone="tint"
+        eyebrow="By the end"
+        title="What your kid can do after six weeks"
+        lead={c.completion.summary}
+      >
+        <CheckGrid items={c.learningOutcomes} />
+      </CourseSection>
 
-      {/* 3. The investigation loop */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">How every week works</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Each week runs on the same loop that real scientists use. Students never aim for a perfect
-            first try - they predict, test, see what happens, and improve.
-          </p>
-
-          <ol className="mt-8 grid grid-cols-1 gap-y-6 sm:grid-cols-6 sm:gap-x-2">
-            {c.investigationLoop.map((step, i) => (
-              <li
-                key={step.stage}
-                className="relative flex items-start gap-4 sm:flex-col sm:items-center sm:gap-3 sm:text-center"
-              >
-                {/* Connector line linking the numbered nodes (desktop only). */}
-                {i > 0 && (
-                  <span
-                    aria-hidden
-                    className="absolute left-[-50%] top-4 hidden h-px w-full bg-border sm:block"
-                  />
-                )}
-                <span className="relative z-10 flex h-8 w-8 flex-none items-center justify-center rounded-full border border-avanza-orange bg-background font-mono text-sm font-semibold text-avanza-orange-dark">
-                  {i + 1}
-                </span>
-                <div>
-                  <p className="font-semibold text-foreground">{step.stage}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground sm:text-xs">
-                    {step.description}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* 4. The 6-week learning path */}
-      <section className="border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">The 6-week path</h2>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Six weeks in order. Each week starts with a big question and answers it through one
-            hands-on experiment.
-          </p>
-
-          <ScienceWeekList />
-        </div>
-      </section>
-
-      {/* 5. What students will be able to do */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">
-            What kids can do by the end
-          </h2>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            {c.completion.summary}
-          </p>
-          <ul className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
-            {c.learningOutcomes.map((outcome) => (
-              <li key={outcome} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
-                <span aria-hidden className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-orange" />
-                <span>{outcome}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* 6. Materials, grouped by week */}
-      <section id="materials" className="scroll-mt-24 border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">Materials by week</h2>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Everything is common and low-cost. You only need a small handful for any single week, so
-            gather as you go.
-          </p>
-
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            {c.lessons.map((lesson) => (
-              <div key={lesson.slug} className="rounded-lg border border-border bg-card p-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-avanza-orange-dark">
-                  Week {lesson.week}
-                </p>
-                <h3 className="mt-0.5 text-sm font-bold text-foreground">{lesson.title}</h3>
-                <ul className="mt-3 space-y-2">
-                  {lesson.materials.map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
-                      <span
-                        aria-hidden
-                        className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-orange"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <p className="mt-6 rounded-md border border-border bg-card px-4 py-3 text-sm font-medium text-foreground">
+      {/* Materials, grouped by week. */}
+      <CourseSection
+        id="materials"
+        eyebrow="Shopping list"
+        title="Everything you need, week by week"
+        lead="All of it is common and low-cost, and you only need a small handful for any single week - so gather as you go rather than buying it all up front."
+      >
+        <MaterialsGrid
+          groups={c.lessons.map((lesson) => ({
+            label: `Week ${lesson.week}`,
+            caption: lesson.title,
+            items: lesson.materials,
+          }))}
+        />
+        <div className="mt-8">
+          <Callout title="Good to know">
             {c.materialsNote}
-          </p>
+          </Callout>
         </div>
-      </section>
+      </CourseSection>
 
-      {/* 7. Safety notes */}
-      <section id="safety" className="scroll-mt-24 border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">Safety notes</h2>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            These experiments are safe, but a few habits keep them that way. Read these before you
-            start, and each week adds its own specific notes.
-          </p>
-          <ul className="mt-6 space-y-3">
-            {c.safetyNotes.map((note) => (
-              <li key={note} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
-                <span
-                  aria-hidden
-                  className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-orange"
-                />
-                <span>{note}</span>
-              </li>
-            ))}
-          </ul>
+      {/* Safety. */}
+      <CourseSection
+        id="safety"
+        tone="paper"
+        eyebrow="Before you start"
+        title="Safety, in plain language"
+        lead="These experiments are safe, and a few habits keep them that way. Each week adds its own specific notes on the lesson page."
+      >
+        <CheckGrid items={c.safetyNotes} columns={2} />
+        <div className="mt-8">
+          <Callout title="An adult should be nearby">
+            Do the experiments together, and keep water, vinegar, and scissors supervised. Nothing
+            in this course uses a heat source, a flame, or a chemical you cannot buy at a grocery
+            store.
+          </Callout>
         </div>
-      </section>
+      </CourseSection>
 
-      {/* 8. For parents and teachers */}
-      <section className="border-b border-border bg-secondary">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">For parents and teachers</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            You do not need a science background to run this course. A little preparation makes each
-            week go smoothly:
-          </p>
-          <ul className="mt-6 space-y-3">
-            {[
-              "Skim the week ahead of time and set out the small list of materials before you start.",
-              "Have students write their prediction before they test - being wrong is useful, not a mistake.",
-              "Ask \"what did you notice?\" and \"why do you think that happened?\" instead of giving the answer.",
-              "Plan about 45-60 minutes per week; the seed lab in week 6 also needs a quick daily check-in.",
-              "Do the experiments together and keep water, vinegar, and scissors supervised.",
-            ].map((point) => (
-              <li key={point} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
-                <span
-                  aria-hidden
-                  className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-orange"
-                />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {/* Parents and teachers. */}
+      <CourseSection
+        id="grown-ups"
+        eyebrow="For grown-ups"
+        title="You do not need a science background"
+        lead="Your job is not to have the answers. It is to set out the materials and ask good questions - here is what makes each week go smoothly."
+      >
+        <CheckGrid
+          columns={2}
+          items={[
+            "Skim the week ahead of time and set out the small list of materials before you start.",
+            "Have your kid write a prediction before they test. Being wrong is useful information, not a mistake.",
+            'Ask "what did you notice?" and "why do you think that happened?" instead of giving the answer.',
+            "Plan about 45-60 minutes per week. The seed lab in week 6 also needs a quick daily check-in.",
+            "Do the experiments together and keep water, vinegar, and scissors supervised.",
+            "Progress saves in this browser. There is no account, no sign-in, and nothing to pay for.",
+          ]}
+        />
+      </CourseSection>
 
-      {/* 9. Finishing the course (linked from Week 6) */}
-      <section id="complete" className="scroll-mt-24 border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
+      {/* End-of-course reflection (linked from Week 6). */}
+      <CourseSection
+        id="complete"
+        tone="tint"
+        eyebrow="Finish line"
+        title="Finishing the course"
+      >
+        <div className="max-w-3xl">
           <ScienceCompletion />
         </div>
-      </section>
+      </CourseSection>
 
-      {/* 10. Closing call to action */}
-      <section>
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
-          <h2 className="text-xl font-bold text-foreground md:text-2xl">Ready to start?</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Begin with {firstLesson.title} and the {firstLesson.activityTitle}, then work through all
-            six weeks at your own pace.
-          </p>
-          <div className="mt-6">
-            <ScienceResumeButton />
-          </div>
-          <p className="mt-6 text-sm">
-            <Link
-              href="/curriculums"
-              className="font-semibold text-avanza-orange-dark underline underline-offset-2 hover:text-avanza-orange"
-            >
-              Back to all curriculums
-            </Link>
-          </p>
-        </div>
-      </section>
-    </div>
+      <CourseClosing
+        title="Ready to run the first experiment?"
+        description={`Start with ${firstLesson.title} and the ${firstLesson.activityTitle}, then work through all six weeks at whatever pace fits your week.`}
+      >
+        <ScienceResumeButton />
+      </CourseClosing>
+    </CourseShell>
   )
 }
