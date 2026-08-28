@@ -14,6 +14,22 @@
 /* Data model                                                                 */
 /* ========================================================================== */
 
+import { translations, type Translations } from "../../../../i18n/translations.ts"
+
+/**
+ * The Week 4 chatbot wording. Keywords are translated too - a Spanish student
+ * types "horario", not "hours" - while every id stays English so a saved bot
+ * keeps its structure.
+ */
+export type Week4ChatbotStrings = Translations["courseUi"]["ai"]["week4Chatbot"]
+
+const EN: Week4ChatbotStrings = translations.en.courseUi.ai.week4Chatbot
+
+/** Comma-separated keyword lists are stored as one string per language. */
+function kw(list: string): string[] {
+  return list.split(",").map((k) => k.trim()).filter(Boolean)
+}
+
 export type BranchOption = {
   id: string
   label: string
@@ -56,144 +72,75 @@ export type ChatbotSpec = {
 
 export type Template = { id: string; name: string; description: string; build: () => ChatbotSpec }
 
-function baseSpec(over: Partial<ChatbotSpec> & { id: string; templateId: string; name: string }): ChatbotSpec {
+function baseSpec(
+  S: Week4ChatbotStrings,
+  over: Partial<ChatbotSpec> & { id: string; templateId: string; name: string },
+): ChatbotSpec {
   return {
-    welcome: "Hi! I'm a helper bot. I can answer a few things — pick a topic or type a keyword.",
+    welcome: S.baseWelcome,
     intents: [],
-    fallback: "Sorry, I didn't catch that. I can only help with a few topics — try a keyword, or type 'help' to reach a person.",
-    humanHelp: "No problem — a real person can help. Ask a staff member at the front desk, or email the office.",
-    privacyNote: "Please don't type personal information (full name, address, phone). I only answer general questions.",
-    endingNote: "That's everything I can do here. Type 'restart' to begin again.",
+    fallback: S.baseFallback,
+    humanHelp: S.baseHumanHelp,
+    privacyNote: S.basePrivacyNote,
+    endingNote: S.baseEndingNote,
     ...over,
   }
 }
 
-export const TEMPLATES: Template[] = [
-  {
-    id: "library",
-    name: "School library helper",
-    description: "Answers questions about hours, borrowing, and library cards.",
-    build: () =>
-      baseSpec({
-        id: "bot-library",
-        templateId: "library",
-        name: "Library Helper",
-        welcome: "Welcome to the school library helper! I can help with hours, renewing a book, or getting a library card.",
-        intents: [
-          { id: "in-hours", name: "Opening hours", keywords: ["hours", "open", "close", "time"], response: "The library is open 8am–4pm on school days." },
-          {
-            id: "in-renew",
-            name: "Renew a book",
-            keywords: ["renew", "overdue", "extend", "keep"],
-            response: "You can renew a book once online or at the desk.",
-            branch: {
-              question: "Is your book already overdue? (type 'yes' or 'no')",
-              options: [
-                { id: "op-yes", label: "Overdue", keywords: ["yes", "overdue", "late"], response: "Overdue books can't be renewed online — please bring it to the desk." },
-                { id: "op-no", label: "Not overdue", keywords: ["no", "not"], response: "Great — you can renew it online from your account page." },
-              ],
-            },
-          },
-          { id: "in-card", name: "Library card", keywords: ["card", "join", "sign up", "register"], response: "To get a library card, bring your student ID to the front desk." },
-        ],
-      }),
-  },
-  {
-    id: "recycling",
-    name: "Recycling guide",
-    description: "Explains which bin common classroom items go in (as a teaching example).",
-    build: () =>
-      baseSpec({
-        id: "bot-recycling",
-        templateId: "recycling",
-        name: "Recycling Guide",
-        welcome: "Hi! I'm a recycling guide for our classroom. Ask about paper, plastic, or where a bin is. (Rules vary by place — check your local ones too.)",
-        intents: [
-          { id: "in-paper", name: "Paper", keywords: ["paper", "cardboard", "card"], response: "Clean paper and cardboard go in the blue paper bin." },
-          { id: "in-plastic", name: "Plastic", keywords: ["plastic", "bottle", "wrapper"], response: "Empty, clean plastic bottles go in the yellow bin. Wrappers usually go in general waste." },
-          { id: "in-where", name: "Bin location", keywords: ["where", "bin", "located", "find"], response: "The recycling bins are by the classroom door, next to the sink." },
-        ],
-      }),
-  },
-  {
-    id: "museum",
-    name: "Museum visitor helper",
-    description: "Helps a visitor find exhibits, tickets, and facilities.",
-    build: () =>
-      baseSpec({
-        id: "bot-museum",
-        templateId: "museum",
-        name: "Museum Helper",
-        welcome: "Welcome to the science museum helper! I can help with exhibits, tickets, or facilities.",
-        intents: [
-          {
-            id: "in-exhibit",
-            name: "Exhibits",
-            keywords: ["exhibit", "see", "show", "dinosaur", "space"],
-            response: "Our main exhibits are Space, Dinosaurs, and the Robotics Lab.",
-            branch: {
-              question: "Which floor do you want — 'ground' or 'upper'?",
-              options: [
-                { id: "op-ground", label: "Ground floor", keywords: ["ground", "bottom", "first"], response: "The ground floor has Space and the gift shop." },
-                { id: "op-upper", label: "Upper floor", keywords: ["upper", "top", "second"], response: "The upper floor has Dinosaurs and the Robotics Lab." },
-              ],
-            },
-          },
-          { id: "in-tickets", name: "Tickets", keywords: ["ticket", "price", "cost", "entry"], response: "Student tickets are free with a school group; adults are $8." },
-          { id: "in-facilities", name: "Facilities", keywords: ["toilet", "bathroom", "cafe", "food", "water"], response: "Restrooms and the cafe are on the ground floor near the entrance." },
-        ],
-      }),
-  },
-  {
-    id: "club",
-    name: "Club information bot",
-    description: "Shares meeting times, how to join, and what a club does.",
-    build: () =>
-      baseSpec({
-        id: "bot-club",
-        templateId: "club",
-        name: "Science Club Bot",
-        welcome: "Hey! I'm the Science Club bot. Ask about meeting times, how to join, or what we do.",
-        intents: [
-          { id: "in-when", name: "Meeting time", keywords: ["when", "meet", "time", "day"], response: "The club meets Thursdays at lunch in Room 12." },
-          { id: "in-join", name: "How to join", keywords: ["join", "sign up", "member", "how"], response: "To join, just come to a Thursday meeting — no sign-up needed!" },
-          { id: "in-do", name: "What we do", keywords: ["do", "activities", "projects", "about"], response: "We build small science projects, like circuits and simple robots." },
-        ],
-      }),
-  },
-  {
-    id: "homework",
-    name: "Homework-planning helper",
-    description: "Helps a student plan homework time (general tips only).",
-    build: () =>
-      baseSpec({
-        id: "bot-homework",
-        templateId: "homework",
-        name: "Homework Planner",
-        welcome: "Hi! I can help you plan homework time with general tips. I can't do your homework for you, though!",
-        intents: [
-          {
-            id: "in-plan",
-            name: "Make a plan",
-            keywords: ["plan", "schedule", "organize", "start"],
-            response: "A simple plan: list your tasks, guess how long each takes, and do the hardest one first.",
-            branch: {
-              question: "Do you have a lot of tasks or just one — type 'many' or 'one'?",
-              options: [
-                { id: "op-many", label: "Many tasks", keywords: ["many", "lots", "several"], response: "Break it up: do a 20-minute block, take a short break, then the next task." },
-                { id: "op-one", label: "One task", keywords: ["one", "single", "just"], response: "For one task, set a timer for 20 minutes and focus only on that." },
-              ],
-            },
-          },
-          { id: "in-breaks", name: "Breaks", keywords: ["break", "rest", "tired"], response: "Short breaks help — try 20 minutes of work, then a 5-minute break." },
-          { id: "in-focus", name: "Focus tips", keywords: ["focus", "distracted", "concentrate", "phone"], response: "Put your phone in another room and keep only what you need on your desk." },
-        ],
-      }),
-  },
-]
+type TemplateStrings = Week4ChatbotStrings["templates"]["library"]
 
-export function getTemplate(id: string): Template | undefined {
-  return TEMPLATES.find((t) => t.id === id)
+/** Builds one template's spec from its translated strings. */
+function specFrom(S: Week4ChatbotStrings, templateId: string, t: TemplateStrings, ids: string[][]): ChatbotSpec {
+  return baseSpec(S, {
+    id: `bot-${templateId}`,
+    templateId,
+    name: t.specName,
+    welcome: t.welcome,
+    intents: t.intents.map((intent, i) => {
+      const [intentId, ...optionIds] = ids[i]
+      const base: Intent = { id: intentId, name: intent.name, keywords: kw(intent.keywords), response: intent.response }
+      const branch = (intent as { question?: string; options?: { label: string; keywords: string; response: string }[] })
+      if (branch.question && branch.options) {
+        base.branch = {
+          question: branch.question,
+          options: branch.options.map((o, j) => ({
+            id: optionIds[j],
+            label: o.label,
+            keywords: kw(o.keywords),
+            response: o.response,
+          })),
+        }
+      }
+      return base
+    }),
+  })
+}
+
+/** The stable node ids per template: [intentId, ...optionIds] for each intent. */
+const TEMPLATE_IDS: Record<string, string[][]> = {
+  library: [["in-hours"], ["in-renew", "op-yes", "op-no"], ["in-card"]],
+  recycling: [["in-paper"], ["in-plastic"], ["in-where"]],
+  museum: [["in-exhibit", "op-ground", "op-upper"], ["in-tickets"], ["in-facilities"]],
+  club: [["in-when"], ["in-join"], ["in-do"]],
+  homework: [["in-plan", "op-many", "op-one"], ["in-breaks"], ["in-focus"]],
+}
+
+export const templates = (S: Week4ChatbotStrings = EN): Template[] =>
+  (Object.keys(TEMPLATE_IDS) as (keyof Week4ChatbotStrings["templates"])[]).map((id) => {
+    const t = S.templates[id]
+    return {
+      id,
+      name: t.name,
+      description: t.description,
+      build: () => specFrom(S, id, t, TEMPLATE_IDS[id]),
+    }
+  })
+
+/** The English base, for callers that pass no strings. */
+export const TEMPLATES: Template[] = templates()
+
+export function getTemplate(id: string, S: Week4ChatbotStrings = EN): Template | undefined {
+  return templates(S).find((t) => t.id === id)
 }
 
 /* ========================================================================== */
@@ -204,9 +151,14 @@ export function getTemplate(id: string): Template | undefined {
 export function normalize(text: string): string {
   return text
     .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
     .replace(/\s+/g, " ")
     .trim()
+}
+
+/** True for scripts written without spaces between words (CJK, kana). */
+function unspaced(text: string): boolean {
+  return /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/.test(text)
 }
 
 export function tokenize(text: string): string[] {
@@ -219,12 +171,15 @@ export function matchesKeyword(message: string, keyword: string): boolean {
   const normKeyword = normalize(keyword)
   if (!normKeyword) return false
   const normMessage = normalize(message)
+  // Chinese and Japanese are typed without spaces, so a whole-token test would
+  // never fire; fall back to containment for those keywords.
+  if (unspaced(normKeyword)) return normMessage.includes(normKeyword)
   if (normKeyword.includes(" ")) return ` ${normMessage} `.includes(` ${normKeyword} `)
   return tokenize(normMessage).includes(normKeyword)
 }
 
-const HUMAN_KEYWORDS = ["human", "person", "someone", "agent", "staff", "real person", "help desk", "help me"]
-const RESTART_KEYWORDS = ["restart", "start over", "reset", "begin again", "start again"]
+const humanKeywords = (S: Week4ChatbotStrings) => kw(S.humanKeywords)
+const restartKeywords = (S: Week4ChatbotStrings) => kw(S.restartKeywords)
 
 export function matchesAny(message: string, keywords: string[]): string | null {
   for (const k of keywords) if (matchesKeyword(message, k)) return k
@@ -258,31 +213,31 @@ export type TurnResult = {
  * commands (human help, restart) win first; then a pending branch is matched;
  * otherwise intents are matched in order; else the fallback fires.
  */
-export function respond(spec: ChatbotSpec, state: ConvoState, userText: string): TurnResult {
-  const human = matchesAny(userText, HUMAN_KEYWORDS)
+export function respond(spec: ChatbotSpec, state: ConvoState, userText: string, S: Week4ChatbotStrings = EN): TurnResult {
+  const human = matchesAny(userText, humanKeywords(S))
   if (human) {
     return {
       messages: [spec.humanHelp],
       matchKind: "human-help",
       matchedId: "human",
-      matchedLabel: "Human help",
+      matchedLabel: S.humanHelpLabel,
       matchedKeyword: human,
       usedFallback: false,
-      explanation: `Matched the human-help request because your message contained “${human}”.`,
+      explanation: S.explainHuman.replace("{kw}", human),
       state: { awaitingBranchIntentId: null },
     }
   }
 
-  const restart = matchesAny(userText, RESTART_KEYWORDS)
+  const restart = matchesAny(userText, restartKeywords(S))
   if (restart) {
     return {
       messages: [spec.welcome],
       matchKind: "restart",
       matchedId: "restart",
-      matchedLabel: "Restart",
+      matchedLabel: S.restartLabel,
       matchedKeyword: restart,
       usedFallback: false,
-      explanation: `Restarted the conversation because your message contained “${restart}”.`,
+      explanation: S.explainRestart.replace("{kw}", restart),
       state: { awaitingBranchIntentId: null },
     }
   }
@@ -299,10 +254,13 @@ export function respond(spec: ChatbotSpec, state: ConvoState, userText: string):
             messages: [opt.response, spec.endingNote],
             matchKind: "branch-option",
             matchedId: opt.id,
-            matchedLabel: `${intent!.name} → ${opt.label}`,
+            matchedLabel: S.branchLabel.replace("{intent}", intent!.name).replace("{option}", opt.label),
             matchedKeyword: kw,
             usedFallback: false,
-            explanation: `Followed the “${intent!.name}” branch to “${opt.label}” because your message contained “${kw}”.`,
+            explanation: S.explainBranch
+              .replace("{intent}", intent!.name)
+              .replace("{option}", opt.label)
+              .replace("{kw}", kw),
             state: { awaitingBranchIntentId: null },
           }
         }
@@ -312,10 +270,10 @@ export function respond(spec: ChatbotSpec, state: ConvoState, userText: string):
         messages: [spec.fallback],
         matchKind: "fallback",
         matchedId: null,
-        matchedLabel: "Fallback",
+        matchedLabel: S.fallbackLabel,
         matchedKeyword: null,
         usedFallback: true,
-        explanation: `No branch option matched, so the fallback answered. Expected one of: ${branch.options.map((o) => o.label).join(", ")}.`,
+        explanation: S.explainNoBranch.replace("{options}", branch.options.map((o) => o.label).join(", ")),
         state: { awaitingBranchIntentId: null },
       }
     }
@@ -338,7 +296,7 @@ export function respond(spec: ChatbotSpec, state: ConvoState, userText: string):
         matchedLabel: intent.name,
         matchedKeyword: kw,
         usedFallback: false,
-        explanation: `Matched the intent “${intent.name}” because your message contained the keyword “${kw}”.`,
+        explanation: S.explainIntent.replace("{intent}", intent.name).replace("{kw}", kw),
         state: nextState,
       }
     }
@@ -348,10 +306,10 @@ export function respond(spec: ChatbotSpec, state: ConvoState, userText: string):
     messages: [spec.fallback],
     matchKind: "fallback",
     matchedId: null,
-    matchedLabel: "Fallback",
+    matchedLabel: S.fallbackLabel,
     matchedKeyword: null,
     usedFallback: true,
-    explanation: "No intent keyword matched your message, so the fallback answered.",
+    explanation: S.explainFallback,
     state: { awaitingBranchIntentId: null },
   }
 }
@@ -367,36 +325,36 @@ export type ValidationIssue = { level: "error" | "warning"; message: string; nod
  * (nothing to say), unreachable nodes (no keywords, so never matched), and the
  * challenge boundaries (privacy note, human help, at least three intents).
  */
-export function validateChatbot(spec: ChatbotSpec): ValidationIssue[] {
+export function validateChatbot(spec: ChatbotSpec, S: Week4ChatbotStrings = EN): ValidationIssue[] {
   const issues: ValidationIssue[] = []
-  if (!spec.welcome.trim()) issues.push({ level: "error", message: "Add a welcome message so users know what the bot can do." })
-  if (!spec.fallback.trim()) issues.push({ level: "error", message: "Add a fallback response for messages the bot doesn't understand." })
-  if (spec.intents.length < 3) issues.push({ level: "warning", message: `Add at least 3 intents (you have ${spec.intents.length}).` })
-  if (!spec.humanHelp.trim()) issues.push({ level: "warning", message: "Add a human-help option so users can reach a person." })
-  if (!spec.privacyNote.trim()) issues.push({ level: "warning", message: "Add a privacy boundary reminding users not to share personal info." })
+  if (!spec.welcome.trim()) issues.push({ level: "error", message: S.vAddWelcome })
+  if (!spec.fallback.trim()) issues.push({ level: "error", message: S.vAddFallback })
+  if (spec.intents.length < 3) issues.push({ level: "warning", message: S.vAddIntents.replace("{n}", String(spec.intents.length)) })
+  if (!spec.humanHelp.trim()) issues.push({ level: "warning", message: S.vAddHumanHelp })
+  if (!spec.privacyNote.trim()) issues.push({ level: "warning", message: S.vAddPrivacy })
 
   for (const intent of spec.intents) {
     if (intent.keywords.filter((k) => normalize(k)).length === 0) {
-      issues.push({ level: "error", message: `Intent “${intent.name || intent.id}” has no keywords, so it can never be matched (unreachable).`, nodeId: intent.id })
+      issues.push({ level: "error", message: S.vIntentNoKeywords.replace("{name}", intent.name || intent.id), nodeId: intent.id })
     }
     const hasResponse = intent.response.trim().length > 0
     const hasBranch = !!intent.branch && intent.branch.options.length > 0
     if (!hasResponse && !hasBranch) {
-      issues.push({ level: "error", message: `Intent “${intent.name || intent.id}” is a dead end — it has no response and no follow-up.`, nodeId: intent.id })
+      issues.push({ level: "error", message: S.vIntentDeadEnd.replace("{name}", intent.name || intent.id), nodeId: intent.id })
     }
     if (intent.branch) {
       if (intent.branch.options.length === 0) {
-        issues.push({ level: "error", message: `The follow-up for “${intent.name}” has no options — it's a dead end.`, nodeId: intent.id })
+        issues.push({ level: "error", message: S.vBranchNoOptions.replace("{name}", intent.name), nodeId: intent.id })
       }
       if (!intent.branch.question.trim()) {
-        issues.push({ level: "warning", message: `The follow-up for “${intent.name}” has no question.`, nodeId: intent.id })
+        issues.push({ level: "warning", message: S.vBranchNoQuestion.replace("{name}", intent.name), nodeId: intent.id })
       }
       for (const opt of intent.branch.options) {
         if (opt.keywords.filter((k) => normalize(k)).length === 0) {
-          issues.push({ level: "error", message: `Option “${opt.label || opt.id}” has no keywords, so it can never be reached (unreachable).`, nodeId: opt.id })
+          issues.push({ level: "error", message: S.vOptionNoKeywords.replace("{name}", opt.label || opt.id), nodeId: opt.id })
         }
         if (!opt.response.trim()) {
-          issues.push({ level: "error", message: `Option “${opt.label || opt.id}” has no response — it's a dead end.`, nodeId: opt.id })
+          issues.push({ level: "error", message: S.vOptionNoResponse.replace("{name}", opt.label || opt.id), nodeId: opt.id })
         }
       }
     }
@@ -409,7 +367,10 @@ export function validateChatbot(spec: ChatbotSpec): ValidationIssue[] {
       if (shadowedBy) {
         issues.push({
           level: "warning",
-          message: `Keyword “${kw}” in “${intent.name}” is also in the earlier intent “${shadowedBy.name}”, which will always match first.`,
+          message: S.vShadowed
+            .replace("{kw}", kw)
+            .replace("{name}", intent.name)
+            .replace("{earlier}", shadowedBy.name),
           nodeId: intent.id,
         })
       }
@@ -419,6 +380,6 @@ export function validateChatbot(spec: ChatbotSpec): ValidationIssue[] {
   return issues
 }
 
-export function chatbotErrors(spec: ChatbotSpec): ValidationIssue[] {
-  return validateChatbot(spec).filter((i) => i.level === "error")
+export function chatbotErrors(spec: ChatbotSpec, S: Week4ChatbotStrings = EN): ValidationIssue[] {
+  return validateChatbot(spec, S).filter((i) => i.level === "error")
 }

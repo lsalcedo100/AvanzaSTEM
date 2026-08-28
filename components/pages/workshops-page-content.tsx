@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import Link from "next/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
@@ -55,6 +56,18 @@ export function WorkshopsPageContent() {
       accent: "bg-avanza-teal",
     },
   ]
+  const translationCredit = (
+    <>
+      {t.workshopsPage.translationCreditPre}
+      <Link
+        href="/about#team"
+        className="font-bold text-avanza-green underline underline-offset-4 transition-colors hover:text-avanza-teal"
+      >
+        {t.workshopsPage.translationCreditName}
+      </Link>
+      {t.workshopsPage.translationCreditPost}
+    </>
+  )
   const approachPoints = [
     {
       title: t.workshopsPage.handsOnLearning,
@@ -230,11 +243,14 @@ export function WorkshopsPageContent() {
               </FadeIn>
             </div>
             {/* Partner venues abroad, listed after the New Jersey libraries.
-                Photos for both are still being added. */}
+                Wenbo Shuijing has no photo and Lanyu Books only a room shot,
+                so each card carries its own note explaining why. */}
             <FadeIn delay={700}>
               <PastProgramCard
                 name={t.workshopsPage.wenboLibrary}
                 description={t.workshopsPage.wenboDesc}
+                credit={translationCredit}
+                note={t.workshopsPage.wenboPhotoNote}
               />
             </FadeIn>
             <FadeIn delay={800}>
@@ -244,15 +260,11 @@ export function WorkshopsPageContent() {
                 imageAlt={t.workshopsPage.lanyuImageAlt}
                 imageBoxClassName="aspect-[4/3]"
                 description={t.workshopsPage.lanyuDesc}
+                credit={translationCredit}
+                note={t.workshopsPage.lanyuPhotoNote}
               />
             </FadeIn>
           </div>
-
-          <FadeIn delay={900}>
-            <p className="mx-auto mt-10 max-w-3xl text-center leading-relaxed text-muted-foreground">
-              {t.workshopsPage.chinaPhotoNote}
-            </p>
-          </FadeIn>
         </div>
       </section>
 
@@ -416,6 +428,8 @@ function PastProgramCard({
   duration,
   location,
   description,
+  credit,
+  note,
   imageBoxClassName = "h-56 sm:h-64",
   imageClassName = "object-cover",
 }: {
@@ -427,6 +441,8 @@ function PastProgramCard({
   duration?: string
   location?: string
   description?: string
+  credit?: ReactNode
+  note?: string
   imageBoxClassName?: string
   imageClassName?: string
 }) {
@@ -456,6 +472,16 @@ function PastProgramCard({
         {description && (
           <p className="mt-3 leading-relaxed text-muted-foreground">
             {description}
+          </p>
+        )}
+        {credit && (
+          <p className="mt-3 leading-relaxed text-muted-foreground">
+            {credit}
+          </p>
+        )}
+        {note && (
+          <p className="mt-4 border-t border-border/70 pt-4 text-sm leading-relaxed text-muted-foreground/90">
+            {note}
           </p>
         )}
       </div>

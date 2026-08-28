@@ -129,7 +129,9 @@ export function AboutPageContent() {
         </div>
       </section>
 
-      <section className="bg-background py-20">
+      {/* Linked to as /about#team, from the Shanghai translation credit on the
+          workshops page. */}
+      <section id="team" className="scroll-mt-24 bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
           <FadeIn className="text-center">
             <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">

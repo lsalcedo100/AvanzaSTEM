@@ -4,13 +4,20 @@ import { useEffect, useRef, useState } from "react"
 import { Check } from "lucide-react"
 import {
   SCENARIOS,
-  FIELDS,
-  CLASSIFICATIONS,
+  scenarios,
+  fields,
+  classifications,
   guidanceFor,
   evaluateChoice,
   scoreScenario,
   type Classification,
 } from "@/features/curriculums/intro-to-ai/activities/week5-privacy"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Week 5 privacy wording in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.week5Privacy
+}
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 
@@ -35,6 +42,7 @@ function parseState(raw: string | undefined): PVState {
 }
 
 export function PrivacyMinimizeActivity({ activity, progress }: ActivityComponentProps) {
+  const S = useS()
   const [state, setState] = useState<PVState>(emptyState)
   const announceRef = useRef<HTMLParagraphElement>(null)
 
@@ -50,7 +58,10 @@ export function PrivacyMinimizeActivity({ activity, progress }: ActivityComponen
     if (announceRef.current) announceRef.current.textContent = msg
   }
 
-  const scenario = SCENARIOS.find((s) => s.id === state.scenarioId)!
+  const SCEN = scenarios(S)
+  const FIELD_LIST = fields(S)
+  const CLASSES = classifications(S)
+  const scenario = SCEN.find((s) => s.id === state.scenarioId)!
   const choices = state.choices[scenario.id] ?? {}
   const revealed = state.revealed[scenario.id] ?? false
 
@@ -58,34 +69,36 @@ export function PrivacyMinimizeActivity({ activity, progress }: ActivityComponen
     persist({ ...state, choices: { ...state.choices, [scenario.id]: { ...choices, [fieldId]: c } } })
   const reveal = () => {
     persist({ ...state, revealed: { ...state.revealed, [scenario.id]: true } })
-    const s = scoreScenario(scenario.id, choices)
-    announce(`Feedback shown. ${s.matched} of ${s.total} match the recommendation.`)
+    const sc = scoreScenario(scenario.id, choices)
+    announce(
+      S.pmFeedbackAnnounce.replace("{matched}", String(sc.matched)).replace("{total}", String(sc.total)),
+    )
   }
 
   const score = scoreScenario(scenario.id, choices)
-  const answeredCount = FIELDS.filter((f) => choices[f.id]).length
+  const answeredCount = FIELD_LIST.filter((f) => choices[f.id]).length
 
   return (
     <ActivityFrame
       title={activity.title}
       purpose={activity.goal}
       instructions={[
-        "Pick an app scenario. For each data field, decide: required, helpful, unnecessary, or too sensitive.",
-        "Aim to collect only what the app truly needs — data minimization.",
-        "Reveal the guidance to compare, and see safer alternatives, consent, and how long to keep each field.",
+        S.pmInstr1,
+        S.pmInstr2,
+        S.pmInstr3,
       ]}
       status="ready"
       saveStatus={progress.saveStatus}
     >
       <p ref={announceRef} className="sr-only" role="status" aria-live="polite" />
 
-      <p className="mt-3 rounded-md bg-secondary px-3 py-2 text-xs text-muted-foreground">These are made-up apps. Don&apos;t enter any of your own personal details — just classify the fields.</p>
+      <p className="mt-3 rounded-md bg-secondary px-3 py-2 text-xs text-muted-foreground">{S.pmMadeUpNote}</p>
 
       {/* Scenario */}
       <fieldset className="mt-4">
-        <legend className="text-sm font-bold text-foreground">Choose an app</legend>
+        <legend className="text-sm font-bold text-foreground">{S.pmChooseApp}</legend>
         <div className="mt-2 flex flex-wrap gap-2">
-          {SCENARIOS.map((s) => (
+          {SCEN.map((s) => (
             <button
               key={s.id}
               type="button"
@@ -102,15 +115,15 @@ export function PrivacyMinimizeActivity({ activity, progress }: ActivityComponen
 
       {/* Fields */}
       <ul className="mt-4 space-y-2">
-        {FIELDS.map((field) => {
+        {FIELD_LIST.map((field) => {
           const choice = choices[field.id]
-          const evalr = revealed && choice ? evaluateChoice(scenario.id, field.id, choice) : null
+          const evalr = revealed && choice ? evaluateChoice(scenario.id, field.id, choice, S) : null
           return (
             <li key={field.id} className="rounded-md border border-border p-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-sm font-semibold text-foreground">{field.label}</span>
                 <div className="flex flex-wrap gap-1" role="group" aria-label={`Classify ${field.label}`}>
-                  {CLASSIFICATIONS.map((c) => (
+                  {CLASSES.map((c) => (
                     <button
                       key={c.id}
                       type="button"
@@ -127,15 +140,24 @@ export function PrivacyMinimizeActivity({ activity, progress }: ActivityComponen
                 <div className="mt-2 rounded-md bg-secondary px-3 py-2 text-xs" aria-live="polite">
                   <p className="font-semibold text-foreground">
                     {evalr.matches ? (
-                      <span className="inline-flex items-center gap-1 text-avanza-green-dark"><Check className="h-3 w-3" aria-hidden /> Matches the recommendation ({CLASSIFICATIONS.find((c) => c.id === evalr.recommended)!.label})</span>
+                      <span className="inline-flex items-center gap-1 text-avanza-green-dark">
+                        <Check className="h-3 w-3" aria-hidden />{" "}
+                        {S.pmMatches.replace("{label}", CLASSES.find((c) => c.id === evalr.recommended)!.label)}
+                      </span>
                     ) : (
-                      <span className="text-avanza-orange-dark">Recommended: {CLASSIFICATIONS.find((c) => c.id === evalr.recommended)!.label}</span>
+                      <span className="text-avanza-orange-dark">
+                        {S.pmRecommended.replace("{label}", CLASSES.find((c) => c.id === evalr.recommended)!.label)}
+                      </span>
                     )}
                   </p>
                   <p className="mt-0.5 text-muted-foreground">{evalr.guidance.why}</p>
-                  <p className="mt-0.5 text-muted-foreground"><span className="font-semibold">Safer alternative:</span> {evalr.guidance.saferAlternative}</p>
+                  <p className="mt-0.5 text-muted-foreground"><span className="font-semibold">{S.pmSaferAlternative}</span> {evalr.guidance.saferAlternative}</p>
                   <p className="mt-0.5 text-muted-foreground">
-                    <span className="font-semibold">Consent:</span> {evalr.guidance.consentNeeded ? "needed" : "not needed"} · <span className="font-semibold">Keep:</span> {evalr.guidance.retention} · <span className="font-semibold">On-device:</span> {evalr.guidance.localProcessing ? "reduces risk" : "n/a"}
+                    <span className="font-semibold">{S.pmConsent}</span>{" "}
+                    {evalr.guidance.consentNeeded ? S.pmConsentNeeded : S.pmConsentNotNeeded} ·{" "}
+                    <span className="font-semibold">{S.pmKeep}</span> {evalr.guidance.retention} ·{" "}
+                    <span className="font-semibold">{S.pmOnDevice}</span>{" "}
+                    {evalr.guidance.localProcessing ? S.pmReducesRisk : S.pmNotApplicable}
                   </p>
                 </div>
               )}
@@ -151,11 +173,14 @@ export function PrivacyMinimizeActivity({ activity, progress }: ActivityComponen
           disabled={answeredCount === 0}
           className="inline-flex items-center rounded-md bg-avanza-green px-4 py-2 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
         >
-          Show the guidance
+          {S.pmShowGuidance}
         </button>
         {revealed && (
           <p className="text-sm text-muted-foreground" aria-live="polite">
-            {score.matched} of {score.total} match. {score.unnecessaryOrSensitiveKept > 0 ? `You chose to collect ${score.unnecessaryOrSensitiveKept} field(s) that are unnecessary or too sensitive — collecting less is safer.` : "You avoided collecting unnecessary or sensitive data — good data minimization."}
+            {S.pmMatchLine.replace("{matched}", String(score.matched)).replace("{total}", String(score.total))}{" "}
+            {score.unnecessaryOrSensitiveKept > 0
+              ? S.pmKeptRisky.replace("{n}", String(score.unnecessaryOrSensitiveKept))
+              : S.pmGoodMinimization}
           </p>
         )}
       </div>

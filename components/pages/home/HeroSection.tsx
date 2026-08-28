@@ -37,7 +37,7 @@ export function HeroSection() {
             {t.home.heroTrustLine}
           </p>
         </FadeIn>
-        <FadeIn className="w-full md:flex-[1.15] lg:flex-[1.3]" delay={120}>
+        <FadeIn className="w-full md:flex-[1.2] lg:flex-[1.4]" delay={120}>
           <HeroCarousel />
         </FadeIn>
       </div>

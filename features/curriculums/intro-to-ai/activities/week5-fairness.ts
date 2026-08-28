@@ -22,7 +22,22 @@
 /* Data model                                                                 */
 /* ========================================================================== */
 
+import { translations, type Translations } from "../../../../i18n/translations.ts"
+
+/**
+ * The Week 5 fairness wording. Group and interest values stay English because the
+ * dataset, the metrics and the student's saved audit key on them; `groupLabel`
+ * and `interestLabel` supply the display names.
+ */
+export type Week5FairnessStrings = Translations["courseUi"]["ai"]["week5Fairness"]
+
+const EN: Week5FairnessStrings = translations.en.courseUi.ai.week5Fairness
+
 export type Group = "Hillside" | "Riverside"
+
+export function groupLabel(group: Group, S: Week5FairnessStrings = EN): string {
+  return group === "Hillside" ? S.groupHillside : S.groupRiverside
+}
 export type Interest = "robotics" | "coding" | "science" | "art"
 
 export type StudentFeatures = {
@@ -44,12 +59,25 @@ export type StudentRecord = {
 export type FeatureKey = "interest" | "scheduleFree" | "pastStem" | "nearCampus"
 export type Weights = Record<FeatureKey, number>
 
-export const FEATURE_META: { key: FeatureKey; label: string; proxy?: boolean; note: string }[] = [
-  { key: "interest", label: "Interest area", note: "What the student likes — directly relevant to program fit." },
-  { key: "scheduleFree", label: "Free after school", note: "Whether the student can attend — relevant." },
-  { key: "pastStem", label: "Past STEM activities", note: "Prior involvement — relevant." },
-  { key: "nearCampus", label: "Lives near campus", proxy: true, note: "A proxy for neighborhood. It does not measure fit, but it tracks which group a student is in — a misleading feature." },
+export const featureMeta = (S: Week5FairnessStrings = EN): { key: FeatureKey; label: string; proxy?: boolean; note: string }[] => [
+  { key: "interest", label: S.fmInterest, note: S.fmInterestNote },
+  { key: "scheduleFree", label: S.fmScheduleFree, note: S.fmScheduleFreeNote },
+  { key: "pastStem", label: S.fmPastStem, note: S.fmPastStemNote },
+  { key: "nearCampus", label: S.fmNearCampus, proxy: true, note: S.fmNearCampusNote },
 ]
+
+/** The English base, for code that only needs the keys and their order. */
+export const FEATURE_META = featureMeta()
+
+export function interestLabel(interest: Interest, S: Week5FairnessStrings = EN): string {
+  return interest === "robotics"
+    ? S.intRobotics
+    : interest === "coding"
+      ? S.intCoding
+      : interest === "science"
+        ? S.intScience
+        : S.intArt
+}
 
 /** Flawed default: the model leans on the proxy (weight 2) more than real features. */
 export function flawedWeights(): Weights {
