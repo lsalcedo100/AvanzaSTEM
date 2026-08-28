@@ -8,7 +8,14 @@ import { FadeIn } from "@/components/ui/animate"
 import { getProjectGuides } from "@/features/projects/data"
 import { useLanguage } from "@/components/providers/language-provider"
 
-type ProjectCategory = "engineering" | "science" | "coding" | "robotics"
+type ProjectCategory =
+  | "engineering"
+  | "science"
+  | "coding"
+  | "robotics"
+  | "math"
+  | "ai"
+  | "optics"
 type FilterTag = "all" | ProjectCategory
 
 export function ProjectsPageContent() {
@@ -23,6 +30,9 @@ export function ProjectsPageContent() {
     { key: "science", label: t.projectsPage.science },
     { key: "coding", label: t.projectsPage.coding },
     { key: "robotics", label: t.projectsPage.robotics },
+    { key: "math", label: t.projectsPage.math },
+    { key: "ai", label: t.projectsPage.ai },
+    { key: "optics", label: t.projectsPage.optics },
   ]
 
   const taggedProjects = projects.map((project) => ({
@@ -211,14 +221,20 @@ function ProjectCard({
   return (
     <Link href={`/projects/${slug}`} className="group block">
       <div className="overflow-hidden rounded-md border border-border">
-        <div className="relative h-52">
-          <Image
-            src={image}
-            alt={title}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
+        <div className="relative h-52 bg-secondary/40">
+          {image ? (
+            <Image
+              src={image}
+              alt={title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          ) : (
+            // No authentic photo for this guide yet - restrained graph-paper
+            // panel rather than a stock or AI-generated image.
+            <div className="notebook-grid h-full w-full bg-secondary" aria-hidden="true" />
+          )}
         </div>
       </div>
       <div className="mt-4">

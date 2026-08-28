@@ -27,6 +27,41 @@ export function BlogPageContent() {
 
   const blogPosts = [
     {
+      title: t.blogPage.post47Title,
+      excerpt: t.blogPage.post47Excerpt,
+      image: "",
+      category: t.blogPage.lightCategory,
+      href: "/blog/how-does-a-camera-work-without-a-lens",
+    },
+    {
+      title: t.blogPage.post48Title,
+      excerpt: t.blogPage.post48Excerpt,
+      image: "",
+      category: t.blogPage.lightCategory,
+      href: "/blog/how-do-fiber-optic-cables-work",
+    },
+    {
+      title: t.blogPage.post49Title,
+      excerpt: t.blogPage.post49Excerpt,
+      image: "",
+      category: t.blogPage.lightCategory,
+      href: "/blog/how-do-scientists-know-what-stars-are-made-of",
+    },
+    {
+      title: t.blogPage.post50Title,
+      excerpt: t.blogPage.post50Excerpt,
+      image: "",
+      category: t.blogPage.lightCategory,
+      href: "/blog/why-do-things-glow-under-a-blacklight",
+    },
+    {
+      title: t.blogPage.post51Title,
+      excerpt: t.blogPage.post51Excerpt,
+      image: "",
+      category: t.blogPage.lightCategory,
+      href: "/blog/is-light-a-wave-or-a-particle",
+    },
+    {
       title: t.blogPage.post19Title,
       excerpt: t.blogPage.post19Excerpt,
       image: "/images/blog/Taipei 101 Skyscraper that Sways.jpg",
@@ -433,18 +468,24 @@ function BlogCard({
       className="group flex h-full flex-col overflow-hidden rounded-md border border-border bg-card shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-avanza-green-dark/30 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-dark focus-visible:ring-offset-2"
     >
       <div className="relative h-48 overflow-hidden bg-secondary">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-          priority={priority}
-          className={
-            imageFit === "contain"
-              ? "object-contain"
-              : "object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          }
-        />
+        {image ? (
+          <Image
+            src={image}
+            alt={title}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            priority={priority}
+            className={
+              imageFit === "contain"
+                ? "object-contain"
+                : "object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            }
+          />
+        ) : (
+          // No authentic photo for this post yet - restrained graph-paper panel
+          // rather than a stock or AI-generated image.
+          <div className="notebook-grid h-full w-full bg-secondary" aria-hidden="true" />
+        )}
       </div>
       <div className="flex flex-1 flex-col p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-avanza-green-dark">

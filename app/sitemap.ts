@@ -40,42 +40,48 @@ import {
   introToAiPath,
   introToAiWeekPath,
 } from '@/features/curriculums/intro-to-ai'
+import { engineeringCurriculumHasTranslation } from '@/features/curriculums/engineering-fundamentals-i18n'
+import { introToAiCourseHasTranslation } from '@/features/curriculums/intro-to-ai-i18n'
+import { pythonCurriculumHasTranslation } from '@/features/curriculums/intro-to-python-i18n'
+import { mathCurriculumHasTranslation } from '@/features/curriculums/math-adventures-i18n'
+import { roboticsCurriculumHasTranslation } from '@/features/curriculums/robotics-i18n'
+import { scienceCurriculumHasTranslation } from '@/features/curriculums/science-experiments-i18n'
 import { projectGuides } from '@/features/projects/data'
 import { enOnlyAlternates, languageAlternates, localizedPath } from '@/lib/i18n-routes'
 import { siteConfig } from '@/lib/site-config'
 import { VALID_LANGUAGES, type Language } from '@/i18n/translations'
 
-// The Intro to Python curriculum landing and its per-week lesson pages render
-// English content at every locale, so they are treated as English-only routes.
+// A course is advertised as translated only when every non-English locale has
+// an overlay for it. The overlays are filled in course by course, so this is
+// read off the data rather than kept as a hand-maintained list that would go
+// stale the moment a translation lands.
+const NON_ENGLISH_LANGUAGES = VALID_LANGUAGES.filter((language) => language !== 'en')
+
+function fullyTranslated(hasTranslation: (language: Language) => boolean): boolean {
+  return NON_ENGLISH_LANGUAGES.every(hasTranslation)
+}
+
 const introToPythonLessonPaths = introToPythonCurriculum.weeks.map((w) =>
   introToPythonWeekPath(w.week),
 )
 
-// The Engineering Fundamentals course and its lesson pages render English
-// content at every locale, so they are treated as English-only routes too.
 const engineeringFundamentalsLessonPaths = engineeringFundamentalsCurriculum.lessons.map((lesson) =>
   engineeringLessonPath(lesson.slug),
 )
 
-// Printable worksheets and per-lesson teacher guides, also English-only.
+// Printable worksheets and per-lesson teacher guides.
 const engineeringFundamentalsResourcePaths = engineeringFundamentalsCurriculum.lessons.flatMap(
   (lesson) => [engineeringWorksheetPath(lesson.slug), engineeringTeacherGuidePath(lesson.slug)],
 )
 
-// The Science Experiments course and its per-week lesson pages render English
-// content at every locale, so they are treated as English-only routes too.
 const scienceExperimentsLessonPaths = scienceExperimentsCurriculum.lessons.map((lesson) =>
   scienceLessonPath(lesson.slug),
 )
 
-// The Math Adventures course and its per-week lesson pages render English
-// content at every locale, so they are treated as English-only routes too.
 const mathAdventuresLessonPaths = mathAdventuresCurriculum.lessons.map((lesson) =>
   mathLessonPath(lesson.slug),
 )
 
-// The Robotics & Automation course, its per-week lesson pages, and per-week
-// worksheets and teacher guides render English content at every locale.
 const roboticsLessonPaths = roboticsCurriculum.modules.map((module) =>
   roboticsLessonPath(module.slug),
 )
@@ -89,9 +95,8 @@ const roboticsSectionPaths = [
   `${roboticsPath}/final-project`,
 ]
 
-// The Intro to Artificial Intelligence course (hub, six weekly overviews, 18
-// lessons, and its final-project/assessment/completion sections) renders English
-// content at every locale, so it is treated as English-only too.
+// The Intro to Artificial Intelligence course: hub, six weekly overviews, 18
+// lessons, and its final-project/assessment/completion sections.
 const introToAiWeekPaths = introToAiCourse.weeks.map((w) => introToAiWeekPath(w.week))
 const introToAiLessonPaths = introToAiCourse.weeks.flatMap((w) =>
   w.lessons.map((lesson) => introToAiLessonPath(w.week, lesson.slug)),
@@ -102,40 +107,62 @@ const introToAiSectionPaths = [
   introToAiCompletionPath,
 ]
 
-// Routes that are only rendered in English. They remain reachable at /es and
-// /zh (middleware rewrites them to the English route), but since the visible
-// content does not change per locale, we don't emit /es and /zh sitemap
+const COURSE_PATHS: { translated: boolean; paths: string[] }[] = [
+  {
+    translated: fullyTranslated(pythonCurriculumHasTranslation),
+    paths: [
+      introToPythonPath,
+      introToPythonTeacherGuidePath,
+      introToPythonWorksheetsPath,
+      ...introToPythonLessonPaths,
+    ],
+  },
+  {
+    translated: fullyTranslated(engineeringCurriculumHasTranslation),
+    paths: [
+      engineeringFundamentalsPath,
+      ...engineeringFundamentalsLessonPaths,
+      ...engineeringFundamentalsResourcePaths,
+    ],
+  },
+  {
+    translated: fullyTranslated(scienceCurriculumHasTranslation),
+    paths: [scienceExperimentsPath, ...scienceExperimentsLessonPaths],
+  },
+  {
+    translated: fullyTranslated(mathCurriculumHasTranslation),
+    paths: [mathAdventuresPath, ...mathAdventuresLessonPaths],
+  },
+  {
+    translated: fullyTranslated(roboticsCurriculumHasTranslation),
+    paths: [
+      roboticsPath,
+      ...roboticsLessonPaths,
+      ...roboticsResourcePaths,
+      ...roboticsSectionPaths,
+    ],
+  },
+  {
+    translated: fullyTranslated(introToAiCourseHasTranslation),
+    paths: [
+      introToAiPath,
+      ...introToAiWeekPaths,
+      ...introToAiLessonPaths,
+      ...introToAiSectionPaths,
+    ],
+  },
+]
+
+// Routes that are only rendered in English. They remain reachable at /es, /pt
+// and /zh (middleware rewrites them to the English route), but since the
+// visible content does not change per locale, we don't emit localized sitemap
 // entries or hreflang alternates for them - only the canonical English URL.
-const ENGLISH_ONLY_PATHS = new Set([
-  '/about',
-  '/games',
-  '/workshops',
-  '/find-a-workshop',
-  '/host',
-  '/gallery',
-  '/faq',
-  '/privacy',
-  '/python-ide',
-  introToPythonPath,
-  introToPythonTeacherGuidePath,
-  introToPythonWorksheetsPath,
-  ...introToPythonLessonPaths,
-  engineeringFundamentalsPath,
-  ...engineeringFundamentalsLessonPaths,
-  ...engineeringFundamentalsResourcePaths,
-  scienceExperimentsPath,
-  ...scienceExperimentsLessonPaths,
-  mathAdventuresPath,
-  ...mathAdventuresLessonPaths,
-  roboticsPath,
-  ...roboticsLessonPaths,
-  ...roboticsResourcePaths,
-  ...roboticsSectionPaths,
-  introToAiPath,
-  ...introToAiWeekPaths,
-  ...introToAiLessonPaths,
-  ...introToAiSectionPaths,
-])
+//
+// The flat pages and the home, blog and project routes are all translated, so
+// nothing outside the untranslated courses belongs in here.
+const ENGLISH_ONLY_PATHS = new Set(
+  COURSE_PATHS.filter((course) => !course.translated).flatMap((course) => course.paths),
+)
 
 // lastModified dates below reflect the last meaningful content update for each
 // route, derived from git history over the files that actually render it - not
@@ -228,6 +255,12 @@ const blogLastModified: Record<string, string> = {
   'how-do-noise-canceling-headphones-work': '2026-06-16',
   'why-do-some-things-float-and-others-sink': '2026-06-16',
   'why-do-magnets-stick-to-some-metals-but-not-others': '2026-06-16',
+  // Light & Optics strand added 2026-08-27
+  'how-does-a-camera-work-without-a-lens': '2026-08-27',
+  'how-do-fiber-optic-cables-work': '2026-08-27',
+  'how-do-scientists-know-what-stars-are-made-of': '2026-08-27',
+  'why-do-things-glow-under-a-blacklight': '2026-08-27',
+  'is-light-a-wave-or-a-particle': '2026-08-27',
 }
 
 // Per-project last-updated dates, based on when each guide's content/component
@@ -258,7 +291,9 @@ function absoluteImageUrls(images: readonly (string | undefined)[]): string[] {
   const resolved: string[] = []
   for (const image of images) {
     if (!image) continue
-    const url = /^https?:\/\//.test(image) ? image : `${siteConfig.url}${image}`
+    // Several image filenames contain spaces, which are not legal in a
+    // sitemap <image:loc>. encodeURI leaves an already-valid path alone.
+    const url = /^https?:\/\//.test(image) ? image : encodeURI(`${siteConfig.url}${image}`)
     if (seen.has(url)) continue
     seen.add(url)
     resolved.push(url)

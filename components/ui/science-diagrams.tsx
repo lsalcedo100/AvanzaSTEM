@@ -1,3 +1,6 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
 import { type ScienceDiagramKind } from "@/features/curriculums/science-experiments"
 
 /**
@@ -27,6 +30,11 @@ export function ScienceDiagram({ kind }: { kind: ScienceDiagramKind }) {
     default:
       return null
   }
+}
+
+/** The figure's labels and captions for the reader's language. */
+function useDiagramCopy() {
+  return useLanguage().t.courseUi.science.diagrams
 }
 
 function Figure({
@@ -104,11 +112,12 @@ function Leader({
 }
 
 function PaperHelicopter() {
+  const d = useDiagramCopy().helicopter
   const arrow = "heli-arrow"
   return (
     <Figure
-      label="A paper helicopter: two blades at the top, a straight body, and a paper clip on the bottom. It spins as it falls."
-      caption="The blades catch air and spin, so the helicopter falls slowly."
+      label={d.label}
+      caption={d.caption}
     >
       <ArrowMarker id={arrow} />
       {/* Blades (folded in opposite directions from a top hub) */}
@@ -121,26 +130,27 @@ function PaperHelicopter() {
       <line x1="155" y1="149" x2="155" y2="161" stroke="currentColor" strokeWidth="1" />
       {/* Spin arrow */}
       <path d="M188,60 A22 10 0 0 1 232,62" fill="none" stroke="currentColor" strokeWidth="1.5" markerEnd={`url(#${arrow})`} />
-      <text x="210" y="40" textAnchor="middle" {...labelProps}>Spins</text>
+      <text x="210" y="40" textAnchor="middle" {...labelProps}>{d.spins}</text>
       {/* Labels + leaders */}
       <Leader x1="70" y1="58" x2="112" y2="58" />
-      <text x="66" y="62" textAnchor="end" {...labelProps}>Blade</text>
+      <text x="66" y="62" textAnchor="end" {...labelProps}>{d.blade}</text>
       <Leader x1="250" y1="58" x2="208" y2="58" />
-      <text x="254" y="62" textAnchor="start" {...labelProps}>Blade</text>
+      <text x="254" y="62" textAnchor="start" {...labelProps}>{d.blade}</text>
       <Leader x1="210" y1="110" x2="169" y2="110" />
-      <text x="214" y="114" textAnchor="start" {...labelProps}>Body</text>
+      <text x="214" y="114" textAnchor="start" {...labelProps}>{d.body}</text>
       <Leader x1="160" y1="184" x2="160" y2="166" />
-      <text x="160" y="198" textAnchor="middle" {...labelProps}>Paper clip</text>
+      <text x="160" y="198" textAnchor="middle" {...labelProps}>{d.paperClip}</text>
     </Figure>
   )
 }
 
 function BalloonGas() {
+  const d = useDiagramCopy().balloonGas
   const arrow = "gas-arrow"
   return (
     <Figure
-      label="A bottle of vinegar with a balloon on top. Gas from the reaction rises out of the liquid and fills the balloon."
-      caption="The reaction makes carbon dioxide gas, which rises and fills the balloon."
+      label={d.label}
+      caption={d.caption}
     >
       <ArrowMarker id={arrow} />
       {/* Balloon */}
@@ -158,51 +168,53 @@ function BalloonGas() {
       {/* Gas rising arrow */}
       <line x1="160" y1="146" x2="160" y2="76" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
       {/* Labels */}
-      <text x="160" y="14" textAnchor="middle" {...labelProps}>Balloon fills up</text>
+      <text x="160" y="14" textAnchor="middle" {...labelProps}>{d.balloonFills}</text>
       <Leader x1="214" y1="110" x2="172" y2="110" />
-      <text x="218" y="114" textAnchor="start" {...labelProps}>Gas</text>
+      <text x="218" y="114" textAnchor="start" {...labelProps}>{d.gas}</text>
       <Leader x1="96" y1="150" x2="133" y2="150" />
-      <text x="92" y="154" textAnchor="end" {...labelProps}>Vinegar</text>
+      <text x="92" y="154" textAnchor="end" {...labelProps}>{d.vinegar}</text>
       <Leader x1="214" y1="170" x2="176" y2="168" />
-      <text x="218" y="174" textAnchor="start" {...labelProps}>Bubbles</text>
+      <text x="218" y="174" textAnchor="start" {...labelProps}>{d.bubbles}</text>
     </Figure>
   )
 }
 
 function IceInsulation() {
+  const d = useDiagramCopy().iceInsulation
   const arrow = "ice-arrow"
   return (
     <Figure
-      label="Two ice cubes. The left one is wrapped in an insulating material and melts slower. The right one is bare and melts faster."
-      caption="Heat from the room reaches bare ice faster; a wrap slows the heat down."
+      label={d.label}
+      caption={d.caption}
     >
       <ArrowMarker id={arrow} />
       {/* Heat arrows from the top */}
       <line x1="82" y1="44" x2="82" y2="86" stroke="currentColor" strokeWidth="1.5" markerEnd={`url(#${arrow})`} />
       <line x1="238" y1="44" x2="238" y2="118" stroke="currentColor" strokeWidth="1.5" markerEnd={`url(#${arrow})`} />
-      <text x="160" y="34" textAnchor="middle" {...labelProps}>Heat from the warm room</text>
+      <text x="160" y="34" textAnchor="middle" {...labelProps}>{d.heatFromRoom}</text>
       {/* Left: wrapped */}
       <rect x="52" y="92" width="60" height="60" rx="8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="5 4" />
       <rect x="70" y="108" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <text x="82" y="176" textAnchor="middle" {...labelProps}>Wrapped</text>
-      <text x="82" y="190" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">melts slower</text>
+      <text x="82" y="176" textAnchor="middle" {...labelProps}>{d.wrapped}</text>
+      <text x="82" y="190" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">{d.meltsSlower}</text>
       {/* Right: bare */}
       <rect x="214" y="118" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <text x="226" y="176" textAnchor="middle" {...labelProps}>Bare</text>
-      <text x="226" y="190" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">melts faster</text>
+      <text x="226" y="176" textAnchor="middle" {...labelProps}>{d.bare}</text>
+      <text x="226" y="190" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">{d.meltsFaster}</text>
       {/* Ice labels */}
-      <text x="82" y="124" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">ice</text>
-      <text x="226" y="134" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">ice</text>
+      <text x="82" y="124" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">{d.ice}</text>
+      <text x="226" y="134" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">{d.ice}</text>
     </Figure>
   )
 }
 
 function RampForces() {
+  const d = useDiagramCopy().rampForces
   const arrow = "ramp-arrow"
   return (
     <Figure
-      label="A car on a ramp. Gravity pulls it down the ramp, it moves down the slope, and friction from the surface slows it."
-      caption="Gravity pulls the car down the ramp; friction from the surface slows it."
+      label={d.label}
+      caption={d.caption}
     >
       <ArrowMarker id={arrow} />
       {/* Ground */}
@@ -222,26 +234,27 @@ function RampForces() {
       />
       {/* Gravity (down) */}
       <line x1="131" y1="122" x2="131" y2="162" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
-      <text x="131" y="176" textAnchor="middle" {...labelProps}>Gravity</text>
+      <text x="131" y="176" textAnchor="middle" {...labelProps}>{d.gravity}</text>
       {/* Motion (down the slope) */}
       <line x1="150" y1="120" x2="196" y2="142" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
-      <text x="212" y="146" textAnchor="start" {...labelProps}>Motion</text>
+      <text x="212" y="146" textAnchor="start" {...labelProps}>{d.motion}</text>
       {/* Friction (up the slope) */}
       <line x1="120" y1="102" x2="86" y2="86" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
-      <text x="80" y="82" textAnchor="end" {...labelProps}>Friction</text>
+      <text x="80" y="82" textAnchor="end" {...labelProps}>{d.friction}</text>
       {/* Surface label */}
       <Leader x1="215" y1="196" x2="200" y2="178" />
-      <text x="219" y="200" textAnchor="start" {...labelProps}>Surface</text>
+      <text x="219" y="200" textAnchor="start" {...labelProps}>{d.surface}</text>
     </Figure>
   )
 }
 
 function TriangleTower() {
+  const d = useDiagramCopy().triangleTower
   const arrow = "tower-arrow"
   return (
     <Figure
-      label="A tower braced with triangles. A load pushes down on top, the triangle braces hold their shape, and a wide base keeps it steady."
-      caption="Triangles keep their shape and a wide base stays steady, so the tower holds the load."
+      label={d.label}
+      caption={d.caption}
     >
       <ArrowMarker id={arrow} />
       {/* Legs */}
@@ -259,20 +272,21 @@ function TriangleTower() {
       <line x1="130" y1="107" x2="175" y2="72" stroke="currentColor" strokeWidth="1.5" />
       {/* Load arrow */}
       <line x1="160" y1="34" x2="160" y2="68" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
-      <text x="160" y="26" textAnchor="middle" {...labelProps}>Load</text>
+      <text x="160" y="26" textAnchor="middle" {...labelProps}>{d.load}</text>
       {/* Labels */}
       <Leader x1="246" y1="120" x2="200" y2="124" />
-      <text x="250" y="124" textAnchor="start" {...labelProps}>Triangle brace</text>
-      <text x="160" y="196" textAnchor="middle" {...labelProps}>Wide base</text>
+      <text x="250" y="124" textAnchor="start" {...labelProps}>{d.triangleBrace}</text>
+      <text x="160" y="196" textAnchor="middle" {...labelProps}>{d.wideBase}</text>
     </Figure>
   )
 }
 
 function PlantGrowth() {
+  const d = useDiagramCopy().plantGrowth
   return (
     <Figure
-      label="A plant with roots below the soil and a stem and leaves above it. A sun gives light and water goes to the roots."
-      caption="A plant needs light, water, and air to grow leaves, a stem, and roots."
+      label={d.label}
+      caption={d.caption}
     >
       {/* Sun with rays */}
       <circle cx="56" cy="46" r="15" fill="none" stroke="currentColor" strokeWidth="1.5" />
@@ -290,7 +304,7 @@ function PlantGrowth() {
           />
         )
       })}
-      <text x="56" y="86" textAnchor="middle" {...labelProps}>Light</text>
+      <text x="56" y="86" textAnchor="middle" {...labelProps}>{d.light}</text>
       {/* Soil line */}
       <line x1="70" y1="150" x2="270" y2="150" stroke="currentColor" strokeWidth="1.5" />
       {/* Stem */}
@@ -305,11 +319,11 @@ function PlantGrowth() {
       <path d="M118,156 q-4,7 0,10 q4,-3 0,-10 Z" fill="none" stroke="currentColor" strokeWidth="1.2" />
       {/* Labels */}
       <Leader x1="250" y1="98" x2="214" y2="100" />
-      <text x="254" y="102" textAnchor="start" {...labelProps}>Leaves</text>
+      <text x="254" y="102" textAnchor="start" {...labelProps}>{d.leaves}</text>
       <Leader x1="212" y1="130" x2="178" y2="130" />
-      <text x="216" y="134" textAnchor="start" {...labelProps}>Stem</text>
-      <text x="176" y="200" textAnchor="middle" {...labelProps}>Roots</text>
-      <text x="98" y="186" textAnchor="middle" {...labelProps}>Water</text>
+      <text x="216" y="134" textAnchor="start" {...labelProps}>{d.stem}</text>
+      <text x="176" y="200" textAnchor="middle" {...labelProps}>{d.roots}</text>
+      <text x="98" y="186" textAnchor="middle" {...labelProps}>{d.water}</text>
     </Figure>
   )
 }

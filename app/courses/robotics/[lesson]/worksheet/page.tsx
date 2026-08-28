@@ -35,7 +35,7 @@ export default async function RoboticsWorksheetPage({
   return (
     <>
       <CourseBreadcrumbJsonLd path={roboticsWorksheetPath(lesson)} leafName={`${courseModule.title} worksheet`} />
-      <RoboticsWorksheetContent module={courseModule} />
+      <RoboticsWorksheetContent slug={lesson} />
     </>
   )
 }

@@ -199,26 +199,22 @@ export function IntroToPythonCurriculumContent() {
  * photograph, so the honest cover is the thing students actually make.
  */
 function FirstProgram() {
+  const { t } = useLanguage()
+  const ui = t.courseUi.python
   return (
     <div className="overflow-hidden rounded-lg bg-avanza-dark shadow-[0_24px_60px_-28px_rgba(26,26,46,0.6)]">
       <div className="border-b border-white/10 px-6 py-3.5">
         <span className="font-mono text-sm font-semibold text-white/50">week1.py</span>
       </div>
       <pre className="overflow-x-auto px-6 py-6 font-mono text-sm leading-relaxed text-white/90 sm:text-base">
-        <code>
-          {`name = input("What's your name? ")
-print("Hello, " + name + "!")
-
-for i in range(3):
-    print("Python is fun!")`}
-        </code>
+        <code>{ui.coverCode}</code>
       </pre>
       <div className="border-t border-white/10 bg-black/25 px-6 py-5 font-mono text-sm leading-relaxed text-avanza-green">
-        <p className="text-sm font-semibold text-white/40">Output</p>
-        <p className="mt-2">Hello, Maya!</p>
-        <p>Python is fun!</p>
-        <p>Python is fun!</p>
-        <p>Python is fun!</p>
+        <p className="text-sm font-semibold text-white/40">{ui.coverOutput}</p>
+        <p className="mt-2">{ui.coverGreeting}</p>
+        <p>{ui.coverFun}</p>
+        <p>{ui.coverFun}</p>
+        <p>{ui.coverFun}</p>
       </div>
     </div>
   )

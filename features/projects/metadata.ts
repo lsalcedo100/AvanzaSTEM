@@ -67,6 +67,10 @@ export function generateProjectMetadata(slug: string, language: Language = "en")
   const description = override?.description ?? project.description
   const path = `/projects/${slug}`
   const url = `${siteConfig.url}${localizedPath(path, language)}`
+  // Guides awaiting a real photo carry an empty `image`. Fall back to the
+  // default OG card rather than emitting an empty image URL, which crawlers
+  // resolve against the site root and report as a broken preview.
+  const ogImage = project.image || "/images/og-default-en.png"
 
   return {
     title,
@@ -82,13 +86,13 @@ export function generateProjectMetadata(slug: string, language: Language = "en")
       siteName: siteConfig.name,
       locale: OG_LOCALE_BY_LANGUAGE[language],
       type: "article",
-      images: [{ url: project.image, alt: project.title }],
+      images: [{ url: ogImage, alt: project.title }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [project.image],
+      images: [ogImage],
     },
   }
 }

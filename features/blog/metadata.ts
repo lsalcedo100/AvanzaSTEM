@@ -245,6 +245,31 @@ export const BLOG_POST_META: Record<BlogSlug, { headline: string; description: s
     description:
       "Whether something floats or sinks comes down to density, shape, and how much water it pushes aside. Learn why a steel ship floats but a small rock sinks.",
   },
+  "how-does-a-camera-work-without-a-lens": {
+    headline: "How Does a Camera Work Without a Lens? Pinhole Optics",
+    description:
+      "A box with one pinhole makes a real, full-color, upside-down picture. Learn why light travels straight, why smaller holes are sharper but dimmer, and how your eye does the same job.",
+  },
+  "how-do-fiber-optic-cables-work": {
+    headline: "How Do Fiber Optic Cables Work? Light Trapped in Glass",
+    description:
+      "Light travels in straight lines, so how does it follow a cable under the ocean? Total internal reflection explained for kids, plus a water-stream version you can build at home.",
+  },
+  "how-do-scientists-know-what-stars-are-made-of": {
+    headline: "How Do Scientists Know What Stars Are Made Of?",
+    description:
+      "Split starlight and every element leaves its own pattern of bright lines. How spectroscopy works, why atoms emit only certain colors, and how helium was found in the sun first.",
+  },
+  "why-do-things-glow-under-a-blacklight": {
+    headline: "Why Do Things Glow Under a Blacklight? Fluorescence",
+    description:
+      "Tonic water, highlighters, and laundry powder glow because they absorb invisible UV and emit new visible light. The one-way color rule explained, with a cheap experiment to test it.",
+  },
+  "is-light-a-wave-or-a-particle": {
+    headline: "Is Light a Wave or a Particle? The Double Slit Explained",
+    description:
+      "Light interferes like a wave and arrives like a particle. Young's slits, the photoelectric effect, and the one-photon-at-a-time result, explained honestly for curious kids.",
+  },
   "why-do-magnets-stick-to-some-metals-but-not-others": {
     headline: "Why Do Magnets Stick to Some Metals but Not Others?",
     description:
@@ -310,6 +335,11 @@ export const BLOG_POST_AUTHORS: Record<BlogSlug, string> = {
   "how-do-noise-canceling-headphones-work": "Liam Salcedo",
   "why-do-some-things-float-and-others-sink": "Enqi Qi",
   "why-do-magnets-stick-to-some-metals-but-not-others": "Noah Lopez",
+  "how-does-a-camera-work-without-a-lens": "Liam Salcedo",
+  "how-do-fiber-optic-cables-work": "Liam Salcedo",
+  "how-do-scientists-know-what-stars-are-made-of": "Liam Salcedo",
+  "why-do-things-glow-under-a-blacklight": "Liam Salcedo",
+  "is-light-a-wave-or-a-particle": "Liam Salcedo",
 }
 
 /**
@@ -365,6 +395,11 @@ export const BLOG_POST_DATES: Record<BlogSlug, { datePublished: string; dateModi
   "how-do-noise-canceling-headphones-work": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
   "why-do-some-things-float-and-others-sink": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
   "why-do-magnets-stick-to-some-metals-but-not-others": { datePublished: "2026-06-16", dateModified: "2026-06-17" },
+  "how-does-a-camera-work-without-a-lens": { datePublished: "2026-08-27", dateModified: "2026-08-27" },
+  "how-do-fiber-optic-cables-work": { datePublished: "2026-08-27", dateModified: "2026-08-27" },
+  "how-do-scientists-know-what-stars-are-made-of": { datePublished: "2026-08-27", dateModified: "2026-08-27" },
+  "why-do-things-glow-under-a-blacklight": { datePublished: "2026-08-27", dateModified: "2026-08-27" },
+  "is-light-a-wave-or-a-particle": { datePublished: "2026-08-27", dateModified: "2026-08-27" },
 }
 
 /**
@@ -396,7 +431,7 @@ export function generateBlogPostMetadata(slug: BlogSlug, language: Language = "e
     article.title.length + 14 <= 60 ? `${article.title} - Avanza STEM` : article.title
   const path = `/blog/${slug}`
   const url = `${siteConfig.url}${localizedPath(path, language)}`
-  const image = article.image ?? "/images/og-default-en.png"
+  const image = article.image || "/images/og-default-en.png"
   const imageAlt = article.imageAlt ?? article.title
   const { datePublished, dateModified } = BLOG_POST_DATES[slug]
 

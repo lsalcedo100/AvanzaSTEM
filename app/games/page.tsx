@@ -1,33 +1,10 @@
 import type { Metadata } from "next"
-import { translations } from "@/i18n/translations"
-import { GamesPageContent } from "@/components/pages/games-page-content"
-import { getLanguage } from "@/lib/get-language"
-import { enOnlyAlternates } from "@/lib/i18n-routes"
-import { siteConfig } from "@/lib/site-config"
 
-export async function generateMetadata(): Promise<Metadata> {
-  const language = await getLanguage()
-  const t = translations[language].gamesPage
-  const title = t.metaTitle
-  const description = t.metaDesc
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/games",
-      languages: enOnlyAlternates("/games"),
-    },
-    openGraph: {
-      title,
-      description,
-      url: `${siteConfig.url}/games`,
-      siteName: siteConfig.name,
-      type: "website",
-      images: [
-        { url: "/images/og-default-en.png", width: 1200, height: 630, alt: "Avanza STEM" },
-      ],
-    },
-  }
+import { generateSitePageMetadata } from "@/features/site/page-metadata"
+import { GamesPageContent } from "@/components/pages/games-page-content"
+
+export function generateMetadata(): Metadata {
+  return generateSitePageMetadata("games", "en")
 }
 
 export default function GamesRoute() {

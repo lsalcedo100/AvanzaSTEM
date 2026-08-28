@@ -108,6 +108,16 @@ export const LOCALIZED_BLOG_DESCRIPTIONS: Record<"es" | "zh" | "pt", Record<Blog
       "Flotar o hundirse depende de la densidad, la forma y cuánta agua desplaza un objeto. Descubre por qué un barco de acero flota y una piedra pequeña se hunde.",
     "why-do-magnets-stick-to-some-metals-but-not-others":
       "Los imanes se pegan al hierro, el acero y el níquel porque sus regiones magnéticas se alinean. El cobre y el aluminio no funcionan igual. Descubre por qué.",
+    "how-does-a-camera-work-without-a-lens":
+      "Una caja con un agujerito crea una imagen real y al reves. Descubre por que la luz viaja en linea recta y por que un agujero mas pequeno da una imagen mas nitida.",
+    "how-do-fiber-optic-cables-work":
+      "La luz viaja recto, entonces como sigue un cable bajo el oceano? La reflexion interna total explicada para ninos, con una version de chorro de agua para hacer en casa.",
+    "how-do-scientists-know-what-stars-are-made-of":
+      "Separa la luz de una estrella y cada elemento deja su propio patron de lineas. Como funciona la espectroscopia y como se hallo el helio en el sol antes que en la Tierra.",
+    "why-do-things-glow-under-a-blacklight":
+      "El agua tonica y los marcadores brillan porque absorben luz ultravioleta invisible y emiten luz visible nueva. La regla del color que nunca falla, con un experimento barato.",
+    "is-light-a-wave-or-a-particle":
+      "La luz interfiere como onda y llega como particula. Las rendijas de Young, el efecto fotoelectrico y el resultado foton a foton, explicados con honestidad para ninos.",
   },
   zh: {
     "5-easy-science-experiments":
@@ -202,6 +212,16 @@ export const LOCALIZED_BLOG_DESCRIPTIONS: Record<"es" | "zh" | "pt", Record<Blog
       "浮起还是下沉取决于密度、形状，以及物体排开多少水。了解为什么钢铁做的船会浮，而一块小石头会沉。",
     "why-do-magnets-stick-to-some-metals-but-not-others":
       "磁铁能吸住铁、钢和镍，因为这些金属内部的微小磁畴会排列整齐。铜和铝则不一样。了解其中原因。",
+    "how-does-a-camera-work-without-a-lens":
+      "针孔成像原理：为什么图像是倒的，孔越小越清晰",
+    "how-do-fiber-optic-cables-work":
+      "光纤原理：全内反射如何把光困在玻璃里，在家用水流就能看见",
+    "how-do-scientists-know-what-stars-are-made-of":
+      "光谱学：每种元素都有独特的谱线，氦元素是先在太阳上被发现的",
+    "why-do-things-glow-under-a-blacklight":
+      "荧光原理：物体吸收看不见的紫外光，发出能量更低的可见光",
+    "is-light-a-wave-or-a-particle":
+      "光是波还是粒子？双缝实验、光电效应与单光子结果的诚实解释",
   },
   pt: {
     "5-easy-science-experiments":
@@ -296,5 +316,15 @@ export const LOCALIZED_BLOG_DESCRIPTIONS: Record<"es" | "zh" | "pt", Record<Blog
       "Flutuar ou afundar depende da densidade, da forma e de quanta água o objeto desloca. Descubra por que um navio de aço flutua e uma pedrinha afunda.",
     "why-do-magnets-stick-to-some-metals-but-not-others":
       "Os ímãs grudam no ferro, no aço e no níquel porque as regiões magnéticas deles se alinham. Cobre e alumínio não funcionam assim. Descubra o motivo.",
+    "how-does-a-camera-work-without-a-lens":
+      "Uma caixa com um furinho cria uma imagem real e de cabeça para baixo. Descubra por que a luz anda em linha reta e por que um furo menor deixa a imagem mais nítida.",
+    "how-do-fiber-optic-cables-work":
+      "A luz anda em linha reta, então como ela segue um cabo no fundo do oceano? A reflexão interna total explicada, com uma versão em jato de água para fazer em casa.",
+    "how-do-scientists-know-what-stars-are-made-of":
+      "Separe a luz de uma estrela e cada elemento deixa o próprio padrão de linhas. Como funciona a espectroscopia e como o hélio foi achado no sol antes da Terra.",
+    "why-do-things-glow-under-a-blacklight":
+      "Água tônica e marca-texto brilham porque absorvem luz ultravioleta invisível e emitem luz visível nova. A regra de cor que nunca falha, com um experimento barato.",
+    "is-light-a-wave-or-a-particle":
+      "A luz interfere como onda e chega como partícula. As fendas de Young, o efeito fotoelétrico e o resultado fóton a fóton, explicados com honestidade para crianças.",
   },
 }

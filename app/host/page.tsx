@@ -1,30 +1,10 @@
 import type { Metadata } from "next"
+
+import { generateSitePageMetadata } from "@/features/site/page-metadata"
 import { HostPageContent } from "@/components/pages/host-page-content"
-import { enOnlyAlternates } from "@/lib/i18n-routes"
-import { siteConfig } from "@/lib/site-config"
 
 export function generateMetadata(): Metadata {
-  const title = "Host a Workshop | Avanza STEM"
-  const description = "Bring Avanza STEM to your school or library. Contact us to host a free STEM workshop for your community."
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/host",
-      languages: enOnlyAlternates("/host"),
-    },
-    openGraph: {
-      title,
-      description,
-      url: `${siteConfig.url}/host`,
-      siteName: siteConfig.name,
-      type: "website",
-      images: [
-        { url: "/images/og-default-en.png", width: 1200, height: 630, alt: "Avanza STEM" },
-      ],
-    },
-  }
+  return generateSitePageMetadata("host", "en")
 }
 
 export default function HostPage() {

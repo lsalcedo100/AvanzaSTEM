@@ -2,14 +2,16 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useState, useRef, useEffect, useSyncExternalStore } from "react"
 import { Check, Globe, Menu, X } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { type Language, languageLabels } from "@/i18n/translations"
+import { canonicalPath, localizedPath } from "@/lib/i18n-routes"
 
 export function Navbar() {
   const pathname = usePathname()
+  const router = useRouter()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -19,6 +21,20 @@ export function Navbar() {
     () => false,
   )
   const { language, setLanguage, t } = useLanguage()
+  /*
+   * Every page exists at both the unprefixed English path and its /es, /pt and
+   * /zh twin, so switching language is a navigation, not just a state change.
+   * Without the push the URL, canonical tag and cookie would disagree with what
+   * is on screen, and a reload would snap back to the language in the URL.
+   */
+  const goToLanguage = (lang: Language) => {
+    setLanguage(lang)
+    const target = localizedPath(canonicalPath(pathname), lang)
+    if (target !== pathname) {
+      router.push(target)
+    }
+  }
+
   const desktopLangRef = useRef<HTMLDivElement>(null)
   const mobileLangRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
@@ -182,7 +198,7 @@ export function Navbar() {
                     type="button"
                     key={lang}
                     onClick={() => {
-                      setLanguage(lang)
+                      goToLanguage(lang)
                       setLangOpen(false)
                     }}
                     role="menuitemradio"
@@ -232,7 +248,7 @@ export function Navbar() {
                     type="button"
                     key={lang}
                     onClick={() => {
-                      setLanguage(lang)
+                      goToLanguage(lang)
                       setLangOpen(false)
                     }}
                     role="menuitemradio"

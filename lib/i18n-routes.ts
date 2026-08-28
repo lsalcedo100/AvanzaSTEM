@@ -48,3 +48,18 @@ export function languageAlternates(path: string): Record<string, string> {
 export function enOnlyAlternates(path: string): Record<string, string> {
   return { en: absoluteUrl(path), "x-default": absoluteUrl(path) }
 }
+
+/**
+ * Strips any locale prefix off a live pathname, yielding the canonical English
+ * path. `/pt/courses/robotics` becomes `/courses/robotics`, and a path that is
+ * already unprefixed is returned unchanged.
+ */
+export function canonicalPath(pathname: string): string {
+  const segments = pathname.split("/")
+  const first = segments[1]
+  if (!first || !VALID_LANGUAGES.includes(first as Language) || first === "en") {
+    return pathname
+  }
+  const rest = `/${segments.slice(2).join("/")}`
+  return rest === "/" ? "/" : rest.replace(/\/$/, "")
+}

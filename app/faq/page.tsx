@@ -1,31 +1,12 @@
 import type { Metadata } from "next"
+
+import { generateSitePageMetadata } from "@/features/site/page-metadata"
 import { FAQPageContent } from "@/components/pages/faq-page-content"
 import { translations } from "@/i18n/translations"
-import { enOnlyAlternates } from "@/lib/i18n-routes"
 import { siteConfig } from "@/lib/site-config"
 
 export function generateMetadata(): Metadata {
-  const title = "Free STEM Workshop FAQ | Avanza STEM"
-  const description = "Answers to common questions about Avanza STEM workshops, curricula, costs, and how to get involved."
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/faq",
-      languages: enOnlyAlternates("/faq"),
-    },
-    openGraph: {
-      title,
-      description,
-      url: `${siteConfig.url}/faq`,
-      siteName: siteConfig.name,
-      type: "website",
-      images: [
-        { url: "/images/og-default-en.png", width: 1200, height: 630, alt: "Avanza STEM" },
-      ],
-    },
-  }
+  return generateSitePageMetadata("faq", "en")
 }
 
 const faqJsonLd = {

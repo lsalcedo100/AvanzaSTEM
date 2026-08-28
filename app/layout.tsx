@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/footer'
 import { Navbar } from '@/components/layout/navbar'
 import { ImageLightboxProvider } from '@/components/providers/image-lightbox-provider'
 import { LanguageProvider } from '@/components/providers/language-provider'
+import { SkipToContent } from '@/components/layout/skip-to-content'
 import { generateHomeMetadata } from '@/features/home/metadata'
 import { siteConfig } from '@/lib/site-config'
 import { publisherLogoUrl } from '@/lib/structured-data'
@@ -106,13 +107,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-200 focus:rounded-lg focus:bg-avanza-green focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-avanza-dark focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
-        >
-          Skip to content
-        </a>
         <LanguageProvider initialLanguage="en">
+          <SkipToContent />
           <ImageLightboxProvider>
             <Navbar />
             <main id="main-content">{children}</main>

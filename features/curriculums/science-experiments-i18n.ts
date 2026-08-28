@@ -1,4 +1,7 @@
-import type { ScienceCurriculum } from "@/features/curriculums/science-experiments"
+import type {
+  ScienceCurriculum,
+  ScienceLesson,
+} from "@/features/curriculums/science-experiments"
 import { scienceExperimentsCurriculum } from "@/features/curriculums/science-experiments"
 import {
   createLocalizedResolver,
@@ -1505,4 +1508,9 @@ export const getScienceExperimentsCurriculum = createLocalizedResolver(
 /** Whether this course has been translated into `language` at all. */
 export function scienceCurriculumHasTranslation(language: Language): boolean {
   return hasLocaleOverlay(overlays, language)
+}
+
+/** The lesson with this slug, in the requested language. */
+export function findScienceLesson(language: Language, slug: string): ScienceLesson | undefined {
+  return getScienceExperimentsCurriculum(language).lessons.find((lesson) => lesson.slug === slug)
 }

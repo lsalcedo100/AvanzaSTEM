@@ -1,3 +1,10 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import {
+  findRoboticsModule,
+  getRoboticsModules,
+} from "@/features/curriculums/robotics-i18n"
 import Link from "next/link"
 import {
   ROBOTICS_SAFETY,
@@ -52,9 +59,11 @@ function answerKeyText(question: KnowledgeCheckQuestion): string {
  * the knowledge-check answer key. It reads entirely from the passed
  * `RoboticsModule` and mirrors the lesson page's clean, printable style.
  */
-export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule }) {
-  const label = module.isFinal ? "Final project" : `Week ${module.week}: ${module.title}`
-  const guidance = module.teacherGuidance
+export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
+  const { language } = useLanguage()
+  const weekModule = findRoboticsModule(language, slug) ?? getRoboticsModules(language)[0]
+  const label = weekModule.isFinal ? "Final project" : `Week ${weekModule.week}: ${weekModule.title}`
+  const guidance = weekModule.teacherGuidance
 
   return (
     <article className="bg-background">
@@ -63,13 +72,13 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
         <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-4 px-6 py-4">
           <div className="flex flex-wrap items-center gap-4 text-sm">
             <Link
-              href={roboticsLessonPath(module.slug)}
+              href={roboticsLessonPath(weekModule.slug)}
               className="font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
             >
               ← Back to the lesson
             </Link>
             <Link
-              href={roboticsWorksheetPath(module.slug)}
+              href={roboticsWorksheetPath(weekModule.slug)}
               className="font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
             >
               Printable worksheet
@@ -88,14 +97,14 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
           <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">{label}</h1>
           <p className="mt-3 text-sm text-muted-foreground">
             <span className="font-semibold text-foreground">Session length: </span>
-            {module.estimatedTime}
+            {weekModule.estimatedTime}
           </p>
         </header>
 
         {/* Learning purpose */}
         <section className="mt-12">
           <h2 className="text-xl font-bold text-foreground">Learning purpose</h2>
-          <p className="mt-3 text-sm leading-relaxed text-foreground/90">{module.summary}</p>
+          <p className="mt-3 text-sm leading-relaxed text-foreground/90">{weekModule.summary}</p>
         </section>
 
         {/* Learning goals / expected outcomes */}
@@ -103,7 +112,7 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
           <h2 className="text-xl font-bold text-foreground">Expected student outcomes</h2>
           <p className="mt-1 text-sm text-muted-foreground">By the end of this week, students can:</p>
           <ul className="mt-4 space-y-2">
-            {module.learningGoals.map((goal) => (
+            {weekModule.learningGoals.map((goal) => (
               <li key={goal.id} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
                 <span aria-hidden className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-green" />
                 <span>{goal.text}</span>
@@ -116,7 +125,7 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
         <section className="mt-12">
           <h2 className="text-xl font-bold text-foreground">Suggested pacing</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            About {module.estimatedTime}. Adjust to your group - these are guides, not limits.
+            About {weekModule.estimatedTime}. Adjust to your group - these are guides, not limits.
           </p>
           <div className="mt-4 overflow-x-auto">
             <table className="w-full border-collapse text-left text-sm">
@@ -128,7 +137,7 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
                 </tr>
               </thead>
               <tbody>
-                {module.lessonFlow.map((step) => (
+                {weekModule.lessonFlow.map((step) => (
                   <tr key={step.id} className="align-top">
                     <td className="border border-border px-3 py-2 font-semibold text-foreground">{step.title}</td>
                     <td className="border border-border px-3 py-2 text-foreground/90">{step.focus}</td>
@@ -175,7 +184,7 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
         <section className="mt-12">
           <h2 className="text-xl font-bold text-foreground">Materials</h2>
           <ul className="mt-4 space-y-3">
-            {module.materials.map((material) => (
+            {weekModule.materials.map((material) => (
               <li key={material.id} className="text-sm leading-relaxed text-foreground/90">
                 <span className="font-semibold text-foreground">{material.name}</span>
                 {material.optional && (
@@ -198,7 +207,7 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
         <section className="mt-12">
           <h2 className="text-xl font-bold text-foreground">Safety</h2>
           <ul className="mt-4 space-y-3">
-            {module.safetyNotes.map((note) => (
+            {weekModule.safetyNotes.map((note) => (
               <li key={note.id} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
                 <span
                   aria-hidden
@@ -329,7 +338,7 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
           </p>
           <div className="mt-4 grid gap-4 sm:grid-cols-3">
             {PATH_ORDER.map((path) => {
-              const mats = module.materials.filter((m) => m.paths.includes(path))
+              const mats = weekModule.materials.filter((m) => m.paths.includes(path))
               return (
                 <div key={path} className="rounded-lg border border-border p-4">
                   <h3 className="text-sm font-bold text-foreground">{PATH_LABELS[path]}</h3>
@@ -350,7 +359,7 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
 
         {/* Troubleshooting (aggregated from the activities' equipment variants) */}
         {(() => {
-          const tips = module.activities.flatMap((a) =>
+          const tips = weekModule.activities.flatMap((a) =>
             PATH_ORDER.flatMap((path) =>
               (a.variants[path]?.troubleshooting ?? []).map((t) => ({ ...t, activity: a.title, path })),
             ),
@@ -384,7 +393,7 @@ export function RoboticsTeacherGuideContent({ module }: { module: RoboticsModule
             Answers are shown here for the adult only - the student worksheet keeps them hidden.
           </p>
           <ol className="mt-4 space-y-6">
-            {module.knowledgeCheck.questions.map((question, i) => (
+            {weekModule.knowledgeCheck.questions.map((question, i) => (
               <li key={question.id}>
                 <p className="text-sm font-semibold leading-relaxed text-foreground">
                   {i + 1}. {question.prompt}

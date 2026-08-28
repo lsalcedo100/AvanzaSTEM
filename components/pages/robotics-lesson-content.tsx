@@ -1,3 +1,10 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import {
+  findRoboticsModule,
+  getRoboticsModules,
+} from "@/features/curriculums/robotics-i18n"
 import Link from "next/link"
 import {
   nextRoboticsModule,
@@ -123,14 +130,16 @@ function programMissionsFor(module: RoboticsModule): ProgramMission[] {
  * "finish Week N first" message (with a link) when the week is locked, and marks
  * the week started when it is open.
  */
-export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
-  const previous = previousRoboticsModule(module.slug)
-  const next = nextRoboticsModule(module.slug)
-  const label = module.isFinal ? "Final project" : `Week ${module.week}`
+export function RoboticsLessonContent({ slug }: { slug: string }) {
+  const { language } = useLanguage()
+  const weekModule = findRoboticsModule(language, slug) ?? getRoboticsModules(language)[0]
+  const previous = previousRoboticsModule(weekModule.slug)
+  const next = nextRoboticsModule(weekModule.slug)
+  const label = weekModule.isFinal ? "Final project" : `Week ${weekModule.week}`
 
-  const hasPredict = module.predictionPrompts.length > 0
-  const hasTest = module.testRecords.length > 0 || module.debuggingMissions.length > 0
-  const programMissions = programMissionsFor(module)
+  const hasPredict = weekModule.predictionPrompts.length > 0
+  const hasTest = weekModule.testRecords.length > 0 || weekModule.debuggingMissions.length > 0
+  const programMissions = programMissionsFor(weekModule)
   const hasProgram = programMissions.length > 0
 
   // Only include steps that this week actually has, keeping the canonical order.
@@ -145,7 +154,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
   ]
 
   return (
-    <RoboticsLessonGate module={module}>
+    <RoboticsLessonGate module={weekModule}>
       <article className="bg-background">
         {/* Breadcrumb + header */}
         <header className="border-b border-border">
@@ -161,24 +170,24 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
             <p className="mt-6 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {label}
             </p>
-            <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">{module.title}</h1>
-            <p className="mt-3 max-w-2xl text-base leading-relaxed text-foreground/90">{module.subtitle}</p>
+            <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">{weekModule.title}</h1>
+            <p className="mt-3 max-w-2xl text-base leading-relaxed text-foreground/90">{weekModule.subtitle}</p>
 
             <ul className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-              <li className="font-medium text-foreground">{module.estimatedTime}</li>
+              <li className="font-medium text-foreground">{weekModule.estimatedTime}</li>
               <li aria-hidden className="text-border">|</li>
-              <li className="font-medium text-foreground">Mission: {module.mainMission}</li>
+              <li className="font-medium text-foreground">Mission: {weekModule.mainMission}</li>
             </ul>
 
             <div className="mt-6 flex flex-wrap gap-4 text-sm">
               <Link
-                href={roboticsWorksheetPath(module.slug)}
+                href={roboticsWorksheetPath(weekModule.slug)}
                 className="font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
               >
                 Printable worksheet
               </Link>
               <Link
-                href={roboticsTeacherGuidePath(module.slug)}
+                href={roboticsTeacherGuidePath(weekModule.slug)}
                 className="font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
               >
                 Parent &amp; teacher guide
@@ -188,16 +197,16 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
         </header>
 
         <div className="mx-auto max-w-3xl px-6 pb-12 md:pb-16">
-          <RoboticsLessonSteps moduleId={module.id} steps={steps} />
+          <RoboticsLessonSteps moduleId={weekModule.id} steps={steps} />
 
           {/* Summary */}
-          <p className="mt-8 text-base leading-relaxed text-foreground/90">{module.summary}</p>
+          <p className="mt-8 text-base leading-relaxed text-foreground/90">{weekModule.summary}</p>
 
           {/* Learning goals */}
           <section className="mt-10">
             <h2 className="text-xl font-bold text-foreground">By the end of this week you can</h2>
             <ul className="mt-4 space-y-2">
-              {module.learningGoals.map((goal) => (
+              {weekModule.learningGoals.map((goal) => (
                 <li key={goal.id} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
                   <span aria-hidden className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-green" />
                   <span>{goal.text}</span>
@@ -210,7 +219,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
           <section id="lesson-learn" className="mt-12 scroll-mt-20">
             <h2 className="text-xl font-bold text-foreground">Learn</h2>
             <div className="mt-4 space-y-6">
-              {module.concepts.map((concept) => (
+              {weekModule.concepts.map((concept) => (
                 <div key={concept.id}>
                   <h3 className="font-bold text-foreground">{concept.title}</h3>
                   {concept.body.map((para, i) => (
@@ -233,7 +242,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
           <section className="mt-12">
             <h2 className="text-xl font-bold text-foreground">Words to know</h2>
             <dl className="mt-4 space-y-3">
-              {module.vocabulary.map((term) => (
+              {weekModule.vocabulary.map((term) => (
                 <div key={term.term} className="text-sm leading-relaxed">
                   <dt className="inline font-semibold text-foreground">{term.term}: </dt>
                   <dd className="inline text-foreground/90">{term.definition}</dd>
@@ -243,7 +252,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
           </section>
 
           {/* Stay safe (contextual safety for this week's activities) */}
-          {module.safetyNotes.length > 0 && (
+          {weekModule.safetyNotes.length > 0 && (
             <section id="lesson-safety" className="mt-12 scroll-mt-20">
               <div className="rounded-md border border-avanza-orange/50 bg-avanza-orange/5 p-5">
                 <h2 className="text-base font-bold text-foreground">Stay safe</h2>
@@ -251,7 +260,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
                   Read these before you build or run a robot this week.
                 </p>
                 <ul className="mt-3 space-y-2">
-                  {module.safetyNotes.map((note) => (
+                  {weekModule.safetyNotes.map((note) => (
                     <li key={note.id} className="flex gap-2 text-sm leading-relaxed text-foreground/90">
                       <span
                         className={
@@ -275,7 +284,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
             <div className="mt-4">
               <RoboticsEquipmentPathPicker />
             </div>
-            {module.activities.map((activity) => (
+            {weekModule.activities.map((activity) => (
               <RoboticsActivity key={activity.id} activity={activity} />
             ))}
           </section>
@@ -312,7 +321,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
                 save automatically.
               </p>
               <div className="mt-4">
-                <RoboticsPredictions prompts={module.predictionPrompts} />
+                <RoboticsPredictions prompts={weekModule.predictionPrompts} />
               </div>
             </section>
           )}
@@ -322,15 +331,15 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
             <section id="lesson-test" className="mt-12 scroll-mt-20">
               <h2 className="text-xl font-bold text-foreground">Test &amp; improve</h2>
 
-              {module.testRecords.length > 0 && (
+              {weekModule.testRecords.length > 0 && (
                 <div className="mt-4 space-y-6">
-                  {module.testRecords.map((record) => (
+                  {weekModule.testRecords.map((record) => (
                     <RoboticsTestRecord key={record.id} record={record} />
                   ))}
                 </div>
               )}
 
-              {module.debuggingMissions.length > 0 && (
+              {weekModule.debuggingMissions.length > 0 && (
                 <div className="mt-8">
                   <h3 className="font-bold text-foreground">Debugging missions</h3>
                   <p className="mt-1 text-sm text-muted-foreground">
@@ -338,7 +347,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
                     the program, or with a sensor - then check the fix.
                   </p>
                   <div className="mt-4 space-y-4">
-                    {module.debuggingMissions.map((mission) => (
+                    {weekModule.debuggingMissions.map((mission) => (
                       <RoboticsDebugMission key={mission.id} mission={mission} />
                     ))}
                   </div>
@@ -351,7 +360,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
           <section id="lesson-check" className="mt-12 scroll-mt-20">
             <h2 className="text-xl font-bold text-foreground">Knowledge check</h2>
             <div className="mt-4">
-              <RoboticsKnowledgeCheck check={module.knowledgeCheck} />
+              <RoboticsKnowledgeCheck check={weekModule.knowledgeCheck} />
             </div>
           </section>
 
@@ -360,19 +369,19 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
             <h2 className="text-xl font-bold text-foreground">Reflect</h2>
             <p className="mt-2 text-sm text-muted-foreground">Your reflections save automatically.</p>
             <div className="mt-4">
-              <RoboticsReflection prompts={module.reflection} />
+              <RoboticsReflection prompts={weekModule.reflection} />
             </div>
           </section>
 
           {/* Next week */}
           <section className="mt-12 rounded-lg border border-border bg-secondary p-5">
             <h2 className="text-sm font-bold uppercase tracking-wide text-foreground">
-              {module.isFinal ? "After the course" : "Coming up next week"}
+              {weekModule.isFinal ? "After the course" : "Coming up next week"}
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-foreground/90">{module.nextWeek.teaser}</p>
-            {module.nextWeek.prepare.length > 0 && (
+            <p className="mt-2 text-sm leading-relaxed text-foreground/90">{weekModule.nextWeek.teaser}</p>
+            {weekModule.nextWeek.prepare.length > 0 && (
               <ul className="mt-3 space-y-1.5">
-                {module.nextWeek.prepare.map((item, i) => (
+                {weekModule.nextWeek.prepare.map((item, i) => (
                   <li key={i} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
                     <span aria-hidden className="mt-2 h-1 w-1 flex-none rounded-full bg-avanza-green" />
                     <span>{item}</span>
@@ -383,7 +392,7 @@ export function RoboticsLessonContent({ module }: { module: RoboticsModule }) {
           </section>
 
           {/* Mark complete */}
-          <RoboticsLessonComplete module={module} />
+          <RoboticsLessonComplete module={weekModule} />
 
           {/* Prev / next navigation */}
           <nav className="mt-12 flex items-center justify-between gap-4 border-t border-border pt-6 text-sm">

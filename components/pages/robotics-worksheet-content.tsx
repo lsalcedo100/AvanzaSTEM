@@ -1,3 +1,10 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
+import {
+  findRoboticsModule,
+  getRoboticsModules,
+} from "@/features/curriculums/robotics-i18n"
 import Link from "next/link"
 import { roboticsLessonPath, type RoboticsModule } from "@/features/curriculums/robotics"
 import { PrintButton } from "@/components/ui/print-button"
@@ -17,8 +24,10 @@ function WriteSpace({ className = "h-16" }: { className?: string }) {
  * writes is a blank ruled box they fill in by hand. The on-screen toolbar (print button + back
  * link) lives in a `print-hidden` container so it stays off the printout.
  */
-export function RoboticsWorksheetContent({ module }: { module: RoboticsModule }) {
-  const label = module.isFinal ? "Final project" : `Week ${module.week}`
+export function RoboticsWorksheetContent({ slug }: { slug: string }) {
+  const { language } = useLanguage()
+  const weekModule = findRoboticsModule(language, slug) ?? getRoboticsModules(language)[0]
+  const label = weekModule.isFinal ? "Final project" : `Week ${weekModule.week}`
 
   return (
     <article className="bg-background">
@@ -26,7 +35,7 @@ export function RoboticsWorksheetContent({ module }: { module: RoboticsModule })
         {/* On-screen toolbar (kept off the printed handout) */}
         <div className="print-hidden mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-6">
           <Link
-            href={roboticsLessonPath(module.slug)}
+            href={roboticsLessonPath(weekModule.slug)}
             className="text-sm font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
           >
             ← Back to the lesson
@@ -43,16 +52,16 @@ export function RoboticsWorksheetContent({ module }: { module: RoboticsModule })
         {/* Header */}
         <header className="mt-6 border-b border-border pb-6">
           <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
-          <h1 className="mt-2 text-3xl font-extrabold text-foreground">{module.title}</h1>
-          <p className="mt-3 text-base leading-relaxed text-foreground/90">{module.subtitle}</p>
-          <p className="mt-3 text-sm font-medium text-foreground">{module.estimatedTime}</p>
+          <h1 className="mt-2 text-3xl font-extrabold text-foreground">{weekModule.title}</h1>
+          <p className="mt-3 text-base leading-relaxed text-foreground/90">{weekModule.subtitle}</p>
+          <p className="mt-3 text-sm font-medium text-foreground">{weekModule.estimatedTime}</p>
         </header>
 
         {/* Key ideas */}
         <section className="mt-10">
           <h2 className="text-xl font-bold text-foreground">Key ideas</h2>
           <div className="mt-4 space-y-4">
-            {module.concepts.map((concept) => (
+            {weekModule.concepts.map((concept) => (
               <div key={concept.id}>
                 <h3 className="font-bold text-foreground">{concept.title}</h3>
                 {concept.body[0] && (
@@ -67,7 +76,7 @@ export function RoboticsWorksheetContent({ module }: { module: RoboticsModule })
         <section className="mt-10">
           <h2 className="text-xl font-bold text-foreground">Words to know</h2>
           <dl className="mt-4 space-y-3">
-            {module.vocabulary.map((term) => (
+            {weekModule.vocabulary.map((term) => (
               <div key={term.term} className="text-sm leading-relaxed">
                 <dt className="inline font-semibold text-foreground">{term.term}: </dt>
                 <dd className="inline text-foreground/90">{term.definition}</dd>
@@ -80,7 +89,7 @@ export function RoboticsWorksheetContent({ module }: { module: RoboticsModule })
         <section className="mt-10">
           <h2 className="text-xl font-bold text-foreground">Your activity</h2>
           <div className="mt-4 space-y-8">
-            {module.activities.map((activity) => (
+            {weekModule.activities.map((activity) => (
               <div key={activity.id}>
                 <h3 className="font-bold text-foreground">{activity.title}</h3>
                 <p className="mt-1 text-sm text-foreground/90">
@@ -102,14 +111,14 @@ export function RoboticsWorksheetContent({ module }: { module: RoboticsModule })
         </section>
 
         {/* Predict */}
-        {module.predictionPrompts.length > 0 && (
+        {weekModule.predictionPrompts.length > 0 && (
           <section className="mt-10">
             <h2 className="text-xl font-bold text-foreground">Predict</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Write your guess before you test.
             </p>
             <div className="mt-4 space-y-6">
-              {module.predictionPrompts.map((prompt) => (
+              {weekModule.predictionPrompts.map((prompt) => (
                 <div key={prompt.id}>
                   <p className="text-sm font-semibold text-foreground">{prompt.prompt}</p>
                   <WriteSpace />
@@ -120,11 +129,11 @@ export function RoboticsWorksheetContent({ module }: { module: RoboticsModule })
         )}
 
         {/* Test and record */}
-        {module.testRecords.length > 0 && (
+        {weekModule.testRecords.length > 0 && (
           <section className="mt-10">
             <h2 className="text-xl font-bold text-foreground">Test and record</h2>
             <div className="mt-4 space-y-6">
-              {module.testRecords.map((record) => (
+              {weekModule.testRecords.map((record) => (
                 <div key={record.id}>
                   <h3 className="font-bold text-foreground">{record.title}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">{record.instructions}</p>
@@ -172,7 +181,7 @@ export function RoboticsWorksheetContent({ module }: { module: RoboticsModule })
             Answer each question. For choice questions, circle the best answer.
           </p>
           <ol className="mt-4 list-decimal space-y-5 pl-5">
-            {module.knowledgeCheck.questions.map((question) => (
+            {weekModule.knowledgeCheck.questions.map((question) => (
               <li key={question.id} className="text-sm leading-relaxed">
                 <p className="font-semibold text-foreground">{question.prompt}</p>
                 {"scenario" in question && (
@@ -247,11 +256,11 @@ export function RoboticsWorksheetContent({ module }: { module: RoboticsModule })
         </section>
 
         {/* Reflect */}
-        {module.reflection.length > 0 && (
+        {weekModule.reflection.length > 0 && (
           <section className="mt-10">
             <h2 className="text-xl font-bold text-foreground">Reflect</h2>
             <div className="mt-4 space-y-6">
-              {module.reflection.map((prompt) => (
+              {weekModule.reflection.map((prompt) => (
                 <div key={prompt.id}>
                   <p className="text-sm font-semibold text-foreground">{prompt.prompt}</p>
                   <WriteSpace />

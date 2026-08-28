@@ -17,6 +17,7 @@ import {
   introToPythonWeekPath,
   type CurriculumWeek,
 } from "@/features/curriculums/intro-to-python"
+import { formatTemplate } from "@/lib/format-template"
 
 /**
  * A single week's lesson page for the Intro to Python curriculum.
@@ -26,7 +27,9 @@ import {
  * from the data, so this component is pure layout.
  */
 export function IntroToPythonLessonContent({ weekNumber }: { weekNumber: number }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const ui = t.courseUi.python
+  const shared = t.courseUi.shared
   const c = getIntroToPythonCurriculum(language)
   const week = findPythonWeek(language, weekNumber) ?? c.weeks[0]
   const total = c.totalWeeks
@@ -43,14 +46,14 @@ export function IntroToPythonLessonContent({ weekNumber }: { weekNumber: number 
             href={introToPythonPath}
             className="font-semibold text-avanza-green underline underline-offset-2 hover:text-avanza-teal"
           >
-            Intro to Python Programming
+            {c.title}
           </Link>
         </nav>
 
         {/* Header */}
         <header className="mt-6 border-b border-border pb-8">
           <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Week {week.week} of {total}
+            {formatTemplate(shared.weekOfTotal, { n: week.week, total })}
           </p>
           <h1 className="mt-3 text-3xl font-extrabold text-foreground md:text-4xl">
             {week.title}
@@ -59,18 +62,18 @@ export function IntroToPythonLessonContent({ weekNumber }: { weekNumber: number 
             {week.description}
           </p>
           <dl className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
-            <HeaderDetail label="Estimated time" value={week.estimatedTime} />
-            <HeaderDetail label="Project" value={week.projectName} />
+            <HeaderDetail label={ui.estimatedTime} value={week.estimatedTime} />
+            <HeaderDetail label={ui.project} value={week.projectName} />
           </dl>
         </header>
 
         {/* The idea */}
-        <Section title="The idea">
+        <Section title={ui.theIdea}>
           <p className="text-base leading-relaxed text-foreground/90">{week.mainConcept}</p>
         </Section>
 
         {/* Learning goals */}
-        <Section title="What you will learn">
+        <Section title={ui.whatYouWillLearn}>
           <ul className="space-y-2">
             {week.learningGoals.map((goal) => (
               <li key={goal} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -82,7 +85,7 @@ export function IntroToPythonLessonContent({ weekNumber }: { weekNumber: number 
         </Section>
 
         {/* Vocabulary */}
-        <Section title="New words">
+        <Section title={ui.newWords}>
           <dl className="divide-y divide-border border-t border-b border-border">
             {week.vocabulary.map((item) => (
               <div key={item.term} className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4">
@@ -94,37 +97,36 @@ export function IntroToPythonLessonContent({ weekNumber }: { weekNumber: number 
         </Section>
 
         {/* Project */}
-        <Section title={`Project: ${week.projectName}`}>
+        <Section title={formatTemplate(ui.projectTitle, { name: week.projectName })}>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Edit the starter code below and press Run to see it work. Use Reset starter code to go
-            back to the original at any time.
+            {ui.editStarterCode}
           </p>
           <PythonWorkspace
             key={week.week}
             starterCode={week.starterCode}
             storageKey={`avanza-py-lesson-week-${week.week}`}
-            resetLabel="Reset starter code"
-            finishedMessage="Program finished."
+            resetLabel={ui.resetStarterCode}
+            finishedMessage={ui.programFinished}
             className="mt-4"
           />
-          <p className="mt-6 text-sm font-semibold text-foreground">Expected output</p>
+          <p className="mt-6 text-sm font-semibold text-foreground">{ui.expectedOutput}</p>
           <CodeBlock>{week.expectedOutput}</CodeBlock>
         </Section>
 
         {/* Mini challenge */}
-        <Section title="Mini challenge">
+        <Section title={ui.miniChallenge}>
           <p className="text-sm leading-relaxed text-foreground/90">{week.miniChallenge}</p>
         </Section>
 
         {/* Debugging challenge */}
-        <Section title="Debugging challenge">
+        <Section title={ui.debuggingChallenge}>
           <p className="text-sm leading-relaxed text-foreground/90">{week.debuggingChallenge.prompt}</p>
-          <p className="mt-4 text-sm font-semibold text-foreground">Broken code</p>
+          <p className="mt-4 text-sm font-semibold text-foreground">{ui.brokenCode}</p>
           <CodeBlock>{week.debuggingChallenge.brokenCode}</CodeBlock>
           <details className="group mt-4 rounded-md border border-border">
             <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-avanza-green marker:content-none hover:text-avanza-teal">
-              <span className="group-open:hidden">Show solution</span>
-              <span className="hidden group-open:inline">Hide solution</span>
+              <span className="group-open:hidden">{ui.showSolution}</span>
+              <span className="hidden group-open:inline">{ui.hideSolution}</span>
             </summary>
             <div className="border-t border-border px-4 py-3">
               <CodeBlock>{week.debuggingChallenge.solution}</CodeBlock>
@@ -133,29 +135,29 @@ export function IntroToPythonLessonContent({ weekNumber }: { weekNumber: number 
         </Section>
 
         {/* Extension challenge */}
-        <Section title="Extension challenge">
+        <Section title={ui.extensionChallenge}>
           <p className="text-sm leading-relaxed text-foreground/90">{week.extensionChallenge}</p>
         </Section>
 
         {/* Reflection */}
-        <Section title="Reflect">
+        <Section title={ui.reflectTitle}>
           <p className="text-base leading-relaxed text-foreground/90">{week.reflectionQuestion}</p>
         </Section>
 
         {/* Teacher notes */}
-        <Section title="Teacher notes">
+        <Section title={ui.teacherNotes}>
           <div className="rounded-md border border-border bg-secondary p-5">
             <p className="text-sm leading-relaxed text-muted-foreground">{week.teacherNotes}</p>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
-            Facilitating this lesson? See the{" "}
+            {ui.facilitatingBefore}{" "}
             <Link
               href={introToPythonTeacherGuidePath}
               className="font-semibold text-avanza-green underline underline-offset-2 hover:text-avanza-teal"
             >
-              teacher &amp; librarian guide
+              {ui.facilitatingLink}
             </Link>{" "}
-            for how to run it, common mistakes, and an offline backup activity.
+            {ui.facilitatingAfter}
           </p>
         </Section>
 
@@ -169,7 +171,7 @@ export function IntroToPythonLessonContent({ weekNumber }: { weekNumber: number 
               href={introToPythonWeekPath(prev)}
               className="font-semibold text-avanza-green underline underline-offset-2 hover:text-avanza-teal"
             >
-              Previous: Week {prev}
+              {formatTemplate(ui.previousWeek, { n: prev })}
             </Link>
           ) : (
             <span />
@@ -179,14 +181,14 @@ export function IntroToPythonLessonContent({ weekNumber }: { weekNumber: number 
               href={introToPythonWeekPath(next)}
               className="font-semibold text-avanza-green underline underline-offset-2 hover:text-avanza-teal"
             >
-              Next: Week {next}
+              {formatTemplate(ui.nextWeek, { n: next })}
             </Link>
           ) : (
             <Link
               href={introToPythonPath}
               className="font-semibold text-avanza-green underline underline-offset-2 hover:text-avanza-teal"
             >
-              Back to overview
+              {ui.backToOverview}
             </Link>
           )}
         </nav>

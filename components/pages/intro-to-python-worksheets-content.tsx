@@ -8,6 +8,7 @@ import {
   introToPythonTeacherGuidePath,
   type CurriculumWeek,
 } from "@/features/curriculums/intro-to-python"
+import { formatTemplate } from "@/lib/format-template"
 
 /**
  * Printable student worksheets for the Intro to Python curriculum. Each lesson
@@ -16,7 +17,8 @@ import {
  * the site chrome is hidden and each worksheet starts on a fresh page.
  */
 export function IntroToPythonWorksheetsContent() {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const ui = t.courseUi.python
   const c = getIntroToPythonCurriculum(language)
 
   return (
@@ -25,22 +27,21 @@ export function IntroToPythonWorksheetsContent() {
         {/* On-screen intro (hidden when printing) */}
         <div className="print-hidden">
           <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Student worksheets
+            {ui.studentWorksheets}
           </p>
           <h1 className="mt-3 text-3xl font-extrabold text-foreground md:text-4xl">
             {c.title}
           </h1>
           <p className="mt-4 text-base leading-relaxed text-foreground/90">
-            One printable worksheet per lesson, for students working on paper or away from a screen.
-            Use your browser&apos;s print option to print all worksheets, or a single page.
+            {ui.worksheetsIntro}
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <PrintButton label="Print worksheets" />
+            <PrintButton label={ui.printWorksheets} />
             <Link
               href={introToPythonTeacherGuidePath}
               className="text-sm font-semibold text-avanza-green underline underline-offset-2 hover:text-avanza-teal"
             >
-              Back to teacher resources
+              {ui.backToTeacherResources}
             </Link>
           </div>
         </div>
@@ -64,6 +65,8 @@ function Worksheet({
   first: boolean
   total: number
 }) {
+  const { t } = useLanguage()
+  const ui = t.courseUi.python
   return (
     <section
       className={`print-avoid-break border-t-2 border-foreground pt-6 ${
@@ -73,18 +76,18 @@ function Worksheet({
       {/* Handout header */}
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Intro to Python &middot; Worksheet {week.week} of {total}
+          {formatTemplate(ui.worksheetHeader, { n: week.week, total })}
         </p>
-        <p className="text-xs text-muted-foreground">Name: _______________ Date: __________</p>
+        <p className="text-xs text-muted-foreground">{ui.nameDate}</p>
       </div>
       <h2 className="mt-3 text-2xl font-bold text-foreground">
-        Week {week.week}: {week.title}
+        {formatTemplate(t.courseUi.shared.weekNumber, { n: week.week })}: {week.title}
       </h2>
 
       {/* Key idea */}
       <div className="mt-6">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Key idea
+          {ui.keyIdea}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-foreground/90">{week.mainConcept}</p>
       </div>
@@ -92,7 +95,7 @@ function Worksheet({
       {/* Vocabulary */}
       <div className="mt-6">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Vocabulary
+          {ui.vocabulary}
         </h3>
         <dl className="mt-2 divide-y divide-border border-t border-b border-border">
           {week.vocabulary.map((item) => (
@@ -107,10 +110,10 @@ function Worksheet({
       {/* Code planning space */}
       <div className="mt-6">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Plan your code
+          {ui.planYourCode}
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Project: {week.projectName}. Write, step by step, what your program should do.
+          {formatTemplate(ui.planYourCodeBody, { name: week.projectName })}
         </p>
         <WritingLines lines={6} />
       </div>
@@ -118,7 +121,7 @@ function Worksheet({
       {/* Debugging question */}
       <div className="mt-6">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Debugging question
+          {ui.debuggingQuestion}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-foreground/90">
           {week.debuggingChallenge.prompt}
@@ -126,14 +129,14 @@ function Worksheet({
         <pre className="mt-3 overflow-x-auto rounded-md border border-border bg-secondary p-4 text-sm text-foreground print:bg-white">
           <code className="font-mono">{week.debuggingChallenge.brokenCode}</code>
         </pre>
-        <p className="mt-3 text-sm text-muted-foreground">Write the fix:</p>
+        <p className="mt-3 text-sm text-muted-foreground">{ui.writeTheFix}</p>
         <WritingLines lines={3} />
       </div>
 
       {/* Reflection */}
       <div className="mt-6">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Reflection
+          {ui.reflection}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-foreground/90">{week.reflectionQuestion}</p>
         <WritingLines lines={3} />

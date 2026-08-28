@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
+import { PrintButton } from "@/components/ui/print-button"
 import { getProjectGuide } from "@/features/projects/data"
 import {
   getProjectBreadcrumbJsonLd,
@@ -64,15 +65,21 @@ export function GenericProjectGuide({ slug, language }: { slug: string; language
         </div>
 
         <div className="mt-8 overflow-hidden rounded-lg border border-border">
-          <div className="relative h-80">
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              sizes="(min-width: 1024px) 896px, calc(100vw - 48px)"
-              className="object-cover"
-              priority
-            />
+          <div className="relative h-80 bg-secondary/40">
+            {project.image ? (
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="(min-width: 1024px) 896px, calc(100vw - 48px)"
+                className="object-cover"
+                priority
+              />
+            ) : (
+              // No authentic photo for this guide yet - restrained graph-paper
+              // panel rather than a stock or AI-generated image.
+              <div className="notebook-grid h-full w-full bg-secondary" aria-hidden="true" />
+            )}
           </div>
         </div>
       </div>
@@ -131,6 +138,105 @@ export function GenericProjectGuide({ slug, language }: { slug: string; language
                   })}
                 </ol>
               </section>
+
+              {project.video ? (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
+                    {t.projectsPage.watchThis}
+                  </h2>
+                  <figure className="mt-4">
+                    {/* youtube-nocookie + strict referrer policy, matching the
+                        blog's embed: no cookie is set unless the viewer plays. */}
+                    <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-secondary">
+                      <iframe
+                        className="absolute inset-0 h-full w-full"
+                        src={`https://www.youtube-nocookie.com/embed/${project.video.videoId}?rel=0${
+                          project.video.startSeconds ? `&start=${project.video.startSeconds}` : ""
+                        }`}
+                        title={project.video.title}
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                      />
+                    </div>
+                    {project.video.caption ? (
+                      <figcaption className="mt-3 text-sm leading-6 text-muted-foreground">
+                        {project.video.caption}
+                      </figcaption>
+                    ) : null}
+                  </figure>
+                </section>
+              ) : null}
+
+              {project.codeBlock ? (
+                <section>
+                  <h2 className="text-xl font-bold text-foreground">
+                    {project.codeBlock.title}
+                  </h2>
+                  <p className="mt-4 text-base leading-7 text-muted-foreground">
+                    {project.codeBlock.intro}
+                  </p>
+                  <div className="mt-5 overflow-x-auto rounded-lg border border-border bg-secondary">
+                    <pre className="p-5 text-sm leading-6">
+                      <code className="font-mono text-foreground">{project.codeBlock.code}</code>
+                    </pre>
+                  </div>
+                  {project.codeBlock.note ? (
+                    <p className="mt-4 text-sm leading-6 text-muted-foreground">
+                      {project.codeBlock.note}
+                    </p>
+                  ) : null}
+                </section>
+              ) : null}
+
+              {project.recordSheet ? (
+                <section>
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <h2 className="text-xl font-bold text-foreground">
+                      {project.recordSheet.title}
+                    </h2>
+                    <PrintButton label={t.projectsPage.recordSheetPrint} />
+                  </div>
+                  <p className="mt-4 text-base leading-7 text-muted-foreground">
+                    {project.recordSheet.intro}
+                  </p>
+
+                  <div className="mt-6 overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border text-left">
+                          {project.recordSheet.columns.map((column) => (
+                            <th key={column} className="pb-3 pr-4 font-semibold text-foreground">
+                              {column}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Array.from({ length: project.recordSheet.rows }, (_, row) => (
+                          <tr key={row} className="border-b border-border">
+                            {project.recordSheet!.columns.map((column) => (
+                              <td key={column} className="py-3 pr-4 text-muted-foreground">
+                                <span className="sr-only">
+                                  {`${t.projectsPage.recordSheetRowLabel} ${row + 1}, ${column}`}
+                                </span>
+                                <span aria-hidden="true">_____</span>
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {project.recordSheet.footnote ? (
+                    <p className="mt-4 text-sm leading-6 text-muted-foreground">
+                      {project.recordSheet.footnote}
+                    </p>
+                  ) : null}
+                </section>
+              ) : null}
 
               {slug === "coke-mentos-experiment" && (
                 <section>

@@ -709,16 +709,41 @@ const howToEligibleSlugs = new Set([
   "coke-mentos-experiment",
   "elephant-toothpaste-experiment",
   "making-oobleck",
+  "corner-count",
+  "sock-sorter",
+  "teardown-night",
+  "egg-drop-budget",
+  "bean-race",
+  "rover-wheels",
+  "family-chatbot",
+  "loudest-room",
+  "receipt-detective",
+  "measure-the-school",
+  "predict-then-launch",
+  "sensor-scavenger-hunt",
+  "sunset-in-a-jar",
+  "shoebox-camera-obscura",
+  "light-pipe-water-stream",
+  "cd-spectroscope",
+  "uv-glow-lab",
+  "double-slit-at-home",
 ])
 
 function getTotalTime(time: string) {
   const normalized = time.toLowerCase()
+  // Must precede the plain "20 minutes" test, which this string contains.
+  if (normalized.includes("3 x 20 minutes")) return "PT1H"
   if (normalized.includes("20 minutes")) return "PT20M"
   if (normalized.includes("30 minutes")) return "PT30M"
   if (normalized.includes("45-60 minutes")) return "PT1H"
+  if (normalized.includes("45 minutes")) return "PT45M"
+  if (normalized.includes("90 minutes")) return "PT1H30M"
   if (normalized.includes("1 hour")) return "PT1H"
   if (normalized.includes("1-2 hours")) return "PT2H"
   if (normalized.includes("2-3 hours")) return "PT3H"
+  // Must trail the "1-2 hours" test, whose string contains "2 hours".
+  if (normalized.includes("2 hours")) return "PT2H"
+  if (normalized.includes("30 days")) return "P30D"
   return undefined
 }
 
@@ -761,7 +786,7 @@ export function getProjectHowToJsonLd(slug: string, language: Language = "en") {
     description: project.description,
     inLanguage: language,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    image: [absoluteUrl(project.image)],
+    ...(project.image ? { image: [absoluteUrl(project.image)] } : {}),
     url,
     ...(totalTime ? { totalTime } : {}),
     supply: project.materials.map((material) => ({

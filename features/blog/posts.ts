@@ -124,6 +124,11 @@ export type BlogSlug =
   | "how-do-noise-canceling-headphones-work"
   | "why-do-some-things-float-and-others-sink"
   | "why-do-magnets-stick-to-some-metals-but-not-others"
+  | "how-does-a-camera-work-without-a-lens"
+  | "how-do-fiber-optic-cables-work"
+  | "how-do-scientists-know-what-stars-are-made-of"
+  | "why-do-things-glow-under-a-blacklight"
+  | "is-light-a-wave-or-a-particle"
 
 export type LocalizedBlogArticles = {
   en: Record<BlogSlug, BlogArticle>
@@ -591,7 +596,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/Cardboard Mars Rover.jpeg",
       imageAlt: "Students working on a hands-on engineering design challenge at an Avanza STEM workshop",
       imageCaption: "Engineering challenges at Avanza STEM start with a design brief and constraints, then end with a real test.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM engineering workshop" },
+      endingProject: { href: "/projects/rover-wheels", label: "Try this project: rover wheels vs. sand" },
       endingSecondary: { href: "/projects/popsicle-stick-bridge", label: "See this project: popsicle stick bridge" },
       endingRelatedSlug: "how-engineers-think-when-something-breaks",
       sections: [
@@ -734,7 +739,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/kid thinking.jpg",
       imageAlt: "A child thinking with question marks and a glowing lightbulb drawn above them",
       imageCaption: "At Avanza STEM workshops, students skip straight to building something and figure out what to fix from there.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM engineering workshop" },
+      endingProject: { href: "/projects/egg-drop-budget", label: "Try this project: egg drop on a budget" },
       endingSecondary: { href: "/blog/why-your-first-design-is-usually-not-your-best-one", label: "Read next: why your first design is usually not your best one" },
       endingRelatedSlug: "why-your-first-design-is-usually-not-your-best-one",
       sections: [
@@ -791,7 +796,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/workshops/past-engineering.jpg",
       imageAlt: "A student examining a structure that just collapsed during a load test at an Avanza STEM workshop",
       imageCaption: "The moment a bridge collapses is not the end of the session. It is usually the beginning of the real learning.",
-      endingProject: { href: "/projects/popsicle-stick-bridge", label: "Try this project: popsicle stick truss bridge" },
+      endingProject: { href: "/projects/egg-drop-budget", label: "Try this project: egg drop on a budget" },
       endingSecondary: { href: "/workshops", label: "See upcoming workshops" },
       endingRelatedSlug: "how-engineers-think-when-something-breaks",
       sections: [
@@ -1041,7 +1046,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/beautiful modern elevator Medium.jpeg",
       imageAlt: "A sleek modern elevator interior with illuminated floor buttons and polished metallic walls",
       imageCaption: "Behind that simple button press is a system of sensors, motors, counterweights, and logic that moves people safely between floors.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM engineering workshop" },
+      endingProject: { href: "/projects/sensor-scavenger-hunt", label: "Try this project: sensor scavenger hunt" },
       endingSecondary: { href: "/blog/how-engineers-think-when-something-breaks", label: "Read next: how engineers think when something breaks" },
       endingRelatedSlug: "how-engineers-think-when-something-breaks",
       sections: [
@@ -1313,7 +1318,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/the engineering behind water bottles.webp",
       imageAlt: "A clear plastic water bottle showing its ridged sides, threaded neck, and structural base design",
       imageCaption: "A disposable water bottle weighs a few grams but holds thousands of times its own weight in liquid. Every ridge, thread, and wall thickness is there for a reason.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM engineering workshop" },
+      endingProject: { href: "/projects/teardown-night", label: "Try this project: teardown night" },
       endingSecondary: { href: "/blog/the-engineering-of-a-backpack", label: "Read next: the engineering of a backpack" },
       endingRelatedSlug: "the-engineering-of-a-backpack",
       sections: [
@@ -1447,7 +1452,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/Why AI can get things wrong.jpg",
       imageAlt: "A visual representation of AI producing an incorrect or confused output, illustrating the concept of AI hallucination and error",
       imageCaption: "AI does not know things the way people do. It predicts, and sometimes its predictions are confidently wrong.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM AI workshop" },
+      endingProject: { href: "/projects/sock-sorter", label: "Try this project: the sock sorter" },
       endingSecondary: { href: "/blog/what-is-ai-actually-doing-when-it-answers-you", label: "Read next: what is AI actually doing when it answers you" },
       endingRelatedSlug: "can-ai-actually-think",
       sections: [
@@ -1502,7 +1507,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/How an Iphone recognizes your face.jpg",
       imageAlt: "An iPhone screen showing the Face ID setup interface with a face scan in progress, illustrating how the phone maps facial geometry",
       imageCaption: "Face ID maps thousands of points on your face and compares them to a stored 3D model, using the same kind of pattern recognition at the heart of modern AI.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM AI workshop" },
+      endingProject: { href: "/projects/sock-sorter", label: "Try this project: the sock sorter" },
       endingSecondary: { href: "/blog/can-ai-actually-think", label: "Read: can AI actually think?" },
       endingRelatedSlug: "why-ai-sometimes-gets-things-wrong",
       sections: [
@@ -1559,7 +1564,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/shared/ai-workshop.jpg",
       imageAlt: "Students discussing how prediction systems work during an Avanza STEM AI workshop",
       imageCaption: "Autocorrect and AI share the same core idea: both predict what should come next based on patterns in language.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM AI workshop" },
+      endingProject: { href: "/projects/family-chatbot", label: "Try this project: a chatbot that only knows your family" },
       endingSecondary: { href: "/blog/how-does-your-phone-recognize-your-face", label: "Read: how does your phone recognize your face?" },
       endingRelatedSlug: "how-does-your-phone-recognize-your-face",
       sections: [
@@ -1661,7 +1666,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/should kids trust what ai says.jpg",
       imageAlt: "Students at an Avanza STEM AI workshop discussing when to trust and when to verify AI responses",
       imageCaption: "Knowing when to trust AI and when to check it is one of the most important skills students can learn at Avanza STEM AI workshops.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM AI workshop" },
+      endingProject: { href: "/projects/sock-sorter", label: "Try this project: the sock sorter" },
       endingSecondary: { href: "/blog/why-ai-sometimes-gets-things-wrong", label: "Read: why AI sometimes gets things wrong" },
       endingRelatedSlug: "what-happens-when-you-ask-ai-a-question",
       sections: [
@@ -1869,7 +1874,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/how robots know where they are.jpg",
       imageAlt: "A robot using cameras and sensors to scan and map its surrounding environment for navigation",
       imageCaption: "Robots build a picture of their surroundings using cameras, lidar, and mapping software, then constantly update it as they move.",
-      endingProject: { href: "/projects/lego-robot-builder", label: "Try this project: build your first LEGO robot" },
+      endingProject: { href: "/projects/sensor-scavenger-hunt", label: "Try this project: sensor scavenger hunt" },
       endingSecondary: { href: "/workshops", label: "See upcoming workshops" },
       endingRelatedSlug: "what-makes-a-robot-a-robot",
       sections: [
@@ -1964,7 +1969,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/what is a robot.webp",
       imageAlt: "A robot with visible sensors, motors, and articulated joints illustrating the three core components: sense, process, act",
       imageCaption: "A robot needs to sense its environment, process that information, and take physical action. All three together define what makes a machine a robot.",
-      endingProject: { href: "/projects/lego-robot-builder", label: "Try this project: build your first LEGO robot" },
+      endingProject: { href: "/projects/sensor-scavenger-hunt", label: "Try this project: sensor scavenger hunt" },
       endingSecondary: { href: "/workshops", label: "See upcoming workshops" },
       endingRelatedSlug: "how-do-robots-know-where-they-are",
       sections: [
@@ -2012,7 +2017,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/mars rover without driver.jpg",
       imageAlt: "A Mars rover navigating rocky red terrain on the Martian surface with no human driver, guided entirely by onboard cameras and software",
       imageCaption: "Mars rovers drive themselves because a signal from Earth takes up to 24 minutes one way. There is no time for a human to react to obstacles.",
-      endingProject: { href: "/projects/lego-robot-builder", label: "Try this project: build your first LEGO robot" },
+      endingProject: { href: "/projects/rover-wheels", label: "Try this project: rover wheels vs. sand" },
       endingSecondary: { href: "/workshops", label: "See upcoming workshops" },
       endingRelatedSlug: "design-a-mars-rover-out-of-cardboard",
       sections: [
@@ -2136,7 +2141,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/blue and orange sky Medium.jpeg",
       imageAlt: "A sky transitioning from deep blue at the top to warm orange and pink near the horizon at sunset",
       imageCaption: "The same atmosphere that scatters blue light across the daytime sky redirects warmer wavelengths to your eyes at sunset.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM science workshop" },
+      endingProject: { href: "/projects/sunset-in-a-jar", label: "Try this project: sunset in a jar" },
       endingSecondary: { href: "/blog/why-does-metal-feel-colder-than-wood", label: "Read next: why does metal feel colder than wood?" },
       endingRelatedSlug: "why-does-metal-feel-colder-than-wood",
       sections: [
@@ -2347,7 +2352,7 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
       image: "/images/blog/how noise cancelling works.webp",
       imageAlt: "A pair of noise-canceling headphones with a diagram showing how anti-noise waves cancel incoming sound waves",
       imageCaption: "Noise-canceling headphones use a microphone to detect incoming sound, then play the exact opposite wave to cancel it before it reaches your ears.",
-      endingProject: { href: "/workshops", label: "Join a free Avanza STEM science workshop" },
+      endingProject: { href: "/projects/loudest-room", label: "Try this project: find the loudest room in the house" },
       endingSecondary: { href: "/blog/why-is-the-sky-blue-but-sunsets-are-orange", label: "Read next: why is the sky blue but sunsets are orange?" },
       endingRelatedSlug: "why-is-the-sky-blue-but-sunsets-are-orange",
       sections: [
@@ -2457,6 +2462,267 @@ export const localizedBlogArticles: LocalizedBlogArticles = {
         { title: "The Big Idea", blocks: [
           { type: "paragraph", text: "Magnets stick to metals whose internal domains can line up with a magnetic field. Iron, steel, nickel, and cobalt can do it. Copper and aluminum cannot, because their structure does not allow that alignment." },
           { type: "callout", accent: "orange", text: "So when a magnet slides off a metal object, nothing is broken. That metal just is not the magnetic kind, and now you know why." },
+        ] },
+      ],
+    },
+    "how-does-a-camera-work-without-a-lens": {
+      title: "How Does a Camera Work Without a Lens?",
+      category: "Light & Optics",
+      categoryColor: "bg-avanza-teal",
+      readTime: common.en.minutes.m5,
+      image: "",
+      imageAlt: "",
+      imageCaption: "",
+      endingProject: { href: "/projects/shoebox-camera-obscura", label: "Try this project: shoebox camera obscura" },
+      endingSecondary: { href: "/blog/is-light-a-wave-or-a-particle", label: "Read next: is light a wave or a particle?" },
+      endingRelatedSlug: "why-is-the-sky-blue-but-sunsets-are-orange",
+      sections: [
+        { title: "", blocks: [
+          { type: "paragraph", text: "No lens. No battery. No film, no sensor, no app. A cardboard box with one pinhole in it will show you a full-color, moving picture of the world outside, and it has been doing that for at least a thousand years." },
+          { type: "paragraph", text: "It is also the simplest way to understand what every camera, and your own eye, is actually doing." },
+        ] },
+        { title: "Light Goes Straight, and That Is the Whole Trick", blocks: [
+          { type: "paragraph", text: "Every lit-up point in front of you is throwing light in every direction at once. The top of a tree outside your window is sending rays toward the sky, toward the ground, toward your face, and toward every part of the wall behind you." },
+          { type: "paragraph", text: "Now put a wall between the tree and a sheet of paper, and punch one small hole in it. Almost all of those rays get stopped. From the top of the tree, only the one narrow bundle aimed exactly at your hole makes it through, and because light travels in straight lines, that bundle keeps going and lands on one small spot on the paper." },
+          { type: "paragraph", text: "The same thing happens for every other point on the tree. Each one gets its own small spot. Line up all those spots and you have a picture." },
+        ] },
+        { title: "Why the Picture Is Upside Down", blocks: [
+          { type: "paragraph", text: "Rays from the top of the tree are travelling downward as they pass through the hole, so they land low on the paper. Rays from the bottom are travelling upward, so they land high. The two paths cross each other right at the pinhole." },
+          { type: "paragraph", text: "Nothing is flipping the image. It arrives inverted because straight lines through a single point have no other option, and left and right get swapped for exactly the same reason." },
+          { type: "callout", accent: "teal", title: "Try this", text: "Hold a finger over the top half of the hole. The bottom half of the picture is what disappears. That one test tells you more about how the image is built than any diagram." },
+        ] },
+        { title: "Smaller Hole, Sharper Picture", blocks: [
+          { type: "paragraph", text: "A hole is not really a point, it is an opening with a width. So each point on the tree does not make a perfect dot on the paper, it makes a small disc, roughly as wide as the hole itself." },
+          { type: "paragraph", text: "Make the hole bigger and every one of those discs gets wider. They start overlapping their neighbors, and overlapping discs are what blur looks like. Make the hole smaller and the discs shrink, the overlap shrinks, and detail appears." },
+          { type: "paragraph", text: "You pay for it in brightness. A smaller hole lets less light through, so the picture that gets sharper also gets dimmer. That trade is not a flaw in cardboard cameras. Photographers still make exactly this trade every time they change the aperture on a modern lens." },
+        ] },
+        { title: "So Why Not Make the Hole Microscopically Small?", blocks: [
+          { type: "paragraph", text: "Because light stops cooperating. Below roughly half a millimeter, a strange thing happens: instead of continuing in a tidy straight line, light passing through a very narrow opening spreads out as it leaves." },
+          { type: "paragraph", text: "That spreading is called diffraction, and it means the discs start growing again. There is a sweet spot, a hole size where the shrinking from geometry and the spreading from diffraction balance out, and your picture is as sharp as that box will ever get. Go smaller than that and you make things worse." },
+          { type: "callout", accent: "purple", title: "The same effect, doing something useful", text: "Diffraction is not just a nuisance here. Send a laser through two narrow slits instead of one hole and that same spreading produces a row of stripes on the wall, which is the experiment that told physicists light behaves like a wave." },
+        ] },
+        { title: "Your Eye Is Doing This Right Now", blocks: [
+          { type: "paragraph", text: "Your eye is a dark box with a hole in the front. The hole is your pupil, and the back wall is your retina. The image landing on your retina at this moment is upside down and backwards, exactly like the one in a shoebox." },
+          { type: "paragraph", text: "Your eye then adds something a pinhole camera does not have: a lens, which lets the opening be much wider while still bringing rays back to a sharp point. That is how you get a picture that is bright and sharp at the same time, instead of having to pick one." },
+          { type: "paragraph", text: "Your brain handles the upside down part without ever mentioning it to you." },
+        ] },
+        { title: "The Big Idea", blocks: [
+          { type: "paragraph", text: "A camera does not need glass, electronics, or anything clever. It needs a dark space, one small opening, and the fact that light travels in straight lines. Everything after that, lenses included, is an improvement on a picture that already exists." },
+          { type: "callout", accent: "green", text: "You can build one this afternoon out of a shoebox and a piece of foil, and the first time the outside world appears on the tracing paper, upside down and in color, it does not feel like a science demonstration. It feels like a trick." },
+          { type: "ctaLink", title: "Build one", accent: "teal", text: "Our step-by-step guide walks through sealing the box, making a clean pinhole in foil, and swapping in three different hole sizes so you can find the sharpest one yourself.", linkText: "Shoebox camera obscura guide", href: "/projects/shoebox-camera-obscura" },
+        ] },
+      ],
+    },
+    "how-do-fiber-optic-cables-work": {
+      title: "How Do Fiber Optic Cables Work?",
+      category: "Light & Optics",
+      categoryColor: "bg-avanza-teal",
+      readTime: common.en.minutes.m6,
+      image: "",
+      imageAlt: "",
+      imageCaption: "",
+      endingProject: { href: "/projects/light-pipe-water-stream", label: "Try this project: bending light down a stream of water" },
+      endingSecondary: { href: "/blog/how-does-a-camera-work-without-a-lens", label: "Read next: how does a camera work without a lens?" },
+      endingRelatedSlug: "how-does-a-camera-work-without-a-lens",
+      sections: [
+        { title: "", blocks: [
+          { type: "paragraph", text: "This page reached you as pulses of light. For most of its journey it was travelling inside a strand of glass thinner than a human hair, and a good part of that journey was along the floor of an ocean." },
+          { type: "paragraph", text: "Which raises an awkward question, because light travels in straight lines and the cable does not." },
+        ] },
+        { title: "Light Really Does Go Straight", blocks: [
+          { type: "paragraph", text: "It is not a simplification. Straight-line travel is why a pinhole camera works, why shadows have sharp edges, and why you cannot see around a corner." },
+          { type: "paragraph", text: "So a fiber that curves under the sea should leak its light out at the first bend, like water out of a bent hose with a hole in it. It does not. A modern fiber can carry a signal something like fifty to a hundred kilometers before it needs any help at all." },
+          { type: "paragraph", text: "The light is not bending. It is bouncing, and the bouncing is the part worth understanding." },
+        ] },
+        { title: "The Bounce That Loses Nothing", blocks: [
+          { type: "paragraph", text: "When light inside a dense material like glass or water arrives at the boundary with something less dense, like air, one of two things happens. Hit that boundary steeply and most of the light escapes. Hit it at a shallow enough angle and none of it does. All of it reflects back inside." },
+          { type: "paragraph", text: "There is a specific cutoff angle where the behavior switches over, called the critical angle. For water it sits at about 49 degrees. For glass it is closer to 42. Shallower than the cutoff and the light is trapped." },
+          { type: "callout", accent: "teal", title: "Why not just line the cable with mirrors?", text: "Because mirrors are not perfect. Every bounce off even a very good mirror loses a percent or two, and after a few thousand bounces there is nothing left. Total internal reflection is not a good mirror, it is not a mirror at all: nothing is absorbed, because nothing gets out." },
+        ] },
+        { title: "How You Get Light to Stay Inside", blocks: [
+          { type: "paragraph", text: "Send light into a fiber at a shallow angle and it strikes the wall past the critical angle, reflects, crosses to the other wall, and strikes that one at the same shallow angle too. So it bounces again. And again, tens of thousands of times per kilometer, zigzagging its way along." },
+          { type: "paragraph", text: "When the fiber curves gently, the geometry still holds. Each bounce keeps arriving shallower than the cutoff, so the light keeps being turned back inward and ends up following the curve. Bend a fiber too tightly and you break that condition, the angle goes past the cutoff, and the light escapes. Installers have a minimum bend radius for exactly this reason." },
+          { type: "paragraph", text: "Real fibers do not rely on a glass-to-air boundary, because a scratch or a fingerprint would ruin it. Instead the glass core is wrapped in a second layer of glass called cladding, made slightly less dense on purpose. The bounce then happens at a boundary buried safely inside the cable." },
+        ] },
+        { title: "Why Glass Beat Copper", blocks: [
+          { type: "numbered", items: [
+            { title: "Light can carry far more", body: "Information is carried by flickering the signal on and off. Light waves cycle vastly faster than the electrical signals in a copper wire, so they can be flickered vastly faster too." },
+            { title: "Many colors, one strand", body: "A single fiber can carry dozens of different wavelengths at the same time, each one an independent channel, and they pass straight through each other without interfering." },
+            { title: "It barely fades", body: "Modern fiber is so transparent that if the ocean were made of it you could see the bottom. That is why the signal survives tens of kilometers between amplifiers." },
+            { title: "It ignores electrical noise", body: "A copper wire picks up interference from motors, lightning, and other cables. A photon is not bothered by any of it." },
+          ] },
+        ] },
+        { title: "You Can Watch It Happen in Your Kitchen", blocks: [
+          { type: "paragraph", text: "You do not need glass. Water works, because water has a critical angle too." },
+          { type: "paragraph", text: "Punch a hole low in a plastic bottle, fill it with water, and let the stream arc out into a sink. Shine a light in through the opposite side, straight at the hole, and the beam gets caught in the falling stream. It follows the arc all the way down and lights up the spot where the water lands." },
+          { type: "paragraph", text: "Put a finger in the stream and the light stops dead at your finger, because you have broken the smooth surface it was bouncing off. That is the same failure mode as a fiber bent too tightly, and it is the clearest thirty seconds of the whole demonstration." },
+        ] },
+        { title: "The Big Idea", blocks: [
+          { type: "paragraph", text: "Fiber optic cables do not bend light. They trap it, using a boundary that reflects perfectly whenever light arrives at a shallow enough angle, and then they let the trapped light follow wherever the glass goes." },
+          { type: "callout", accent: "green", text: "It is the same effect that makes the underside of a swimming pool surface look like a mirror when you are down there looking up. Most of the internet runs on it." },
+          { type: "ctaLink", title: "See it for yourself", accent: "teal", text: "Our guide walks through the bottle, the hole, the stream, and the safety rules for the light source, plus how to measure how far the light stays trapped before it leaks out.", linkText: "Bending light down a stream of water", href: "/projects/light-pipe-water-stream" },
+        ] },
+      ],
+    },
+    "how-do-scientists-know-what-stars-are-made-of": {
+      title: "How Do Scientists Know What Stars Are Made Of?",
+      category: "Light & Optics",
+      categoryColor: "bg-avanza-teal",
+      readTime: common.en.minutes.m6,
+      image: "",
+      imageAlt: "",
+      imageCaption: "",
+      endingProject: { href: "/projects/cd-spectroscope", label: "Try this project: build a spectroscope from a CD" },
+      endingSecondary: { href: "/blog/why-do-things-glow-under-a-blacklight", label: "Read next: why do things glow under a blacklight?" },
+      endingRelatedSlug: "why-is-the-sky-blue-but-sunsets-are-orange",
+      sections: [
+        { title: "", blocks: [
+          { type: "paragraph", text: "Nobody has been to a star. Nobody has brought a piece of one back. The closest one is 150 million kilometers away and everything after that is unreachable for a very long time." },
+          { type: "paragraph", text: "And yet we can tell you what stars are made of, in what proportions, how hot they are, and whether they are moving toward us or away. All of it came from light, and you can do a simplified version of the same measurement with a cereal box." },
+        ] },
+        { title: "Split the Light and It Stops Being One Color", blocks: [
+          { type: "paragraph", text: "White light is not a color. It is every color at once, and the only reason it looks white is that your eye adds them all together." },
+          { type: "paragraph", text: "Spread them back apart, with a prism or with something that has microscopically fine grooves in it, and the mixture separates. What you get is called a spectrum, and it is the single most useful thing in astronomy." },
+        ] },
+        { title: "Some Lights Give You a Rainbow, Others Give You Stripes", blocks: [
+          { type: "paragraph", text: "Take the spectrum of an old filament light bulb and you get a smooth continuous band. Red bleeds into orange bleeds into yellow, with nothing missing anywhere." },
+          { type: "paragraph", text: "Now take the spectrum of a fluorescent tube. It looks nothing like that. Instead of a smooth band you get a handful of separate bright lines with darkness between them: a strong green, a pair of yellows, a blue. Only certain exact colors are there, and the rest were never emitted at all." },
+          { type: "paragraph", text: "The difference is what the light is coming from. A hot solid glows in every color because its atoms are crowded together and constantly jostling each other. A thin glowing gas has atoms far enough apart to act on their own, and on their own they are astonishingly picky." },
+        ] },
+        { title: "Why an Atom Is Picky", blocks: [
+          { type: "paragraph", text: "Here is the part that took physics a long time to accept. An electron inside an atom cannot have just any amount of energy. It can only occupy certain fixed levels, and there is no in between." },
+          { type: "paragraph", text: "Think of a ladder where you can stand on the rungs but there is genuinely no space between them. Not a ramp with steps drawn on it. A ramp does not exist for an electron." },
+          { type: "paragraph", text: "When an electron drops from a higher rung to a lower one, the leftover energy leaves as a single photon, and the energy of that photon is set exactly by the size of the gap it fell across. Photon energy determines color. So a fixed set of gaps produces a fixed set of colors, and nothing else." },
+          { type: "callout", accent: "purple", title: "This is where quantum mechanics came from", text: "Those separated lines were not predicted, they were found, and nobody could explain why light came in specific colors instead of a smooth spread. The word quantum means a fixed amount, and it entered physics because atoms insisted on it." },
+        ] },
+        { title: "Every Element Has Its Own Set of Stripes", blocks: [
+          { type: "paragraph", text: "Different elements have different rungs, so they emit different colors. Sodium produces an intense pair of yellow lines so close together they look like one, which is why old street lamps had that unmistakable orange glow. Hydrogen has a red line, a blue-green one, and a couple in violet. Neon has a crowd of reds and oranges, which is why a neon sign is that color and not some other." },
+          { type: "paragraph", text: "Those patterns do not shift. They are the same in a laboratory in New Jersey and in a star. So if you spread out the light from something unreachable and find sodium's yellow pair sitting exactly where sodium's yellow pair belongs, you have identified sodium in an object you will never touch." },
+        ] },
+        { title: "Helium Was Found in the Sun Before It Was Found on Earth", blocks: [
+          { type: "paragraph", text: "During a solar eclipse in 1868, astronomers examined the spectrum of the glowing edge of the sun and found a yellow line that did not match any known element. It was not sodium, it was not anything on the list." },
+          { type: "paragraph", text: "The conclusion was bold and correct: the sun contains an element nobody on Earth had ever isolated. It was named helium, after helios, the Greek word for sun." },
+          { type: "paragraph", text: "It took another twenty-seven years before anyone found helium on Earth to confirm it. An element was discovered by looking at a stripe of light, ninety-three million miles from the nearest sample." },
+        ] },
+        { title: "Dark Lines Tell You What Got in the Way", blocks: [
+          { type: "paragraph", text: "There is a second trick hiding in the same spectrum. Atoms absorb precisely the colors they would emit, so cool gas sitting in front of a hot source removes those exact colors from the light passing through." },
+          { type: "paragraph", text: "Spread out sunlight carefully and the rainbow is crossed by hundreds of thin dark gaps. Each one is a color that got absorbed on the way out, by a specific element in the sun's own atmosphere. The missing colors are the message." },
+          { type: "callout", accent: "orange", text: "This is how we know stars are mostly hydrogen and helium, how the composition of a planet's atmosphere gets measured from light-years away, and how astronomers tell whether a galaxy is rushing away from us: the whole pattern shifts toward red when it is." },
+        ] },
+        { title: "You Can Do the Simple Version With a Cereal Box", blocks: [
+          { type: "paragraph", text: "A CD has grooves packed closer together than the wavelength of light, which makes it a diffraction grating: the working part of a real spectroscope. Tape one inside a cereal box with a narrow slit at the far end and you have an instrument." },
+          { type: "paragraph", text: "Point it at daylight bounced off a wall and you get the smooth continuous band. Point it at a fluorescent tube and the separated lines appear. Nobody has to tell you they are there. You just look, and there they are." },
+          { type: "ctaLink", title: "Build the spectroscope", accent: "teal", text: "Our guide covers the slit, cutting the disc safely, getting the angle right, and a comparison sheet for sketching four different light sources side by side.", linkText: "Build a spectroscope from a CD", href: "/projects/cd-spectroscope" },
+        ] },
+        { title: "The Big Idea", blocks: [
+          { type: "paragraph", text: "We know what stars are made of because atoms can only emit and absorb specific colors, those colors are a fingerprint, and light carries the fingerprint across any distance without changing it." },
+          { type: "callout", accent: "green", text: "The lines you can see in a cereal box are the same lines that identified an element in the sun before anyone had found it on Earth. Same physics, worse equipment." },
+        ] },
+      ],
+    },
+    "why-do-things-glow-under-a-blacklight": {
+      title: "Why Do Things Glow Under a Blacklight?",
+      category: "Light & Optics",
+      categoryColor: "bg-avanza-teal",
+      readTime: common.en.minutes.m5,
+      image: "",
+      imageAlt: "",
+      imageCaption: "",
+      endingProject: { href: "/projects/uv-glow-lab", label: "Try this project: the glow rule" },
+      endingSecondary: { href: "/blog/how-do-scientists-know-what-stars-are-made-of", label: "Read next: how do scientists know what stars are made of?" },
+      endingRelatedSlug: "how-do-scientists-know-what-stars-are-made-of",
+      sections: [
+        { title: "", blocks: [
+          { type: "paragraph", text: "Switch on a blacklight and ordinary things start behaving strangely. Tonic water turns a vivid blue. A highlighter mark blazes. White socks light up, laundry powder glows, and a banknote reveals a strip that was invisible a second ago." },
+          { type: "paragraph", text: "The strangest part is that the lamp does not look like it is putting out much of anything. So where is all that color coming from?" },
+        ] },
+        { title: "Ultraviolet Is Light You Cannot See", blocks: [
+          { type: "paragraph", text: "Your eye handles a band of colors from red at one end to violet at the other. Just past violet, the waves keep getting shorter and your eye simply stops reporting them. That is ultraviolet." },
+          { type: "paragraph", text: "Shorter waves mean more energy per photon. An ultraviolet photon arrives carrying more punch than any photon you can actually see, and that extra energy is the whole reason the glow happens." },
+          { type: "paragraph", text: "A cheap blacklight is not pure ultraviolet, which is why it looks faintly purple: a little visible violet leaks out along with the invisible part." },
+        ] },
+        { title: "The Glow Is New Light, Not Reflected Light", blocks: [
+          { type: "paragraph", text: "This is the piece people usually get wrong. A glowing highlighter mark is not bouncing the lamp's light back at you. It is absorbing that light, keeping it for a fraction of a billionth of a second, and then making its own." },
+          { type: "paragraph", text: "You can tell because the color changes. Reflection cannot do that. A red shirt under blue light looks dark, not red, because reflection can only give back a subset of what fell on it. Something invisible going in and bright blue coming out is not reflection at all." },
+        ] },
+        { title: "Up, Then Down, With a Little Lost on the Way", blocks: [
+          { type: "numbered", items: [
+            { title: "Absorb", body: "An ultraviolet photon hits the right kind of molecule and is swallowed whole. Its energy lifts an electron up to a higher energy level." },
+            { title: "Settle", body: "The electron immediately gives up a small part of that energy, usually as a tiny amount of heat shaken into the molecule around it." },
+            { title: "Emit", body: "The electron falls back down and releases the rest as a brand new photon of its own." },
+          ] },
+          { type: "paragraph", text: "Because step two threw a little energy away, the photon that comes out in step three always has less energy than the one that went in. Less energy means a longer wavelength, and longer wavelength means a color further toward red." },
+        ] },
+        { title: "The Rule With No Exceptions", blocks: [
+          { type: "paragraph", text: "That gives you a rule you can go and test: the light coming out is always a lower-energy color than the light going in. Ultraviolet in, blue out. Blue in, green or yellow out. The shift only ever goes one way." },
+          { type: "paragraph", text: "You will not find something that takes in red and hands back blue, because that would mean getting more energy out than went in. The step down even has a name, the Stokes shift, after the physicist who wrote it down in the 1850s." },
+          { type: "callout", accent: "teal", title: "Worth doing", text: "Go hunting for the exception on purpose. Failing to find one is what turns a list of glowing objects into an actual rule, and rules are what physics is made of." },
+        ] },
+        { title: "Why Detergent Makes Clothes Look Whiter Than White", blocks: [
+          { type: "paragraph", text: "Laundry powder has fluorescent compounds added to it deliberately. They are called optical brighteners, and they stay in the fabric after washing." },
+          { type: "paragraph", text: "Daylight contains ultraviolet. Those brighteners catch the ultraviolet you cannot see and hand it back as visible blue, so the shirt returns slightly more visible light than actually landed on it. It is not whiter. It is cheating, very slightly, using light you were never able to see in the first place." },
+          { type: "paragraph", text: "The blue is chosen on purpose too, because fabric tends to yellow with age and a touch of blue cancels that out." },
+        ] },
+        { title: "Glow-in-the-Dark Is the Slow Version", blocks: [
+          { type: "paragraph", text: "Everything above stops the instant the lamp goes off. Fluorescence is fast: absorb, emit, done, in less than a millionth of a second." },
+          { type: "paragraph", text: "Glow-in-the-dark stars are different. In those materials the lifted electron gets stuck in a state it cannot easily drop out of, so instead of falling back immediately it waits. And waits. The energy trickles out over minutes rather than pouring out at once, which is why the stars keep going long after you have turned everything off. That slower cousin is called phosphorescence." },
+        ] },
+        { title: "The Big Idea", blocks: [
+          { type: "paragraph", text: "Things glow under a blacklight because they absorb high-energy invisible photons and emit lower-energy visible ones. The color always steps down, never up, because a little energy is always lost on the way." },
+          { type: "callout", accent: "green", text: "A five dollar torch, a bottle of tonic water, and a dark room is enough to watch photon energy behave in a way you can predict before you test it." },
+          { type: "ctaLink", title: "Run the hunt", accent: "teal", text: "Our guide has the safe torch specification, a list of things worth testing, and a log sheet built around comparing the color going in against the color coming out.", linkText: "The Glow Rule", href: "/projects/uv-glow-lab" },
+        ] },
+      ],
+    },
+    "is-light-a-wave-or-a-particle": {
+      title: "Is Light a Wave or a Particle?",
+      category: "Light & Optics",
+      categoryColor: "bg-avanza-teal",
+      readTime: common.en.minutes.m7,
+      image: "",
+      imageAlt: "",
+      imageCaption: "",
+      endingProject: { href: "/projects/double-slit-at-home", label: "Try this project: the double slit on your bedroom wall" },
+      endingSecondary: { href: "/blog/how-do-scientists-know-what-stars-are-made-of", label: "Read next: how do scientists know what stars are made of?" },
+      endingRelatedSlug: "how-do-scientists-know-what-stars-are-made-of",
+      sections: [
+        { title: "", blocks: [
+          { type: "paragraph", text: "The honest answer is that light is neither, and that this is not a dodge." },
+          { type: "paragraph", text: "Waves and particles are both ideas we borrowed from things much bigger than light: ripples on a pond, and thrown pebbles. Light behaves like each of them in different experiments, and like neither of them all the time. Getting to that conclusion took about two centuries and three rounds of argument." },
+        ] },
+        { title: "Round One: Light Is a Wave", blocks: [
+          { type: "paragraph", text: "In 1801 Thomas Young cut two narrow slits close together and shone light through them onto a screen." },
+          { type: "paragraph", text: "If light were a stream of tiny bullets, the answer is obvious: two bright bands, one behind each slit. That is not what appeared. He got a whole row of evenly spaced bright stripes with dark gaps between them, spreading out well beyond where the two slits were." },
+          { type: "paragraph", text: "That pattern has only one good explanation. Waves leaving the two slits travel slightly different distances to reach each point on the screen. Where the difference is a whole number of wavelengths, the crests line up and add together into a bright stripe. Where it is half a wavelength, a crest meets a trough and they cancel into darkness." },
+          { type: "paragraph", text: "Two things adding up to nothing is something only waves do. Bullets do not cancel. Round one to the wave." },
+        ] },
+        { title: "Round Two: Light Is a Particle", blocks: [
+          { type: "paragraph", text: "A century later a different experiment refused to fit. Shine light on a piece of metal and electrons can be knocked loose. Reasonable enough, if light is a wave delivering energy." },
+          { type: "paragraph", text: "But the details were wrong in a way nobody could explain. Shine a very dim blue light and electrons come out immediately. Shine an extremely bright red light and none come out at all, no matter how long you wait or how much you crank up the brightness." },
+          { type: "paragraph", text: "A wave should not care. Pile on enough energy and the electron should eventually shake loose. It never did." },
+          { type: "paragraph", text: "Einstein's explanation in 1905 was that light arrives in individual packets, and the energy of each packet is set by its color, not by the brightness. A blue packet carries enough to free an electron. A red packet does not, and a billion red packets are still a billion things that individually cannot do the job. Brightness only changes how many packets arrive." },
+          { type: "callout", accent: "orange", title: "Worth knowing", text: "Einstein's Nobel Prize was for this, not for relativity. Those packets are what we now call photons, and this is the same idea that explains why ultraviolet makes things glow and visible light does not." },
+        ] },
+        { title: "Round Three: Both, and It Gets Stranger", blocks: [
+          { type: "paragraph", text: "So light comes in packets, and light makes interference stripes. Those two facts sound like they belong to different objects. So somebody eventually did the obvious cruel experiment: run the double slit again, but turn the source down so far that only one photon is in the apparatus at a time." },
+          { type: "paragraph", text: "Each photon arrives at the screen as a single dot, in one specific place, exactly like a particle. No stripes, just a dot. Then another dot somewhere else. Then another." },
+          { type: "paragraph", text: "Leave it running for hours and the dots pile up. And the pattern they build, one isolated arrival at a time, is the striped interference pattern. With nothing else in the machine to interfere with, each photon behaved as though it went through both slits and interfered with itself." },
+          { type: "paragraph", text: "That result is not a metaphor or a simplification. It is what the experiment does." },
+        ] },
+        { title: "What This Does Not Mean", blocks: [
+          { type: "paragraph", text: "It does not mean light is confused, or that it decides what to be based on how you feel about it, or that thinking about something changes it. Those versions get repeated a lot and they are not what the physics says." },
+          { type: "paragraph", text: "What it means is narrower and more interesting. Wave and particle are two pictures we invented from watching everyday objects, and photons are not everyday objects. Each picture predicts the outcome perfectly in some situations and fails in others. The mathematics handles all of it consistently. It is only the pictures in our heads that have to take turns." },
+          { type: "quote", text: "The failure is not in light. It is in expecting something that small to resemble anything we have ever held.", attribution: "The usual conclusion, put plainly" },
+        ] },
+        { title: "What You Can and Cannot Do at Home", blocks: [
+          { type: "paragraph", text: "You can absolutely get Young's result. Two slits cut into aluminum foil, a cheap red laser held by an adult, and a wall a few meters away will give you the stripes. It takes some patience to cut the slits close enough together, and that is genuinely the hard part." },
+          { type: "paragraph", text: "You can then go further than Young did, because you know something he did not: the wavelength of your laser. Measure how far apart the stripes are, and you can work backwards to calculate the gap between your two slits, a distance far too small to measure with any ruler you own." },
+          { type: "paragraph", text: "What you cannot do at home is round three. Your laser is firing trillions of photons at once, so what lands on your wall is honest wave interference and nothing weirder. Doing the one-photon-at-a-time version needs detectors and darkness that a bedroom cannot provide." },
+          { type: "callout", accent: "purple", text: "That is worth being straight about. The pattern on your wall is the evidence that convinced 1801. The strange part came a hundred and twenty years later, and it starts from exactly the same stripes." },
+        ] },
+        { title: "The Big Idea", blocks: [
+          { type: "paragraph", text: "Light interferes like a wave, arrives like a particle, and does both in the same experiment. Neither picture is wrong and neither is complete, because both were built by people looking at things enormously larger than a photon." },
+          { type: "ctaLink", title: "Get the stripes", accent: "teal", text: "Our guide covers cutting the slits, the laser safety rules, and the arithmetic for turning your fringe spacing into a slit separation you could never measure directly.", linkText: "The double slit on your bedroom wall", href: "/projects/double-slit-at-home" },
         ] },
       ],
     },

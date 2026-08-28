@@ -1,6 +1,17 @@
 import type { Metadata } from "next"
-import { type Language } from "@/i18n/translations"
+import { translations, type Language } from "@/i18n/translations"
 import { enOnlyAlternates, languageAlternates, localizedPath } from "@/lib/i18n-routes"
+import { formatTemplate } from "@/lib/format-template"
+import {
+  findPythonWeek,
+  getIntroToPythonCurriculum,
+  pythonCurriculumHasTranslation,
+} from "@/features/curriculums/intro-to-python-i18n"
+import {
+  findScienceLesson,
+  getScienceExperimentsCurriculum,
+  scienceCurriculumHasTranslation,
+} from "@/features/curriculums/science-experiments-i18n"
 import { siteConfig } from "@/lib/site-config"
 import {
   getIntroToPythonWeek,
@@ -121,6 +132,20 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
   },
 }
 
+/**
+ * Canonical + hreflang for a course page.
+ *
+ * A course only advertises localized alternates once its content is actually
+ * translated. Until then the localized route still exists and renders (with
+ * translated chrome and English lesson text), but it points its canonical at
+ * the English URL rather than claiming to be a distinct translation.
+ */
+function courseAlternates(path: string, language: Language, translated: boolean) {
+  return translated
+    ? { canonical: localizedPath(path, language), languages: languageAlternates(path) }
+    : { canonical: path, languages: enOnlyAlternates(path) }
+}
+
 export function generateCurriculumsMetadata(language: Language = "en"): Metadata {
   const { title, description } = metadataByLanguage[language]
 
@@ -155,23 +180,27 @@ export function generateCurriculumsMetadata(language: Language = "en"): Metadata
   }
 }
 
-export function generateIntroToPythonWeekMetadata(week: number): Metadata {
-  const lesson = getIntroToPythonWeek(week)
+export function generateIntroToPythonWeekMetadata(
+  week: number,
+  language: Language = "en",
+): Metadata {
+  const lesson = findPythonWeek(language, week)
   if (!lesson) {
     return { title: "Lesson not found | Avanza STEM" }
   }
 
   const path = introToPythonWeekPath(week)
-  const title = clampTitle(`Week ${lesson.week}: ${lesson.title}`, "Intro to Python")
+  const course = getIntroToPythonCurriculum(language)
+  const label = formatTemplate(translations[language].courseUi.shared.weekNumber, {
+    n: lesson.week,
+  })
+  const title = clampTitle(`${label}: ${lesson.title}`, course.title)
   const description = clampDescription(lesson.description)
 
   return {
     title,
     description,
-    alternates: {
-      canonical: path,
-      languages: enOnlyAlternates(path),
-    },
+    alternates: courseAlternates(path, language, pythonCurriculumHasTranslation(language)),
     openGraph: {
       title,
       description,
@@ -270,18 +299,22 @@ export function generateIntroToPythonWorksheetsMetadata(): Metadata {
 
 const INTRO_TO_PYTHON_PATH = "/curriculums/intro-to-python"
 
-export function generateIntroToPythonMetadata(): Metadata {
-  const title = clampTitle("Intro to Python: 8-Week Beginner Coding Course (Grades 3-6)")
-  const description =
-    "An 8-week beginner Python curriculum for grades 3-6. One concept per week, from print() and variables to loops, functions, and a final build-your-own game project."
+export function generateIntroToPythonMetadata(language: Language = "en"): Metadata {
+  const course = getIntroToPythonCurriculum(language)
+  const title =
+    language === "en"
+      ? clampTitle("Intro to Python: 8-Week Beginner Coding Course (Grades 3-6)")
+      : clampTitle(course.title, course.gradeRange)
+  const description = clampDescription(course.description)
 
   return {
     title,
     description,
-    alternates: {
-      canonical: INTRO_TO_PYTHON_PATH,
-      languages: enOnlyAlternates(INTRO_TO_PYTHON_PATH),
-    },
+    alternates: courseAlternates(
+      INTRO_TO_PYTHON_PATH,
+      language,
+      pythonCurriculumHasTranslation(language),
+    ),
     openGraph: {
       title,
       description,
@@ -560,20 +593,22 @@ export function generateEngineeringTeacherGuideMetadata(slug: string): Metadata 
   }
 }
 
-export function generateScienceExperimentsMetadata(): Metadata {
-  const c = scienceExperimentsCurriculum
+export function generateScienceExperimentsMetadata(language: Language = "en"): Metadata {
+  const c = getScienceExperimentsCurriculum(language)
   const title =
-    "Science Experiments: 6-Week Course (Grades 2-4)"
-  const description =
-    "A 6-week hands-on science course for grades 2-4. One safe, low-cost experiment a week, using the ask, predict, test, observe, explain loop real scientists use."
+    language === "en"
+      ? "Science Experiments: 6-Week Course (Grades 2-4)"
+      : clampTitle(c.title, c.gradeRange)
+  const description = clampDescription(c.description)
 
   return {
     title,
     description,
-    alternates: {
-      canonical: scienceExperimentsPath,
-      languages: enOnlyAlternates(scienceExperimentsPath),
-    },
+    alternates: courseAlternates(
+      scienceExperimentsPath,
+      language,
+      scienceCurriculumHasTranslation(language),
+    ),
     openGraph: {
       title,
       description,
@@ -598,24 +633,24 @@ export function generateScienceExperimentsMetadata(): Metadata {
   }
 }
 
-export function generateScienceLessonMetadata(slug: string): Metadata {
-  const lesson = getScienceLesson(slug)
+export function generateScienceLessonMetadata(slug: string, language: Language = "en"): Metadata {
+  const lesson = findScienceLesson(language, slug)
   if (!lesson) {
     return { title: "Lesson not found | Avanza STEM" }
   }
 
   const path = scienceLessonPath(slug)
-  const label = `Week ${lesson.week}`
-  const title = clampTitle(`${label}: ${lesson.title}`, "Science Experiments")
+  const course = getScienceExperimentsCurriculum(language)
+  const label = formatTemplate(translations[language].courseUi.shared.weekNumber, {
+    n: lesson.week,
+  })
+  const title = clampTitle(`${label}: ${lesson.title}`, course.title)
   const description = clampDescription(`${lesson.bigQuestion} ${lesson.explanation}`)
 
   return {
     title,
     description,
-    alternates: {
-      canonical: path,
-      languages: enOnlyAlternates(path),
-    },
+    alternates: courseAlternates(path, language, scienceCurriculumHasTranslation(language)),
     openGraph: {
       title,
       description,
@@ -627,7 +662,7 @@ export function generateScienceLessonMetadata(slug: string): Metadata {
           url: "/images/og-default-en.png",
           width: 1200,
           height: 630,
-          alt: `Science Experiments - ${label}: ${lesson.title}`,
+          alt: `${course.title} - ${label}: ${lesson.title}`,
         },
       ],
     },

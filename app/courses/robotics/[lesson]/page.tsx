@@ -35,7 +35,7 @@ export default async function RoboticsLessonPage({
   return (
     <>
       <CourseBreadcrumbJsonLd path={roboticsLessonPath(lesson)} leafName={courseModule.title} />
-      <RoboticsLessonContent module={courseModule} />
+      <RoboticsLessonContent slug={lesson} />
     </>
   )
 }

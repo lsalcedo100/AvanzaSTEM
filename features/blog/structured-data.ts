@@ -26,14 +26,16 @@ export function getBlogPostingJsonLd(slug: BlogSlug, language: Language = "en") 
 
   const url = `${siteConfig.url}${localizedPath(`/blog/${slug}`, language)}`
   const { datePublished, dateModified } = BLOG_POST_DATES[slug]
-  const image = absoluteImageUrl(article.image)
+  // Posts awaiting a real photo carry an empty `image`; omit the property
+  // rather than emitting a URL that resolves to the site root.
+  const image = article.image ? absoluteImageUrl(article.image) : undefined
 
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: language === "en" ? BLOG_POST_META[slug].headline : article.title,
     description: getBlogPostDescription(slug, language),
-    image: [image],
+    ...(image ? { image: [image] } : {}),
     inLanguage: language,
     datePublished,
     dateModified,

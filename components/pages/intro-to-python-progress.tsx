@@ -10,11 +10,13 @@ import {
   type LessonStatus,
   useIntroToPythonProgress,
 } from "@/components/ui/useIntroToPythonProgress"
+import { formatTemplate } from "@/lib/format-template"
+import type { Translations } from "@/i18n/translations"
 
-const STATUS_LABEL: Record<LessonStatus, string> = {
-  completed: "Completed",
-  "in-progress": "In progress",
-  "not-started": "Not started",
+function statusLabel(status: LessonStatus, shared: Translations["courseUi"]["shared"]): string {
+  if (status === "completed") return shared.statusCompleted
+  if (status === "in-progress") return shared.statusInProgress
+  return shared.statusNotStarted
 }
 
 /**
@@ -25,16 +27,16 @@ const STATUS_LABEL: Record<LessonStatus, string> = {
  * the neutral default (no hydration mismatch).
  */
 export function IntroToPythonProgress() {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const ui = t.courseUi.python
+  const shared = t.courseUi.shared
   const c = getIntroToPythonCurriculum(language)
   const { loaded, totalWeeks, completedCount, showAll, status, isUnlocked, setShowAll, reset } =
     useIntroToPythonProgress()
 
   const handleReset = () => {
     if (
-      window.confirm(
-        "Reset your progress for this curriculum? Your completed lessons will be cleared. This cannot be undone.",
-      )
+      window.confirm(ui.resetConfirm)
     ) {
       reset()
     }
@@ -43,7 +45,7 @@ export function IntroToPythonProgress() {
   return (
     <div>
       <p className="text-sm font-semibold text-foreground" aria-live="polite">
-        {completedCount} of {totalWeeks} lessons completed
+        {formatTemplate(ui.lessonsCompleted, { done: completedCount, total: totalWeeks })}
       </p>
 
       <ol className="mt-6 divide-y divide-border border-t border-b border-border">
@@ -56,7 +58,7 @@ export function IntroToPythonProgress() {
               className="grid gap-x-6 gap-y-3 py-7 md:grid-cols-[5.5rem_1fr_auto]"
             >
               <div className="text-sm font-semibold text-muted-foreground">
-                Week {week.week}
+                {formatTemplate(shared.weekNumber, { n: week.week })}
               </div>
               <div>
                 <h3 className="text-lg font-bold text-foreground">{week.title}</h3>
@@ -64,13 +66,13 @@ export function IntroToPythonProgress() {
                   {week.description}
                 </p>
                 <p className="mt-3 text-sm text-muted-foreground">
-                  <span className="font-semibold text-foreground">Project:</span>{" "}
+                  <span className="font-semibold text-foreground">{ui.projectLabel}</span>{" "}
                   {week.projectName}
                   <span className="px-2 text-border">|</span>
                   {week.estimatedTime}
                 </p>
                 <p className="mt-3 text-sm font-semibold text-muted-foreground">
-                  {STATUS_LABEL[weekStatus]}
+                  {statusLabel(weekStatus, shared)}
                 </p>
               </div>
               <div className="md:justify-self-end md:self-center">
@@ -80,16 +82,16 @@ export function IntroToPythonProgress() {
                     className="inline-flex items-center text-sm font-semibold text-avanza-green underline underline-offset-2 hover:text-avanza-teal"
                   >
                     {weekStatus === "completed"
-                      ? "Review lesson"
+                      ? ui.reviewLesson
                       : weekStatus === "in-progress"
-                        ? "Continue lesson"
-                        : "Start lesson"}
+                        ? ui.continueLesson
+                        : ui.startLesson}
                   </Link>
                 ) : (
                   <span className="text-sm text-muted-foreground">
-                    Locked
+                    {ui.locked}
                     <span className="mt-1 block text-xs">
-                      Complete Week {week.week - 1} first
+                      {formatTemplate(ui.completeWeekFirst, { n: week.week - 1 })}
                     </span>
                   </span>
                 )}
@@ -106,18 +108,18 @@ export function IntroToPythonProgress() {
           disabled={!loaded}
           className="text-sm font-semibold text-muted-foreground underline underline-offset-2 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Reset progress
+          {shared.resetProgress}
         </button>
 
         {showAll ? (
           <p className="text-sm text-muted-foreground">
-            Showing all lessons (teacher mode).{" "}
+            {ui.showingAllLessons}{" "}
             <button
               type="button"
               onClick={() => setShowAll(false)}
               className="font-semibold text-avanza-green underline underline-offset-2 hover:text-avanza-teal"
             >
-              Turn off
+              {ui.turnOff}
             </button>
           </p>
         ) : (
@@ -127,7 +129,7 @@ export function IntroToPythonProgress() {
             disabled={!loaded}
             className="text-left text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50 sm:text-right"
           >
-            Show all lessons (for teachers)
+            {ui.showAllLessons}
           </button>
         )}
       </div>

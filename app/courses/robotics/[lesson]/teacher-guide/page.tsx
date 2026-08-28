@@ -35,7 +35,7 @@ export default async function RoboticsTeacherGuidePage({
   return (
     <>
       <CourseBreadcrumbJsonLd path={roboticsTeacherGuidePath(lesson)} leafName={`${courseModule.title} teacher guide`} />
-      <RoboticsTeacherGuideContent module={courseModule} />
+      <RoboticsTeacherGuideContent slug={lesson} />
     </>
   )
 }
