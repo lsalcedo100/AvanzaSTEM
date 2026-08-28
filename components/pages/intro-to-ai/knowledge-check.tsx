@@ -181,7 +181,6 @@ function QuestionBody({
             revealed={revealed}
             multiple={false}
             onAnswer={onAnswer}
-            onReveal={onReveal}
             onChange={onChange}
           />
         ) : question.kind === "multiple" ? (
@@ -191,11 +190,10 @@ function QuestionBody({
             revealed={revealed}
             multiple
             onAnswer={onAnswer}
-            onReveal={onReveal}
             onChange={onChange}
           />
         ) : question.kind === "true-false" ? (
-          <TrueFalse question={question} answer={answer} revealed={revealed} onAnswer={onAnswer} onReveal={onReveal} onChange={onChange} />
+          <TrueFalse question={question} answer={answer} revealed={revealed} onAnswer={onAnswer} onChange={onChange} />
         ) : (
           <Ordering question={question} answer={answer} onAnswer={onAnswer} />
         )}
@@ -257,7 +255,6 @@ function ChoiceQuestion({
   revealed,
   multiple,
   onAnswer,
-  onReveal,
   onChange,
 }: {
   question: Extract<KnowledgeCheckQuestion, { kind: "single" | "scenario" | "multiple" }>
@@ -265,7 +262,6 @@ function ChoiceQuestion({
   revealed: boolean
   multiple: boolean
   onAnswer: (value: string) => void
-  onReveal: () => void
   onChange: () => void
 }) {
   const S = useS()
@@ -319,7 +315,6 @@ function ChoiceQuestion({
         })}
       </div>
       {multiple && <p className="text-xs text-muted-foreground">{S.selectAll}</p>}
-      <ResetHint revealed={revealed} loaded onReveal={onReveal} onChange={onChange} answered={selected.size > 0} />
     </div>
   )
 }
@@ -329,14 +324,12 @@ function TrueFalse({
   answer,
   revealed,
   onAnswer,
-  onReveal,
   onChange,
 }: {
   question: Extract<KnowledgeCheckQuestion, { kind: "true-false" }>
   answer: string
   revealed: boolean
   onAnswer: (value: string) => void
-  onReveal: () => void
   onChange: () => void
 }) {
   const pick = (value: "true" | "false") => {
@@ -372,7 +365,6 @@ function TrueFalse({
           )
         })}
       </div>
-      <ResetHint revealed={revealed} loaded onReveal={onReveal} onChange={onChange} answered={answer !== ""} />
     </div>
   )
 }

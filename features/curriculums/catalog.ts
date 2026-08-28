@@ -41,9 +41,10 @@ export type CurriculumEntry = {
   /** Canonical course route. These hrefs are load-bearing — keep them exact. */
   href: string
   /**
-   * Real Avanza STEM workshop/robotics photo for the card. Omitted when no
-   * authentic image exists for the course (Math) — the card then falls back to a
-   * restrained neutral treatment rather than a stock or AI-generated image.
+   * Card art. Normally a real Avanza STEM workshop/robotics photo; Math uses a
+   * commissioned illustration because no authentic math-workshop photo exists.
+   * Still optional so a course with neither falls back to the restrained
+   * neutral treatment in {@link CurriculumCard}.
    */
   image?: string
   /** AI card renders the authentic in-course JourneyDiagram instead of a photo. */
@@ -126,7 +127,8 @@ export const curriculumCatalog: CurriculumEntry[] = [
   {
     id: "math",
     href: "/courses/math-adventures",
-    // No authentic math photo exists — card uses the neutral graph-paper treatment.
+    // No authentic math-workshop photo exists, so this card uses an illustration.
+    image: "/images/curriculums/math-adventures.jpg",
     group: "hands-on",
     gradeMin: 2,
     gradeMax: 5,

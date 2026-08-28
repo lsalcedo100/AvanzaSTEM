@@ -13,6 +13,16 @@
  * stays on the device and is never sent to any external service.
  */
 
+import { translations, type Translations } from "../../../i18n/translations.ts"
+
+/**
+ * The final-project wording. Every id - project type, plan field, test kind,
+ * requirement - stays English because the saved studio project keys on them.
+ */
+export type FinalProjectStrings = Translations["courseUi"]["ai"]["finalProject"]
+
+const EN: FinalProjectStrings = translations.en.courseUi.ai.finalProject
+
 export const STUDIO_ACTIVITY_ID = "final-project-studio"
 export const STUDIO_VERSION = 1 as const
 
@@ -37,77 +47,44 @@ export type ProjectTypeDef = {
   policyOnly?: boolean
 }
 
-export const PROJECT_TYPES: ProjectTypeDef[] = [
-  {
-    id: "blueprint",
-    name: "No-Code AI System Blueprint",
-    summary: "Plan an AI system on paper — no live model built.",
-    planFields: [
-      { id: "dataNeeded", label: "Data the system would need", hint: "What examples or information would it use?" },
-      { id: "rulesOrPatterns", label: "Rules or patterns", hint: "Would it follow clear rules, or learn patterns from data?" },
-      { id: "systemSteps", label: "How it works, step by step", hint: "Input → processing → output." },
-      { id: "successMeasure", label: "How you'd measure success", hint: "What would 'working well' look like?" },
-    ],
-  },
-  {
-    id: "chatbot",
-    name: "Rule-Based Help Chatbot",
-    summary: "Build a limited-purpose chatbot using the Week 4 tools.",
-    importSourceId: "w4l1-act",
-    importLabel: "Week 4 chatbot",
-    planFields: [
-      { id: "intents", label: "Intents", hint: "The main things users will ask about." },
-      { id: "keywords", label: "Keywords or choices", hint: "The words that trigger each intent." },
-      { id: "branches", label: "Follow-up branches", hint: "Any question the bot asks back." },
-      { id: "fallback", label: "Fallback", hint: "What it says when it doesn't understand." },
-      { id: "humanHelp", label: "Human-help route", hint: "How a user reaches a person." },
-    ],
-  },
-  {
-    id: "classifier",
-    name: "Image-Classification Investigation",
-    summary: "Train, test, and improve a classifier using the Week 3 lab.",
-    importSourceId: "w3l2-act",
-    importLabel: "Week 3 classifier",
-    planFields: [
-      { id: "categories", label: "Categories", hint: "The labels the model chooses between." },
-      { id: "features", label: "Features", hint: "What the model looks at in each image." },
-      { id: "trainingExamples", label: "Training examples", hint: "What it learns from." },
-      { id: "testingExamples", label: "Testing examples", hint: "Held-back examples to check it." },
-      { id: "labelPlan", label: "Label plan", hint: "How examples get their correct labels." },
-    ],
-  },
-  {
-    id: "recommender",
-    name: "Recommendation System",
-    summary: "Build and explain recommendations using the Week 4 system.",
-    importSourceId: "w4l3-act",
-    importLabel: "Week 4 recommender",
-    planFields: [
-      { id: "itemFeatures", label: "Item features", hint: "What describes each item." },
-      { id: "userPreferences", label: "User preferences", hint: "What the system learns from choices." },
-      { id: "scoringLogic", label: "Scoring logic", hint: "How items are scored." },
-      { id: "explanationLogic", label: "Explanation logic", hint: "How it explains each recommendation." },
-      { id: "lowData", label: "Low-data behavior", hint: "What it does with too little information." },
-    ],
-  },
-  {
-    id: "ethics",
-    name: "“Should We Use AI?” Ethics & Policy Proposal",
-    summary: "Evaluate a proposed AI system and recommend approval, limits, safeguards, or rejection.",
-    policyOnly: true,
-    planFields: [
-      { id: "evidence", label: "Evidence", hint: "What shows the problem is real." },
-      { id: "affectedUsers", label: "Affected users", hint: "Who is helped or harmed." },
-      { id: "risks", label: "Risks", hint: "What could go wrong." },
-      { id: "safeguards", label: "Safeguards", hint: "Protections you'd require." },
-      { id: "approvalCriteria", label: "Approval criteria", hint: "What would have to be true to approve it." },
-    ],
-  },
+/** The machine-readable half of each type; the prose comes from the strings. */
+const TYPE_DATA: {
+  id: ProjectType
+  planFieldIds: string[]
+  importSourceId?: string
+  policyOnly?: boolean
+}[] = [
+  { id: "blueprint", planFieldIds: ["dataNeeded", "rulesOrPatterns", "systemSteps", "successMeasure"] },
+  { id: "chatbot", importSourceId: "w4l1-act", planFieldIds: ["intents", "keywords", "branches", "fallback", "humanHelp"] },
+  { id: "classifier", importSourceId: "w3l2-act", planFieldIds: ["categories", "features", "trainingExamples", "testingExamples", "labelPlan"] },
+  { id: "recommender", importSourceId: "w4l3-act", planFieldIds: ["itemFeatures", "userPreferences", "scoringLogic", "explanationLogic", "lowData"] },
+  { id: "ethics", policyOnly: true, planFieldIds: ["evidence", "affectedUsers", "risks", "safeguards", "approvalCriteria"] },
 ]
 
-export function getProjectType(id: string | null): ProjectTypeDef | undefined {
-  return PROJECT_TYPES.find((t) => t.id === id)
+export const projectTypes = (S: FinalProjectStrings = EN): ProjectTypeDef[] =>
+  TYPE_DATA.map((d) => {
+    const t = (S.types as Record<string, {
+      name: string
+      summary: string
+      importLabel?: string
+      planFields: Record<string, { label: string; hint: string }>
+    }>)[d.id]
+    return {
+      id: d.id,
+      name: t.name,
+      summary: t.summary,
+      planFields: d.planFieldIds.map((id) => ({ id, label: t.planFields[id].label, hint: t.planFields[id].hint })),
+      importSourceId: d.importSourceId,
+      importLabel: t.importLabel,
+      policyOnly: d.policyOnly,
+    }
+  })
+
+/** The English base, for code that only needs the ids and the field ids. */
+export const PROJECT_TYPES: ProjectTypeDef[] = projectTypes()
+
+export function getProjectType(id: string | null, S: FinalProjectStrings = EN): ProjectTypeDef | undefined {
+  return projectTypes(S).find((t) => t.id === id)
 }
 
 /* ========================================================================== */
@@ -116,14 +93,16 @@ export function getProjectType(id: string | null): ProjectTypeDef | undefined {
 
 export type TestKind = "normal" | "difficult" | "missing-input" | "unexpected-input" | "edge" | "harmful"
 
-export const TEST_KINDS: { id: TestKind; label: string; hint: string }[] = [
-  { id: "normal", label: "Normal case", hint: "A typical, expected input." },
-  { id: "difficult", label: "Difficult case", hint: "Harder but valid." },
-  { id: "missing-input", label: "Missing-input case", hint: "A required piece is missing." },
-  { id: "unexpected-input", label: "Unexpected-input case", hint: "Something the system wasn't built for." },
-  { id: "edge", label: "Edge case", hint: "Right at the boundary." },
-  { id: "harmful", label: "Potentially harmful mistake", hint: "A wrong answer that could cause harm." },
-]
+const TEST_KIND_IDS: TestKind[] = ["normal", "difficult", "missing-input", "unexpected-input", "edge", "harmful"]
+
+export const testKinds = (S: FinalProjectStrings = EN): { id: TestKind; label: string; hint: string }[] =>
+  TEST_KIND_IDS.map((id) => {
+    const t = (S.testKinds as Record<string, { label: string; hint: string }>)[id]
+    return { id, label: t.label, hint: t.hint }
+  })
+
+/** The English base, for code that only needs the ids and their order. */
+export const TEST_KINDS = testKinds()
 
 export type TestCase = {
   id: string
@@ -300,83 +279,85 @@ const filled = (s: string) => s.trim().length > 0
  * build-specific requirements (plan, prototype, fairness group-testing) relax,
  * because there is nothing to build — but the policy reasoning stays required.
  */
-export function validateProject(p: StudioProject): Requirement[] {
-  const type = getProjectType(p.type)
+export function validateProject(p: StudioProject, S: FinalProjectStrings = EN): Requirement[] {
+  const type = getProjectType(p.type, S)
+  const sec = (id: string) => (S.sections as Record<string, string>)[id]
+  const lbl = (id: string) => (S.requirements as Record<string, string>)[id]
   const notUsingAi = p.appropriateness.useAi === "no"
   const req: Requirement[] = []
   const add = (id: string, section: string, label: string, met: boolean, required = true) => req.push({ id, section, label, met, required })
 
-  add("type", "Setup", "Choose a project type", !!p.type)
+  add("type", sec("setup"), lbl("type"), !!p.type)
 
   // Section 1 — define
-  add("d-title", "Define the problem", "Problem title", filled(p.define.title))
-  add("d-who", "Define the problem", "Who experiences it", filled(p.define.who))
-  add("d-why", "Define the problem", "Why it matters", filled(p.define.whyMatters))
-  add("d-evidence", "Define the problem", "Evidence the problem is real", filled(p.define.evidence))
+  add("d-title", sec("define"), lbl("d-title"), filled(p.define.title))
+  add("d-who", sec("define"), lbl("d-who"), filled(p.define.who))
+  add("d-why", sec("define"), lbl("d-why"), filled(p.define.whyMatters))
+  add("d-evidence", sec("define"), lbl("d-evidence"), filled(p.define.evidence))
 
   // Section 2 — appropriateness
-  add("a-usai", "Is AI appropriate?", "Decide whether to use AI", p.appropriateness.useAi !== "")
-  add("a-conc", "Is AI appropriate?", "Explain your conclusion", filled(p.appropriateness.conclusion))
-  add("a-ifwrong", "Is AI appropriate?", "What happens if it's wrong", filled(p.appropriateness.ifWrong))
+  add("a-usai", sec("appropriate"), lbl("a-usai"), p.appropriateness.useAi !== "")
+  add("a-conc", sec("appropriate"), lbl("a-conc"), filled(p.appropriateness.conclusion))
+  add("a-ifwrong", sec("appropriate"), lbl("a-ifwrong"), filled(p.appropriateness.ifWrong))
 
   // Section 3 — inputs/outputs
-  add("io-in", "Inputs & outputs", "Inputs", filled(p.io.inputs))
-  add("io-out", "Inputs & outputs", "Outputs", filled(p.io.outputs))
-  add("io-missing", "Inputs & outputs", "What happens with missing/unclear input", filled(p.io.missingUnclear))
+  add("io-in", sec("io"), lbl("io-in"), filled(p.io.inputs))
+  add("io-out", sec("io"), lbl("io-out"), filled(p.io.outputs))
+  add("io-missing", sec("io"), lbl("io-missing"), filled(p.io.missingUnclear))
 
   // Section 4 — plan (relaxed when not using AI, or for policy-only types the plan is the proposal)
   if (type) {
     const planRequired = !notUsingAi || !!type.policyOnly
     const planMet = type.planFields.every((f) => filled(p.plan[f.id] ?? ""))
-    add("plan", "Data / rules plan", `Fill the ${type.name} plan`, planMet, planRequired)
+    add("plan", sec("plan"), lbl("plan").replace("{name}", type.name), planMet, planRequired)
   }
 
   // Section 5 — prototype (relaxed when not using AI)
-  add("proto", "Prototype", "Describe or import a prototype", filled(p.prototype.flow) || filled(p.prototype.notes) || filled(p.prototype.importSnapshot), !notUsingAi)
+  add("proto", sec("prototype"), lbl("proto"), filled(p.prototype.flow) || filled(p.prototype.notes) || filled(p.prototype.importSnapshot), !notUsingAi)
 
   // Section 6 — tests (>= 6 cases covering all six kinds, each with an input and a pass/fail)
   const kindsCovered = new Set(p.tests.filter((t) => filled(t.input)).map((t) => t.kind))
   const completeTests = p.tests.filter((t) => filled(t.input) && t.pass !== "").length
-  add("tests-count", "Test cases", "At least 6 completed test cases", completeTests >= 6)
-  add("tests-kinds", "Test cases", "Cover all six case kinds", TEST_KINDS.every((k) => kindsCovered.has(k.id)))
+  add("tests-count", sec("tests"), lbl("tests-count"), completeTests >= 6)
+  add("tests-kinds", sec("tests"), lbl("tests-kinds"), TEST_KIND_IDS.every((k) => kindsCovered.has(k)))
 
   // Section 7 — limitations (safety)
-  add("lim-cannot", "Mistakes & limitations", "Situations it can't handle", filled(p.limitations.cannotHandle))
-  add("lim-refuse", "Mistakes & limitations", "When it should refuse to decide", filled(p.limitations.refuse))
-  add("lim-review", "Mistakes & limitations", "Cases needing human review", filled(p.limitations.humanReview))
+  add("lim-cannot", sec("limitations"), lbl("lim-cannot"), filled(p.limitations.cannotHandle))
+  add("lim-refuse", sec("limitations"), lbl("lim-refuse"), filled(p.limitations.refuse))
+  add("lim-review", sec("limitations"), lbl("lim-review"), filled(p.limitations.humanReview))
 
   // Section 8 — privacy (safety)
-  add("pr-necessary", "Privacy review", "Necessary data", filled(p.privacy.necessary))
-  add("pr-donot", "Privacy review", "Data that should not be collected", filled(p.privacy.doNotCollect))
-  add("pr-processing", "Privacy review", "Where processing happens", filled(p.privacy.processing))
-  add("pr-retention", "Privacy review", "How long data is kept", filled(p.privacy.retention))
-  add("pr-delete", "Privacy review", "How a user deletes or corrects data", filled(p.privacy.deleteCorrect))
+  add("pr-necessary", sec("privacy"), lbl("pr-necessary"), filled(p.privacy.necessary))
+  add("pr-donot", sec("privacy"), lbl("pr-donot"), filled(p.privacy.doNotCollect))
+  add("pr-processing", sec("privacy"), lbl("pr-processing"), filled(p.privacy.processing))
+  add("pr-retention", sec("privacy"), lbl("pr-retention"), filled(p.privacy.retention))
+  add("pr-delete", sec("privacy"), lbl("pr-delete"), filled(p.privacy.deleteCorrect))
 
   // Section 9 — fairness (safety; group-testing relaxed when not using AI)
-  add("fa-rep", "Fairness review", "Who is represented", filled(p.fairness.represented))
-  add("fa-missing", "Fairness review", "Who might be missing", filled(p.fairness.missing))
-  add("fa-invest", "Fairness review", "How you'd investigate unequal results", filled(p.fairness.investigate))
-  add("fa-group", "Fairness review", "Group-level testing plan", filled(p.fairness.groupTesting), !notUsingAi)
+  add("fa-rep", sec("fairness"), lbl("fa-rep"), filled(p.fairness.represented))
+  add("fa-missing", sec("fairness"), lbl("fa-missing"), filled(p.fairness.missing))
+  add("fa-invest", sec("fairness"), lbl("fa-invest"), filled(p.fairness.investigate))
+  add("fa-group", sec("fairness"), lbl("fa-group"), filled(p.fairness.groupTesting), !notUsingAi)
 
   // Section 10 — oversight & appeal (safety)
-  add("ov-reviewer", "Human oversight & appeal", "Who reviews results", filled(p.oversight.reviewer))
-  add("ov-final", "Human oversight & appeal", "Who makes the final decision", filled(p.oversight.finalDecision))
-  add("ov-explain", "Human oversight & appeal", "How a user asks for an explanation", filled(p.oversight.explanation))
-  add("ov-correct", "Human oversight & appeal", "How a result is corrected", filled(p.oversight.correction))
-  add("ov-override", "Human oversight & appeal", "How an AI result can be overridden", filled(p.oversight.override))
+  add("ov-reviewer", sec("oversight"), lbl("ov-reviewer"), filled(p.oversight.reviewer))
+  add("ov-final", sec("oversight"), lbl("ov-final"), filled(p.oversight.finalDecision))
+  add("ov-explain", sec("oversight"), lbl("ov-explain"), filled(p.oversight.explanation))
+  add("ov-correct", sec("oversight"), lbl("ov-correct"), filled(p.oversight.correction))
+  add("ov-override", sec("oversight"), lbl("ov-override"), filled(p.oversight.override))
 
   // Section 11 — wrap-up
-  add("wrap-next", "Presentation", "Your next improvement", filled(p.wrapUp.nextImprovement))
+  add("wrap-next", sec("presentation"), lbl("wrap-next"), filled(p.wrapUp.nextImprovement))
 
   return req
 }
 
-export function projectComplete(p: StudioProject): boolean {
-  return validateProject(p).every((r) => !r.required || r.met)
+export function projectComplete(p: StudioProject, S: FinalProjectStrings = EN): boolean {
+  return validateProject(p, S).every((r) => !r.required || r.met)
 }
 
-export function completionSummary(p: StudioProject): { met: number; total: number; remaining: Requirement[] } {
-  const reqs = validateProject(p).filter((r) => r.required)
+export function completionSummary(p: StudioProject, S: FinalProjectStrings = EN): { met: number; total: number; remaining: Requirement[] } {
+  const reqs = validateProject(p, S).filter((r) => r.required)
   const remaining = reqs.filter((r) => !r.met)
   return { met: reqs.length - remaining.length, total: reqs.length, remaining }
 }
@@ -392,28 +373,42 @@ export type ImportResult = { ok: boolean; summary: string }
  * snapshot (never a brittle deep copy of state). Best-effort: malformed data
  * returns `ok: false` rather than throwing.
  */
-export function summarizeImport(sourceId: string, raw: string | undefined): ImportResult {
-  if (!raw) return { ok: false, summary: "No saved work found for that activity yet." }
+export function summarizeImport(sourceId: string, raw: string | undefined, S: FinalProjectStrings = EN): ImportResult {
+  if (!raw) return { ok: false, summary: S.impNoSaved }
   try {
     const data = JSON.parse(raw) as Record<string, unknown>
     if (sourceId === "w4l1-act") {
       const intents = Array.isArray(data.intents) ? (data.intents as { name?: string }[]) : []
       const names = intents.map((i) => i.name).filter(Boolean).slice(0, 6).join(", ")
-      return { ok: intents.length > 0, summary: intents.length ? `Chatbot “${str(data.name) || "Untitled"}” with ${intents.length} intents: ${names}. Fallback set: ${str(data.fallback) ? "yes" : "no"}.` : "The chatbot has no intents yet." }
+      return {
+        ok: intents.length > 0,
+        summary: intents.length
+          ? S.impChatbot
+              .replace("{name}", str(data.name) || S.impUntitled)
+              .replace("{n}", String(intents.length))
+              .replace("{names}", names)
+              .replace("{fallback}", str(data.fallback) ? S.impYes : S.impNo)
+          : S.impChatbotEmpty,
+      }
     }
     if (sourceId === "w3l2-act") {
       const training = (data.training as Record<string, unknown>) ?? {}
       const topic = str(data.topic)
       const counts = Object.values(training).map((v) => (Array.isArray(v) ? v.length : 0)).reduce((a, b) => a + b, 0)
-      return { ok: !!topic, summary: topic ? `Classifier on topic “${topic}” with ${counts} selected training pictures.` : "No topic selected yet in the classifier lab." }
+      return {
+        ok: !!topic,
+        summary: topic
+          ? S.impClassifier.replace("{topic}", topic).replace("{n}", String(counts))
+          : S.impClassifierEmpty,
+      }
     }
     if (sourceId === "w4l3-act") {
       const ratings = (data.ratings as Record<string, unknown>) ?? {}
       const n = Object.keys(ratings).length
-      return { ok: n > 0, summary: n ? `Recommender profile from ${n} rated item(s).` : "No items rated in the recommender yet." }
+      return { ok: n > 0, summary: n ? S.impRecommender.replace("{n}", String(n)) : S.impRecommenderEmpty }
     }
-    return { ok: false, summary: "That activity can't be imported here." }
+    return { ok: false, summary: S.impNotImportable }
   } catch {
-    return { ok: false, summary: "That saved work couldn't be read (it may be from a different version)." }
+    return { ok: false, summary: S.impUnreadable }
   }
 }

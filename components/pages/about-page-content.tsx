@@ -115,15 +115,20 @@ export function AboutPageContent() {
               </div>
             </FadeIn>
             <FadeIn delay={100}>
-              <div className="relative h-80 overflow-hidden rounded-2xl shadow-2xl lg:h-96">
-                <LightboxImage
-                  src="/images/about/liam-and-enqi.jpg"
-                  alt={t.aboutPage.teamPhotoAlt}
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover object-[center_38%]"
-                />
-              </div>
+              <figure className="mx-auto w-full max-w-lg">
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl shadow-2xl">
+                  <LightboxImage
+                    src="/images/about/liam-and-enqi.jpg"
+                    alt={t.aboutPage.teamPhotoAlt}
+                    fill
+                    sizes="(min-width: 1024px) 512px, 100vw"
+                    className="object-contain"
+                  />
+                </div>
+                <figcaption className="mt-3 text-center text-sm text-muted-foreground">
+                  us trying to look tuff
+                </figcaption>
+              </figure>
             </FadeIn>
           </div>
         </div>

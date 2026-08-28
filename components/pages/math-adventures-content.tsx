@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+
 import { useLanguage } from "@/components/providers/language-provider"
 import {
   MathCourseProgress,
@@ -35,9 +37,9 @@ import {
  *
  * Design: the shared course kit (`components/pages/courses/course-ui`) in the
  * teal palette. This is the one course with no authentic workshop photography,
- * so instead of reaching for a stock image the cover is a built visual - the
- * ten topic tiles the course actually covers - which doubles as the syllabus at
- * a glance for a parent skimming the page.
+ * so the cover is an illustration rather than a stock photo of someone else's
+ * classroom. The syllabus-at-a-glance job the cover used to do now belongs to
+ * the lesson path in the "weeks" section, which lists all ten adventures.
  */
 export function MathAdventuresContent() {
   const { language, t } = useLanguage()
@@ -52,7 +54,7 @@ export function MathAdventuresContent() {
         title={ml.title}
         lead={ml.lead}
         facts={ml.facts}
-        media={<TopicTiles label={ml.topicTilesLabel} topics={ml.topics} />}
+        media={<CoverIllustration alt={ml.title} />}
         mediaCaption={ml.mediaCaption}
         note={ml.note}
       >
@@ -146,28 +148,26 @@ export function MathAdventuresContent() {
 }
 
 /**
- * The course cover for a course with no authentic photography: the ten topics
- * as bright tiles, numbered by week. Honest about what the course is (a
- * syllabus you can read in three seconds) rather than a stock photo of a child
- * at a whiteboard.
+ * Hero cover for the course.
+ *
+ * Math Adventures is the one course with no authentic workshop photography, so
+ * it uses an illustration rather than a stock photo of someone else's class.
+ * The art is a 2:1 panel on a flat #dbeff6 field, so it is shown with
+ * `object-contain` over that same colour: the panel reads as one continuous
+ * surface instead of the heavy left/right crop `object-cover` would force in
+ * the shared 4:3 photo frame.
  */
-function TopicTiles({ label, topics }: { label: string; topics: string[] }) {
+function CoverIllustration({ alt }: { alt: string }) {
   return (
-    <div className="rounded-lg bg-white px-7 py-8 shadow-[0_24px_60px_-28px_rgba(26,26,46,0.5)] sm:px-9 sm:py-10">
-      <p className="text-sm font-bold text-[var(--c-accent-dark)]">{label}</p>
-      <ol className="mt-5 grid gap-x-10 border-t border-avanza-dark/10 sm:grid-cols-2">
-        {topics.map((topic, i) => (
-          <li
-            key={topic}
-            className="flex items-baseline gap-4 border-b border-avanza-dark/10 py-3"
-          >
-            <span aria-hidden className="font-mono text-sm font-bold text-[var(--c-accent)]">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <span className="text-base font-bold leading-snug text-avanza-dark">{topic}</span>
-          </li>
-        ))}
-      </ol>
+    <div className="relative aspect-4/3 w-full overflow-hidden rounded-lg bg-[#dbeff6] shadow-[0_24px_60px_-28px_rgba(26,26,46,0.5)]">
+      <Image
+        src="/images/curriculums/math-adventures.jpg"
+        alt={alt}
+        fill
+        priority
+        sizes="(min-width: 1024px) 44rem, 100vw"
+        className="object-contain"
+      />
     </div>
   )
 }

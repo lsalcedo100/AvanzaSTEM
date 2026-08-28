@@ -2,21 +2,28 @@
 
 import { useEffect, useRef, useState } from "react"
 import {
-  POSTS,
-  EVIDENCE_ITEMS,
-  VERDICTS,
-  evidenceScore,
   ETHICS_SCENARIOS,
+  posts,
+  evidenceItems,
+  verdicts,
+  evidenceScore,
+  ethicsScenarios,
   getEthicsScenario,
   evaluateEthics,
-  DECISIONS,
-  SAFEGUARDS,
-  APPEAL_FIELDS,
+  decisions,
+  safeguards as safeguardList,
+  appealFields,
   appealComplete,
   type Verdict,
   type Decision,
   type SafeguardId,
 } from "@/features/curriculums/intro-to-ai/activities/week5-content"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Week 5 content wording in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.week5Content
+}
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 
@@ -49,6 +56,7 @@ function parseState(raw: string | undefined): CEState {
 }
 
 export function ContentEthicsActivity({ activity, progress }: ActivityComponentProps) {
+  const S = useS()
   const [state, setState] = useState<CEState>(emptyState)
   const announceRef = useRef<HTMLParagraphElement>(null)
 
@@ -64,10 +72,10 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
     if (announceRef.current) announceRef.current.textContent = msg
   }
 
-  const scenario = getEthicsScenario(state.ethicsScenarioId)!
+  const scenario = getEthicsScenario(state.ethicsScenarioId, S)!
   const decision = state.decision[scenario.id] ?? ""
   const safeguards = state.safeguards[scenario.id] ?? []
-  const feedback = decision ? evaluateEthics(scenario, decision, safeguards) : null
+  const feedback = decision ? evaluateEthics(scenario, decision, safeguards, S) : null
   const appealState = appealComplete(state.appeal)
 
   return (
@@ -75,9 +83,9 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
       title={activity.title}
       purpose={activity.goal}
       instructions={[
-        "Part 1 — investigate posts: run the seven source-and-context checks, then judge each one.",
-        "Part 2 — ethics committee: weigh a proposed AI system, choose a decision, and pick safeguards.",
-        "Part 3 — design an appeal: how a person learns AI was involved, gets an explanation, and can be reviewed.",
+        S.ceInstr1,
+        S.ceInstr2,
+        S.ceInstr3,
       ]}
       status="ready"
       saveStatus={progress.saveStatus}
@@ -90,30 +98,32 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
       <p className="mt-3 rounded-md bg-secondary px-3 py-2 text-xs text-muted-foreground">Every post, school, and person here is fictional. No real accounts are visited. Don&apos;t put personal details in your notes.</p>
 
       {/* Part 1 — misinformation */}
-      <h4 className="mt-4 text-sm font-bold text-foreground">Part 1 · Investigate the posts</h4>
+      <h4 className="mt-4 text-sm font-bold text-foreground">{S.cePart1}</h4>
       <p className="mt-1 text-sm text-muted-foreground">
-        A visual &ldquo;tell&rdquo; like strange hands or odd text is <strong>not</strong> reliable proof. Verification means checking the source, date, and context — the seven questions below.
+        {S.ceVisualTell}
       </p>
       <ul className="mt-3 space-y-4">
-        {POSTS.map((post) => {
+        {posts(S).map((post) => {
           const verdict = state.verdicts[post.id] ?? ""
           const revealed = verdict !== ""
-          const score = evidenceScore(post)
+          const score = evidenceScore(post, S)
           return (
             <li key={post.id} className="rounded-md border border-border p-3">
               <p className="text-sm font-bold text-foreground">{post.headline}</p>
               <p className="mt-0.5 text-xs uppercase tracking-wide text-muted-foreground">{post.kind}</p>
               <p className="mt-1 text-sm text-muted-foreground">{post.imageDescription}</p>
-              <p className="mt-1 text-sm text-foreground"><span className="font-semibold">Claim:</span> {post.claim}</p>
+              <p className="mt-1 text-sm text-foreground"><span className="font-semibold">{S.ceClaim}</span> {post.claim}</p>
 
               <div className="mt-2 rounded-md border border-border/60 p-2">
-                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Evidence ({score.good}/{score.total} checks look healthy)</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                  {S.ceEvidenceHeader.replace("{good}", String(score.good)).replace("{total}", String(score.total))}
+                </p>
                 <ul className="mt-1 space-y-0.5 text-xs">
-                  {EVIDENCE_ITEMS.map((item) => {
+                  {evidenceItems(S).map((item) => {
                     const good = item.good(post.evidence)
                     return (
                       <li key={item.key} className="flex gap-1.5">
-                        <span className={`font-semibold ${good ? "text-avanza-green-dark" : "text-avanza-orange-dark"}`}>{good ? "OK" : "Flag"}:</span>
+                        <span className={`font-semibold ${good ? "text-avanza-green-dark" : "text-avanza-orange-dark"}`}>{good ? S.ceOk : S.ceFlag}:</span>
                         <span className="text-muted-foreground"><span className="text-foreground">{item.question}</span> {item.describe(post.evidence)}</span>
                       </li>
                     )
@@ -122,8 +132,8 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
               </div>
 
               <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold text-muted-foreground">Your judgment:</span>
-                {VERDICTS.map((v) => (
+                <span className="text-xs font-semibold text-muted-foreground">{S.ceYourJudgment}</span>
+                {verdicts(S).map((v) => (
                   <button
                     key={v.id}
                     type="button"
@@ -137,21 +147,24 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
               </div>
               {revealed && (
                 <div className="mt-2 rounded-md bg-secondary px-3 py-2 text-xs" aria-live="polite">
-                  <p className="font-semibold text-foreground">Recommended: {VERDICTS.find((v) => v.id === post.verdict)!.label}{verdict === post.verdict ? " — matches your call." : ""}</p>
+                  <p className="font-semibold text-foreground">
+                    {S.ceRecommended.replace("{label}", verdicts(S).find((v) => v.id === post.verdict)!.label)}
+                    {verdict === post.verdict ? S.ceMatchesYourCall : ""}
+                  </p>
                   <p className="mt-0.5 text-muted-foreground">{post.explanation}</p>
-                  <p className="mt-0.5 text-muted-foreground"><span className="font-semibold">Remember:</span> {post.teachingNote}</p>
+                  <p className="mt-0.5 text-muted-foreground"><span className="font-semibold">{S.ceRemember}</span> {post.teachingNote}</p>
                 </div>
               )}
             </li>
           )
         })}
       </ul>
-      <p className="mt-2 text-xs text-muted-foreground">This activity can&apos;t perfectly detect AI-made content, and it doesn&apos;t try to — it checks sources and context, which is what actually holds up.</p>
+      <p className="mt-2 text-xs text-muted-foreground">{S.ceCannotDetect}</p>
 
       {/* Part 2 — ethics committee */}
-      <h4 className="mt-8 border-t border-border pt-6 text-sm font-bold text-foreground">Part 2 · AI ethics committee</h4>
+      <h4 className="mt-8 border-t border-border pt-6 text-sm font-bold text-foreground">{S.cePart2}</h4>
       <div className="mt-2 flex flex-wrap gap-2">
-        {ETHICS_SCENARIOS.map((s) => (
+        {ethicsScenarios(S).map((s) => (
           <button
             key={s.id}
             type="button"
@@ -165,17 +178,19 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
       </div>
 
       <div className="mt-3 rounded-md border border-border p-3 text-sm">
-        <p className="text-foreground"><span className="font-semibold">Proposal:</span> {scenario.proposal}</p>
-        <p className="mt-1 text-muted-foreground"><span className="font-semibold text-foreground">Intended benefit:</span> {scenario.intendedBenefit}</p>
-        <p className="mt-1 text-muted-foreground"><span className="font-semibold text-foreground">Likely mistakes:</span> {scenario.likelyMistakes.join("; ")}</p>
-        <p className="mt-1 text-muted-foreground"><span className="font-semibold text-foreground">People affected:</span> {scenario.peopleAffected.join(", ")}</p>
-        <p className="mt-1 text-muted-foreground"><span className="font-semibold text-foreground">Stakes:</span> {scenario.stakes === "high" ? "high" : "low"}. <span className="italic">{scenario.nonAiSaferHint}</span></p>
+        <p className="text-foreground"><span className="font-semibold">{S.ceProposal}</span> {scenario.proposal}</p>
+        <p className="mt-1 text-muted-foreground"><span className="font-semibold text-foreground">{S.ceIntendedBenefit}</span> {scenario.intendedBenefit}</p>
+        <p className="mt-1 text-muted-foreground"><span className="font-semibold text-foreground">{S.ceLikelyMistakes}</span> {scenario.likelyMistakes.join("; ")}</p>
+        <p className="mt-1 text-muted-foreground"><span className="font-semibold text-foreground">{S.cePeopleAffected}</span> {scenario.peopleAffected.join(", ")}</p>
+        <p className="mt-1 text-muted-foreground"><span className="font-semibold text-foreground">{S.ceStakes}</span>{" "}
+          {S.ceStakesLine.replace("{stakes}", scenario.stakes === "high" ? S.ceStakesHigh : S.ceStakesLow)}{" "}
+          <span className="italic">{scenario.nonAiSaferHint}</span></p>
       </div>
 
       <div className="mt-3">
-        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Your decision</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{S.ceYourDecision}</p>
         <div className="mt-1 flex flex-wrap gap-2">
-          {DECISIONS.map((d) => (
+          {decisions(S).map((d) => (
             <button
               key={d.id}
               type="button"
@@ -190,9 +205,9 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
       </div>
 
       <div className="mt-3">
-        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Safeguards you&apos;d require</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{S.ceSafeguards}</p>
         <div className="mt-1 grid gap-1 sm:grid-cols-2">
-          {SAFEGUARDS.map((sg) => {
+          {safeguardList(S).map((sg) => {
             const on = safeguards.includes(sg.id)
             return (
               <label key={sg.id} className="flex items-center gap-2 rounded-md border border-border px-2 py-1 text-sm">
@@ -215,7 +230,14 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
       {feedback && (
         <div className="mt-3 rounded-md bg-secondary px-3 py-3 text-sm" aria-live="polite">
           <p className="font-semibold text-foreground">
-            Committee read: {feedback.soundness === "well-reasoned" ? "well-reasoned" : feedback.soundness === "needs-more-safeguards" ? "needs more safeguards" : "reconsider this"}
+            {S.ceCommitteeRead.replace(
+              "{verdict}",
+              feedback.soundness === "well-reasoned"
+                ? S.ceSoundWellReasoned
+                : feedback.soundness === "needs-more-safeguards"
+                  ? S.ceSoundNeedsMore
+                  : S.ceSoundReconsider,
+            )}
           </p>
           {feedback.strengths.length > 0 && (
             <ul className="mt-1 list-disc space-y-0.5 pl-5 text-avanza-green-dark">
@@ -227,15 +249,15 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
               {feedback.concerns.map((c, i) => <li key={i}>{c}</li>)}
             </ul>
           )}
-          <p className="mt-1 text-xs text-muted-foreground">There isn&apos;t one “correct” choice — your decision is judged by whether your safeguards and reasoning fit the stakes.</p>
+          <p className="mt-1 text-xs text-muted-foreground">{S.ceNoOneAnswer}</p>
         </div>
       )}
 
       {/* Part 3 — appeal design */}
-      <h4 className="mt-8 border-t border-border pt-6 text-sm font-bold text-foreground">Part 3 · Design an appeal process</h4>
-      <p className="mt-1 text-sm text-muted-foreground">High-stakes AI needs a way for people to understand and challenge a decision. Design one:</p>
+      <h4 className="mt-8 border-t border-border pt-6 text-sm font-bold text-foreground">{S.cePart3}</h4>
+      <p className="mt-1 text-sm text-muted-foreground">{S.cePart3Intro}</p>
       <div className="mt-3 space-y-3">
-        {APPEAL_FIELDS.map((f) => (
+        {appealFields(S).map((f) => (
           <div key={f.id}>
             <label htmlFor={`appeal-${f.id}`} className="block text-sm font-medium text-foreground">{f.prompt}</label>
             <input
@@ -250,9 +272,13 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
       </div>
       <p className="mt-3 text-sm" aria-live="polite">
         {appealState.complete ? (
-          <span className="font-semibold text-avanza-green-dark">Your appeal process covers all six parts.</span>
+          <span className="font-semibold text-avanza-green-dark">{S.ceAppealComplete}</span>
         ) : (
-          <span className="text-muted-foreground">{APPEAL_FIELDS.length - appealState.missing.length} of {APPEAL_FIELDS.length} parts designed — fill the rest to complete the appeal process.</span>
+          <span className="text-muted-foreground">
+            {S.cePartsDesigned
+              .replace("{done}", String(appealFields(S).length - appealState.missing.length))
+              .replace("{total}", String(appealFields(S).length))}
+          </span>
         )}
       </p>
     </ActivityFrame>

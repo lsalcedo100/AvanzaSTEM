@@ -13,7 +13,7 @@ const WIDTHS = [480, 768, 1024, 1280, 1600]
 
 function heroUrl(id: string, width: number) {
   // g_auto lets Cloudinary crop around faces/activity instead of the center.
-  return tx(id, `c_fill,ar_4:3,g_auto,f_auto,q_auto:good,w_${width}`)
+  return tx(id, `c_fill,ar_5:4,g_auto,f_auto,q_auto:good,w_${width}`)
 }
 
 type Transition = { from: number; to: number; dir: 1 | -1 }
@@ -136,7 +136,7 @@ export function HeroCarousel() {
         key={`${slide.id}-${i === transition?.from ? "out" : "in"}`}
         src={slide.src}
         srcSet={slide.srcSet}
-        sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1280px) 56vw, 800px"
+        sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1280px) 58vw, 820px"
         alt={`${t.home.heroImageAlt} (${i + 1}/${slides.length})`}
         loading={i === 0 ? "eager" : "lazy"}
         decoding="async"
@@ -152,7 +152,7 @@ export function HeroCarousel() {
 
   return (
     <div
-      className="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-secondary shadow-xl ring-1 ring-avanza-dark/10"
+      className="group relative aspect-[5/4] w-full overflow-hidden rounded-2xl bg-secondary shadow-xl ring-1 ring-avanza-dark/10"
       role="region"
       aria-roledescription="carousel"
     >
