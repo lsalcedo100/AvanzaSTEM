@@ -12,6 +12,8 @@
  * not human understanding.
  */
 
+import { translations, type Translations } from "../../../../i18n/translations.ts"
+
 /* ========================================================================== */
 /* Curated corpus (safe, age-appropriate)                                      */
 /* ========================================================================== */
@@ -21,44 +23,19 @@
  * "storm" vs "parade"). Repetition is intentional — it weights the counts so the
  * probabilities are interesting but still hand-checkable.
  */
-export const CORPUS: string[] = [
-  // storm leftovers
-  "the storm left puddles on the road",
-  "the storm left puddles everywhere in town",
-  "the storm left puddles near the school",
-  "the storm left branches across the path",
-  "the storm left branches on the grass",
-  "the storm left water in the street",
-  "the storm left mud on the steps",
-  // parade leftovers
-  "the parade left confetti on the road",
-  "the parade left confetti all over town",
-  "the parade left confetti near the school",
-  "the parade left streamers on the fence",
-  "the parade left streamers in the trees",
-  "the parade left litter along the route",
-  // party leftovers
-  "the party left balloons on the floor",
-  "the party left balloons by the door",
-  "the party left crumbs on the table",
-  "the party left a mess in the kitchen",
-  // looking up
-  "we looked at the sky above us",
-  "we looked at the sky and clouds",
-  "we looked at the stars at night",
-  "we looked at the stars through a telescope",
-  "we looked at the painting on the wall",
-  // favorite subject
-  "my favorite subject is science because it is fun",
-  "my favorite subject is science and math",
-  "my favorite subject is math because i like numbers",
-  "my favorite subject is art because i like drawing",
-  "my favorite subject is reading",
-  // generic connective text so bigrams exist
-  "the road was quiet in the morning",
-  "the school was open in the morning",
-  "the town was busy on the weekend",
-]
+export type Week4TextStrings = Translations["courseUi"]["ai"]["week4Text"]
+
+const EN: Week4TextStrings = translations.en.courseUi.ai.week4Text
+
+/**
+ * The corpus in the reader's language. Chinese is written with spaces between
+ * words because the model tokenizes on whitespace; the counts and the back-off
+ * logic are identical in every language.
+ */
+export const corpus = (S: Week4TextStrings = EN): string[] => [...S.corpus]
+
+/** The English base, kept for tests and for callers that pass no strings. */
+export const CORPUS: string[] = corpus()
 
 /* ========================================================================== */
 /* N-gram model                                                                */
@@ -93,6 +70,11 @@ export function buildModel(corpus: string[] = CORPUS): TextModel {
 
 export const DEFAULT_MODEL = buildModel()
 
+/** The n-gram model for one language, built from that language's corpus. */
+export function modelFor(S: Week4TextStrings = EN): TextModel {
+  return buildModel(corpus(S))
+}
+
 export type Prediction = { word: string; count: number; probability: number }
 export type PredictionResult = {
   level: "trigram" | "bigram" | "unigram" | "none"
@@ -115,7 +97,7 @@ function toPredictions(counts: CountMap, k: number): { total: number; prediction
  * → unigram so there is always an honest, deterministic answer. Reports which level
  * it used so the UI can explain "based on the last two words / one word".
  */
-export function predictNext(context: string, model: TextModel = DEFAULT_MODEL, k = 4): PredictionResult {
+export function predictNext(context: string, model: TextModel = DEFAULT_MODEL, k = 4, S: Week4TextStrings = EN): PredictionResult {
   const words = context.toLowerCase().split(/\s+/).filter(Boolean)
   if (words.length >= 2) {
     const key = `${words[words.length - 2]} ${words[words.length - 1]}`
@@ -134,14 +116,14 @@ export function predictNext(context: string, model: TextModel = DEFAULT_MODEL, k
     }
   }
   const { total, predictions } = toPredictions(model.unigram, k)
-  return { level: predictions.length ? "unigram" : "none", contextUsed: "(no match — most common words overall)", total, predictions }
+  return { level: predictions.length ? "unigram" : "none", contextUsed: S.noMatchContext, total, predictions }
 }
 
-export function explainPrediction(result: PredictionResult): string {
-  if (result.level === "trigram") return `Based on the last two words “${result.contextUsed}”, these words followed most often in the corpus.`
-  if (result.level === "bigram") return `No exact match for two words, so the model backed off to the last word “${result.contextUsed}”.`
-  if (result.level === "unigram") return "No match for the recent words, so the model fell back to the most common words overall."
-  return "The corpus has nothing to predict from here."
+export function explainPrediction(result: PredictionResult, S: Week4TextStrings = EN): string {
+  if (result.level === "trigram") return S.explainTrigram.replace("{context}", result.contextUsed)
+  if (result.level === "bigram") return S.explainBigram.replace("{context}", result.contextUsed)
+  if (result.level === "unigram") return S.explainUnigram
+  return S.explainNone
 }
 
 /* ========================================================================== */
@@ -156,11 +138,19 @@ export type PromptPreset = {
   display: string // "The {theme} left ___"
 }
 
-export const PROMPT_PRESETS: PromptPreset[] = [
-  { id: "left", template: "the {theme} left", themes: ["storm", "parade", "party"], display: "The {theme} left ___" },
-  { id: "lookedat", template: "we looked at the", themes: [], display: "We looked at the ___" },
-  { id: "subject", template: "my favorite subject is", themes: [], display: "My favorite subject is ___" },
+export const promptPresets = (S: Week4TextStrings = EN): PromptPreset[] => [
+  {
+    id: "left",
+    template: S.presetLeftTemplate,
+    themes: [S.presetLeftTheme1, S.presetLeftTheme2, S.presetLeftTheme3],
+    display: S.presetLeftDisplay,
+  },
+  { id: "lookedat", template: S.presetLookedTemplate, themes: [], display: S.presetLookedDisplay },
+  { id: "subject", template: S.presetSubjectTemplate, themes: [], display: S.presetSubjectDisplay },
 ]
+
+/** The English base, for callers that pass no strings. */
+export const PROMPT_PRESETS: PromptPreset[] = promptPresets()
 
 export function fillTemplate(template: string, theme: string): string {
   return template.replace("{theme}", theme)
@@ -180,32 +170,35 @@ export type FluencyCard = {
   howToVerify: string
 }
 
-export const FLUENCY_CARDS: FluencyCard[] = [
+export const fluencyCards = (S: Week4TextStrings = EN): FluencyCard[] => [
   {
     id: "fc-mars",
-    prompt: "The first person to walk on Mars was",
-    continuation: "Captain Alex Rivera, on July 3rd, 1997.",
+    prompt: S.fc1Prompt,
+    continuation: S.fc1Continuation,
     isTrue: false,
     claimType: "date",
-    why: "This reads smoothly and even gives a name and a date — but no human has ever walked on Mars. A likely-sounding continuation can invent a confident detail.",
-    howToVerify: "Check a trusted source like NASA: Mars has only been visited by robotic rovers, never by people.",
+    why: S.fc1Why,
+    howToVerify: S.fc1Verify,
   },
   {
     id: "fc-quote",
-    prompt: "As Albert Einstein famously said,",
-    continuation: "“Never trust a fact you read on the internet.”",
+    prompt: S.fc2Prompt,
+    continuation: S.fc2Continuation,
     isTrue: false,
     claimType: "quote",
-    why: "The sentence is fluent and attributes a neat quote to a famous person, but Einstein never said this — misattributed quotes are a common invented detail.",
-    howToVerify: "Search a reputable quotation source; if it can't be traced to a real record, treat it as unverified.",
+    why: S.fc2Why,
+    howToVerify: S.fc2Verify,
   },
   {
     id: "fc-jupiter",
-    prompt: "The largest planet in our solar system is",
-    continuation: "Jupiter.",
+    prompt: S.fc3Prompt,
+    continuation: S.fc3Continuation,
     isTrue: true,
     claimType: "fact",
-    why: "This one is both fluent AND true — but you only know that by checking, not because it sounded confident.",
-    howToVerify: "Any astronomy reference confirms Jupiter is the largest planet.",
+    why: S.fc3Why,
+    howToVerify: S.fc3Verify,
   },
 ]
+
+/** The English base, for callers that pass no strings. */
+export const FLUENCY_CARDS: FluencyCard[] = fluencyCards()

@@ -6,8 +6,6 @@ import {
   BODY_COLORS,
   BODY_SHAPES,
   CREATURE_CATEGORIES,
-  STARTER_CREATURES,
-  WITHHELD_CREATURES,
   classify,
   describeRule,
   fieldType,
@@ -17,8 +15,18 @@ import {
   type Rule,
   type RuleField,
   type RuleOp,
-  RULE_FIELDS,
 } from "@/features/curriculums/intro-to-ai/activities/week1-activities"
+import { getWeek1Activities, type Week1Content } from "@/features/curriculums/intro-to-ai/activities/week1-i18n"
+import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
+
+type W1 = Translations["courseUi"]["ai"]["week1"]
+
+/** The Week 1 content and chrome in the reader's language. */
+function useWeek1(): { content: Week1Content; W: W1 } {
+  const { language, t } = useLanguage()
+  return { content: getWeek1Activities(language), W: t.courseUi.ai.week1 }
+}
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 
@@ -65,6 +73,11 @@ function defaultValueFor(field: RuleField): string | number | boolean {
 }
 
 export function RuleBuilderActivity({ activity, progress }: ActivityComponentProps) {
+  const { content, W } = useWeek1()
+  const STARTER_CREATURES = content.starterCreatures
+  const WITHHELD_CREATURES = content.withheldCreatures
+  const categoryLabel = (c: string) => content.categoryLabels[c] ?? c
+  const describe = (rule: Rule) => describeRule(rule, content.ruleWording, content.fieldSubjects, categoryLabel)
   const [state, setState] = useState<RBState>(EMPTY)
   const [ranStarters, setRanStarters] = useState(false)
   const [ranWithheld, setRanWithheld] = useState(false)
@@ -100,19 +113,23 @@ export function RuleBuilderActivity({ activity, progress }: ActivityComponentPro
   }
 
   const runStarters = () => {
-    const v = validateRuleSet(state.rules)
+    const v = validateRuleSet(state.rules, content.ruleWording)
     setIssues(v.issues)
     if (!v.valid) return
     setRanStarters(true)
-    announce(`Ran ${state.rules.length} rules on ${STARTER_CREATURES.length} starter creatures.`)
+    announce(
+      W.rbRanStarters
+        .replace("{rules}", String(state.rules.length))
+        .replace("{n}", String(STARTER_CREATURES.length)),
+    )
   }
 
   const runWithheld = () => {
-    const v = validateRuleSet(state.rules)
+    const v = validateRuleSet(state.rules, content.ruleWording)
     setIssues(v.issues)
     if (!v.valid) return
     setRanWithheld(true)
-    announce(`Ran your rules on ${WITHHELD_CREATURES.length} tricky creatures. Compare with your predictions.`)
+    announce(W.rbRanTrickyMsg.replace("{n}", String(WITHHELD_CREATURES.length)))
   }
 
   const announce = (msg: string) => {
@@ -127,11 +144,7 @@ export function RuleBuilderActivity({ activity, progress }: ActivityComponentPro
     <ActivityFrame
       title={activity.title}
       purpose={activity.goal}
-      instructions={[
-        "Build an ordered list of rules. Rules are checked top to bottom; the first match wins.",
-        "Run your rules on the starter creatures to see which rule matched each one.",
-        "Then reveal the tricky creatures, predict what your rules will do, and revise.",
-      ]}
+      instructions={[W.rbInstr1, W.rbInstr2, W.rbInstr3]}
       status="ready"
       saveStatus={progress.saveStatus}
       onReset={() => {
@@ -144,26 +157,26 @@ export function RuleBuilderActivity({ activity, progress }: ActivityComponentPro
       <p ref={announceRef} className="sr-only" role="status" aria-live="polite" />
 
       {/* Rule editor */}
-      <h4 className="mt-4 text-sm font-bold text-foreground">Your rules (checked in order)</h4>
+      <h4 className="mt-4 text-sm font-bold text-foreground">{W.rbYourRules}</h4>
       <ol className="mt-2 space-y-2">
         {state.rules.map((rule, i) => (
           <li key={rule.id} className="rounded-md border border-border bg-card p-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-semibold text-muted-foreground">Rule {i + 1}</span>
+              <span className="text-xs font-semibold text-muted-foreground">{W.rbRuleN.replace("{n}", String(i + 1))}</span>
               <RuleEditor rule={rule} onChange={(patch) => updateRule(rule.id, patch)} />
               <span className="ml-auto flex gap-1">
-                <IconBtn label={`Move rule ${i + 1} up`} disabled={i === 0} onClick={() => moveRule(i, -1)}>
+                <IconBtn label={W.rbMoveUp.replace("{n}", String(i + 1))} disabled={i === 0} onClick={() => moveRule(i, -1)}>
                   <ArrowUp className="h-3.5 w-3.5" aria-hidden />
                 </IconBtn>
-                <IconBtn label={`Move rule ${i + 1} down`} disabled={i === state.rules.length - 1} onClick={() => moveRule(i, 1)}>
+                <IconBtn label={W.rbMoveDown.replace("{n}", String(i + 1))} disabled={i === state.rules.length - 1} onClick={() => moveRule(i, 1)}>
                   <ArrowDown className="h-3.5 w-3.5" aria-hidden />
                 </IconBtn>
-                <IconBtn label={`Delete rule ${i + 1}`} onClick={() => removeRule(rule.id)}>
+                <IconBtn label={W.rbDelete.replace("{n}", String(i + 1))} onClick={() => removeRule(rule.id)}>
                   <Trash2 className="h-3.5 w-3.5" aria-hidden />
                 </IconBtn>
               </span>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">{describeRule(rule)}</p>
+            <p className="mt-2 text-xs text-muted-foreground">{describe(rule)}</p>
           </li>
         ))}
       </ol>
@@ -172,12 +185,12 @@ export function RuleBuilderActivity({ activity, progress }: ActivityComponentPro
         onClick={addRule}
         className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-avanza-green/60 hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
       >
-        <Plus className="h-3.5 w-3.5" aria-hidden /> Add a rule
+        <Plus className="h-3.5 w-3.5" aria-hidden /> {W.rbAddRule}
       </button>
 
       {issues.length > 0 && (
         <div className="mt-3 rounded-md border border-avanza-orange/40 bg-avanza-orange/10 p-3 text-sm text-avanza-orange-dark" role="alert">
-          <p className="font-semibold">Fix these before running:</p>
+          <p className="font-semibold">{W.rbFixThese}</p>
           <ul className="mt-1 list-disc pl-5">
             {issues.map((iss, i) => (
               <li key={i}>{iss}</li>
@@ -193,12 +206,14 @@ export function RuleBuilderActivity({ activity, progress }: ActivityComponentPro
           onClick={runStarters}
           className="inline-flex items-center rounded-md bg-avanza-green px-4 py-2 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
         >
-          Run my rules on the examples
+          {W.rbRunStarters}
         </button>
         {ranStarters && (
           <div className="mt-3">
             <p className="text-sm text-muted-foreground">
-              {starterAgree} of {starterRuns.length} matched the expected category.
+              {W.rbMatchedExpected
+                .replace("{done}", String(starterAgree))
+                .replace("{total}", String(starterRuns.length))}
             </p>
             <RunTable runs={starterRuns} creatures={STARTER_CREATURES} rules={state.rules} />
           </div>
@@ -208,17 +223,15 @@ export function RuleBuilderActivity({ activity, progress }: ActivityComponentPro
       {/* Withheld / tricky creatures */}
       {ranStarters && (
         <div className="mt-8 border-t border-border pt-6">
-          <h4 className="text-sm font-bold text-foreground">Tricky creatures</h4>
-          <p className="mt-1 text-sm text-muted-foreground">
-            These new creatures are designed to trip up simple rules. Predict what your rules will do, then run them.
-          </p>
+          <h4 className="text-sm font-bold text-foreground">{W.rbTricky}</h4>
+          <p className="mt-1 text-sm text-muted-foreground">{W.rbTrickyIntro}</p>
           {!state.revealed ? (
             <button
               type="button"
               onClick={() => persist({ ...state, revealed: true })}
               className="mt-3 inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-avanza-green-dark transition-colors hover:border-avanza-green hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
             >
-              Reveal the tricky creatures
+              {W.rbRevealTricky}
             </button>
           ) : (
             <div className="mt-4 space-y-4">
@@ -237,17 +250,18 @@ export function RuleBuilderActivity({ activity, progress }: ActivityComponentPro
                 onClick={runWithheld}
                 className="inline-flex items-center rounded-md bg-avanza-green px-4 py-2 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
               >
-                Run my rules on the tricky creatures
+                {W.rbRunTricky}
               </button>
 
               {ranWithheld && (
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    {withheldRuns.filter((r) => r.agrees).length} of {withheldRuns.length} matched the expected category. Where your rules
-                    disagreed, revise them below.
+                    {W.rbMatchedExpectedRevise
+                      .replace("{done}", String(withheldRuns.filter((r) => r.agrees).length))
+                      .replace("{total}", String(withheldRuns.length))}
                   </p>
                   <label htmlFor="rb-revision" className="mt-3 block text-sm font-medium text-foreground">
-                    Why did your original rules fail, and what did you change?
+                    {W.rbWhyFail}
                   </label>
                   <textarea
                     id="rb-revision"
@@ -256,7 +270,7 @@ export function RuleBuilderActivity({ activity, progress }: ActivityComponentPro
                     onBlur={(e) => persist({ ...state, revision: e.target.value })}
                     rows={3}
                     className="mt-2 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
-                    placeholder="e.g. My 'has wings → Sky' rule sent Divewing to the sky, but it lives underwater."
+                    placeholder={W.rbNotesPlaceholder}
                   />
                 </div>
               )}
@@ -268,40 +282,38 @@ export function RuleBuilderActivity({ activity, progress }: ActivityComponentPro
       {/* Learning comparison */}
       <div className="mt-8 grid gap-3 border-t border-border pt-6 sm:grid-cols-2">
         <div className="rounded-md border border-border bg-card p-4">
-          <p className="text-sm font-bold text-foreground">Fixed-rule program (what you just built)</p>
+          <p className="text-sm font-bold text-foreground">{W.rbFixedTitle}</p>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-            <li>A human writes explicit rules</li>
-            <li>Behavior is predictable and easy to explain</li>
-            <li>Can fail when a situation wasn&apos;t covered</li>
+            <li>{W.rbFixed1}</li>
+            <li>{W.rbFixed2}</li>
+            <li>{W.rbFixed3}</li>
           </ul>
         </div>
         <div className="rounded-md border border-border bg-card p-4">
-          <p className="text-sm font-bold text-foreground">Machine-learning system</p>
+          <p className="text-sm font-bold text-foreground">{W.rbMlTitle}</p>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-            <li>Learns patterns from examples</li>
-            <li>May handle varied examples better</li>
-            <li>Can make mistakes that are hard to explain</li>
-            <li>Still depends on human choices and the data it&apos;s given</li>
+            <li>{W.rbMl1}</li>
+            <li>{W.rbMl2}</li>
+            <li>{W.rbMl3}</li>
+            <li>{W.rbMl4}</li>
           </ul>
         </div>
-        <p className="text-xs text-muted-foreground sm:col-span-2">
-          Neither is always better. Fixed rules shine when the rule is clear; machine learning helps when the pattern is too messy to write
-          by hand — but it needs good examples and careful checking.
-        </p>
+        <p className="text-xs text-muted-foreground sm:col-span-2">{W.rbNeitherBetter}</p>
       </div>
     </ActivityFrame>
   )
 }
 
 function RuleEditor({ rule, onChange }: { rule: Rule; onChange: (patch: Partial<Rule>) => void }) {
+  const { content, W } = useWeek1()
   const type = fieldType(rule.field)
   const selectCls =
     "rounded-md border border-border bg-card px-2 py-1 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
 
   return (
     <span className="flex flex-wrap items-center gap-1.5">
-      <span className="text-sm text-muted-foreground">If</span>
-      <label className="sr-only">Feature</label>
+      <span className="text-sm text-muted-foreground">{W.rbIf}</span>
+      <label className="sr-only">{W.rbFeature}</label>
       <select
         className={selectCls}
         value={rule.field}
@@ -310,27 +322,27 @@ function RuleEditor({ rule, onChange }: { rule: Rule; onChange: (patch: Partial<
           onChange({ field, op: defaultOpFor(field), value: defaultValueFor(field) })
         }}
       >
-        {RULE_FIELDS.map((f) => (
+        {content.ruleFields.map((f) => (
           <option key={f.id} value={f.id}>
             {f.label}
           </option>
         ))}
       </select>
 
-      <label className="sr-only">Condition</label>
+      <label className="sr-only">{W.rbCondition}</label>
       {type === "boolean" ? (
         <select className={selectCls} value={rule.op} onChange={(e) => onChange({ op: e.target.value as RuleOp })}>
-          <option value="is">is true</option>
-          <option value="isNot">is false</option>
+          <option value="is">{W.rbIsTrue}</option>
+          <option value="isNot">{W.rbIsFalse}</option>
         </select>
       ) : type === "number" ? (
         <>
           <select className={selectCls} value={rule.op} onChange={(e) => onChange({ op: e.target.value as RuleOp })}>
-            <option value="atLeast">is at least</option>
-            <option value="atMost">is at most</option>
-            <option value="equals">equals</option>
+            <option value="atLeast">{W.rbIsAtLeast}</option>
+            <option value="atMost">{W.rbIsAtMost}</option>
+            <option value="equals">{W.rbEquals}</option>
           </select>
-          <label className="sr-only">Value</label>
+          <label className="sr-only">{W.rbValue}</label>
           <input
             type="number"
             min={0}
@@ -341,24 +353,24 @@ function RuleEditor({ rule, onChange }: { rule: Rule; onChange: (patch: Partial<
         </>
       ) : (
         <>
-          <span className="text-sm text-muted-foreground">is</span>
-          <label className="sr-only">Value</label>
+          <span className="text-sm text-muted-foreground">{W.rbIs}</span>
+          <label className="sr-only">{W.rbValue}</label>
           <select className={selectCls} value={String(rule.value)} onChange={(e) => onChange({ value: e.target.value })}>
             {(rule.field === "bodyShape" ? BODY_SHAPES : BODY_COLORS).map((v) => (
               <option key={v} value={v}>
-                {v}
+                {(rule.field === "bodyShape" ? content.shapeLabels : content.colorLabels)[v] ?? v}
               </option>
             ))}
           </select>
         </>
       )}
 
-      <span className="text-sm text-muted-foreground">then</span>
-      <label className="sr-only">Category</label>
+      <span className="text-sm text-muted-foreground">{W.rbThen}</span>
+      <label className="sr-only">{W.rbCategory}</label>
       <select className={selectCls} value={rule.category} onChange={(e) => onChange({ category: e.target.value })}>
         {CREATURE_CATEGORIES.map((cat) => (
           <option key={cat} value={cat}>
-            {cat}
+            {content.categoryLabels[cat] ?? cat}
           </option>
         ))}
       </select>
@@ -367,17 +379,19 @@ function RuleEditor({ rule, onChange }: { rule: Rule; onChange: (patch: Partial<
 }
 
 function RunTable({ runs, creatures, rules }: { runs: ReturnType<typeof runRulesOver>; creatures: Creature[]; rules: Rule[] }) {
+  const { content, W } = useWeek1()
+  const label = (c: string | null) => (c ? (content.categoryLabels[c] ?? c) : W.rbUnclassified)
   const ruleIndex = (id: string | null) => (id ? rules.findIndex((r) => r.id === id) + 1 : null)
   return (
     <div className="mt-3 overflow-x-auto">
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="text-left">
-            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">Creature</th>
-            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">Matched rule</th>
-            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">Your rules say</th>
-            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">Expected</th>
-            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">Agrees?</th>
+            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">{W.rbCreature}</th>
+            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">{W.rbMatchedRule}</th>
+            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">{W.rbYourRulesSay}</th>
+            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">{W.rbExpected}</th>
+            <th className="border-b border-border px-2 py-2 font-semibold text-foreground">{W.rbAgrees}</th>
           </tr>
         </thead>
         <tbody>
@@ -387,14 +401,16 @@ function RunTable({ runs, creatures, rules }: { runs: ReturnType<typeof runRules
             return (
               <tr key={run.creatureId}>
                 <td className="border-b border-border/60 px-2 py-2 text-foreground">{creature.name}</td>
-                <td className="border-b border-border/60 px-2 py-2 text-muted-foreground">{ri ? `Rule ${ri}` : "No rule matched"}</td>
-                <td className="border-b border-border/60 px-2 py-2 text-foreground">{run.predictedCategory ?? "Unclassified"}</td>
-                <td className="border-b border-border/60 px-2 py-2 text-muted-foreground">{run.canonicalCategory}</td>
+                <td className="border-b border-border/60 px-2 py-2 text-muted-foreground">
+                  {ri ? W.rbRuleN.replace("{n}", String(ri)) : W.rbNoRuleMatched}
+                </td>
+                <td className="border-b border-border/60 px-2 py-2 text-foreground">{label(run.predictedCategory)}</td>
+                <td className="border-b border-border/60 px-2 py-2 text-muted-foreground">{label(run.canonicalCategory)}</td>
                 <td className="border-b border-border/60 px-2 py-2">
                   {run.agrees ? (
-                    <span className="font-semibold text-avanza-green-dark">Yes ✓</span>
+                    <span className="font-semibold text-avanza-green-dark">{W.rbYes}</span>
                   ) : (
-                    <span className="font-semibold text-avanza-orange-dark">No — differs ✕</span>
+                    <span className="font-semibold text-avanza-orange-dark">{W.rbNo}</span>
                   )}
                 </td>
               </tr>
@@ -417,6 +433,8 @@ function WithheldCard({
   onPredict: (cat: string) => void
   result: { category: string | null } | null
 }) {
+  const { content, W } = useWeek1()
+  const label = (c: string | null) => (c ? (content.categoryLabels[c] ?? c) : W.rbUnclassified)
   return (
     <div className="rounded-md border border-border p-4">
       <div className="flex items-start gap-3">
@@ -428,7 +446,7 @@ function WithheldCard({
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <label htmlFor={`predict-${creature.id}`} className="text-xs font-semibold text-muted-foreground">
-          Your prediction:
+          {W.rbYourPrediction}
         </label>
         <select
           id={`predict-${creature.id}`}
@@ -436,25 +454,25 @@ function WithheldCard({
           onChange={(e) => onPredict(e.target.value)}
           className="rounded-md border border-border bg-card px-2 py-1 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
         >
-          <option value="">Choose…</option>
+          <option value="">{W.rbChoose}</option>
           {CREATURE_CATEGORIES.map((cat) => (
             <option key={cat} value={cat}>
-              {cat}
+              {content.categoryLabels[cat] ?? cat}
             </option>
           ))}
-          <option value="Unclassified">No rule will match</option>
+          <option value="Unclassified">{W.rbNoRuleWillMatch}</option>
         </select>
       </div>
       {result && (
         <p className="mt-3 rounded-md bg-secondary px-3 py-2 text-sm" aria-live="polite">
-          <span className="text-muted-foreground">Your rules said: </span>
-          <span className="font-semibold text-foreground">{result.category ?? "Unclassified"}</span>
-          <span className="text-muted-foreground"> · Expected: </span>
-          <span className="font-semibold text-foreground">{creature.canonicalCategory}</span>
+          <span className="text-muted-foreground">{W.rbYourRulesSaid} </span>
+          <span className="font-semibold text-foreground">{label(result.category)}</span>
+          <span className="text-muted-foreground"> · {W.rbExpectedInline} </span>
+          <span className="font-semibold text-foreground">{label(creature.canonicalCategory)}</span>
           {prediction && (
             <>
-              <span className="text-muted-foreground"> · You predicted: </span>
-              <span className="font-semibold text-foreground">{prediction}</span>
+              <span className="text-muted-foreground"> · {W.rbYouPredicted} </span>
+              <span className="font-semibold text-foreground">{label(prediction)}</span>
             </>
           )}
         </p>

@@ -12,6 +12,12 @@ import {
   type ClassifyResult,
   type Evaluation,
 } from "@/features/curriculums/intro-to-ai/activities/week3-images"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Week 3 wording in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.week3
+}
 
 /**
  * Shared, accessible UI for the Week 3 image lab. All pictures are drawn from
@@ -64,9 +70,10 @@ export function ConfidenceBar({ label, value, emphasis }: { label: string; value
 
 /** Confidence across every category for one prediction (normalized similarity mass). */
 export function ConfidenceBars({ topic, result }: { topic: Topic; result: ClassifyResult }) {
+  const S = useS()
   const total = Object.values(result.scores).reduce((a, b) => a + b, 0) || 1
   return (
-    <div className="space-y-1.5" role="group" aria-label="Confidence for each category">
+    <div className="space-y-1.5" role="group" aria-label={S.isConfidenceEach}>
       {topic.categories.map((c) => (
         <ConfidenceBar key={c.id} label={c.name} value={(result.scores[c.id] ?? 0) / total} emphasis={c.id === result.predicted} />
       ))}
@@ -75,13 +82,14 @@ export function ConfidenceBars({ topic, result }: { topic: Topic; result: Classi
 }
 
 export function ResultBadge({ correct }: { correct: boolean }) {
+  const S = useS()
   return correct ? (
     <span className="inline-flex items-center gap-1 font-semibold text-avanza-green-dark">
-      <Check className="h-3.5 w-3.5" aria-hidden /> Correct
+      <Check className="h-3.5 w-3.5" aria-hidden /> {S.isCorrect}
     </span>
   ) : (
     <span className="inline-flex items-center gap-1 font-semibold text-avanza-orange-dark">
-      <X className="h-3.5 w-3.5" aria-hidden /> Wrong
+      <X className="h-3.5 w-3.5" aria-hidden /> {S.isWrong}
     </span>
   )
 }
@@ -92,13 +100,19 @@ export function ResultBadge({ correct }: { correct: boolean }) {
  * Scrolls on narrow screens and is paired with a text summary and a how-to-read line.
  */
 export function ConfusionMatrix({ topic, evaluation }: { topic: Topic; evaluation: Evaluation }) {
+  const S = useS()
   const cats = topic.categories
   const total = evaluation.total
   const summary = cats
     .map((cat, i) => {
       const row = evaluation.matrix[i]
-      const parts = cats.map((c, j) => `${row[j]} as ${c.name}`).join(", ")
-      return `${row.reduce((a, b) => a + b, 0)} ${cat.name} pictures: ${parts}`
+      const parts = cats
+        .map((c, j) => S.isAsCategory.replace("{n}", String(row[j])).replace("{category}", c.name))
+        .join(", ")
+      return S.isSummaryRow
+        .replace("{n}", String(row.reduce((a, b) => a + b, 0)))
+        .replace("{category}", cat.name)
+        .replace("{parts}", parts)
     })
     .join(". ")
 
@@ -106,20 +120,17 @@ export function ConfusionMatrix({ topic, evaluation }: { topic: Topic; evaluatio
     <div>
       <div className="overflow-x-auto">
         <table className="border-collapse text-sm">
-          <caption className="sr-only">
-            Confusion matrix. Rows are the actual category; columns are the category the model predicted. Each cell counts how many test pictures fell into that
-            combination; the diagonal cells are correct predictions.
-          </caption>
+          <caption className="sr-only">{S.isMatrixCaption}</caption>
           <thead>
             <tr>
               <th className="px-2 py-1" />
               <th scope="colgroup" colSpan={cats.length} className="px-2 py-1 text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Model predicted →
+                {S.isModelPredicted}
               </th>
             </tr>
             <tr>
               <th scope="col" className="px-2 py-1 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Actual ↓
+                {S.isActual}
               </th>
               {cats.map((c) => (
                 <th key={c.id} scope="col" className="border-b border-border px-3 py-2 text-center font-semibold text-foreground">
@@ -141,10 +152,14 @@ export function ConfusionMatrix({ topic, evaluation }: { topic: Topic; evaluatio
                     <td
                       key={colCat.id}
                       className={`px-4 py-2 text-center tabular-nums ${onDiag ? "border-2 border-avanza-green/60 font-bold text-foreground" : "border border-border/40 text-muted-foreground"}`}
-                      aria-label={`${n} ${rowCat.name} picture${n === 1 ? "" : "s"} the model called ${colCat.name}${onDiag ? " (correct)" : ""}`}
+                      aria-label={S.isCellAria
+                        .replace("{n}", String(n))
+                        .replace("{actual}", rowCat.name)
+                        .replace("{predicted}", colCat.name)
+                        .replace("{correct}", onDiag ? S.isCorrectSuffix : "")}
                     >
                       {n}
-                      {onDiag && <span className="sr-only"> correct</span>}
+                      {onDiag && <span className="sr-only">{S.isCorrectSr}</span>}
                     </td>
                   )
                 })}
@@ -153,12 +168,9 @@ export function ConfusionMatrix({ topic, evaluation }: { topic: Topic; evaluatio
           </tbody>
         </table>
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">
-        How to read a cell: find the row for the true category and the column for what the model guessed. A cell on the bold diagonal (row and column match) is a
-        correct prediction; anything off the diagonal is a mistake.
-      </p>
+      <p className="mt-2 text-xs text-muted-foreground">{S.isHowToRead}</p>
       <p className="mt-1 text-xs text-muted-foreground">
-        Summary of {total} test picture{total === 1 ? "" : "s"}: {summary}.
+        {S.isSummaryLine.replace("{n}", String(total)).replace("{summary}", summary)}
       </p>
     </div>
   )
@@ -166,9 +178,10 @@ export function ConfusionMatrix({ topic, evaluation }: { topic: Topic; evaluatio
 
 /** Per-category accuracy list with counts, percentages, and a low-sample warning. */
 export function CategoryAccuracy({ topic, evaluation }: { topic: Topic; evaluation: Evaluation }) {
+  const S = useS()
   return (
     <div>
-      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Accuracy by category</p>
+      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{S.isAccuracyByCategory}</p>
       <ul className="mt-2 space-y-1 text-sm">
         {topic.categories.map((c) => {
           const s = evaluation.perCategory[c.id]
@@ -177,8 +190,9 @@ export function CategoryAccuracy({ topic, evaluation }: { topic: Topic; evaluati
             <li key={c.id} className="flex flex-wrap items-center justify-between gap-2">
               <span className="text-foreground">{c.name}</span>
               <span className="tabular-nums text-muted-foreground">
-                {s.correct}/{s.total} correct{pct === null ? "" : ` · ${pct}%`}
-                {s.total > 0 && s.total < 2 && <span className="ml-1 text-avanza-orange-dark">(too few to be reliable)</span>}
+                {S.isPerCatLine.replace("{correct}", String(s.correct)).replace("{total}", String(s.total))}
+                {pct === null ? "" : ` · ${pct}%`}
+                {s.total > 0 && s.total < 2 && <span className="ml-1 text-avanza-orange-dark">{S.isTooFew}</span>}
               </span>
             </li>
           )

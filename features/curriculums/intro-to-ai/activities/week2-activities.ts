@@ -23,15 +23,26 @@
 /* Feature schema + labels                                                    */
 /* ========================================================================== */
 
+import { translations, type Translations } from "../../../../i18n/translations.ts"
+
+/**
+ * The Week 2 wording. The datasets below are built in English and re-rendered in
+ * the reader's language by `localizeFruits`, so ids, features and labels - the
+ * things the model and the saved progress key on - never change with language.
+ */
+export type Week2Strings = Translations["courseUi"]["ai"]["week2"]
+
+const EN: Week2Strings = translations.en.courseUi.ai.week2
+
 export type SpaceFruitLabel = "safe" | "unsafe"
 
-export const LABELS: { id: SpaceFruitLabel; label: string; short: string }[] = [
-  { id: "safe", label: "Safe to eat", short: "Safe" },
-  { id: "unsafe", label: "Not safe to eat", short: "Not safe" },
+export const labels = (S: Week2Strings = EN): { id: SpaceFruitLabel; label: string; short: string }[] => [
+  { id: "safe", label: S.labelSafe, short: S.labelSafeShort },
+  { id: "unsafe", label: S.labelUnsafe, short: S.labelUnsafeShort },
 ]
 
-export function labelText(label: SpaceFruitLabel | "" | undefined): string {
-  return label === "safe" ? "Safe to eat" : label === "unsafe" ? "Not safe to eat" : "Unlabeled"
+export function labelText(label: SpaceFruitLabel | "" | undefined, S: Week2Strings = EN): string {
+  return label === "safe" ? S.labelSafe : label === "unsafe" ? S.labelUnsafe : S.unlabeled
 }
 
 export type SpaceFruitColor = "crimson" | "azure" | "violet" | "amber" | "teal"
@@ -61,19 +72,27 @@ export type FeatureMeta =
   | { key: FeatureKey; label: string; type: "category"; options: string[] }
   | { key: FeatureKey; label: string; type: "number"; min: number; max: number; unit?: string }
 
-export const SPACE_FRUIT_FEATURES: FeatureMeta[] = [
-  { key: "color", label: "Color", type: "category", options: ["crimson", "azure", "violet", "amber", "teal"] },
-  { key: "shape", label: "Shape", type: "category", options: ["round", "oval", "star", "spiral"] },
-  { key: "texture", label: "Texture", type: "category", options: ["smooth", "bumpy", "fuzzy", "spiky"] },
-  { key: "environment", label: "Grows in", type: "category", options: ["crater", "cavern", "canopy", "reef", "dune"] },
-  { key: "seeds", label: "Seeds", type: "number", min: 0, max: 12 },
-  { key: "sweetness", label: "Sweetness", type: "number", min: 1, max: 10 },
-  { key: "glow", label: "Glow level", type: "number", min: 0, max: 5 },
-  { key: "size", label: "Size", type: "number", min: 2, max: 20, unit: "cm" },
+export const spaceFruitFeatures = (S: Week2Strings = EN): FeatureMeta[] => [
+  { key: "color", label: S.fColor, type: "category", options: ["crimson", "azure", "violet", "amber", "teal"] },
+  { key: "shape", label: S.fShape, type: "category", options: ["round", "oval", "star", "spiral"] },
+  { key: "texture", label: S.fTexture, type: "category", options: ["smooth", "bumpy", "fuzzy", "spiky"] },
+  { key: "environment", label: S.fEnvironment, type: "category", options: ["crater", "cavern", "canopy", "reef", "dune"] },
+  { key: "seeds", label: S.fSeeds, type: "number", min: 0, max: 12 },
+  { key: "sweetness", label: S.fSweetness, type: "number", min: 1, max: 10 },
+  { key: "glow", label: S.fGlow, type: "number", min: 0, max: 5 },
+  { key: "size", label: S.fSize, type: "number", min: 2, max: 20, unit: S.unitCm },
 ]
 
-export function featureMeta(key: FeatureKey): FeatureMeta {
-  return SPACE_FRUIT_FEATURES.find((f) => f.key === key)!
+/** The English base, for code that only needs the keys, options, and ranges. */
+export const SPACE_FRUIT_FEATURES: FeatureMeta[] = spaceFruitFeatures()
+
+export function featureMeta(key: FeatureKey, S: Week2Strings = EN): FeatureMeta {
+  return spaceFruitFeatures(S).find((f) => f.key === key)!
+}
+
+/** Display name for a category feature value (e.g. "crimson"). */
+export function optionText(value: string, S: Week2Strings = EN): string {
+  return (S.optionLabels as Record<string, string>)[value] ?? value
 }
 
 export type SpaceFruit = {
@@ -98,8 +117,7 @@ export type SpaceFruit = {
 /* Ground-truth rule                                                          */
 /* ========================================================================== */
 
-export const GROUND_TRUTH_RULE =
-  "A space fruit is Not safe to eat if it glows brightly (glow level 3 or more) OR it is spiky. Otherwise it is Safe to eat."
+export const groundTruthRule = (S: Week2Strings = EN): string => S.groundTruthRule
 
 /** The single source of truth for a fruit's correct label. Deterministic. */
 export function groundTruthLabel(f: SpaceFruitFeatures): SpaceFruitLabel {
@@ -107,17 +125,42 @@ export function groundTruthLabel(f: SpaceFruitFeatures): SpaceFruitLabel {
 }
 
 /** Plain-language reason a fruit has its canonical label (for feedback). */
-export function groundTruthReason(f: SpaceFruitFeatures): string {
+export function groundTruthReason(f: SpaceFruitFeatures, S: Week2Strings = EN): string {
   const reasons: string[] = []
-  if (f.glow >= 3) reasons.push(`it glows brightly (glow level ${f.glow})`)
-  if (f.texture === "spiky") reasons.push("it is spiky")
-  if (reasons.length > 0) return `Not safe because ${reasons.join(" and ")}.`
-  return "Safe because it does not glow brightly and is not spiky."
+  if (f.glow >= 3) reasons.push(S.reasonGlow.replace("{n}", String(f.glow)))
+  if (f.texture === "spiky") reasons.push(S.reasonSpiky)
+  if (reasons.length > 0) return S.notSafeBecause.replace("{reasons}", reasons.join(S.reasonAnd))
+  return S.safeBecause
 }
 
 /** Human description built from features (also used as accessible label). */
-export function describeFruit(f: SpaceFruitFeatures): string {
-  return `A ${f.size} cm ${f.color} ${f.shape} fruit with ${f.texture} skin and ${f.seeds} seeds, sweetness ${f.sweetness} of 10, glow level ${f.glow} of 5, growing in a ${f.environment}.`
+export function describeFruit(f: SpaceFruitFeatures, S: Week2Strings = EN): string {
+  return S.describeFruit
+    .replace("{size}", String(f.size))
+    .replace("{color}", optionText(f.color, S))
+    .replace("{shape}", optionText(f.shape, S))
+    .replace("{texture}", optionText(f.texture, S))
+    .replace("{seeds}", String(f.seeds))
+    .replace("{sweetness}", String(f.sweetness))
+    .replace("{glow}", String(f.glow))
+    .replace("{environment}", optionText(f.environment, S))
+}
+
+/**
+ * Re-renders a dataset in the reader's language. Only `name` and `description`
+ * change; ids, features and labels are untouched, so a model run, a saved split,
+ * and the progress keys are identical in every language.
+ */
+export function localizeFruit(fruit: SpaceFruit, S: Week2Strings): SpaceFruit {
+  return {
+    ...fruit,
+    name: (S.fruitNames as Record<string, string>)[fruit.name] ?? fruit.name,
+    description: describeFruit(fruit.features, S),
+  }
+}
+
+export function localizeFruits(list: SpaceFruit[], S: Week2Strings): SpaceFruit[] {
+  return list.map((f) => localizeFruit(f, S))
 }
 
 /* ========================================================================== */
@@ -508,30 +551,30 @@ export type SplitValidation = {
  * be empty, must not be too small, must not contain only one category, and no
  * example may sit in both sets. Deterministic.
  */
-export function validateSplit(training: SpaceFruit[], test: SpaceFruit[]): SplitValidation {
+export function validateSplit(training: SpaceFruit[], test: SpaceFruit[], S: Week2Strings = EN): SplitValidation {
   const errors: string[] = []
   const warnings: string[] = []
 
   const trainIds = new Set(training.map((e) => e.id))
   const overlap = test.filter((e) => trainIds.has(e.id))
-  if (overlap.length > 0) errors.push(`${overlap.length} example(s) are in BOTH training and testing — a fruit must be in only one set.`)
+  if (overlap.length > 0) errors.push(S.splitOverlap.replace("{n}", String(overlap.length)))
 
   if (test.length === 0) {
-    errors.push("The testing set is empty. Hold back some examples so the model can be checked on unseen fruit.")
+    errors.push(S.splitTestEmpty)
   } else if (test.length < 3) {
-    warnings.push(`Only ${test.length} testing example(s). A tiny test set gives an unreliable accuracy — hold back a few more.`)
+    warnings.push(S.splitTestTiny.replace("{n}", String(test.length)))
   }
 
-  if (training.length === 0) errors.push("The training set is empty. The model has nothing to learn from.")
+  if (training.length === 0) errors.push(S.splitTrainEmpty)
 
   const testCounts = labelCounts(test, true)
   if (test.length > 0 && (testCounts.safe === 0 || testCounts.unsafe === 0)) {
-    warnings.push("The testing set has only one category. Include both Safe and Not-safe fruit so the test really checks the model.")
+    warnings.push(S.splitTestOneCategory)
   }
 
   const trainCounts = labelCounts(training, true)
   if (training.length > 0 && (trainCounts.safe === 0 || trainCounts.unsafe === 0)) {
-    warnings.push("The training set has only one category. The model can only ever predict that one label.")
+    warnings.push(S.splitTrainOneCategory)
   }
 
   return { ok: errors.length === 0, errors, warnings }
@@ -568,29 +611,29 @@ function buildIncorrect(): SpaceFruit[] {
   )
 }
 
-export const EXPERIMENTS: Experiment[] = [
+export const experiments = (S: Week2Strings = EN): Experiment[] => [
   {
     id: "balanced",
-    label: "A · Balanced, correct data",
-    description: "All 24 examples, evenly split between Safe and Not-safe, every label correct. This is the fair starting point.",
+    label: S.expBalancedLabel,
+    description: S.expBalancedDesc,
     buildTraining: () => CANONICAL_TRAINING,
   },
   {
     id: "unbalanced",
-    label: "B · Unbalanced data",
-    description: "Every Safe example but only 2 Not-safe examples, so the model barely sees the Not-safe category.",
+    label: S.expUnbalancedLabel,
+    description: S.expUnbalancedDesc,
     buildTraining: buildUnbalanced,
   },
   {
     id: "incorrect",
-    label: "C · Data with incorrect labels",
-    description: "The same 24 examples, but 5 of them have their labels flipped to the wrong answer.",
+    label: S.expIncorrectLabel,
+    description: S.expIncorrectDesc,
     buildTraining: buildIncorrect,
   },
 ]
 
-export function getExperiment(id: string): Experiment | undefined {
-  return EXPERIMENTS.find((e) => e.id === id)
+export function getExperiment(id: string, S: Week2Strings = EN): Experiment | undefined {
+  return experiments(S).find((e) => e.id === id)
 }
 
 /** Runs an experiment against the canonical (held-back) test set. */
@@ -631,7 +674,7 @@ export type ComparisonRow = {
  * fresh model run (against the held-back canonical test set) for the flawed and
  * repaired training sets.
  */
-export function repairComparison(before: SpaceFruit[], after: SpaceFruit[], k = 3): {
+export function repairComparison(before: SpaceFruit[], after: SpaceFruit[], S: Week2Strings = EN, k = 3): {
   beforeStats: DatasetStats
   afterStats: DatasetStats
   beforeRun: ModelRun
@@ -644,20 +687,20 @@ export function repairComparison(before: SpaceFruit[], after: SpaceFruit[], k = 
   const afterRun = runModel(after, CANONICAL_TEST, k)
 
   const rows: ComparisonRow[] = [
-    { metric: "Dataset size", before: `${beforeStats.size}`, after: `${afterStats.size}`, improved: null },
+    { metric: S.cmpSize, before: `${beforeStats.size}`, after: `${afterStats.size}`, improved: null },
     {
-      metric: "Safe / Not-safe counts",
+      metric: S.cmpCounts,
       before: `${beforeStats.labelCounts.safe} / ${beforeStats.labelCounts.unsafe}`,
       after: `${afterStats.labelCounts.safe} / ${afterStats.labelCounts.unsafe}`,
       improved: balanceRatio(after) > balanceRatio(before),
     },
-    { metric: "Duplicate rows", before: `${beforeStats.duplicateCount}`, after: `${afterStats.duplicateCount}`, improved: afterStats.duplicateCount < beforeStats.duplicateCount },
-    { metric: "Incorrect labels", before: `${beforeStats.incorrectCount}`, after: `${afterStats.incorrectCount}`, improved: afterStats.incorrectCount < beforeStats.incorrectCount },
-    { metric: "Overall accuracy", before: `${accuracyPercent(beforeRun)}%`, after: `${accuracyPercent(afterRun)}%`, improved: afterRun.accuracy > beforeRun.accuracy },
+    { metric: S.cmpDuplicates, before: `${beforeStats.duplicateCount}`, after: `${afterStats.duplicateCount}`, improved: afterStats.duplicateCount < beforeStats.duplicateCount },
+    { metric: S.cmpIncorrect, before: `${beforeStats.incorrectCount}`, after: `${afterStats.incorrectCount}`, improved: afterStats.incorrectCount < beforeStats.incorrectCount },
+    { metric: S.cmpAccuracy, before: `${accuracyPercent(beforeRun)}%`, after: `${accuracyPercent(afterRun)}%`, improved: afterRun.accuracy > beforeRun.accuracy },
     {
-      metric: "Not-safe accuracy",
-      before: categoryPercentText(beforeRun, "unsafe"),
-      after: categoryPercentText(afterRun, "unsafe"),
+      metric: S.cmpUnsafeAccuracy,
+      before: categoryPercentText(beforeRun, "unsafe", S),
+      after: categoryPercentText(afterRun, "unsafe", S),
       improved: categoryAccuracy(afterRun, "unsafe") > categoryAccuracy(beforeRun, "unsafe"),
     },
   ]
@@ -670,8 +713,8 @@ export function categoryAccuracy(run: ModelRun, label: SpaceFruitLabel): number 
   return c.total === 0 ? 0 : c.correct / c.total
 }
 
-export function categoryPercentText(run: ModelRun, label: SpaceFruitLabel): string {
+export function categoryPercentText(run: ModelRun, label: SpaceFruitLabel, S: Week2Strings = EN): string {
   const c = run.perCategory[label]
-  if (c.total === 0) return "—"
+  if (c.total === 0) return S.dash
   return `${Math.round((c.correct / c.total) * 100)}% (${c.correct}/${c.total})`
 }

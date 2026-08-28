@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Upload } from "lucide-react"
 import {
-  TOPICS,
+  topics,
   trainingPool,
   testSet,
   featuresFor,
@@ -14,7 +14,7 @@ import {
   categoryName,
   FEATURE_NAMES,
   GRID_SIZE,
-  EDGE_CASES,
+  edgeCases,
   type ImageRecord,
   type Grid,
   type ClassifyResult,
@@ -22,17 +22,24 @@ import {
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 import { ConfidenceBars, PixelImage, ResultBadge } from "@/components/pages/intro-to-ai/activities/image-shared"
+import { useLanguage } from "@/components/providers/language-provider"
 
-const TOPIC = TOPICS[0] // shapes — the clearest for a first walkthrough
-const TRAIN = trainingPool(TOPIC.id)
-const CHOICES = testSet(TOPIC.id)
+/** The Week 3 wording in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.week3
+}
+
 // A deliberately confident-but-wrong demo: a 45° square that reads as another shape.
-const CONFIDENT_WRONG = EDGE_CASES.find((e) => e.id === "ec-tri-rot")!
+const CONFIDENT_WRONG_ID = "ec-tri-rot"
 
 /** The few features most useful to name in plain language during the walkthrough. */
 const HIGHLIGHT_FEATURES = [0, 2, 5, 9, 11] // ink, fill, top-left corner, symmetry, edges
 
 export function ClassifierWalkthroughActivity({ activity, progress }: ActivityComponentProps) {
+  const S = useS()
+  const TOPIC = topics(S)[0]
+  const TRAIN = trainingPool(TOPIC.id, S)
+  const CHOICES = testSet(TOPIC.id, S)
   const [selectedId, setSelectedId] = useState<string>(CHOICES[0].id)
   const announceRef = useRef<HTMLParagraphElement>(null)
 
@@ -49,9 +56,9 @@ export function ClassifierWalkthroughActivity({ activity, progress }: ActivityCo
       title={activity.title}
       purpose={activity.goal}
       instructions={[
-        "Pick a picture. See it the way a computer does — a grid of numbered pixels.",
-        "Look at the visual features the model measured, then its prediction and confidence.",
-        "Notice that confidence compares the categories; it is not a promise the answer is right.",
+        S.wtInstr1,
+        S.wtInstr2,
+        S.wtInstr3,
       ]}
       status="ready"
       saveStatus={progress.saveStatus}
@@ -69,7 +76,7 @@ export function ClassifierWalkthroughActivity({ activity, progress }: ActivityCo
               aria-pressed={im.id === selectedId}
               onClick={() => {
                 setSelectedId(im.id)
-                announce(`Selected ${categoryName(TOPIC, im.label)} picture.`)
+                announce(S.wtSelectedAnnounce.replace("{name}", categoryName(TOPIC, im.label)))
               }}
               className={`rounded-md border p-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 ${
                 im.id === selectedId ? "border-avanza-green ring-1 ring-avanza-green" : "border-border hover:border-avanza-green/60"
@@ -110,17 +117,17 @@ export function ClassifierWalkthroughActivity({ activity, progress }: ActivityCo
         <p className="text-sm font-bold text-foreground">4 · Prediction and confidence</p>
         <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm">
           <span>
-            Predicted: <span className="font-semibold text-foreground">{categoryName(TOPIC, result.predicted)}</span>
+            {S.wtPredicted} <span className="font-semibold text-foreground">{categoryName(TOPIC, result.predicted)}</span>
           </span>
           <span>
-            Actual: <span className="font-semibold text-foreground">{categoryName(TOPIC, selected.label)}</span>
+            {S.wtActual} <span className="font-semibold text-foreground">{categoryName(TOPIC, selected.label)}</span>
           </span>
           <ResultBadge correct={result.predicted === selected.label} />
         </div>
         <div className="mt-3">
           <ConfidenceBars topic={TOPIC} result={result} />
         </div>
-        <p className="mt-3 text-sm text-muted-foreground">{explainResult(TOPIC, result)}</p>
+        <p className="mt-3 text-sm text-muted-foreground">{explainResult(TOPIC, result, S)}</p>
       </div>
 
       {/* Confident-but-wrong demo */}
@@ -133,20 +140,26 @@ export function ClassifierWalkthroughActivity({ activity, progress }: ActivityCo
 }
 
 function ConfidentWrong() {
+  const S = useS()
+  const TOPIC = topics(S)[0]
+  const TRAIN = trainingPool(TOPIC.id, S)
+  const CONFIDENT_WRONG = edgeCases(S).find((e) => e.id === CONFIDENT_WRONG_ID)!
   const result = classify(TRAIN, featuresFor(CONFIDENT_WRONG), 3)
   const pct = Math.round(result.confidence * 100)
   const wrong = result.predicted !== CONFIDENT_WRONG.label
   return (
     <div className="mt-6 rounded-md border-l-2 border-avanza-orange/60 bg-avanza-orange/5 p-4">
-      <p className="text-sm font-bold text-avanza-orange-dark">Confidence is not certainty</p>
+      <p className="text-sm font-bold text-avanza-orange-dark">{S.wtConfidenceNotCertainty}</p>
       <div className="mt-2 flex items-start gap-3">
         <PixelImage spec={CONFIDENT_WRONG.spec} alt={CONFIDENT_WRONG.description} size={96} />
         <div className="text-sm text-muted-foreground">
           <p>{CONFIDENT_WRONG.description}</p>
           <p className="mt-1">
-            The real answer is <span className="font-semibold text-foreground">{categoryName(TOPICS[0], CONFIDENT_WRONG.label)}</span>, but the model predicts{" "}
-            <span className="font-semibold text-foreground">{categoryName(TOPICS[0], result.predicted)}</span> with {pct}% confidence.{" "}
-            {wrong ? "A model can be confident and still wrong — high confidence only means the categories looked lopsided to the model, not that it is correct." : ""}
+            {S.wtRealAnswer.split("{name}")[0]}
+            <span className="font-semibold text-foreground">{categoryName(topics(S)[0], CONFIDENT_WRONG.label)}</span>
+            {S.wtRealAnswer.split("{name}")[1]} {S.wtButModelPredicts}{" "}
+            <span className="font-semibold text-foreground">{categoryName(topics(S)[0], result.predicted)}</span>{" "}
+            {S.wtWithConfidence.replace("{pct}", String(pct))} {wrong ? S.wtConfidentWrong : ""}
           </p>
         </div>
       </div>
@@ -169,20 +182,20 @@ function canvasSupported(): boolean {
 
 /** Downscales an uploaded image to the grid on the device (which also strips
  *  metadata). Never stores or transmits the image; nothing is sent to any service. */
-async function fileToGrid(file: File): Promise<Grid> {
+async function fileToGrid(file: File, message: { couldNotRead: string; noCanvas: string }): Promise<Grid> {
   const url = URL.createObjectURL(file)
   try {
     const img = await new Promise<HTMLImageElement>((resolve, reject) => {
       const el = new Image()
       el.onload = () => resolve(el)
-      el.onerror = () => reject(new Error("Could not read that image."))
+      el.onerror = () => reject(new Error(message.couldNotRead))
       el.src = url
     })
     const canvas = document.createElement("canvas")
     canvas.width = GRID_SIZE
     canvas.height = GRID_SIZE
     const ctx = canvas.getContext("2d")
-    if (!ctx) throw new Error("Canvas is not available.")
+    if (!ctx) throw new Error(message.noCanvas)
     ctx.fillStyle = "#fff"
     ctx.fillRect(0, 0, GRID_SIZE, GRID_SIZE)
     ctx.drawImage(img, 0, 0, GRID_SIZE, GRID_SIZE)
@@ -202,6 +215,9 @@ async function fileToGrid(file: File): Promise<Grid> {
 }
 
 function OptionalImageUpload() {
+  const S = useS()
+  const TOPIC = topics(S)[0]
+  const TRAIN = trainingPool(TOPIC.id, S)
   const [open, setOpen] = useState(false)
   const [supported, setSupported] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -215,39 +231,39 @@ function OptionalImageUpload() {
     setResult(null)
     setGrid(null)
     if (!file) return
-    if (!file.type.startsWith("image/")) return setError("Please choose an image file.")
-    if (file.size > 5_000_000) return setError("That image is larger than 5 MB. Please choose a smaller one.")
+    if (!file.type.startsWith("image/")) return setError(S.wtChooseImageFile)
+    if (file.size > 5_000_000) return setError(S.wtTooLarge)
     try {
-      const g = await fileToGrid(file)
+      const g = await fileToGrid(file, { couldNotRead: S.wtCouldNotRead, noCanvas: S.wtNoCanvas })
       setGrid(g)
       setResult(classify(TRAIN, extractFeatures(g), 3))
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong reading that image.")
+      setError(e instanceof Error ? e.message : S.wtReadError)
     }
   }
 
   return (
     <div className="mt-6 rounded-md border border-dashed border-border p-4">
-      <p className="text-sm font-bold text-foreground">Optional: try your own picture</p>
+      <p className="text-sm font-bold text-foreground">{S.wtOptionalUpload}</p>
       <p className="mt-1 text-sm text-muted-foreground">
         Everything above works with the built-in pictures — this is an extra. If you upload a picture, it is shrunk to a {GRID_SIZE}×{GRID_SIZE} grid and
         classified <strong>entirely on your device</strong>. It is never saved and never sent to any service. Draw a big circle, triangle, or square on white
         paper for the best result.
       </p>
       {!supported ? (
-        <p className="mt-2 text-sm text-avanza-orange-dark">Your browser can&apos;t process images here, but the built-in walkthrough above works fully.</p>
+        <p className="mt-2 text-sm text-avanza-orange-dark">{S.wtNoImageSupport}</p>
       ) : !open ? (
         <button
           type="button"
           onClick={() => setOpen(true)}
           className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-semibold text-foreground transition-colors hover:border-avanza-green/60 hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
         >
-          <Upload className="h-4 w-4" aria-hidden /> Turn on optional upload
+          <Upload className="h-4 w-4" aria-hidden /> {S.wtTurnOnUpload}
         </button>
       ) : (
         <div className="mt-3">
           <label className="inline-flex items-center gap-2 text-sm">
-            <span className="rounded-md bg-avanza-green px-3 py-1.5 font-bold text-avanza-dark">Choose an image…</span>
+            <span className="rounded-md bg-avanza-green px-3 py-1.5 font-bold text-avanza-dark">{S.wtChooseImage}</span>
             <input type="file" accept="image/*" className="sr-only" onChange={(e) => onFile(e.target.files?.[0])} />
           </label>
           {error && <p className="mt-2 text-sm text-avanza-orange-dark" role="alert">{error}</p>}
@@ -256,10 +272,10 @@ function OptionalImageUpload() {
               <UploadedGrid grid={grid} />
               <div className="text-sm">
                 <p>
-                  Predicted: <span className="font-semibold text-foreground">{categoryName(TOPIC, result.predicted)}</span> ·{" "}
+                  {S.wtPredicted} <span className="font-semibold text-foreground">{categoryName(TOPIC, result.predicted)}</span> ·{" "}
                   {Math.round(result.confidence * 100)}% confidence
                 </p>
-                <p className="mt-1 text-muted-foreground">The same simple model that runs on the built-in pictures — no camera required, nothing stored.</p>
+                <p className="mt-1 text-muted-foreground">{S.wtSameModel}</p>
               </div>
             </div>
           )}
@@ -271,9 +287,10 @@ function OptionalImageUpload() {
 
 /** Renders an arbitrary grid (from an upload) as pixels. */
 function UploadedGrid({ grid }: { grid: Grid }) {
+  const S = useS()
   const size = 96
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${GRID_SIZE} ${GRID_SIZE}`} role="img" aria-label="Your uploaded picture shrunk to a pixel grid" className="rounded-sm border border-border bg-white" shapeRendering="crispEdges">
+    <svg width={size} height={size} viewBox={`0 0 ${GRID_SIZE} ${GRID_SIZE}`} role="img" aria-label={S.wtUploadedAlt} className="rounded-sm border border-border bg-white" shapeRendering="crispEdges">
       <rect x={0} y={0} width={GRID_SIZE} height={GRID_SIZE} fill="#fff" />
       {grid.map((v, i) => {
         if (v <= 0.05) return null

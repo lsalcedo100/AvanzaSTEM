@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import {
-  TOPICS,
+  topics,
   getTopic,
   trainingPool,
   testSet,
@@ -12,7 +12,7 @@ import {
   compareModels,
   accuracyPercent,
   categoryName,
-  EDGE_CASES,
+  edgeCases,
   type ImageRecord,
   type Topic,
   type Evaluation,
@@ -20,12 +20,17 @@ import {
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 import { CategoryAccuracy, ConfusionMatrix, PixelImage, ResultBadge } from "@/components/pages/intro-to-ai/activities/image-shared"
+import { useLanguage } from "@/components/providers/language-provider"
 
-const SHAPES = TOPICS[0]
-const SHAPES_TEST = testSet("shapes")
+/** The Week 3 wording in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.week3
+}
+
 // Weak start: the model has only ever seen circles and squares — never a triangle.
 // It therefore misses every triangle until the student adds some.
 const FIRST_TRAINING_IDS = ["sh-circle-1", "sh-circle-2", "sh-sq-1", "sh-sq-2"]
+// Ids only, so the list is the same in every language.
 const ADDABLE_IDS = trainingPool("shapes")
   .map((im) => im.id)
   .filter((id) => !FIRST_TRAINING_IDS.includes(id))
@@ -71,6 +76,9 @@ function parseState(raw: string | undefined): CIState {
 }
 
 export function ConfuseImproveActivity({ activity, progress }: ActivityComponentProps) {
+  const S = useS()
+  const SHAPES = topics(S)[0]
+  const SHAPES_TEST = testSet("shapes", S)
   const [state, setState] = useState<CIState>(emptyState)
   const announceRef = useRef<HTMLParagraphElement>(null)
 
@@ -86,8 +94,8 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
     if (announceRef.current) announceRef.current.textContent = msg
   }
 
-  const improvedTraining = [...FIRST_TRAINING_IDS, ...state.added].map((id) => getImage(id)!).filter(Boolean)
-  const firstTraining = FIRST_TRAINING_IDS.map((id) => getImage(id)!)
+  const improvedTraining = [...FIRST_TRAINING_IDS, ...state.added].map((id) => getImage(id, S)!).filter(Boolean)
+  const firstTraining = FIRST_TRAINING_IDS.map((id) => getImage(id, S)!)
   const comparison = state.compared ? compareModels(SHAPES, firstTraining, improvedTraining, SHAPES_TEST, 3) : null
 
   const setEdge = (id: string, patch: Partial<EdgeEntry>) => {
@@ -106,27 +114,27 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
       title={activity.title}
       purpose={activity.goal}
       instructions={[
-        "Part 1 — Confuse the model: predict what it will do on each tricky picture, run it, and see the source of the confusion.",
-        "Part 2 — Improve it: a weak starter model has only ever seen circles and squares, never a triangle. Add a few varied pictures and retrain.",
-        "Compare the first and improved models: what got fixed, what broke, and why.",
+        S.ciInstr1,
+        S.ciInstr2,
+        S.ciInstr3,
       ]}
       status="ready"
       saveStatus={progress.saveStatus}
       onReset={() => {
-        announce("Activity reset.")
+        announce(S.ciActivityReset)
         persist(emptyState())
       }}
     >
       <p ref={announceRef} className="sr-only" role="status" aria-live="polite" />
 
       {/* Part 1 — Confuse the model */}
-      <h4 className="mt-4 text-sm font-bold text-foreground">Part 1 · Confuse the model</h4>
-      <p className="mt-1 text-sm text-muted-foreground">Each picture is a known edge case. Predict the model&apos;s answer first, then run it.</p>
+      <h4 className="mt-4 text-sm font-bold text-foreground">{S.ciPart1}</h4>
+      <p className="mt-1 text-sm text-muted-foreground">{S.ciPart1Intro}</p>
       <ul className="mt-3 space-y-4">
-        {EDGE_CASES.map((ec) => {
+        {edgeCases(S).map((ec) => {
           const topic = getTopic(ec.topic) as Topic
           const entry = state.edges[ec.id] ?? { prediction: "", ran: false, disposition: "" as Disposition }
-          const result = entry.ran ? classify(trainingPool(ec.topic), featuresFor(ec), 3) : null
+          const result = entry.ran ? classify(trainingPool(ec.topic, S), featuresFor(ec), 3) : null
           return (
             <li key={ec.id} className="rounded-md border border-border p-3">
               <div className="flex flex-wrap items-start gap-3">
@@ -139,7 +147,7 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
 
                   <div className="mt-2 flex flex-wrap items-center gap-2">
                     <label htmlFor={`pred-${ec.id}`} className="text-xs font-semibold text-muted-foreground">
-                      Your prediction:
+                      {S.ciYourPrediction}
                     </label>
                     <select
                       id={`pred-${ec.id}`}
@@ -147,7 +155,7 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
                       onChange={(e) => setEdge(ec.id, { prediction: e.target.value })}
                       className="rounded-md border border-border bg-card px-2 py-1 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
                     >
-                      <option value="">Choose…</option>
+                      <option value="">{S.ciChoose}</option>
                       {topic.categories.map((c) => (
                         <option key={c.id} value={c.id}>
                           {c.name}
@@ -158,27 +166,36 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
                       type="button"
                       onClick={() => {
                         setEdge(ec.id, { ran: true })
-                        const r = classify(trainingPool(ec.topic), featuresFor(ec), 3)
-                        announce(`Model predicted ${categoryName(topic, r.predicted)} for the ${ec.tag} picture.`)
+                        const r = classify(trainingPool(ec.topic, S), featuresFor(ec), 3)
+                        announce(
+                          S.ciModelAnnounce
+                            .replace("{name}", categoryName(topic, r.predicted))
+                            .replace("{tag}", ec.tag),
+                        )
                       }}
                       disabled={!entry.prediction}
                       className="rounded-md bg-avanza-green px-3 py-1 text-xs font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1"
                     >
-                      Run it
+                      {S.ciRunIt}
                     </button>
                   </div>
 
                   {result && (
                     <div className="mt-2 rounded-md bg-secondary px-3 py-2 text-sm" aria-live="polite">
                       <p>
-                        Model said <span className="font-semibold text-foreground">{categoryName(topic, result.predicted)}</span> ({Math.round(result.confidence * 100)}% confidence) · actual{" "}
-                        <span className="font-semibold text-foreground">{categoryName(topic, ec.label)}</span> · <ResultBadge correct={result.predicted === ec.label} />
+                        {S.ciModelSaid
+                          .replace("{predicted}", categoryName(topic, result.predicted))
+                          .replace("{pct}", String(Math.round(result.confidence * 100)))
+                          .replace("{actual}", categoryName(topic, ec.label))}{" "}
+                        · <ResultBadge correct={result.predicted === ec.label} />
                       </p>
                       <p className="mt-1 text-muted-foreground">
-                        You predicted {entry.prediction ? categoryName(topic, entry.prediction) : "—"}. Likely confusion: {ec.why}
+                        {S.ciYouPredicted
+                          .replace("{name}", entry.prediction ? categoryName(topic, entry.prediction) : S.ciDash)
+                          .replace("{why}", ec.why)}
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <span className="text-xs font-semibold text-muted-foreground">Should this picture be added to:</span>
+                        <span className="text-xs font-semibold text-muted-foreground">{S.ciShouldBeAdded}</span>
                         {(["train", "test", "neither"] as Disposition[]).map((d) => (
                           <button
                             key={d}
@@ -189,7 +206,7 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
                               entry.disposition === d ? "border-avanza-green bg-avanza-green/15 text-avanza-green-dark" : "border-border text-muted-foreground hover:text-foreground"
                             }`}
                           >
-                            {d === "train" ? "Training" : d === "test" ? "Testing" : "Neither"}
+                            {d === "train" ? S.ciTraining : d === "test" ? S.ciTesting : S.ciNeither}
                           </button>
                         ))}
                       </div>
@@ -203,7 +220,7 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
       </ul>
 
       {/* Part 2 — Improve */}
-      <h4 className="mt-8 border-t border-border pt-6 text-sm font-bold text-foreground">Part 2 · Improve the model</h4>
+      <h4 className="mt-8 border-t border-border pt-6 text-sm font-bold text-foreground">{S.ciPart2}</h4>
       <p className="mt-1 text-sm text-muted-foreground">
         The starter model has only ever seen circles and squares — it has never seen a triangle, so it misses every one. Add up to {ADD_LIMIT} more varied pictures
         (try some triangles!) and retrain to see if it improves.
@@ -223,7 +240,10 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
               type="button"
               aria-pressed={on}
               disabled={atLimit}
-              aria-label={`${categoryName(SHAPES, im.label)}: ${im.description} ${on ? "Added — activate to remove." : atLimit ? "Add limit reached." : "Activate to add."}`}
+              aria-label={S.ciImageAria
+                .replace("{name}", categoryName(SHAPES, im.label))
+                .replace("{description}", im.description)
+                .replace("{state}", on ? S.ciAdded : atLimit ? S.ciAddLimit : S.ciActivateToAdd)}
               onClick={() => toggleAdd(id)}
               className={`flex flex-col items-center gap-1 rounded-md border p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1 ${
                 on ? "border-avanza-green bg-avanza-green/10" : "border-border hover:border-avanza-green/50"
@@ -247,36 +267,43 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
         disabled={state.added.length === 0}
         className="mt-4 inline-flex items-center rounded-md bg-avanza-green px-4 py-2 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
       >
-        Retrain and compare with the first model
+        {S.ciRetrain}
       </button>
-      {state.added.length === 0 && <p className="mt-1 text-xs text-muted-foreground">Add at least one picture to build an improved model.</p>}
+      {state.added.length === 0 && <p className="mt-1 text-xs text-muted-foreground">{S.ciAddAtLeastOne}</p>}
 
       {comparison && (
         <div className="mt-5 space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
-            <ModelCard title="First model (1 per shape)" training={firstTraining} evaluation={comparison.first} />
-            <ModelCard title={`Improved model (+${state.added.length})`} training={improvedTraining} evaluation={comparison.improved} />
+            <ModelCard title={S.ciFirstModel} training={firstTraining} evaluation={comparison.first} />
+            <ModelCard title={S.ciImprovedModel.replace("{n}", String(state.added.length))} training={improvedTraining} evaluation={comparison.improved} />
           </div>
 
           <div className="rounded-md border border-border bg-card p-4 text-sm">
             <p className="font-semibold text-foreground">
-              Overall accuracy: {accuracyPercent(comparison.first)}% → {accuracyPercent(comparison.improved)}%{" "}
+              {S.ciOverallAccuracy
+                .replace("{before}", String(accuracyPercent(comparison.first)))
+                .replace("{after}", String(accuracyPercent(comparison.improved)))}{" "}
               <span className={comparison.overallDelta >= 0 ? "text-avanza-green-dark" : "text-avanza-orange-dark"}>
-                ({comparison.overallDelta >= 0 ? "+" : ""}
-                {Math.round(comparison.overallDelta * 100)} points)
+                {S.ciPoints
+                  .replace("{sign}", comparison.overallDelta >= 0 ? "+" : "")
+                  .replace("{n}", String(Math.round(comparison.overallDelta * 100)))}
               </span>
             </p>
             <p className="mt-1 text-muted-foreground">
-              Fixed {comparison.fixed.length}: {comparison.fixed.map((id) => getImage(id)?.description ?? id).join("; ") || "none"}.
+              {S.ciFixed
+                .replace("{n}", String(comparison.fixed.length))
+                .replace("{list}", comparison.fixed.map((id) => getImage(id, S)?.description ?? id).join("; ") || S.ciNone)}
             </p>
             <p className="mt-0.5 text-muted-foreground">
-              Newly broken {comparison.broke.length}: {comparison.broke.map((id) => getImage(id)?.description ?? id).join("; ") || "none"}.
+              {S.ciBroke
+                .replace("{n}", String(comparison.broke.length))
+                .replace("{list}", comparison.broke.map((id) => getImage(id, S)?.description ?? id).join("; ") || S.ciNone)}
             </p>
           </div>
 
           <div>
             <label htmlFor="ci-explain" className="block text-sm font-semibold text-foreground">
-              Explain: why did your added pictures help (or not help)?
+              {S.ciExplain}
             </label>
             <textarea
               id="ci-explain"
@@ -285,7 +312,7 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
               onBlur={(e) => persist({ ...state, explanation: e.target.value })}
               rows={2}
               className="mt-1 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
-              placeholder="e.g. Adding a rotated square taught the model that tilted squares are still squares."
+              placeholder={S.ciExplainPlaceholder}
             />
           </div>
         </div>
@@ -295,6 +322,8 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
 }
 
 function ModelCard({ title, training, evaluation }: { title: string; training: ImageRecord[]; evaluation: Evaluation }) {
+  const S = useS()
+  const SHAPES = topics(S)[0]
   const counts = SHAPES.categories.map((c) => ({ c, n: training.filter((im) => im.label === c.id).length }))
   return (
     <div className="rounded-md border border-border p-3">
@@ -303,7 +332,10 @@ function ModelCard({ title, training, evaluation }: { title: string; training: I
         Training per category: {counts.map(({ c, n }) => `${c.name} ${n}`).join(" · ")}
       </p>
       <p className="mt-1 text-sm">
-        Accuracy: <span className="font-extrabold tabular-nums text-foreground">{accuracyPercent(evaluation)}%</span> ({evaluation.correct}/{evaluation.total})
+        {S.ciAccuracy
+          .replace("{pct}", String(accuracyPercent(evaluation)))
+          .replace("{correct}", String(evaluation.correct))
+          .replace("{total}", String(evaluation.total))}
       </p>
       <div className="mt-2">
         <ConfusionMatrix topic={SHAPES} evaluation={evaluation} />

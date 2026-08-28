@@ -19,6 +19,14 @@ import {
   type Rule,
   type DetectiveCategory,
 } from "./week1-activities.ts"
+import { getWeek1Activities } from "./week1-i18n.ts"
+
+// The rule engine takes its wording from the caller; the English bundle is the
+// structural base, so these assertions read it.
+const EN = getWeek1Activities("en")
+const WORDING = EN.ruleWording
+const SUBJECTS = EN.fieldSubjects
+const asIs = (category: string) => category
 
 /* ============================ AI Detective =============================== */
 
@@ -115,19 +123,19 @@ test("withheld creatures expose weaknesses: wings-underwater, decorative fins, d
 })
 
 test("validateRuleSet rejects empty and incomplete rule sets", () => {
-  assert.equal(validateRuleSet([]).valid, false)
-  const bad = validateRuleSet([{ id: "r1", field: "legs", op: "atLeast", value: "", category: "" } as unknown as Rule])
+  assert.equal(validateRuleSet([], WORDING).valid, false)
+  const bad = validateRuleSet([{ id: "r1", field: "legs", op: "atLeast", value: "", category: "" } as unknown as Rule], WORDING)
   assert.equal(bad.valid, false)
   assert.ok(bad.issues.length >= 1)
-  assert.equal(validateRuleSet(SIMPLE_RULES).valid, true)
+  assert.equal(validateRuleSet(SIMPLE_RULES, WORDING).valid, true)
 })
 
 test("describeRule produces a readable preview and fieldType is correct", () => {
   assert.equal(fieldType("hasWings"), "boolean")
   assert.equal(fieldType("legs"), "number")
   assert.equal(fieldType("bodyColor"), "string")
-  assert.match(describeRule(SIMPLE_RULES[0]), /Sky Creature/)
-  assert.match(describeRule({ id: "x", field: "legs", op: "atLeast", value: 4, category: "Land Creature" }), /at least 4/)
+  assert.match(describeRule(SIMPLE_RULES[0], WORDING, SUBJECTS, asIs), /Sky Creature/)
+  assert.match(describeRule({ id: "x", field: "legs", op: "atLeast", value: 4, category: "Land Creature" }, WORDING, SUBJECTS, asIs), /at least 4/)
 })
 
 /* ====================== Device investigation ============================ */

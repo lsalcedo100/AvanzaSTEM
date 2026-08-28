@@ -18,6 +18,10 @@ const codingThumbnailImage = codingFeatureImage.full
 // never swap these out from under the cards.
 const veronaWorkshopImage = galleryPhoto(319).full
 const littleFallsWorkshopImage = galleryPhoto(357).full
+// A room shot rather than a session photo: the Shanghai venues do not allow
+// photography while a program is running. Wenbo Shuijing has no photo at all,
+// so its card renders without an image.
+const lanyuWorkshopImage = "/images/workshops/Lanyu Books.jpeg"
 
 export function WorkshopsPageContent() {
   const { t } = useLanguage()
@@ -225,7 +229,30 @@ export function WorkshopsPageContent() {
                 />
               </FadeIn>
             </div>
+            {/* Partner venues abroad, listed after the New Jersey libraries.
+                Photos for both are still being added. */}
+            <FadeIn delay={700}>
+              <PastProgramCard
+                name={t.workshopsPage.wenboLibrary}
+                description={t.workshopsPage.wenboDesc}
+              />
+            </FadeIn>
+            <FadeIn delay={800}>
+              <PastProgramCard
+                name={t.workshopsPage.lanyuLibrary}
+                image={lanyuWorkshopImage}
+                imageAlt={t.workshopsPage.lanyuImageAlt}
+                imageBoxClassName="aspect-[4/3]"
+                description={t.workshopsPage.lanyuDesc}
+              />
+            </FadeIn>
           </div>
+
+          <FadeIn delay={900}>
+            <p className="mx-auto mt-10 max-w-3xl text-center leading-relaxed text-muted-foreground">
+              {t.workshopsPage.chinaPhotoNote}
+            </p>
+          </FadeIn>
         </div>
       </section>
 
@@ -393,8 +420,9 @@ function PastProgramCard({
   imageClassName = "object-cover",
 }: {
   name: string
-  image: string
-  imageAlt: string
+  // Optional: venues that do not allow photography get a text-only card.
+  image?: string
+  imageAlt?: string
   gradeRange?: string
   duration?: string
   location?: string
@@ -405,15 +433,17 @@ function PastProgramCard({
   const meta = [gradeRange, duration, location].filter(Boolean).join(" · ")
   return (
     <article className="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
-      <div className={`relative w-full overflow-hidden ${imageBoxClassName}`}>
-        <LightboxImage
-          src={image}
-          alt={imageAlt}
-          fill
-          sizes="(min-width: 640px) 50vw, 100vw"
-          className={`${imageClassName} transition-transform duration-500 group-hover:scale-105`}
-        />
-      </div>
+      {image && (
+        <div className={`relative w-full overflow-hidden ${imageBoxClassName}`}>
+          <LightboxImage
+            src={image}
+            alt={imageAlt ?? ""}
+            fill
+            sizes="(min-width: 640px) 50vw, 100vw"
+            className={`${imageClassName} transition-transform duration-500 group-hover:scale-105`}
+          />
+        </div>
+      )}
       <div className="p-6">
         <h3 className="text-xl font-extrabold leading-snug text-card-foreground">
           {name}

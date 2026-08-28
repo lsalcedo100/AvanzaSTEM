@@ -4,7 +4,10 @@ import { useEffect, useRef, useState } from "react"
 import { ThumbsDown, ThumbsUp } from "lucide-react"
 import {
   CATALOG,
-  FEATURES,
+  features,
+  localizeItems,
+  valueText,
+  type Week4RecommendStrings,
   recommend,
   defaultWeights,
   topicDistribution,
@@ -15,6 +18,12 @@ import {
   type FeatureKey,
   type Recommendation,
 } from "@/features/curriculums/intro-to-ai/activities/week4-recommend"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Week 4 recommender wording in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.week4Recommend
+}
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 
@@ -32,7 +41,7 @@ function parseState(raw: string | undefined): RBState {
     const ratings: Ratings = {}
     if (d.ratings && typeof d.ratings === "object") for (const [k, v] of Object.entries(d.ratings)) if (typeof v === "number" && getItem(k)) ratings[k] = v
     const weights = { ...base.weights }
-    if (d.weights && typeof d.weights === "object") for (const { key } of FEATURES) if (typeof (d.weights as Record<string, unknown>)[key] === "number") weights[key] = (d.weights as Weights)[key]
+    if (d.weights && typeof d.weights === "object") for (const { key } of features()) if (typeof (d.weights as Record<string, unknown>)[key] === "number") weights[key] = (d.weights as Weights)[key]
     return {
       ratings,
       weights,
@@ -45,6 +54,7 @@ function parseState(raw: string | undefined): RBState {
 }
 
 export function RecommendationBuilderActivity({ activity, progress }: ActivityComponentProps) {
+  const S = useS()
   const [state, setState] = useState<RBState>(emptyState)
   const announceRef = useRef<HTMLParagraphElement>(null)
 
@@ -60,7 +70,8 @@ export function RecommendationBuilderActivity({ activity, progress }: ActivityCo
     if (announceRef.current) announceRef.current.textContent = msg
   }
 
-  const result = recommend(state.ratings, state.weights, { explore: state.explore, topN: 6 })
+  const ITEMS = localizeItems(CATALOG, S)
+  const result = recommend(state.ratings, state.weights, { explore: state.explore, topN: 6 }, S)
   const dist = topicDistribution(result.recommendations)
 
   const rate = (id: string, value: number) => {
@@ -68,7 +79,11 @@ export function RecommendationBuilderActivity({ activity, progress }: ActivityCo
     if (ratings[id] === value) delete ratings[id]
     else ratings[id] = value
     persist({ ...state, ratings })
-    announce(`${getItem(id)?.title}: ${value >= 4 ? "liked" : "not for me"}.`)
+    announce(
+      S.rbRateAnnounce
+        .replace("{title}", getItem(id, S)?.title ?? id)
+        .replace("{verdict}", value >= 4 ? S.rbLiked : S.rbDisliked),
+    )
   }
   const setWeight = (key: FeatureKey, value: number) => persist({ ...state, weights: { ...state.weights, [key]: value } })
 
@@ -77,9 +92,9 @@ export function RecommendationBuilderActivity({ activity, progress }: ActivityCo
       title={activity.title}
       purpose={activity.goal}
       instructions={[
-        "Rate a few activities you like or don't. The recommender builds a profile from your ratings.",
-        "Adjust which features matter, then read the recommendations — each one explains why it appeared.",
-        "Run the filter-bubble experiment: rate one topic only, then add a different topic and compare.",
+        S.rbInstr1,
+        S.rbInstr2,
+        S.rbInstr3,
       ]}
       status="ready"
       saveStatus={progress.saveStatus}
@@ -90,25 +105,28 @@ export function RecommendationBuilderActivity({ activity, progress }: ActivityCo
     >
       <p ref={announceRef} className="sr-only" role="status" aria-live="polite" />
 
-      <p className="mt-3 rounded-md bg-secondary px-3 py-2 text-xs text-muted-foreground">This catalog is made up. Don&apos;t enter personal information — just rate the built-in items.</p>
+      <p className="mt-3 rounded-md bg-secondary px-3 py-2 text-xs text-muted-foreground">{S.rbCatalogNote}</p>
 
       {/* Catalog */}
       <fieldset className="mt-4">
-        <legend className="text-sm font-bold text-foreground">1 · Rate items</legend>
+        <legend className="text-sm font-bold text-foreground">{S.rbStep1}</legend>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
-          {CATALOG.map((item) => {
+          {ITEMS.map((item) => {
             const r = state.ratings[item.id]
             return (
               <div key={item.id} className="flex items-start justify-between gap-2 rounded-md border border-border p-2">
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-foreground">{item.title}</p>
-                  <p className="text-xs text-muted-foreground">{item.topic} · {item.category} · {item.difficulty} · {item.format}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {valueText(item.topic, S)} · {valueText(item.category, S)} · {valueText(item.difficulty, S)} ·{" "}
+                    {valueText(item.format, S)}
+                  </p>
                 </div>
                 <div className="flex flex-none gap-1">
-                  <button type="button" aria-label={`Like ${item.title}`} aria-pressed={r === 5} onClick={() => rate(item.id, 5)} className={`inline-flex h-7 w-7 items-center justify-center rounded-md border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1 ${r === 5 ? "border-avanza-green bg-avanza-green/15 text-avanza-green-dark" : "border-border text-muted-foreground hover:text-foreground"}`}>
+                  <button type="button" aria-label={S.rbLike.replace("{title}", item.title)} aria-pressed={r === 5} onClick={() => rate(item.id, 5)} className={`inline-flex h-7 w-7 items-center justify-center rounded-md border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1 ${r === 5 ? "border-avanza-green bg-avanza-green/15 text-avanza-green-dark" : "border-border text-muted-foreground hover:text-foreground"}`}>
                     <ThumbsUp className="h-3.5 w-3.5" aria-hidden />
                   </button>
-                  <button type="button" aria-label={`Not for me: ${item.title}`} aria-pressed={r === 1} onClick={() => rate(item.id, 1)} className={`inline-flex h-7 w-7 items-center justify-center rounded-md border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1 ${r === 1 ? "border-avanza-orange bg-avanza-orange/15 text-avanza-orange-dark" : "border-border text-muted-foreground hover:text-foreground"}`}>
+                  <button type="button" aria-label={S.rbNotForMe.replace("{title}", item.title)} aria-pressed={r === 1} onClick={() => rate(item.id, 1)} className={`inline-flex h-7 w-7 items-center justify-center rounded-md border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1 ${r === 1 ? "border-avanza-orange bg-avanza-orange/15 text-avanza-orange-dark" : "border-border text-muted-foreground hover:text-foreground"}`}>
                     <ThumbsDown className="h-3.5 w-3.5" aria-hidden />
                   </button>
                 </div>
@@ -120,14 +138,14 @@ export function RecommendationBuilderActivity({ activity, progress }: ActivityCo
 
       {/* Weights */}
       <fieldset className="mt-5">
-        <legend className="text-sm font-bold text-foreground">2 · Choose which features matter</legend>
+        <legend className="text-sm font-bold text-foreground">{S.rbStep2}</legend>
         <div className="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map(({ key, label }) => (
+          {features(S).map(({ key, label }) => (
             <label key={key} className="text-sm">
               <span className="flex items-center justify-between text-foreground">
-                {label} <span className="tabular-nums text-muted-foreground">weight {state.weights[key]}</span>
+                {label} <span className="tabular-nums text-muted-foreground">{S.rbWeight.replace("{n}", String(state.weights[key]))}</span>
               </span>
-              <input type="range" min={0} max={6} step={1} value={state.weights[key]} onChange={(e) => setWeight(key, Number(e.target.value))} className="mt-1 w-full accent-avanza-green" aria-label={`${label} weight`} />
+              <input type="range" min={0} max={6} step={1} value={state.weights[key]} onChange={(e) => setWeight(key, Number(e.target.value))} className="mt-1 w-full accent-avanza-green" aria-label={S.rbWeightAria.replace("{label}", label)} />
             </label>
           ))}
         </div>
@@ -136,19 +154,19 @@ export function RecommendationBuilderActivity({ activity, progress }: ActivityCo
       {/* Low-data warning */}
       {result.lowData && (
         <p className="mt-4 rounded-md border border-avanza-orange/40 bg-avanza-orange/10 px-3 py-2 text-sm text-avanza-orange-dark" role="status">
-          Low data: {result.lowDataReason}
+          {S.rbLowData.replace("{reason}", result.lowDataReason ?? "")}
         </p>
       )}
 
       {/* Recommendations */}
       <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
-        <h4 className="text-sm font-bold text-foreground">3 · Recommendations</h4>
+        <h4 className="text-sm font-bold text-foreground">{S.rbStep3}</h4>
         <label className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
-          <input type="checkbox" checked={state.explore} onChange={(e) => persist({ ...state, explore: e.target.checked })} /> Explore mode (add variety)
+          <input type="checkbox" checked={state.explore} onChange={(e) => persist({ ...state, explore: e.target.checked })} /> {S.rbExploreMode}
         </label>
       </div>
       {result.recommendations.length === 0 ? (
-        <p className="mt-2 text-sm text-muted-foreground">Rate some items to get recommendations.</p>
+        <p className="mt-2 text-sm text-muted-foreground">{S.rbRateToGet}</p>
       ) : (
         <ul className="mt-2 space-y-2">
           {result.recommendations.map((rec) => (
@@ -159,40 +177,63 @@ export function RecommendationBuilderActivity({ activity, progress }: ActivityCo
 
       {/* Filter bubble */}
       <div className="mt-6 border-t border-border pt-5">
-        <h4 className="text-sm font-bold text-foreground">4 · Filter-bubble experiment</h4>
+        <h4 className="text-sm font-bold text-foreground">{S.rbStep4}</h4>
         <ol className="mt-1 list-decimal space-y-0.5 pl-5 text-sm text-muted-foreground">
-          <li>Like a few items from just <strong>one topic</strong> and look at the feed&apos;s topics below.</li>
-          <li>Snapshot it, then like an item from a <strong>different topic</strong> and compare.</li>
-          <li>Turn on Explore mode to see how variety changes the feed.</li>
+          <li>
+            {S.rbExp1.split(S.rbExp1Strong)[0]}
+            <strong>{S.rbExp1Strong}</strong>
+            {S.rbExp1.split(S.rbExp1Strong)[1]}
+          </li>
+          <li>
+            {S.rbExp2.split(S.rbExp2Strong)[0]}
+            <strong>{S.rbExp2Strong}</strong>
+            {S.rbExp2.split(S.rbExp2Strong)[1]}
+          </li>
+          <li>{S.rbExp3}</li>
         </ol>
 
         <div className="mt-3 rounded-md border border-border p-3">
-          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Topics in your current feed ({distinctTopics(result.recommendations)} of 6 topics)</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+            {S.rbTopicsInFeed.replace("{n}", String(distinctTopics(result.recommendations)))}
+          </p>
           <div className="mt-2 space-y-1.5">
             {dist.map((d) => (
               <div key={d.topic} className="grid grid-cols-[5rem_1fr_2rem] items-center gap-2 text-sm">
-                <span className="capitalize text-muted-foreground">{d.topic}</span>
+                <span className="text-muted-foreground">{valueText(d.topic, S)}</span>
                 <span className="h-3 rounded-sm bg-secondary" aria-hidden><span className="block h-3 rounded-sm bg-avanza-purple" style={{ width: `${Math.round(d.share * 100)}%` }} /></span>
                 <span className="text-right tabular-nums text-foreground">{d.count}</span>
               </div>
             ))}
-            {dist.length === 0 && <p className="text-sm text-muted-foreground">Rate some items first.</p>}
+            {dist.length === 0 && <p className="text-sm text-muted-foreground">{S.rbRateFirst}</p>}
           </div>
-          <p className="sr-only">Current feed topics: {dist.map((d) => `${d.topic} ${d.count}`).join(", ")}.</p>
+          <p className="sr-only">
+            {S.rbCurrentTopics.replace("{list}", dist.map((d) => `${valueText(d.topic, S)} ${d.count}`).join(", "))}
+          </p>
 
           <div className="mt-3 flex flex-wrap gap-2">
-            <button type="button" onClick={() => { persist({ ...state, snapshot: result.recommendations.map((r) => r.item.id) }); announce("Feed snapshot saved.") }} className="rounded-md border border-border px-2.5 py-1 text-xs font-semibold text-foreground hover:border-avanza-green/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1">
-              Snapshot this feed
+            <button type="button" onClick={() => { persist({ ...state, snapshot: result.recommendations.map((r) => r.item.id) }); announce(S.rbSnapshotSaved) }} className="rounded-md border border-border px-2.5 py-1 text-xs font-semibold text-foreground hover:border-avanza-green/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1">
+              {S.rbSnapshotFeed}
             </button>
-            {state.snapshot && <button type="button" onClick={() => persist({ ...state, snapshot: null })} className="rounded-md border border-border px-2.5 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1">Clear snapshot</button>}
+            {state.snapshot && <button type="button" onClick={() => persist({ ...state, snapshot: null })} className="rounded-md border border-border px-2.5 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1">{S.rbClearSnapshot}</button>}
           </div>
 
           {state.snapshot && (
             <div className="mt-3 rounded-md bg-secondary px-3 py-2 text-sm" aria-live="polite">
-              <p className="font-semibold text-foreground">Snapshot vs. now</p>
+              <p className="font-semibold text-foreground">{S.rbSnapshotVsNow}</p>
               <p className="mt-1 text-muted-foreground">
-                Snapshot topics: {snapshotTopics(state.snapshot).join(", ") || "—"}. Now: {result.recommendations.map((r) => r.item.topic).filter((v, i, a) => a.indexOf(v) === i).join(", ")}.
-                {" "}Adding a new preference (or Explore mode) brings in topics the earlier feed was hiding — a filter bubble is not a complete view of what&apos;s available.
+                {S.rbSnapshotLine
+                  .replace(
+                    "{before}",
+                    snapshotTopics(state.snapshot, S).map((t) => valueText(t, S)).join(", ") || S.rbDash,
+                  )
+                  .replace(
+                    "{after}",
+                    result.recommendations
+                      .map((r) => r.item.topic)
+                      .filter((v, i, a) => a.indexOf(v) === i)
+                      .map((t) => valueText(t, S))
+                      .join(", "),
+                  )}
               </p>
             </div>
           )}
@@ -202,21 +243,22 @@ export function RecommendationBuilderActivity({ activity, progress }: ActivityCo
   )
 }
 
-function snapshotTopics(ids: string[]): string[] {
-  const topics = ids.map((id) => getItem(id)?.topic).filter(Boolean) as string[]
+function snapshotTopics(ids: string[], S: Week4RecommendStrings): string[] {
+  const topics = ids.map((id) => getItem(id, S)?.topic).filter(Boolean) as string[]
   return topics.filter((v, i, a) => a.indexOf(v) === i)
 }
 
 function RecCard({ rec }: { rec: Recommendation }) {
+  const S = useS()
   return (
     <li className="rounded-md border border-border p-3">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="text-sm font-semibold text-foreground">{rec.item.title}</p>
-        <p className="text-xs tabular-nums text-muted-foreground">score {rec.score.toFixed(1)}</p>
+        <p className="text-xs tabular-nums text-muted-foreground">{S.rbScore.replace("{n}", rec.score.toFixed(1))}</p>
       </div>
       <p className="text-xs text-muted-foreground">{rec.item.topic} · {rec.item.category} · {rec.item.difficulty} · {rec.item.format}</p>
       <div className="mt-1.5 text-sm">
-        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Why you&apos;re seeing this</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{S.rbWhySeeing}</p>
         <ul className="mt-0.5 list-disc space-y-0.5 pl-5 text-muted-foreground">
           {rec.reasons.map((r, i) => (
             <li key={i}>{r}</li>

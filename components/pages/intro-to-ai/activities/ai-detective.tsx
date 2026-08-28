@@ -3,13 +3,22 @@
 import { useEffect, useRef, useState } from "react"
 import { Check, HelpCircle, Info } from "lucide-react"
 import {
-  AI_DETECTIVE_SYSTEMS,
-  DETECTIVE_CATEGORIES,
   evaluateDetective,
   type DetectiveCategory,
   type DetectiveSystem,
   type DetectiveVerdict,
 } from "@/features/curriculums/intro-to-ai/activities/week1-activities"
+import { getWeek1Activities } from "@/features/curriculums/intro-to-ai/activities/week1-i18n"
+import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
+
+type W1 = Translations["courseUi"]["ai"]["week1"]
+
+/** The Week 1 activity chrome and content in the reader's language. */
+function useWeek1() {
+  const { language, t } = useLanguage()
+  return { content: getWeek1Activities(language), W: t.courseUi.ai.week1 }
+}
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 
@@ -18,13 +27,13 @@ type DetectiveState = { answers: Record<string, Answer>; submitted: boolean }
 
 const EMPTY: DetectiveState = { answers: {}, submitted: false }
 
-function parseState(raw: string | undefined): DetectiveState {
+function parseState(raw: string | undefined, systems: DetectiveSystem[]): DetectiveState {
   if (!raw) return EMPTY
   try {
     const data = JSON.parse(raw) as Partial<DetectiveState>
     const answers: Record<string, Answer> = {}
     if (data.answers && typeof data.answers === "object") {
-      for (const s of AI_DETECTIVE_SYSTEMS) {
+      for (const s of systems) {
         const a = (data.answers as Record<string, Answer>)[s.id]
         if (a && typeof a === "object") {
           answers[s.id] = {
@@ -40,17 +49,17 @@ function parseState(raw: string | undefined): DetectiveState {
   }
 }
 
-const categoryLabel = (id: DetectiveCategory) => DETECTIVE_CATEGORIES.find((c) => c.id === id)?.label ?? id
-
 export function AiDetectiveActivity({ activity, progress }: ActivityComponentProps) {
+  const { content, W } = useWeek1()
+  const AI_DETECTIVE_SYSTEMS = content.systems
   const [state, setState] = useState<DetectiveState>(EMPTY)
   const [error, setError] = useState("")
   const resultsRef = useRef<HTMLDivElement>(null)
 
   // Load saved state once progress is available (keyed remount avoids hydration mismatch).
   useEffect(() => {
-    if (progress.loaded) setState(parseState(progress.progress.activities[activity.id]))
-  }, [progress.loaded, progress.progress.activities, activity.id])
+    if (progress.loaded) setState(parseState(progress.progress.activities[activity.id], AI_DETECTIVE_SYSTEMS))
+  }, [progress.loaded, progress.progress.activities, activity.id, AI_DETECTIVE_SYSTEMS])
 
   const persist = (next: DetectiveState) => {
     setState(next)
@@ -76,11 +85,11 @@ export function AiDetectiveActivity({ activity, progress }: ActivityComponentPro
 
   const submit = () => {
     if (answeredCount < AI_DETECTIVE_SYSTEMS.length) {
-      setError("Choose a category for every system before submitting.")
+      setError(W.dtNeedCategory)
       return
     }
     if (missingEvidence.length > 0) {
-      setError("Pick at least one piece of evidence for each system.")
+      setError(W.dtNeedEvidence)
       return
     }
     setError("")
@@ -98,17 +107,15 @@ export function AiDetectiveActivity({ activity, progress }: ActivityComponentPro
     <ActivityFrame
       title={activity.title}
       purpose={activity.goal}
-      instructions={[
-        "For each system, choose the category you think fits best.",
-        "Pick at least one piece of evidence for your choice.",
-        "Review your answers, then submit to see an explanation for each.",
-      ]}
+      instructions={[W.dtInstr1, W.dtInstr2, W.dtInstr3]}
       status="ready"
       saveStatus={progress.saveStatus}
       onReset={() => persist(EMPTY)}
     >
       <p className="mt-3 text-sm text-muted-foreground" aria-live="polite">
-        {answeredCount} of {AI_DETECTIVE_SYSTEMS.length} classified
+        {W.dtClassified
+          .replace("{done}", String(answeredCount))
+          .replace("{total}", String(AI_DETECTIVE_SYSTEMS.length))}
       </p>
 
       <div className="mt-4 space-y-4">
@@ -139,7 +146,7 @@ export function AiDetectiveActivity({ activity, progress }: ActivityComponentPro
             disabled={!progress.loaded}
             className="inline-flex items-center rounded-md bg-avanza-green px-5 py-2.5 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
           >
-            Submit and see explanations
+            {W.dtSubmit}
           </button>
         ) : (
           <button
@@ -147,11 +154,11 @@ export function AiDetectiveActivity({ activity, progress }: ActivityComponentPro
             onClick={retry}
             className="inline-flex items-center rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-avanza-green-dark transition-colors hover:border-avanza-green hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
           >
-            Change my answers
+            {W.dtChangeAnswers}
           </button>
         )}
         <div ref={resultsRef} tabIndex={-1} aria-live="polite" className="text-sm text-muted-foreground focus-visible:outline-none">
-          {state.submitted ? "Explanations are shown below each system." : ""}
+          {state.submitted ? W.dtExplanationsBelow : ""}
         </div>
       </div>
     </ActivityFrame>
@@ -173,6 +180,8 @@ function SystemCard({
   onCategory: (c: DetectiveCategory) => void
   onEvidence: (e: string) => void
 }) {
+  const { content, W } = useWeek1()
+  const DETECTIVE_CATEGORIES = content.detectiveCategories
   return (
     <div className="rounded-lg border border-border p-4">
       <p className="text-sm font-bold text-foreground">
@@ -182,7 +191,7 @@ function SystemCard({
       <p className="mt-1 text-sm text-muted-foreground">{system.description}</p>
 
       <fieldset className="mt-3">
-        <legend className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Your classification</legend>
+        <legend className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{W.dtYourClassification}</legend>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {DETECTIVE_CATEGORIES.map((cat) => {
             const checked = answer.category === cat.id
@@ -211,7 +220,7 @@ function SystemCard({
       </fieldset>
 
       <fieldset className="mt-3">
-        <legend className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Evidence for your choice</legend>
+        <legend className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{W.dtEvidenceForChoice}</legend>
         <div className="mt-2 space-y-1.5">
           {system.evidence.map((ev) => (
             <label key={ev.id} className="flex items-start gap-2 text-sm text-foreground">
@@ -233,13 +242,16 @@ function SystemCard({
 }
 
 function Feedback({ system, chosen }: { system: DetectiveSystem; chosen: DetectiveCategory }) {
+  const { content, W } = useWeek1()
+  const categoryLabel = (id: DetectiveCategory) =>
+    content.detectiveCategories.find((c) => c.id === id)?.label ?? id
   const verdict: DetectiveVerdict = evaluateDetective(system, chosen)
   const tone =
     verdict === "best"
-      ? { icon: <Check className="h-4 w-4" aria-hidden />, label: "Strong choice", cls: "border-avanza-green/40 bg-avanza-green/10 text-avanza-green-dark" }
+      ? { icon: <Check className="h-4 w-4" aria-hidden />, label: W.dtStrongChoice, cls: "border-avanza-green/40 bg-avanza-green/10 text-avanza-green-dark" }
       : verdict === "reasonable"
-        ? { icon: <Info className="h-4 w-4" aria-hidden />, label: "Reasonable", cls: "border-avanza-teal/40 bg-avanza-teal/10 text-avanza-teal-dark" }
-        : { icon: <HelpCircle className="h-4 w-4" aria-hidden />, label: "Worth reconsidering", cls: "border-avanza-orange/40 bg-avanza-orange/10 text-avanza-orange-dark" }
+        ? { icon: <Info className="h-4 w-4" aria-hidden />, label: W.dtReasonable, cls: "border-avanza-teal/40 bg-avanza-teal/10 text-avanza-teal-dark" }
+        : { icon: <HelpCircle className="h-4 w-4" aria-hidden />, label: W.dtReconsider, cls: "border-avanza-orange/40 bg-avanza-orange/10 text-avanza-orange-dark" }
 
   return (
     <div className="mt-4 rounded-md border border-border bg-secondary/40 p-4 text-sm" aria-live="polite">
@@ -248,30 +260,30 @@ function Feedback({ system, chosen }: { system: DetectiveSystem; chosen: Detecti
       </p>
       <dl className="mt-3 grid gap-2 sm:grid-cols-2">
         <div>
-          <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Most appropriate</dt>
+          <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{W.dtMostAppropriate}</dt>
           <dd className="text-foreground">{categoryLabel(system.bestCategory)}</dd>
         </div>
         {system.alsoReasonable.length > 0 && (
           <div>
-            <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Also reasonable</dt>
+            <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{W.dtAlsoReasonable}</dt>
             <dd className="text-foreground">{system.alsoReasonable.map(categoryLabel).join(", ")}</dd>
           </div>
         )}
         <div>
-          <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Input</dt>
+          <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{W.dtInput}</dt>
           <dd className="text-foreground">{system.input}</dd>
         </div>
         <div>
-          <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Output</dt>
+          <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{W.dtOutput}</dt>
           <dd className="text-foreground">{system.output}</dd>
         </div>
         <div className="sm:col-span-2">
-          <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Rule or learned pattern</dt>
+          <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{W.dtRuleOrPattern}</dt>
           <dd className="text-foreground">{system.ruleOrPattern}</dd>
         </div>
         {system.infoNeeded && (
           <div className="sm:col-span-2">
-            <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">If unsure, you&apos;d need to know</dt>
+            <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{W.dtIfUnsure}</dt>
             <dd className="text-foreground">{system.infoNeeded}</dd>
           </div>
         )}

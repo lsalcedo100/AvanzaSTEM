@@ -20,6 +20,17 @@
 /* Pixel grid + rasterizer                                                    */
 /* ========================================================================== */
 
+import { translations, type Translations } from "../../../../i18n/translations.ts"
+
+/**
+ * The Week 3 wording. The pictures themselves are generated from geometry, so
+ * only the names and descriptions are localized; ids, category ids, splits and
+ * feature vectors are identical in every language.
+ */
+export type Week3Strings = Translations["courseUi"]["ai"]["week3"]
+
+const EN: Week3Strings = translations.en.courseUi.ai.week3
+
 export const GRID_SIZE = 16 as const
 export type Grid = number[] // length GRID_SIZE*GRID_SIZE, each value 0..1 (ink coverage)
 
@@ -177,25 +188,13 @@ export function rasterize(spec: ImageSpec): Grid {
 /* Feature extraction (from pixels, not from the generating spec)             */
 /* ========================================================================== */
 
-export const FEATURE_NAMES = [
-  "ink coverage",
-  "shape width ÷ height",
-  "fill inside its box",
-  "top-heavy vs bottom-heavy",
-  "left-heavy vs right-heavy",
-  "top-left corner",
-  "top-right corner",
-  "bottom-left corner",
-  "bottom-right corner",
-  "left-right symmetry",
-  "top-bottom symmetry",
-  "edge (outline) amount",
-  "diagonal (↘) ink",
-  "diagonal (↗) ink",
-  "center fill",
-  "widest row band",
-  "tallest column band",
-] as const
+export const featureNames = (S: Week3Strings = EN): string[] => [
+  S.fn1, S.fn2, S.fn3, S.fn4, S.fn5, S.fn6, S.fn7, S.fn8, S.fn9,
+  S.fn10, S.fn11, S.fn12, S.fn13, S.fn14, S.fn15, S.fn16, S.fn17,
+]
+
+/** The English base, for code that only needs the count or the order. */
+export const FEATURE_NAMES: string[] = featureNames()
 
 export type FeatureVector = number[]
 
@@ -336,42 +335,45 @@ export type Topic = {
   note?: string
 }
 
-export const TOPICS: Topic[] = [
+export const topics = (S: Week3Strings = EN): Topic[] => [
   {
     id: "shapes",
-    name: "Geometric shapes",
-    description: "Simple outlines and solids: circles, triangles, and squares.",
+    name: S.topShapesName,
+    description: S.topShapesDesc,
     categories: [
-      { id: "circle", name: "Circle", definition: "A round shape with no corners." },
-      { id: "triangle", name: "Triangle", definition: "A shape with three straight sides and three corners." },
-      { id: "square", name: "Square", definition: "A shape with four equal straight sides and four corners." },
+      { id: "circle", name: S.catCircle, definition: S.catCircleDef },
+      { id: "triangle", name: S.catTriangle, definition: S.catTriangleDef },
+      { id: "square", name: S.catSquare, definition: S.catSquareDef },
     ],
   },
   {
     id: "school",
-    name: "School supplies",
-    description: "Everyday classroom items drawn as simple silhouettes.",
+    name: S.topSchoolName,
+    description: S.topSchoolDesc,
     categories: [
-      { id: "writing", name: "Writing tool", definition: "Something you write or draw with, like a pencil — long and thin." },
-      { id: "measuring", name: "Measuring tool", definition: "Something you measure with, like a ruler — a wide flat bar." },
-      { id: "paper", name: "Paper", definition: "A sheet of paper — an upright rectangle." },
+      { id: "writing", name: S.catWriting, definition: S.catWritingDef },
+      { id: "measuring", name: S.catMeasuring, definition: S.catMeasuringDef },
+      { id: "paper", name: S.catPaper, definition: S.catPaperDef },
     ],
   },
   {
     id: "recycling",
-    name: "Recycling items",
-    description: "Illustrations of common recyclables. These are teaching pictures, not a guide to your local rules.",
-    note: "Recycling rules differ by place. Do not treat these categories as universal instructions for what is actually recyclable where you live.",
+    name: S.topRecyclingName,
+    description: S.topRecyclingDesc,
+    note: S.topRecyclingNote,
     categories: [
-      { id: "paper", name: "Paper", definition: "A flat paper item, like a sheet or card — an upright rectangle." },
-      { id: "plastic", name: "Plastic", definition: "A plastic bottle — tall with a narrow neck at the top." },
-      { id: "metal", name: "Metal", definition: "A metal can — a short rounded cylinder." },
+      { id: "paper", name: S.catPaper, definition: S.catRecPaperDef },
+      { id: "plastic", name: S.catPlastic, definition: S.catPlasticDef },
+      { id: "metal", name: S.catMetal, definition: S.catMetalDef },
     ],
   },
 ]
 
-export function getTopic(id: string): Topic | undefined {
-  return TOPICS.find((t) => t.id === id)
+/** The English base, for code that only needs the ids and the category order. */
+export const TOPICS: Topic[] = topics()
+
+export function getTopic(id: string, S: Week3Strings = EN): Topic | undefined {
+  return topics(S).find((t) => t.id === id)
 }
 
 export type ImageRecord = {
@@ -448,7 +450,7 @@ function rec(
 }
 
 /** Builds a topic's training + test images with controlled variation. */
-function buildShapes(): ImageRecord[] {
+function buildShapes(S: Week3Strings): ImageRecord[] {
   const out: ImageRecord[] = []
   // Training (indices 0–2) spans the wider rotations; testing (3–4) stays inside
   // that range so the base model generalizes. Extreme rotations live in EDGE_CASES.
@@ -456,47 +458,54 @@ function buildShapes(): ImageRecord[] {
   const sizes = [0.5, 0.44, 0.56, 0.48, 0.52]
   // circles
   sizes.forEach((s, i) =>
-    out.push(rec(`sh-circle-${i + 1}`, "shapes", "circle", circle(s), `A solid circle, ${i % 2 ? "smaller" : "medium"} size, centered.`, i < 3 ? "train" : "test", i === 1 ? ["small"] : [])),
+    out.push(rec(`sh-circle-${i + 1}`, "shapes", "circle", circle(s), S.descCircle.replace("{size}", i % 2 ? S.sizeSmaller : S.sizeMedium), i < 3 ? "train" : "test", i === 1 ? ["small"] : [])),
   )
   rots.forEach((r, i) =>
-    out.push(rec(`sh-tri-${i + 1}`, "shapes", "triangle", triangle(sizes[i], r), `A solid triangle rotated ${Math.round((r * 180) / Math.PI)} degrees.`, i < 3 ? "train" : "test", r !== 0 ? ["rotated"] : [])),
+    out.push(rec(`sh-tri-${i + 1}`, "shapes", "triangle", triangle(sizes[i], r), S.descTriangle.replace("{deg}", String(Math.round((r * 180) / Math.PI))), i < 3 ? "train" : "test", r !== 0 ? ["rotated"] : [])),
   )
   rots.forEach((r, i) =>
-    out.push(rec(`sh-sq-${i + 1}`, "shapes", "square", square(sizes[i], r), `A solid square rotated ${Math.round((r * 180) / Math.PI)} degrees.`, i < 3 ? "train" : "test", r !== 0 ? ["rotated"] : [])),
+    out.push(rec(`sh-sq-${i + 1}`, "shapes", "square", square(sizes[i], r), S.descSquare.replace("{deg}", String(Math.round((r * 180) / Math.PI))), i < 3 ? "train" : "test", r !== 0 ? ["rotated"] : [])),
   )
   return out
 }
 
-function buildSchool(): ImageRecord[] {
+function buildSchool(S: Week3Strings): ImageRecord[] {
   const out: ImageRecord[] = []
   const pRot = [0, 0.1, -0.1, 0.2, -0.15]
-  pRot.forEach((r, i) => out.push(rec(`sc-pen-${i + 1}`, "school", "writing", pencil(r), "A thin pencil drawn as a diagonal line.", i < 3 ? "train" : "test", r !== 0 ? ["rotated"] : [])))
-  for (let i = 0; i < 5; i++) out.push(rec(`sc-rul-${i + 1}`, "school", "measuring", { ...ruler(), scale: 1 - i * 0.05 }, "A ruler drawn as a wide flat bar with tick marks.", i < 3 ? "train" : "test", []))
-  for (let i = 0; i < 5; i++) out.push(rec(`sc-pap-${i + 1}`, "school", "paper", { ...sheet(true), scale: 1 - i * 0.05 }, "A sheet of paper drawn as an upright rectangle with lines.", i < 3 ? "train" : "test", []))
+  pRot.forEach((r, i) => out.push(rec(`sc-pen-${i + 1}`, "school", "writing", pencil(r), S.descPencil, i < 3 ? "train" : "test", r !== 0 ? ["rotated"] : [])))
+  for (let i = 0; i < 5; i++) out.push(rec(`sc-rul-${i + 1}`, "school", "measuring", { ...ruler(), scale: 1 - i * 0.05 }, S.descRuler, i < 3 ? "train" : "test", []))
+  for (let i = 0; i < 5; i++) out.push(rec(`sc-pap-${i + 1}`, "school", "paper", { ...sheet(true), scale: 1 - i * 0.05 }, S.descPaperLined, i < 3 ? "train" : "test", []))
   return out
 }
 
-function buildRecycling(): ImageRecord[] {
+function buildRecycling(S: Week3Strings): ImageRecord[] {
   const out: ImageRecord[] = []
-  for (let i = 0; i < 5; i++) out.push(rec(`re-pap-${i + 1}`, "recycling", "paper", { ...sheet(false), scale: 1 - i * 0.05 }, "A flat paper item drawn as an upright rectangle.", i < 3 ? "train" : "test", []))
-  for (let i = 0; i < 5; i++) out.push(rec(`re-pla-${i + 1}`, "recycling", "plastic", { ...bottle(), scale: 1 - i * 0.04 }, "A plastic bottle drawn tall with a narrow neck.", i < 3 ? "train" : "test", []))
-  for (let i = 0; i < 5; i++) out.push(rec(`re-met-${i + 1}`, "recycling", "metal", { ...can(), scale: 1 - i * 0.04 }, "A metal can drawn as a short rounded cylinder.", i < 3 ? "train" : "test", []))
+  for (let i = 0; i < 5; i++) out.push(rec(`re-pap-${i + 1}`, "recycling", "paper", { ...sheet(false), scale: 1 - i * 0.05 }, S.descPaperFlat, i < 3 ? "train" : "test", []))
+  for (let i = 0; i < 5; i++) out.push(rec(`re-pla-${i + 1}`, "recycling", "plastic", { ...bottle(), scale: 1 - i * 0.04 }, S.descBottle, i < 3 ? "train" : "test", []))
+  for (let i = 0; i < 5; i++) out.push(rec(`re-met-${i + 1}`, "recycling", "metal", { ...can(), scale: 1 - i * 0.04 }, S.descCan, i < 3 ? "train" : "test", []))
   return out
 }
 
-export const IMAGES: ImageRecord[] = [...buildShapes(), ...buildSchool(), ...buildRecycling()]
+export const images = (S: Week3Strings = EN): ImageRecord[] => [
+  ...buildShapes(S),
+  ...buildSchool(S),
+  ...buildRecycling(S),
+]
 
-export function topicImages(topic: TopicId): ImageRecord[] {
-  return IMAGES.filter((im) => im.topic === topic)
+/** The English base, for code that only needs ids, labels, splits, or features. */
+export const IMAGES: ImageRecord[] = images()
+
+export function topicImages(topic: TopicId, S: Week3Strings = EN): ImageRecord[] {
+  return images(S).filter((im) => im.topic === topic)
 }
-export function trainingPool(topic: TopicId): ImageRecord[] {
-  return topicImages(topic).filter((im) => im.split === "train")
+export function trainingPool(topic: TopicId, S: Week3Strings = EN): ImageRecord[] {
+  return topicImages(topic, S).filter((im) => im.split === "train")
 }
-export function testSet(topic: TopicId): ImageRecord[] {
-  return topicImages(topic).filter((im) => im.split === "test")
+export function testSet(topic: TopicId, S: Week3Strings = EN): ImageRecord[] {
+  return topicImages(topic, S).filter((im) => im.split === "test")
 }
-export function getImage(id: string): ImageRecord | undefined {
-  return IMAGES.find((im) => im.id === id)
+export function getImage(id: string, S: Week3Strings = EN): ImageRecord | undefined {
+  return images(S).find((im) => im.id === id)
 }
 
 /* ========================================================================== */
@@ -514,18 +523,21 @@ export type EdgeCase = {
   why: string
 }
 
-export const EDGE_CASES: EdgeCase[] = [
-  { id: "ec-tri-rot", topic: "shapes", label: "square", spec: square(0.5, Math.PI / 4), description: "A square rotated 45 degrees, so it looks like a diamond.", tag: "rotated", why: "Rotated 45°, a square sits like a diamond; its corners no longer fill the picture's corners, so it can look more like a circle or triangle to the model." },
-  { id: "ec-circ-occ", topic: "shapes", label: "circle", spec: { ...circle(0.56), occlude: [{ kind: "rectFill", x: 0.5, y: 0, w: 0.5, h: 1 }] }, description: "A circle with its right half hidden behind a block.", tag: "obstructed", why: "Half the circle is covered, so the model sees a half-moon and may match it to a different shape." },
-  { id: "ec-sq-noise", topic: "shapes", label: "square", spec: { ...square(0.46, 0), noise: 0.18 }, description: "A square on a noisy, speckled background.", tag: "unusual background", why: "Background speckles add stray ink the model may read as part of the shape." },
-  { id: "ec-tri-blur", topic: "shapes", label: "triangle", spec: { ...triangle(0.52, 0), blur: 2 }, description: "A blurred triangle with soft, fuzzy edges.", tag: "blurred", why: "Blurring softens the sharp corners a triangle is known by, weakening the strongest clue." },
-  { id: "ec-circ-small", topic: "shapes", label: "circle", spec: circle(0.2), description: "A very small circle in the middle of the picture.", tag: "very small", why: "A tiny shape leaves most of the picture empty, so the model has little ink to judge." },
-  { id: "ec-pen-thick", topic: "school", label: "writing", spec: { draw: [{ kind: "line", a: [0.22, 0.78], b: [0.78, 0.22], thickness: 0.26 }] }, description: "A very thick pencil that looks more like a bar.", tag: "shared features", why: "Drawn thick, a pencil starts to look like a ruler — the two categories share the 'long bar' feature." },
-  { id: "ec-mixed", topic: "shapes", label: "square", spec: { draw: [{ kind: "polyFill", points: [[0.28, 0.3], [0.62, 0.3], [0.62, 0.64], [0.28, 0.64]] }, { kind: "disc", cx: 0.68, cy: 0.66, r: 0.14 }] }, description: "A square with a small circle overlapping one corner.", tag: "mixed category", why: "Two shapes appear at once, so the model must pick one label for a picture that honestly contains two." },
+export const edgeCases = (S: Week3Strings = EN): EdgeCase[] => [
+  { id: "ec-tri-rot", topic: "shapes", label: "square", spec: square(0.5, Math.PI / 4), description: S.ec1Desc, tag: S.ec1Tag, why: S.ec1Why },
+  { id: "ec-circ-occ", topic: "shapes", label: "circle", spec: { ...circle(0.56), occlude: [{ kind: "rectFill", x: 0.5, y: 0, w: 0.5, h: 1 }] }, description: S.ec2Desc, tag: S.ec2Tag, why: S.ec2Why },
+  { id: "ec-sq-noise", topic: "shapes", label: "square", spec: { ...square(0.46, 0), noise: 0.18 }, description: S.ec3Desc, tag: S.ec3Tag, why: S.ec3Why },
+  { id: "ec-tri-blur", topic: "shapes", label: "triangle", spec: { ...triangle(0.52, 0), blur: 2 }, description: S.ec4Desc, tag: S.ec4Tag, why: S.ec4Why },
+  { id: "ec-circ-small", topic: "shapes", label: "circle", spec: circle(0.2), description: S.ec5Desc, tag: S.ec5Tag, why: S.ec5Why },
+  { id: "ec-pen-thick", topic: "school", label: "writing", spec: { draw: [{ kind: "line", a: [0.22, 0.78], b: [0.78, 0.22], thickness: 0.26 }] }, description: S.ec6Desc, tag: S.ec6Tag, why: S.ec6Why },
+  { id: "ec-mixed", topic: "shapes", label: "square", spec: { draw: [{ kind: "polyFill", points: [[0.28, 0.3], [0.62, 0.3], [0.62, 0.64], [0.28, 0.64]] }, { kind: "disc", cx: 0.68, cy: 0.66, r: 0.14 }] }, description: S.ec7Desc, tag: S.ec7Tag, why: S.ec7Why },
 ]
 
-export function edgeCasesForTopic(topic: TopicId): EdgeCase[] {
-  return EDGE_CASES.filter((e) => e.topic === topic)
+/** The English base, for code that only needs ids, labels, or specs. */
+export const EDGE_CASES: EdgeCase[] = edgeCases()
+
+export function edgeCasesForTopic(topic: TopicId, S: Week3Strings = EN): EdgeCase[] {
+  return edgeCases(S).filter((e) => e.topic === topic)
 }
 
 /* ========================================================================== */
@@ -602,11 +614,18 @@ export function classifyImage(training: ImageRecord[], target: ImageRecord, k = 
 }
 
 /** Human explanation of what the model matched. */
-export function explainResult(topic: Topic, result: ClassifyResult): string {
-  const names = result.neighbors.map((n) => `${categoryName(topic, n.label)} (${Math.round(n.similarity * 100)}% similar)`).join(", ")
-  return `The closest training pictures were: ${names}. The model added up the similarities and chose ${categoryName(topic, result.predicted)}, giving it ${Math.round(
-    result.confidence * 100,
-  )}% confidence. Confidence compares the categories to each other — it is not a promise the answer is right.`
+export function explainResult(topic: Topic, result: ClassifyResult, S: Week3Strings = EN): string {
+  const names = result.neighbors
+    .map((n) =>
+      S.explainNeighbor
+        .replace("{name}", categoryName(topic, n.label))
+        .replace("{pct}", String(Math.round(n.similarity * 100))),
+    )
+    .join(", ")
+  return S.explainResult
+    .replace("{names}", names)
+    .replace("{predicted}", categoryName(topic, result.predicted))
+    .replace("{confidence}", String(Math.round(result.confidence * 100)))
 }
 
 export function categoryName(topic: Topic, id: string): string {
@@ -673,21 +692,21 @@ export function accuracyPercent(evaluation: Evaluation): number {
   return Math.round(evaluation.accuracy * 100)
 }
 
-export function validateTraining(topic: Topic, training: ImageRecord[], test: ImageRecord[]): { errors: string[]; warnings: string[]; ok: boolean } {
+export function validateTraining(topic: Topic, training: ImageRecord[], test: ImageRecord[], S: Week3Strings = EN): { errors: string[]; warnings: string[]; ok: boolean } {
   const errors: string[] = []
   const warnings: string[] = []
   const counts = topic.categories.map((c) => training.filter((im) => im.label === c.id).length)
   const empties = topic.categories.filter((c, i) => counts[i] === 0)
-  for (const c of empties) errors.push(`“${c.name}” has no training pictures. The model can never predict it.`)
+  for (const c of empties) errors.push(S.vtNoPictures.replace("{name}", c.name))
   if (training.length > 0) {
     const max = Math.max(...counts)
     const min = Math.min(...counts.filter((_, i) => counts[i] > 0))
-    if (max >= 3 * min) warnings.push("The categories are very unbalanced. The model will favor the category with the most pictures.")
+    if (max >= 3 * min) warnings.push(S.vtUnbalanced)
   }
-  if (training.length < topic.categories.length * 2) warnings.push("Very few training pictures — results may be unreliable. Add a couple more per category.")
+  if (training.length < topic.categories.length * 2) warnings.push(S.vtTooFew)
   const trainIds = new Set(training.map((im) => im.id))
   const overlap = test.filter((im) => trainIds.has(im.id))
-  if (overlap.length > 0) errors.push(`${overlap.length} test picture(s) are also in training — testing on training pictures is not a fair check.`)
+  if (overlap.length > 0) errors.push(S.vtOverlap.replace("{n}", String(overlap.length)))
   return { errors, warnings, ok: errors.length === 0 }
 }
 

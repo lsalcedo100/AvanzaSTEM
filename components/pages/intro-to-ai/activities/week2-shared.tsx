@@ -3,12 +3,20 @@
 import type { ReactNode } from "react"
 import { Check, X } from "lucide-react"
 import {
-  SPACE_FRUIT_FEATURES,
+  spaceFruitFeatures,
   labelText,
   type FeatureKey,
   type SpaceFruit,
+  optionText,
   type SpaceFruitLabel,
+  type Week2Strings,
 } from "@/features/curriculums/intro-to-ai/activities/week2-activities"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Week 2 wording in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.week2
+}
 
 /**
  * Shared, accessible primitives for the Week 2 "data lab" activities: a label
@@ -18,32 +26,34 @@ import {
  */
 
 /** Formats a feature value for display, showing "—" for a missing value. */
-export function featureValue(fruit: SpaceFruit, key: FeatureKey): string {
-  if (fruit.incomplete?.includes(key)) return "—"
-  const meta = SPACE_FRUIT_FEATURES.find((f) => f.key === key)!
+export function featureValue(fruit: SpaceFruit, key: FeatureKey, S: Week2Strings): string {
+  if (fruit.incomplete?.includes(key)) return S.dash
+  const meta = spaceFruitFeatures(S).find((f) => f.key === key)!
   const v = fruit.features[key]
-  return meta.type === "number" && meta.unit ? `${v} ${meta.unit}` : String(v)
+  if (meta.type === "number") return meta.unit ? `${v} ${meta.unit}` : String(v)
+  return optionText(String(v), S)
 }
 
 /** A label shown as text with a distinct icon/shape, so it never relies on color. */
 export function LabelBadge({ label }: { label: SpaceFruitLabel | "" | undefined }) {
+  const S = useS()
   if (label === "safe") {
     return (
       <span className="inline-flex items-center gap-1 rounded-full border border-avanza-green/50 bg-avanza-green/10 px-2 py-0.5 text-xs font-semibold text-avanza-green-dark">
-        <Check className="h-3 w-3" aria-hidden /> Safe
+        <Check className="h-3 w-3" aria-hidden /> {S.labelSafeShort}
       </span>
     )
   }
   if (label === "unsafe") {
     return (
       <span className="inline-flex items-center gap-1 rounded-full border border-avanza-orange/50 bg-avanza-orange/10 px-2 py-0.5 text-xs font-semibold text-avanza-orange-dark">
-        <X className="h-3 w-3" aria-hidden /> Not safe
+        <X className="h-3 w-3" aria-hidden /> {S.labelUnsafeShort}
       </span>
     )
   }
   return (
     <span className="inline-flex items-center gap-1 rounded-full border border-border bg-secondary px-2 py-0.5 text-xs font-semibold text-muted-foreground">
-      Unlabeled
+      {S.unlabeled}
     </span>
   )
 }
@@ -120,6 +130,8 @@ export function FruitDataTable({
   rows: FruitRow[]
   controlHeader?: string
 }) {
+  const S = useS()
+  const SPACE_FRUIT_FEATURES = spaceFruitFeatures(S)
   return (
     <div>
       {/* Wide screens: semantic table. */}
@@ -129,7 +141,7 @@ export function FruitDataTable({
           <thead>
             <tr>
               <th scope="col" className="border-b border-border px-2 py-2 text-left font-semibold text-foreground">
-                Fruit
+                {S.wsFruitName}
               </th>
               {SPACE_FRUIT_FEATURES.map((f) => (
                 <th key={f.key} scope="col" className="border-b border-border px-2 py-2 text-left font-semibold text-foreground">
@@ -153,7 +165,7 @@ export function FruitDataTable({
                 </th>
                 {SPACE_FRUIT_FEATURES.map((f) => (
                   <td key={f.key} className="border-b border-border/60 px-2 py-2 align-top text-muted-foreground">
-                    {featureValue(fruit, f.key)}
+                    {featureValue(fruit, f.key, S)}
                   </td>
                 ))}
                 {controlHeader && <td className="border-b border-border/60 px-2 py-2 align-top">{controls}</td>}
@@ -175,7 +187,7 @@ export function FruitDataTable({
               {SPACE_FRUIT_FEATURES.map((f) => (
                 <div key={f.key} className="flex justify-between gap-2">
                   <dt className="text-muted-foreground">{f.label}</dt>
-                  <dd className="text-right font-medium text-foreground">{featureValue(fruit, f.key)}</dd>
+                  <dd className="text-right font-medium text-foreground">{featureValue(fruit, f.key, S)}</dd>
                 </div>
               ))}
             </dl>
@@ -198,8 +210,9 @@ export function LabelPicker({
   onChange: (label: SpaceFruitLabel | "") => void
   idBase: string
 }) {
+  const S = useS()
   return (
-    <span className="inline-flex flex-wrap gap-1" role="group" aria-label="Assign a label">
+    <span className="inline-flex flex-wrap gap-1" role="group" aria-label={S.wsAssignLabel}>
       {(["safe", "unsafe"] as SpaceFruitLabel[]).map((l) => {
         const active = value === l
         return (
@@ -218,7 +231,7 @@ export function LabelPicker({
             }`}
           >
             {l === "safe" ? <Check className="h-3 w-3" aria-hidden /> : <X className="h-3 w-3" aria-hidden />}
-            {labelText(l)}
+            {labelText(l, S)}
           </button>
         )
       })}

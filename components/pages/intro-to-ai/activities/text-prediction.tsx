@@ -3,13 +3,20 @@
 import { useEffect, useRef, useState } from "react"
 import { Check, HelpCircle, X } from "lucide-react"
 import {
-  PROMPT_PRESETS,
+  promptPresets,
+  modelFor,
   fillTemplate,
   predictNext,
   explainPrediction,
-  FLUENCY_CARDS,
+  fluencyCards,
   type PredictionResult,
 } from "@/features/curriculums/intro-to-ai/activities/week4-text"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Week 4 text-lab wording in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.week4Text
+}
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 
@@ -17,7 +24,7 @@ type Mark = "true" | "false" | "check" | ""
 type TPState = { presetId: string; theme: string; context: string; marks: Record<string, Mark> }
 
 function emptyState(): TPState {
-  const preset = PROMPT_PRESETS[0]
+  const preset = promptPresets()[0]
   return { presetId: preset.id, theme: preset.themes[0] ?? "", context: fillTemplate(preset.template, preset.themes[0] ?? ""), marks: {} }
 }
 
@@ -40,6 +47,7 @@ function parseState(raw: string | undefined): TPState {
 }
 
 export function TextPredictionActivity({ activity, progress }: ActivityComponentProps) {
+  const S = useS()
   const [state, setState] = useState<TPState>(emptyState)
   const announceRef = useRef<HTMLParagraphElement>(null)
 
@@ -55,31 +63,39 @@ export function TextPredictionActivity({ activity, progress }: ActivityComponent
     if (announceRef.current) announceRef.current.textContent = msg
   }
 
-  const preset = PROMPT_PRESETS.find((p) => p.id === state.presetId) ?? PROMPT_PRESETS[0]
-  const result = predictNext(state.context)
+  const PRESETS = promptPresets(S)
+  const MODEL = modelFor(S)
+  const preset = PRESETS.find((p) => p.id === state.presetId) ?? PRESETS[0]
+  const result = predictNext(state.context, MODEL, 4, S)
 
   const selectPreset = (id: string) => {
-    const p = PROMPT_PRESETS.find((x) => x.id === id)!
+    const p = PRESETS.find((x) => x.id === id)!
     const theme = p.themes[0] ?? ""
     persist({ ...state, presetId: id, theme, context: fillTemplate(p.template, theme) })
   }
   const setTheme = (theme: string) => {
     persist({ ...state, theme, context: fillTemplate(preset.template, theme) })
-    announce(`Context changed to “${fillTemplate(preset.template, theme)}”. Predictions updated.`)
+    announce(S.tpContextAnnounce.replace("{context}", fillTemplate(preset.template, theme)))
   }
   const setMark = (id: string, mark: Mark) => persist({ ...state, marks: { ...state.marks, [id]: mark } })
 
   // Comparison across all theme options for the swappable preset.
-  const comparison = preset.themes.length > 1 ? preset.themes.map((t) => ({ theme: t, top: predictNext(fillTemplate(preset.template, t)).predictions[0]?.word ?? "—" })) : []
+  const comparison =
+    preset.themes.length > 1
+      ? preset.themes.map((t) => ({
+          theme: t,
+          top: predictNext(fillTemplate(preset.template, t), MODEL, 4, S).predictions[0]?.word ?? S.tpDash,
+        }))
+      : []
 
   return (
     <ActivityFrame
       title={activity.title}
       purpose={activity.goal}
       instructions={[
-        "Pick a prompt and see the words the model rates as most likely to come next.",
-        "Swap a word (like storm → parade) or add your own words, and watch the likelihoods change.",
-        "Then judge the fluency cards: a smooth sentence can still be false.",
+        S.tpInstr1,
+        S.tpInstr2,
+        S.tpInstr3,
       ]}
       status="ready"
       saveStatus={progress.saveStatus}
@@ -88,9 +104,9 @@ export function TextPredictionActivity({ activity, progress }: ActivityComponent
 
       {/* Prompt picker */}
       <fieldset className="mt-4">
-        <legend className="text-sm font-bold text-foreground">1 · Pick a prompt</legend>
+        <legend className="text-sm font-bold text-foreground">{S.tpStep1}</legend>
         <div className="mt-2 flex flex-wrap gap-2">
-          {PROMPT_PRESETS.map((p) => (
+          {PRESETS.map((p) => (
             <button
               key={p.id}
               type="button"
@@ -110,7 +126,7 @@ export function TextPredictionActivity({ activity, progress }: ActivityComponent
       <div className="mt-4 rounded-md border border-border p-3">
         {preset.themes.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
-            <label htmlFor="tp-theme" className="text-sm font-semibold text-foreground">Swap the word:</label>
+            <label htmlFor="tp-theme" className="text-sm font-semibold text-foreground">{S.tpSwapWord}</label>
             <select id="tp-theme" value={state.theme} onChange={(e) => setTheme(e.target.value)} className="rounded-md border border-border bg-card px-2 py-1 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green">
               {preset.themes.map((t) => (
                 <option key={t} value={t}>{t}</option>
@@ -118,7 +134,7 @@ export function TextPredictionActivity({ activity, progress }: ActivityComponent
             </select>
           </div>
         )}
-        <label htmlFor="tp-context" className="mt-3 block text-sm font-semibold text-foreground">Context (edit or add words):</label>
+        <label htmlFor="tp-context" className="mt-3 block text-sm font-semibold text-foreground">{S.tpContext}</label>
         <div className="mt-1 flex flex-wrap items-center gap-2">
           <input id="tp-context" value={state.context} onChange={(e) => persist({ ...state, context: e.target.value })} className="flex-1 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green" />
           <span className="text-sm text-muted-foreground">___ ?</span>
@@ -127,19 +143,22 @@ export function TextPredictionActivity({ activity, progress }: ActivityComponent
 
       {/* Predictions */}
       <div className="mt-4 rounded-md border border-border bg-card p-4">
-        <p className="text-sm font-bold text-foreground">Most likely next words</p>
+        <p className="text-sm font-bold text-foreground">{S.tpMostLikely}</p>
         <ProbBars result={result} />
-        <p className="mt-2 text-xs text-muted-foreground">{explainPrediction(result)} This is pattern-matching over a small word list — not real understanding, and not a fact-check.</p>
+        <p className="mt-2 text-xs text-muted-foreground">{explainPrediction(result, S)} {S.tpPatternNote}</p>
       </div>
 
       {/* Comparison */}
       {comparison.length > 0 && (
         <div className="mt-3 rounded-md border border-avanza-purple/30 bg-avanza-purple/5 p-3 text-sm">
-          <p className="font-semibold text-foreground">Same sentence, different word:</p>
+          <p className="font-semibold text-foreground">{S.tpSameSentence}</p>
           <ul className="mt-1 space-y-0.5 text-muted-foreground">
             {comparison.map((c) => (
               <li key={c.theme}>
-                “{fillTemplate(preset.template, c.theme)} <span className="font-semibold text-foreground">{c.top}</span>…” — changing one word changes the likely continuation.
+                {S.tpComparisonLine.split("{context}")[0]}
+                {fillTemplate(preset.template, c.theme)}{" "}
+                <span className="font-semibold text-foreground">{c.top}</span>
+                {S.tpComparisonLine.split("{word}")[1]}
               </li>
             ))}
           </ul>
@@ -148,10 +167,10 @@ export function TextPredictionActivity({ activity, progress }: ActivityComponent
 
       {/* Fluency vs truth */}
       <div className="mt-6 border-t border-border pt-5">
-        <h4 className="text-sm font-bold text-foreground">Fluent is not the same as true</h4>
-        <p className="mt-1 text-sm text-muted-foreground">Each sentence below sounds smooth and confident. Decide if it&apos;s actually true, then reveal the answer.</p>
+        <h4 className="text-sm font-bold text-foreground">{S.tpFluentTitle}</h4>
+        <p className="mt-1 text-sm text-muted-foreground">{S.tpFluentIntro}</p>
         <ul className="mt-3 space-y-3">
-          {FLUENCY_CARDS.map((card) => {
+          {fluencyCards(S).map((card) => {
             const mark = state.marks[card.id] ?? ""
             const revealed = mark !== ""
             return (
@@ -160,8 +179,8 @@ export function TextPredictionActivity({ activity, progress }: ActivityComponent
                   “{card.prompt} <span className="font-semibold">{card.continuation}</span>”
                 </p>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
-                  <span className="text-xs font-semibold text-muted-foreground">Your call:</span>
-                  {([["true", "True", Check], ["false", "False", X], ["check", "Need to check", HelpCircle]] as [Mark, string, typeof Check][]).map(([m, label, Icon]) => (
+                  <span className="text-xs font-semibold text-muted-foreground">{S.tpYourCall}</span>
+                  {([["true", S.tpTrue, Check], ["false", S.tpFalse, X], ["check", S.tpNeedCheck, HelpCircle]] as [Mark, string, typeof Check][]).map(([m, label, Icon]) => (
                     <button
                       key={m}
                       type="button"
@@ -177,9 +196,17 @@ export function TextPredictionActivity({ activity, progress }: ActivityComponent
                 </div>
                 {revealed && (
                   <div className={`mt-2 rounded-md px-3 py-2 text-sm ${card.isTrue ? "bg-avanza-green/10 text-avanza-green-dark" : "bg-avanza-orange/10 text-avanza-orange-dark"}`} aria-live="polite">
-                    <p className="font-semibold">Actually {card.isTrue ? "true" : "false"} ({card.claimType}). {mark === (card.isTrue ? "true" : "false") ? "You got it." : ""}</p>
+                    <p className="font-semibold">
+                      {S.tpActually
+                        .replace("{verdict}", card.isTrue ? S.tpVerdictTrue : S.tpVerdictFalse)
+                        .replace(
+                          "{type}",
+                          card.claimType === "fact" ? S.tpTypeFact : card.claimType === "date" ? S.tpTypeDate : S.tpTypeQuote,
+                        )}{" "}
+                      {mark === (card.isTrue ? "true" : "false") ? S.tpGotIt : ""}
+                    </p>
                     <p className="mt-0.5">{card.why}</p>
-                    <p className="mt-0.5"><span className="font-semibold">How to check:</span> {card.howToVerify}</p>
+                    <p className="mt-0.5"><span className="font-semibold">{S.tpHowToCheck}</span> {card.howToVerify}</p>
                   </div>
                 )}
               </li>
@@ -192,11 +219,12 @@ export function TextPredictionActivity({ activity, progress }: ActivityComponent
 }
 
 function ProbBars({ result }: { result: PredictionResult }) {
+  const S = useS()
   const max = Math.max(0.0001, ...result.predictions.map((p) => p.probability))
-  if (result.predictions.length === 0) return <p className="mt-2 text-sm text-muted-foreground">No prediction available for this context.</p>
+  if (result.predictions.length === 0) return <p className="mt-2 text-sm text-muted-foreground">{S.tpNoPrediction}</p>
   const summary = result.predictions.map((p) => `${p.word} ${Math.round(p.probability * 100)}%`).join(", ")
   return (
-    <div className="mt-2 space-y-1.5" role="img" aria-label={`Likely next words: ${summary}`}>
+    <div className="mt-2 space-y-1.5" role="img" aria-label={S.tpLikelyWords.replace("{summary}", summary)}>
       {result.predictions.map((p) => (
         <div key={p.word} className="grid grid-cols-[6rem_1fr_4.5rem] items-center gap-2 text-sm">
           <span className="truncate font-medium text-foreground">{p.word}</span>

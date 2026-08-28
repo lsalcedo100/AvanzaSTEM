@@ -1,5 +1,9 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
+import { translations } from "../../../../i18n/translations.ts"
+
+// The metric labels are localized; the structure under test is not.
+const EXPERIMENTS_EN = translations.en.courseUi.ai.week2
 
 import {
   CANONICAL_TRAINING,
@@ -8,7 +12,7 @@ import {
   FLAWED_TRAINING,
   REPAIR_POOL,
   SPACE_FRUIT_FEATURES,
-  EXPERIMENTS,
+  experiments,
   groundTruthLabel,
   featureSignature,
   findDuplicateGroups,
@@ -208,7 +212,7 @@ test("unbalanced data specifically hurts the under-represented Not-safe category
 })
 
 test("every experiment is reproducible", () => {
-  for (const exp of EXPERIMENTS) {
+  for (const exp of experiments()) {
     const a = runExperiment(exp.id, 3)
     const b = runExperiment(exp.id, 3)
     assert.deepEqual(a.results.map((r) => r.predicted), b.results.map((r) => r.predicted))
@@ -236,9 +240,9 @@ test("repairing the flawed dataset improves the comparison", () => {
   const fixed = deduped.map((e) => ({ ...e, label: e.canonicalLabel }))
   const repaired = [...fixed, ...REPAIR_POOL.filter((e) => e.canonicalLabel === "unsafe")]
 
-  const cmp = repairComparison(FLAWED_TRAINING, repaired, 3)
+  const cmp = repairComparison(FLAWED_TRAINING, repaired)
   assert.ok(cmp.afterRun.accuracy > cmp.beforeRun.accuracy, "repair should raise accuracy")
   assert.equal(datasetStats(fixed).incorrectCount, 0, "no incorrect labels remain after fixing")
-  assert.ok(cmp.rows.find((r) => r.metric === "Overall accuracy"))
+  assert.ok(cmp.rows.find((r) => r.metric === EXPERIMENTS_EN.cmpAccuracy))
   assert.ok(balanceRatio(repaired) > balanceRatio(FLAWED_TRAINING))
 })

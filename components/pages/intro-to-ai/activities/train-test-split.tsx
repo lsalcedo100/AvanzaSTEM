@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
   CANONICAL_TRAINING,
-  EXPERIMENTS,
-  GROUND_TRUTH_RULE,
+  experiments,
+  localizeFruits,
   accuracyPercent,
   categoryPercentText,
   labelCounts,
@@ -16,6 +16,12 @@ import {
   type ModelRun,
   type SpaceFruit,
 } from "@/features/curriculums/intro-to-ai/activities/week2-activities"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Week 2 wording in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.week2
+}
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 import { CountBars, LabelBadge } from "@/components/pages/intro-to-ai/activities/week2-shared"
@@ -89,6 +95,7 @@ function parseState(raw: string | undefined): TTState {
 }
 
 export function TrainTestSplitActivity({ activity, progress }: ActivityComponentProps) {
+  const S = useS()
   const [state, setState] = useState<TTState>(emptyState)
   const announceRef = useRef<HTMLParagraphElement>(null)
 
@@ -104,9 +111,10 @@ export function TrainTestSplitActivity({ activity, progress }: ActivityComponent
     if (announceRef.current) announceRef.current.textContent = msg
   }
 
-  const trainFruits = SPLIT_POOL.filter((e) => state.assignment[e.id] === "train")
-  const testFruits = SPLIT_POOL.filter((e) => state.assignment[e.id] === "test")
-  const validation = validateSplit(trainFruits, testFruits)
+  const POOL = useMemo(() => localizeFruits(SPLIT_POOL, S), [S])
+  const trainFruits = POOL.filter((e) => state.assignment[e.id] === "train")
+  const testFruits = POOL.filter((e) => state.assignment[e.id] === "test")
+  const validation = validateSplit(trainFruits, testFruits, S)
   const trainCounts = labelCounts(trainFruits, true)
   const testCounts = labelCounts(testFruits, true)
 
@@ -125,15 +133,11 @@ export function TrainTestSplitActivity({ activity, progress }: ActivityComponent
     <ActivityFrame
       title={activity.title}
       purpose={activity.goal}
-      instructions={[
-        "Split the 16 fruits into a training set (to learn from) and a testing set (held back to check the model).",
-        "Every fruit goes in exactly one set. Keep some of each category in the test set.",
-        "Run the model, read its accuracy, then try the three data experiments below.",
-      ]}
+      instructions={[S.ttInstr1, S.ttInstr2, S.ttInstr3]}
       status="ready"
       saveStatus={progress.saveStatus}
       onReset={() => {
-        announce("Activity reset.")
+        announce(S.ttActivityReset)
         persist(emptyState())
       }}
     >
@@ -142,7 +146,7 @@ export function TrainTestSplitActivity({ activity, progress }: ActivityComponent
       {/* Predict why examples must be hidden */}
       <div className="mt-4 rounded-md border border-avanza-purple/30 bg-avanza-purple/5 p-4">
         <label htmlFor="tt-split-pred" className="block text-sm font-semibold text-foreground">
-          Predict first: why must some examples be hidden from training?
+          {S.ttPredictFirst}
         </label>
         <textarea
           id="tt-split-pred"
@@ -151,46 +155,44 @@ export function TrainTestSplitActivity({ activity, progress }: ActivityComponent
           onBlur={(e) => persist({ ...state, splitPrediction: e.target.value })}
           rows={2}
           className="mt-2 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
-          placeholder="e.g. If the model is tested on fruit it already studied, it could just repeat memorized answers."
+          placeholder={S.ttPredictPlaceholder}
         />
       </div>
 
       {/* Split controls */}
       <div className="mt-5 flex flex-wrap items-center justify-between gap-2">
-        <h4 className="text-sm font-bold text-foreground">Assign each fruit</h4>
+        <h4 className="text-sm font-bold text-foreground">{S.ttAssignEach}</h4>
         <button
           type="button"
           onClick={() => {
             persist({ ...state, assignment: suggestedSplit(), ranSplit: false })
-            announce("Reset to a suggested split of 12 training and 4 testing.")
+            announce(S.ttResetSplit)
           }}
           className="rounded-md border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-avanza-green/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1"
         >
-          Use a suggested 12 / 4 split
+          {S.ttSuggestedSplit}
         </button>
       </div>
 
       {/* Set summaries */}
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
-        <SetSummary title="Training set" total={trainFruits.length} counts={trainCounts} tone="green" />
-        <SetSummary title="Testing set (held back)" total={testFruits.length} counts={testCounts} tone="purple" />
+        <SetSummary title={S.ttTrainingSet} total={trainFruits.length} counts={trainCounts} tone="green" />
+        <SetSummary title={S.ttTestingSet} total={testFruits.length} counts={testCounts} tone="purple" />
       </div>
 
       {/* Assignment table */}
       <div className="mt-4 overflow-x-auto">
         <table className="w-full border-collapse text-sm">
-          <caption className="sr-only">
-            Sixteen space fruits. For each, a toggle assigns it to the training set or the testing set, and its correct label is shown.
-          </caption>
+          <caption className="sr-only">{S.ttTableCaption}</caption>
           <thead>
             <tr className="text-left">
-              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">Fruit</th>
-              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">Correct label</th>
-              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">In which set?</th>
+              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">{S.ttFruit}</th>
+              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">{S.ttCorrectLabel}</th>
+              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">{S.ttInWhichSet}</th>
             </tr>
           </thead>
           <tbody>
-            {SPLIT_POOL.map((fruit) => {
+            {POOL.map((fruit) => {
               const set = state.assignment[fruit.id]
               return (
                 <tr key={fruit.id}>
@@ -205,14 +207,17 @@ export function TrainTestSplitActivity({ activity, progress }: ActivityComponent
                     <button
                       type="button"
                       onClick={() => toggle(fruit.id)}
-                      aria-label={`${fruit.name} is in the ${set === "train" ? "training" : "testing"} set. Activate to move it to the ${set === "train" ? "testing" : "training"} set.`}
+                      aria-label={S.ttToggleAria
+                        .replace("{name}", fruit.name)
+                        .replace("{set}", set === "train" ? S.ttTrainingWord : S.ttTestingWord)
+                        .replace("{other}", set === "train" ? S.ttTestingWord : S.ttTrainingWord)}
                       className={`inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1 ${
                         set === "train"
                           ? "border-avanza-green bg-avanza-green/15 text-avanza-green-dark"
                           : "border-avanza-purple bg-avanza-purple/10 text-avanza-purple-dark"
                       }`}
                     >
-                      {set === "train" ? "Training" : "Testing"} · switch
+                      {S.ttSwitch.replace("{set}", set === "train" ? S.ttTrainingShort : S.ttTestingShort)}
                     </button>
                   </td>
                 </tr>
@@ -234,7 +239,7 @@ export function TrainTestSplitActivity({ activity, progress }: ActivityComponent
             <p key={`e${i}`} className="text-avanza-orange-dark">⚠ {e}</p>
           ))}
           {validation.warnings.map((w, i) => (
-            <p key={`w${i}`} className="text-muted-foreground">Note: {w}</p>
+            <p key={`w${i}`} className="text-muted-foreground">{S.ttNotePrefix.replace("{text}", w)}</p>
           ))}
         </div>
       )}
@@ -246,27 +251,28 @@ export function TrainTestSplitActivity({ activity, progress }: ActivityComponent
           onClick={() => {
             persist({ ...state, ranSplit: true })
             const r = runModel(trainFruits, testFruits, 3)
-            announce(`Model run complete. Accuracy ${accuracyPercent(r)} percent on ${r.total} test fruits.`)
+            announce(S.ttRunAnnounce.replace("{pct}", String(accuracyPercent(r))).replace("{n}", String(r.total)))
           }}
           disabled={!validation.ok}
           className="inline-flex items-center rounded-md bg-avanza-green px-4 py-2 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
         >
-          Train on the training set, then test
+          {S.ttTrainThenTest}
         </button>
-        {!validation.ok && <p className="mt-2 text-xs text-muted-foreground">Fix the split problems above to run a fair test.</p>}
+        {!validation.ok && <p className="mt-2 text-xs text-muted-foreground">{S.ttFixSplit}</p>}
       </div>
 
-      {splitRun && <ModelResults run={splitRun} caption="Results on your held-back testing set" />}
+      {splitRun && <ModelResults run={splitRun} caption={S.ttResults} />}
 
       {/* Experiments (Change the Data) */}
       <div className="mt-8 border-t border-border pt-6">
-        <h4 className="text-sm font-bold text-foreground">Experiment: change the data, keep the test the same</h4>
+        <h4 className="text-sm font-bold text-foreground">{S.ttExperimentTitle}</h4>
         <p className="mt-1 text-sm text-muted-foreground">
-          Each experiment trains on a different version of the data and is checked on the <strong>same 8 held-back test fruits</strong>. Predict what will
-          happen, then run it.
+          {S.ttExperimentIntroFull.split("{same}")[0]}
+          <strong>{S.ttSameTestFruits}</strong>
+          {S.ttExperimentIntroFull.split("{same}")[1]}
         </p>
         <div className="mt-4 space-y-4">
-          {EXPERIMENTS.map((exp) => (
+          {experiments(S).map((exp) => (
             <ExperimentPanel
               key={exp.id}
               id={exp.id}
@@ -280,7 +286,7 @@ export function TrainTestSplitActivity({ activity, progress }: ActivityComponent
               onRun={() => {
                 persist({ ...state, experiments: { ...state.experiments, [exp.id]: { ...state.experiments[exp.id], ran: true } } })
                 const r = runExperiment(exp.id, 3)
-                announce(`${exp.label} run complete. Accuracy ${accuracyPercent(r)} percent.`)
+                announce(S.ttExpRunAnnounce.replace("{label}", exp.label).replace("{pct}", String(accuracyPercent(r))))
               }}
             />
           ))}
@@ -295,14 +301,13 @@ export function TrainTestSplitActivity({ activity, progress }: ActivityComponent
           onClick={() => persist({ ...state, accuracyOpen: !state.accuracyOpen })}
           className="inline-flex items-center gap-2 rounded-md border border-avanza-purple/40 bg-avanza-purple/5 px-3 py-2 text-sm font-semibold text-avanza-purple-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-purple focus-visible:ring-offset-2"
         >
-          {state.accuracyOpen ? "Hide" : "Show"} the accuracy math (grades 7–8, optional)
+          {state.accuracyOpen ? S.ttHideMath : S.ttShowMath}
         </button>
         {state.accuracyOpen && <AccuracyExtension run={splitRun ?? runExperiment("balanced", 3)} />}
       </div>
 
       <p className="mt-6 rounded-md bg-secondary px-3 py-2 text-xs text-muted-foreground">
-        This is a simplified classroom model (k-nearest neighbors). It compares a new fruit to the most similar training fruits and copies the
-        most common label. Real AI systems are far larger — but the same ideas about good data still apply. The made-up rule is: {GROUND_TRUTH_RULE}
+        {S.ttModelNote.replace("{rule}", S.groundTruthRule)}
       </p>
     </ActivityFrame>
   )
@@ -319,12 +324,13 @@ function SetSummary({
   counts: { safe: number; unsafe: number }
   tone: "green" | "purple"
 }) {
+  const S = useS()
   return (
     <div className={`rounded-md border p-3 ${tone === "green" ? "border-avanza-green/40 bg-avanza-green/5" : "border-avanza-purple/40 bg-avanza-purple/5"}`}>
       <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{title}</p>
       <p className="mt-1 text-2xl font-extrabold tabular-nums text-foreground">{total}</p>
       <p className="text-xs text-muted-foreground">
-        Safe: <span className="font-semibold tabular-nums text-foreground">{counts.safe}</span> · Not safe:{" "}
+        {S.ttSafeCount} <span className="font-semibold tabular-nums text-foreground">{counts.safe}</span> · {S.ttNotSafeLabel}{" "}
         <span className="font-semibold tabular-nums text-foreground">{counts.unsafe}</span>
       </p>
     </div>
@@ -332,12 +338,13 @@ function SetSummary({
 }
 
 function ModelResults({ run, caption }: { run: ModelRun; caption: string }) {
+  const S = useS()
   return (
     <div className="mt-4 rounded-md border border-border bg-card p-4" aria-live="polite">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="text-sm font-bold text-foreground">{caption}</p>
         <p className="text-sm">
-          <span className="text-muted-foreground">Overall accuracy: </span>
+          <span className="text-muted-foreground">{S.ttOverallAccuracy} </span>
           <span className="text-lg font-extrabold tabular-nums text-foreground">{accuracyPercent(run)}%</span>
           <span className="text-muted-foreground"> ({run.correct}/{run.total})</span>
         </p>
@@ -345,28 +352,29 @@ function ModelResults({ run, caption }: { run: ModelRun; caption: string }) {
 
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <CountBars
-          title="Accuracy by category"
-          unit="percent"
+          title={S.ttAccuracyByCategory}
+          unit={S.ttPercentUnit}
           bars={[
-            { label: "Safe", value: run.perCategory.safe.total === 0 ? 0 : Math.round((run.perCategory.safe.correct / run.perCategory.safe.total) * 100), tone: "safe" },
-            { label: "Not safe", value: run.perCategory.unsafe.total === 0 ? 0 : Math.round((run.perCategory.unsafe.correct / run.perCategory.unsafe.total) * 100), tone: "unsafe" },
+            { label: S.labelSafeShort, value: run.perCategory.safe.total === 0 ? 0 : Math.round((run.perCategory.safe.correct / run.perCategory.safe.total) * 100), tone: "safe" },
+            { label: S.labelUnsafeShort, value: run.perCategory.unsafe.total === 0 ? 0 : Math.round((run.perCategory.unsafe.correct / run.perCategory.unsafe.total) * 100), tone: "unsafe" },
           ]}
         />
         <p className="text-xs text-muted-foreground">
-          Safe: {categoryPercentText(run, "safe")} · Not safe: {categoryPercentText(run, "unsafe")}. Overall accuracy alone can hide a weak
-          category — always read the per-category results too.
+          {S.ttPerCategoryNote
+            .replace("{safe}", categoryPercentText(run, "safe", S))
+            .replace("{unsafe}", categoryPercentText(run, "unsafe", S))}
         </p>
       </div>
 
       <div className="mt-3 overflow-x-auto">
         <table className="w-full border-collapse text-sm">
-          <caption className="sr-only">{caption}: each test fruit&apos;s predicted label, actual label, whether it was correct, and why.</caption>
+          <caption className="sr-only">{S.ttResultsCaption.replace("{caption}", caption)}</caption>
           <thead>
             <tr className="text-left">
-              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">Test fruit</th>
-              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">Predicted</th>
-              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">Actual</th>
-              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">Result</th>
+              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">{S.ttTestFruit}</th>
+              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">{S.ttPredicted}</th>
+              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">{S.ttActual}</th>
+              <th scope="col" className="border-b border-border px-2 py-2 font-semibold text-foreground">{S.ttResult}</th>
             </tr>
           </thead>
           <tbody>
@@ -380,9 +388,9 @@ function ModelResults({ run, caption }: { run: ModelRun; caption: string }) {
                 <td className="border-b border-border/60 px-2 py-2"><LabelBadge label={r.actual} /></td>
                 <td className="border-b border-border/60 px-2 py-2 font-semibold">
                   {r.correct ? (
-                    <span className="text-avanza-green-dark">Correct ✓</span>
+                    <span className="text-avanza-green-dark">{S.ttCorrect}</span>
                   ) : (
-                    <span className="text-avanza-orange-dark">Wrong ✕</span>
+                    <span className="text-avanza-orange-dark">{S.ttWrong}</span>
                   )}
                 </td>
               </tr>
@@ -413,6 +421,7 @@ function ExperimentPanel({
   onPredict: (text: string) => void
   onRun: () => void
 }) {
+  const S = useS()
   const run = state.ran ? runExperiment(id, 3) : null
   // Test fruits whose prediction changed from the balanced baseline (what this data change affected).
   const affected =
@@ -426,7 +435,7 @@ function ExperimentPanel({
       <p className="mt-1 text-sm text-muted-foreground">{description}</p>
 
       <label htmlFor={`exp-${id}`} className="mt-3 block text-sm font-medium text-foreground">
-        Predict: how will accuracy compare to the balanced data, and why?
+        {S.ttPredictExperiment}
       </label>
       <textarea
         id={`exp-${id}`}
@@ -435,7 +444,7 @@ function ExperimentPanel({
         onBlur={(e) => onPredict(e.target.value)}
         rows={2}
         className="mt-1 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
-        placeholder={id === "balanced" ? "e.g. This is the fair baseline, so it should do well." : "e.g. Fewer Not-safe examples means the model will miss Not-safe fruit."}
+        placeholder={id === "balanced" ? S.ttExpPlaceholderBalanced : S.ttExpPlaceholderOther}
       />
       <button
         type="button"
@@ -443,34 +452,41 @@ function ExperimentPanel({
         disabled={state.prediction.trim().length === 0}
         className="mt-2 inline-flex items-center rounded-md bg-avanza-green px-3 py-1.5 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
       >
-        Run this experiment
+        {S.ttRunExperiment}
       </button>
-      {state.prediction.trim().length === 0 && <p className="mt-1 text-xs text-muted-foreground">Write a prediction first.</p>}
+      {state.prediction.trim().length === 0 && <p className="mt-1 text-xs text-muted-foreground">{S.ttWritePredictionFirst}</p>}
 
       {run && (
         <div className="mt-3 rounded-md bg-secondary px-3 py-3 text-sm" aria-live="polite">
           <p className="font-semibold text-foreground">
-            Result: {accuracyPercent(run)}% overall ({run.correct}/{run.total}). Safe {categoryPercentText(run, "safe")} · Not safe{" "}
-            {categoryPercentText(run, "unsafe")}.
+            {S.ttExpResult
+              .replace("{pct}", String(accuracyPercent(run)))
+              .replace("{correct}", String(run.correct))
+              .replace("{total}", String(run.total))
+              .replace("{safe}", categoryPercentText(run, "safe", S))
+              .replace("{unsafe}", categoryPercentText(run, "unsafe", S))}
           </p>
           <p className="mt-1 text-muted-foreground">
-            Your prediction: <span className="italic">“{state.prediction}”</span>
+            {S.ttYourPrediction} <span className="italic">“{state.prediction}”</span>
           </p>
           <p className="mt-1 text-muted-foreground">
             {id === "balanced"
-              ? "With balanced, correct data the model learns both categories and generalizes well."
+              ? S.ttBalancedNote
               : id === "unbalanced"
-                ? "Because the Not-safe category had very few examples, the model rarely predicts Not safe — so its mistakes land on Not-safe test fruit. That is why overall accuracy can look okay while one category collapses."
-                : "The flipped labels taught the model a false pattern near those fruits, so nearby test fruit get the wrong label."}
+                ? S.ttUnbalancedNoteFull
+                : S.ttIncorrectNote}
           </p>
           {affected.length > 0 && (
             <div className="mt-2">
-              <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Test fruit this change flipped</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{S.ttFlippedFruit}</p>
               <ul className="mt-1 space-y-1">
                 {affected.map((r) => (
                   <li key={r.fruit.id} className="text-xs text-foreground">
-                    <span className="font-semibold">{r.fruit.name}</span>: now predicted {labelText(r.predicted)}, actually {labelText(r.actual)}{" "}
-                    {r.correct ? "(still correct)" : "(now wrong)"}
+                    {S.ttFlippedLine
+                      .replace("{name}", (S.fruitNames as Record<string, string>)[r.fruit.name] ?? r.fruit.name)
+                      .replace("{predicted}", labelText(r.predicted, S))
+                      .replace("{actual}", labelText(r.actual, S))
+                      .replace("{status}", r.correct ? S.ttStillCorrect : S.ttNowWrong)}
                   </li>
                 ))}
               </ul>
@@ -483,20 +499,21 @@ function ExperimentPanel({
 }
 
 function AccuracyExtension({ run }: { run: ModelRun }) {
+  const S = useS()
   const safe = run.perCategory.safe
   const unsafe = run.perCategory.unsafe
   const pct = accuracyPercent(run)
   return (
     <div className="mt-3 rounded-md border border-avanza-purple/30 bg-avanza-purple/5 p-4 text-sm">
-      <p className="font-semibold text-foreground">accuracy = correct predictions ÷ total predictions</p>
+      <p className="font-semibold text-foreground">{S.ttAccuracyFormula}</p>
       <ol className="mt-2 list-decimal space-y-1 pl-5 text-foreground/90">
-        <li>Count the correct predictions: <span className="font-semibold tabular-nums">{run.correct}</span></li>
-        <li>Count the total predictions: <span className="font-semibold tabular-nums">{run.total}</span></li>
+        <li>{S.ttCountCorrect} <span className="font-semibold tabular-nums">{run.correct}</span></li>
+        <li>{S.ttCountTotal} <span className="font-semibold tabular-nums">{run.total}</span></li>
         <li>
-          Write the fraction: <span className="font-semibold tabular-nums">{run.correct}/{run.total}</span>
+          {S.ttWriteFraction} <span className="font-semibold tabular-nums">{run.correct}/{run.total}</span>
         </li>
         <li>
-          Convert to a percent: {run.correct} ÷ {run.total} = {run.total === 0 ? "—" : (run.correct / run.total).toFixed(2)} ={" "}
+          {S.ttConvertPercent} {run.correct} ÷ {run.total} = {run.total === 0 ? "—" : (run.correct / run.total).toFixed(2)} ={" "}
           <span className="font-semibold tabular-nums">{pct}%</span>
         </li>
       </ol>

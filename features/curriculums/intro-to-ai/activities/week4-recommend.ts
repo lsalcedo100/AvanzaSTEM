@@ -13,16 +13,44 @@
 /* Catalog                                                                     */
 /* ========================================================================== */
 
+import { translations, type Translations } from "../../../../i18n/translations.ts"
+
+/**
+ * The Week 4 recommender wording. Item ids and every feature value stay English,
+ * because ratings, the profile and the saved snapshot key on them; only titles,
+ * descriptions and display labels change with the reader's language.
+ */
+export type Week4RecommendStrings = Translations["courseUi"]["ai"]["week4Recommend"]
+
+const EN: Week4RecommendStrings = translations.en.courseUi.ai.week4Recommend
+
 export type FeatureKey = "category" | "topic" | "difficulty" | "length" | "format" | "ageRange"
 
-export const FEATURES: { key: FeatureKey; label: string }[] = [
-  { key: "topic", label: "Topic" },
-  { key: "category", label: "Type" },
-  { key: "difficulty", label: "Difficulty" },
-  { key: "length", label: "Length" },
-  { key: "format", label: "Format" },
-  { key: "ageRange", label: "Age range" },
+export const features = (S: Week4RecommendStrings = EN): { key: FeatureKey; label: string }[] => [
+  { key: "topic", label: S.fTopic },
+  { key: "category", label: S.fCategory },
+  { key: "difficulty", label: S.fDifficulty },
+  { key: "length", label: S.fLength },
+  { key: "format", label: S.fFormat },
+  { key: "ageRange", label: S.fAgeRange },
 ]
+
+/** The English base, for code that only needs the keys and their order. */
+export const FEATURES: { key: FeatureKey; label: string }[] = features()
+
+/** Display name for a feature value (e.g. "hands-on"). */
+export function valueText(value: string, S: Week4RecommendStrings = EN): string {
+  return (S.valueLabels as Record<string, string>)[value] ?? value
+}
+
+/** Re-renders the catalog in the reader's language; ids and features are untouched. */
+export function localizeItems(items: Item[], S: Week4RecommendStrings): Item[] {
+  return items.map((item) => ({
+    ...item,
+    title: (S.itemTitles as Record<string, string>)[item.id] ?? item.title,
+    description: (S.itemDescriptions as Record<string, string>)[item.id] ?? item.description,
+  }))
+}
 
 export type Item = {
   id: string
@@ -65,8 +93,9 @@ export const CATALOG: Item[] = [
   { id: "it-24", title: "Times Table Game", description: "Practice multiplication with a quick game.", category: "game", topic: "math", difficulty: "beginner", length: "short", format: "interactive", ageRange: "8-10", popularity: 73 },
 ]
 
-export function getItem(id: string): Item | undefined {
-  return CATALOG.find((i) => i.id === id)
+export function getItem(id: string, S: Week4RecommendStrings = EN): Item | undefined {
+  const item = CATALOG.find((i) => i.id === id)
+  return item && localizeItems([item], S)[0]
 }
 
 export const TOPICS = ["space", "robots", "animals", "art", "weather", "math"] as const
@@ -134,13 +163,13 @@ export type RecommendOptions = { explore?: boolean; topN?: number }
  * normalized preference across features, with the per-feature contributions kept
  * so we can explain the ranking. Deterministic (ties break by popularity then id).
  */
-export function recommend(ratings: Ratings, weights: Weights = defaultWeights(), options: RecommendOptions = {}): RecommendResult {
+export function recommend(ratings: Ratings, weights: Weights = defaultWeights(), options: RecommendOptions = {}, S: Week4RecommendStrings = EN): RecommendResult {
   const profile = buildProfile(ratings)
   const ratedIds = new Set(Object.keys(ratings))
   const ratedCount = ratedIds.size
 
   const raw = CATALOG.filter((item) => !ratedIds.has(item.id)).map((item) => {
-    const contributions: Contribution[] = FEATURES.map(({ key, label }) => {
+    const contributions: Contribution[] = features(S).map(({ key, label }) => {
       const value = item[key] as string
       const pref = normalizedPref(profile, key, value)
       const weight = weights[key] ?? 1
@@ -149,7 +178,7 @@ export function recommend(ratings: Ratings, weights: Weights = defaultWeights(),
     const score = contributions.reduce((s, c) => s + c.contribution, 0)
     const positives = contributions.filter((c) => c.contribution > 0.001).sort((a, b) => b.contribution - a.contribution)
     const reducers = contributions.filter((c) => c.contribution < -0.001).sort((a, b) => a.contribution - b.contribution)
-    return { item, score, contributions, positives, reducers, reasons: buildReasons(item, positives, reducers, ratings) }
+    return { item: localizeItems([item], S)[0], score, contributions, positives, reducers, reasons: buildReasons(positives, reducers, ratings, S) }
   })
 
   raw.sort((a, b) => b.score - a.score || b.item.popularity - a.item.popularity || a.item.id.localeCompare(b.item.id))
@@ -161,7 +190,7 @@ export function recommend(ratings: Ratings, weights: Weights = defaultWeights(),
   let lowDataReason: string | null = null
   if (ratedCount < 2) {
     lowData = true
-    lowDataReason = "Rate at least two items so the recommender has enough to learn from."
+    lowDataReason = S.lowDataRateTwo
   } else {
     const likedTopics = new Set(
       Object.entries(ratings)
@@ -171,7 +200,7 @@ export function recommend(ratings: Ratings, weights: Weights = defaultWeights(),
     )
     if (likedTopics.size <= 1) {
       lowData = true
-      lowDataReason = "You've only liked one topic, so recommendations will be narrow. Rate something from another topic to widen them."
+      lowDataReason = S.lowDataOneTopic
     }
   }
 
@@ -202,22 +231,31 @@ export function diversify(sorted: Recommendation[], topN: number): Recommendatio
   return out
 }
 
-function buildReasons(item: Item, positives: Contribution[], reducers: Contribution[], ratings: Ratings): string[] {
+function buildReasons(positives: Contribution[], reducers: Contribution[], ratings: Ratings, S: Week4RecommendStrings): string[] {
   const reasons: string[] = []
   for (const c of positives.slice(0, 3)) {
     const likedSame = Object.entries(ratings).filter(([id, r]) => r >= 4 && (getItem(id)?.[c.feature] as string) === c.value)
     const count = likedSame.length
+    const feature = c.label.toLowerCase()
+    const value = valueText(c.value, S)
     if (count > 0) {
-      reasons.push(`You rated ${count} ${c.label.toLowerCase()} = “${c.value}” item${count === 1 ? "" : "s"} highly, and this one is also “${c.value}”.`)
+      reasons.push(
+        S.reasonRatedHighly
+          .replace("{n}", String(count))
+          .replace("{feature}", feature)
+          .replaceAll("{value}", value),
+      )
     } else {
-      reasons.push(`This matches your preferred ${c.label.toLowerCase()} “${c.value}”.`)
+      reasons.push(S.reasonPreferred.replace("{feature}", feature).replace("{value}", value))
     }
   }
   if (reducers.length > 0) {
     const r = reducers[0]
-    reasons.push(`Its ${r.label.toLowerCase()} “${r.value}” lowered the score, because you rated that kind lower.`)
+    reasons.push(
+      S.reasonLowered.replace("{feature}", r.label.toLowerCase()).replace("{value}", valueText(r.value, S)),
+    )
   }
-  if (reasons.length === 0) reasons.push("This appeared because there isn't enough rating information yet to prefer anything specific.")
+  if (reasons.length === 0) reasons.push(S.reasonNotEnough)
   return reasons
 }
 

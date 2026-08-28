@@ -435,17 +435,35 @@ export function classify(rules: Rule[], creature: Creature): ClassifyResult {
 
 export type RuleSetValidation = { valid: boolean; issues: string[] }
 
+/**
+ * The wording the rule engine needs. Passed in rather than hard-coded so the
+ * preview line and the validation messages read in the student's language while
+ * the engine itself stays a pure function.
+ */
+export type RuleWording = {
+  addAtLeastOne: string
+  chooseFeature: string
+  chooseCondition: string
+  chooseCategory: string
+  enterValue: string
+  not: string
+  isAtLeast: string
+  isAtMost: string
+  is: string
+  ifThen: string
+}
+
 /** Rejects invalid/incomplete rule sets before they run. */
-export function validateRuleSet(rules: Rule[]): RuleSetValidation {
+export function validateRuleSet(rules: Rule[], w: RuleWording): RuleSetValidation {
   const issues: string[] = []
-  if (rules.length === 0) issues.push("Add at least one rule.")
+  if (rules.length === 0) issues.push(w.addAtLeastOne)
   rules.forEach((rule, i) => {
-    const n = i + 1
-    if (!rule.field) issues.push(`Rule ${n}: choose a feature.`)
-    if (!rule.op) issues.push(`Rule ${n}: choose a condition.`)
-    if (!rule.category) issues.push(`Rule ${n}: choose a category to assign.`)
+    const n = String(i + 1)
+    if (!rule.field) issues.push(w.chooseFeature.replace("{n}", n))
+    if (!rule.op) issues.push(w.chooseCondition.replace("{n}", n))
+    if (!rule.category) issues.push(w.chooseCategory.replace("{n}", n))
     if ((rule.op === "equals" || rule.op === "atLeast" || rule.op === "atMost") && (rule.value === "" || rule.value === null || rule.value === undefined)) {
-      issues.push(`Rule ${n}: enter a value.`)
+      issues.push(w.enterValue.replace("{n}", n))
     }
   })
   return { valid: issues.length === 0, issues }
@@ -455,31 +473,28 @@ export function fieldType(field: RuleField): "boolean" | "number" | "string" {
   return RULE_FIELDS.find((f) => f.id === field)?.type ?? "string"
 }
 
-const FIELD_LABEL: Record<RuleField, string> = {
-  hasWings: "it has wings",
-  livesInWater: "it lives in water",
-  hasAntennae: "it has antennae",
-  canGlow: "it can glow",
-  legs: "the number of legs",
-  bodyColor: "the body color",
-  bodyShape: "the body shape",
-}
-
 /** Human-readable, deterministic description of a rule for the preview. */
-export function describeRule(rule: Rule): string {
-  const subject = FIELD_LABEL[rule.field]
+export function describeRule(
+  rule: Rule,
+  w: RuleWording,
+  fieldSubjects: Record<RuleField, string>,
+  categoryLabel: (category: string) => string,
+): string {
+  const subject = fieldSubjects[rule.field]
   const type = fieldType(rule.field)
   let condition: string
   if (type === "boolean") {
-    condition = rule.op === "isNot" ? `NOT (${subject})` : subject
+    condition = rule.op === "isNot" ? w.not.replace("{subject}", subject) : subject
   } else if (rule.op === "atLeast") {
-    condition = `${subject} is at least ${rule.value}`
+    condition = w.isAtLeast.replace("{subject}", subject).replace("{value}", String(rule.value))
   } else if (rule.op === "atMost") {
-    condition = `${subject} is at most ${rule.value}`
+    condition = w.isAtMost.replace("{subject}", subject).replace("{value}", String(rule.value))
   } else {
-    condition = `${subject} is ${rule.value}`
+    condition = w.is.replace("{subject}", subject).replace("{value}", String(rule.value))
   }
-  return `If ${condition} → ${rule.category || "?"}`
+  return w.ifThen
+    .replace("{condition}", condition)
+    .replace("{category}", rule.category ? categoryLabel(rule.category) : "?")
 }
 
 /** Runs a validated rule set over a list of creatures; reports match vs. canonical. */
