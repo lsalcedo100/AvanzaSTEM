@@ -65,14 +65,22 @@ export function GenericProjectGuide({ slug, language }: { slug: string; language
         </div>
 
         <div className="mt-8 overflow-hidden rounded-lg border border-border">
-          <div className="relative h-80 bg-secondary/40">
+          <div
+            className={
+              // A "contain" hero trades the fixed band for a 16:9 frame so the
+              // whole photo stays visible instead of being cropped top and bottom.
+              project.imageFit === "contain"
+                ? "relative aspect-video bg-secondary/40"
+                : "relative h-80 bg-secondary/40"
+            }
+          >
             {project.image ? (
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
                 sizes="(min-width: 1024px) 896px, calc(100vw - 48px)"
-                className="object-cover"
+                className={project.imageFit === "contain" ? "object-contain" : "object-cover"}
                 priority
               />
             ) : (

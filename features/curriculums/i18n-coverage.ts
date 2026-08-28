@@ -42,6 +42,37 @@ const IDENTIFIER_KEYS = new Set([
   "lessonIds",
   "code",
   "language",
+  // Prev/next navigation between lessons stores route slugs, which are
+  // language-independent for the same reason `slug` itself is.
+  "nextLessonSlug",
+  "previousLessonSlug",
+  // Widget enums in the math activities' `sampleData`/`activityConfig`. Those
+  // two fields are typed `unknown`, so `DeepPartial` cannot narrow them the way
+  // it narrows a string-literal union - nothing would stop an overlay from
+  // translating "subtract" or "thousands" and silently breaking the widget that
+  // switches on it. Listing the keys here keeps them out of the report.
+  // `ActivityStatus` ("briefing" | "interactive") picks which activity shell to
+  // render, exactly like the neighbouring `kind`.
+  "status",
+  "operation",
+  "heroes",
+  "allowedRuleTypes",
+  "places",
+  "maxPlace",
+  "quantity",
+  "views",
+  "currency",
+  // Robotics and Intro to AI string-literal unions. `DeepPartial` already stops
+  // an overlay from translating these (the compiler narrows them to their own
+  // literals), so listing them here only keeps the report honest.
+  "severity",
+  "captures",
+  "bugType",
+  "category",
+  "sectionKind",
+  "expectedBlocks",
+  "paths",
+  "pathId",
 ])
 
 /**
@@ -97,6 +128,12 @@ function isLanguageNeutral(value: string): boolean {
   // attribute calls such as "random.choice()" and "str.upper()".
   if (/^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z0-9_]+)*\(|^\//.test(trimmed)) return true
   if (/^https?:/.test(trimmed)) return true
+  // A hyphenated lowercase token is a machine identifier, not a sentence:
+  // material and question ids ("w3-m1", "w1l2-kc-q2-i1"), simulator block names
+  // ("move-forward"), lesson section kinds ("knowledge-check"). These are keyed
+  // on by name or looked up across files, so an overlay must leave them alone.
+  // Real prose in these courses always contains a space.
+  if (/^[a-z0-9]+(-[a-z0-9]+)+$/.test(trimmed)) return true
   // Reserved words of a language we teach. These are syntax, not prose: a
   // Spanish student still types `elif`, so an overlay repeating the English
   // spelling is correct rather than missing.

@@ -90,6 +90,12 @@ export type ProjectGuide = {
    * OpenGraph, JSON-LD, and sitemap entries instead of pointing at nothing.
    */
   image: string
+  /**
+   * How the hero photo fills its frame on the guide page. Defaults to a wide
+   * cropped band; "contain" keeps the whole frame visible instead, for photos
+   * where the crop would cut off the subject.
+   */
+  imageFit?: "contain"
   description: string
   introduction: string[]
   why: string
@@ -1164,6 +1170,7 @@ while True:
       difficulty: "Easy",
       time: "45 minutes",
       image: "/images/projects/Sunset in a Jar.jpg",
+      imageFit: "contain",
       description:
         "Shine a flashlight through a jar of milky water and watch it look blue from the side and orange from the end, for exactly the reason the sky and the sunset do.",
       introduction: [
@@ -2517,6 +2524,7 @@ while True:
       difficulty: "Facil",
       time: "45 minutos",
       image: "/images/projects/Sunset in a Jar.jpg",
+      imageFit: "contain",
       description:
         "Alumbra con una linterna un frasco de agua con leche y observa como se ve azul de lado y naranja por el extremo, exactamente por la misma razon que el cielo y el atardecer.",
       introduction: [
@@ -3863,6 +3871,7 @@ while True:
       difficulty: "简单",
       time: "45分钟",
       image: "/images/projects/Sunset in a Jar.jpg",
+      imageFit: "contain",
       description:
         "用手电筒照射一罐掺了牛奶的水，从侧面看它是蓝色的，从末端看它是橙色的，原因和天空与日落完全相同。",
       introduction: [
@@ -5203,6 +5212,7 @@ while True:
       difficulty: "Fácil",
       time: "45 minutos",
       image: "/images/projects/Sunset in a Jar.jpg",
+      imageFit: "contain",
       description:
         "Ilumine com uma lanterna um pote de água com leite e veja como ele fica azul de lado e alaranjado pela ponta, exatamente pelo mesmo motivo que o céu e o pôr do sol.",
       introduction: [

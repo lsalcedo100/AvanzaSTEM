@@ -1,5 +1,5 @@
-import { VALID_LANGUAGES, type Language } from "@/i18n/translations"
-import { siteConfig } from "@/lib/site-config"
+import { VALID_LANGUAGES, type Language } from "../i18n/translations.ts"
+import { siteConfig } from "./site-config.ts"
 
 /** Prefixes a site-root-relative path with the origin to yield an absolute URL. */
 function absoluteUrl(path: string): string {

@@ -14,6 +14,11 @@ export function WhoItsForSection() {
     { value: t.home.impactStudentsValue, label: t.home.impactStudentsLabel },
     { value: t.home.impactLibrariesValue, label: t.home.impactLibrariesLabel },
     { value: t.home.impactPhotosValue, label: t.home.impactPhotosLabel },
+    { value: t.home.impactSearchClicksValue, label: t.home.impactSearchClicksLabel },
+    {
+      value: t.home.impactSearchImpressionsValue,
+      label: t.home.impactSearchImpressionsLabel,
+    },
   ]
 
   return (
@@ -27,7 +32,7 @@ export function WhoItsForSection() {
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-primary-foreground/75">
               {t.home.whoItsForIntro}
             </p>
-            <div className="mt-10 grid grid-cols-3 gap-6">
+            <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3">
               {stats.map((stat) => (
                 <div key={stat.label}>
                   <p className="text-3xl font-extrabold text-avanza-green sm:text-4xl">

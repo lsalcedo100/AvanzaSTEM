@@ -19,6 +19,10 @@ import {
   introToPythonWeekPath,
   introToPythonWorksheetsPath,
 } from "./intro-to-python/index.ts"
+import { engineeringCurriculumHasTranslation } from "./engineering-fundamentals/i18n.ts"
+import { introToAiCourseHasTranslation } from "./intro-to-ai/i18n.ts"
+import { mathCurriculumHasTranslation } from "./math-adventures/i18n.ts"
+import { roboticsCurriculumHasTranslation } from "./robotics/i18n.ts"
 import {
   engineeringFundamentalsCurriculum,
   engineeringFundamentalsPath,
@@ -133,15 +137,41 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
 }
 
 /**
+ * Course pages whose visible copy comes from the UI dictionary in
+ * `i18n/translations.ts` rather than from the curriculum data.
+ *
+ * The overlays for Robotics, Math Adventures, Engineering Fundamentals and
+ * Intro to AI are still empty, so those courses' lesson, worksheet and
+ * teacher-guide pages really do render English bodies under a translated shell
+ * and are right to canonicalize to English. Their overview pages are the
+ * exception: everything a reader sees on them is dictionary copy, so /es, /zh
+ * and /pt are genuine translations - 44-89% of the visible text differs from
+ * English - and pointing their canonical at the English URL was telling Google
+ * to drop fifteen real pages.
+ *
+ * Entries leave this set the moment the course itself gains overlays: at that
+ * point `hasTranslation` covers every page, including these.
+ */
+export const DICTIONARY_TRANSLATED_COURSE_PATHS: ReadonlySet<string> = new Set([
+  roboticsPath,
+  mathAdventuresPath,
+  engineeringFundamentalsPath,
+  introToAiPath,
+  introToAiCompletionPath,
+])
+
+/**
  * Canonical + hreflang for a course page.
  *
  * A course only advertises localized alternates once its content is actually
  * translated. Until then the localized route still exists and renders (with
  * translated chrome and English lesson text), but it points its canonical at
- * the English URL rather than claiming to be a distinct translation.
+ * the English URL rather than claiming to be a distinct translation - unless
+ * the page draws its copy from the dictionary, per the set above.
  */
 function courseAlternates(path: string, language: Language, translated: boolean) {
-  return translated
+  const localized = translated || DICTIONARY_TRANSLATED_COURSE_PATHS.has(path)
+  return localized
     ? { canonical: localizedPath(path, language), languages: languageAlternates(path) }
     : { canonical: path, languages: enOnlyAlternates(path) }
 }
@@ -225,7 +255,7 @@ export function generateIntroToPythonWeekMetadata(
   }
 }
 
-export function generateIntroToPythonTeacherGuideMetadata(): Metadata {
+export function generateIntroToPythonTeacherGuideMetadata(language: Language = "en"): Metadata {
   const title = clampTitle("Teacher & Librarian Guide", "Intro to Python")
   const description =
     "How to run each lesson of the 8-week Intro to Python curriculum in a library or classroom: common student mistakes, questions to ask, and offline backups."
@@ -233,10 +263,11 @@ export function generateIntroToPythonTeacherGuideMetadata(): Metadata {
   return {
     title,
     description,
-    alternates: {
-      canonical: introToPythonTeacherGuidePath,
-      languages: enOnlyAlternates(introToPythonTeacherGuidePath),
-    },
+    alternates: courseAlternates(
+      introToPythonTeacherGuidePath,
+      language,
+      pythonCurriculumHasTranslation(language),
+    ),
     openGraph: {
       title,
       description,
@@ -261,7 +292,7 @@ export function generateIntroToPythonTeacherGuideMetadata(): Metadata {
   }
 }
 
-export function generateIntroToPythonWorksheetsMetadata(): Metadata {
+export function generateIntroToPythonWorksheetsMetadata(language: Language = "en"): Metadata {
   const title = clampTitle("Printable Student Worksheets", "Intro to Python")
   const description =
     "Print-friendly worksheets for every week of the Intro to Python curriculum: the key idea, vocabulary, code planning space, and a debugging question."
@@ -269,10 +300,11 @@ export function generateIntroToPythonWorksheetsMetadata(): Metadata {
   return {
     title,
     description,
-    alternates: {
-      canonical: introToPythonWorksheetsPath,
-      languages: enOnlyAlternates(introToPythonWorksheetsPath),
-    },
+    alternates: courseAlternates(
+      introToPythonWorksheetsPath,
+      language,
+      pythonCurriculumHasTranslation(language),
+    ),
     openGraph: {
       title,
       description,
@@ -339,7 +371,7 @@ export function generateIntroToPythonMetadata(language: Language = "en"): Metada
   }
 }
 
-export function generateMathAdventuresMetadata(): Metadata {
+export function generateMathAdventuresMetadata(language: Language = "en"): Metadata {
   const c = mathAdventuresCurriculum
   const title =
     "Math Adventures: 10-Week Course (Grades 2-5)"
@@ -349,10 +381,11 @@ export function generateMathAdventuresMetadata(): Metadata {
   return {
     title,
     description,
-    alternates: {
-      canonical: mathAdventuresPath,
-      languages: enOnlyAlternates(mathAdventuresPath),
-    },
+    alternates: courseAlternates(
+      mathAdventuresPath,
+      language,
+      mathCurriculumHasTranslation(language),
+    ),
     openGraph: {
       title,
       description,
@@ -419,7 +452,7 @@ export function generateMathLessonMetadata(slug: string): Metadata {
   }
 }
 
-export function generateEngineeringFundamentalsMetadata(): Metadata {
+export function generateEngineeringFundamentalsMetadata(language: Language = "en"): Metadata {
   const c = engineeringFundamentalsCurriculum
   const title =
     "Engineering Fundamentals: 6-Week Course (Grades 2-5)"
@@ -429,10 +462,11 @@ export function generateEngineeringFundamentalsMetadata(): Metadata {
   return {
     title,
     description,
-    alternates: {
-      canonical: engineeringFundamentalsPath,
-      languages: enOnlyAlternates(engineeringFundamentalsPath),
-    },
+    alternates: courseAlternates(
+      engineeringFundamentalsPath,
+      language,
+      engineeringCurriculumHasTranslation(language),
+    ),
     openGraph: {
       title,
       description,
@@ -685,14 +719,12 @@ function roboticsMetadata(
   path: string,
   type: "website" | "article",
   alt: string,
+  language: Language = "en",
 ): Metadata {
   return {
     title,
     description,
-    alternates: {
-      canonical: path,
-      languages: enOnlyAlternates(path),
-    },
+    alternates: courseAlternates(path, language, roboticsCurriculumHasTranslation(language)),
     openGraph: {
       title,
       description,
@@ -710,11 +742,18 @@ function roboticsMetadata(
   }
 }
 
-export function generateRoboticsMetadata(): Metadata {
+export function generateRoboticsMetadata(language: Language = "en"): Metadata {
   const title = clampTitle("Robotics & Automation: 8-Week Course (Grades 4-6)")
   const description =
     "An 8-week robotics course for grades 4-6. Build a robot that moves, program it, add sensors, and debug it - with a kit, a browser simulator, or unplugged."
-  return roboticsMetadata(title, description, roboticsPath, "website", `${roboticsCurriculum.title} course`)
+  return roboticsMetadata(
+    title,
+    description,
+    roboticsPath,
+    "website",
+    `${roboticsCurriculum.title} course`,
+    language,
+  )
 }
 
 export function generateRoboticsLessonMetadata(slug: string): Metadata {
@@ -803,14 +842,12 @@ function introToAiMetadata(
   path: string,
   type: "website" | "article",
   alt: string,
+  language: Language = "en",
 ): Metadata {
   return {
     title,
     description,
-    alternates: {
-      canonical: path,
-      languages: enOnlyAlternates(path),
-    },
+    alternates: courseAlternates(path, language, introToAiCourseHasTranslation(language)),
     openGraph: {
       title,
       description,
@@ -828,11 +865,18 @@ function introToAiMetadata(
   }
 }
 
-export function generateIntroToAiMetadata(): Metadata {
+export function generateIntroToAiMetadata(language: Language = "en"): Metadata {
   const title = clampTitle("Intro to AI: 6-Week Course for Kids (Grades 5-8)")
   const description =
     "A six-week AI course for grades 5-8. Learn what AI is and is not, how data trains a model, where it fails, and how to use it responsibly. No coding required."
-  return introToAiMetadata(title, description, introToAiPath, "website", `${introToAiCourse.title} course`)
+  return introToAiMetadata(
+    title,
+    description,
+    introToAiPath,
+    "website",
+    `${introToAiCourse.title} course`,
+    language,
+  )
 }
 
 export function generateIntroToAiWeekMetadata(week: number): Metadata {
@@ -877,9 +921,16 @@ export function generateIntroToAiFinalAssessmentMetadata(): Metadata {
   return introToAiMetadata(title, description, introToAiFinalAssessmentPath, "website", "Intro to Artificial Intelligence final assessment")
 }
 
-export function generateIntroToAiCompletionMetadata(): Metadata {
+export function generateIntroToAiCompletionMetadata(language: Language = "en"): Metadata {
   const title = clampTitle("Course Completion", "Intro to AI")
   const description =
     "Finish the six-week Intro to Artificial Intelligence course, review what you learned, and print a certificate of completion."
-  return introToAiMetadata(title, description, introToAiCompletionPath, "website", "Intro to Artificial Intelligence completion")
+  return introToAiMetadata(
+    title,
+    description,
+    introToAiCompletionPath,
+    "website",
+    "Intro to Artificial Intelligence completion",
+    language,
+  )
 }

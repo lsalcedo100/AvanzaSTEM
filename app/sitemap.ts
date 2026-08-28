@@ -46,6 +46,7 @@ import { pythonCurriculumHasTranslation } from '@/features/curriculums/intro-to-
 import { mathCurriculumHasTranslation } from '@/features/curriculums/math-adventures/i18n'
 import { roboticsCurriculumHasTranslation } from '@/features/curriculums/robotics/i18n'
 import { scienceCurriculumHasTranslation } from '@/features/curriculums/science-experiments/i18n'
+import { DICTIONARY_TRANSLATED_COURSE_PATHS } from '@/features/curriculums/metadata'
 import { projectGuides } from '@/features/projects/data'
 import { enOnlyAlternates, languageAlternates, localizedPath } from '@/lib/i18n-routes'
 import { siteConfig } from '@/lib/site-config'
@@ -160,8 +161,15 @@ const COURSE_PATHS: { translated: boolean; paths: string[] }[] = [
 //
 // The flat pages and the home, blog and project routes are all translated, so
 // nothing outside the untranslated courses belongs in here.
+//
+// An untranslated course still has a handful of pages - its overview, and the
+// AI completion page - built entirely from dictionary copy rather than from
+// curriculum data. Those render as real translations under /es, /zh and /pt, so
+// they are exempted here and emitted for every locale.
 const ENGLISH_ONLY_PATHS = new Set(
-  COURSE_PATHS.filter((course) => !course.translated).flatMap((course) => course.paths),
+  COURSE_PATHS.filter((course) => !course.translated)
+    .flatMap((course) => course.paths)
+    .filter((path) => !DICTIONARY_TRANSLATED_COURSE_PATHS.has(path)),
 )
 
 // lastModified dates below reflect the last meaningful content update for each
