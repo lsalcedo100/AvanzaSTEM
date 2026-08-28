@@ -15,7 +15,7 @@ import {
   type ExperimentId,
   type ModelRun,
   type SpaceFruit,
-} from "@/features/curriculums/intro-to-ai-week2-activities"
+} from "@/features/curriculums/intro-to-ai/activities/week2-activities"
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 import { CountBars, LabelBadge } from "@/components/pages/intro-to-ai/activities/week2-shared"

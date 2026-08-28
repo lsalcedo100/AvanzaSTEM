@@ -10,7 +10,7 @@ import {
   type RoboticsProgress,
   type SavedSimulatorResult,
 } from "@/features/curriculums/robotics"
-import type { Program } from "@/features/curriculums/robotics-program"
+import type { Program } from "@/features/curriculums/robotics/program"
 import {
   computeModuleRequirements,
   courseCompletion,
@@ -49,7 +49,7 @@ import {
   setFinalMissionChoice,
   type RoboticsResumeTarget,
   type StorageLike,
-} from "@/features/curriculums/robotics-progress"
+} from "@/features/curriculums/robotics/progress"
 
 /** The browser localStorage, or undefined on the server (keeps the layer SSR-safe). */
 function browserStorage(): StorageLike | undefined {
@@ -61,7 +61,7 @@ function browserStorage(): StorageLike | undefined {
  * Device-local, account-free progress for the Robotics & Automation course.
  *
  * This is a thin React wrapper over the pure logic in
- * `features/curriculums/robotics-progress.ts`: it holds the progress in state,
+ * `features/curriculums/robotics/progress.ts`: it holds the progress in state,
  * reads/writes localStorage, and supplies each reducer with a timestamp. Reads
  * run only inside an effect, so the server and the first client render both use
  * the neutral empty state - no hydration mismatch. Mirrors `useMathProgress`.

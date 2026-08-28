@@ -10,9 +10,9 @@ import {
   introToAiPath,
   introToAiWeekPath,
 } from "@/features/curriculums/intro-to-ai"
-import type { CourseWeek } from "@/features/curriculums/intro-to-ai-types"
+import type { CourseWeek } from "@/features/curriculums/intro-to-ai/types"
 import { useLanguage } from "@/components/providers/language-provider"
-import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
+import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai/i18n"
 import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { ConfirmDialog, SaveState } from "@/components/pages/intro-to-ai/ui"
 import { IntroToAiVocabulary } from "@/components/pages/intro-to-ai/vocabulary"

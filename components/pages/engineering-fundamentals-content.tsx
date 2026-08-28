@@ -6,7 +6,7 @@ import {
   EngineeringLessonList,
   EngineeringResumeButton,
 } from "@/components/pages/engineering-progress-ui"
-import { getEngineeringFundamentalsCurriculum } from "@/features/curriculums/engineering-fundamentals-i18n"
+import { getEngineeringFundamentalsCurriculum } from "@/features/curriculums/engineering-fundamentals/i18n"
 import {
   engineeringLessonPath,
 } from "@/features/curriculums/engineering-fundamentals"

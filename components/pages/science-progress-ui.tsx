@@ -7,7 +7,7 @@ import {
   scienceExperimentsPath,
   scienceLessonPath,
 } from "@/features/curriculums/science-experiments"
-import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments-i18n"
+import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments/i18n"
 import {
   type ScienceLessonStatus,
   useScienceProgress,

@@ -6,7 +6,7 @@ import {
   scienceExperimentsPath,
   scienceLessonPath,
 } from "@/features/curriculums/science-experiments"
-import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments-i18n"
+import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments/i18n"
 import { formatTemplate } from "@/lib/format-template"
 import {
   ScienceLessonComplete,

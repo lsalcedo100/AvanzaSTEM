@@ -14,7 +14,7 @@ import {
   pourPosition,
   sortByDensityAsc,
   waterComparison,
-} from "./density-model"
+} from "./density-model.ts"
 
 let passed = 0
 let failed = 0

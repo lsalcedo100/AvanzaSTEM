@@ -1,4 +1,4 @@
-import type { WorkedExample } from "@/features/curriculums/intro-to-ai-types"
+import type { WorkedExample } from "@/features/curriculums/intro-to-ai/types"
 
 /**
  * Reusable worked-example presentation. Renders the process as numbered steps

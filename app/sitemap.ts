@@ -40,12 +40,12 @@ import {
   introToAiPath,
   introToAiWeekPath,
 } from '@/features/curriculums/intro-to-ai'
-import { engineeringCurriculumHasTranslation } from '@/features/curriculums/engineering-fundamentals-i18n'
-import { introToAiCourseHasTranslation } from '@/features/curriculums/intro-to-ai-i18n'
-import { pythonCurriculumHasTranslation } from '@/features/curriculums/intro-to-python-i18n'
-import { mathCurriculumHasTranslation } from '@/features/curriculums/math-adventures-i18n'
-import { roboticsCurriculumHasTranslation } from '@/features/curriculums/robotics-i18n'
-import { scienceCurriculumHasTranslation } from '@/features/curriculums/science-experiments-i18n'
+import { engineeringCurriculumHasTranslation } from '@/features/curriculums/engineering-fundamentals/i18n'
+import { introToAiCourseHasTranslation } from '@/features/curriculums/intro-to-ai/i18n'
+import { pythonCurriculumHasTranslation } from '@/features/curriculums/intro-to-python/i18n'
+import { mathCurriculumHasTranslation } from '@/features/curriculums/math-adventures/i18n'
+import { roboticsCurriculumHasTranslation } from '@/features/curriculums/robotics/i18n'
+import { scienceCurriculumHasTranslation } from '@/features/curriculums/science-experiments/i18n'
 import { projectGuides } from '@/features/projects/data'
 import { enOnlyAlternates, languageAlternates, localizedPath } from '@/lib/i18n-routes'
 import { siteConfig } from '@/lib/site-config'

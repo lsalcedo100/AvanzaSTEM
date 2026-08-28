@@ -10,7 +10,7 @@ import {
   evaluateChoice,
   scoreScenario,
   type Classification,
-} from "@/features/curriculums/intro-to-ai-week5-privacy"
+} from "@/features/curriculums/intro-to-ai/activities/week5-privacy"
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 

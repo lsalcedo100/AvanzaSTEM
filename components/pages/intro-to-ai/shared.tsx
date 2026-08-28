@@ -1,5 +1,5 @@
 import Link from "next/link"
-import type { VisualExplanation } from "@/features/curriculums/intro-to-ai-types"
+import type { VisualExplanation } from "@/features/curriculums/intro-to-ai/types"
 import { BeforeAfterDiagram, DecisionTreeDiagram, FlowDiagram } from "@/components/pages/intro-to-ai/diagrams"
 
 /** Breadcrumb trail. Semantic <nav> + ordered list; last item is the current page. */

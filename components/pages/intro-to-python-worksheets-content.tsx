@@ -1,7 +1,7 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import { getIntroToPythonCurriculum } from "@/features/curriculums/intro-to-python-i18n"
+import { getIntroToPythonCurriculum } from "@/features/curriculums/intro-to-python/i18n"
 import Link from "next/link"
 import { PrintButton } from "@/components/ui/print-button"
 import {

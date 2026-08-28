@@ -9,7 +9,7 @@ import {
   type DetectiveCategory,
   type DetectiveSystem,
   type DetectiveVerdict,
-} from "@/features/curriculums/intro-to-ai-week1-activities"
+} from "@/features/curriculums/intro-to-ai/activities/week1-activities"
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 

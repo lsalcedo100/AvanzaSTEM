@@ -4,7 +4,7 @@ import { useLanguage } from "@/components/providers/language-provider"
 import {
   findMathLesson,
   getMathAdventuresCurriculum,
-} from "@/features/curriculums/math-adventures-i18n"
+} from "@/features/curriculums/math-adventures/i18n"
 import Link from "next/link"
 import {
   MathLessonComplete,

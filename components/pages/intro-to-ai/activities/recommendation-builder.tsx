@@ -14,7 +14,7 @@ import {
   type Weights,
   type FeatureKey,
   type Recommendation,
-} from "@/features/curriculums/intro-to-ai-week4-recommend"
+} from "@/features/curriculums/intro-to-ai/activities/week4-recommend"
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 

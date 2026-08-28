@@ -98,7 +98,7 @@ rewritten to the English route by `middleware.ts`):
 | `/courses/robotics/review` | `app/courses/robotics/review/page.tsx` | Client |
 | Course-scoped 404 | `app/courses/robotics/not-found.tsx` | Server |
 
-**Curriculum data (single source of truth):** `features/curriculums/robotics.ts`
+**Curriculum data (single source of truth):** `features/curriculums/robotics/index.ts`
 (`roboticsCurriculum: RoboticsCurriculum`, `modules: RoboticsModule[]`, all typed content
 + helper functions `getRoboticsModule(slug)`, `roboticsModuleSlugs()`, `roboticsPath`,
 `roboticsLessonPath()`, `validateRoboticsCurriculum()`). Supporting logic files:
@@ -143,7 +143,7 @@ curriculum maps onto `RoboticsModule` almost 1:1, minus the robot-hardware-speci
   (`"${moduleId}:${promptId}"`, etc.) using **stable content ids**, never display text.
 - **Versioning + migration exists only in Robotics** (`ROBOTICS_PROGRESS_VERSION = 2`,
   `avanza-robotics-progress-v2`, legacy `-v1`) via `migrateRoboticsProgress()` in
-  `features/curriculums/robotics-progress.ts` — routes by `version`, coerces field-by-field
+  `features/curriculums/robotics/progress.ts` — routes by `version`, coerces field-by-field
   with defaults, migrates v1→v2, and best-effort-coerces unknown/newer versions instead of
   wiping. This is the pattern to copy.
 - **Free-text persistence already exists** (Robotics): `predictions`, `reflections`,
@@ -172,7 +172,7 @@ curriculum maps onto `RoboticsModule` almost 1:1, minus the robot-hardware-speci
 | Need | Reuse (as-is or by-pattern) | File |
 |---|---|---|
 | Course hub / weekly lesson / worksheet / teacher-guide / review / journal routing | **Copy the Robotics route tree** | `app/courses/robotics/**` |
-| Curriculum data model & helpers | **Adapt `RoboticsModule`/`RoboticsCurriculum` types** (drop hardware fields) | `features/curriculums/robotics.ts` |
+| Curriculum data model & helpers | **Adapt `RoboticsModule`/`RoboticsCurriculum` types** (drop hardware fields) | `features/curriculums/robotics/index.ts` |
 | Quiz / knowledge-check (single, multiple, true-false, ordering, matching, short, scenario) + immediate per-option feedback, aria-live status, keyboard-only ordering | **Reuse the discriminated-union model + pure grader + renderer** | `robotics.ts` (types), `robotics-quiz.ts`, `components/pages/robotics-knowledge-check.tsx` |
 | Progress persistence + versioning + migrations + resume | **Copy the pure-logic pattern** | `robotics-progress.ts`, hook `components/ui/useRoboticsProgress.ts` |
 | Editable data tables (datasets, confusion matrices, test logs) | **Reuse `TestRunsTable` / `RoboticsTestRecord` pattern** | `components/pages/robotics-test-record.tsx`, `robotics-final-project-content.tsx` |

@@ -1,7 +1,7 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import { getRoboticsModules } from "@/features/curriculums/robotics-i18n"
+import { getRoboticsModules } from "@/features/curriculums/robotics/i18n"
 import { useEffect } from "react"
 import Link from "next/link"
 import {
@@ -16,7 +16,7 @@ import { LESSON_STEP_LABELS } from "@/components/pages/robotics-lesson-steps"
 import type {
   RoboticsModuleStatus,
   RoboticsRemainingTime,
-} from "@/features/curriculums/robotics-progress"
+} from "@/features/curriculums/robotics/progress"
 
 /** Course modules in the reader's language, in course order. */
 function useModules() {

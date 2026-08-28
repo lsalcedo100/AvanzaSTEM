@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import Link from "next/link"
 import { Lock } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
-import { getMathAdventuresCurriculum } from "@/features/curriculums/math-adventures-i18n"
+import { getMathAdventuresCurriculum } from "@/features/curriculums/math-adventures/i18n"
 import {
   getNextMathLesson,
   mathAdventuresPath,

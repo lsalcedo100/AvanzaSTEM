@@ -6,7 +6,7 @@ import {
   type RobotState,
   type RobotWorld,
   type SensorReadings,
-} from "@/features/curriculums/robotics-program"
+} from "@/features/curriculums/robotics/program"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
 
 /**

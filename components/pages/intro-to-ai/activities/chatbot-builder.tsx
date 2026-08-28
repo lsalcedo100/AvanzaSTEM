@@ -13,7 +13,7 @@ import {
   type BranchOption,
   type ConvoState,
   type TurnResult,
-} from "@/features/curriculums/intro-to-ai-week4-chatbot"
+} from "@/features/curriculums/intro-to-ai/activities/week4-chatbot"
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 import { ConfirmDialog } from "@/components/pages/intro-to-ai/ui"

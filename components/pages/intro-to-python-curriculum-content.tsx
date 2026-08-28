@@ -1,7 +1,7 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import { getIntroToPythonCurriculum } from "@/features/curriculums/intro-to-python-i18n"
+import { getIntroToPythonCurriculum } from "@/features/curriculums/intro-to-python/i18n"
 import { IntroToPythonProgress } from "@/components/pages/intro-to-python-progress"
 import {
   introToPythonTeacherGuidePath,

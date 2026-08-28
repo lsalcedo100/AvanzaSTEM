@@ -1,4 +1,4 @@
-import type { Translations } from "@/i18n/translations"
+import type { Translations } from "../../i18n/translations.ts"
 
 /**
  * How students primarily work in a path. Used by the comparison section (and,

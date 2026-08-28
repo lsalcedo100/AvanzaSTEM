@@ -789,7 +789,7 @@ const localizedProjectGuides: Record<Language, ProjectGuide[]> = {
       categoryKey: "robotics",
       difficulty: "Medium",
       time: "2 hours",
-      image: "",
+      image: "/images/projects/Rover Wheels vs. Sand.png",
       description:
         "Build four different wheels from cardboard and bottle caps, run the same chassis over the same tray of sand and gravel, and measure which design actually travels furthest.",
       introduction: [
@@ -920,7 +920,7 @@ while True:
       categoryKey: "science",
       difficulty: "Medium",
       time: "2 hours",
-      image: "",
+      image: "/images/projects/Loudest Room.jpg",
       description:
         "Measure every room with a phone sound meter, find the loudest one, then build a quiet box from household materials and measure exactly how many decibels each layer buys you.",
       introduction: [
@@ -1211,7 +1211,7 @@ while True:
       categoryKey: "optics",
       difficulty: "Medium",
       time: "1 hour",
-      image: "/images/projects/Shoebox Camera Obscura.jpg",
+      image: "/images/projects/Shoebox Camera Obsura.jpg",
       description:
         "Turn a shoebox into a working camera with one pinhole and no lens, then find out why a smaller hole gives you a sharper picture and a dimmer one.",
       introduction: [
@@ -1259,7 +1259,7 @@ while True:
       categoryKey: "optics",
       difficulty: "Medium",
       time: "1 hour",
-      image: "/images/projects/Bending Light Down a Stream of Water.jpg",
+      image: "/images/projects/Bending Light Down a Stream.jpg",
       description:
         "Send a beam of light down a falling stream of water and watch it follow the curve, which is exactly the trick that carries the internet across the ocean floor.",
       introduction: [
@@ -1407,7 +1407,7 @@ while True:
       categoryKey: "optics",
       difficulty: "Hard",
       time: "2 hours",
-      image: "",
+      image: "/images/projects/double slit.jpeg",
       description:
         "Cut two slits into black paper, send a laser through them, and get the striped pattern that convinced physicists light is a wave. Then use those stripes to measure a gap far too small to put a ruler on.",
       introduction: [
@@ -2142,7 +2142,7 @@ while True:
       categoryKey: "robotics",
       difficulty: "Medio",
       time: "2 horas",
-      image: "",
+      image: "/images/projects/Rover Wheels vs. Sand.png",
       description:
         "Construye cuatro ruedas distintas con carton y tapas de botella, haz correr el mismo chasis sobre la misma charola de arena y grava, y mide cual diseno de verdad llega mas lejos.",
       introduction: [
@@ -2273,7 +2273,7 @@ while True:
       categoryKey: "science",
       difficulty: "Medio",
       time: "2 horas",
-      image: "",
+      image: "/images/projects/Loudest Room.jpg",
       description:
         "Mide cada cuarto con un sonometro en el telefono, encuentra el mas ruidoso y despues construye una caja silenciadora con materiales de casa y mide cuantos decibeles te gana cada capa.",
       introduction: [
@@ -2564,7 +2564,7 @@ while True:
       categoryKey: "optics",
       difficulty: "Medio",
       time: "1 hora",
-      image: "/images/projects/Shoebox Camera Obscura.jpg",
+      image: "/images/projects/Shoebox Camera Obsura.jpg",
       description:
         "Convierte una caja de zapatos en una camara que funciona con un solo agujerito y sin lente, y descubre por que un agujero mas pequeno da una imagen mas nitida y mas oscura.",
       introduction: [
@@ -2612,7 +2612,7 @@ while True:
       categoryKey: "optics",
       difficulty: "Medio",
       time: "1 hora",
-      image: "/images/projects/Bending Light Down a Stream of Water.jpg",
+      image: "/images/projects/Bending Light Down a Stream.jpg",
       description:
         "Manda un haz de luz por un chorro de agua que cae y observa como sigue la curva, que es justo el truco con el que el internet cruza el fondo del oceano.",
       introduction: [
@@ -2760,7 +2760,7 @@ while True:
       categoryKey: "optics",
       difficulty: "Dificil",
       time: "2 horas",
-      image: "",
+      image: "/images/projects/double slit.jpeg",
       description:
         "Corta dos rendijas en papel negro, pasa un laser por ellas y obten el patron de rayas que convencio a los fisicos de que la luz es una onda. Despues usa esas rayas para medir una separacion demasiado pequena para una regla.",
       introduction: [
@@ -3495,7 +3495,7 @@ while True:
       categoryKey: "robotics",
       difficulty: "中等",
       time: "2小时",
-      image: "",
+      image: "/images/projects/Rover Wheels vs. Sand.png",
       description:
         "用纸板和瓶盖做出四种不同的轮子，让同一个底盘在同一盘沙子和砾石上行驶，测出哪一种设计真的跑得最远。",
       introduction: [
@@ -3619,7 +3619,7 @@ while True:
       categoryKey: "science",
       difficulty: "中等",
       time: "2小时",
-      image: "",
+      image: "/images/projects/Loudest Room.jpg",
       description:
         "用手机上的分贝计测量每一个房间，找出最吵的那间，然后用家里的材料做一个隔音盒，量一量每加一层能换回多少分贝。",
       introduction: [
@@ -3910,7 +3910,7 @@ while True:
       categoryKey: "optics",
       difficulty: "中等",
       time: "1小时",
-      image: "/images/projects/Shoebox Camera Obscura.jpg",
+      image: "/images/projects/Shoebox Camera Obsura.jpg",
       description:
         "把一个鞋盒变成一台真的相机，只有一个针孔，没有镜头，然后弄清为什么孔越小画面越清晰、也越暗。",
       introduction: [
@@ -3958,7 +3958,7 @@ while True:
       categoryKey: "optics",
       difficulty: "中等",
       time: "1小时",
-      image: "/images/projects/Bending Light Down a Stream of Water.jpg",
+      image: "/images/projects/Bending Light Down a Stream.jpg",
       description:
         "把一束光送进一道落下的水流里，看着它顺着弧线一起弯下去，而这正是互联网穿越大洋海底所用的同一个把戏。",
       introduction: [
@@ -4100,7 +4100,7 @@ while True:
       categoryKey: "optics",
       difficulty: "困难",
       time: "2小时",
-      image: "",
+      image: "/images/projects/double slit.jpeg",
       description:
         "在黑纸上割出两道缝，让激光穿过去，得到那个曾让物理学家认定光是波的条纹图案。然后用这些条纹，量出一个尺子根本放不上去的间距。",
       introduction: [
@@ -4828,7 +4828,7 @@ while True:
       categoryKey: "robotics",
       difficulty: "Médio",
       time: "2 horas",
-      image: "",
+      image: "/images/projects/Rover Wheels vs. Sand.png",
       description:
         "Construa quatro rodas diferentes com papelão e tampinhas, rode o mesmo chassi sobre a mesma bandeja de areia e cascalho, e meça qual projeto de fato vai mais longe.",
       introduction: [
@@ -4959,7 +4959,7 @@ while True:
       categoryKey: "science",
       difficulty: "Médio",
       time: "2 horas",
-      image: "",
+      image: "/images/projects/Loudest Room.jpg",
       description:
         "Meça cada cômodo com um decibelímetro no celular, ache o mais barulhento e depois construa uma caixa de silêncio com materiais de casa, medindo quantos decibéis cada camada rende.",
       introduction: [
@@ -5250,7 +5250,7 @@ while True:
       categoryKey: "optics",
       difficulty: "Médio",
       time: "1 hora",
-      image: "/images/projects/Shoebox Camera Obscura.jpg",
+      image: "/images/projects/Shoebox Camera Obsura.jpg",
       description:
         "Transforme uma caixa de sapato numa câmera que funciona, com um furinho só e sem lente, e descubra por que um furo menor dá uma imagem mais nítida e mais escura.",
       introduction: [
@@ -5298,7 +5298,7 @@ while True:
       categoryKey: "optics",
       difficulty: "Médio",
       time: "1 hora",
-      image: "/images/projects/Bending Light Down a Stream of Water.jpg",
+      image: "/images/projects/Bending Light Down a Stream.jpg",
       description:
         "Mande um feixe de luz por um jato de água caindo e veja a luz acompanhar a curva, que é exatamente o truque que leva a internet pelo fundo do oceano.",
       introduction: [
@@ -5446,7 +5446,7 @@ while True:
       categoryKey: "optics",
       difficulty: "Difícil",
       time: "2 horas",
-      image: "",
+      image: "/images/projects/double slit.jpeg",
       description:
         "Corte duas fendas em papel preto, passe um laser por elas e obtenha o padrão de listras que convenceu os físicos de que a luz é uma onda. Depois use as listras para medir uma distância pequena demais para uma régua.",
       introduction: [

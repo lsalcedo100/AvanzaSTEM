@@ -4,7 +4,7 @@ import { useLanguage } from "@/components/providers/language-provider"
 import {
   findPythonWeek,
   getIntroToPythonCurriculum,
-} from "@/features/curriculums/intro-to-python-i18n"
+} from "@/features/curriculums/intro-to-python/i18n"
 import Link from "next/link"
 import { PythonWorkspace } from "@/components/ui/python-workspace"
 import {

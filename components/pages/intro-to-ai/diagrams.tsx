@@ -1,4 +1,4 @@
-import type { BeforeAfterData, DecisionTreeNode, FlowData } from "@/features/curriculums/intro-to-ai-types"
+import type { BeforeAfterData, DecisionTreeNode, FlowData } from "@/features/curriculums/intro-to-ai/types"
 
 /**
  * Static, restrained diagram primitives for the lesson system. All are plain

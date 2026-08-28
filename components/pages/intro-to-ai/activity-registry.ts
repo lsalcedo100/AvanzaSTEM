@@ -1,5 +1,5 @@
 import { createElement, type ReactNode } from "react"
-import type { ActivityDefinition, ActivityKind } from "@/features/curriculums/intro-to-ai-types"
+import type { ActivityDefinition, ActivityKind } from "@/features/curriculums/intro-to-ai/types"
 import type { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { AiDetectiveActivity } from "@/components/pages/intro-to-ai/activities/ai-detective"
 import { RuleBuilderActivity } from "@/components/pages/intro-to-ai/activities/rule-builder"

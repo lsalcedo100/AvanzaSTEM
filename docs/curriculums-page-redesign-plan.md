@@ -105,7 +105,7 @@ es ~L1810, zh ~L3343). `image`/`color`/`progress`/`href`/`illustration` are hard
 component.
 
 The **rich per-course data model** (drives the actual course pages, not the listing) is the
-`Curriculum` type in `features/curriculums/intro-to-python.ts` (L114–139): `slug, title,
+`Curriculum` type in `features/curriculums/intro-to-python/index.ts` (L114–139): `slug, title,
 subtitle, description, gradeRange, totalWeeks, estimatedTimePerWeek, requirement, summary,
 format[], outcomes[], lessonFlow[], facilitator, weeks[]`. Instances:
 `introToPythonCurriculum`, `engineeringFundamentalsCurriculum`, `scienceExperimentsCurriculum`,
@@ -162,7 +162,7 @@ These are solid and should be **reused as-is or lightly restyled**, not replaced
 **Lesson-experience source for the "preview" section (item #6 in target structure)**
 - The as-built AI course is the richest, most authentic thing to preview:
   `components/pages/intro-to-ai/lesson-content.tsx` renders a `LessonSection[]` discriminated
-  union derived by `lessonSections(lesson)` (`features/curriculums/intro-to-ai.ts` L348–365):
+  union derived by `lessonSections(lesson)` (`features/curriculums/intro-to-ai/index.ts` L348–365):
   `objectives → opening → prediction → vocabulary → concept → worked-example → visual →
   activity → knowledge-check → challenge → reflection → recap → extension`.
 - Section sub-components already exist and are reusable/screenshottable: `prediction.tsx`,

@@ -1,10 +1,10 @@
-import { getEngineeringFundamentalsCurriculum } from "@/features/curriculums/engineering-fundamentals-i18n"
-import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
-import { getIntroToPythonCurriculum } from "@/features/curriculums/intro-to-python-i18n"
-import { getMathAdventuresCurriculum } from "@/features/curriculums/math-adventures-i18n"
-import { getRoboticsCurriculum } from "@/features/curriculums/robotics-i18n"
-import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments-i18n"
-import { VALID_LANGUAGES, type Language } from "@/i18n/translations"
+import { getEngineeringFundamentalsCurriculum } from "./engineering-fundamentals/i18n.ts"
+import { getIntroToAiCourse } from "./intro-to-ai/i18n.ts"
+import { getIntroToPythonCurriculum } from "./intro-to-python/i18n.ts"
+import { getMathAdventuresCurriculum } from "./math-adventures/i18n.ts"
+import { getRoboticsCurriculum } from "./robotics/i18n.ts"
+import { getScienceExperimentsCurriculum } from "./science-experiments/i18n.ts"
+import { VALID_LANGUAGES, type Language } from "../../i18n/translations.ts"
 
 /**
  * Translation coverage for the six courses.
@@ -45,6 +45,45 @@ const IDENTIFIER_KEYS = new Set([
 ])
 
 /**
+ * Syntax tokens from the languages taught in these courses. They are typed
+ * verbatim regardless of the student's spoken language, so a locale overlay
+ * that repeats the English spelling is correct, not a missing translation.
+ *
+ * Only reserved words and syntax names belong here. Ordinary words that happen
+ * to be spelled the same in another language (a Spanish "variable", a
+ * Portuguese "item") are deliberately left out, so a human still reviews them.
+ */
+const RESERVED_WORDS = new Set([
+  // Python keywords longer than the 3-character floor above.
+  "elif",
+  "else",
+  "None",
+  "True",
+  "False",
+  "assert",
+  "async",
+  "await",
+  "break",
+  "class",
+  "continue",
+  "except",
+  "finally",
+  "from",
+  "global",
+  "import",
+  "lambda",
+  "nonlocal",
+  "pass",
+  "raise",
+  "return",
+  "while",
+  "with",
+  "yield",
+  // Python syntax features referred to by name in the vocabulary lists.
+  "f-string",
+].map((word) => word.toLowerCase()))
+
+/**
  * Values that are the same word in every language we ship, or are not really
  * text at all: numerals, measurements, code identifiers, and single symbols.
  * Counting these as untranslated would bury the real gaps in noise.
@@ -54,8 +93,14 @@ function isLanguageNeutral(value: string): boolean {
   if (trimmed.length <= 3) return true
   // Pure numbers, measurements, ranges: "45-60", "2 cm", "1/2", "100%".
   if (/^[\d\s.,:/×x%°+-]+$/.test(trimmed)) return true
-  // Looks like code or a path rather than a sentence.
-  if (/^[a-z][a-zA-Z0-9_]*\(|^\/|^https?:/.test(trimmed)) return true
+  // Looks like code or a path rather than a sentence. The dotted form catches
+  // attribute calls such as "random.choice()" and "str.upper()".
+  if (/^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z0-9_]+)*\(|^\//.test(trimmed)) return true
+  if (/^https?:/.test(trimmed)) return true
+  // Reserved words of a language we teach. These are syntax, not prose: a
+  // Spanish student still types `elif`, so an overlay repeating the English
+  // spelling is correct rather than missing.
+  if (RESERVED_WORDS.has(trimmed.toLowerCase())) return true
   return false
 }
 

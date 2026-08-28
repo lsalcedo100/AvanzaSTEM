@@ -1,18 +1,18 @@
 import {
   engineeringFundamentalsCurriculum,
   engineeringFundamentalsPath,
-} from "@/features/curriculums/engineering-fundamentals"
-import { introToAiCourse, introToAiPath } from "@/features/curriculums/intro-to-ai"
-import { introToPythonCurriculum, introToPythonPath } from "@/features/curriculums/intro-to-python"
-import { mathAdventuresCurriculum, mathAdventuresPath } from "@/features/curriculums/math-adventures"
-import { roboticsCurriculum, roboticsPath } from "@/features/curriculums/robotics"
+} from "./engineering-fundamentals/index.ts"
+import { introToAiCourse, introToAiPath } from "./intro-to-ai/index.ts"
+import { introToPythonCurriculum, introToPythonPath } from "./intro-to-python/index.ts"
+import { mathAdventuresCurriculum, mathAdventuresPath } from "./math-adventures/index.ts"
+import { roboticsCurriculum, roboticsPath } from "./robotics/index.ts"
 import {
   scienceExperimentsCurriculum,
   scienceExperimentsPath,
-} from "@/features/curriculums/science-experiments"
-import { translations } from "@/i18n/translations"
-import { siteConfig } from "@/lib/site-config"
-import { getBreadcrumbJsonLd } from "@/lib/structured-data"
+} from "./science-experiments/index.ts"
+import { translations } from "../../i18n/translations.ts"
+import { siteConfig } from "../../lib/site-config.ts"
+import { getBreadcrumbJsonLd } from "../../lib/structured-data.ts"
 
 /**
  * Course structured data for the six curriculum hubs.

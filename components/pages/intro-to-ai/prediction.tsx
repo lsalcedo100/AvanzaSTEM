@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import type { PredictionPrompt } from "@/features/curriculums/intro-to-ai-types"
+import type { PredictionPrompt } from "@/features/curriculums/intro-to-ai/types"
 import type { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { SaveState } from "@/components/pages/intro-to-ai/ui"
 

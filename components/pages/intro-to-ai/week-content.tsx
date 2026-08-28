@@ -1,7 +1,7 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import { findAiWeek, getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
+import { findAiWeek, getIntroToAiCourse } from "@/features/curriculums/intro-to-ai/i18n"
 
 import Link from "next/link"
 import { ArrowRight, Check } from "lucide-react"

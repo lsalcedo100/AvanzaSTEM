@@ -19,7 +19,7 @@ import {
   isBulbBypassed,
   isClosedLoop,
   simulate,
-} from "./circuit-levels"
+} from "./circuit-levels.ts"
 
 // --- tiny test harness -----------------------------------------------------
 

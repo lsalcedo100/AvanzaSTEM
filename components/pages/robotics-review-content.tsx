@@ -2,7 +2,7 @@
 
 import { useMemo } from "react"
 import { useLanguage } from "@/components/providers/language-provider"
-import { getRoboticsModules } from "@/features/curriculums/robotics-i18n"
+import { getRoboticsModules } from "@/features/curriculums/robotics/i18n"
 import Link from "next/link"
 import {
   roboticsLessonPath,
@@ -11,9 +11,9 @@ import {
   roboticsWorksheetPath,
 } from "@/features/curriculums/robotics"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
-import { countStatements } from "@/features/curriculums/robotics-program"
+import { countStatements } from "@/features/curriculums/robotics/program"
 import type { RoboticsModule } from "@/features/curriculums/robotics"
-import type { RoboticsModuleStatus } from "@/features/curriculums/robotics-progress"
+import type { RoboticsModuleStatus } from "@/features/curriculums/robotics/progress"
 
 /** Course modules in the reader's language, in course order. */
 function useModules() {

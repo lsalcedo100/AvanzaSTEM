@@ -2,7 +2,7 @@
 
 import { useLanguage } from "@/components/providers/language-provider"
 import { scienceLessonPath } from "@/features/curriculums/science-experiments"
-import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments-i18n"
+import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments/i18n"
 import {
   ScienceCompletion,
   ScienceCourseProgress,

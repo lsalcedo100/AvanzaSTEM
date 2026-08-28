@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import type { KnowledgeCheckQuestion } from "@/features/curriculums/intro-to-ai-types"
+import type { KnowledgeCheckQuestion } from "@/features/curriculums/intro-to-ai/types"
 import {
   allAnswered,
   answeredCount,
@@ -9,7 +9,7 @@ import {
   isCorrect,
   parseList,
   scoreCheck,
-} from "@/features/curriculums/intro-to-ai-quiz"
+} from "@/features/curriculums/intro-to-ai/quiz"
 import { VisualBlock } from "@/components/pages/intro-to-ai/shared"
 
 const optionBase =

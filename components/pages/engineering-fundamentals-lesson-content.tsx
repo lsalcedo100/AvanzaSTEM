@@ -4,7 +4,7 @@ import { useLanguage } from "@/components/providers/language-provider"
 import {
   findEngineeringLesson,
   getEngineeringFundamentalsCurriculum,
-} from "@/features/curriculums/engineering-fundamentals-i18n"
+} from "@/features/curriculums/engineering-fundamentals/i18n"
 import Link from "next/link"
 import {
   EngineeringLessonComplete,

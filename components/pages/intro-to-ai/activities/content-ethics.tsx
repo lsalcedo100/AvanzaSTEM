@@ -16,7 +16,7 @@ import {
   type Verdict,
   type Decision,
   type SafeguardId,
-} from "@/features/curriculums/intro-to-ai-week5-content"
+} from "@/features/curriculums/intro-to-ai/activities/week5-content"
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 

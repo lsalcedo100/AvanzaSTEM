@@ -18,7 +18,7 @@ import {
   type ImageRecord,
   type Grid,
   type ClassifyResult,
-} from "@/features/curriculums/intro-to-ai-week3-images"
+} from "@/features/curriculums/intro-to-ai/activities/week3-images"
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 import { ConfidenceBars, PixelImage, ResultBadge } from "@/components/pages/intro-to-ai/activities/image-shared"

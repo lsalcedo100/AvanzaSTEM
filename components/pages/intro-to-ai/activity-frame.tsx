@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react"
 import { RotateCcw } from "lucide-react"
-import type { ActivityDefinition } from "@/features/curriculums/intro-to-ai-types"
+import type { ActivityDefinition } from "@/features/curriculums/intro-to-ai/types"
 import type { SaveStatus } from "@/components/ui/useIntroToAiProgress"
 import { SaveState } from "@/components/pages/intro-to-ai/ui"
 

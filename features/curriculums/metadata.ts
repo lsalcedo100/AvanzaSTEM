@@ -1,24 +1,24 @@
 import type { Metadata } from "next"
-import { translations, type Language } from "@/i18n/translations"
-import { enOnlyAlternates, languageAlternates, localizedPath } from "@/lib/i18n-routes"
-import { formatTemplate } from "@/lib/format-template"
+import { translations, type Language } from "../../i18n/translations.ts"
+import { enOnlyAlternates, languageAlternates, localizedPath } from "../../lib/i18n-routes.ts"
+import { formatTemplate } from "../../lib/format-template.ts"
 import {
   findPythonWeek,
   getIntroToPythonCurriculum,
   pythonCurriculumHasTranslation,
-} from "@/features/curriculums/intro-to-python-i18n"
+} from "./intro-to-python/i18n.ts"
 import {
   findScienceLesson,
   getScienceExperimentsCurriculum,
   scienceCurriculumHasTranslation,
-} from "@/features/curriculums/science-experiments-i18n"
-import { siteConfig } from "@/lib/site-config"
+} from "./science-experiments/i18n.ts"
+import { siteConfig } from "../../lib/site-config.ts"
 import {
   getIntroToPythonWeek,
   introToPythonTeacherGuidePath,
   introToPythonWeekPath,
   introToPythonWorksheetsPath,
-} from "@/features/curriculums/intro-to-python"
+} from "./intro-to-python/index.ts"
 import {
   engineeringFundamentalsCurriculum,
   engineeringFundamentalsPath,
@@ -26,19 +26,19 @@ import {
   engineeringTeacherGuidePath,
   engineeringWorksheetPath,
   getEngineeringLesson,
-} from "@/features/curriculums/engineering-fundamentals"
+} from "./engineering-fundamentals/index.ts"
 import {
   getScienceLesson,
   scienceExperimentsCurriculum,
   scienceExperimentsPath,
   scienceLessonPath,
-} from "@/features/curriculums/science-experiments"
+} from "./science-experiments/index.ts"
 import {
   getMathLessonBySlug,
   mathAdventuresCurriculum,
   mathAdventuresPath,
   mathLessonPath,
-} from "@/features/curriculums/math-adventures"
+} from "./math-adventures/index.ts"
 import {
   getRoboticsModule,
   roboticsCurriculum,
@@ -46,7 +46,7 @@ import {
   roboticsPath,
   roboticsTeacherGuidePath,
   roboticsWorksheetPath,
-} from "@/features/curriculums/robotics"
+} from "./robotics/index.ts"
 import {
   getLesson as getIntroToAiLesson,
   getWeek as getIntroToAiWeek,
@@ -57,7 +57,7 @@ import {
   introToAiLessonPath,
   introToAiPath,
   introToAiWeekPath,
-} from "@/features/curriculums/intro-to-ai"
+} from "./intro-to-ai/index.ts"
 
 /*
  * Title and description length control for the ~130 course pages.

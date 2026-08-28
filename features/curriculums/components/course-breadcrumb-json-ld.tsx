@@ -1,4 +1,4 @@
-import { getCourseBreadcrumbJsonLd } from "@/features/curriculums/structured-data"
+import { getCourseBreadcrumbJsonLd } from "../structured-data.ts"
 
 /**
  * Emits BreadcrumbList JSON-LD for a course lesson, worksheet, teacher guide,

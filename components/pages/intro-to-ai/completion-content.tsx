@@ -1,13 +1,13 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
+import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai/i18n"
 
 import Link from "next/link"
 import { introToAiLessonPath, introToAiPath } from "@/features/curriculums/intro-to-ai"
-import { courseCompletionRequirements, finalProjectComplete } from "@/features/curriculums/intro-to-ai-progress"
-import { computeSkillStates, summarizeSkills, STATUS_LABEL, type SkillStatus } from "@/features/curriculums/intro-to-ai-skills"
-import { FINAL_REFLECTION_PROMPTS } from "@/features/curriculums/intro-to-ai-mission"
+import { courseCompletionRequirements, finalProjectComplete } from "@/features/curriculums/intro-to-ai/progress"
+import { computeSkillStates, summarizeSkills, STATUS_LABEL, type SkillStatus } from "@/features/curriculums/intro-to-ai/skills"
+import { FINAL_REFLECTION_PROMPTS } from "@/features/curriculums/intro-to-ai/mission"
 import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { Breadcrumbs } from "@/components/pages/intro-to-ai/shared"
 

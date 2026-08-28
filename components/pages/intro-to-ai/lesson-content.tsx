@@ -2,12 +2,12 @@
 
 import { useLanguage } from "@/components/providers/language-provider"
 import { introToAiCourse } from "@/features/curriculums/intro-to-ai"
-import { findAiLesson, findAiWeek } from "@/features/curriculums/intro-to-ai-i18n"
+import { findAiLesson, findAiWeek } from "@/features/curriculums/intro-to-ai/i18n"
 
 import { useEffect } from "react"
 import Link from "next/link"
 import { ArrowLeft, ArrowRight, Check } from "lucide-react"
-import type { Lesson, LessonSection } from "@/features/curriculums/intro-to-ai-types"
+import type { Lesson, LessonSection } from "@/features/curriculums/intro-to-ai/types"
 import {
   introToAiLessonPath,
   introToAiPath,
@@ -15,7 +15,7 @@ import {
   lessonNeighbors,
   lessonSections,
 } from "@/features/curriculums/intro-to-ai"
-import { lessonRequirements, lessonRequirementsMet } from "@/features/curriculums/intro-to-ai-progress"
+import { lessonRequirements, lessonRequirementsMet } from "@/features/curriculums/intro-to-ai/progress"
 import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { IntroToAiKnowledgeCheck } from "@/components/pages/intro-to-ai/knowledge-check"
 import { Breadcrumbs, VisualBlock } from "@/components/pages/intro-to-ai/shared"

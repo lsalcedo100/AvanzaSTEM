@@ -11,7 +11,7 @@ import {
   type Topic,
   type ClassifyResult,
   type Evaluation,
-} from "@/features/curriculums/intro-to-ai-week3-images"
+} from "@/features/curriculums/intro-to-ai/activities/week3-images"
 
 /**
  * Shared, accessible UI for the Week 3 image lab. All pictures are drawn from

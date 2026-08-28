@@ -7,7 +7,7 @@ import {
   MathResumeButton,
   MathTeacherControls,
 } from "@/components/pages/math-adventures-progress-ui"
-import { getMathAdventuresCurriculum } from "@/features/curriculums/math-adventures-i18n"
+import { getMathAdventuresCurriculum } from "@/features/curriculums/math-adventures/i18n"
 import {
   mathLessonPath,
 } from "@/features/curriculums/math-adventures"

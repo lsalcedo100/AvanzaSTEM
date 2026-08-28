@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReflectionPrompt } from "@/features/curriculums/intro-to-ai-types"
+import type { ReflectionPrompt } from "@/features/curriculums/intro-to-ai/types"
 import type { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { SaveState } from "@/components/pages/intro-to-ai/ui"
 

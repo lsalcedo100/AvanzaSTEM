@@ -29,7 +29,7 @@ Sitemap: registered in `app/sitemap.ts` (hub + 8 lessons + worksheets/teacher-gu
 
 ## Curriculum architecture
 
-Single source of truth: `features/curriculums/robotics.ts`.
+Single source of truth: `features/curriculums/robotics/index.ts`.
 - `roboticsCurriculum: RoboticsCurriculum` with `modules: RoboticsModule[]` (8 weeks, flat).
 - Each `RoboticsModule` holds identity, `learningGoals`, `vocabulary`, `prerequisites`,
   `concepts`, `materials`, `activities` (each with three `EquipmentVariantSet` variants
@@ -50,7 +50,7 @@ Rendered by one component (`robotics-knowledge-check.tsx`); graded by the pure
 
 `RoboticsProgress` (in `robotics.ts`), persisted to `localStorage` key
 `avanza-robotics-progress-v2` by `components/ui/useRoboticsProgress.ts`.
-- Pure logic in `features/curriculums/robotics-progress.ts` (framework-free, testable).
+- Pure logic in `features/curriculums/robotics/progress.ts` (framework-free, testable).
 - Fields: equipment path, started/completed, per-module step + timestamps, `unlockAll`,
   `knowledgeChecks`, `predictions`, `activityResults`, `activityData` (generic interactive
   state), `testRecords`, `debugFindings`, `savedPrograms` (legacy) + `savedProgramAsts`
@@ -76,7 +76,7 @@ in every teacher guide. Materials are kit-agnostic — no specific product is re
 
 ## Block-program model
 
-`features/curriculums/robotics-program.ts` — a typed, serializable, versioned AST
+`features/curriculums/robotics/program.ts` — a typed, serializable, versioned AST
 (`Program` = `{ version, variables, body: Statement[] }`), independent of visual block ids.
 - `execute(program, world, {maxSteps})` — generator interpreter with a hard step budget
   (`ExecutionLimitError`, infinite-loop protection); no `eval`.
@@ -91,7 +91,7 @@ in every teacher guide. Materials are kit-agnostic — no specific product is re
 
 ## Simulator architecture
 
-`features/curriculums/robotics-sim.ts` (engine) + `robotics-missions.ts` (worlds).
+`features/curriculums/robotics/sim.ts` (engine) + `robotics/missions.ts` (worlds).
 - `traceRun` records poses/collisions/sensor readings; `runMission` = trace + checks +
   likely-cause feedback; `feedbackFor` produces specific diagnostics (never the full answer).
 - `readSensors` (in `robotics-program.ts`) is the shared sensor read (distance/touch/line/

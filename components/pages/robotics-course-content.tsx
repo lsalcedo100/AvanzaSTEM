@@ -1,7 +1,7 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import { getRoboticsModules } from "@/features/curriculums/robotics-i18n"
+import { getRoboticsModules } from "@/features/curriculums/robotics/i18n"
 import { roboticsPath } from "@/features/curriculums/robotics"
 import {
   RoboticsFinalProjectPreview,

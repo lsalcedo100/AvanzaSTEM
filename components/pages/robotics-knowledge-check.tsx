@@ -16,7 +16,7 @@ import {
   answeredCount,
   isAnswerCorrect,
   scoreQuiz,
-} from "@/features/curriculums/robotics-quiz"
+} from "@/features/curriculums/robotics/quiz"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
 
 /** Deterministically rotate a list by one, so ordering/matching don't start solved. */

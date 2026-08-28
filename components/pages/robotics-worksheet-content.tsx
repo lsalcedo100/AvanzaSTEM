@@ -4,7 +4,7 @@ import { useLanguage } from "@/components/providers/language-provider"
 import {
   findRoboticsModule,
   getRoboticsModules,
-} from "@/features/curriculums/robotics-i18n"
+} from "@/features/curriculums/robotics/i18n"
 import Link from "next/link"
 import { roboticsLessonPath, type RoboticsModule } from "@/features/curriculums/robotics"
 import { PrintButton } from "@/components/ui/print-button"

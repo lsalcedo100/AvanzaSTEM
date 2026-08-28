@@ -1,11 +1,11 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
+import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai/i18n"
 
 import { useMemo, useState } from "react"
 
-import type { VocabularyTerm } from "@/features/curriculums/intro-to-ai-types"
+import type { VocabularyTerm } from "@/features/curriculums/intro-to-ai/types"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 type Grouping = "week" | "alpha"

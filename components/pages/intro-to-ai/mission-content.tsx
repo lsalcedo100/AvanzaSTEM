@@ -1,12 +1,12 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
-import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai-i18n"
+import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai/i18n"
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { introToAiCourse, introToAiLessonPath, introToAiPath } from "@/features/curriculums/intro-to-ai"
-import { isCorrect } from "@/features/curriculums/intro-to-ai-quiz"
+import { isCorrect } from "@/features/curriculums/intro-to-ai/quiz"
 import {
   MISSION_ID,
   MISSION_SCENARIO,
@@ -20,8 +20,8 @@ import {
   evaluateRecommendation,
   type RecommendationAnswer,
   type RecommendationDecision,
-} from "@/features/curriculums/intro-to-ai-mission"
-import { SKILLS } from "@/features/curriculums/intro-to-ai-skills"
+} from "@/features/curriculums/intro-to-ai/mission"
+import { SKILLS } from "@/features/curriculums/intro-to-ai/skills"
 import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { IntroToAiKnowledgeCheck } from "@/components/pages/intro-to-ai/knowledge-check"
 import { Breadcrumbs } from "@/components/pages/intro-to-ai/shared"

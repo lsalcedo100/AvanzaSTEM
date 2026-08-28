@@ -20,7 +20,7 @@ import {
   type TestCase,
   type TestKind,
   type Requirement,
-} from "@/features/curriculums/intro-to-ai-final-project"
+} from "@/features/curriculums/intro-to-ai/final-project"
 import { introToAiPath } from "@/features/curriculums/intro-to-ai"
 import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { Breadcrumbs } from "@/components/pages/intro-to-ai/shared"

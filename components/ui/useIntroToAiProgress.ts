@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import { introToAiCourse } from "@/features/curriculums/intro-to-ai"
-import type { KnowledgeCheckQuestion } from "@/features/curriculums/intro-to-ai-types"
+import type { KnowledgeCheckQuestion } from "@/features/curriculums/intro-to-ai/types"
 import {
   courseProgressPercent,
   earnCertificate,
@@ -28,7 +28,7 @@ import {
   weekCompletion,
   type IntroToAiProgress,
   type StorageLike,
-} from "@/features/curriculums/intro-to-ai-progress"
+} from "@/features/curriculums/intro-to-ai/progress"
 
 /** Whether the most recent write reached storage. "idle" before any write. */
 export type SaveStatus = "idle" | "saved" | "error"

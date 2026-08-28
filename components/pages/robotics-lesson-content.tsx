@@ -4,7 +4,7 @@ import { useLanguage } from "@/components/providers/language-provider"
 import {
   findRoboticsModule,
   getRoboticsModules,
-} from "@/features/curriculums/robotics-i18n"
+} from "@/features/curriculums/robotics/i18n"
 import Link from "next/link"
 import {
   nextRoboticsModule,
@@ -30,7 +30,7 @@ import { RoboticsKnowledgeCheck } from "@/components/pages/robotics-knowledge-ch
 import { RoboticsDebugMission, RoboticsTestRecord } from "@/components/pages/robotics-test-record"
 import { RoboticsLessonSteps, type LessonStep } from "@/components/pages/robotics-lesson-steps"
 import { RoboticsBlockEditor, type StatementType } from "@/components/pages/robotics-block-editor"
-import type { MissionKind } from "@/features/curriculums/robotics-missions"
+import type { MissionKind } from "@/features/curriculums/robotics/missions"
 
 /**
  * Which simulator mission each programming week's block editor targets. Only

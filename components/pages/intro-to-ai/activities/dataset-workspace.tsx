@@ -15,7 +15,7 @@ import {
   type FeatureKey,
   type SpaceFruit,
   type SpaceFruitLabel,
-} from "@/features/curriculums/intro-to-ai-week2-activities"
+} from "@/features/curriculums/intro-to-ai/activities/week2-activities"
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 import { CountBars, FlagChip, FruitDataTable, LabelPicker, type FruitRow } from "@/components/pages/intro-to-ai/activities/week2-shared"

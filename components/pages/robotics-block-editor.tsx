@@ -16,18 +16,18 @@ import {
   type RobotState,
   type RobotWorld,
   type Statement,
-} from "@/features/curriculums/robotics-program"
+} from "@/features/curriculums/robotics/program"
 import {
   getMission,
   type MissionKind,
-} from "@/features/curriculums/robotics-missions"
+} from "@/features/curriculums/robotics/missions"
 import {
   buildResultRecord,
   describeState,
   describeWorld,
   runMission,
   type MissionRunOutcome,
-} from "@/features/curriculums/robotics-sim"
+} from "@/features/curriculums/robotics/sim"
 
 /* -------------------------------------------------------------------------- */
 /* Shared class vocabulary (matches the sibling robotics components)          */

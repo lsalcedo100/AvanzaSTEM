@@ -8,7 +8,7 @@ import {
   type FeatureKey,
   type SpaceFruit,
   type SpaceFruitLabel,
-} from "@/features/curriculums/intro-to-ai-week2-activities"
+} from "@/features/curriculums/intro-to-ai/activities/week2-activities"
 
 /**
  * Shared, accessible primitives for the Week 2 "data lab" activities: a label

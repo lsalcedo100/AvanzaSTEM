@@ -14,7 +14,7 @@ import {
   type FeatureKey,
   type Evaluation,
   type StudentRecord,
-} from "@/features/curriculums/intro-to-ai-week5-fairness"
+} from "@/features/curriculums/intro-to-ai/activities/week5-fairness"
 import type { ActivityComponentProps } from "@/components/pages/intro-to-ai/activity-registry"
 import { ActivityFrame } from "@/components/pages/intro-to-ai/activity-frame"
 
