@@ -2,6 +2,7 @@
 
 import { useMemo } from "react"
 import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 import { getRoboticsModules } from "@/features/curriculums/robotics/i18n"
 import Link from "next/link"
 import {
@@ -53,12 +54,15 @@ function hasFilledCell(rows: string[][]): boolean {
   return rows.some((row) => row.some((cell) => cell.trim() !== ""))
 }
 
-const STATUS_LABEL: Record<RoboticsModuleStatus, string> = {
-  completed: "Completed",
-  "in-progress": "In progress",
-  "not-started": "Not started",
-  locked: "Locked",
-}
+type ReviewStrings = Translations["courseUi"]["robotics"]["review"]
+type ProgressStrings = Translations["courseUi"]["robotics"]["progress"]
+
+const statusLabels = (P: ProgressStrings): Record<RoboticsModuleStatus, string> => ({
+  completed: P.completed,
+  "in-progress": P.inProgress,
+  "not-started": P.notStarted,
+  locked: P.locked,
+})
 
 const roboticsJournalPath = `${roboticsPath}/journal`
 const roboticsFinalProjectPath = `${roboticsPath}/final-project`
@@ -76,14 +80,14 @@ function resolveCta(state: {
   hasProgress: boolean
   complete: boolean
   resumePath: string
-}, modules: RoboticsModule[]): { href: string; label: string } {
+}, modules: RoboticsModule[], P: ProgressStrings, R: ReviewStrings): { href: string; label: string } {
   if (!state.loaded || !state.hasProgress) {
-    return { href: roboticsLessonPath(modules[0].slug), label: "Start Week 1" }
+    return { href: roboticsLessonPath(modules[0].slug), label: P.startWeek1 }
   }
   if (state.complete) {
-    return { href: roboticsPath, label: "You've finished the course" }
+    return { href: roboticsPath, label: R.finishedCourse }
   }
-  return { href: state.resumePath, label: "Continue where you left off" }
+  return { href: state.resumePath, label: R.continueWhereLeft }
 }
 
 /**
@@ -94,6 +98,9 @@ function resolveCta(state: {
  * mismatch. Matches the visual style of robotics-progress-ui.tsx.
  */
 export function RoboticsReviewContent() {
+  const ui = useLanguage().t.courseUi.robotics
+  const P = ui.progress
+  const R = ui.review
   const modules = useModules()
   const {
     programSpecs,
@@ -141,15 +148,15 @@ export function RoboticsReviewContent() {
     hasProgress,
     complete: completion.complete,
     resumePath: resume.path,
-  }, modules)
+  }, modules, P, R)
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
       <header>
         <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Robotics &amp; Automation
+          {ui.lesson.courseTitle}
         </p>
-        <h1 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">Course review</h1>
+        <h1 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">{R.title}</h1>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
           A single place to see how far you have come, jump back to where you left off, and revisit
           any week. Your progress is saved on this device.
@@ -195,14 +202,14 @@ export function RoboticsReviewContent() {
       {/* Empty state */}
       {loaded && !hasProgress && (
         <section className="mt-6 rounded-lg border border-border bg-secondary p-5">
-          <p className="text-sm font-semibold text-foreground">You haven&apos;t started yet.</p>
+          <p className="text-sm font-semibold text-foreground">{R.notStartedYet}</p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             Once you begin the course, this page will fill in with your weekly progress and knowledge
             check scores. Start with the first week whenever you are ready.
           </p>
           <div className="mt-4">
             <Link href={roboticsLessonPath(modules[0].slug)} className={greenButton}>
-              Start Week 1
+              {P.startWeek1}
             </Link>
           </div>
         </section>
@@ -210,18 +217,20 @@ export function RoboticsReviewContent() {
 
       {/* Per-week list */}
       <section className="mt-8">
-        <h2 className="text-lg font-bold text-foreground">Weeks</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.weeks}</h2>
         <ul className="mt-4 space-y-3">
           {modules.map((module) => {
             const moduleStatus: RoboticsModuleStatus = loaded ? status(module) : "not-started"
             const locked = loaded && moduleStatus === "locked"
-            const label = module.isFinal ? "Final project" : `Week ${module.week}: ${module.title}`
+            const label = module.isFinal
+              ? ui.finalProject
+              : P.weekTitleLine.replace("{n}", String(module.week)).replace("{title}", module.title)
 
             const action =
               moduleStatus === "completed"
-                ? "Review"
+                ? P.review
                 : moduleStatus === "in-progress"
-                  ? "Continue"
+                  ? P.continueLabel
                   : "Open"
 
             const attempt = progress.knowledgeChecks[module.knowledgeCheck.id]
@@ -236,20 +245,20 @@ export function RoboticsReviewContent() {
                   <div className="md:pr-6">
                     <div className="flex items-baseline gap-3">
                       <span className="font-mono text-sm font-semibold text-muted-foreground">
-                        {module.isFinal ? "Final" : `0${module.week}`}
+                        {module.isFinal ? P.finalShort : `0${module.week}`}
                       </span>
                       <h3 className="text-base font-bold text-foreground">
-                        {module.isFinal ? "Final project" : module.title}
+                        {module.isFinal ? ui.finalProject : module.title}
                       </h3>
                     </div>
                     <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
                       <span className="sr-only">{label}. </span>
-                      <span className="font-semibold text-foreground">Status: </span>
-                      {loaded ? STATUS_LABEL[moduleStatus] : "Not started"}
+                      <span className="font-semibold text-foreground">{R.status}</span>
+                      {loaded ? statusLabels(P)[moduleStatus] : P.notStarted}
                       {loaded && attempt && (
                         <>
                           <span aria-hidden="true"> · </span>
-                          <span className="font-semibold text-foreground">Knowledge check: </span>
+                          <span className="font-semibold text-foreground">{R.knowledgeCheck}</span>
                           {attempt.score} of {total}
                         </>
                       )}
@@ -258,7 +267,7 @@ export function RoboticsReviewContent() {
 
                   <div className="flex-none md:text-right">
                     {locked ? (
-                      <p className="text-sm font-medium text-muted-foreground">Locked</p>
+                      <p className="text-sm font-medium text-muted-foreground">{P.locked}</p>
                     ) : (
                       <Link
                         href={roboticsLessonPath(module.slug)}
@@ -277,7 +286,7 @@ export function RoboticsReviewContent() {
 
       {/* Saved programs */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Saved programs</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.savedPrograms}</h2>
         {loaded && (savedProgramAsts.length > 0 || savedPrograms.length > 0) ? (
           <ul className="mt-4 space-y-2">
             {savedProgramAsts.map((prog) => {
@@ -310,14 +319,14 @@ export function RoboticsReviewContent() {
           </ul>
         ) : (
           <p className="mt-3 text-sm text-muted-foreground">
-            Programs you build and save in the programming weeks will appear here.
+            {R.savedProgramsEmpty}
           </p>
         )}
       </section>
 
       {/* Completed simulations */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Simulator runs</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.simulatorRuns}</h2>
         {loaded && savedSimulations.length > 0 ? (
           <ul className="mt-4 space-y-2">
             {savedSimulations.map((run) => {
@@ -327,13 +336,14 @@ export function RoboticsReviewContent() {
                 <li key={run.specId || run.missionId} className="rounded-lg border border-border p-4 text-sm">
                   <p className="font-semibold text-foreground capitalize">{label}</p>
                   <p className="mt-1 text-muted-foreground">
-                    {run.success ? "Completed" : "Attempted"} · trial {run.trial} · {run.steps} step
-                    {run.steps === 1 ? "" : "s"} · {run.collisions} collision{run.collisions === 1 ? "" : "s"}
-                    {run.ranTooLong ? " · ran too long" : ""}
+                    {run.success ? R.runCompleted : R.runAttempted} · {R.trial} {run.trial} ·{" "}
+                    {run.steps} {run.steps === 1 ? R.step : R.steps} · {run.collisions}{" "}
+                    {run.collisions === 1 ? R.collision : R.collisions}
+                    {run.ranTooLong ? R.ranTooLong : ""}
                   </p>
                   {run.revisionMade.trim() !== "" && (
                     <p className="mt-1 text-muted-foreground">
-                      <span className="font-semibold text-foreground">Changed: </span>
+                      <span className="font-semibold text-foreground">{R.changed}</span>
                       {run.revisionMade}
                     </p>
                   )}
@@ -343,14 +353,14 @@ export function RoboticsReviewContent() {
           </ul>
         ) : (
           <p className="mt-3 text-sm text-muted-foreground">
-            Simulator missions you complete will be listed here.
+            {R.simulatorRunsEmpty}
           </p>
         )}
       </section>
 
       {/* Printable resources + adult guidance */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Printable resources &amp; adult guidance</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.printableResources}</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Each week has a print-friendly student worksheet and a parent &amp; teacher guide (with the
           learning purpose, pacing, common misconceptions, questions to ask, safety notes, and the
@@ -363,20 +373,22 @@ export function RoboticsReviewContent() {
               className="flex flex-col gap-2 rounded-lg border border-border p-4 text-sm sm:flex-row sm:items-center sm:justify-between"
             >
               <span className="font-semibold text-foreground">
-                {module.isFinal ? "Final project" : `Week ${module.week}: ${module.title}`}
+                {module.isFinal
+                  ? ui.finalProject
+                  : P.weekTitleLine.replace("{n}", String(module.week)).replace("{title}", module.title)}
               </span>
               <span className="flex flex-wrap gap-x-5 gap-y-1">
                 <Link
                   href={roboticsWorksheetPath(module.slug)}
                   className="font-medium text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
                 >
-                  Worksheet
+                  {R.worksheet}
                 </Link>
                 <Link
                   href={roboticsTeacherGuidePath(module.slug)}
                   className="font-medium text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
                 >
-                  Teacher &amp; parent guide
+                  {R.teacherGuide}
                 </Link>
               </span>
             </li>
@@ -386,15 +398,17 @@ export function RoboticsReviewContent() {
 
       {/* Vocabulary reference */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Vocabulary reference</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.vocabularyReference}</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Every robotics term from the course, week by week.
+          {R.vocabularyIntro}
         </p>
         <div className="mt-4 space-y-6">
           {modules.map((module) => (
             <div key={module.slug}>
               <h3 className="text-sm font-bold text-foreground">
-                {module.isFinal ? "Final project" : `Week ${module.week}: ${module.title}`}
+                {module.isFinal
+                  ? ui.finalProject
+                  : P.weekTitleLine.replace("{n}", String(module.week)).replace("{title}", module.title)}
               </h3>
               <dl className="mt-2 space-y-2">
                 {module.vocabulary.map((term) => (
@@ -411,7 +425,7 @@ export function RoboticsReviewContent() {
 
       {/* Predictions */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Predictions</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.predictions}</h2>
         {loaded && savedPredictions.length > 0 ? (
           <ul className="mt-4 space-y-2">
             {savedPredictions.map(({ promptId, response, prompt }) => (
@@ -423,14 +437,14 @@ export function RoboticsReviewContent() {
           </ul>
         ) : (
           <p className="mt-3 text-sm text-muted-foreground">
-            Predictions you write before an experiment will appear here.
+            {R.predictionsEmpty}
           </p>
         )}
       </section>
 
       {/* Test records */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Test records</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.testRecords}</h2>
         {loaded && savedTestRecords.length > 0 ? (
           <ul className="mt-4 space-y-3">
             {savedTestRecords.map(({ record, spec }) => (
@@ -473,14 +487,14 @@ export function RoboticsReviewContent() {
           </ul>
         ) : (
           <p className="mt-3 text-sm text-muted-foreground">
-            Test tables you fill in during the testing weeks will appear here.
+            {R.testRecordsEmpty}
           </p>
         )}
       </section>
 
       {/* Bugs & fixes */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Bugs &amp; fixes</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.bugsFixes}</h2>
         {loaded && savedDebugFindings.length > 0 ? (
           <ul className="mt-4 space-y-2">
             {savedDebugFindings.map(({ finding, mission }) => (
@@ -492,14 +506,14 @@ export function RoboticsReviewContent() {
           </ul>
         ) : (
           <p className="mt-3 text-sm text-muted-foreground">
-            Fixes you note in the debugging missions will appear here.
+            {R.bugsFixesEmpty}
           </p>
         )}
       </section>
 
       {/* Journal entries */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Journal entries</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.journalEntries}</h2>
         {loaded && savedJournalEntries.length > 0 ? (
           <ul className="mt-4 space-y-2">
             {savedJournalEntries.map(({ entry, lookup }) => (
@@ -518,20 +532,22 @@ export function RoboticsReviewContent() {
           </ul>
         ) : (
           <p className="mt-3 text-sm text-muted-foreground">
-            Design-journal answers you save will appear here.
+            {R.journalEntriesEmpty}
           </p>
         )}
       </section>
 
       {/* Answer explanations */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Answer explanations</h2>
+        <h2 className="text-lg font-bold text-foreground">{R.answerExplanations}</h2>
         {loaded && reviewableChecks.length > 0 ? (
           <div className="mt-4 space-y-6">
             {reviewableChecks.map((module) => (
               <div key={module.slug}>
                 <h3 className="text-sm font-bold text-foreground">
-                  {module.isFinal ? "Final project" : `Week ${module.week}: ${module.title}`}
+                  {module.isFinal
+                  ? ui.finalProject
+                  : P.weekTitleLine.replace("{n}", String(module.week)).replace("{title}", module.title)}
                 </h3>
                 <ul className="mt-2 space-y-3">
                   {module.knowledgeCheck.questions.map((question) => (
@@ -546,7 +562,7 @@ export function RoboticsReviewContent() {
           </div>
         ) : (
           <p className="mt-3 text-sm text-muted-foreground">
-            Once you take a knowledge check, its answer explanations will appear here to re-read.
+            {R.answerExplanationsEmpty}
           </p>
         )}
       </section>
@@ -557,19 +573,19 @@ export function RoboticsReviewContent() {
           href={roboticsJournalPath}
           className="text-sm font-medium text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
         >
-          Design journal
+          {ui.journal.title}
         </Link>
         <Link
           href={roboticsFinalProjectPath}
           className="text-sm font-medium text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
         >
-          Final project
+          {ui.finalProject}
         </Link>
         <Link
           href={roboticsPath}
           className="text-sm font-medium text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
         >
-          Back to course overview
+          {P.backToOverview}
         </Link>
       </div>
     </div>

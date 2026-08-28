@@ -188,6 +188,7 @@ const ENGLISH_ONLY_PATHS = new Set(
 // commit removed an unused authorId field and changed nothing a reader sees.
 const staticRoutes = [
   { path: '/', priority: 1.0, changeFrequency: 'weekly', lastModified: '2026-08-14' },
+  { path: '/resources', priority: 0.9, changeFrequency: 'weekly', lastModified: '2026-08-28' },
   { path: '/about', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-12' },
   { path: '/projects', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-04' },
   { path: '/games', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-16' },

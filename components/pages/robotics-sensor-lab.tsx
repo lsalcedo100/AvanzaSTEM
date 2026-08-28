@@ -8,6 +8,8 @@ import {
   type SensorReadings,
 } from "@/features/curriculums/robotics/program"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
+import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 
 /**
  * Week 4 "Sensor Investigation Lab" for the Robotics & Automation course
@@ -55,7 +57,9 @@ type SavedLab = {
   reason: string
 }
 
-const TABLE_COLUMNS = ["What I set", "Distance", "Light", "Notes"]
+type SensorStrings = Translations["courseUi"]["robotics"]["sensorLab"]
+
+const tableColumns = (S: SensorStrings) => [S.colWhatISet, S.colDistance, S.colLight, S.colNotes]
 
 const emptyLab: SavedLab = { rows: [], threshold: "", reason: "" }
 
@@ -101,11 +105,13 @@ function isOutOfRange(rawDistance: number): boolean {
 }
 
 /** How the live distance reading should be shown as text. */
-function distanceLabel(rawDistance: number): string {
-  return isOutOfRange(rawDistance) ? "Out of range" : `${rawDistance} cells`
+function distanceLabel(rawDistance: number, S: SensorStrings): string {
+  return isOutOfRange(rawDistance) ? S.outOfRange : S.cells.replace("{n}", String(rawDistance))
 }
 
 export function SensorInvestigationLab({ activityId }: { activityId: string }) {
+  const S = useLanguage().t.courseUi.robotics.sensorLab
+  const TABLE_COLUMNS = tableColumns(S)
   const { loaded, progress, equipmentPath, saveActivityData, saveActivityResult } = useRoboticsProgress()
 
   const storageKey = `sensor-lab:${activityId}`
@@ -148,13 +154,13 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
 
   // The threshold decision: NEAR if the live distance is at or below the
   // threshold, FAR otherwise. Out-of-range readings are always FAR.
-  const decision: "NEAR" | "FAR" | null = !thresholdValid
+  const decision: string | null = !thresholdValid
     ? null
     : outOfRange
-      ? "FAR"
+      ? S.far
       : readings.distance <= (threshold as number)
-        ? "NEAR"
-        : "FAR"
+        ? S.near
+        : S.far
 
   // Completion: at least 3 recorded readings AND a valid threshold.
   const meetsCompletion = lab.rows.length >= 3 && thresholdValid
@@ -171,12 +177,15 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
   }, [loaded, meetsCompletion, savedResult, activityId, equipmentPath, saveActivityResult])
 
   const addCurrentReading = () => {
-    const whatISet = `${outOfRange ? `${distance} cells (out of range)` : `${distance} cells`}, ${
-      dark ? "dark surface" : "light surface"
-    }`
+    const whatISet = S.whatISet
+      .replace(
+        "{distance}",
+        (outOfRange ? S.cellsOutOfRange : S.cells).replace("{n}", String(distance)),
+      )
+      .replace("{surface}", dark ? S.darkSurfaceShort : S.lightSurfaceShort)
     const row: Reading = {
       whatISet,
-      distance: distanceLabel(readings.distance),
+      distance: distanceLabel(readings.distance, S),
       light: String(readings.light),
       notes: "",
     }
@@ -195,17 +204,15 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
       <header>
-        <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Week 4 lab</p>
+        <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{S.eyebrow}</p>
         {/* h2, not h1: this lab is embedded inside the Week 4 lesson page, whose
             own h1 is the module title. Two h1 elements on one page is a
             semantic error. All sizing comes from the utility classes below and
             Tailwind's preflight resets heading font-size/weight to inherit, so
             the rendered output is byte-for-byte identical. */}
-        <h2 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">Sensor Investigation Lab</h2>
+        <h2 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">{S.title}</h2>
         <p className="mt-4 text-sm leading-relaxed text-foreground/90">
-          Place an object at different distances and try a light or a dark surface. Read the live sensor values,
-          record them in your table, and pick a threshold. A sensor returns a measurement - a number - not an
-          understanding of what the object is.
+          {S.intro}
         </p>
       </header>
 
@@ -213,15 +220,15 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
       <section className="mt-10 grid gap-6 md:grid-cols-2">
         {/* Controls */}
         <div className="rounded-lg border border-border bg-card p-5">
-          <h2 className="text-lg font-bold text-foreground">Set up the test</h2>
+          <h2 className="text-lg font-bold text-foreground">{S.setUpTest}</h2>
 
           {/* Object distance */}
           <fieldset className="mt-5" disabled={!loaded}>
-            <legend className="text-sm font-semibold text-foreground">Object distance</legend>
+            <legend className="text-sm font-semibold text-foreground">{S.objectDistance}</legend>
             <p className="mt-1 text-xs text-muted-foreground">
               How many cells ahead of the robot the object sits. Beyond {MAX_RANGE} cells the sensor cannot see it.
             </p>
-            <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Object distance in cells">
+            <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label={S.distanceInCells}>
               {Array.from({ length: MAX_DISTANCE - MIN_DISTANCE + 1 }, (_, i) => MIN_DISTANCE + i).map((d) => {
                 const active = distance === d
                 return (
@@ -244,7 +251,7 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
               })}
             </div>
             <label htmlFor="distance-range" className="mt-4 block text-xs font-semibold text-muted-foreground">
-              Or use the slider
+              {S.orUseSlider}
             </label>
             <input
               id="distance-range"
@@ -262,14 +269,14 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
 
           {/* Surface */}
           <fieldset className="mt-6" disabled={!loaded}>
-            <legend className="text-sm font-semibold text-foreground">Surface</legend>
+            <legend className="text-sm font-semibold text-foreground">{S.surface}</legend>
             <p className="mt-1 text-xs text-muted-foreground">
-              A dark surface reflects less light, so the light sensor reads a low number.
+              {S.darkSurfaceNote}
             </p>
-            <div className="mt-3 flex gap-2" role="group" aria-label="Surface under the robot">
+            <div className="mt-3 flex gap-2" role="group" aria-label={S.surfaceUnder}>
               {[
-                { value: false, label: "Light surface" },
-                { value: true, label: "Dark surface" },
+                { value: false, label: S.lightSurface },
+                { value: true, label: S.darkSurface },
               ].map((opt) => {
                 const active = dark === opt.value
                 return (
@@ -296,21 +303,29 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
 
         {/* Live readings */}
         <div className="rounded-lg border border-border bg-card p-5">
-          <h2 className="text-lg font-bold text-foreground">Live sensor read-out</h2>
+          <h2 className="text-lg font-bold text-foreground">{S.liveReadout}</h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            These update the moment you change the setup. Same setup, same numbers - every time.
+            {S.liveReadoutNote}
           </p>
           <dl className="mt-4 space-y-3 text-sm" aria-live="polite">
             <ReadingRow
-              label="Distance"
-              value={distanceLabel(readings.distance)}
+              label={S.distance}
+              value={distanceLabel(readings.distance, S)}
               indicator={outOfRange ? "limit" : "ok"}
             />
-            <ReadingRow label="Touch" value={readings.touch ? "Pressed" : "Not pressed"} indicator={readings.touch ? "on" : "off"} />
-            <ReadingRow label="Light" value={`${readings.light} of 100`} indicator={readings.light <= 50 ? "on" : "off"} />
             <ReadingRow
-              label="Over a line"
-              value={readings.onLine ? "Yes" : "No"}
+              label={S.touch}
+              value={readings.touch ? S.pressed : S.notPressed}
+              indicator={readings.touch ? "on" : "off"}
+            />
+            <ReadingRow
+              label={S.light}
+              value={S.lightOf100.replace("{n}", String(readings.light))}
+              indicator={readings.light <= 50 ? "on" : "off"}
+            />
+            <ReadingRow
+              label={S.overALine}
+              value={readings.onLine ? S.yes : S.no}
               indicator={readings.onLine ? "on" : "off"}
             />
           </dl>
@@ -321,7 +336,7 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-bold text-foreground">Your data table</h2>
+            <h2 className="text-lg font-bold text-foreground">{S.yourDataTable}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Record at least three readings. Try different distances, an edge-of-range reading, the same reading
               twice, a light surface, and a dark surface.
@@ -333,7 +348,7 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
             disabled={!loaded}
             className="rounded-md border border-avanza-green bg-avanza-green/10 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-avanza-green/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Add current reading
+            {S.addReading}
           </button>
         </div>
 
@@ -350,7 +365,7 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
                   </th>
                 ))}
                 <th className="border-b border-border px-3 py-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                  <span className="sr-only">Remove</span>
+                  <span className="sr-only">{S.remove}</span>
                 </th>
               </tr>
             </thead>
@@ -358,7 +373,7 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
               {lab.rows.length === 0 ? (
                 <tr>
                   <td colSpan={TABLE_COLUMNS.length + 1} className="px-3 py-6 text-center text-sm text-muted-foreground">
-                    No readings yet. Set up a test above and press &ldquo;Add current reading&rdquo;.
+                    {S.noReadings}
                   </td>
                 </tr>
               ) : (
@@ -373,8 +388,8 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
                         value={row.notes}
                         onChange={(e) => updateNotes(r, e.target.value)}
                         disabled={!loaded}
-                        aria-label={`Notes for reading ${r + 1}`}
-                        placeholder="What did you notice?"
+                        aria-label={S.notesFor.replace("{n}", String(r + 1))}
+                        placeholder={S.whatDidYouNotice}
                         className={cellClass}
                       />
                     </td>
@@ -383,10 +398,10 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
                         type="button"
                         onClick={() => removeRow(r)}
                         disabled={!loaded}
-                        aria-label={`Remove reading ${r + 1}`}
+                        aria-label={S.removeReading.replace("{n}", String(r + 1))}
                         className="rounded-md border border-border px-2 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green disabled:opacity-50"
                       >
-                        Remove
+                        {S.remove}
                       </button>
                     </td>
                   </tr>
@@ -402,7 +417,7 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
 
       {/* Threshold */}
       <section className="mt-12">
-        <h2 className="text-lg font-bold text-foreground">Choose a threshold</h2>
+        <h2 className="text-lg font-bold text-foreground">{S.chooseThreshold}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           A threshold is the number your robot compares against to decide. Here: if the distance is at or below your
           threshold, the robot calls the object NEAR.
@@ -411,7 +426,7 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <div>
             <label htmlFor="threshold" className="block text-sm font-semibold text-foreground">
-              My chosen threshold (cells)
+              {S.myThreshold}
             </label>
             <input
               id="threshold"
@@ -421,13 +436,13 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
               value={lab.threshold}
               onChange={(e) => persist({ ...lab, threshold: e.target.value })}
               disabled={!loaded}
-              placeholder="e.g. 3"
+              placeholder={S.egThree}
               className={inputClass}
             />
           </div>
           <div>
             <label htmlFor="threshold-reason" className="block text-sm font-semibold text-foreground">
-              Why this threshold?
+              {S.whyThreshold}
             </label>
             <input
               id="threshold-reason"
@@ -435,7 +450,7 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
               value={lab.reason}
               onChange={(e) => persist({ ...lab, reason: e.target.value })}
               disabled={!loaded}
-              placeholder="Explain your choice"
+              placeholder={S.explainChoice}
               className={inputClass}
             />
           </div>
@@ -444,16 +459,15 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
         <div className="mt-5 rounded-lg border border-border bg-secondary p-4" aria-live="polite">
           {thresholdValid ? (
             <p className="text-sm text-foreground/90">
-              With a threshold of{" "}
-              <span className="font-semibold text-foreground">{threshold}</span> and the current distance of{" "}
-              <span className="font-semibold text-foreground">{distanceLabel(readings.distance)}</span>, the robot
-              would decide:{" "}
-              <span className="font-bold text-foreground">{decision}</span>
-              {decision === "FAR" && outOfRange ? " (the object is past the sensor's range)" : ""}.
+              {S.withThresholdA}{" "}
+              <span className="font-semibold text-foreground">{threshold}</span> {S.withThresholdB}{" "}
+              <span className="font-semibold text-foreground">{distanceLabel(readings.distance, S)}</span>,{" "}
+              {S.withThresholdC} <span className="font-bold text-foreground">{decision}</span>
+              {decision === S.far && outOfRange ? S.pastRange : ""}.
             </p>
           ) : (
             <p className="text-sm text-muted-foreground">
-              Enter a threshold number to see what the robot would decide right now.
+              {S.enterThreshold}
             </p>
           )}
         </div>
@@ -463,7 +477,7 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
       <section className="mt-10">
         {loaded && (meetsCompletion || savedResult) ? (
           <div className="rounded-lg border border-avanza-green bg-avanza-green/10 p-4">
-            <p className="text-sm font-semibold text-foreground">Lab saved.</p>
+            <p className="text-sm font-semibold text-foreground">{S.labSaved}</p>
             <p className="mt-1 text-sm text-foreground/90">
               You recorded {lab.rows.length} readings and chose a threshold. This activity is marked complete on this
               device.
@@ -472,13 +486,13 @@ export function SensorInvestigationLab({ activityId }: { activityId: string }) {
         ) : (
           <div className="rounded-lg border border-border bg-card p-4">
             <p className="text-sm text-muted-foreground">
-              Record at least three readings and enter a threshold to finish this lab.
+              {S.finishHint}
             </p>
           </div>
         )}
       </section>
 
-      <p className="mt-10 text-xs text-muted-foreground">Everything on this page is saved on this device only.</p>
+      <p className="mt-10 text-xs text-muted-foreground">{S.savedOnDevice}</p>
     </div>
   )
 }

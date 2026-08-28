@@ -1,4 +1,4 @@
-import { getProjectGuide, type ProjectGuide } from "@/features/projects/data"
+import { getProjectGuide, getProjectGuides, type ProjectGuide } from "@/features/projects/data"
 import { getBreadcrumbJsonLd } from "@/lib/structured-data"
 import { localizedPath } from "@/lib/i18n-routes"
 import { siteConfig } from "@/lib/site-config"
@@ -855,6 +855,87 @@ export function getProjectBreadcrumbJsonLd(slug: string, language: Language = "e
       { name: t.nav.home, path: "/" },
       { name: t.nav.projects, path: "/projects" },
       { name: project.title, path: `/projects/${slug}` },
+    ],
+    language,
+  )
+}
+
+
+/**
+ * Structured data for the /projects index.
+ *
+ * The index was the one content hub on the site emitting no JSON-LD at all:
+ * every individual guide describes itself as a HowTo, but nothing told a
+ * crawler that /projects is the collection those guides belong to. That
+ * matters for the "STEM resources / projects / activities for kids" queries
+ * the index is meant to answer, which are collection-intent queries, not
+ * single-project ones.
+ *
+ * The ItemList mirrors the order the page renders the cards in, and every
+ * field is read from the same project data the cards render, so the markup
+ * never describes a project the visitor cannot see.
+ */
+export function getProjectsIndexJsonLd(language: Language = "en") {
+  const projects = getProjectGuides(language)
+  const url = `${siteConfig.url}${localizedPath("/projects", language)}`
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${url}#collection`,
+    name: translations[language].nav.projects,
+    description: PROJECTS_INDEX_DESCRIPTION[language],
+    url,
+    inLanguage: language,
+    isPartOf: { "@id": `${siteConfig.url}/#website` },
+    publisher: { "@id": `${siteConfig.url}/#organization` },
+    isAccessibleForFree: true,
+    audience: {
+      "@type": "EducationalAudience",
+      educationalRole: "student",
+      audienceType: "Kids, parents, teachers, and librarians",
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      name: PROJECTS_INDEX_LIST_NAME[language],
+      numberOfItems: projects.length,
+      itemListElement: projects.map((project, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${siteConfig.url}${localizedPath(`/projects/${project.slug}`, language)}`,
+        name: project.title,
+      })),
+    },
+  }
+}
+
+/**
+ * Short summaries of what the index collects, used as the CollectionPage
+ * description. Kept here rather than reused from the page's meta description so
+ * the JSON-LD does not silently change every time that description is retuned
+ * for click-through rate.
+ */
+const PROJECTS_INDEX_DESCRIPTION: Record<Language, string> = {
+  en: "Free step-by-step STEM project guides for kids, parents, and teachers, covering engineering, science, coding, robotics, and math.",
+  es: "Guias de proyectos STEM gratuitas y paso a paso para ninos, familias y maestros, sobre ingenieria, ciencias, programacion, robotica y matematicas.",
+  zh: "面向儿童、家长和老师的免费分步 STEM 项目指南，涵盖工程、科学、编程、机器人和数学。",
+  pt: "Guias de projetos de STEM gratuitos e passo a passo para criancas, familias e professores, sobre engenharia, ciencias, programacao, robotica e matematica.",
+}
+
+const PROJECTS_INDEX_LIST_NAME: Record<Language, string> = {
+  en: "Free STEM project guides for kids",
+  es: "Guias de proyectos STEM gratuitos para ninos",
+  zh: "免费儿童 STEM 项目指南",
+  pt: "Guias de projetos de STEM gratuitos para criancas",
+}
+
+/** BreadcrumbList for the /projects index itself (Home > Projects). */
+export function getProjectsIndexBreadcrumbJsonLd(language: Language = "en") {
+  const t = translations[language]
+  return getBreadcrumbJsonLd(
+    [
+      { name: t.nav.home, path: "/" },
+      { name: t.nav.projects, path: "/projects" },
     ],
     language,
   )

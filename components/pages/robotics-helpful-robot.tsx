@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import { PrintButton } from "@/components/ui/print-button"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
+import { useLanguage } from "@/components/providers/language-provider"
 
 /** The saved design record. Every field is optional text until the student fills it in. */
 type HelpfulRobotDesign = {
@@ -43,6 +44,7 @@ const fieldClass =
  * the finished design can be printed as a labeled description.
  */
 export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
+  const H = useLanguage().t.courseUi.robotics.helpful
   const { loaded, progress, saveActivityData, saveActivityResult } = useRoboticsProgress()
   const storageKey = `helpful-robot:${activityId}`
 
@@ -76,25 +78,23 @@ export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
     <div className="rounded-lg border border-border p-5 md:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h3 className="text-lg font-bold text-foreground">Helpful Robot design challenge</h3>
+          <h3 className="text-lg font-bold text-foreground">{H.title}</h3>
           <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-            Design a robot that helps a real person. Break your idea into what it senses, the
-            decision it makes, and what it does. Sketch it on paper, then describe it here.
+            {H.intro}
           </p>
         </div>
         <div className="print-hidden">
-          <PrintButton label="Print this design" tone="green" />
+          <PrintButton label={H.printDesign} tone="green" />
         </div>
       </div>
 
       <div className="mt-5 space-y-5">
         <div>
           <label htmlFor="hr-problem" className="block text-sm font-semibold text-foreground">
-            The problem your robot solves
+            {H.problem}
           </label>
           <p className="mt-1 text-xs text-muted-foreground">
-            For example: carrying books, sorting recycling, finding lost objects, watering plants,
-            or inspecting unsafe areas.
+            {H.problemHint}
           </p>
           <textarea
             key={`problem-${loaded}`}
@@ -103,14 +103,14 @@ export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
             onBlur={(e) => saveField("problem", e.target.value)}
             disabled={!loaded}
             rows={3}
-            placeholder="What problem will your robot help with?"
+            placeholder={H.phProblem}
             className={fieldClass}
           />
         </div>
 
         <div>
           <label htmlFor="hr-user" className="block text-sm font-semibold text-foreground">
-            Who it helps (the intended user)
+            {H.user}
           </label>
           <input
             key={`user-${loaded}`}
@@ -119,14 +119,14 @@ export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
             defaultValue={initial.user ?? ""}
             onBlur={(e) => saveField("user", e.target.value)}
             disabled={!loaded}
-            placeholder="Who will use it or benefit from it?"
+            placeholder={H.phUser}
             className={fieldClass}
           />
         </div>
 
         <div>
           <label htmlFor="hr-input" className="block text-sm font-semibold text-foreground">
-            What it senses (input)
+            {H.senses}
           </label>
           <textarea
             key={`input-${loaded}`}
@@ -135,14 +135,14 @@ export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
             onBlur={(e) => saveField("input", e.target.value)}
             disabled={!loaded}
             rows={2}
-            placeholder="What does your robot detect or measure?"
+            placeholder={H.phSenses}
             className={fieldClass}
           />
         </div>
 
         <div>
           <label htmlFor="hr-processing" className="block text-sm font-semibold text-foreground">
-            The decision it makes (processing)
+            {H.decision}
           </label>
           <textarea
             key={`processing-${loaded}`}
@@ -151,14 +151,14 @@ export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
             onBlur={(e) => saveField("processing", e.target.value)}
             disabled={!loaded}
             rows={2}
-            placeholder="How does it decide what to do with what it senses?"
+            placeholder={H.phDecision}
             className={fieldClass}
           />
         </div>
 
         <div>
           <label htmlFor="hr-output" className="block text-sm font-semibold text-foreground">
-            What it does (output action)
+            {H.action}
           </label>
           <textarea
             key={`output-${loaded}`}
@@ -167,18 +167,17 @@ export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
             onBlur={(e) => saveField("output", e.target.value)}
             disabled={!loaded}
             rows={2}
-            placeholder="What action does your robot take?"
+            placeholder={H.phAction}
             className={fieldClass}
           />
         </div>
 
         <div>
           <label htmlFor="hr-sketch" className="block text-sm font-semibold text-foreground">
-            Describe your labeled design / sketch
+            {H.sketch}
           </label>
           <p className="mt-1 text-xs text-muted-foreground">
-            Draw your robot on paper and label its parts, then describe the sketch here so it is
-            saved with your design.
+            {H.sketchHint}
           </p>
           <textarea
             key={`sketch-${loaded}`}
@@ -187,14 +186,14 @@ export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
             onBlur={(e) => saveField("sketch", e.target.value)}
             disabled={!loaded}
             rows={3}
-            placeholder="What does your sketch show, and what are the labeled parts?"
+            placeholder={H.phSketch}
             className={fieldClass}
           />
         </div>
 
         <div>
           <label htmlFor="hr-safety" className="block text-sm font-semibold text-foreground">
-            One safety or responsibility consideration
+            {H.safety}
           </label>
           <textarea
             key={`safety-${loaded}`}
@@ -203,7 +202,7 @@ export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
             onBlur={(e) => saveField("safety", e.target.value)}
             disabled={!loaded}
             rows={2}
-            placeholder="How will you keep it safe and use it responsibly?"
+            placeholder={H.phSafety}
             className={fieldClass}
           />
         </div>
@@ -211,7 +210,7 @@ export function HelpfulRobotDesigner({ activityId }: { activityId: string }) {
 
       {complete && (
         <p className="mt-5 text-sm font-semibold text-avanza-green-dark" role="status">
-          Saved. Your Helpful Robot design is complete.
+          {H.savedNote}
         </p>
       )}
     </div>

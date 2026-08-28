@@ -12,6 +12,7 @@ import {
   SIM_TICK_MS,
   buildResultRecord,
   describeState,
+  type SimDescribeStrings,
   describeWorld,
   feedbackFor,
   runMission,
@@ -97,12 +98,12 @@ function fb(program: Program, kind: Parameters<typeof getMission>[0]): string[] 
 test("feedback: stopped after crossing the delivery/goal zone", () => {
   // stop-in-zone goal is (3,0); driving 5 overshoots to (4,0) after visiting it.
   const messages = fb(P({ type: "move", direction: "forward", distance: 5 }), "stop-in-zone")
-  assert.ok(messages.some((m) => m.includes("crossing the delivery zone")))
+  assert.ok(messages.includes("crossedZone"))
 })
 
 test("feedback: touched the obstacle because stop ran after the move", () => {
   const messages = fb(P({ type: "move", direction: "forward", distance: 5 }, { type: "safeStop" }), "obstacle-detection")
-  assert.ok(messages.some((m) => m.includes("stop command ran after the movement")))
+  assert.ok(messages.includes("stopAfterMove"))
 })
 
 test("feedback: distance threshold triggered too late (collision with a distance check)", () => {
@@ -111,7 +112,7 @@ test("feedback: distance threshold triggered too late (collision with a distance
     { type: "move", direction: "forward", distance: 5 },
   )
   const messages = fb(program, "obstacle-detection")
-  assert.ok(messages.some((m) => m.includes("threshold triggered too late")))
+  assert.ok(messages.includes("thresholdLate"))
 })
 
 test("feedback: mismatched motor speeds cause a curve", () => {
@@ -121,12 +122,12 @@ test("feedback: mismatched motor speeds cause a curve", () => {
     { type: "moveForDuration", direction: "forward", ms: 500 },
   )
   const messages = fb(program, "timed-delivery")
-  assert.ok(messages.some((m) => m.includes("curve")))
+  assert.ok(messages.includes("motorsCurve"))
 })
 
 test("feedback: detected the line but never changed direction", () => {
   const messages = fb(P({ type: "move", direction: "forward", distance: 2 }), "line-following")
-  assert.ok(messages.some((m) => m.includes("did not change its direction")))
+  assert.ok(messages.includes("lineNoSteer"))
 })
 
 test("feedback: the counter increased several times for the same object", () => {
@@ -141,12 +142,12 @@ test("feedback: the counter increased several times for the same object", () => 
     { type: "safeStop" },
   )
   const messages = fb(program, "counting")
-  assert.ok(messages.some((m) => m.includes("same object")))
+  assert.ok(messages.includes("countedTwice"))
 })
 
 test("feedback: an endless program gets the too-long message", () => {
   const messages = fb(P({ type: "forever", body: [{ type: "turn", direction: "left", angle: 90 }] }), "timed-delivery")
-  assert.ok(messages.some((m) => m.includes("ran for too long")))
+  assert.ok(messages.includes("ranTooLong"))
 })
 
 test("no feedback is given when the mission passes", () => {
@@ -175,12 +176,39 @@ test("buildResultRecord captures the full attempt", () => {
 /* Accessibility text ------------------------------------------------------- */
 
 test("describeWorld and describeState produce readable text", () => {
+  // The describers take their wording from the caller, so this asserts the
+  // shape of the sentence rather than any one language's phrasing.
+  const words: SimDescribeStrings = {
+    dirUp: "up",
+    dirRight: "right",
+    dirDown: "down",
+    dirLeft: "left",
+    gridSize: "A {cols} by {rows} grid.",
+    startsAt: "The robot starts at column {col}, row {row}, facing {dir}.",
+    goalAt: "The goal zone is at column {col}, row {row}.",
+    oneWall: "There is 1 wall.",
+    manyWalls: "There are {n} walls.",
+    lineAcross: "A line runs across {n} cells.",
+    oneMarker: "There is 1 coloured marker.",
+    manyMarkers: "There are {n} coloured markers.",
+    robotAt: "Robot at column {col}, row {row}, facing {dir}.",
+    distanceAhead: "Distance ahead: {n} {unit}.",
+    cell: "cell",
+    cells: "cells",
+    touchPressed: "Touch: pressed.",
+    touchClear: "Touch: clear.",
+    overLineYes: "Over a line: yes.",
+    overLineNo: "Over a line: no.",
+    lightIs: "Light: {n}.",
+    inGoalZone: "In the goal zone.",
+    notInGoalZone: "Not in the goal zone.",
+  }
   const mission = getMission("obstacle-avoidance")
-  const worldText = describeWorld(mission.world)
+  const worldText = describeWorld(mission.world, words)
   assert.ok(worldText.includes("grid"))
   assert.ok(worldText.includes("goal zone"))
   const trace = traceRun(mission.example, mission.world)
-  const stateText = describeState(mission.world, trace.finalState)
+  const stateText = describeState(mission.world, trace.finalState, words)
   assert.ok(stateText.includes("Distance ahead"))
   assert.ok(stateText.includes("Touch"))
 })

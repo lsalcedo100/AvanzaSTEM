@@ -12,11 +12,20 @@ import {
   type RoboticsModule,
 } from "@/features/curriculums/robotics"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
-import { LESSON_STEP_LABELS } from "@/components/pages/robotics-lesson-steps"
+import { lessonStepLabels } from "@/components/pages/robotics-lesson-steps"
 import type {
   RoboticsModuleStatus,
   RoboticsRemainingTime,
 } from "@/features/curriculums/robotics/progress"
+
+import type { Translations } from "@/i18n/translations"
+
+/** The robotics progress-panel strings, in the reader's language. */
+type ProgressStrings = Translations["courseUi"]["robotics"]["progress"]
+
+function useP(): ProgressStrings {
+  return useLanguage().t.courseUi.robotics.progress
+}
 
 /** Course modules in the reader's language, in course order. */
 function useModules() {
@@ -24,12 +33,12 @@ function useModules() {
   return getRoboticsModules(language)
 }
 
-const STATUS_LABEL: Record<RoboticsModuleStatus, string> = {
-  completed: "Completed",
-  "in-progress": "In progress",
-  "not-started": "Not started",
-  locked: "Locked",
-}
+const statusLabels = (P: ProgressStrings): Record<RoboticsModuleStatus, string> => ({
+  completed: P.completed,
+  "in-progress": P.inProgress,
+  "not-started": P.notStarted,
+  locked: P.locked,
+})
 
 const roboticsReviewPath = `${roboticsPath}/review`
 const roboticsJournalPath = `${roboticsPath}/journal`
@@ -50,19 +59,20 @@ function resolveCta(
     resumeModuleId: string
   },
   modules: ReturnType<typeof useModules>,
+  P: ProgressStrings,
 ): { href: string; label: string } {
   if (!state.loaded || !state.hasProgress) {
-    return { href: roboticsLessonPath(modules[0].slug), label: "Start Week 1" }
+    return { href: roboticsLessonPath(modules[0].slug), label: P.startWeek1 }
   }
   if (state.complete) {
-    return { href: roboticsReviewPath, label: "Review the course" }
+    return { href: roboticsReviewPath, label: P.reviewCourse }
   }
   const resumeModule = getRoboticsModuleById(state.resumeModuleId)
   const label = resumeModule
     ? resumeModule.isFinal
-      ? "Continue to the final project"
-      : `Continue Week ${resumeModule.week}: ${resumeModule.title}`
-    : "Continue"
+      ? P.continueToFinal
+      : P.continueToWeek.replace("{n}", String(resumeModule.week)).replace("{title}", resumeModule.title)
+    : P.continueLabel
   return { href: state.resumePath, label }
 }
 
@@ -73,6 +83,7 @@ function resolveCta(
  * empty state - no hydration mismatch. Mirrors the other courses' progress UI.
  */
 export function RoboticsCourseProgress() {
+  const P = useP()
   const modules = useModules()
   const { loaded, completion, hasProgress, resume } = useRoboticsProgress()
   const cta = resolveCta({
@@ -81,13 +92,15 @@ export function RoboticsCourseProgress() {
     complete: completion.complete,
     resumePath: resume.path,
     resumeModuleId: resume.moduleId,
-  }, modules)
+  }, modules, P)
 
   return (
     <div className="rounded-lg border border-border bg-card p-5 md:p-6">
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm font-semibold text-foreground" aria-live="polite">
-          {completion.completedCount} of {completion.total} weeks completed
+          {P.weeksProgress
+            .replace("{done}", String(completion.completedCount))
+            .replace("{total}", String(completion.total))}
         </p>
         <p className="text-sm text-muted-foreground">{completion.percent}%</p>
       </div>
@@ -98,7 +111,9 @@ export function RoboticsCourseProgress() {
         aria-valuemin={0}
         aria-valuemax={completion.total}
         aria-valuenow={completion.completedCount}
-        aria-valuetext={`${completion.completedCount} of ${completion.total} weeks completed`}
+        aria-valuetext={P.weeksProgress
+          .replace("{done}", String(completion.completedCount))
+          .replace("{total}", String(completion.total))}
       >
         <div
           className="h-full rounded-full bg-avanza-green transition-all duration-500"
@@ -108,7 +123,7 @@ export function RoboticsCourseProgress() {
 
       {loaded && completion.complete && (
         <p className="mt-4 text-sm font-semibold text-foreground">
-          Course complete. You have finished all {completion.total} weeks.
+          {P.courseComplete.replace("{total}", String(completion.total))}
         </p>
       )}
 
@@ -117,10 +132,10 @@ export function RoboticsCourseProgress() {
           {cta.label}
         </Link>
         <Link href={roboticsReviewPath} className="text-sm font-medium text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green">
-          Review area
+          {P.reviewArea}
         </Link>
         <Link href={roboticsJournalPath} className="text-sm font-medium text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green">
-          Design journal
+          {P.designJournal}
         </Link>
       </div>
     </div>
@@ -129,6 +144,7 @@ export function RoboticsCourseProgress() {
 
 /** A lighter Start / Continue / Review button used in the closing call-to-action. */
 export function RoboticsResumeButton() {
+  const P = useP()
   const modules = useModules()
   const { loaded, hasProgress, completion, resume } = useRoboticsProgress()
   const cta = resolveCta({
@@ -137,7 +153,7 @@ export function RoboticsResumeButton() {
     complete: completion.complete,
     resumePath: resume.path,
     resumeModuleId: resume.moduleId,
-  }, modules)
+  }, modules, P)
   return (
     <Link href={cta.href} className={greenButton}>
       {cta.label}
@@ -152,21 +168,24 @@ function firstMissingPrerequisite(module: RoboticsModule, completed: string[]): 
 }
 
 /** A short, plain summary of a week's required materials for the module list. */
-function keyMaterials(module: RoboticsModule): string {
+function keyMaterials(module: RoboticsModule, P: ProgressStrings): string {
   const required = module.materials.filter((m) => !m.optional).map((m) => m.name)
-  if (required.length === 0) return "No special materials"
+  if (required.length === 0) return P.noSpecialMaterials
   const shown = required.slice(0, 3).join(", ")
-  return required.length > 3 ? `${shown}, and more` : shown
+  return required.length > 3 ? P.andMore.replace("{list}", shown) : shown
 }
 
 /** Formats an estimated-remaining-time record for display. */
-function formatRemaining(remaining: RoboticsRemainingTime): string {
-  if (remaining.weeksLeft === 0) return "You have completed every week."
-  const weeks = `${remaining.weeksLeft} week${remaining.weeksLeft === 1 ? "" : "s"} left`
+function formatRemaining(remaining: RoboticsRemainingTime, P: ProgressStrings): string {
+  if (remaining.weeksLeft === 0) return P.allWeeksDone
+  const weeks = (remaining.weeksLeft === 1 ? P.weekLeft : P.weeksLeft).replace("{n}", String(remaining.weeksLeft))
   const lowH = Math.max(1, Math.round(remaining.lowMinutes / 60))
   const highH = Math.max(lowH, Math.round(remaining.highMinutes / 60))
-  const hours = lowH === highH ? `about ${lowH} hour${lowH === 1 ? "" : "s"}` : `about ${lowH}-${highH} hours`
-  return `${weeks} · ${hours} of activities`
+  const hours =
+    lowH === highH
+      ? (lowH === 1 ? P.aboutHour : P.aboutHours).replace("{n}", String(lowH))
+      : P.aboutHoursRange.replace("{low}", String(lowH)).replace("{high}", String(highH))
+  return P.remainingLine.replace("{weeks}", weeks).replace("{hours}", hours)
 }
 
 /**
@@ -176,6 +195,7 @@ function formatRemaining(remaining: RoboticsRemainingTime): string {
  * progress loads, every week is shown open so the page is usable without JS/state.
  */
 export function RoboticsModuleList() {
+  const P = useP()
   const modules = useModules()
   const { loaded, status, progress } = useRoboticsProgress()
 
@@ -184,13 +204,13 @@ export function RoboticsModuleList() {
       {modules.map((module) => {
         const moduleStatus = loaded ? status(module) : "not-started"
         const locked = moduleStatus === "locked"
-        const noun = module.isFinal ? "final project" : "lesson"
+        const noun = module.isFinal ? P.finalNoun : P.lessonNoun
         const action =
           moduleStatus === "completed"
-            ? "Review"
+            ? P.review
             : moduleStatus === "in-progress"
-              ? "Continue"
-              : "Open"
+              ? P.continueLabel
+              : P.open
         const missing = locked ? firstMissingPrerequisite(module, progress.completed) : null
 
         return (
@@ -202,7 +222,7 @@ export function RoboticsModuleList() {
               <div className="md:pr-6">
                 <div className="flex items-baseline gap-3">
                   <span className="font-mono text-sm font-semibold text-muted-foreground">
-                    {module.isFinal ? "Final" : `0${module.week}`}
+                    {module.isFinal ? P.finalShort : `0${module.week}`}
                   </span>
                   <h3 className="text-lg font-bold text-foreground">{module.title}</h3>
                 </div>
@@ -210,21 +230,21 @@ export function RoboticsModuleList() {
 
                 <dl className="mt-4 space-y-1.5 text-sm">
                   <div className="flex gap-2">
-                    <dt className="font-semibold text-foreground">Mission:</dt>
+                    <dt className="font-semibold text-foreground">{P.mission}</dt>
                     <dd className="text-muted-foreground">{module.mainMission}</dd>
                   </div>
                   <div className="flex flex-col gap-1 sm:flex-row sm:gap-2">
-                    <dt className="font-semibold text-foreground">Time &amp; parts:</dt>
+                    <dt className="font-semibold text-foreground">{P.timeParts}</dt>
                     <dd className="text-muted-foreground">
                       {module.estimatedTime} · {module.lessonFlow.length}-part lesson
                     </dd>
                   </div>
                   <div className="flex flex-col gap-1 sm:flex-row sm:gap-2">
-                    <dt className="font-semibold text-foreground">Key materials:</dt>
-                    <dd className="text-muted-foreground">{keyMaterials(module)}</dd>
+                    <dt className="font-semibold text-foreground">{P.keyMaterials}</dt>
+                    <dd className="text-muted-foreground">{keyMaterials(module, P)}</dd>
                   </div>
                   <div className="flex flex-col gap-1 sm:flex-row sm:gap-2">
-                    <dt className="font-semibold text-foreground">New ideas:</dt>
+                    <dt className="font-semibold text-foreground">{P.newIdeas}</dt>
                     <dd className="text-muted-foreground">
                       {module.vocabulary.slice(0, 4).map((v) => v.term).join(", ")}
                     </dd>
@@ -246,7 +266,7 @@ export function RoboticsModuleList() {
                             : "text-muted-foreground")
                     }
                   >
-                    {STATUS_LABEL[moduleStatus]}
+                    {statusLabels(P)[moduleStatus]}
                   </p>
                 )}
 
@@ -264,7 +284,7 @@ export function RoboticsModuleList() {
                         first, or unlock all weeks below.
                       </>
                     ) : (
-                      "Finish the earlier weeks first, or unlock all weeks below."
+                      P.finishEarlierOrUnlock
                     )}
                   </p>
                 ) : (
@@ -272,7 +292,9 @@ export function RoboticsModuleList() {
                     href={roboticsLessonPath(module.slug)}
                     className="mt-2 inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-avanza-green-dark transition-colors hover:border-avanza-green hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
                   >
-                    {loaded ? `${action} ${noun}` : `Open ${noun}`}
+                    {loaded
+                      ? P.actionNoun.replace("{action}", action).replace("{noun}", noun)
+                      : P.openNoun.replace("{noun}", noun)}
                   </Link>
                 )}
               </div>
@@ -291,12 +313,13 @@ export function RoboticsModuleList() {
  * state.
  */
 export function RoboticsTeacherControls() {
+  const P = useP()
   const { loaded, unlockAll, hasProgress, setUnlockAll, resetCourse } = useRoboticsProgress()
 
   const handleReset = () => {
     if (
       window.confirm(
-        "Reset your progress for this course? Completed weeks, saved programs, journal entries, and quiz scores on this device will be cleared. This cannot be undone.",
+        P.resetConfirm,
       )
     ) {
       resetCourse()
@@ -312,7 +335,7 @@ export function RoboticsTeacherControls() {
     }
     if (
       window.confirm(
-        "Unlock all eight weeks now? This opens every week for review and skips the normal one-week-at-a-time progression. You can switch back to normal progression anytime.",
+        P.unlockConfirm,
       )
     ) {
       setUnlockAll(true)
@@ -321,10 +344,9 @@ export function RoboticsTeacherControls() {
 
   return (
     <div className="rounded-lg border border-border bg-card p-5">
-      <p className="text-sm font-semibold text-foreground">Parent &amp; teacher controls</p>
+      <p className="text-sm font-semibold text-foreground">{P.parentTeacherControls}</p>
       <p className="mt-1 text-sm text-muted-foreground">
-        Progress is saved on this device only. By default each week unlocks once the week before it
-        is complete. Completed weeks stay open for review.
+        {P.adultControls} Completed weeks stay open for review.
       </p>
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <button
@@ -334,7 +356,7 @@ export function RoboticsTeacherControls() {
           aria-pressed={unlockAll}
           className={`${outlineButton} disabled:cursor-not-allowed disabled:opacity-50`}
         >
-          {unlockAll ? "Lock to normal progression" : "Unlock all weeks"}
+          {unlockAll ? P.lockNormal : P.unlockAll}
         </button>
         <button
           type="button"
@@ -342,14 +364,14 @@ export function RoboticsTeacherControls() {
           disabled={!loaded || !hasProgress}
           className="text-sm font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
         >
-          Reset progress
+          {P.resetProgress}
         </button>
       </div>
       {loaded && (
         <p className="mt-3 text-xs text-muted-foreground">
           {unlockAll
-            ? "All weeks are unlocked and can be opened in any order."
-            : "Weeks unlock in order as each one is completed."}
+            ? P.allUnlocked
+            : P.unlockInOrder}
         </p>
       )}
     </div>
@@ -371,6 +393,7 @@ export function RoboticsLessonGate({
   module: RoboticsModule
   children: React.ReactNode
 }) {
+  const P = useP()
   const { loaded, isUnlocked, progress, markLessonStarted } = useRoboticsProgress()
   const unlocked = isUnlocked(module)
 
@@ -387,32 +410,36 @@ export function RoboticsLessonGate({
         </p>
         <h1 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">{module.title}</h1>
         <div className="mt-6 rounded-lg border border-border bg-secondary p-5">
-          <p className="text-sm font-semibold text-foreground">This week isn&apos;t open yet.</p>
+          <p className="text-sm font-semibold text-foreground">{P.weekNotOpen}</p>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             {missing ? (
               <>
-                It builds on <span className="font-semibold text-foreground">Week {missing.week}: {missing.title}</span>.
-                Finish that week first and this one will open.
+                {P.itBuildsOn}{" "}
+                <span className="font-semibold text-foreground">
+                  {P.weekTitleLine.replace("{n}", String(missing.week)).replace("{title}", missing.title)}
+                </span>
+                .
+                {P.finishThatWeek}
               </>
             ) : (
-              <>Finish the earlier weeks first and this one will open.</>
+              <>{P.finishEarlierWeeks}</>
             )}
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-4">
             {missing && (
               <Link href={roboticsLessonPath(missing.slug)} className={greenButton}>
-                Go to Week {missing.week}
+                {P.goToWeek.replace("{n}", String(missing.week))}
               </Link>
             )}
             <Link
               href={roboticsPath}
               className="text-sm font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
             >
-              Back to course overview
+              {P.backToOverview}
             </Link>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            A parent or teacher can unlock every week from the course overview.
+            {P.adultCanUnlock}
           </p>
         </div>
       </div>
@@ -428,6 +455,7 @@ export function RoboticsLessonGate({
  * next week or the review area. Disabled until progress loads.
  */
 export function RoboticsLessonComplete({ module }: { module: RoboticsModule }) {
+  const P = useP()
   const { loaded, isCompleted, markLessonComplete, moduleRequirements } = useRoboticsProgress()
   const done = isCompleted(module.id)
   const next = module.nextWeek.moduleId ? getRoboticsModuleById(module.nextWeek.moduleId) : null
@@ -439,12 +467,12 @@ export function RoboticsLessonComplete({ module }: { module: RoboticsModule }) {
       {done ? (
         <div>
           <p className="text-sm font-semibold text-foreground">
-            {module.isFinal ? "Final project complete" : `Week ${module.week} completed`}
+            {module.isFinal ? P.finalComplete : P.weekCompleted.replace("{n}", String(module.week))}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
             {module.isFinal
-              ? "You have finished the Robotics & Automation course."
-              : "Nice work. Your progress is saved on this device."}
+              ? P.courseFinished
+              : P.niceWork}
           </p>
           <p className="mt-3 text-sm">
             {next ? (
@@ -452,14 +480,14 @@ export function RoboticsLessonComplete({ module }: { module: RoboticsModule }) {
                 href={roboticsLessonPath(next.slug)}
                 className="font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
               >
-                Continue to Week {next.week}: {next.title}
+                {P.continueToWeek.replace("{n}", String(next.week)).replace("{title}", next.title)}
               </Link>
             ) : (
               <Link
                 href={roboticsReviewPath}
                 className="font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
               >
-                Go to the review area
+                {P.goToReviewArea}
               </Link>
             )}
           </p>
@@ -467,10 +495,10 @@ export function RoboticsLessonComplete({ module }: { module: RoboticsModule }) {
       ) : (
         <div>
           <p className="text-sm font-semibold text-foreground">
-            {module.isFinal ? "Finish the final project" : `Finish Week ${module.week}`}
+            {module.isFinal ? P.finishFinal : P.finishWeek.replace("{n}", String(module.week))}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Complete these to mark the week done and unlock the next one:
+            {P.completeThese}
           </p>
           <ul className="mt-3 space-y-1.5">
             {requirements.map((req) => (
@@ -499,11 +527,11 @@ export function RoboticsLessonComplete({ module }: { module: RoboticsModule }) {
             disabled={!loaded || !allMet}
             className={`mt-4 ${greenButton} disabled:cursor-not-allowed disabled:opacity-50`}
           >
-            {module.isFinal ? "Mark final project complete" : "Mark week complete"}
+            {module.isFinal ? P.markFinalComplete : P.markWeekComplete}
           </button>
           {loaded && !allMet && (
             <p className="mt-2 text-xs text-muted-foreground" aria-live="polite">
-              Finish the steps above to complete this week.
+              {P.finishStepsAbove}
             </p>
           )}
         </div>
@@ -521,11 +549,13 @@ export function RoboticsLessonComplete({ module }: { module: RoboticsModule }) {
  * mismatch.
  */
 export function RoboticsResumeArea() {
+  const P = useP()
   const modules = useModules()
+  const { t } = useLanguage()
   const { loaded, completion, hasProgress, resume, remaining } = useRoboticsProgress()
   const current = getRoboticsModuleById(resume.moduleId)
   const stepLabel =
-    (resume.stepId ? LESSON_STEP_LABELS[resume.stepId] : undefined) ??
+    (resume.stepId ? lessonStepLabels(t)[resume.stepId] : undefined) ??
     current?.lessonFlow.find((f) => f.id === resume.stepId)?.title
   const started = loaded && hasProgress
   const complete = loaded && completion.complete
@@ -556,10 +586,10 @@ export function RoboticsResumeArea() {
       {!started && (
         <div className="mt-5">
           <p className="text-sm leading-relaxed text-muted-foreground">
-            New here? Start with Week 1 - it needs no kit and takes about {modules[0].estimatedTime}.
+            {P.newHere.replace("{time}", modules[0].estimatedTime)}
           </p>
           <Link href={roboticsLessonPath(modules[0].slug)} className={`mt-4 ${greenButton}`}>
-            Begin course
+            {P.beginCourse}
           </Link>
         </div>
       )}
@@ -569,25 +599,27 @@ export function RoboticsResumeArea() {
           <dl className="space-y-1.5 text-sm">
             <div className="flex gap-2">
               <dt className="font-semibold text-foreground">
-                {current.isFinal ? "Up next:" : "Current week:"}
+                {current.isFinal ? P.upNext : P.currentWeek}
               </dt>
               <dd className="text-muted-foreground">
-                {current.isFinal ? "Final project" : `Week ${current.week}: ${current.title}`}
+                {current.isFinal
+                  ? P.finalNoun
+                  : P.weekTitleLine.replace("{n}", String(current.week)).replace("{title}", current.title)}
               </dd>
             </div>
             {stepLabel && (
               <div className="flex gap-2">
-                <dt className="font-semibold text-foreground">Pick up at:</dt>
+                <dt className="font-semibold text-foreground">{P.pickUpAt}</dt>
                 <dd className="text-muted-foreground">{stepLabel}</dd>
               </div>
             )}
             <div className="flex gap-2">
-              <dt className="font-semibold text-foreground">Time left:</dt>
-              <dd className="text-muted-foreground">{formatRemaining(remaining)}</dd>
+              <dt className="font-semibold text-foreground">{P.timeLeft}</dt>
+              <dd className="text-muted-foreground">{formatRemaining(remaining, P)}</dd>
             </div>
           </dl>
           <Link href={resume.path} className={`mt-4 ${greenButton}`}>
-            Resume course
+            {P.resumeCourse}
           </Link>
         </div>
       )}
@@ -595,10 +627,10 @@ export function RoboticsResumeArea() {
       {complete && (
         <div className="mt-5">
           <p className="text-sm font-semibold text-foreground">
-            Course complete. You have finished all {completion.total} weeks.
+            {P.courseComplete.replace("{total}", String(completion.total))}
           </p>
           <Link href={roboticsReviewPath} className={`mt-4 ${greenButton}`}>
-            Review the course
+            {P.reviewCourse}
           </Link>
         </div>
       )}
@@ -612,6 +644,7 @@ export function RoboticsResumeArea() {
  * unlocked yet. The locked/available state comes from the real unlock rules.
  */
 export function RoboticsFinalProjectPreview() {
+  const P = useP()
   const modules = useModules()
   const { loaded, isUnlocked, progress } = useRoboticsProgress()
   const finalModule = modules.find((m) => m.isFinal)
@@ -628,7 +661,7 @@ export function RoboticsFinalProjectPreview() {
         <h3 className="text-lg font-bold text-foreground">{fp.title}</h3>
         {loaded && (
           <span className="text-sm font-semibold text-muted-foreground">
-            {unlocked ? "Available" : "Unlocks after Week 7"}
+            {unlocked ? P.available : P.unlocksAfterWeek7}
           </span>
         )}
       </div>
@@ -637,7 +670,7 @@ export function RoboticsFinalProjectPreview() {
       <div className="mt-5 grid gap-6 sm:grid-cols-2">
         <div>
           <p className="text-sm font-bold text-muted-foreground">
-            Example missions
+            {P.exampleMissions}
           </p>
           <ul className="mt-2 space-y-1.5">
             {fp.missionChoices.map((choice) => (
@@ -650,7 +683,7 @@ export function RoboticsFinalProjectPreview() {
         </div>
         <div>
           <p className="text-sm font-bold text-muted-foreground">
-            Core requirements
+            {P.coreRequirements}
           </p>
           <ul className="mt-2 space-y-1.5">
             {coreRequirements.map((req) => (
@@ -664,7 +697,7 @@ export function RoboticsFinalProjectPreview() {
       </div>
 
       <p className="mt-5 text-sm text-muted-foreground">
-        <span className="font-semibold text-foreground">Weeks 1-7 prepare you: </span>
+        <span className="font-semibold text-foreground">{P.weeksPrepare} </span>
         the base that moves, exact programs, sensors, loops and conditions, and testing all come
         together here.
       </p>
@@ -672,17 +705,17 @@ export function RoboticsFinalProjectPreview() {
       <div className="mt-5 flex flex-wrap items-center gap-4">
         {loaded && unlocked ? (
           <Link href={`${roboticsPath}/final-project`} className={greenButton}>
-            Open the final project
+            {P.openFinalProject}
           </Link>
         ) : (
           <>
             <span className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-muted-foreground">
-              Final project
+              {P.finalNoun}
             </span>
             <p className="text-xs text-muted-foreground">
               {missing
                 ? `Finish Week ${missing.week} and the earlier weeks to unlock it.`
-                : "Finish the earlier weeks to unlock it."}
+                : P.finishEarlierToUnlock}
             </p>
           </>
         )}
@@ -690,7 +723,7 @@ export function RoboticsFinalProjectPreview() {
           href={roboticsLessonPath(finalModule.slug)}
           className="text-sm font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
         >
-          Preview Week {finalModule.week}
+          {P.previewWeek.replace("{n}", String(finalModule.week))}
         </Link>
       </div>
     </div>

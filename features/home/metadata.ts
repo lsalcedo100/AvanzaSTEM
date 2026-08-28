@@ -3,26 +3,42 @@ import { type Language } from "@/i18n/translations"
 import { languageAlternates, localizedPath } from "@/lib/i18n-routes"
 import { siteConfig } from "@/lib/site-config"
 
+/**
+ * The home page is the site's strongest URL, so its title targets the broad
+ * head term the rest of the site only answers page by page: people looking for
+ * "STEM resources for kids" (and the "free STEM resources" / "STEM activities
+ * for kids" variants) land on a hub, not on a single project guide.
+ *
+ * The old title led with "Workshops and Projects", which names two of the five
+ * things the site publishes and matches only visitors who already know they
+ * want a workshop. "Resources" is the word parents, teachers and librarians
+ * actually search with, and it is honest here: the page links out to project
+ * guides, course paths, printable worksheets, browser labs and workshops.
+ *
+ * Titles are kept under ~60 characters so they survive SERP truncation, and
+ * the brand is dropped from the English title because Google renders the site
+ * name beside it regardless.
+ */
 const metadataByLanguage: Record<Language, Pick<Metadata, "title" | "description">> = {
   en: {
-    title: "Free Hands-On STEM Workshops and Projects | Avanza STEM",
+    title: "Free STEM Resources for Kids: Projects, Courses & Labs",
     description:
-      "Free hands-on STEM workshops and step-by-step projects for kids, run by students. Bridges, circuits, Python, robotics, and science - all free and bilingual.",
+      "Free STEM resources for kids, parents, and teachers: step-by-step project guides, full course paths, printable worksheets, browser labs, and free workshops.",
   },
   es: {
-    title: "Talleres y proyectos STEM gratuitos | Avanza STEM",
+    title: "Recursos STEM gratuitos para niños: proyectos y cursos",
     description:
-      "Talleres STEM gratuitos y proyectos paso a paso para niños, dirigidos por estudiantes. Puentes, circuitos, Python, robótica y ciencia, gratis y en dos idiomas.",
+      "Recursos STEM gratuitos para niños, familias y maestros: guías de proyectos paso a paso, cursos completos, hojas imprimibles y talleres prácticos gratis.",
   },
   zh: {
-    title: "免费的动手 STEM 工作坊和项目 | Avanza STEM",
+    title: "免费儿童 STEM 资源：项目、课程与实验",
     description:
-      "Avanza STEM 是一个由青年主导的项目，为学生带来免费的动手 STEM 工作坊和适合初学者的项目，特别关注西班牙裔和代表性不足的社区。",
+      "面向儿童、家长和老师的免费 STEM 资源：分步项目指南、完整课程路径、可打印练习页、浏览器互动实验，以及免费的动手 STEM 工作坊。",
   },
   pt: {
-    title: "Oficinas e projetos de STEM gratuitos | Avanza STEM",
+    title: "Recursos de STEM gratuitos para crianças: projetos e cursos",
     description:
-      "Oficinas de STEM gratuitas e projetos passo a passo para crianças, conduzidos por estudantes. Pontes, circuitos, Python, robótica e ciências, tudo de graça e em mais de um idioma.",
+      "Recursos de STEM gratuitos para crianças, famílias e professores: guias de projeto passo a passo, trilhas de curso, folhas para imprimir e oficinas gratuitas.",
   },
 }
 

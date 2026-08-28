@@ -26,6 +26,7 @@ const LOCALE_TREE_SEGMENTS = new Set([
   "privacy",
   "projects",
   "python-ide",
+  "resources",
   "workshops",
 ])
 

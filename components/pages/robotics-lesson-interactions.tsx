@@ -1,13 +1,14 @@
 "use client"
 
 import {
-  ROBOTICS_EQUIPMENT_PATHS,
   type Activity,
   type EquipmentPathId,
   type InteractiveActivityKind,
   type PredictionPrompt,
   type ReflectionPrompt,
 } from "@/features/curriculums/robotics"
+import { getRoboticsCurriculum } from "@/features/curriculums/robotics/i18n"
+import { useLanguage } from "@/components/providers/language-provider"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
 import { RobotOrNot } from "@/components/pages/robotics-robot-or-not"
 import { RobotSystemMapper } from "@/components/pages/robotics-system-mapper"
@@ -42,16 +43,18 @@ const chip =
  */
 export function RoboticsEquipmentPathPicker() {
   const { loaded, equipmentPath, selectEquipmentPath } = useRoboticsProgress()
+  const { language, t } = useLanguage()
+  const A = t.courseUi.robotics.activity
+  const paths = getRoboticsCurriculum(language).equipmentPaths
 
   return (
     <div className="rounded-lg border border-border bg-card p-5">
-      <p className="text-sm font-semibold text-foreground">Choose your path</p>
+      <p className="text-sm font-semibold text-foreground">{A.choosePath}</p>
       <p className="mt-1 text-sm text-muted-foreground">
-        Do this course with a robot kit, the browser simulator, or unplugged with household
-        materials. Pick one - you can switch anytime without losing your work.
+        {A.choosePathIntro}
       </p>
-      <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Equipment path">
-        {ROBOTICS_EQUIPMENT_PATHS.map((path) => {
+      <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label={A.equipmentPath}>
+        {paths.map((path) => {
           const active = equipmentPath === path.id
           return (
             <button
@@ -77,8 +80,8 @@ export function RoboticsEquipmentPathPicker() {
       {loaded && (
         <p className="mt-3 text-xs text-muted-foreground">
           {equipmentPath
-            ? ROBOTICS_EQUIPMENT_PATHS.find((p) => p.id === equipmentPath)?.needs
-            : "No path chosen yet - activities below show the robot-kit version by default."}
+            ? paths.find((p) => p.id === equipmentPath)?.needs
+            : A.noPathChosen}
         </p>
       )}
     </div>
@@ -95,7 +98,10 @@ export function RoboticsActivity({ activity }: { activity: Activity }) {
   const { loaded, equipmentPath, progress, saveActivityResult } = useRoboticsProgress()
   const pathId: EquipmentPathId = equipmentPath ?? "kit"
   const variant = activity.variants[pathId]
-  const pathLabel = ROBOTICS_EQUIPMENT_PATHS.find((p) => p.id === pathId)?.label ?? "Robot kit"
+  const { language, t } = useLanguage()
+  const A = t.courseUi.robotics.activity
+  const paths = getRoboticsCurriculum(language).equipmentPaths
+  const pathLabel = paths.find((p) => p.id === pathId)?.label ?? paths[0].label
   const done = progress.activityResults[activity.id]?.completed ?? false
 
   return (
@@ -124,12 +130,12 @@ export function RoboticsActivity({ activity }: { activity: Activity }) {
 
         {variant.materials.length > 0 && (
           <p className="mt-2 text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">You need: </span>
+            <span className="font-semibold text-foreground">{A.youNeed}</span>
             {variant.materials.join(", ")}
           </p>
         )}
 
-        <p className="mt-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">Steps</p>
+        <p className="mt-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">{A.steps}</p>
         <ol className="mt-2 space-y-1.5">
           {variant.instructions.map((step, i) => (
             <li key={i} className="grid grid-cols-[1.5rem_1fr] gap-2 text-sm leading-relaxed text-foreground/90">
@@ -141,12 +147,12 @@ export function RoboticsActivity({ activity }: { activity: Activity }) {
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           <p className="text-sm text-foreground/90">
-            <span className="font-semibold text-foreground">What success looks like: </span>
+            <span className="font-semibold text-foreground">{A.successLooksLike}</span>
             {variant.expectedResult}
           </p>
           {variant.successCriteria.length > 0 && (
             <div className="text-sm text-foreground/90">
-              <span className="font-semibold text-foreground">Check for:</span>
+              <span className="font-semibold text-foreground">{A.checkFor}</span>
               <ul className="mt-1 space-y-1">
                 {variant.successCriteria.map((c, i) => (
                   <li key={i} className="flex gap-2">
@@ -161,7 +167,7 @@ export function RoboticsActivity({ activity }: { activity: Activity }) {
 
         {variant.safetyNotes.length > 0 && (
           <p className="mt-3 text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">Safety: </span>
+            <span className="font-semibold text-foreground">{A.safety}</span>
             {variant.safetyNotes.join(" ")}
           </p>
         )}
@@ -169,7 +175,7 @@ export function RoboticsActivity({ activity }: { activity: Activity }) {
         {variant.troubleshooting.length > 0 && (
           <div className="mt-3">
             <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-              If it doesn&apos;t work
+              {A.ifItDoesntWork}
             </p>
             <dl className="mt-1 space-y-1 text-sm">
               {variant.troubleshooting.map((tip, i) => (
@@ -184,7 +190,7 @@ export function RoboticsActivity({ activity }: { activity: Activity }) {
 
         {variant.extension && (
           <p className="mt-3 text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">Go further: </span>
+            <span className="font-semibold text-foreground">{A.goFurther}</span>
             {variant.extension}
           </p>
         )}
@@ -209,7 +215,7 @@ export function RoboticsActivity({ activity }: { activity: Activity }) {
               : "border-border text-foreground hover:border-avanza-green/60")
           }
         >
-          {done ? "✓ Marked as done" : "Mark this activity done"}
+          {done ? A.markedDone : A.markActivityDone}
         </button>
       </div>
     </div>
@@ -220,6 +226,7 @@ export function RoboticsActivity({ activity }: { activity: Activity }) {
 /** Prediction prompts saved as the student types (predict-then-test). */
 export function RoboticsPredictions({ prompts }: { prompts: PredictionPrompt[] }) {
   const { loaded, savePrediction, progress } = useRoboticsProgress()
+  const A = useLanguage().t.courseUi.robotics.activity
   if (prompts.length === 0) return null
 
   return (
@@ -229,14 +236,17 @@ export function RoboticsPredictions({ prompts }: { prompts: PredictionPrompt[] }
           <label htmlFor={`pred-${p.id}`} className="block text-sm font-semibold text-foreground">
             {p.prompt}
           </label>
-          <p className="mt-1 text-xs text-muted-foreground">How to check: {p.howToCheck}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {A.howToCheck}
+            {p.howToCheck}
+          </p>
           <textarea
             id={`pred-${p.id}`}
             defaultValue={progress.predictions[p.id] ?? ""}
             onBlur={(e) => savePrediction(p.id, e.target.value)}
             disabled={!loaded}
             rows={2}
-            placeholder="Write your prediction..."
+            placeholder={A.writePrediction}
             className="mt-2 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green disabled:opacity-50"
           />
         </div>
@@ -248,6 +258,7 @@ export function RoboticsPredictions({ prompts }: { prompts: PredictionPrompt[] }
 /** Reflection prompts saved as the student types. */
 export function RoboticsReflection({ prompts }: { prompts: ReflectionPrompt[] }) {
   const { loaded, saveReflection, progress } = useRoboticsProgress()
+  const A = useLanguage().t.courseUi.robotics.activity
   if (prompts.length === 0) return null
 
   return (
@@ -263,7 +274,7 @@ export function RoboticsReflection({ prompts }: { prompts: ReflectionPrompt[] })
             onBlur={(e) => saveReflection(p.id, e.target.value)}
             disabled={!loaded}
             rows={2}
-            placeholder="Write your reflection..."
+            placeholder={A.writeReflection}
             className="mt-2 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green disabled:opacity-50"
           />
         </div>

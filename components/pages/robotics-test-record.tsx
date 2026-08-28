@@ -3,6 +3,7 @@
 import { useState } from "react"
 import type { DebuggingMission, TestRecord } from "@/features/curriculums/robotics"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
+import { useLanguage } from "@/components/providers/language-provider"
 
 const cellClass =
   "w-full rounded-md border border-border bg-card px-2 py-1.5 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green disabled:opacity-50"
@@ -18,6 +19,7 @@ const textareaClass =
  * editable table is re-keyed on `loaded` so saved values appear once hydrated.
  */
 export function RoboticsTestRecord({ record }: { record: TestRecord }) {
+  const R = useLanguage().t.courseUi.robotics.testRecord
   const { loaded, progress, saveTestRecord } = useRoboticsProgress()
 
   // Seed the table from saved progress (used to initialise the child
@@ -32,7 +34,7 @@ export function RoboticsTestRecord({ record }: { record: TestRecord }) {
       <h3 className="text-lg font-bold text-foreground">{record.title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-foreground/90">{record.instructions}</p>
       <p className="mt-2 text-sm text-foreground/90">
-        <span className="font-semibold text-foreground">Measure: </span>
+        <span className="font-semibold text-foreground">{R.measure}</span>
         {record.measure}
       </p>
       <TestRecordTable
@@ -121,6 +123,7 @@ function TestRecordTable({
  * text appears once progress has hydrated; it stays disabled until then.
  */
 export function RoboticsDebugMission({ mission }: { mission: DebuggingMission }) {
+  const R = useLanguage().t.courseUi.robotics.testRecord
   const { loaded, progress, saveDebugFinding } = useRoboticsProgress()
 
   const finding = progress.debugFindings[mission.id]
@@ -133,11 +136,11 @@ export function RoboticsDebugMission({ mission }: { mission: DebuggingMission })
 
       <div className="mt-4 rounded-md border border-border bg-secondary p-4">
         <p className="text-sm text-foreground/90">
-          <span className="font-semibold text-foreground">Symptom: </span>
+          <span className="font-semibold text-foreground">{R.symptom}</span>
           {mission.symptom}
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
-          <span className="font-semibold text-foreground">Hint: </span>
+          <span className="font-semibold text-foreground">{R.hint}</span>
           {mission.hint}
         </p>
       </div>
@@ -145,10 +148,10 @@ export function RoboticsDebugMission({ mission }: { mission: DebuggingMission })
       <div className="mt-5">
         <div className="flex items-baseline justify-between gap-2">
           <label htmlFor={`debug-${mission.id}`} className="block text-sm font-semibold text-foreground">
-            What kind of bug do you think it is, and why?
+            {R.whatKindOfBug}
           </label>
           {saved && (
-            <span className="text-xs font-semibold uppercase tracking-wide text-avanza-green-dark">Saved</span>
+            <span className="text-xs font-semibold uppercase tracking-wide text-avanza-green-dark">{R.saved}</span>
           )}
         </div>
         <textarea
@@ -163,20 +166,20 @@ export function RoboticsDebugMission({ mission }: { mission: DebuggingMission })
           }
           disabled={!loaded}
           rows={3}
-          placeholder="Write your thinking..."
+          placeholder={R.writeThinking}
           className={textareaClass}
         />
       </div>
 
       <details className="mt-5 rounded-md border border-border bg-card p-4">
-        <summary className="cursor-pointer text-sm font-semibold text-foreground">Show the fix</summary>
+        <summary className="cursor-pointer text-sm font-semibold text-foreground">{R.showFix}</summary>
         <p className="mt-3 text-sm leading-relaxed text-foreground/90">
-          <span className="font-semibold text-foreground">Fix: </span>
+          <span className="font-semibold text-foreground">{R.fix}</span>
           {mission.fix}
         </p>
         {mission.likelyCauses.length > 0 && (
           <div className="mt-3">
-            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Likely causes</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{R.likelyCauses}</p>
             <ol className="mt-2 space-y-1.5">
               {mission.likelyCauses.map((cause, i) => (
                 <li

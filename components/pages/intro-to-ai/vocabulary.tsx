@@ -17,14 +17,16 @@ type Grouping = "week" | "alpha"
  * it is keyboard-navigable and works without hover; fully responsive.
  */
 export function IntroToAiVocabulary() {
-  const course = getIntroToAiCourse(useLanguage().language)
+  const { language, t } = useLanguage()
+  const S = t.courseUi.ai.shared
+  const course = getIntroToAiCourse(language)
   const [grouping, setGrouping] = useState<Grouping>("week")
 
   const byWeek = useMemo(
     () =>
       course.weeks.map((w) => ({
         id: w.id,
-        label: `Week ${w.week}: ${w.title}`,
+        label: S.weekTitleLine.replace("{n}", String(w.week)).replace("{title}", w.title),
         terms: dedupe(w.lessons.flatMap((l) => l.vocabulary)),
       })),
     [],
@@ -38,10 +40,10 @@ export function IntroToAiVocabulary() {
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-semibold text-muted-foreground">Group by:</span>
-        <div className="inline-flex rounded-md border border-border p-0.5" role="group" aria-label="Group vocabulary by">
+        <span className="text-xs font-semibold text-muted-foreground">{S.groupBy}</span>
+        <div className="inline-flex rounded-md border border-border p-0.5" role="group" aria-label={S.groupVocabularyBy}>
           <ToggleButton active={grouping === "week"} onClick={() => setGrouping("week")}>
-            Week
+            {S.weekWord}
           </ToggleButton>
           <ToggleButton active={grouping === "alpha"} onClick={() => setGrouping("alpha")}>
             A–Z
@@ -54,7 +56,9 @@ export function IntroToAiVocabulary() {
           {byWeek.map((group) => (
             <AccordionItem key={group.id} value={group.id}>
               <AccordionTrigger>
-                {group.label} <span className="ml-2 text-xs font-normal text-muted-foreground">({group.terms.length} terms)</span>
+                {group.label} <span className="ml-2 text-xs font-normal text-muted-foreground">
+                  {S.termsCount.replace("{n}", String(group.terms.length))}
+                </span>
               </AccordionTrigger>
               <AccordionContent>
                 <TermList terms={group.terms} />

@@ -24,11 +24,14 @@ import {
  * challenge gets a mission-style variant with a solution-path picker.
  */
 export function EngineeringWorksheetContent({ slug }: { slug: string }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const H = t.courseUi.engineering.handouts
   const c = getEngineeringFundamentalsCurriculum(language)
   const lesson = findEngineeringLesson(language, slug) ?? c.lessons[0]
   const total = c.totalLessons
-  const label = lesson.isFinal ? "Final challenge" : `Lesson ${lesson.order} of ${total}`
+  const label = lesson.isFinal
+    ? H.finalChallenge
+    : H.lessonOfTotal.replace("{n}", String(lesson.order)).replace("{total}", String(total))
 
   return (
     <div className="bg-background">
@@ -40,26 +43,28 @@ export function EngineeringWorksheetContent({ slug }: { slug: string }) {
               href={engineeringLessonPath(lesson.slug)}
               className="font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
             >
-              &larr; Back to {lesson.isFinal ? "the final challenge" : `Lesson ${lesson.order}`}
+              &larr;{" "}
+              {lesson.isFinal
+                ? H.backToFinal
+                : H.backToLesson.replace("{n}", String(lesson.order))}
             </Link>
           </nav>
           <p className="mt-6 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Student worksheet
+            {H.studentWorksheet}
           </p>
           <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">
             {lesson.title}
           </h1>
           <p className="mt-3 text-base leading-relaxed text-foreground/90">
-            A one-page handout for this lesson. Use your browser&apos;s print option to print it in
-            black and white, or fill it in on paper.
+            {H.worksheetIntro}
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <PrintButton label="Print student worksheet" tone="purple" />
+            <PrintButton label={H.printWorksheet} tone="purple" />
             <Link
               href={engineeringTeacherGuidePath(lesson.slug)}
               className="text-sm font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
             >
-              Parent/teacher guide
+              {H.parentTeacherGuide}
             </Link>
           </div>
         </div>
@@ -69,10 +74,10 @@ export function EngineeringWorksheetContent({ slug }: { slug: string }) {
           <header className="border-b-2 border-foreground pb-3">
             <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Engineering Fundamentals &middot; {label}
+                {H.courseTitle} &middot; {label}
               </p>
               <p className="text-xs text-muted-foreground">
-                Name: ________________  Date: __________
+                {H.nameDate}
               </p>
             </div>
             <h2 className="mt-2 text-2xl font-bold text-foreground">
@@ -92,54 +97,51 @@ export function EngineeringWorksheetContent({ slug }: { slug: string }) {
 }
 
 function StandardWorksheet({ lesson }: { lesson: EngineeringLesson }) {
+  const H = useLanguage().t.courseUi.engineering.handouts
   return (
     <>
-      <Field title="The problem">
+      <Field title={H.wsProblem}>
         <p className="text-sm leading-relaxed text-foreground/90">
           {lesson.problem ?? lesson.designBrief}
         </p>
       </Field>
 
-      <Field title="Materials checklist">
+      <Field title={H.wsMaterialsChecklist}>
         <Checklist items={lesson.materials} />
       </Field>
 
-      <Field title="Design sketch">
-        <p className="text-sm text-muted-foreground">Draw your plan and label the parts.</p>
+      <Field title={H.wsDesignSketch}>
+        <p className="text-sm text-muted-foreground">{H.wsDrawPlan}</p>
         <SketchBox />
       </Field>
 
-      <Field title="Prediction">
-        <p className="text-sm text-muted-foreground">
-          What do you think will happen when you test it? What might fail first?
-        </p>
+      <Field title={H.wsPrediction}>
+        <p className="text-sm text-muted-foreground">{H.wsPredictionIntro}</p>
         <WriteLines count={3} />
       </Field>
 
-      <Field title="Build notes">
-        <p className="text-sm text-muted-foreground">
-          Write what you actually built and any changes you made along the way.
-        </p>
+      <Field title={H.wsBuildNotes}>
+        <p className="text-sm text-muted-foreground">{H.wsBuildNotesIntro}</p>
         <WriteLines count={3} />
       </Field>
 
-      <Field title="Test results">
+      <Field title={H.wsTestResults}>
         <ResultsTable tests={lesson.testingChallenges} />
       </Field>
 
-      <Field title="What failed first?">
+      <Field title={H.wsWhatFailed}>
         <WriteLines count={2} />
       </Field>
 
-      <Field title="What did you change?">
+      <Field title={H.wsWhatChanged}>
         <WriteLines count={2} />
       </Field>
 
-      <Field title="Reflection">
+      <Field title={H.wsReflection}>
         <QuestionLines questions={lesson.reflectionQuestions} />
       </Field>
 
-      <Field title="Extension challenge">
+      <Field title={H.wsExtension}>
         {lesson.extensionChallenges.length > 0 && (
           <p className="text-sm leading-relaxed text-foreground/90">
             {lesson.extensionChallenges[0]}
@@ -152,22 +154,23 @@ function StandardWorksheet({ lesson }: { lesson: EngineeringLesson }) {
 }
 
 function FinalWorksheet({ lesson }: { lesson: EngineeringLesson }) {
+  const H = useLanguage().t.courseUi.engineering.handouts
   return (
     <>
-      <Field title="Mission brief">
+      <Field title={H.wsMissionBrief}>
         <p className="text-sm leading-relaxed text-foreground/90">
           {lesson.problem ?? lesson.designBrief}
         </p>
       </Field>
 
       {lesson.solutionPaths && lesson.solutionPaths.length > 0 && (
-        <Field title="Chosen solution path">
-          <p className="text-sm text-muted-foreground">Check the one you are building.</p>
+        <Field title={H.wsChosenPath}>
+          <p className="text-sm text-muted-foreground">{H.wsCheckOne}</p>
           <Checklist items={lesson.solutionPaths} />
         </Field>
       )}
 
-      <Field title="Design constraints">
+      <Field title={H.wsConstraints}>
         <ul className="space-y-1.5">
           {lesson.constraints.map((rule) => (
             <li key={rule} className="flex gap-2 text-sm leading-relaxed text-foreground/90">
@@ -178,28 +181,26 @@ function FinalWorksheet({ lesson }: { lesson: EngineeringLesson }) {
         </ul>
       </Field>
 
-      <Field title="Planning sketch">
-        <p className="text-sm text-muted-foreground">Draw your design and label the parts.</p>
+      <Field title={H.wsPlanningSketch}>
+        <p className="text-sm text-muted-foreground">{H.wsDrawDesign}</p>
         <SketchBox />
       </Field>
 
-      <Field title="Materials used">
+      <Field title={H.wsMaterialsUsed}>
         <Checklist items={lesson.materials} />
       </Field>
 
-      <Field title="Test results">
+      <Field title={H.wsTestResults}>
         <ResultsTable tests={lesson.testingChallenges} />
       </Field>
 
-      <Field title="Redesign notes">
-        <p className="text-sm text-muted-foreground">
-          What failed, and what one thing did you change before the next run?
-        </p>
+      <Field title={H.wsRedesignNotes}>
+        <p className="text-sm text-muted-foreground">{H.wsRedesignIntro}</p>
         <WriteLines count={3} />
       </Field>
 
       {lesson.presentationPrompts && lesson.presentationPrompts.length > 0 && (
-        <Field title="Final presentation">
+        <Field title={H.wsFinalPresentation}>
           <QuestionLines questions={lesson.presentationPrompts} />
         </Field>
       )}
@@ -269,16 +270,17 @@ function QuestionLines({ questions }: { questions: string[] }) {
 
 /** A results table: one row per test with blank columns for three tries. */
 function ResultsTable({ tests }: { tests: EngineeringTest[] }) {
+  const H = useLanguage().t.courseUi.engineering.handouts
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-left text-sm">
         <thead>
           <tr className="border-b-2 border-foreground">
-            <th className="py-2 pr-3 font-bold text-foreground">Test</th>
-            <th className="py-2 pr-3 font-bold text-foreground">What to record</th>
-            <th className="py-2 pr-3 font-bold text-foreground">Try 1</th>
-            <th className="py-2 pr-3 font-bold text-foreground">Try 2</th>
-            <th className="py-2 font-bold text-foreground">Try 3</th>
+            <th className="py-2 pr-3 font-bold text-foreground">{H.colTest}</th>
+            <th className="py-2 pr-3 font-bold text-foreground">{H.colWhatToRecord}</th>
+            <th className="py-2 pr-3 font-bold text-foreground">{H.colTry1}</th>
+            <th className="py-2 pr-3 font-bold text-foreground">{H.colTry2}</th>
+            <th className="py-2 font-bold text-foreground">{H.colTry3}</th>
           </tr>
         </thead>
         <tbody>

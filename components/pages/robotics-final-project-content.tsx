@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 import { getRoboticsModules } from "@/features/curriculums/robotics/i18n"
 import Link from "next/link"
 import {
@@ -24,36 +25,43 @@ const cellClass =
  * the required planning captures for the final project; the program itself is
  * captured by the block editor and the three runs by the test table below.
  */
-const PLAN_FIELDS: { id: string; label: string; hint: string; rows: number }[] = [
-  { id: "problem", label: "Problem", hint: "The real problem your robot solves, and why it matters.", rows: 2 },
-  { id: "intended-user", label: "Intended user", hint: "Who this robot is for and what they need.", rows: 2 },
-  { id: "required-behavior", label: "Required robot behavior", hint: "What the robot MUST do, step by step, to do the job.", rows: 3 },
-  { id: "safety-limits", label: "Safety limits", hint: "What the robot must never do, and when it should stop.", rows: 2 },
-  { id: "sensors", label: "Sensors", hint: "Which sensor(s) the robot uses and what each one reads.", rows: 2 },
-  { id: "outputs", label: "Outputs", hint: "What the robot does or shows: movement, sound, or light.", rows: 2 },
-  { id: "materials", label: "Materials", hint: "The parts (or simulator blocks and zones) you need.", rows: 2 },
-  { id: "labeled-design", label: "Labeled design", hint: "Describe your drawing and the parts you labeled.", rows: 3 },
-  { id: "ipo-diagram", label: "Input - processing - output", hint: "What the robot senses, decides, and does.", rows: 3 },
-  { id: "flowchart", label: "Flowchart", hint: "The step-by-step order of the program, with its decision.", rows: 3 },
-  { id: "test-plan", label: "Test plan", hint: "How you will test it and what counts as a pass.", rows: 2 },
-  { id: "revision", label: "Revision", hint: "The one improvement you made after testing, and its effect.", rows: 2 },
-  { id: "final-explanation", label: "Final explanation", hint: "How the robot helps, how you know it works, and how it stays safe.", rows: 3 },
+type FinalStrings = Translations["courseUi"]["robotics"]["final"]
+
+const planFields = (F: FinalStrings): { id: string; label: string; hint: string; rows: number }[] => [
+  { id: "problem", label: F.planProblem, hint: F.planProblemHint, rows: 2 },
+  { id: "intended-user", label: F.planUser, hint: F.planUserHint, rows: 2 },
+  { id: "required-behavior", label: F.planBehavior, hint: F.planBehaviorHint, rows: 3 },
+  { id: "safety-limits", label: F.planSafety, hint: F.planSafetyHint, rows: 2 },
+  { id: "sensors", label: F.planSensors, hint: F.planSensorsHint, rows: 2 },
+  { id: "outputs", label: F.planOutputs, hint: F.planOutputsHint, rows: 2 },
+  { id: "materials", label: F.planMaterials, hint: F.planMaterialsHint, rows: 2 },
+  { id: "labeled-design", label: F.planDesign, hint: F.planDesignHint, rows: 3 },
+  { id: "ipo-diagram", label: F.planIpo, hint: F.planIpoHint, rows: 3 },
+  { id: "flowchart", label: F.planFlowchart, hint: F.planFlowchartHint, rows: 3 },
+  { id: "test-plan", label: F.planTestPlan, hint: F.planTestPlanHint, rows: 2 },
+  { id: "revision", label: F.planRevision, hint: F.planRevisionHint, rows: 2 },
+  { id: "final-explanation", label: F.planExplanation, hint: F.planExplanationHint, rows: 3 },
 ]
 
-const TEST_COLUMNS = ["Run", "What happened", "Mission complete? (Y/N)", "What to change"]
+const testColumns = (F: FinalStrings) => [F.colRun, F.colWhatHappened, F.colMissionComplete, F.colWhatToChange]
 
-const REQUIREMENT_CATEGORIES: {
-  id: FinalProjectRequirement["category"]
-  label: string
-}[] = [
-  { id: "planning", label: "Planning" },
-  { id: "mechanical", label: "Mechanical" },
-  { id: "programming", label: "Programming" },
-  { id: "testing", label: "Testing" },
-  { id: "communication", label: "Communication" },
+const requirementCategories = (
+  F: FinalStrings,
+): { id: FinalProjectRequirement["category"]; label: string }[] => [
+  { id: "planning", label: F.catPlanning },
+  { id: "mechanical", label: F.catMechanical },
+  { id: "programming", label: F.catProgramming },
+  { id: "testing", label: F.catTesting },
+  { id: "communication", label: F.catCommunication },
 ]
 
-const RUBRIC_LEVELS = ["Beginning", "Developing", "Proficient", "Exemplary"]
+/**
+ * The rubric levels, in order. These strings are the stored scoring keys - they
+ * index `LEVEL_POINTS` below and are typed as `RubricLevel["label"]` - so they
+ * stay English everywhere. `t.courseUi.rubricLevels` supplies what the student
+ * actually reads.
+ */
+const RUBRIC_LEVELS = ["Beginning", "Developing", "Proficient", "Exemplary"] as const
 
 /**
  * The Week 8 final-project workspace. The student picks a mission, writes a
@@ -64,7 +72,13 @@ const RUBRIC_LEVELS = ["Beginning", "Developing", "Proficient", "Exemplary"]
  * are re-keyed on `loaded` so saved values appear once hydrated.
  */
 export function RoboticsFinalProjectContent() {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const ui = t.courseUi.robotics
+  const F = ui.final
+  const PLAN_FIELDS = planFields(F)
+  const TEST_COLUMNS = testColumns(F)
+  const REQUIREMENT_CATEGORIES = requirementCategories(F)
+  const levelName = (label: string) => t.courseUi.rubricLevels[label as keyof typeof t.courseUi.rubricLevels] ?? label
   const finalModule = getRoboticsModules(language).find((m) => m.isFinal)
 
   const { loaded, progress, setFinalMissionChoice, saveFinalPlanField, saveFinalTestResults, saveFinalSelfEval } =
@@ -81,7 +95,7 @@ export function RoboticsFinalProjectContent() {
   if (!finalModule || !finalModule.finalProject) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-16">
-        <p className="text-sm text-muted-foreground">The final project isn&apos;t available right now.</p>
+        <p className="text-sm text-muted-foreground">{F.notAvailable}</p>
       </div>
     )
   }
@@ -106,7 +120,7 @@ export function RoboticsFinalProjectContent() {
     <div className="mx-auto max-w-3xl px-6 py-12">
       {/* Header */}
       <header>
-        <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Final project</p>
+        <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{ui.finalProject}</p>
         <h1 className="mt-3 text-2xl font-extrabold text-foreground md:text-3xl">{fp.title}</h1>
         <p className="mt-4 text-sm leading-relaxed text-foreground/90">{fp.overview}</p>
         <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
@@ -120,17 +134,17 @@ export function RoboticsFinalProjectContent() {
             href={roboticsPath}
             className="text-sm font-medium text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
           >
-            Back to course overview
+            {ui.progress.backToOverview}
           </Link>
-          <PrintButton label="Print project brief" tone="green" className="ml-auto" />
+          <PrintButton label={F.printBrief} tone="green" className="ml-auto" />
         </div>
       </header>
 
       {/* Choose your mission */}
       <section className="mt-12">
-        <h2 className="text-lg font-bold text-foreground">Choose your mission</h2>
+        <h2 className="text-lg font-bold text-foreground">{F.chooseMission}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Pick one mission for your robot. Your choice is saved on this device.
+          {F.chooseMissionIntro}
         </p>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           {fp.missionChoices.map((choice) => {
@@ -152,12 +166,12 @@ export function RoboticsFinalProjectContent() {
                 <span className="text-base font-bold text-foreground">{choice.name}</span>
                 <span className="mt-2 text-sm leading-relaxed text-foreground/90">{choice.scenario}</span>
                 <span className="mt-3 text-sm text-foreground/90">
-                  <span className="font-semibold text-foreground">Example goal: </span>
+                  <span className="font-semibold text-foreground">{F.exampleGoal}</span>
                   {choice.exampleGoal}
                 </span>
                 {choice.sensorIdeas.length > 0 && (
                   <span className="mt-3 block text-xs text-muted-foreground">
-                    <span className="font-semibold text-foreground">Sensor ideas: </span>
+                    <span className="font-semibold text-foreground">{F.sensorIdeas}</span>
                     {choice.sensorIdeas.join("; ")}
                   </span>
                 )}
@@ -169,9 +183,9 @@ export function RoboticsFinalProjectContent() {
 
       {/* Planning brief */}
       <section className="mt-12">
-        <h2 className="text-lg font-bold text-foreground">Planning brief</h2>
+        <h2 className="text-lg font-bold text-foreground">{F.planningBrief}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Write your plan before you build. Each box saves when you click away.
+          {F.planningIntro}
         </p>
         <div className="mt-5 space-y-5">
           {PLAN_FIELDS.map((field) => (
@@ -186,7 +200,7 @@ export function RoboticsFinalProjectContent() {
                 onBlur={(e) => saveFinalPlanField(field.id, e.target.value)}
                 disabled={!loaded}
                 rows={field.rows}
-                placeholder="Write here..."
+                placeholder={F.writeHere}
                 className={textareaClass}
               />
             </div>
@@ -196,7 +210,7 @@ export function RoboticsFinalProjectContent() {
 
       {/* Program your robot (block editor + simulator) */}
       <section className="mt-12 print-hidden">
-        <h2 className="text-lg font-bold text-foreground">Program your robot</h2>
+        <h2 className="text-lg font-bold text-foreground">{F.programRobot}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Build and run your mission program from your flowchart. Use a sequence, a loop, a
           condition on a sensor, and a safe stop. On the kit path, mirror these steps in your
@@ -207,17 +221,17 @@ export function RoboticsFinalProjectContent() {
           <RoboticsBlockEditor
             specId="w8-prog-final"
             mission="final-project"
-            title="Final mission program"
-            description="Program your chosen mission: leave the start, use a sensor to react to the world, do the job, and stop safely at the goal."
+            title={F.programTitle}
+            description={F.programDescription}
           />
         </div>
       </section>
 
       {/* What your robot must include */}
       <section className="mt-12">
-        <h2 className="text-lg font-bold text-foreground">What your robot must include</h2>
+        <h2 className="text-lg font-bold text-foreground">{F.mustInclude}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          A checklist to plan and check your build against. This is a reference - it is not saved.
+          {F.checklistIntro}
         </p>
         <div className="mt-5 space-y-6">
           {REQUIREMENT_CATEGORIES.map((cat) => {
@@ -241,7 +255,7 @@ export function RoboticsFinalProjectContent() {
                             (req.required ? "text-avanza-green-dark" : "text-muted-foreground")
                           }
                         >
-                          {req.required ? "Required" : "Stretch"}
+                          {req.required ? F.required : F.stretch}
                         </span>
                         <span className="mt-0.5 block text-muted-foreground">{req.description}</span>
                       </span>
@@ -256,7 +270,7 @@ export function RoboticsFinalProjectContent() {
 
       {/* Three test runs */}
       <section className="mt-12">
-        <h2 className="text-lg font-bold text-foreground">Three test runs</h2>
+        <h2 className="text-lg font-bold text-foreground">{F.threeTestRuns}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Run your mission {fp.requiredTestRuns} times and record what happened. Each cell saves when you click
           away.
@@ -272,9 +286,9 @@ export function RoboticsFinalProjectContent() {
 
       {/* Score your work (rubric) */}
       <section className="mt-12">
-        <h2 className="text-lg font-bold text-foreground">Score your work</h2>
+        <h2 className="text-lg font-bold text-foreground">{F.scoreWork}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Read each level and pick where your project lands. Your scores save on this device.
+          {F.scoreIntro}
         </p>
         <div className="mt-5 space-y-5">
           {fp.rubric.map((category) => (
@@ -282,14 +296,14 @@ export function RoboticsFinalProjectContent() {
               <div className="flex items-baseline justify-between gap-3">
                 <p className="text-sm font-semibold text-foreground">{category.name}</p>
                 <span className="flex-none text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  {category.weightPercent}% of grade
+                  {F.percentOfGrade.replace("{n}", String(category.weightPercent))}
                 </span>
               </div>
               <p className="mt-1 text-sm text-muted-foreground">{category.description}</p>
               <dl className="mt-3 space-y-1 text-sm">
                 {category.levels.map((level) => (
                   <div key={level.label} className="text-foreground/90">
-                    <dt className="inline font-semibold text-foreground">{level.label}: </dt>
+                    <dt className="inline font-semibold text-foreground">{levelName(level.label)}: </dt>
                     <dd className="inline text-muted-foreground">{level.descriptor}</dd>
                   </div>
                 ))}
@@ -298,7 +312,7 @@ export function RoboticsFinalProjectContent() {
                 htmlFor={`rubric-${category.id}`}
                 className="mt-4 block text-xs font-bold uppercase tracking-wide text-muted-foreground"
               >
-                My level
+                {F.myLevel}
               </label>
               <select
                 id={`rubric-${category.id}`}
@@ -307,10 +321,10 @@ export function RoboticsFinalProjectContent() {
                 disabled={!loaded}
                 className="mt-2 w-full max-w-xs rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green disabled:opacity-50"
               >
-                <option value="">Not scored yet</option>
+                <option value="">{F.notScoredYet}</option>
                 {RUBRIC_LEVELS.map((label) => (
                   <option key={label} value={label}>
-                    {label}
+                    {levelName(label)}
                   </option>
                 ))}
               </select>
@@ -322,11 +336,11 @@ export function RoboticsFinalProjectContent() {
         <div className="mt-6 rounded-lg border border-avanza-green/40 bg-avanza-green/5 p-5">
           {allScored ? (
             <p className="text-sm font-semibold text-foreground">
-              Estimated score: <span className="text-avanza-green-dark">{estimatedScore}%</span>
+              {F.estimatedScore} <span className="text-avanza-green-dark">{estimatedScore}%</span>
             </p>
           ) : (
             <p className="text-sm font-semibold text-foreground">
-              Estimated score so far: <span className="text-avanza-green-dark">{estimatedScore}%</span>{" "}
+              {F.estimatedScoreSoFar} <span className="text-avanza-green-dark">{estimatedScore}%</span>{" "}
               <span className="font-normal text-muted-foreground">
                 ({scoredCategories.length} of {fp.rubric.length} categories scored)
               </span>
@@ -341,7 +355,7 @@ export function RoboticsFinalProjectContent() {
       </section>
 
       <p className="mt-10 text-xs text-muted-foreground">
-        Everything on this page is saved on this device only.
+        {F.savedOnDevice}
       </p>
     </div>
   )
@@ -364,6 +378,7 @@ function TestRunsTable({
   disabled: boolean
   onSave: (rows: string[][]) => void
 }) {
+  const TEST_COLUMNS = testColumns(useLanguage().t.courseUi.robotics.final)
   const [rows, setRows] = useState<string[][]>(initialRows)
 
   const updateCell = (r: number, c: number, value: string) => {

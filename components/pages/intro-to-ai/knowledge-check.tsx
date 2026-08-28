@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { useLanguage } from "@/components/providers/language-provider"
 import type { KnowledgeCheckQuestion } from "@/features/curriculums/intro-to-ai/types"
 import {
   allAnswered,
@@ -10,6 +11,11 @@ import {
   parseList,
   scoreCheck,
 } from "@/features/curriculums/intro-to-ai/quiz"
+
+/** The Intro to AI chrome in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.shared
+}
 import { VisualBlock } from "@/components/pages/intro-to-ai/shared"
 
 const optionBase =
@@ -34,7 +40,7 @@ export function IntroToAiKnowledgeCheck({
   passThreshold,
   loaded = true,
   savedAnswers,
-  saveLabel = "Save my score",
+  saveLabel,
   onSave,
 }: {
   instructions: string
@@ -45,6 +51,7 @@ export function IntroToAiKnowledgeCheck({
   saveLabel?: string
   onSave?: (answers: Record<string, string>, score: number, total: number) => void
 }) {
+  const S = useS()
   const [answers, setAnswers] = useState<Record<string, string>>(savedAnswers ?? {})
   const [revealed, setRevealed] = useState<Record<string, boolean>>({})
   const [submitted, setSubmitted] = useState(false)
@@ -64,7 +71,7 @@ export function IntroToAiKnowledgeCheck({
 
   const submit = () => {
     if (!everyAnswered) {
-      setError("Answer every question before saving your score.")
+      setError(S.answerAllFirst)
       return
     }
     setError("")
@@ -103,18 +110,21 @@ export function IntroToAiKnowledgeCheck({
       <div className="mt-6 flex flex-wrap items-center gap-4">
         {!submitted ? (
           <button type="button" onClick={submit} disabled={!loaded} className={primaryButton}>
-            {saveLabel}
+            {saveLabel ?? S.saveMyScore}
           </button>
         ) : (
           <button type="button" onClick={retry} className={outlineButton}>
-            Try the check again
+            {S.tryCheckAgain}
           </button>
         )}
 
         <p className="text-sm text-muted-foreground" aria-live="polite">
           {submitted
-            ? `${score} of ${total} correct${passed ? " — passed" : " — review the ones you missed and try again"}`
-            : `${answered} of ${total} answered`}
+            ? S.scoreLine.replace("{score}", String(score)).replace("{total}", String(total)) +
+              (passed ? S.passedSuffix : S.reviewSuffix)
+            : S.answeredLine
+                .replace("{answered}", String(answered))
+                .replace("{total}", String(total))}
         </p>
       </div>
 
@@ -220,6 +230,7 @@ function ResetHint({
   onReveal: () => void
   onChange: () => void
 }) {
+  const S = useS()
   return (
     <div className="mt-3">
       {!revealed ? (
@@ -229,11 +240,11 @@ function ResetHint({
           disabled={!loaded || !answered}
           className="text-xs font-semibold text-avanza-green-dark underline-offset-2 hover:underline disabled:cursor-not-allowed disabled:text-muted-foreground disabled:no-underline"
         >
-          Check my answer
+          {S.checkMyAnswer}
         </button>
       ) : (
         <button type="button" onClick={onChange} className="text-xs font-semibold text-muted-foreground underline-offset-2 hover:underline">
-          Change my answer
+          {S.changeMyAnswer}
         </button>
       )}
     </div>
@@ -257,6 +268,7 @@ function ChoiceQuestion({
   onReveal: () => void
   onChange: () => void
 }) {
+  const S = useS()
   const selected = new Set(multiple ? parseList(answer) : answer ? [answer] : [])
 
   const toggle = (id: string) => {
@@ -306,7 +318,7 @@ function ChoiceQuestion({
           )
         })}
       </div>
-      {multiple && <p className="text-xs text-muted-foreground">Select all that apply.</p>}
+      {multiple && <p className="text-xs text-muted-foreground">{S.selectAll}</p>}
       <ResetHint revealed={revealed} loaded onReveal={onReveal} onChange={onChange} answered={selected.size > 0} />
     </div>
   )
@@ -433,6 +445,7 @@ function OrderingCheck({
   onReveal: () => void
   onChange: () => void
 }) {
+  const S = useS()
   const answered = parseList(answer || question.items.map((i) => i.id).join(","))
   const correct = revealed && isCorrect(question, encodeList(answered))
   return (
@@ -444,15 +457,15 @@ function OrderingCheck({
           disabled={!loaded}
           className="text-xs font-semibold text-avanza-green-dark underline-offset-2 hover:underline disabled:cursor-not-allowed disabled:text-muted-foreground disabled:no-underline"
         >
-          Check my order
+          {S.checkMyOrder}
         </button>
       ) : (
         <>
           <p className={`text-xs font-semibold ${correct ? "text-avanza-green-dark" : "text-avanza-orange-dark"}`} aria-live="polite">
-            {correct ? "That order is correct." : "Not quite — use the arrows to rearrange and check again."}
+            {correct ? S.orderCorrect : S.orderWrong}
           </p>
           <button type="button" onClick={onChange} className="text-xs font-semibold text-muted-foreground underline-offset-2 hover:underline">
-            Keep rearranging
+            {S.keepRearranging}
           </button>
         </>
       )}

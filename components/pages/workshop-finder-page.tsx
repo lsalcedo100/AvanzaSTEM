@@ -303,8 +303,11 @@ export function WorkshopFinderPage() {
             nextSession: t.home.finderNextSession,
             tentative: t.home.finderTentative,
             planned: t.home.finderPlannedBadge,
+            hosted: t.home.finderHostedBadge,
+            minhang: t.home.finderLocalityMinhang,
           }}
           countryNames={{
+            CN: t.home.finderCountryChina,
             EC: t.home.finderCountryEcuador,
             PE: t.home.finderCountryPeru,
             CO: t.home.finderCountryColombia,
@@ -347,7 +350,7 @@ export function WorkshopFinderPage() {
               language={language}
             />
 
-            <InternationalSection t={t} />
+            <InternationalSection t={t} language={language} />
           </div>
 
           {active && (
@@ -536,22 +539,47 @@ function LocationSection({
   )
 }
 
-const COUNTRY_ORDER: PartnerCountry[] = ["EC", "PE", "CO"]
+const COUNTRY_ORDER: PartnerCountry[] = ["CN", "EC", "PE", "CO"]
 
 /**
- * Partner libraries abroad, in planning conversations. Purely a list, grouped by
- * country — these have no coordinates and never appear on the NJ map.
+ * Venues abroad carry both an English name and one in their own script. Readers
+ * of that script get the local name first; everyone else gets the English one.
+ */
+function partnerPrimaryName(partner: InternationalPartner, language: string) {
+  return language === "zh" && partner.localName ? partner.localName : partner.name
+}
+
+/** The name not used as the headline, plus the district line, if either exists. */
+function partnerSecondLine(
+  partner: InternationalPartner,
+  language: string,
+  localityLabel: Record<"minhang", string>,
+) {
+  const otherName =
+    language === "zh" ? partner.name : partner.localName
+  const locality = partner.localityKey ? localityLabel[partner.localityKey] : null
+  return [otherName, locality].filter(Boolean).join(" · ")
+}
+
+/**
+ * Partner libraries abroad, grouped by country: venues we have already run at
+ * are badged as hosted, the rest as planning conversations.
  */
 function InternationalSection({
   t,
+  language,
 }: {
   t: ReturnType<typeof useLanguage>["t"]
+  language: string
 }) {
   const countryName: Record<PartnerCountry, string> = {
+    CN: t.home.finderCountryChina,
     EC: t.home.finderCountryEcuador,
     PE: t.home.finderCountryPeru,
     CO: t.home.finderCountryColombia,
   }
+
+  const localityLabel = { minhang: t.home.finderLocalityMinhang }
 
   const groups = COUNTRY_ORDER.map((code) => ({
     code,
@@ -588,11 +616,26 @@ function InternationalSection({
                   key={partner.id}
                   className="flex items-start justify-between gap-3 rounded-2xl border-2 border-transparent bg-white p-3.5 shadow-[0_1px_0_rgba(26,26,46,0.06)]"
                 >
-                  <p className="text-sm font-bold leading-snug text-foreground">
-                    {partner.name}
-                  </p>
-                  <span className="mt-0.5 shrink-0 rounded-full bg-avanza-teal/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-avanza-teal-dark">
-                    {t.home.finderPlannedBadge}
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold leading-snug text-foreground">
+                      {partnerPrimaryName(partner, language)}
+                    </p>
+                    {partnerSecondLine(partner, language, localityLabel) && (
+                      <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                        {partnerSecondLine(partner, language, localityLabel)}
+                      </p>
+                    )}
+                  </div>
+                  <span
+                    className={`mt-0.5 shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide ${
+                      partner.status === "hosted"
+                        ? "bg-avanza-orange/10 text-avanza-orange"
+                        : "bg-avanza-teal/10 text-avanza-teal-dark"
+                    }`}
+                  >
+                    {partner.status === "hosted"
+                      ? t.home.finderHostedBadge
+                      : t.home.finderPlannedBadge}
                   </span>
                 </li>
               ))}
@@ -646,6 +689,8 @@ function LeafletMap({
     nextSession: string
     tentative: string
     planned: string
+    hosted: string
+    minhang: string
   }
   countryNames: Record<PartnerCountry, string>
 }) {
@@ -823,23 +868,33 @@ function LeafletMap({
       markersRef.current.set(lib.id, primary)
     })
 
-    // International partners — planned, teal, not part of the NJ selection flow.
+    // International partners — not part of the NJ selection flow. Hosted venues
+    // share the orange tone of the NJ venues we have run at; planning
+    // conversations stay teal.
     internationalPartners.forEach((partner) => {
+      const hosted = partner.status === "hosted"
       const icon = L.divIcon({
         className: "",
-        html: pinHtml("#1abc9c", false),
+        html: pinHtml(hosted ? "#f97316" : "#1abc9c", false),
         iconSize: [32, 42],
         iconAnchor: [16, 38],
         popupAnchor: [0, -32],
       })
+      const headline = partnerPrimaryName(partner, language)
+      const place = [
+        partnerSecondLine(partner, language, { minhang: labels.minhang }),
+        countryNames[partner.country],
+      ]
+        .filter(Boolean)
+        .join(" · ")
       const popupHtml = `
         <div style="min-width:180px;font-family:inherit">
-          <p style="margin:0;font-weight:800;font-size:13px;color:#1a1a2e">${escapeHtml(partner.name)}</p>
-          <p style="margin:2px 0 0;font-size:11px;color:#6b7280">${escapeHtml(countryNames[partner.country])}</p>
-          <p style="margin:6px 0 0;font-size:11px;font-weight:700;color:#0f766e">${escapeHtml(labels.planned)}</p>
+          <p style="margin:0;font-weight:800;font-size:13px;color:#1a1a2e">${escapeHtml(headline)}</p>
+          <p style="margin:2px 0 0;font-size:11px;color:#6b7280">${escapeHtml(place)}</p>
+          <p style="margin:6px 0 0;font-size:11px;font-weight:700;color:${hosted ? "#c2410c" : "#0f766e"}">${escapeHtml(hosted ? labels.hosted : labels.planned)}</p>
         </div>`
       addWrapped(partner.lat, partner.lng, icon, {
-        markerOptions: { title: partner.name, riseOnHover: true },
+        markerOptions: { title: headline, riseOnHover: true },
         popupHtml,
       })
     })

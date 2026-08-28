@@ -15,6 +15,7 @@ import { BooleanLogicGame } from "@/components/ui/logic-game"
 import { DensityTower } from "@/components/ui/density-tower"
 import { SortingRace } from "@/components/ui/sorting-race"
 import { MarbleRun } from "@/components/ui/marble-run"
+import { LAB_GROUPS } from "@/features/games/labs"
 
 type Activity = {
   id: string
@@ -31,38 +32,24 @@ type Group = {
 export function GamesPageContent() {
   const { t } = useLanguage()
 
-  const groups: Group[] = [
-    {
-      id: "group-code",
-      name: t.gamesPage.groupCodeName,
-      activities: [
-        { id: "python", name: t.gamesPage.pythonName, tagline: t.gamesPage.pythonTagline },
-        { id: "robot", name: t.gamesPage.robotName, tagline: t.gamesPage.robotTagline },
-        { id: "logic", name: t.gamesPage.logicName, tagline: t.gamesPage.logicTagline },
-        { id: "sort", name: t.gamesPage.sortName, tagline: t.gamesPage.sortTagline },
-      ],
-    },
-    {
-      id: "group-build",
-      name: t.gamesPage.groupBuildName,
-      activities: [
-        { id: "bridge", name: t.gamesPage.bridgeName, tagline: t.gamesPage.bridgeTagline },
-        { id: "tower", name: t.gamesPage.towerName, tagline: t.gamesPage.towerTagline },
-        { id: "catapult", name: t.gamesPage.catapultName, tagline: t.gamesPage.catapultTagline },
-        { id: "marble", name: t.gamesPage.marbleName, tagline: t.gamesPage.marbleTagline },
-      ],
-    },
-    {
-      id: "group-science",
-      name: t.gamesPage.groupScienceName,
-      activities: [
-        { id: "atom", name: t.gamesPage.atomName, tagline: t.gamesPage.atomTagline },
-        { id: "circuit", name: t.gamesPage.circuitName, tagline: t.gamesPage.circuitTagline },
-        { id: "density", name: t.gamesPage.densityName, tagline: t.gamesPage.densityTagline },
-        { id: "gravity", name: t.gamesPage.gravityName, tagline: t.gamesPage.gravityTagline },
-      ],
-    },
-  ]
+  // Built from the shared LAB_GROUPS data so /games and the /resources hub can
+  // never disagree about which labs exist. Every lab's strings follow the
+  // `<id>Name` / `<id>Tagline` convention in the dictionary.
+  const GROUP_NAME: Record<(typeof LAB_GROUPS)[number]["id"], string> = {
+    "group-code": t.gamesPage.groupCodeName,
+    "group-build": t.gamesPage.groupBuildName,
+    "group-science": t.gamesPage.groupScienceName,
+  }
+
+  const groups: Group[] = LAB_GROUPS.map((group) => ({
+    id: group.id,
+    name: GROUP_NAME[group.id],
+    activities: group.labs.map((id) => ({
+      id,
+      name: t.gamesPage[`${id}Name`],
+      tagline: t.gamesPage[`${id}Tagline`],
+    })),
+  }))
 
   return (
     <>

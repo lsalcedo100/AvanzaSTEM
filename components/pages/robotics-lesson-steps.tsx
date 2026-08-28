@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
+import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 
 /** One step in the lesson stepper: a stable key, a label, and the section id it scrolls to. */
 export type LessonStep = {
@@ -10,15 +12,22 @@ export type LessonStep = {
   sectionId: string
 }
 
-/** Friendly labels for the canonical lesson steps (also used by the hub resume area). */
-export const LESSON_STEP_LABELS: Record<string, string> = {
-  learn: "Learn",
-  do: "Do",
-  program: "Program",
-  predict: "Predict",
-  test: "Test & improve",
-  check: "Knowledge check",
-  reflect: "Reflect",
+/**
+ * Friendly labels for the canonical lesson steps (also used by the hub resume
+ * area). The keys are stable step ids; the display text comes from
+ * `t.courseUi.robotics.steps`, so callers pass the translations in.
+ */
+export function lessonStepLabels(t: Translations): Record<string, string> {
+  const s = t.courseUi.robotics.steps
+  return {
+    learn: s.learn,
+    do: s.doIt,
+    program: s.program,
+    predict: s.predict,
+    test: s.test,
+    check: s.check,
+    reflect: s.reflect,
+  }
 }
 
 /**
@@ -31,6 +40,7 @@ export const LESSON_STEP_LABELS: Record<string, string> = {
  * scrolls horizontally, so there is no overflow on mobile.
  */
 export function RoboticsLessonSteps({ moduleId, steps }: { moduleId: string; steps: LessonStep[] }) {
+  const { t } = useLanguage()
   const { loaded, progress, saveLessonStep } = useRoboticsProgress()
   const [active, setActive] = useState<string>(steps[0]?.key ?? "")
   const lastSaved = useRef<string>("")
@@ -88,7 +98,7 @@ export function RoboticsLessonSteps({ moduleId, steps }: { moduleId: string; ste
 
   return (
     <nav
-      aria-label="Lesson steps"
+      aria-label={t.courseUi.robotics.stepsNavLabel}
       className="sticky top-0 z-10 -mx-6 border-b border-border bg-background/95 px-6 py-3 backdrop-blur"
     >
       <ol className="flex flex-wrap gap-2">

@@ -14,11 +14,20 @@ import {
   useEngineeringProgress,
 } from "@/components/ui/useEngineeringProgress"
 
-const STATUS_LABEL: Record<LessonProgressStatus, string> = {
-  completed: "Completed",
-  "in-progress": "In progress",
-  "not-started": "Not started",
+import type { Translations } from "@/i18n/translations"
+
+type EngStrings = Translations["courseUi"]["engineering"]["progress"]
+
+/** The Engineering Fundamentals chrome in the reader's language. */
+function useE(): EngStrings {
+  return useLanguage().t.courseUi.engineering.progress
 }
+
+const statusLabels = (E: EngStrings): Record<LessonProgressStatus, string> => ({
+  completed: E.completed,
+  "in-progress": E.inProgress,
+  "not-started": E.notStarted,
+})
 
 /** The course lessons in the reader's language. */
 function useLessons(): EngineeringLesson[] {
@@ -44,17 +53,20 @@ function resolveCta(
     currentOrder: number
   },
   lessons: EngineeringLesson[],
+  E: EngStrings,
 ): { slug: string; label: string } {
   if (!state.loaded || !state.hasProgress) {
-    return { slug: lessonByOrder(lessons, 1).slug, label: "Start Lesson 1" }
+    return { slug: lessonByOrder(lessons, 1).slug, label: E.startLesson1 }
   }
   if (state.allComplete) {
-    return { slug: lessonByOrder(lessons, 1).slug, label: "Review course" }
+    return { slug: lessonByOrder(lessons, 1).slug, label: E.reviewCourse }
   }
   const lesson = lessonByOrder(lessons, state.currentOrder)
   return {
     slug: lesson.slug,
-    label: lesson.isFinal ? "Continue to the final challenge" : `Continue Lesson ${lesson.order}`,
+    label: lesson.isFinal
+      ? E.continueToFinal
+      : E.continueLesson.replace("{n}", String(lesson.order)),
   }
 }
 
@@ -68,18 +80,15 @@ const purpleButton =
  * first client render both show the neutral empty state (no hydration mismatch).
  */
 export function EngineeringCourseProgress() {
+  const E = useE()
   const lessons = useLessons()
   const { loaded, totalLessons, completedCount, percent, hasProgress, allComplete, currentOrder, reset } =
     useEngineeringProgress()
 
-  const cta = resolveCta({ loaded, hasProgress, allComplete, currentOrder }, lessons)
+  const cta = resolveCta({ loaded, hasProgress, allComplete, currentOrder }, lessons, E)
 
   const handleReset = () => {
-    if (
-      window.confirm(
-        "Reset your progress for this course? Your completed lessons will be cleared. This cannot be undone.",
-      )
-    ) {
+    if (window.confirm(E.resetConfirm)) {
       reset()
     }
   }
@@ -88,7 +97,9 @@ export function EngineeringCourseProgress() {
     <div className="rounded-lg border border-border bg-card p-5 md:p-6">
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm font-semibold text-foreground" aria-live="polite">
-          {completedCount} of {totalLessons} lessons completed
+          {E.lessonsCompleted
+            .replace("{done}", String(completedCount))
+            .replace("{total}", String(totalLessons))}
         </p>
         <p className="text-sm text-muted-foreground">{percent}%</p>
       </div>
@@ -99,7 +110,9 @@ export function EngineeringCourseProgress() {
         aria-valuemin={0}
         aria-valuemax={totalLessons}
         aria-valuenow={completedCount}
-        aria-valuetext={`${completedCount} of ${totalLessons} lessons completed`}
+        aria-valuetext={E.lessonsCompleted
+          .replace("{done}", String(completedCount))
+          .replace("{total}", String(totalLessons))}
       >
         <div
           className="h-full rounded-full bg-avanza-purple transition-all duration-500"
@@ -109,7 +122,7 @@ export function EngineeringCourseProgress() {
 
       {loaded && allComplete && (
         <p className="mt-4 text-sm font-semibold text-foreground">
-          Course complete. You have finished all {totalLessons} lessons.
+          {E.courseComplete.replace("{total}", String(totalLessons))}
         </p>
       )}
 
@@ -124,7 +137,7 @@ export function EngineeringCourseProgress() {
             onClick={handleReset}
             className="text-sm font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-purple focus-visible:ring-offset-2"
           >
-            Reset progress
+            {E.resetProgress}
           </button>
         )}
       </div>
@@ -137,9 +150,10 @@ export function EngineeringCourseProgress() {
  * closing call-to-action further down the overview.
  */
 export function EngineeringResumeButton() {
+  const E = useE()
   const lessons = useLessons()
   const { loaded, hasProgress, allComplete, currentOrder } = useEngineeringProgress()
-  const cta = resolveCta({ loaded, hasProgress, allComplete, currentOrder }, lessons)
+  const cta = resolveCta({ loaded, hasProgress, allComplete, currentOrder }, lessons, E)
 
   return (
     <Link href={engineeringLessonPath(cta.slug)} className={purpleButton}>
@@ -154,6 +168,8 @@ export function EngineeringResumeButton() {
  * ("Open" / "Continue" / "Review") reflect saved progress once it has loaded.
  */
 export function EngineeringLessonList() {
+  const E = useE()
+  const STATUS_LABEL = statusLabels(E)
   const lessons = useLessons()
   const { loaded, status } = useEngineeringProgress()
 
@@ -161,13 +177,15 @@ export function EngineeringLessonList() {
     <ol className="mt-8 space-y-4">
       {lessons.map((lesson) => {
         const lessonStatus = status(lesson.order)
-        const noun = lesson.isFinal ? "challenge" : "lesson"
+        const noun = lesson.isFinal ? E.challengeNoun : E.lessonNoun
+        const named = (action: string) =>
+          E.actionNoun.replace("{action}", action).replace("{noun}", noun)
         const action =
           lessonStatus === "completed"
-            ? `Review ${noun}`
+            ? named(E.actionReview)
             : lessonStatus === "in-progress"
-              ? `Continue ${noun}`
-              : `Open ${noun}`
+              ? named(E.actionContinue)
+              : named(E.actionOpen)
 
         return (
           <li
@@ -178,7 +196,7 @@ export function EngineeringLessonList() {
               <div className="md:pr-6">
                 <div className="flex items-baseline gap-3">
                   <span className="font-mono text-sm font-semibold text-muted-foreground">
-                    {lesson.isFinal ? "Final" : `0${lesson.order}`}
+                    {lesson.isFinal ? E.finalShort : `0${lesson.order}`}
                   </span>
                   <h3 className="text-lg font-bold text-foreground">{lesson.title}</h3>
                 </div>
@@ -186,15 +204,15 @@ export function EngineeringLessonList() {
 
                 <dl className="mt-4 space-y-1.5 text-sm">
                   <div className="flex gap-2">
-                    <dt className="font-semibold text-foreground">Project:</dt>
+                    <dt className="font-semibold text-foreground">{E.project}</dt>
                     <dd className="text-muted-foreground">{lesson.projectName}</dd>
                   </div>
                   <div className="flex gap-2">
-                    <dt className="font-semibold text-foreground">Time:</dt>
+                    <dt className="font-semibold text-foreground">{E.time}</dt>
                     <dd className="text-muted-foreground">{lesson.estimatedTime}</dd>
                   </div>
                   <div className="flex flex-col gap-1 sm:flex-row sm:gap-2">
-                    <dt className="font-semibold text-foreground">Concepts:</dt>
+                    <dt className="font-semibold text-foreground">{E.concepts}</dt>
                     <dd className="text-muted-foreground">
                       {lesson.concepts.map((concept) => concept.term).join(", ")}
                     </dd>
@@ -221,7 +239,7 @@ export function EngineeringLessonList() {
                   href={engineeringLessonPath(lesson.slug)}
                   className="mt-2 inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-avanza-purple transition-colors hover:border-avanza-purple hover:bg-avanza-purple/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-purple focus-visible:ring-offset-2"
                 >
-                  {loaded ? action : `Open ${noun}`}
+                  {loaded ? action : named(E.actionOpen)}
                 </Link>
               </div>
             </div>
@@ -254,14 +272,15 @@ export function EngineeringLessonVisit({ order }: { order: number }) {
  * Disabled until progress has loaded so it never acts on stale state.
  */
 export function EngineeringLessonComplete({ order }: { order: number }) {
+  const E = useE()
   const lessons = useLessons()
   const { loaded, totalLessons, isCompleted, markComplete } = useEngineeringProgress()
   const lesson = lessonByOrder(lessons, order)
   const next = lessons.find((l) => l.order === order + 1) ?? null
   const done = isCompleted(order)
 
-  const completeLabel = lesson.isFinal ? "Mark final challenge complete" : "Mark lesson complete"
-  const doneHeading = lesson.isFinal ? "Final challenge completed" : "Lesson completed"
+  const completeLabel = lesson.isFinal ? E.markFinalComplete : E.markLessonComplete
+  const doneHeading = lesson.isFinal ? E.finalDoneHeading : E.lessonDoneHeading
 
   return (
     <div className="mt-12 rounded-md border border-border bg-secondary p-5">
@@ -270,10 +289,10 @@ export function EngineeringLessonComplete({ order }: { order: number }) {
           <p className="text-sm font-semibold text-foreground">{doneHeading}</p>
           <p className="mt-1 text-sm text-muted-foreground">
             {lesson.isFinal
-              ? "You have finished the Engineering Fundamentals course."
+              ? E.finishedCourse
               : next
-                ? "Nice work. Your progress is saved on this device."
-                : "You have finished every lesson in the course."}
+                ? E.niceWork
+                : E.finishedEveryLesson}
           </p>
           <p className="mt-3 text-sm">
             {lesson.isFinal ? (
@@ -281,7 +300,7 @@ export function EngineeringLessonComplete({ order }: { order: number }) {
                 href={engineeringFundamentalsPath}
                 className="font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
               >
-                Back to course overview
+                {E.backToOverview}
               </Link>
             ) : next ? (
               <Link
@@ -289,15 +308,17 @@ export function EngineeringLessonComplete({ order }: { order: number }) {
                 className="font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
               >
                 {next.isFinal
-                  ? "Continue to the final challenge"
-                  : `Continue to Lesson ${next.order}: ${next.title}`}
+                  ? E.continueToFinal
+                  : E.continueToLesson
+                      .replace("{n}", String(next.order))
+                      .replace("{title}", next.title)}
               </Link>
             ) : (
               <Link
                 href={engineeringFundamentalsPath}
                 className="font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
               >
-                Back to course overview
+                {E.backToOverview}
               </Link>
             )}
           </p>
@@ -306,8 +327,8 @@ export function EngineeringLessonComplete({ order }: { order: number }) {
         <div>
           <p className="text-sm text-muted-foreground">
             {lesson.isFinal
-              ? "Finished designing, testing, and presenting? Mark the final challenge complete to finish the course."
-              : `Finished building, testing, and reflecting? Mark this lesson complete to track your progress through the ${totalLessons}-lesson course.`}
+              ? E.promptFinal
+              : E.promptLesson.replace("{total}", String(totalLessons))}
           </p>
           <button
             type="button"

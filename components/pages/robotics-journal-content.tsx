@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 import { getRoboticsModules } from "@/features/curriculums/robotics/i18n"
 import {
   roboticsLessonPath,
@@ -13,16 +14,16 @@ import { PrintButton } from "@/components/ui/print-button"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
 
 /** A short hint describing what a prompt captures. */
-function captureHint(captures: JournalPrompt["captures"]): string {
+function captureHint(captures: JournalPrompt["captures"], j: Translations["courseUi"]["robotics"]["journal"]): string {
   switch (captures) {
     case "sketch":
-      return "Describe or note your sketch."
+      return j.hintSketch
     case "number":
-      return "Enter a number."
+      return j.hintNumber
     case "checklist":
-      return "List each item on its own line."
+      return j.hintChecklist
     default:
-      return "Write your answer."
+      return j.hintText
   }
 }
 
@@ -39,13 +40,17 @@ const inputClass =
 export function RoboticsJournalContent() {
   const { loaded, progress, saveJournalEntry } = useRoboticsProgress()
 
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const ui = t.courseUi.robotics
+  const j = ui.journal
   const modules = [...getRoboticsModules(language)]
     .filter((m) => m.journalPrompts.length > 0)
     .sort((a, b) => a.week - b.week)
 
   const sectionTitle = (module: RoboticsModule) =>
-    module.isFinal ? "Final project" : `Week ${module.week}: ${module.title}`
+    module.isFinal
+      ? ui.finalProject
+      : ui.weekTitle.replace("{n}", String(module.week)).replace("{title}", module.title)
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
@@ -55,12 +60,11 @@ export function RoboticsJournalContent() {
             href={roboticsPath}
             className="text-sm font-semibold text-muted-foreground transition-colors hover:text-avanza-green"
           >
-            &larr; Back to Robotics &amp; Automation
+            &larr; {ui.backToCourse}
           </Link>
-          <h1 className="mt-3 text-2xl font-bold text-foreground">Design journal</h1>
+          <h1 className="mt-3 text-2xl font-bold text-foreground">{j.title}</h1>
           <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-            Every week&apos;s journal prompts in one place. Return here to record your sketches,
-            tests, and decisions as you build.
+            {j.intro}
           </p>
         </div>
         <PrintButton tone="green" />
@@ -75,7 +79,7 @@ export function RoboticsJournalContent() {
                 href={roboticsLessonPath(module.slug)}
                 className="print-hidden text-sm font-semibold text-muted-foreground transition-colors hover:text-avanza-green"
               >
-                Go to lesson
+                {ui.goToLesson}
               </Link>
             </div>
 
@@ -89,7 +93,7 @@ export function RoboticsJournalContent() {
                     <label htmlFor={inputId} className="block text-sm font-semibold text-foreground">
                       {prompt.prompt}
                     </label>
-                    <p className="mt-1 text-xs text-muted-foreground">{captureHint(prompt.captures)}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{captureHint(prompt.captures, j)}</p>
                     {prompt.captures === "number" ? (
                       <input
                         id={inputId}
@@ -98,7 +102,7 @@ export function RoboticsJournalContent() {
                         defaultValue={saved}
                         onBlur={(e) => saveJournalEntry(module.id, prompt.id, e.target.value)}
                         disabled={!loaded}
-                        placeholder="Enter a number..."
+                        placeholder={j.placeholderNumber}
                         className={inputClass}
                       />
                     ) : (
@@ -109,7 +113,7 @@ export function RoboticsJournalContent() {
                         onBlur={(e) => saveJournalEntry(module.id, prompt.id, e.target.value)}
                         disabled={!loaded}
                         rows={prompt.captures === "checklist" ? 4 : 3}
-                        placeholder="Write your answer..."
+                        placeholder={j.placeholderText}
                         className={inputClass}
                       />
                     )}
@@ -122,7 +126,7 @@ export function RoboticsJournalContent() {
       </div>
 
       <p className="mt-10 text-xs text-muted-foreground">
-        Your entries are saved automatically on this device as you finish each field.
+        {j.savedNote}
       </p>
     </div>
   )

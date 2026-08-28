@@ -65,10 +65,23 @@ const organizationJsonLd = {
     height: 180,
   },
   image: `${siteConfig.url}/images/og-default-en.png`,
+  alternateName: 'AvanzaSTEM',
   email: 'liam@avanzastem.org',
   description:
-    'A youth-led program bringing free hands-on STEM workshops and beginner-friendly projects to students, with a special focus on Hispanic and underrepresented communities.',
+    'A youth-led program publishing free STEM resources for kids - project guides, course paths, printable worksheets and browser labs - and running free hands-on STEM workshops for students, with a special focus on Hispanic and underrepresented communities.',
   knowsLanguage: ['en', 'es', 'zh', 'pt'],
+  // The in-person workshops run with New Jersey libraries and community
+  // partners; the published resources are online and reachable anywhere, which
+  // is why the audience is declared separately from areaServed.
+  areaServed: {
+    '@type': 'State',
+    name: 'New Jersey',
+  },
+  audience: {
+    '@type': 'EducationalAudience',
+    educationalRole: 'student',
+    audienceType: 'Kids, parents, teachers, and librarians',
+  },
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'liam@avanzastem.org',

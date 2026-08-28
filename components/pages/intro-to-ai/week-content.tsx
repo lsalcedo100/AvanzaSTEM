@@ -17,6 +17,7 @@ import { Breadcrumbs } from "@/components/pages/intro-to-ai/shared"
 export function IntroToAiWeekContent({ weekNumber }: { weekNumber: number }) {
   const { language } = useLanguage()
   const week = findAiWeek(language, weekNumber) ?? getIntroToAiCourse(language).weeks[0]
+  const S = useLanguage().t.courseUi.ai.shared
   const p = useIntroToAiProgress()
   const totalWeeks = weekNumbers().length
   const { completed, total } = p.weekCompletion(week.week)
@@ -28,25 +29,28 @@ export function IntroToAiWeekContent({ weekNumber }: { weekNumber: number }) {
       <div className="mx-auto max-w-3xl px-6 py-10 md:py-14">
         <Breadcrumbs
           trail={[
-            { label: "Intro to AI", href: introToAiPath },
-            { label: `Week ${week.week}` },
+            { label: S.courseTitle, href: introToAiPath },
+            { label: S.weekLabel.replace("{n}", String(week.week)) },
           ]}
         />
 
         <header className="mt-6 border-b border-border pb-8">
           <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Week {week.week} of {totalWeeks} · {week.estimatedTime}
+            {S.weekOfTotal
+              .replace("{n}", String(week.week))
+              .replace("{total}", String(totalWeeks))}{" "}
+            · {week.estimatedTime}
           </p>
           <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">{week.title}</h1>
           <p className="mt-3 text-base leading-relaxed text-foreground/90">{week.subtitle}</p>
 
           <p className="mt-5 rounded-md border border-border bg-secondary/40 px-4 py-3 text-sm font-medium text-foreground">
-            <span className="font-bold">Big question: </span>
+            <span className="font-bold">{S.bigQuestion}</span>
             {week.bigQuestion}
           </p>
 
           <div className="mt-5">
-            <p className="text-xs font-bold uppercase tracking-wide text-avanza-green-dark">By the end of this week</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-avanza-green-dark">{S.byEndOfWeek}</p>
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-foreground">
               {week.objectives.map((o, i) => (
                 <li key={i}>{o}</li>
@@ -55,7 +59,11 @@ export function IntroToAiWeekContent({ weekNumber }: { weekNumber: number }) {
           </div>
 
           <p className="mt-5 text-sm text-muted-foreground" aria-live="polite">
-            {p.loaded ? `${completed} of ${total} lessons complete` : "Loading your progress…"}
+            {p.loaded
+              ? S.lessonsComplete
+                  .replace("{done}", String(completed))
+                  .replace("{total}", String(total))
+              : S.loadingProgress}
           </p>
         </header>
 
@@ -87,23 +95,23 @@ export function IntroToAiWeekContent({ weekNumber }: { weekNumber: number }) {
           })}
         </ol>
 
-        <nav aria-label="Week navigation" className="mt-10 flex items-center justify-between gap-4 border-t border-border pt-6 text-sm">
+        <nav aria-label={S.weekNavigation} className="mt-10 flex items-center justify-between gap-4 border-t border-border pt-6 text-sm">
           {prevWeek ? (
             <Link href={introToAiWeekPath(prevWeek)} className="font-semibold text-avanza-green-dark hover:underline">
-              ← Week {prevWeek}
+              ← {S.weekLabel.replace("{n}", String(prevWeek))}
             </Link>
           ) : (
             <Link href={introToAiPath} className="font-semibold text-avanza-green-dark hover:underline">
-              ← Course overview
+              ← {S.courseOverview}
             </Link>
           )}
           {nextWeek ? (
             <Link href={introToAiWeekPath(nextWeek)} className="font-semibold text-avanza-green-dark hover:underline">
-              Week {nextWeek} →
+              {S.weekLabel.replace("{n}", String(nextWeek))} →
             </Link>
           ) : (
             <Link href={`${introToAiPath}/final-project`} className="font-semibold text-avanza-green-dark hover:underline">
-              Final project →
+              {S.finalProject} →
             </Link>
           )}
         </nav>

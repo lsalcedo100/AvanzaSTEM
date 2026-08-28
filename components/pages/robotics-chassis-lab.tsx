@@ -5,37 +5,55 @@ import {
   DEFAULT_CHASSIS,
   evaluateChassis,
   type ChassisConfig,
+  type FeedbackId,
+  type NoteId,
   type Rating,
   type Surface,
+  type TestId,
 } from "@/components/ui/chassis-model"
+import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
 
+type ChassisStrings = Translations["courseUi"]["robotics"]["chassis"]
+
 /** Word labels for each 1..3 slider, so students read a level - never color alone. */
-const LEVEL_WORDS: Record<keyof Omit<ChassisConfig, "surface">, [string, string, string]> = {
-  wheelSize: ["small", "medium", "large"],
-  wheelSpacing: ["narrow", "medium", "wide"],
-  bodyWidth: ["narrow", "medium", "wide"],
-  bodyHeight: ["low", "medium", "tall"],
-  weightPlacement: ["low", "middle", "high"],
-  motorPower: ["low", "medium", "high"],
-}
+const levelWords = (
+  C: ChassisStrings,
+): Record<keyof Omit<ChassisConfig, "surface">, [string, string, string]> => ({
+  wheelSize: [C.small, C.medium, C.large],
+  wheelSpacing: [C.narrow, C.medium, C.wide],
+  bodyWidth: [C.narrow, C.medium, C.wide],
+  bodyHeight: [C.low, C.medium, C.tall],
+  weightPlacement: [C.low, C.middle, C.high],
+  motorPower: [C.low, C.medium, C.high],
+})
 
-const SLIDERS: { key: keyof Omit<ChassisConfig, "surface">; label: string }[] = [
-  { key: "wheelSize", label: "Wheel size" },
-  { key: "wheelSpacing", label: "Wheel spacing" },
-  { key: "bodyWidth", label: "Body width" },
-  { key: "bodyHeight", label: "Body height" },
-  { key: "weightPlacement", label: "Weight placement" },
-  { key: "motorPower", label: "Motor power" },
+const sliders = (C: ChassisStrings): { key: keyof Omit<ChassisConfig, "surface">; label: string }[] => [
+  { key: "wheelSize", label: C.wheelSize },
+  { key: "wheelSpacing", label: C.wheelSpacing },
+  { key: "bodyWidth", label: C.bodyWidth },
+  { key: "bodyHeight", label: C.bodyHeight },
+  { key: "weightPlacement", label: C.weightPlacement },
+  { key: "motorPower", label: C.motorPower },
 ]
 
-const SURFACES: { id: Surface; label: string }[] = [
-  { id: "smooth", label: "Smooth floor" },
-  { id: "carpet", label: "Carpet" },
-  { id: "slippery", label: "Slippery" },
+const surfaces = (C: ChassisStrings): { id: Surface; label: string }[] => [
+  { id: "smooth", label: C.smooth },
+  { id: "carpet", label: C.carpet },
+  { id: "slippery", label: C.slippery },
 ]
 
-const RATING_WORD: Record<Rating, string> = { good: "Good", okay: "Okay", poor: "Poor" }
+const ratingWord = (C: ChassisStrings): Record<Rating, string> => ({
+  good: C.good,
+  okay: C.okay,
+  poor: C.poor,
+})
+
+/** Display names for the model's stable test / note / feedback ids. */
+const testName = (C: ChassisStrings, id: TestId): string => C[id]
+const noteText = (C: ChassisStrings, id: NoteId): string => C[id]
+const feedbackText = (C: ChassisStrings, id: FeedbackId): string => C[id]
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
@@ -107,6 +125,8 @@ function StatBar({ label, value }: { label: string; value: number }) {
 
 /** Side-view drawing of the chassis so students can SEE the center of mass. */
 function ChassisDiagram({ config, centerOfMass }: { config: ChassisConfig; centerOfMass: number }) {
+  const C = useLanguage().t.courseUi.robotics.chassis
+  const LEVEL_WORDS = levelWords(C)
   // Map 1..3 choices onto a 240 x 140 canvas.
   const wheelR = 12 + config.wheelSize * 6 // 18..30
   const halfSpan = 26 + config.wheelSpacing * 20 // 46..86 (half distance between wheels)
@@ -126,7 +146,13 @@ function ChassisDiagram({ config, centerOfMass }: { config: ChassisConfig; cente
   const leftWheelX = cx - halfSpan
   const rightWheelX = cx + halfSpan
 
-  const label = `Side view of the robot: ${LEVEL_WORDS.bodyWidth[config.bodyWidth - 1]} body, ${LEVEL_WORDS.bodyHeight[config.bodyHeight - 1]} height, ${LEVEL_WORDS.wheelSize[config.wheelSize - 1]} wheels spaced ${LEVEL_WORDS.wheelSpacing[config.wheelSpacing - 1]}, with the weight placed ${LEVEL_WORDS.weightPlacement[config.weightPlacement - 1]}. Center of mass height is ${centerOfMass} out of 6.`
+  const label = C.diagramAlt
+    .replace("{bodyWidth}", LEVEL_WORDS.bodyWidth[config.bodyWidth - 1])
+    .replace("{bodyHeight}", LEVEL_WORDS.bodyHeight[config.bodyHeight - 1])
+    .replace("{wheelSize}", LEVEL_WORDS.wheelSize[config.wheelSize - 1])
+    .replace("{wheelSpacing}", LEVEL_WORDS.wheelSpacing[config.wheelSpacing - 1])
+    .replace("{weight}", LEVEL_WORDS.weightPlacement[config.weightPlacement - 1])
+    .replace("{com}", String(centerOfMass))
 
   return (
     <svg
@@ -169,6 +195,11 @@ function ChassisDiagram({ config, centerOfMass }: { config: ChassisConfig; cente
  * student's real work.
  */
 export function VirtualChassisLab({ activityId }: { activityId: string }) {
+  const C = useLanguage().t.courseUi.robotics.chassis
+  const SLIDERS = sliders(C)
+  const SURFACES = surfaces(C)
+  const LEVEL_WORDS = levelWords(C)
+  const RATING_WORD = ratingWord(C)
   const { loaded, progress, saveActivityData, saveActivityResult } = useRoboticsProgress()
   const key = `chassis-lab:${activityId}`
 
@@ -210,16 +241,15 @@ export function VirtualChassisLab({ activityId }: { activityId: string }) {
 
   return (
     <div className="rounded-lg border border-border bg-card p-5 md:p-6">
-      <h3 className="text-lg font-bold text-foreground">Virtual Chassis Lab</h3>
+      <h3 className="text-lg font-bold text-foreground">{C.title}</h3>
       <p className="mt-1 text-sm text-muted-foreground">
-        Design a rolling robot, then watch how it does on four tests. Change one thing at a time and
-        read the tips to figure out <em>why</em> a design works or fails.
+        {C.intro}
       </p>
 
       <div className="mt-5 grid gap-6 md:grid-cols-2">
         {/* Controls */}
         <div className="space-y-4">
-          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Your design</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{C.yourDesign}</p>
 
           {SLIDERS.map((s) => (
             <LevelSlider
@@ -234,11 +264,14 @@ export function VirtualChassisLab({ activityId }: { activityId: string }) {
           ))}
 
           <div>
-            <p className="text-sm font-semibold text-foreground">Test surface</p>
+            <p className="text-sm font-semibold text-foreground">{C.testSurface}</p>
             <p className="text-sm text-muted-foreground">
-              Surface: <span className="font-semibold text-foreground">{SURFACES.find((x) => x.id === config.surface)?.label}</span>
+              {C.surface}{" "}
+              <span className="font-semibold text-foreground">
+                {SURFACES.find((x) => x.id === config.surface)?.label}
+              </span>
             </p>
-            <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Test surface">
+            <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label={C.testSurface}>
               {SURFACES.map((s) => {
                 const active = config.surface === s.id
                 return (
@@ -267,24 +300,24 @@ export function VirtualChassisLab({ activityId }: { activityId: string }) {
 
         {/* Results */}
         <div className="space-y-5">
-          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Live results</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{C.liveResults}</p>
 
           <ChassisDiagram config={config} centerOfMass={report.centerOfMass} />
 
           <div className="space-y-3">
-            <StatBar label="Stability" value={report.stability} />
-            <StatBar label="Speed" value={report.speed} />
-            <StatBar label="Torque (climbing power)" value={report.torque} />
-            <StatBar label="Traction (grip)" value={report.traction} />
+            <StatBar label={C.stability} value={report.stability} />
+            <StatBar label={C.speed} value={report.speed} />
+            <StatBar label={C.torque} value={report.torque} />
+            <StatBar label={C.traction} value={report.traction} />
           </div>
 
           <div>
-            <p className="text-sm font-semibold text-foreground">Test outcomes</p>
+            <p className="text-sm font-semibold text-foreground">{C.testOutcomes}</p>
             <ul className="mt-2 space-y-2">
               {report.tests.map((t) => (
                 <li key={t.test} className="rounded-md border border-border bg-secondary p-3">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-sm font-semibold text-foreground">{t.test}</span>
+                    <span className="text-sm font-semibold text-foreground">{testName(C, t.test)}</span>
                     <span
                       className={
                         "text-sm font-bold " +
@@ -298,26 +331,26 @@ export function VirtualChassisLab({ activityId }: { activityId: string }) {
                       {RATING_WORD[t.result]}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-muted-foreground">{t.note}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{noteText(C, t.note)}</p>
                 </li>
               ))}
             </ul>
           </div>
 
           <div aria-live="polite">
-            <p className="text-sm font-semibold text-foreground">Why this happened</p>
+            <p className="text-sm font-semibold text-foreground">{C.whyHappened}</p>
             {report.feedback.length > 0 ? (
               <ul className="mt-2 space-y-2">
                 {report.feedback.map((line, i) => (
                   <li key={i} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
                     <span aria-hidden className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-avanza-green" />
-                    <span>{line}</span>
+                    <span>{feedbackText(C, line)}</span>
                   </li>
                 ))}
               </ul>
             ) : (
               <p className="mt-2 text-sm text-muted-foreground">
-                Adjust the design to see tips about what helps and what hurts.
+                {C.adjustForTips}
               </p>
             )}
           </div>
@@ -326,30 +359,30 @@ export function VirtualChassisLab({ activityId }: { activityId: string }) {
 
       {/* What are you testing? */}
       <div className="mt-6 rounded-md border border-border bg-secondary p-4">
-        <p className="text-sm font-bold text-foreground">What are you testing?</p>
+        <p className="text-sm font-bold text-foreground">{C.whatTesting}</p>
         <dl className="mt-2 space-y-1.5 text-sm">
           <div>
-            <dt className="inline font-semibold text-foreground">Straight line: </dt>
-            <dd className="inline text-muted-foreground">Can it roll straight without slipping or wobbling?</dd>
+            <dt className="inline font-semibold text-foreground">{C.straightLine}: </dt>
+            <dd className="inline text-muted-foreground">{C.straightLineQ}</dd>
           </div>
           <div>
-            <dt className="inline font-semibold text-foreground">Turning: </dt>
-            <dd className="inline text-muted-foreground">Can it turn cleanly without spinning out or being too slow?</dd>
+            <dt className="inline font-semibold text-foreground">{C.turning}: </dt>
+            <dd className="inline text-muted-foreground">{C.turningQ}</dd>
           </div>
           <div>
-            <dt className="inline font-semibold text-foreground">Small ramp: </dt>
-            <dd className="inline text-muted-foreground">Does it have enough power and grip to climb a slope or push through resistance?</dd>
+            <dt className="inline font-semibold text-foreground">{C.smallRamp}: </dt>
+            <dd className="inline text-muted-foreground">{C.smallRampQ}</dd>
           </div>
           <div>
-            <dt className="inline font-semibold text-foreground">Slippery surface: </dt>
-            <dd className="inline text-muted-foreground">Can it still move when the floor has almost no grip?</dd>
+            <dt className="inline font-semibold text-foreground">{C.slipperySurface}: </dt>
+            <dd className="inline text-muted-foreground">{C.slipperyQ}</dd>
           </div>
         </dl>
       </div>
 
       {saved && (
         <p className="mt-4 text-sm font-semibold text-avanza-green-dark" aria-live="polite">
-          Saved. Your design is stored with your course work.
+          {C.savedNote}
         </p>
       )}
     </div>

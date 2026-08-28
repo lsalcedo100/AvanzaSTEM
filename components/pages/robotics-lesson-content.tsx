@@ -131,11 +131,13 @@ function programMissionsFor(module: RoboticsModule): ProgramMission[] {
  * the week started when it is open.
  */
 export function RoboticsLessonContent({ slug }: { slug: string }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const ui = t.courseUi.robotics
+  const L = ui.lesson
   const weekModule = findRoboticsModule(language, slug) ?? getRoboticsModules(language)[0]
   const previous = previousRoboticsModule(weekModule.slug)
   const next = nextRoboticsModule(weekModule.slug)
-  const label = weekModule.isFinal ? "Final project" : `Week ${weekModule.week}`
+  const label = weekModule.isFinal ? ui.finalProject : L.weekLabel.replace("{n}", String(weekModule.week))
 
   const hasPredict = weekModule.predictionPrompts.length > 0
   const hasTest = weekModule.testRecords.length > 0 || weekModule.debuggingMissions.length > 0
@@ -144,13 +146,13 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
 
   // Only include steps that this week actually has, keeping the canonical order.
   const steps: LessonStep[] = [
-    { key: "learn", label: "Learn", sectionId: "lesson-learn" },
-    { key: "do", label: "Do", sectionId: "lesson-do" },
-    ...(hasProgram ? [{ key: "program", label: "Program", sectionId: "lesson-program" }] : []),
-    ...(hasPredict ? [{ key: "predict", label: "Predict", sectionId: "lesson-predict" }] : []),
-    ...(hasTest ? [{ key: "test", label: "Test & improve", sectionId: "lesson-test" }] : []),
-    { key: "check", label: "Knowledge check", sectionId: "lesson-check" },
-    { key: "reflect", label: "Reflect", sectionId: "lesson-reflect" },
+    { key: "learn", label: ui.steps.learn, sectionId: "lesson-learn" },
+    { key: "do", label: ui.steps.doIt, sectionId: "lesson-do" },
+    ...(hasProgram ? [{ key: "program", label: ui.steps.program, sectionId: "lesson-program" }] : []),
+    ...(hasPredict ? [{ key: "predict", label: ui.steps.predict, sectionId: "lesson-predict" }] : []),
+    ...(hasTest ? [{ key: "test", label: ui.steps.test, sectionId: "lesson-test" }] : []),
+    { key: "check", label: ui.steps.check, sectionId: "lesson-check" },
+    { key: "reflect", label: ui.steps.reflect, sectionId: "lesson-reflect" },
   ]
 
   return (
@@ -159,9 +161,9 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
         {/* Breadcrumb + header */}
         <header className="border-b border-border">
           <div className="mx-auto max-w-3xl px-6 py-10 md:py-14">
-            <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
+            <nav aria-label={L.breadcrumb} className="text-sm text-muted-foreground">
               <Link href={roboticsPath} className="underline underline-offset-2 hover:text-foreground">
-                Robotics &amp; Automation
+                {L.courseTitle}
               </Link>
               <span aria-hidden> / </span>
               <span className="text-foreground">{label}</span>
@@ -176,7 +178,9 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
             <ul className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
               <li className="font-medium text-foreground">{weekModule.estimatedTime}</li>
               <li aria-hidden className="text-border">|</li>
-              <li className="font-medium text-foreground">Mission: {weekModule.mainMission}</li>
+              <li className="font-medium text-foreground">
+                {L.mission} {weekModule.mainMission}
+              </li>
             </ul>
 
             <div className="mt-6 flex flex-wrap gap-4 text-sm">
@@ -184,13 +188,13 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
                 href={roboticsWorksheetPath(weekModule.slug)}
                 className="font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
               >
-                Printable worksheet
+                {L.printableWorksheet}
               </Link>
               <Link
                 href={roboticsTeacherGuidePath(weekModule.slug)}
                 className="font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
               >
-                Parent &amp; teacher guide
+                {L.teacherGuide}
               </Link>
             </div>
           </div>
@@ -204,7 +208,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
 
           {/* Learning goals */}
           <section className="mt-10">
-            <h2 className="text-xl font-bold text-foreground">By the end of this week you can</h2>
+            <h2 className="text-xl font-bold text-foreground">{L.byEndOfWeek}</h2>
             <ul className="mt-4 space-y-2">
               {weekModule.learningGoals.map((goal) => (
                 <li key={goal.id} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -217,7 +221,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
 
           {/* Learn: concepts */}
           <section id="lesson-learn" className="mt-12 scroll-mt-20">
-            <h2 className="text-xl font-bold text-foreground">Learn</h2>
+            <h2 className="text-xl font-bold text-foreground">{L.learn}</h2>
             <div className="mt-4 space-y-6">
               {weekModule.concepts.map((concept) => (
                 <div key={concept.id}>
@@ -229,7 +233,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
                   ))}
                   {concept.examples && concept.examples.length > 0 && (
                     <p className="mt-2 text-sm text-muted-foreground">
-                      <span className="font-semibold text-foreground">For example: </span>
+                      <span className="font-semibold text-foreground">{L.forExample}</span>
                       {concept.examples.join("; ")}
                     </p>
                   )}
@@ -240,7 +244,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
 
           {/* Vocabulary */}
           <section className="mt-12">
-            <h2 className="text-xl font-bold text-foreground">Words to know</h2>
+            <h2 className="text-xl font-bold text-foreground">{L.wordsToKnow}</h2>
             <dl className="mt-4 space-y-3">
               {weekModule.vocabulary.map((term) => (
                 <div key={term.term} className="text-sm leading-relaxed">
@@ -255,9 +259,9 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
           {weekModule.safetyNotes.length > 0 && (
             <section id="lesson-safety" className="mt-12 scroll-mt-20">
               <div className="rounded-md border border-avanza-orange/50 bg-avanza-orange/5 p-5">
-                <h2 className="text-base font-bold text-foreground">Stay safe</h2>
+                <h2 className="text-base font-bold text-foreground">{L.staySafe}</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Read these before you build or run a robot this week.
+                  {L.staySafeIntro}
                 </p>
                 <ul className="mt-3 space-y-2">
                   {weekModule.safetyNotes.map((note) => (
@@ -280,7 +284,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
 
           {/* Choose a path + activities */}
           <section id="lesson-do" className="mt-12 scroll-mt-20">
-            <h2 className="text-xl font-bold text-foreground">Do it</h2>
+            <h2 className="text-xl font-bold text-foreground">{L.doIt}</h2>
             <div className="mt-4">
               <RoboticsEquipmentPathPicker />
             </div>
@@ -292,7 +296,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
           {/* Program the robot (block editor + simulator) */}
           {hasProgram && (
             <section id="lesson-program" className="mt-12 scroll-mt-20">
-              <h2 className="text-xl font-bold text-foreground">Program the robot</h2>
+              <h2 className="text-xl font-bold text-foreground">{L.programRobot}</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Build a program from blocks, then run it on the simulator. On the kit path, use the
                 same steps in your robot&apos;s app; unplugged, act the blocks out on a floor grid.
@@ -315,7 +319,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
           {/* Predict */}
           {hasPredict && (
             <section id="lesson-predict" className="mt-12 scroll-mt-20">
-              <h2 className="text-xl font-bold text-foreground">Predict</h2>
+              <h2 className="text-xl font-bold text-foreground">{L.predict}</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Commit to a guess before you test - then see how close you were. Your predictions
                 save automatically.
@@ -329,7 +333,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
           {/* Test and improve: editable, saved test records + debugging missions */}
           {hasTest && (
             <section id="lesson-test" className="mt-12 scroll-mt-20">
-              <h2 className="text-xl font-bold text-foreground">Test &amp; improve</h2>
+              <h2 className="text-xl font-bold text-foreground">{L.testImprove}</h2>
 
               {weekModule.testRecords.length > 0 && (
                 <div className="mt-4 space-y-6">
@@ -341,7 +345,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
 
               {weekModule.debuggingMissions.length > 0 && (
                 <div className="mt-8">
-                  <h3 className="font-bold text-foreground">Debugging missions</h3>
+                  <h3 className="font-bold text-foreground">{L.debuggingMissions}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">
                     Each robot below misbehaves on purpose. Work out whether the bug is mechanical, in
                     the program, or with a sensor - then check the fix.
@@ -358,7 +362,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
 
           {/* Knowledge check */}
           <section id="lesson-check" className="mt-12 scroll-mt-20">
-            <h2 className="text-xl font-bold text-foreground">Knowledge check</h2>
+            <h2 className="text-xl font-bold text-foreground">{L.knowledgeCheck}</h2>
             <div className="mt-4">
               <RoboticsKnowledgeCheck check={weekModule.knowledgeCheck} />
             </div>
@@ -366,8 +370,8 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
 
           {/* Reflection */}
           <section id="lesson-reflect" className="mt-12 scroll-mt-20">
-            <h2 className="text-xl font-bold text-foreground">Reflect</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Your reflections save automatically.</p>
+            <h2 className="text-xl font-bold text-foreground">{L.reflect}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">{L.reflectionsSave}</p>
             <div className="mt-4">
               <RoboticsReflection prompts={weekModule.reflection} />
             </div>
@@ -376,7 +380,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
           {/* Next week */}
           <section className="mt-12 rounded-lg border border-border bg-secondary p-5">
             <h2 className="text-sm font-bold uppercase tracking-wide text-foreground">
-              {weekModule.isFinal ? "After the course" : "Coming up next week"}
+              {weekModule.isFinal ? L.afterCourse : L.comingUpNext}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-foreground/90">{weekModule.nextWeek.teaser}</p>
             {weekModule.nextWeek.prepare.length > 0 && (
@@ -423,7 +427,7 @@ export function RoboticsLessonContent({ slug }: { slug: string }) {
                 href={`${roboticsPath}/review`}
                 className="text-right font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
               >
-                Review area →
+                {L.reviewArea}
               </Link>
             )}
           </nav>

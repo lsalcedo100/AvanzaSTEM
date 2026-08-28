@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
+import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 
 /* -------------------------------------------------------------------------- */
 /* Device data                                                                */
@@ -22,100 +24,44 @@ type Device = {
   explanation: string
 }
 
-const DEVICES: readonly Device[] = [
-  {
-    id: "sliding-door",
-    name: "Automatic sliding door",
-    answer: "robot",
-    input: true,
-    processing: true,
-    output: true,
-    explanation:
-      "It senses you (input), decides to open (processing), and moves the door (output).",
-  },
-  {
-    id: "rc-car",
-    name: "Remote-controlled car",
-    answer: "machine",
-    input: true,
-    processing: false,
-    output: true,
-    explanation:
-      "A person makes every decision; it does not decide on its own, so it is remote-controlled, not a robot.",
-  },
-  {
-    id: "toaster",
-    name: "Basic toaster",
-    answer: "machine",
-    input: false,
-    processing: false,
-    output: true,
-    explanation:
-      "A timer turns it off; it does not sense whether the toast is done or decide anything.",
-  },
-  {
-    id: "mars-rover",
-    name: "Mars rover",
-    answer: "robot",
-    input: true,
-    processing: true,
-    output: true,
-    explanation:
-      "It senses the ground, follows its program to decide, and drives on its own far from Earth.",
-  },
-  {
-    id: "washing-machine",
-    name: "Washing machine",
-    answer: "in-between",
-    input: true,
-    processing: true,
-    output: true,
-    explanation:
-      "It senses water level and follows a program, but it just repeats fixed cycles rather than reacting to a changing world.",
-  },
-  {
-    id: "robotic-arm",
-    name: "Robotic arm (programmed)",
-    answer: "robot",
-    input: true,
-    processing: true,
-    output: true,
-    explanation:
-      "It follows a program and can use sensors to decide when and where to move.",
-  },
-  {
-    id: "wind-up-toy",
-    name: "Wind-up toy",
-    answer: "machine",
-    input: false,
-    processing: false,
-    output: true,
-    explanation:
-      "It only releases stored spring energy; it senses nothing and decides nothing.",
-  },
-  {
-    id: "voice-speaker",
-    name: "Voice-controlled speaker",
-    answer: "robot",
-    input: true,
-    processing: true,
-    output: true,
-    explanation:
-      "It senses your voice (input), works out what you asked (processing), and answers or acts (output).",
-  },
+type RonStrings = Translations["courseUi"]["robotics"]["robotOrNot"]
+
+const devices = (N: RonStrings): readonly Device[] => [
+  { id: "sliding-door", name: N.slidingDoor, answer: "robot", input: true, processing: true, output: true, explanation: N.slidingDoorWhy },
+  { id: "rc-car", name: N.rcCar, answer: "machine", input: true, processing: false, output: true, explanation: N.rcCarWhy },
+  { id: "toaster", name: N.toaster, answer: "machine", input: false, processing: false, output: true, explanation: N.toasterWhy },
+  { id: "mars-rover", name: N.marsRover, answer: "robot", input: true, processing: true, output: true, explanation: N.marsRoverWhy },
+  { id: "washing-machine", name: N.washingMachine, answer: "in-between", input: true, processing: true, output: true, explanation: N.washingMachineWhy },
+  { id: "robotic-arm", name: N.roboticArm, answer: "robot", input: true, processing: true, output: true, explanation: N.roboticArmWhy },
+  { id: "wind-up-toy", name: N.windUpToy, answer: "machine", input: false, processing: false, output: true, explanation: N.windUpToyWhy },
+  { id: "voice-speaker", name: N.voiceSpeaker, answer: "robot", input: true, processing: true, output: true, explanation: N.voiceSpeakerWhy },
+]
+
+/** Device ids in display order. These are the saved-state keys, so they never change with language. */
+const DEVICE_IDS = [
+  "sliding-door",
+  "rc-car",
+  "toaster",
+  "mars-rover",
+  "washing-machine",
+  "robotic-arm",
+  "wind-up-toy",
+  "voice-speaker",
 ] as const
 
-const CLASS_OPTIONS: readonly { id: Classification; label: string }[] = [
-  { id: "robot", label: "Robot" },
-  { id: "in-between", label: "In between" },
-  { id: "machine", label: "Just a machine" },
-] as const
+const classOptions = (N: RonStrings): readonly { id: Classification; label: string }[] => [
+  { id: "robot", label: N.classRobot },
+  { id: "in-between", label: N.classInBetween },
+  { id: "machine", label: N.classMachine },
+]
 
-const PART_OPTIONS: readonly { id: "input" | "processing" | "output"; label: string; hint: string }[] = [
-  { id: "input", label: "Input", hint: "it can sense" },
-  { id: "processing", label: "Processing", hint: "it can decide" },
-  { id: "output", label: "Output", hint: "it can act" },
-] as const
+const partOptions = (
+  N: RonStrings,
+): readonly { id: "input" | "processing" | "output"; label: string; hint: string }[] => [
+  { id: "input", label: N.partInput, hint: N.hintInput },
+  { id: "processing", label: N.partProcessing, hint: N.hintProcessing },
+  { id: "output", label: N.partOutput, hint: N.hintOutput },
+]
 
 /* -------------------------------------------------------------------------- */
 /* Local state shape (serialized to progress.activityData)                    */
@@ -170,6 +116,10 @@ function entryFor(state: State, id: string): DeviceEntry {
  * toward lesson completion.
  */
 export function RobotOrNot({ activityId }: { activityId: string }) {
+  const N = useLanguage().t.courseUi.robotics.robotOrNot
+  const DEVICES = devices(N)
+  const CLASS_OPTIONS = classOptions(N)
+  const PART_OPTIONS = partOptions(N)
   const { loaded, progress, saveActivityData, saveActivityResult } = useRoboticsProgress()
   const key = `robot-or-not:${activityId}`
 
@@ -250,19 +200,23 @@ export function RobotOrNot({ activityId }: { activityId: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded, state.checked, allClassified, savedDone])
 
+  const total = String(DEVICES.length)
   const feedback = !state.checked
-    ? `${classifiedCount} of ${DEVICES.length} devices sorted.`
+    ? N.sortedCount.replace("{done}", String(classifiedCount)).replace("{total}", total)
     : allClassified
-      ? `You matched ${correctCount} of ${DEVICES.length}. Read the reasons, change any you want, and check again.`
-      : `Sort all ${DEVICES.length} devices, then check again to finish.`
+      ? N.matchedCount.replace("{n}", String(correctCount)).replace("{total}", total)
+      : N.sortAll.replace("{total}", total)
 
   return (
     <div>
       <p className="text-sm text-muted-foreground">
-        For each device, decide if it is a <span className="font-semibold text-foreground">robot</span>, somewhere{" "}
-        <span className="font-semibold text-foreground">in between</span>, or{" "}
-        <span className="font-semibold text-foreground">just a machine</span>. Then tick which parts it really has: does it
-        sense (input), decide (processing), and act (output)? The parts are your evidence - do not go by looks.
+        {N.introA}
+        <span className="font-semibold text-foreground">{N.introRobot}</span>
+        {N.introB}
+        <span className="font-semibold text-foreground">{N.introInBetween}</span>
+        {N.introC}
+        <span className="font-semibold text-foreground">{N.introMachine}</span>
+        {N.introD}
       </p>
 
       <ol className="mt-6 space-y-4">
@@ -278,7 +232,7 @@ export function RobotOrNot({ activityId }: { activityId: string }) {
               </p>
 
               <div className="mt-3">
-                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Your call</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{N.yourCall}</p>
                 <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label={`Classify ${device.name}`}>
                   {CLASS_OPTIONS.map((opt) => {
                     const chosen = entry.classification === opt.id
@@ -311,7 +265,7 @@ export function RobotOrNot({ activityId }: { activityId: string }) {
 
               <div className="mt-4">
                 <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                  What parts does it have?
+                  {N.whatParts}
                 </p>
                 <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label={`Parts of ${device.name}`}>
                   {PART_OPTIONS.map((part) => {
@@ -350,10 +304,11 @@ export function RobotOrNot({ activityId }: { activityId: string }) {
                     }
                   >
                     {correct
-                      ? "That fits"
-                      : `Rethink this one - the best fit is "${
-                          CLASS_OPTIONS.find((c) => c.id === device.answer)?.label
-                        }"`}
+                      ? N.thatFits
+                      : N.rethink.replace(
+                          "{label}",
+                          CLASS_OPTIONS.find((c) => c.id === device.answer)?.label ?? "",
+                        )}
                   </p>
                   <p className="mt-1 text-foreground/90">{device.explanation}</p>
                 </div>
@@ -371,7 +326,7 @@ export function RobotOrNot({ activityId }: { activityId: string }) {
             disabled={!loaded || classifiedCount === 0}
             className="inline-flex items-center rounded-md bg-avanza-green px-5 py-2.5 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
           >
-            Check my answers
+            {N.checkAnswers}
           </button>
         ) : (
           <button
@@ -380,7 +335,7 @@ export function RobotOrNot({ activityId }: { activityId: string }) {
             disabled={!loaded}
             className="inline-flex items-center rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-avanza-green-dark transition-colors hover:border-avanza-green hover:bg-avanza-green/5 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
           >
-            Hide the answers
+            {N.hideAnswers}
           </button>
         )}
 
@@ -391,7 +346,7 @@ export function RobotOrNot({ activityId }: { activityId: string }) {
 
       {loaded && savedDone && (
         <p className="mt-3 text-sm font-medium text-avanza-green-dark" aria-live="polite">
-          Saved. This activity is marked done for your lesson.
+          {N.savedNote}
         </p>
       )}
     </div>

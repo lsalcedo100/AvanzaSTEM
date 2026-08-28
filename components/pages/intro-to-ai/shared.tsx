@@ -1,11 +1,21 @@
+"use client"
+
 import Link from "next/link"
 import type { VisualExplanation } from "@/features/curriculums/intro-to-ai/types"
 import { BeforeAfterDiagram, DecisionTreeDiagram, FlowDiagram } from "@/components/pages/intro-to-ai/diagrams"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Intro to AI chrome in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.shared
+}
+
 
 /** Breadcrumb trail. Semantic <nav> + ordered list; last item is the current page. */
 export function Breadcrumbs({ trail }: { trail: { label: string; href?: string }[] }) {
+  const S = useS()
   return (
-    <nav aria-label="Breadcrumb" className="text-sm">
+    <nav aria-label={S.breadcrumb} className="text-sm">
       <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
         {trail.map((item, i) => (
           <li key={`${item.label}-${i}`} className="flex items-center gap-2">
@@ -84,6 +94,7 @@ function DataTable({ columns, rows }: { columns: string[]; rows: string[][] }) {
 }
 
 function ConfusionMatrixView({ labels, counts }: { labels: string[]; counts: number[][] }) {
+  const S = useS()
   return (
     <div className="mt-3 overflow-x-auto">
       <table className="border-collapse text-sm">
@@ -91,11 +102,11 @@ function ConfusionMatrixView({ labels, counts }: { labels: string[]; counts: num
           <tr>
             <th className="px-3 py-2" />
             <th scope="colgroup" colSpan={labels.length} className="px-3 py-1 text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Predicted
+              {S.predicted}
             </th>
           </tr>
           <tr>
-            <th className="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Actual</th>
+            <th className="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">{S.actual}</th>
             {labels.map((l) => (
               <th key={l} scope="col" className="border-b border-border px-3 py-2 text-center font-semibold text-foreground">
                 {l}
@@ -129,9 +140,10 @@ function ConfusionMatrixView({ labels, counts }: { labels: string[]; counts: num
 }
 
 function BarChartView({ unit, bars }: { unit: string; bars: { label: string; value: number }[] }) {
+  const S = useS()
   const max = Math.max(1, ...bars.map((b) => b.value))
   return (
-    <div className="mt-3 space-y-2" role="img" aria-label={`Bar chart in ${unit}`}>
+    <div className="mt-3 space-y-2" role="img" aria-label={S.barChartLabel.replace("{unit}", unit)}>
       {bars.map((b) => (
         <div key={b.label} className="grid grid-cols-[8rem_1fr_3rem] items-center gap-2 text-sm">
           <span className="truncate text-muted-foreground">{b.label}</span>
@@ -144,7 +156,7 @@ function BarChartView({ unit, bars }: { unit: string; bars: { label: string; val
           <span className="text-right tabular-nums text-foreground">{b.value}</span>
         </div>
       ))}
-      <p className="text-xs text-muted-foreground">Values shown in {unit}.</p>
+      <p className="text-xs text-muted-foreground">{S.valuesShownIn.replace("{unit}", unit)}</p>
     </div>
   )
 }

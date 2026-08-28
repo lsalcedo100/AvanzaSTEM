@@ -10,15 +10,19 @@
  */
 import type { IntroToAiCourse } from "./types.ts"
 import type { IntroToAiProgress } from "./progress.ts"
+import type { Translations } from "../../../i18n/translations.ts"
+
+/** The skill names and statuses in the reader's language. */
+export type SkillStrings = Translations["courseUi"]["ai"]["skills"]
 
 export type SkillStatus = "demonstrated" | "developing" | "review-recommended" | "not-attempted"
 
-export const STATUS_LABEL: Record<SkillStatus, string> = {
-  demonstrated: "Demonstrated",
-  developing: "Developing",
-  "review-recommended": "Review recommended",
-  "not-attempted": "Not yet attempted",
-}
+export const statusLabels = (K: SkillStrings): Record<SkillStatus, string> => ({
+  demonstrated: K.stDemonstrated,
+  developing: K.stDeveloping,
+  "review-recommended": K.stReviewRecommended,
+  "not-attempted": K.stNotAttempted,
+})
 
 export type SkillDef = {
   id: string
@@ -33,19 +37,19 @@ export type SkillDef = {
   needsProject?: boolean
 }
 
-export const SKILLS: SkillDef[] = [
-  { id: "sk-identify", label: "Identifies AI and non-AI systems", description: "Tells machine-learning systems apart from ordinary software.", weekLabel: "Week 1", lessonIds: ["w1l1"], checkIds: ["w1l1-kc"] },
-  { id: "sk-rules", label: "Distinguishes fixed rules from learned patterns", description: "Knows when behavior comes from written rules vs. learned patterns.", weekLabel: "Week 1", lessonIds: ["w1l2"], checkIds: ["w1l2-kc"] },
-  { id: "sk-data", label: "Organizes labeled data", description: "Uses examples, features, labels, and categories, and spots duplicates and bad labels.", weekLabel: "Week 2", lessonIds: ["w2l1"], checkIds: ["w2l1-kc"] },
-  { id: "sk-split", label: "Separates training and testing data", description: "Explains why a model is tested on unseen examples.", weekLabel: "Week 2", lessonIds: ["w2l2"], checkIds: ["w2l2-kc"] },
-  { id: "sk-accuracy", label: "Interprets accuracy and confidence", description: "Reads overall vs. category accuracy and knows confidence is not certainty.", weekLabel: "Week 3", lessonIds: ["w3l1", "w3l2"], checkIds: ["w3l1-kc", "w3l2-kc"] },
-  { id: "sk-mistakes", label: "Investigates model mistakes", description: "Uses confusion matrices and edge cases to find and fix mistakes.", weekLabel: "Week 3", lessonIds: ["w3l3"], checkIds: ["w3l3-kc"] },
-  { id: "sk-behavior", label: "Explains chatbot and recommendation behavior", description: "Explains rule matching, next-text prediction, and recommendations and filter bubbles.", weekLabel: "Week 4", lessonIds: ["w4l1", "w4l3"], checkIds: ["w4l1-kc", "w4l3-kc"] },
-  { id: "sk-privacy", label: "Recognizes privacy concerns", description: "Applies data minimization, consent, and retention.", weekLabel: "Week 5", lessonIds: ["w5l2"], checkIds: ["w5l2-kc"] },
-  { id: "sk-bias", label: "Recognizes bias and representation problems", description: "Reads group-level results and spots proxy features and under-representation.", weekLabel: "Week 5", lessonIds: ["w5l1"], checkIds: ["w5l1-kc"] },
-  { id: "sk-misinfo", label: "Evaluates misinformation using evidence", description: "Checks source, date, context, and independent confirmation.", weekLabel: "Week 5", lessonIds: ["w5l3"], checkIds: ["w5l3-kc"] },
-  { id: "sk-oversight", label: "Defines human oversight", description: "Designs review, appeal, correction, and override for high-stakes AI.", weekLabel: "Week 5", lessonIds: ["w5l3"], checkIds: ["w5l3-kc"] },
-  { id: "sk-design", label: "Designs and tests a responsible system", description: "Defines a problem, decides whether AI fits, prototypes, tests, and presents.", weekLabel: "Week 6", lessonIds: ["w6l1", "w6l2", "w6l3"], checkIds: ["w6l1-kc", "w6l2-kc", "w6l3-kc"], needsProject: true },
+export const skillDefs = (K: SkillStrings): SkillDef[] => [
+  { id: "sk-identify", label: K.skIdentify, description: K.skIdentifyDesc, weekLabel: "Week 1", lessonIds: ["w1l1"], checkIds: ["w1l1-kc"] },
+  { id: "sk-rules", label: K.skRules, description: K.skRulesDesc, weekLabel: "Week 1", lessonIds: ["w1l2"], checkIds: ["w1l2-kc"] },
+  { id: "sk-data", label: K.skData, description: K.skDataDesc, weekLabel: "Week 2", lessonIds: ["w2l1"], checkIds: ["w2l1-kc"] },
+  { id: "sk-split", label: K.skSplit, description: K.skSplitDesc, weekLabel: "Week 2", lessonIds: ["w2l2"], checkIds: ["w2l2-kc"] },
+  { id: "sk-accuracy", label: K.skAccuracy, description: K.skAccuracyDesc, weekLabel: "Week 3", lessonIds: ["w3l1", "w3l2"], checkIds: ["w3l1-kc", "w3l2-kc"] },
+  { id: "sk-mistakes", label: K.skMistakes, description: K.skMistakesDesc, weekLabel: "Week 3", lessonIds: ["w3l3"], checkIds: ["w3l3-kc"] },
+  { id: "sk-behavior", label: K.skBehavior, description: K.skBehaviorDesc, weekLabel: "Week 4", lessonIds: ["w4l1", "w4l3"], checkIds: ["w4l1-kc", "w4l3-kc"] },
+  { id: "sk-privacy", label: K.skPrivacy, description: K.skPrivacyDesc, weekLabel: "Week 5", lessonIds: ["w5l2"], checkIds: ["w5l2-kc"] },
+  { id: "sk-bias", label: K.skBias, description: K.skBiasDesc, weekLabel: "Week 5", lessonIds: ["w5l1"], checkIds: ["w5l1-kc"] },
+  { id: "sk-misinfo", label: K.skMisinfo, description: K.skMisinfoDesc, weekLabel: "Week 5", lessonIds: ["w5l3"], checkIds: ["w5l3-kc"] },
+  { id: "sk-oversight", label: K.skOversight, description: K.skOversightDesc, weekLabel: "Week 5", lessonIds: ["w5l3"], checkIds: ["w5l3-kc"] },
+  { id: "sk-design", label: K.skDesign, description: K.skDesignDesc, weekLabel: "Week 6", lessonIds: ["w6l1", "w6l2", "w6l3"], checkIds: ["w6l1-kc", "w6l2-kc", "w6l3-kc"], needsProject: true },
 ]
 
 /** Map of every knowledge-check id → its pass threshold, from the course data. */
@@ -97,9 +101,14 @@ export function computeSkillState(
   return { skill, status, checksPassed: passed.length, checksAttempted: attempted.length, lessonsComplete: lessonsComplete.length }
 }
 
-export function computeSkillStates(progress: IntroToAiProgress, course: IntroToAiCourse, projectComplete: boolean): SkillState[] {
+export function computeSkillStates(
+  progress: IntroToAiProgress,
+  course: IntroToAiCourse,
+  projectComplete: boolean,
+  skills: SkillDef[],
+): SkillState[] {
   const thresholds = buildCheckThresholds(course)
-  return SKILLS.map((s) => computeSkillState(s, progress, thresholds, projectComplete))
+  return skills.map((s) => computeSkillState(s, progress, thresholds, projectComplete))
 }
 
 export function summarizeSkills(states: SkillState[]): Record<SkillStatus, number> {

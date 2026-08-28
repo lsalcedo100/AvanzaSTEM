@@ -9,9 +9,13 @@
  * label describes all four steps for screen readers.
  */
 
-const STEP_LABEL = "The course in four steps: label example data, split it into training and testing, read a prediction, and find and fix a mistake."
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
 
 export function JourneyDiagram({ variant = "full", className }: { variant?: "full" | "card"; className?: string }) {
+  const S = useLanguage().t.courseUi.ai.shared
+  const STEP_LABEL = S.jdStepLabel
   const compact = variant === "card"
   return (
     <div className={className}>
@@ -95,14 +99,14 @@ export function JourneyDiagram({ variant = "full", className }: { variant?: "ful
 
         {/* step labels */}
         <g className="text-foreground" fill="currentColor" fontSize="9" fontWeight="600" textAnchor="middle">
-          <text x="56" y="92">Label</text>
-          <text x="156" y="92">Train / Test</text>
-          <text x="256" y="92">Predict</text>
-          <text x="350" y="92">Fix mistakes</text>
+          <text x="56" y="92">{S.jdLabel}</text>
+          <text x="156" y="92">{S.jdTrainTest}</text>
+          <text x="256" y="92">{S.jdPredict}</text>
+          <text x="350" y="92">{S.jdFixMistakes}</text>
         </g>
         {!compact && (
           <text x="200" y="118" className="text-muted-foreground" fill="currentColor" fontSize="9" textAnchor="middle">
-            A hands-on path through how AI systems really work
+            {S.jdCaption}
           </text>
         )}
       </svg>

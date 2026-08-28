@@ -3,6 +3,13 @@
 import type { ReflectionPrompt } from "@/features/curriculums/intro-to-ai/types"
 import type { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { SaveState } from "@/components/pages/intro-to-ai/ui"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Intro to AI chrome in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.shared
+}
+
 
 /**
  * Reusable reflection block. Supports one or more prompts, saves each response to
@@ -17,14 +24,15 @@ export function IntroToAiReflection({
   prompts: ReflectionPrompt[]
   progress: ReturnType<typeof useIntroToAiProgress>
 }) {
+  const S = useS()
   return (
-    <section aria-label="Reflection">
+    <section aria-label={S.reflection}>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-xl font-bold text-foreground">Reflection</h2>
-        <SaveState status={progress.saveStatus} idleHint="Saved on this device as you type" />
+        <h2 className="text-xl font-bold text-foreground">{S.reflection}</h2>
+        <SaveState status={progress.saveStatus} idleHint={S.reflectionIdleHint} />
       </div>
       <p className="mt-1 text-xs text-muted-foreground">
-        Please don&apos;t include private information. Your answers are saved only in this browser and are never sent anywhere.
+        {S.reflectionPrivacy}
       </p>
       <div className="mt-4 space-y-4">
         {prompts.map((r) => (
@@ -40,7 +48,7 @@ export function IntroToAiReflection({
               onBlur={(e) => progress.setReflection(r.id, e.target.value)}
               rows={3}
               className="mt-2 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green disabled:opacity-50"
-              placeholder="Write your thoughts here. You can revise this any time."
+              placeholder={S.reflectionPlaceholder}
             />
           </div>
         ))}

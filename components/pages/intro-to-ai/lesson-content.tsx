@@ -27,7 +27,9 @@ import { IntroToAiWorkedExample } from "@/components/pages/intro-to-ai/worked-ex
 import { SaveState } from "@/components/pages/intro-to-ai/ui"
 
 export function IntroToAiLessonContent({ week, slug }: { week: number; slug: string }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const S = t.courseUi.ai.shared
+  const L = t.courseUi.ai.lesson
   // The route 404s unknown week/slug pairs before this renders, so the English
   // base is only a type-level backstop - it keeps the lookup non-null so every
   // hook below stays unconditional.
@@ -55,8 +57,8 @@ export function IntroToAiLessonContent({ week, slug }: { week: number; slug: str
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Breadcrumbs
             trail={[
-              { label: "Intro to AI", href: introToAiPath },
-              { label: `Week ${week}`, href: introToAiWeekPath(week) },
+              { label: S.courseTitle, href: introToAiPath },
+              { label: S.weekLabel.replace("{n}", String(week)), href: introToAiWeekPath(week) },
               { label: lesson.title },
             ]}
           />
@@ -64,35 +66,38 @@ export function IntroToAiLessonContent({ week, slug }: { week: number; slug: str
             href={introToAiPath}
             className="text-sm font-semibold text-avanza-green-dark underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 rounded"
           >
-            Return to course
+            {L.returnToCourse}
           </Link>
         </div>
 
         {/* Lesson header — compact, not sticky, readable on mobile. */}
         <header className="mt-6 border-b border-border pb-8">
           <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Week {week} · Lesson {lesson.order} · {lesson.estimatedTime}
+            {L.weekLessonTime
+              .replace("{week}", String(week))
+              .replace("{lesson}", String(lesson.order))}{" "}
+            · {lesson.estimatedTime}
           </p>
           <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">{lesson.title}</h1>
           <p className="mt-3 text-base leading-relaxed text-foreground/90">{lesson.summary}</p>
 
           <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
             <div>
-              <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Materials</dt>
+              <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{L.materials}</dt>
               <dd className="mt-1 text-foreground">{requiredMaterials.map((m) => m.name).join(" · ")}</dd>
             </div>
             <div className="sm:text-right">
-              <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">This lesson</dt>
+              <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{L.thisLesson}</dt>
               <dd className="mt-1 inline-flex items-center gap-2 sm:justify-end">
                 {done ? (
                   <span className="inline-flex items-center gap-1 font-semibold text-avanza-green-dark">
-                    <Check className="h-4 w-4" aria-hidden /> Complete
+                    <Check className="h-4 w-4" aria-hidden /> {L.complete}
                   </span>
                 ) : (
-                  <span className="text-muted-foreground">In progress</span>
+                  <span className="text-muted-foreground">{L.inProgress}</span>
                 )}
                 <span aria-hidden className="text-border">|</span>
-                <SaveState status={p.saveStatus} idleHint="Auto-saves on this device" />
+                <SaveState status={p.saveStatus} idleHint={L.autoSaves} />
               </dd>
             </div>
           </dl>
@@ -107,7 +112,7 @@ export function IntroToAiLessonContent({ week, slug }: { week: number; slug: str
         {/* Transparent completion + navigation */}
         <div className="mt-14 border-t border-border pt-8">
           <div className="rounded-lg border border-border p-5">
-            <h2 className="text-sm font-bold text-foreground">Finish this lesson</h2>
+            <h2 className="text-sm font-bold text-foreground">{L.finishThisLesson}</h2>
             <ul className="mt-3 space-y-1.5 text-sm">
               {requirements.map((r) => (
                 <li key={r.id} className="flex items-start gap-2">
@@ -121,7 +126,7 @@ export function IntroToAiLessonContent({ week, slug }: { week: number; slug: str
                   </span>
                   <span className={r.met ? "text-foreground" : "text-muted-foreground"}>
                     {r.label}
-                    <span className="sr-only">{r.met ? " — done" : " — not done"}</span>
+                    <span className="sr-only">{r.met ? L.srDone : L.srNotDone}</span>
                   </span>
                 </li>
               ))}
@@ -141,26 +146,26 @@ export function IntroToAiLessonContent({ week, slug }: { week: number; slug: str
               >
                 {done ? (
                   <>
-                    <Check className="h-4 w-4" aria-hidden /> Lesson complete — undo
+                    <Check className="h-4 w-4" aria-hidden /> {L.lessonCompleteUndo}
                   </>
                 ) : (
-                  "Mark lesson complete"
+                  L.markLessonComplete
                 )}
               </button>
               {!done && !canComplete && (
-                <p className="text-xs text-muted-foreground">Attempt the knowledge check to finish this lesson.</p>
+                <p className="text-xs text-muted-foreground">{L.attemptCheckFirst}</p>
               )}
             </div>
           </div>
 
-          <nav aria-label="Lesson navigation" className="mt-8 flex items-stretch justify-between gap-4">
+          <nav aria-label={L.lessonNavigation} className="mt-8 flex items-stretch justify-between gap-4">
             {prev ? (
               <Link
                 href={introToAiLessonPath(prev.week, prev.lesson.slug)}
                 className="group flex max-w-[48%] flex-col rounded-md border border-border px-4 py-3 text-left transition-colors hover:border-avanza-green/60 hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
               >
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
-                  <ArrowLeft className="h-3.5 w-3.5" aria-hidden /> Previous lesson
+                  <ArrowLeft className="h-3.5 w-3.5" aria-hidden /> {L.previousLesson}
                 </span>
                 <span className="mt-1 text-sm font-semibold text-foreground">{prev.lesson.title}</span>
               </Link>
@@ -170,9 +175,11 @@ export function IntroToAiLessonContent({ week, slug }: { week: number; slug: str
                 className="group flex max-w-[48%] flex-col rounded-md border border-border px-4 py-3 text-left transition-colors hover:border-avanza-green/60 hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
               >
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
-                  <ArrowLeft className="h-3.5 w-3.5" aria-hidden /> Back
+                  <ArrowLeft className="h-3.5 w-3.5" aria-hidden /> {L.backWord}
                 </span>
-                <span className="mt-1 text-sm font-semibold text-foreground">Week {week} overview</span>
+                <span className="mt-1 text-sm font-semibold text-foreground">
+                  {L.weekOverview.replace("{n}", String(week))}
+                </span>
               </Link>
             )}
             {next ? (
@@ -181,7 +188,7 @@ export function IntroToAiLessonContent({ week, slug }: { week: number; slug: str
                 className="group flex max-w-[48%] flex-col items-end rounded-md border border-border px-4 py-3 text-right transition-colors hover:border-avanza-green/60 hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
               >
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
-                  {next.week !== week ? "Next week" : "Next lesson"} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                  {next.week !== week ? L.nextWeek : L.nextLesson} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                 </span>
                 <span className="mt-1 text-sm font-semibold text-foreground">{next.lesson.title}</span>
               </Link>
@@ -191,9 +198,9 @@ export function IntroToAiLessonContent({ week, slug }: { week: number; slug: str
                 className="group flex max-w-[48%] flex-col items-end rounded-md border border-border px-4 py-3 text-right transition-colors hover:border-avanza-green/60 hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
               >
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
-                  Next <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                  {L.nextWord} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                 </span>
-                <span className="mt-1 text-sm font-semibold text-foreground">Final assessment</span>
+                <span className="mt-1 text-sm font-semibold text-foreground">{L.finalAssessment}</span>
               </Link>
             )}
           </nav>
@@ -240,11 +247,12 @@ function SectionBlock({
   section: LessonSection
   progress: ReturnType<typeof useIntroToAiProgress>
 }) {
+  const L = useLanguage().t.courseUi.ai.lesson
   switch (section.kind) {
     case "objectives":
       return (
-        <section aria-label="Learning objectives">
-          <p className={KICKER}>What you&apos;ll be able to do</p>
+        <section aria-label={L.learningObjectives}>
+          <p className={KICKER}>{L.whatYoullBeAbleToDo}</p>
           <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm text-foreground">
             {section.objectives.map((o) => (
               <li key={o.id}>{o.text}</li>
@@ -254,8 +262,8 @@ function SectionBlock({
       )
     case "opening":
       return (
-        <section aria-label="Opening question">
-          <p className={KICKER}>Think about it</p>
+        <section aria-label={L.openingQuestion}>
+          <p className={KICKER}>{L.thinkAboutIt}</p>
           <p className="mt-2 text-lg font-semibold text-foreground">{section.scenario.prompt}</p>
           {section.scenario.context && <p className="mt-2 text-sm text-muted-foreground">{section.scenario.context}</p>}
         </section>
@@ -264,14 +272,14 @@ function SectionBlock({
       return <IntroToAiPrediction prompt={section.prompt} progress={progress} />
     case "vocabulary":
       return (
-        <section aria-label="Vocabulary">
+        <section aria-label={L.vocabulary}>
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 className={H2}>Vocabulary</h2>
+            <h2 className={H2}>{L.vocabulary}</h2>
             <Link
               href={`${introToAiPath}#vocabulary`}
               className="text-xs font-semibold text-avanza-green-dark underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2 rounded"
             >
-              See the full course vocabulary
+              {L.seeFullVocabulary}
             </Link>
           </div>
           <dl className="mt-3 space-y-3">
@@ -302,7 +310,7 @@ function SectionBlock({
           )}
           {section.concept.misconception && (
             <p className="mt-3 rounded-md border-l-2 border-avanza-orange/60 bg-avanza-orange/5 px-4 py-2 text-sm text-foreground">
-              <span className="font-semibold text-avanza-orange-dark">Common mix-up: </span>
+              <span className="font-semibold text-avanza-orange-dark">{L.commonMixUp}</span>
               {section.concept.misconception}
             </p>
           )}
@@ -320,7 +328,7 @@ function SectionBlock({
       const interactive = renderActivity({ activity: section.activity, progress })
       return (
         <section aria-label={section.activity.title}>
-          <p className={KICKER}>Activity</p>
+          <p className={KICKER}>{L.activity}</p>
           <div className="mt-2">{interactive ?? <ActivityBriefing activity={section.activity} />}</div>
         </section>
       )
@@ -328,8 +336,8 @@ function SectionBlock({
     case "knowledge-check": {
       const saved = progress.progress.knowledgeChecks[section.check.id]
       return (
-        <section aria-label="Knowledge check">
-          <h2 className={H2}>Check your understanding</h2>
+        <section aria-label={L.knowledgeCheck}>
+          <h2 className={H2}>{L.checkUnderstanding}</h2>
           <div className="mt-3">
             <IntroToAiKnowledgeCheck
               key={`${section.check.id}:${progress.loaded}`}
@@ -347,7 +355,7 @@ function SectionBlock({
     case "challenge":
       return (
         <section aria-label={section.challenge.title}>
-          <p className={KICKER}>Try it yourself</p>
+          <p className={KICKER}>{L.tryItYourself}</p>
           <h2 className={`mt-1 ${H2}`}>{section.challenge.title}</h2>
           <p className="mt-2 text-sm text-foreground">{section.challenge.prompt}</p>
           <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-foreground">
@@ -355,7 +363,7 @@ function SectionBlock({
               <li key={i}>{s}</li>
             ))}
           </ol>
-          <p className="mt-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">Success looks like</p>
+          <p className="mt-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">{L.successLooksLike}</p>
           <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
             {section.challenge.successCriteria.map((s, i) => (
               <li key={i}>{s}</li>
@@ -367,8 +375,8 @@ function SectionBlock({
       return <IntroToAiReflection prompts={section.prompts} progress={progress} />
     case "recap":
       return (
-        <section aria-label="Recap" className="rounded-lg border border-border bg-secondary/40 p-5">
-          <p className={KICKER}>Recap</p>
+        <section aria-label={L.recap} className="rounded-lg border border-border bg-secondary/40 p-5">
+          <p className={KICKER}>{L.recap}</p>
           <p className="mt-2 text-sm font-medium text-foreground">{section.recap.summary}</p>
           <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
             {section.recap.keyPoints.map((k, i) => (
@@ -380,7 +388,7 @@ function SectionBlock({
     case "extension":
       return (
         <section aria-label={section.extension.title} className="rounded-lg border border-avanza-purple/30 bg-avanza-purple/5 p-5">
-          <p className="text-xs font-bold uppercase tracking-wide text-avanza-purple-dark">Grades 7–8 extension</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-avanza-purple-dark">{L.extension}</p>
           <h2 className={`mt-1 ${H2}`}>{section.extension.title}</h2>
           <div className="mt-2 space-y-2 text-sm leading-relaxed text-foreground/90">
             {section.extension.body.map((para, i) => (

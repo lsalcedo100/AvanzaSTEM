@@ -97,6 +97,323 @@ const es: DeepPartial<IntroToAiCourse> = {
       },
     ],
   },
+  finalProject: {
+    title: "Estudio de Diseño de IA: diseña una IA que ayude",
+    overview: "Con todo lo que aprendiste en las seis semanas, diseña una herramienta de IA que ayude a un grupo real de personas. Vas a definir el problema, decidir si la IA de verdad encaja, planear las entradas, las salidas, las etiquetas, las características o las reglas, dibujar un prototipo, escribir casos de prueba y explicar cómo la mantendrías justa, privada y bajo supervisión humana. Este es un proyecto de diseño y planeación: no vas a entrenar un modelo real.",
+    choices: [
+      {
+        name: "Clasificador útil",
+        scenario: "A un grupo le cuesta clasificar muchos objetos rápido, como una biblioteca ordenando libros devueltos o un club organizando fotos.",
+        exampleGoal: "Diseña una IA que clasifique objetos en las categorías correctas.",
+        suitableBecause: "Clasificar a partir de muchos ejemplos etiquetados encaja bien con el aprendizaje automático.",
+      },
+      {
+        name: "Ayudante de preguntas",
+        scenario: "La gente hace una y otra vez las mismas preguntas y un equipo pequeño no se da abasto, como la oficina de una escuela o el soporte de un juego.",
+        exampleGoal: "Diseña un ayudante de reglas que responda las preguntas comunes y pase el resto a una persona.",
+        suitableBecause: "Las preguntas comunes con intenciones claras encajan con un chatbot de árbol de decisión y una respuesta de reserva humana.",
+      },
+      {
+        name: "Recomendador justo",
+        scenario: "Una comunidad quiere sugerencias (libros, actividades o recetas) sin atrapar a la gente en una burbuja de filtros.",
+        exampleGoal: "Diseña un recomendador que sugiera opciones nuevas y explique por qué.",
+        suitableBecause: "Las recomendaciones usan la similitud y la retroalimentación, y te dejan practicar cómo evitar las burbujas de filtros.",
+      },
+      {
+        name: "Tu propia idea",
+        scenario: "Tienes un problema en tu escuela o tu comunidad con el que crees que la IA podría ayudar.",
+        exampleGoal: "Define tu propio problema y diseña una IA (o decide que la IA no es la herramienta adecuada).",
+        suitableBecause: "Decidir si la IA siquiera encaja es parte de un buen diseño.",
+      },
+    ],
+    brief: [
+      {
+        label: "Necesidad de la persona usuaria",
+        hint: "¿Para quién es esto, y qué problema tiene esa persona?",
+      },
+      {
+        label: "Definición del problema",
+        hint: "Enuncia la tarea exacta en una o dos oraciones.",
+      },
+      {
+        label: "¿La IA es la herramienta adecuada?",
+        hint: "Explica por qué la IA encaja, o por qué sería mejor una herramienta más sencilla.",
+      },
+      {
+        label: "Entradas y salidas",
+        hint: "¿Qué entra y qué sale?",
+      },
+      {
+        label: "Etiquetas, características o reglas",
+        hint: "¿De qué ejemplos, etiquetas y características aprendería, o qué reglas seguiría?",
+      },
+      {
+        label: "Boceto del prototipo",
+        hint: "Describe o dibuja cómo lo usaría una persona.",
+      },
+      {
+        label: "Casos de prueba",
+        hint: "Enumera los ejemplos que probarías, incluidos casos límite difíciles.",
+      },
+      {
+        label: "Limitaciones",
+        hint: "¿Dónde podría equivocarse o ser injusta?",
+      },
+      {
+        label: "Justicia, privacidad y supervisión",
+        hint: "¿Cómo vas a proteger la privacidad, revisar la justicia y mantener a una persona al mando? ¿Cómo puede alguien apelar un resultado equivocado?",
+      },
+    ],
+    requirements: [
+      {
+        label: "Necesidad clara de la persona usuaria",
+        description: "Nombra un grupo real de personas y el problema que enfrentan.",
+      },
+      {
+        label: "Decisión sobre la idoneidad de la IA",
+        description: "Argumenta si la IA es la herramienta adecuada, usando las ideas de entrada y salida y de reglas frente a aprendizaje.",
+      },
+      {
+        label: "Entradas y salidas diseñadas",
+        description: "Define las entradas y las salidas, y las etiquetas y características o las reglas involucradas.",
+      },
+      {
+        label: "Prototipo y casos de prueba",
+        description: "Incluye un boceto del prototipo y al menos tres casos de prueba, uno de ellos un caso límite.",
+      },
+      {
+        label: "Plan de uso responsable",
+        description: "Aborda la justicia, la privacidad, las limitaciones, la supervisión humana y las apelaciones.",
+      },
+      {
+        label: "Presentación clara",
+        description: "Explica el diseño de modo que otra persona pueda entenderlo y cuestionarlo.",
+      },
+      {
+        label: "Nota de iteración (opcional avanzado)",
+        description: "Describe un cambio que harías después de probarlo.",
+      },
+    ],
+    rubric: [
+      {
+        name: "Problema e idoneidad",
+        description: "Qué tan claro queda el problema y si la IA es la herramienta adecuada.",
+        levels: [
+          {
+            descriptor: "El problema es vago y no hay razonamiento sobre si la IA encaja.",
+          },
+          {
+            descriptor: "El problema está enunciado, pero el razonamiento sobre la idoneidad de la IA es flojo.",
+          },
+          {
+            descriptor: "Problema claro y un argumento sólido sobre si la IA es la herramienta adecuada.",
+          },
+          {
+            descriptor: "Definición del problema muy precisa, con una decisión de idoneidad convincente y bien razonada.",
+          },
+        ],
+      },
+      {
+        name: "Entradas, salidas y datos",
+        description: "Calidad del diseño de entradas y salidas y de las etiquetas y características o reglas.",
+        levels: [
+          {
+            descriptor: "Faltan las entradas y las salidas, o no quedan claras.",
+          },
+          {
+            descriptor: "Las entradas y las salidas están nombradas, pero las etiquetas y características o las reglas no quedan claras.",
+          },
+          {
+            descriptor: "Entradas y salidas claras, y un plan sensato de etiquetas y características o reglas.",
+          },
+          {
+            descriptor: "Un diseño cuidado y bien ajustado, con etiquetas, características o reglas realistas.",
+          },
+        ],
+      },
+      {
+        name: "Prototipo y pruebas",
+        description: "El boceto del prototipo y la calidad de los casos de prueba.",
+        levels: [
+          {
+            descriptor: "No hay prototipo ni casos de prueba.",
+          },
+          {
+            descriptor: "Un prototipo básico con una o dos pruebas sencillas.",
+          },
+          {
+            descriptor: "Un prototipo claro con al menos tres pruebas, incluido un caso límite.",
+          },
+          {
+            descriptor: "Un prototipo bien explicado, con pruebas sólidas que sondean las fallas probables.",
+          },
+        ],
+      },
+      {
+        name: "Responsabilidad y presentación",
+        description: "Justicia, privacidad, supervisión, apelaciones y claridad de la presentación.",
+        levels: [
+          {
+            descriptor: "Ignora la justicia, la privacidad o la supervisión, y es difícil de seguir.",
+          },
+          {
+            descriptor: "Menciona la responsabilidad, pero deja huecos, o la presentación no queda clara.",
+          },
+          {
+            descriptor: "Aborda con claridad la justicia, la privacidad, la supervisión y las apelaciones.",
+          },
+          {
+            descriptor: "Un plan de uso responsable a fondo, presentado con claridad y abierto a preguntas.",
+          },
+        ],
+      },
+    ],
+  },
+  finalAssessment: {
+    title: "Repaso del curso: lo que aprendiste sobre la IA",
+    instructions: "Un repaso corto de las seis semanas. Responde cada pregunta y lee la explicación. Esto es para tu propio aprendizaje: no hay calificaciones y no se envía nada a ningún lado.",
+    questions: [
+      {
+        prompt: "¿Cuál es la señal más clara de que un programa es IA y no un programa tradicional?",
+        explanation: "La IA aprende patrones a partir de muchos ejemplos, en lugar de solo seguir reglas que una persona escribió a mano.",
+        choices: [
+          {
+            text: "Aprendió patrones a partir de ejemplos.",
+            explanation: "Correcto: aprender de ejemplos es la señal clave de la IA.",
+          },
+          {
+            text: "Corre rápido.",
+            explanation: "La velocidad no decide si un programa es IA.",
+          },
+          {
+            text: "Tiene una interfaz bonita.",
+            explanation: "La interfaz no dice nada sobre si aprende.",
+          },
+          {
+            text: "Funciona en una computadora.",
+            explanation: "Todo el software funciona en una computadora.",
+          },
+        ],
+      },
+      {
+        prompt: "Decide si la afirmación es verdadera o falsa.",
+        statement: "Un conjunto de datos con muchísimos más ejemplos de una categoría que de otra está desequilibrado y puede hacer que un modelo sea menos justo.",
+        explanation: "Verdadero: unos datos desequilibrados hacen que el modelo vea muy pocos casos de algunos tipos, y puede funcionar peor con ellos.",
+      },
+      {
+        prompt: "¿Por qué probamos un modelo con datos con los que no se entrenó?",
+        explanation: "Probar con ejemplos nunca vistos comprueba si el modelo generaliza, en lugar de solo memorizar los datos de entrenamiento.",
+        choices: [
+          {
+            text: "Para ver si generaliza a ejemplos nuevos.",
+            explanation: "Correcto: los datos de prueba nunca vistos muestran el desempeño real.",
+          },
+          {
+            text: "Para que el entrenamiento sea más rápido.",
+            explanation: "Probar es algo aparte de la velocidad del entrenamiento.",
+          },
+          {
+            text: "Para aprovechar los datos que sobran.",
+            explanation: "Los datos de prueba tienen un propósito: medir la generalización.",
+          },
+          {
+            text: "Porque los datos de entrenamiento siempre están mal.",
+            explanation: "Los datos de entrenamiento no siempre están mal; simplemente necesitamos una prueba justa.",
+          },
+        ],
+      },
+      {
+        prompt: "Un clasificador de fotos etiqueta la imagen de un panquecito como un perro. ¿Qué tipo de error es este?",
+        scenario: "El modelo predijo \"perro\" para algo que no es un perro.",
+        explanation: "Predecir \"perro\" cuando no es un perro es un falso positivo de la categoría perro.",
+        choices: [
+          {
+            text: "Un falso positivo de \"perro\".",
+            explanation: "Correcto: dijo por error que había un \"perro\".",
+          },
+          {
+            text: "Un falso negativo de \"perro\".",
+            explanation: "Un falso negativo sería no detectar un perro de verdad.",
+          },
+          {
+            text: "Exactitud perfecta.",
+            explanation: "Cometió un error, así que la exactitud no es perfecta.",
+          },
+          {
+            text: "Un error de entrada.",
+            explanation: "La imagen era válida; lo que estuvo mal fue la predicción del modelo.",
+          },
+        ],
+      },
+      {
+        prompt: "Decide si la afirmación es verdadera o falsa.",
+        statement: "Si la respuesta de un modelo de lenguaje suena fluida y segura, tiene que ser cierta.",
+        explanation: "Falso: los modelos de lenguaje predicen el texto siguiente probable, así que una salida fluida puede seguir estando mal. Verifica siempre los datos.",
+      },
+      {
+        prompt: "¿Qué es una burbuja de filtros?",
+        explanation: "Una burbuja de filtros es cuando las recomendaciones te siguen mostrando cosas parecidas, así que rara vez ves opciones nuevas o distintas.",
+        choices: [
+          {
+            text: "Cuando las recomendaciones te siguen mostrando cosas parecidas y esconden las distintas.",
+            explanation: "Correcto: ese estrechamiento es una burbuja de filtros.",
+          },
+          {
+            text: "Una herramienta que limpia datos.",
+            explanation: "Eso no es lo que significa una burbuja de filtros.",
+          },
+          {
+            text: "Un ajuste de privacidad.",
+            explanation: "Una burbuja de filtros tiene que ver con recomendaciones que se estrechan, no con un ajuste.",
+          },
+          {
+            text: "Un tipo de filtro de cámara.",
+            explanation: "Se trata de recomendaciones, no de filtros para fotos.",
+          },
+        ],
+      },
+      {
+        prompt: "¿Cuáles de estas son buenas formas de usar la IA de manera responsable? (Elige todas las que correspondan.)",
+        explanation: "El uso responsable incluye recopilar menos datos, verificar las fuentes, estar pendiente de los sesgos, y mantener la supervisión humana con una vía de apelación.",
+        choices: [
+          {
+            text: "Recopilar solo los datos que de verdad necesitas.",
+            explanation: "Correcto: la minimización de datos protege la privacidad.",
+          },
+          {
+            text: "Revisar la fuente original antes de confiar en contenido de IA.",
+            explanation: "Correcto: la confirmación independiente atrapa la desinformación.",
+          },
+          {
+            text: "Dejar que la IA tome decisiones importantes sin revisión humana.",
+            explanation: "Las decisiones importantes necesitan supervisión humana y una vía de apelación.",
+          },
+          {
+            text: "Estar pendiente de los sesgos y de resultados injustos por grupo.",
+            explanation: "Correcto: revisar la justicia entre grupos es uso responsable.",
+          },
+        ],
+      },
+      {
+        prompt: "Ordena de forma sensata los pasos para diseñar una herramienta de IA.",
+        explanation: "Un buen diseño parte de la necesidad de la persona usuaria y del problema, decide si la IA encaja, diseña las entradas y salidas, prototipa, y luego prueba y mejora.",
+        items: [
+          {
+            text: "Definir la necesidad de la persona usuaria y el problema",
+          },
+          {
+            text: "Decidir si la IA es la herramienta adecuada",
+          },
+          {
+            text: "Diseñar las entradas, las salidas y las etiquetas y características o reglas",
+          },
+          {
+            text: "Prototipar, y luego probar y mejorar",
+          },
+        ],
+      },
+    ],
+  },
   weeks: [
     {
       title: "Qué es y qué no es la IA",
@@ -4229,6 +4546,865 @@ const es: DeepPartial<IntroToAiCourse> = {
         },
       ],
     },
+    {
+      title: "Estudio de Diseño de IA",
+      subtitle: "Junta todo: define un problema real, decide si la IA encaja, diseña y prueba un prototipo, y preséntalo de forma responsable.",
+      summary: "En la semana final, los estudiantes trabajan como un equipo de diseño: convierten la necesidad de una persona usuaria en una definición clara del problema, juzgan si la IA es la herramienta adecuada, diseñan las entradas, las salidas, las características, las etiquetas y las reglas, construyen y prueban un prototipo de papel, encuentran sus limitaciones con casos de prueba, y presentan el resultado con honestidad, con supervisión humana y uso responsable, mientras exploran las carreras de quienes construyen y regulan la IA. Esta semana prepara a los estudiantes para el estudio del Proyecto Final y la Evaluación Final, que van aparte.",
+      bigQuestion: "¿Cómo llevas una idea desde un problema real hasta un proyecto de IA probado y presentado de forma responsable?",
+      estimatedTime: "2.5-3 horas",
+      objectives: [
+        "Convertir la necesidad de una persona usuaria en una definición clara del problema y juzgar si la IA le queda bien.",
+        "Diseñar las entradas, las salidas, las características, las etiquetas y las reglas de un sistema.",
+        "Construir un prototipo, probarlo con casos de prueba, encontrar sus limitaciones e iterar.",
+        "Presentar un proyecto de forma responsable, con supervisión, y describir carreras reales en IA.",
+      ],
+      requiredConcepts: [
+        "Necesidad de la persona usuaria",
+        "Definición del problema",
+        "Idoneidad de la IA",
+        "Entrada",
+        "Salida",
+        "Característica",
+        "Etiqueta",
+        "Regla",
+        "Prototipo",
+        "Caso de prueba",
+        "Limitación",
+        "Supervisión",
+        "Iteración",
+        "Uso responsable",
+      ],
+      lessons: [
+        {
+          title: "Elige el problema y la herramienta correctos",
+          summary: "Empieza un proyecto de diseño como lo hacen los equipos de verdad: nombra la necesidad de una persona usuaria, escribe una definición clara del problema, y decide si la IA es siquiera la herramienta adecuada para el trabajo.",
+          estimatedTime: "50-60 minutos",
+          objectives: [
+            {
+              text: "Convertir la necesidad de una persona usuaria en una definición del problema clara y de una sola oración.",
+            },
+            {
+              text: "Juzgar la idoneidad de la IA: decidir si un problema encaja mejor con IA o con reglas fijas.",
+            },
+            {
+              text: "Nombrar la entrada y la salida que usaría tu proyecto.",
+            },
+            {
+              text: "Explicar por qué elegir el problema correcto importa antes de construir nada.",
+            },
+          ],
+          materials: [
+            {
+              name: "Esta lección en un navegador web",
+            },
+            {
+              name: "Papel y lápiz, o una app de notas",
+            },
+            {
+              name: "Tus apuntes de las semanas 1 a 5",
+              note: "Para recordar cómo aprende la IA a partir de ejemplos.",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "Necesidad de la persona usuaria",
+              definition: "Un problema real que tiene una persona o un grupo concreto y que quiere resolver, descrito desde su punto de vista.",
+            },
+            {
+              term: "Definición del problema",
+              definition: "Un enunciado claro, de una sola oración, de qué estás tratando de resolver exactamente y para quién.",
+            },
+            {
+              term: "Idoneidad de la IA",
+              definition: "Qué tan bien encaja un problema con la IA, que aprende patrones a partir de muchos ejemplos, frente a una regla fija que una persona simplemente puede escribir.",
+            },
+            {
+              term: "Entrada",
+              definition: "La información que recibiría el sistema, como una foto, una oración o un conjunto de números.",
+            },
+            {
+              term: "Salida",
+              definition: "El resultado que devolvería el sistema, como una etiqueta, una predicción o una sugerencia.",
+            },
+          ],
+          openingScenario: {
+            prompt: "Un club escolar dice: \"¡Queremos usar IA!\". Pero ¿para qué? Un equipo de diseño nunca empieza por la herramienta: empieza por una persona que tiene un problema. ¿De quién sería el problema que resolvería tu proyecto, y cuál es exactamente?",
+            context: "Esta semana planeas un proyecto real. Todo empieza por el problema, no por la tecnología.",
+          },
+          predictionPrompt: {
+            prompt: "Predice: de estas dos ideas, \"clasificar fotos de libros de la biblioteca en ficción y no ficción\" y \"abrir una puerta con la contraseña correcta\", ¿cuál encaja mejor con la IA?",
+            howToCheck: "Mientras lees, pregúntate si cada tarea es demasiado enredada para que una persona escriba reglas exactas, o si una sola regla clara ya la resuelve.",
+          },
+          concepts: [
+            {
+              title: "Empieza por una necesidad de la persona usuaria, no por una herramienta",
+              body: [
+                "Los buenos proyectos empiezan con una persona real que tiene un problema real: una necesidad de la persona usuaria. \"A los niños de mi salón se les olvida en qué bote de reciclaje va cada cosa\" es una necesidad. \"Quiero usar IA\" no lo es; nombra una herramienta, no un problema.",
+                "Cuando partes de una necesidad real, después puedes saber si tu proyecto de verdad ayudó. Describe la necesidad desde el punto de vista de la persona usuaria: quién es y qué se le está dificultando ahora.",
+              ],
+              examples: [
+                "Una jardinera no logra distinguir qué hojas tienen una enfermedad de la planta",
+                "Los estudiantes nuevos se pierden buscando sus salones el primer día",
+                "Un club de amigos por correspondencia recibe mensajes en idiomas que sus miembros no leen",
+              ],
+            },
+            {
+              title: "Escribe una definición clara del problema",
+              body: [
+                "Una vez que tienes una necesidad, escribes una definición del problema: una oración clara que dice exactamente qué estás resolviendo y para quién. Una definición precisa evita que un proyecto se desvíe. \"Ayudar a estudiantes de sexto a separar la basura del salón en reciclaje, composta y basura a partir de una foto\" es lo bastante específica como para construirla y probarla.",
+                "Una definición vaga como \"mejorar el reciclaje\" no se puede probar: nunca sabrías si lo lograste. Una buena definición del problema nombra a la persona usuaria, la tarea y cómo se ve un buen resultado.",
+              ],
+              examples: [
+                "Vaga: \"Ayudar con las plantas\". Clara: \"Decirle a quien cultiva si la foto de una hoja de jitomate se ve sana o enferma\".",
+                "Vaga: \"Hacer la escuela más fácil\". Clara: \"Darle a un estudiante nuevo indicaciones para llegar a un salón a partir de su número\".",
+              ],
+            },
+            {
+              title: "Decide la idoneidad de la IA: ¿es siquiera la herramienta adecuada?",
+              body: [
+                "No todo problema necesita IA. La IA brilla cuando una tarea es demasiado enredada para escribir reglas exactas, pero tienes muchos ejemplos de los cuales aprender, como distinguir hojas sanas de hojas enfermas en fotos. Un problema que una sola regla clara ya resuelve no necesita IA: \"abrir si la contraseña coincide\" es una regla, no una tarea de aprendizaje.",
+                "Para juzgar la idoneidad de la IA, hazte tres preguntas: ¿la tarea es demasiado enredada para reglas escritas a mano? ¿Podrías reunir muchos ejemplos etiquetados? ¿Y está bien que el sistema a veces se equivoque? Si las respuestas son sí, quizá la IA encaje. Si una regla sencilla funciona, usa la regla: es más barata, más clara y más fácil de revisar.",
+              ],
+              examples: [
+                "Buen encaje para la IA: clasificar fotos de basura en reciclaje, composta o basura.",
+                "Mal encaje para la IA: encender las luces del pasillo a las 7:00 de la mañana; eso es una regla fija.",
+                "Mal encaje para la IA: una tarea donde equivocarse aunque sea una vez podría dañar gravemente a alguien.",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "De un deseo difuso a un proyecto que se puede construir",
+            steps: [
+              "Empieza con el deseo: \"Quiero usar IA para ayudar al club de reciclaje\".",
+              "Encuentra la necesidad: los miembros del club y otros estudiantes seguido tiran la basura en el bote equivocado porque no saben qué es reciclable.",
+              "Escribe la definición del problema: \"Ayudar a los estudiantes a decidir en cuál de tres botes (reciclaje, composta o basura) va un objeto, a partir de una foto de ese objeto\".",
+              "Nombra entrada y salida: la entrada es la foto de un objeto; la salida es una etiqueta: \"reciclaje\", \"composta\" o \"basura\".",
+              "Revisa la idoneidad de la IA: ¿demasiado enredado para reglas exactas? Sí, los objetos varían muchísimo. ¿Puedes reunir muchas fotos etiquetadas? Sí. ¿Está bien equivocarse a veces, si una persona revisa? Sí. La IA encaja.",
+            ],
+            takeaway: "Un proyecto que se puede construir tiene una necesidad real, una definición del problema de una oración, una entrada y una salida con nombre, y un sí en la idoneidad de la IA.",
+          },
+          visuals: [
+            {
+              title: "¿Este problema debería usar IA?",
+              summary: "Un árbol de decisión para la idoneidad de la IA. Inicio: \"¿Una sola regla clara lo resuelve?\". Si sí, usa una regla, no IA. Si no, pregunta: \"¿Puedes reunir muchos ejemplos etiquetados?\". Si no, probablemente la IA todavía no va a funcionar. Si sí, pregunta: \"¿Está bien que a veces se equivoque, con una persona revisando?\". Si no, ten mucho cuidado o no uses IA. Si sí, la IA puede encajar bien.",
+              caption: "Usa una regla cuando una regla funciona; reserva la IA para tareas enredadas con ejemplos y revisión humana.",
+            },
+            {
+              title: "Lista de comprobación de la definición del problema",
+              summary: "Una tabla de lo que incluye una buena definición del problema. Persona usuaria: nombra a una persona o grupo concreto. Tarea: dice exactamente qué hay que decidir o producir. Entrada: nombra lo que recibe el sistema. Salida: nombra lo que devuelve. Comprobable: después podrías saber si funcionó.",
+              table: {
+                columns: [
+                  "Parte",
+                  "Pregunta que responde",
+                  "Ejemplo débil",
+                  "Ejemplo fuerte",
+                ],
+                rows: [
+                  [
+                    "Persona usuaria",
+                    "¿Quién tiene este problema?",
+                    "\"La gente\"",
+                    "\"Los estudiantes nuevos de sexto grado\"",
+                  ],
+                  [
+                    "Tarea",
+                    "¿Qué estamos resolviendo exactamente?",
+                    "\"Ayudar con las indicaciones\"",
+                    "\"Dar la ruta a un salón a partir de su número\"",
+                  ],
+                  [
+                    "Entrada",
+                    "¿Qué entra?",
+                    "\"Algo de información\"",
+                    "\"Un número de salón\"",
+                  ],
+                  [
+                    "Salida",
+                    "¿Qué sale?",
+                    "\"Una respuesta\"",
+                    "\"Indicaciones paso a paso\"",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "Estudio de encaje entre problema y herramienta",
+            goal: "Elegir un problema para tu proyecto, escribir su definición del problema, y decidir si la IA es la herramienta correcta.",
+            overview: "Vas a revisar un conjunto de problemas candidatos, elegir uno (o traer tu propia necesidad de persona usuaria) y convertirlo en un resumen de proyecto que se pueda construir: una necesidad, una definición del problema de una oración, una entrada y una salida con nombre, y una decisión sobre la idoneidad de la IA. Esta es la semilla de tu Proyecto Final.",
+            steps: [
+              "Lee los problemas candidatos y elige uno que te interese, o escribe tu propia necesidad de persona usuaria.",
+              "Escribe la necesidad desde el punto de vista de la persona usuaria: quién es y qué se le dificulta.",
+              "Escribe una definición del problema de una oración que nombre a la persona usuaria, la tarea y cómo se ve un buen resultado.",
+              "Nombra la entrada y la salida que usaría tu sistema.",
+              "Haz la revisión de idoneidad de la IA y escribe una oración: ¿la IA encaja, o bastaría con una regla sencilla?",
+            ],
+            materials: [
+              "Papel y lápiz, o una app de notas",
+            ],
+            successCriteria: [
+              "Una necesidad escrita desde el punto de vista de la persona usuaria.",
+              "Una definición del problema de una oración que nombre a la persona usuaria, la tarea y un resultado comprobable.",
+              "Una entrada y una salida con nombre.",
+              "Una decisión clara sobre la idoneidad de la IA, con una razón de una oración.",
+            ],
+            dataset: {
+              name: "Problemas candidatos para el proyecto",
+              description: "Un conjunto incluido de problemas iniciales para el estudio: clasificar la basura del salón a partir de una foto, señalar hojas con enfermedades de las plantas, agrupar objetos perdidos, traducir mensajes de amigos por correspondencia, ordenar libros de la biblioteca por tema, y \"abrir un casillero con una contraseña\" (una trampa que solo requiere reglas y hay que descartar). Cada tarjeta lista una persona usuaria aproximada, una posible entrada y una posible salida.",
+              columns: [
+                "Problema",
+                "Posible persona usuaria",
+                "Posible entrada",
+                "Posible salida",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "Comprueba que sabes definir un problema y juzgar si la IA le queda bien.",
+            questions: [
+              {
+                prompt: "¿Cuál es la definición del problema más sólida?",
+                explanation: "Una definición sólida nombra a la persona usuaria, la tarea exacta y un resultado que después podrías comprobar.",
+                choices: [
+                  {
+                    text: "Usar IA para mejorar la escuela.",
+                    explanation: "Esto nombra una herramienta y un deseo, no una persona usuaria concreta, una tarea ni un resultado comprobable.",
+                  },
+                  {
+                    text: "Ayudar a los estudiantes nuevos a encontrar un salón dándoles indicaciones a partir del número del salón.",
+                    explanation: "Correcto: nombra a la persona usuaria (estudiantes nuevos), la tarea (indicaciones) y un resultado comprobable.",
+                  },
+                  {
+                    text: "Hacer algo padrísimo con fotos.",
+                    explanation: "No hay persona usuaria, ni tarea, ni nada que pudieras comprobar.",
+                  },
+                  {
+                    text: "Mejorar el reciclaje para todos.",
+                    explanation: "Es demasiado vago: nunca podrías saber si funcionó.",
+                  },
+                ],
+              },
+              {
+                prompt: "Decide si la afirmación es verdadera o falsa.",
+                statement: "Si una sola regla clara ya resuelve un problema, de todos modos deberías usar IA porque la IA es más avanzada.",
+                explanation: "Falso: si una regla sencilla funciona, usa la regla. Es más barata, más clara y más fácil de revisar que la IA.",
+              },
+              {
+                prompt: "¿Qué proyecto encaja mejor con la IA?",
+                scenario: "Un club está eligiendo entre: (A) tocar un timbre exactamente cuando termina la clase, o (B) decir a partir de una foto si la hoja de una planta se ve sana o enferma.",
+                explanation: "El timbre es una sola regla clara de horario. Distinguir hojas sanas de enfermas es enredado y necesita muchos ejemplos etiquetados, lo cual encaja con la IA.",
+                choices: [
+                  {
+                    text: "Tocar un timbre cuando termina la clase",
+                    explanation: "Esa es una regla fija de horario: no hace falta aprender nada, así que la IA no encaja.",
+                  },
+                  {
+                    text: "Distinguir una hoja sana de una enferma en una foto",
+                    explanation: "Correcto: es demasiado enredado para reglas a mano y tiene ejemplos de los cuales aprender, así que la IA encaja.",
+                  },
+                  {
+                    text: "Los dos encajan igual de bien con la IA",
+                    explanation: "El timbre es una regla sencilla y no necesita IA.",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "Tres problemas, uno que se queda",
+            prompt: "Propón tres necesidades de personas usuarias, luego elige la que mejor encaje con la IA y defiende tu elección.",
+            steps: [
+              "Escribe tres necesidades distintas, cada una desde el punto de vista de una persona usuaria real.",
+              "Para cada una, nombra una posible entrada y una posible salida.",
+              "Haz la revisión de idoneidad de la IA con las tres y elige la que mejor encaje.",
+              "Escribe dos oraciones defendiendo por qué la que elegiste encaja mejor con la IA que las otras.",
+            ],
+            successCriteria: [
+              "Tres necesidades de personas usuarias, cada una con una entrada y una salida.",
+              "Una decisión de idoneidad de la IA para cada una.",
+              "Un problema elegido, con una defensa de dos oraciones.",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "¿Por qué resulta tentador empezar por la herramienta (\"usemos IA\") en lugar de por el problema, y qué sale mal cuando lo haces?",
+            },
+            {
+              prompt: "¿Qué parte de escribir una definición del problema fue la más difícil: nombrar a la persona usuaria, la tarea o el resultado comprobable?",
+            },
+          ],
+          recap: {
+            summary: "Los grandes proyectos de IA parten de una necesidad real, una definición clara del problema y una revisión honesta de si la IA es siquiera la herramienta adecuada.",
+            keyPoints: [
+              "Una necesidad de persona usuaria describe el problema de una persona real, no una herramienta que quieres usar.",
+              "Una definición del problema nombra a la persona usuaria, la tarea, la entrada, la salida y un resultado comprobable.",
+              "Juzga la idoneidad de la IA: usa una regla cuando una regla funciona; reserva la IA para tareas enredadas con muchos ejemplos.",
+            ],
+          },
+          extension: {
+            title: "¿Oportunidad o puro ruido?",
+            body: [
+              "A veces las empresas le agregan \"IA\" a un producto sobre todo por mercadotecnia, incluso cuando una regla sencilla funcionaría mejor. Eso puede desperdiciar dinero y volver el producto más difícil de confiar y de revisar.",
+              "Encuentra un producto o una app real que anuncie una función de \"IA\". Decide si la tarea de verdad necesita IA o si bastaría con una regla fija. Escribe un párrafo corto explicando tu juicio.",
+            ],
+          },
+        },
+        {
+          title: "Planea, prototipa y prueba",
+          summary: "Convierte tu problema en un plan que puedas construir y revisar: diseña las entradas, las salidas, las características, las etiquetas y las reglas; haz un prototipo sencillo; y pruébalo con casos de prueba reales.",
+          estimatedTime: "50-65 minutos",
+          objectives: [
+            {
+              text: "Diseñar las entradas, las salidas, las características, las etiquetas y las reglas de tu sistema.",
+            },
+            {
+              text: "Explicar qué es un prototipo y hacer uno sencillo en papel.",
+            },
+            {
+              text: "Escribir casos de prueba y usarlos para encontrar limitaciones.",
+            },
+            {
+              text: "Mejorar tu diseño mediante la iteración, con base en lo que muestran las pruebas.",
+            },
+          ],
+          materials: [
+            {
+              name: "Esta lección en un navegador web",
+            },
+            {
+              name: "Papel y lápiz, o una app de notas",
+            },
+            {
+              name: "Tu definición del problema de la lección 1",
+              note: "Vas a construir el plan encima de ella.",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "Característica",
+              definition: "Una pista medible sobre una entrada que el sistema usa para decidir, como el color, la forma o el tamaño de un objeto.",
+            },
+            {
+              term: "Etiqueta",
+              definition: "La respuesta correcta asociada a un ejemplo, como marcar una foto con \"reciclaje\" para que el sistema pueda aprender de ella.",
+            },
+            {
+              term: "Regla",
+              definition: "Una instrucción exacta que escribe una persona, como \"si el objeto es una botella de vidrio, etiquétalo como reciclaje\".",
+            },
+            {
+              term: "Prototipo",
+              definition: "Una primera versión rápida y tosca de una idea, hecha para probar cómo funciona antes de construir lo de verdad.",
+            },
+            {
+              term: "Caso de prueba",
+              definition: "Un ejemplo con una respuesta correcta conocida que pasas por tu prototipo para comprobar si funciona.",
+            },
+            {
+              term: "Iteración",
+              definition: "Repetir el ciclo de construir, probar y mejorar para que el diseño quede mejor cada vez.",
+            },
+          ],
+          openingScenario: {
+            prompt: "Ya tienes una definición del problema: clasificar la foto de un residuo en reciclaje, composta o basura. ¿Qué pistas (características) miraría el sistema? ¿Qué etiquetas le enseñarías? ¿Y cómo sabrías, antes de construir nada de verdad, si tu plan sirve?",
+            context: "En esta lección conviertes tu idea en un plan que de verdad puedes probar en papel.",
+          },
+          predictionPrompt: {
+            prompt: "Predice: cuando pruebes tu prototipo por primera vez con ejemplos difíciles, ¿acertará la mayoría o fallará en algunos? ¿Qué tipo de ejemplo crees que lo va a hacer tropezar?",
+            howToCheck: "Después de escribir y \"correr\" tus casos de prueba, compara lo que realmente pasó con tu predicción.",
+          },
+          concepts: [
+            {
+              title: "Diseña las piezas: entradas, salidas, características, etiquetas y reglas",
+              body: [
+                "Antes de construir, diseña las piezas. La entrada es lo que entra (la foto de un objeto). La salida es lo que sale (una etiqueta: reciclaje, composta o basura). Las etiquetas son el conjunto de respuestas correctas que le enseñarías al sistema y que usarías para revisarlo.",
+                "Las características son las pistas que el sistema usa para decidir: el material de un objeto, su forma, o si está mojado o grasoso. Si una parte de la tarea es sencilla y clara, puedes incluso agregar una regla: \"si es una botella de vidrio limpia, etiquétala como reciclaje\". Un buen plan nombra todo esto, para que cualquiera pueda entender cómo se toma una decisión.",
+              ],
+              examples: [
+                "Entrada: foto de un objeto. Salida: una de tres etiquetas.",
+                "Características: material, está mojado, es papel, tiene comida encima.",
+                "Regla: \"si es una cáscara de plátano, etiquétala como composta\".",
+              ],
+            },
+            {
+              title: "Un prototipo es una primera versión tosca hecha para probar",
+              body: [
+                "Un prototipo es una versión rápida y tosca de tu idea, construida para aprender de ella, no el producto terminado. El tuyo puede ser de papel: un juego de tarjetas de \"si tiene estas características, entonces esta etiqueta\", o un diagrama de flujo sencillo que un compañero pueda seguir a mano. La idea es volver la idea lo bastante concreta como para probarla.",
+                "Los prototipos están hechos para ser imperfectos. Hacer uno barato y pronto te ahorra gastar muchísimo esfuerzo construyendo lo equivocado. Puedes tirar un prototipo y no pasa nada: te quedaste con lo que aprendiste.",
+              ],
+              examples: [
+                "Un diagrama de flujo en papel: \"¿Es papel? ¿Está mojado? → etiqueta\".",
+                "Un montón de tarjetas de decisión que un amigo pueda seguir sin que tú le expliques.",
+                "Un boceto a mano de la pantalla de la app, con la entrada y la salida.",
+              ],
+            },
+            {
+              title: "Los casos de prueba revelan limitaciones, y la iteración las arregla",
+              body: [
+                "Un caso de prueba es un ejemplo con una respuesta correcta conocida. Lo pasas por tu prototipo y ves si le pone la etiqueta correcta. Un puñado de buenos casos de prueba, incluidos algunos difíciles, muestra rapidísimo dónde se rompe tu diseño. Esos puntos débiles son sus limitaciones: las situaciones donde se equivoca o no puede decidir.",
+                "Todos los sistemas tienen limitaciones; la meta es encontrarlas a propósito, no que te sorprendan después. Cuando un caso de prueba falla, mejoras el diseño y vuelves a probar. Ese ciclo de repetir hasta que quede mejor es la iteración, el corazón de cómo se construyen los productos de verdad.",
+              ],
+              examples: [
+                "Caso de prueba: una caja de pizza grasosa. Etiqueta correcta: basura o composta, no reciclaje.",
+                "Limitación encontrada: el prototipo etiqueta todas las cajas como \"reciclaje\", así que las grasosas quedan mal.",
+                "Iteración: agregar una característica de \"¿tiene grasa de comida?\" y una regla para mandar a otro lado las cajas grasosas.",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "Prototipar y probar un clasificador de residuos",
+            steps: [
+              "Diseña las piezas: entrada = foto de un objeto; salida = reciclaje / composta / basura; características = material, es papel, está mojado, tiene grasa de comida.",
+              "Construye un prototipo de papel: tarjetas de decisión. \"Si es resto de comida → composta. Si es papel limpio o botella limpia → reciclaje. Si no → basura\".",
+              "Escribe casos de prueba con respuestas conocidas: botella de agua limpia (reciclaje), cáscara de plátano (composta), caja de pizza grasosa (basura), bolsa de papas con aluminio (basura).",
+              "Corre las pruebas a mano: el prototipo acierta con la botella y la cáscara de plátano, pero etiqueta la caja de pizza grasosa como \"reciclaje\": una falla.",
+              "Encuentra la limitación e itera: agrega una característica de \"¿tiene grasa de comida?\" y una regla para que el papel grasoso vaya a la basura. Vuelve a correr los casos de prueba; ahora la caja de pizza pasa.",
+            ],
+            takeaway: "Diseña las piezas, haz un prototipo tosco, pruébalo con casos de respuesta conocida, encuentra sus limitaciones e itera hasta que mejore.",
+          },
+          visuals: [
+            {
+              title: "El ciclo de construir, probar y mejorar",
+              summary: "Un ciclo de cuatro pasos que se repite. Paso 1: diseña las piezas (entrada, salida, características, etiquetas, reglas). Paso 2: construye un prototipo tosco. Paso 3: corre los casos de prueba y anota cuáles pasan y cuáles fallan. Paso 4: encuentra las limitaciones y mejora. Una flecha va del paso 4 de vuelta al paso 2, mostrando la iteración.",
+              caption: "Iterar significa dar vuelta a este ciclo más de una vez, mejorando en cada pasada.",
+            },
+            {
+              title: "Una hoja de casos de prueba",
+              summary: "Una tabla de casos de prueba para el clasificador de residuos. Cada fila tiene un ejemplo, su etiqueta correcta conocida, la etiqueta que dio el prototipo, y si pasó o falló. Botella de agua limpia: correcta reciclaje, dio reciclaje, pasó. Cáscara de plátano: correcta composta, dio composta, pasó. Caja de pizza grasosa: correcta basura, dio reciclaje, falló. Bolsa de papas con aluminio: correcta basura, dio basura, pasó.",
+              table: {
+                columns: [
+                  "Caso de prueba",
+                  "Etiqueta correcta",
+                  "Etiqueta del prototipo",
+                  "Resultado",
+                ],
+                rows: [
+                  [
+                    "Botella de agua limpia",
+                    "Reciclaje",
+                    "Reciclaje",
+                  ],
+                  [
+                    "Cáscara de plátano",
+                    "Composta",
+                    "Composta",
+                  ],
+                  [
+                    "Caja de pizza grasosa",
+                    "Basura",
+                    "Reciclaje",
+                    "Falló",
+                  ],
+                  [
+                    "Bolsa de papas con aluminio",
+                    "Basura",
+                    "Basura",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "Estudio del plan de prototipo",
+            goal: "Convertir tu definición del problema en un plan diseñado, prototipado y probado que puedas presentar.",
+            overview: "Con tu problema de la lección 1, vas a diseñar las entradas, las salidas, las características, las etiquetas y cualquier regla; dibujar un prototipo de papel; escribir al menos cuatro casos de prueba, incluidos algunos difíciles; \"correrlos\" a mano; y anotar las limitaciones que encuentres y una mejora que harías. Esto se vuelve el núcleo de tu Proyecto Final.",
+            steps: [
+              "Diseña las piezas: nombra tu entrada, tu salida, las etiquetas, de tres a cinco características y cualquier regla sencilla.",
+              "Haz un prototipo de papel: dibuja un diagrama de flujo o escribe tarjetas de decisión que un compañero pueda seguir sin tu ayuda.",
+              "Escribe al menos cuatro casos de prueba con respuestas correctas conocidas, incluidos dos difíciles.",
+              "Pasa cada caso de prueba por tu prototipo a mano y anota si pasó o falló en una hoja de casos de prueba.",
+              "Enumera las limitaciones que revelaron las fallas, y escribe una mejora que harías después (tu iteración).",
+            ],
+            materials: [
+              "Papel y lápiz, o una app de notas",
+            ],
+            successCriteria: [
+              "Quedan nombradas la entrada, la salida, las etiquetas, de tres a cinco características y cualquier regla.",
+              "Un prototipo de papel que un compañero pueda seguir sin explicaciones extra.",
+              "Al menos cuatro casos de prueba con respuestas conocidas, incluidos algunos difíciles, corridos y marcados como pasó o falló.",
+              "Al menos una limitación identificada y una mejora (iteración) propuesta.",
+            ],
+            dataset: {
+              name: "Kit inicial de casos de prueba",
+              description: "Una lista incluida para escribir buenos casos de prueba: incluye ejemplos fáciles, casos límite (mojado, grasoso, dañado, poco común) y ejemplos que podrían irse para cualquiera de dos lados. También incluye una plantilla en blanco de hoja de casos de prueba (ejemplo, etiqueta correcta, etiqueta del prototipo, pasó o falló) para copiar.",
+              columns: [
+                "Tipo de caso de prueba",
+                "Por qué incluirlo",
+                "Ejemplo de consigna",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "Comprueba que sabes planear, prototipar y probar un diseño.",
+            questions: [
+              {
+                prompt: "¿Cuáles de estas cosas deberías diseñar antes de construir tu sistema? (Elige todas las que correspondan.)",
+                explanation: "Las entradas, las salidas, las características y las etiquetas son todas parte del diseño. Las diapositivas de la presentación vienen después y no son parte de diseñar cómo se toman las decisiones.",
+                choices: [
+                  {
+                    text: "La entrada que recibe el sistema",
+                    explanation: "Correcto: nombrar la entrada es una parte central del diseño.",
+                  },
+                  {
+                    text: "La salida que devuelve",
+                    explanation: "Correcto: la salida, incluido el conjunto de etiquetas, hay que diseñarla.",
+                  },
+                  {
+                    text: "Las características que usa para decidir",
+                    explanation: "Correcto: las características son las pistas que usa el sistema, así que son parte del diseño.",
+                  },
+                  {
+                    text: "El color de tus diapositivas de presentación",
+                    explanation: "El color de las diapositivas es cosa de presentar después, no de cómo el sistema toma decisiones.",
+                  },
+                ],
+              },
+              {
+                prompt: "Ordena el ciclo de construir, probar y mejorar para una ronda de prototipado.",
+                explanation: "Diseñas las piezas, construyes un prototipo tosco, corres los casos de prueba, y luego encuentras limitaciones y mejoras; y el ciclo se puede repetir.",
+                items: [
+                  {
+                    text: "Diseñar las piezas (entrada, salida, características, etiquetas, reglas)",
+                  },
+                  {
+                    text: "Construir un prototipo tosco",
+                  },
+                  {
+                    text: "Correr los casos de prueba y anotar si pasan o fallan",
+                  },
+                  {
+                    text: "Encontrar limitaciones y mejorar el diseño",
+                  },
+                ],
+              },
+              {
+                prompt: "¿Qué debería hacer el equipo a continuación?",
+                scenario: "El prototipo de papel de un equipo pasa todos los casos de prueba fáciles, pero etiqueta una caja de pizza grasosa como \"reciclaje\" cuando la respuesta correcta es basura.",
+                explanation: "Un caso de prueba fallido reveló una limitación. La respuesta correcta es iterar: mejorar el diseño (agregar una característica o una regla de grasa) y volver a probar, no esconder ni ignorar la falla.",
+                choices: [
+                  {
+                    text: "Ignorar la caja grasosa porque los casos fáciles pasaron",
+                    explanation: "Ignorar una falla conocida deja una limitación real dentro del diseño.",
+                  },
+                  {
+                    text: "Mejorar el diseño para manejar la grasa, y luego volver a correr los casos de prueba",
+                    explanation: "Correcto: eso es iterar, arreglar la limitación que reveló la prueba y volver a probar.",
+                  },
+                  {
+                    text: "Borrar el caso de prueba de la caja de pizza grasosa para que pase",
+                    explanation: "Quitar un caso de prueba difícil esconde el problema en lugar de arreglarlo.",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "Rompe tu propio prototipo",
+            prompt: "Esfuérzate por hacer fallar tu propio prototipo, y luego usa lo que aprendas para mejorarlo.",
+            steps: [
+              "Escribe tres casos de prueba especialmente difíciles, pensados para hacer tropezar a tu prototipo.",
+              "Córrelos a mano y anota cuáles fallan.",
+              "Para cada falla, nombra la limitación que revela.",
+              "Propón un cambio (una iteración) y predice si arreglaría las fallas.",
+            ],
+            successCriteria: [
+              "Tres casos de prueba difíciles que pongan a prueba el prototipo.",
+              "Cada falla ligada a una limitación con nombre.",
+              "Una iteración propuesta, con una predicción de su efecto.",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "¿Por qué es útil construir un prototipo tosco en lugar de saltar directo a la versión terminada?",
+            },
+            {
+              prompt: "¿Qué caso de prueba te enseñó más sobre las limitaciones de tu diseño, y por qué?",
+            },
+          ],
+          recap: {
+            summary: "Conviertes un problema en un plan comprobable diseñando las piezas, construyendo un prototipo tosco, corriendo casos de prueba de respuesta conocida, e iterando para arreglar las limitaciones que encuentres.",
+            keyPoints: [
+              "Diseña la entrada, la salida, las etiquetas, las características y cualquier regla antes de construir.",
+              "Un prototipo es una versión tosca, hecha barata, para probar una idea desde temprano.",
+              "Los casos de prueba revelan limitaciones; la iteración es el ciclo de mejorar hasta que quede mejor.",
+            ],
+          },
+          extension: {
+            title: "¿Cuántas pruebas son suficientes?",
+            body: [
+              "Los equipos reales no pueden probar todas las entradas posibles, así que eligen los casos de prueba con cuidado: casos comunes, casos límite, y casos donde un error importaría más. Una IA médica se prueba muchísimo más estrictamente que un juego que sugiere emojis.",
+              "Para tu proyecto, decide qué casos de prueba importan más y por qué. Escribe un breve \"plan de pruebas\" que explique cuántas pruebas crees que son suficientes antes de que personas usuarias reales pudieran confiar en este sistema.",
+            ],
+          },
+        },
+        {
+          title: "Presenta, revisa y explora las carreras en IA",
+          summary: "Termina con fuerza: presenta tu proyecto con honestidad, incluidas sus limitaciones y la supervisión humana que necesita, da y recibe retroalimentación útil, y explora qué hace realmente la gente que construye, regula y diseña IA.",
+          estimatedTime: "50-65 minutos",
+          objectives: [
+            {
+              text: "Presentar un proyecto con claridad: el problema, tu diseño, tus pruebas y sus limitaciones.",
+            },
+            {
+              text: "Explicar la supervisión y el uso responsable que tu proyecto necesita para ser confiable.",
+            },
+            {
+              text: "Dar y recibir retroalimentación específica, amable y útil en una revisión.",
+            },
+            {
+              text: "Describir varias carreras reales en IA: las personas que construyen, regulan y diseñan IA.",
+            },
+          ],
+          materials: [
+            {
+              name: "Esta lección en un navegador web",
+            },
+            {
+              name: "Papel y lápiz, o una app de notas",
+            },
+            {
+              name: "Tu plan y tus resultados de prueba de la lección 2",
+              note: "Los vas a presentar.",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "Limitación",
+              definition: "Una situación en la que un sistema se equivoca, no puede decidir, o no debería tener nuestra confianza; algo que los proyectos honestos dicen abiertamente.",
+            },
+            {
+              term: "Supervisión",
+              definition: "Que una persona siga siendo responsable de revisar y corregir las decisiones de una IA, sobre todo cuando un error podría importar.",
+            },
+            {
+              term: "Uso responsable",
+              definition: "Usar la IA de una forma justa, honesta y segura, que respete la privacidad de las personas, siendo claros sobre lo que puede y no puede hacer.",
+            },
+            {
+              term: "Carrera en IA",
+              definition: "Un trabajo en el que las personas construyen, estudian, regulan o diseñan sistemas de IA y la forma en que se usan.",
+            },
+          ],
+          openingScenario: {
+            prompt: "Dos equipos presentan proyectos de clasificación de residuos. Uno dice: \"¡Funciona perfecto!\". El otro dice: \"Acierta la mayoría de las veces, pero batalla con el papel grasoso, así que una persona revisa esos casos\". ¿En qué equipo confías más, y por qué?",
+            context: "Una presentación honesta que nombra limitaciones y supervisión se gana más confianza que una afirmación grandilocuente.",
+          },
+          predictionPrompt: {
+            prompt: "Predice: ¿los proyectos más sólidos serán los que aseguran no cometer errores, o los que explican con claridad sus limitaciones y cómo una persona se mantiene al pendiente?",
+            howToCheck: "Mientras lees, fíjate en por qué nombrar las limitaciones y la supervisión hace que un proyecto sea más confiable, no menos.",
+          },
+          concepts: [
+            {
+              title: "Presenta con honestidad: problema, diseño, pruebas y limitaciones",
+              body: [
+                "Una buena presentación cuenta una historia clara: aquí está la necesidad de la persona usuaria y la definición del problema, aquí está mi diseño (entrada, salida, características, etiquetas, reglas), así lo probé, y esto fue lo que encontré, incluidas sus limitaciones. Nombrar las limitaciones no es una debilidad; muestra que entiendes tu propio sistema.",
+                "Evita prometer de más. \"Funciona perfecto\" casi nunca es cierto y pierde la confianza en cuanto alguien encuentra una falla. \"Acierta en la mayoría de los casos pero batalla con X\" es honesto, y es justo lo que un público reflexivo quiere escuchar.",
+              ],
+              examples: [
+                "\"Entrada: la foto de un objeto. Salida: reciclaje, composta o basura\".",
+                "\"Pasó 7 de 9 casos de prueba; falla con el papel grasoso y el aluminio brillante\".",
+                "\"Como puede equivocarse, una persona revisa los casos dudosos\".",
+              ],
+            },
+            {
+              title: "La supervisión y el uso responsable hacen confiable un proyecto",
+              body: [
+                "Como la IA puede equivocarse o ser injusta, un proyecto responsable planea la supervisión humana: una persona sigue siendo responsable de revisar y corregir la IA, sobre todo donde un error podría importar. Tu presentación debería decir quién supervisa el sistema y cuándo.",
+                "El uso responsable también significa ser justo, ser honesto sobre lo que el sistema puede hacer, proteger la privacidad de las personas, y no usar IA donde los riesgos son demasiado altos. Amarra todo lo del curso: la justicia, la privacidad, las limitaciones y las decisiones humanas aparecen en qué tan responsablemente se diseña y se describe un proyecto.",
+              ],
+              examples: [
+                "\"Un estudiante revisa cualquier objeto sobre el que el clasificador tenga dudas, antes de tirarlo\".",
+                "\"No recopilamos el nombre ni la cara de nadie, solo fotos de los objetos\".",
+                "\"Nunca usaríamos esto para decidir algo serio sobre una persona\".",
+              ],
+            },
+            {
+              title: "Las revisiones funcionan mejor con retroalimentación específica y amable, y la IA también es una carrera",
+              body: [
+                "En una revisión, das y recibes retroalimentación. La retroalimentación útil es específica (\"tu caso de prueba del papel grasoso es un gran hallazgo; ¿podrías agregar una regla para eso?\") en lugar de vaga (\"está bien\") o dura. Recibir bien la retroalimentación significa escuchar, hacer preguntas y tomarla como ayuda, no como ataque. La iteración sigue aquí: las revisiones muchas veces disparan tu siguiente mejora.",
+                "Construir IA también es un campo de trabajo que crece. Quienes hacen ingeniería de aprendizaje automático y ciencia de datos construyen y entrenan modelos. Quienes etiquetan y anotan datos crean los ejemplos etiquetados de los que aprenden los sistemas. Quienes trabajan en ética de la IA, auditoría y políticas públicas regulan la IA: revisan que sea justa, segura y respetuosa de la privacidad, y escriben las reglas de cómo se puede usar. Quienes diseñan producto y experiencia de usuario deciden cómo interactúan realmente las personas con la IA y cómo mantienen el control. Docentes, médicos, artistas y muchas otras personas usan cada vez más la IA como herramienta. No tienes que ser programador para influir en cómo se construye y se usa la IA.",
+              ],
+              examples: [
+                "Ingeniera de aprendizaje automático: construye y entrena el modelo.",
+                "Persona que etiqueta o anota datos: crea los ejemplos etiquetados para el aprendizaje.",
+                "Especialista en ética de la IA o auditor: revisa que los sistemas sean justos, seguros y respetuosos de la privacidad.",
+                "Diseñadora de producto o de experiencia de usuario: diseña cómo la gente usa la IA y mantiene la supervisión.",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "Una presentación confiable de dos minutos",
+            steps: [
+              "Enuncia el problema: \"Los estudiantes nuevos no saben en qué bote va su basura, así que clasificamos una foto en reciclaje, composta o basura\".",
+              "Muestra el diseño: \"La entrada es la foto de un objeto; la salida es una de tres etiquetas; las características incluyen el material y la grasa de comida\".",
+              "Reporta las pruebas: \"Corrimos nueve casos de prueba y pasamos siete; falla con el papel grasoso y el aluminio\".",
+              "Nombra las limitaciones y la supervisión: \"Esos son límites reales, así que una persona revisa cualquier objeto sobre el que tenga dudas, antes de tirarlo\".",
+              "Cierra con el uso responsable: \"Solo recopilamos fotos de objetos, nunca caras ni nombres, y no lo usaríamos para nada de alto riesgo\".",
+            ],
+            takeaway: "La presentación más confiable enuncia el problema, el diseño, resultados de prueba honestos, las limitaciones y la supervisión humana que mantiene responsable su uso.",
+          },
+          visuals: [
+            {
+              title: "Prometer de más frente a presentar con honestidad",
+              summary: "Antes (prometiendo de más): \"¡Nuestra IA clasifica la basura a la perfección!\": sin limitaciones, sin supervisión, y pierde la confianza en cuanto alguien encuentra una falla. Después (honesto): \"Pasa la mayoría de los casos pero falla con el papel grasoso y el aluminio, así que una persona revisa los objetos dudosos, y solo usamos fotos de objetos\": enuncia limitaciones, supervisión y uso responsable, y se gana más confianza.",
+              caption: "Ser honesto sobre los límites y la supervisión hace un proyecto más confiable, no menos.",
+            },
+            {
+              title: "Quién construye y regula la IA",
+              summary: "Una tabla de carreras en IA. Ingeniería de aprendizaje automático: construye y entrena modelos; su habilidad central es diseñar y probar sistemas. Etiquetado y anotación de datos: crea los ejemplos etiquetados; su habilidad central es etiquetar con cuidado y de forma consistente. Ética y auditoría de la IA: regula la IA en cuanto a justicia, seguridad y privacidad; su habilidad central es detectar daños y fijar reglas. Diseño de producto y experiencia de usuario: diseña cómo la gente usa la IA y mantiene la supervisión; su habilidad central es entender a las personas usuarias.",
+              table: {
+                columns: [
+                  "Rol",
+                  "Qué hace",
+                  "Una habilidad que usa",
+                ],
+                rows: [
+                  [
+                    "Ingeniería de aprendizaje automático",
+                    "Construye y entrena modelos",
+                    "Diseñar y probar sistemas",
+                  ],
+                  [
+                    "Etiquetado y anotación de datos",
+                    "Crea los ejemplos etiquetados",
+                    "Etiquetar con cuidado y consistencia",
+                  ],
+                  [
+                    "Ética y auditoría de la IA",
+                    "Regula la IA en justicia y seguridad",
+                    "Detectar daños, fijar reglas",
+                  ],
+                  [
+                    "Diseño de producto y experiencia de usuario",
+                    "Diseña cómo la gente usa la IA",
+                    "Entender a las personas usuarias reales",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "Estudio de presentación y revisión",
+            goal: "Presentar tu proyecto con honestidad y dar y recibir retroalimentación específica y útil usando una rúbrica de revisión.",
+            overview: "Vas a preparar una presentación corta y honesta de tu proyecto (problema, diseño, pruebas, limitaciones, supervisión y uso responsable) y luego participar en una revisión, dándoles a otros equipos retroalimentación específica y amable y recibiendo la suya, con una lista compartida. Las revisiones de aquí pueden disparar una iteración más antes del Proyecto Final.",
+            steps: [
+              "Prepara una presentación de dos minutos que cubra problema, diseño, resultados de prueba, limitaciones, supervisión y uso responsable.",
+              "Preséntala ante un compañero o un grupo pequeño.",
+              "Como revisor, usa la lista de revisión para dar al menos dos comentarios específicos y amables por proyecto.",
+              "Como presentador, anota la retroalimentación que recibas y elige una mejora que vas a hacer (tu siguiente iteración).",
+              "Conversen sobre con qué carreras en IA conecta cada proyecto y cuáles les interesan.",
+            ],
+            materials: [
+              "Papel y lápiz, o una app de notas",
+            ],
+            successCriteria: [
+              "Una presentación que incluya limitaciones, supervisión y uso responsable, no solo lo que funciona.",
+              "Al menos dos comentarios específicos y amables dados a otras personas.",
+              "La retroalimentación recibida queda anotada y se elige una siguiente mejora.",
+              "Se nombra al menos una carrera en IA con la que conecta tu proyecto.",
+            ],
+            dataset: {
+              name: "Rúbrica de revisión de proyectos",
+              description: "Una lista de revisión incluida que los equipos usan para dar retroalimentación. Las filas cubren: definición clara del problema; entrada, salida, etiquetas y características sensatas; resultados de prueba honestos; limitaciones nombradas; un plan de supervisión humana; y uso responsable (justicia, privacidad, honestidad). Cada fila tiene una consigna y espacio para un comentario específico.",
+              columns: [
+                "Área de revisión",
+                "Qué buscar",
+                "Comentario específico",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "Comprueba que sabes presentar de forma responsable y describir el trabajo real en IA.",
+            questions: [
+              {
+                prompt: "¿Por qué la presentación de un proyecto debería incluir sus limitaciones?",
+                explanation: "Nombrar las limitaciones con honestidad genera confianza y muestra que entiendes tu propio sistema; esconderlas te sale contraproducente cuando alguien encuentra una falla.",
+                choices: [
+                  {
+                    text: "Para que el proyecto se vea débil y nadie haga preguntas",
+                    explanation: "Nombrar limitaciones no se trata de verse débil; muestra comprensión y honestidad.",
+                  },
+                  {
+                    text: "Porque ser honesto sobre los límites genera confianza y muestra que entiendes el sistema",
+                    explanation: "Correcto: unos límites honestos se ganan la confianza y demuestran que sabes cómo se comporta tu sistema.",
+                  },
+                  {
+                    text: "Porque todo proyecto está obligado a fallar",
+                    explanation: "Los proyectos no están obligados a fallar; están obligados a ser honestos sobre sus límites reales.",
+                  },
+                  {
+                    text: "Para que no tengas que probarlo",
+                    explanation: "Las limitaciones se encuentran justamente probando; nombrarlas no sustituye a las pruebas.",
+                  },
+                ],
+              },
+              {
+                prompt: "Decide si la afirmación es verdadera o falsa.",
+                statement: "Tienes que ser programador de computadoras para tener algún papel en la construcción o la regulación de la IA.",
+                explanation: "Falso: quienes etiquetan datos, quienes trabajan en ética, auditoría, políticas públicas y diseño le dan forma a la IA sin necesariamente programarla.",
+              },
+              {
+                prompt: "¿Qué respuesta da la retroalimentación de revisión más útil?",
+                scenario: "Un compañero presenta un detector de enfermedades de las plantas que pasó casi todas las pruebas, pero no se probó con fotos borrosas, y no hay ningún plan de quién revisa sus decisiones.",
+                explanation: "La retroalimentación específica señala un hueco real y sugiere un siguiente paso concreto, a diferencia de un elogio vago o un rechazo duro.",
+                choices: [
+                  {
+                    text: "\"Está bien\".",
+                    explanation: "Un elogio vago no le da a quien presenta nada sobre lo cual actuar.",
+                  },
+                  {
+                    text: "\"Agrega un caso de prueba con foto borrosa y di quién supervisa los resultados dudosos\".",
+                    explanation: "Correcto: es específica, amable y apunta a iteraciones concretas.",
+                  },
+                  {
+                    text: "\"Esto nunca va a funcionar, ni te molestes\".",
+                    explanation: "Es dura y vaga: no es específica y no ayuda a mejorar el proyecto.",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "Conoce un trabajo de IA",
+            prompt: "Investiga una carrera en IA y conéctala con el proyecto que diseñaste esta semana.",
+            steps: [
+              "Elige un rol: ingeniería de aprendizaje automático, etiquetado de datos, ética o auditoría de la IA, políticas públicas, o diseño de producto y experiencia de usuario en IA.",
+              "Escribe de tres a cuatro oraciones sobre qué hace esa persona en su día a día y una habilidad que usa.",
+              "Explica qué parte de tu propio proyecto se encargaría ese rol.",
+              "Anota una cosa de ese trabajo sobre la que te gustaría saber más.",
+            ],
+            successCriteria: [
+              "Un rol de IA descrito con precisión, junto con una habilidad que usa.",
+              "Una conexión clara entre el rol y una parte de tu proyecto.",
+              "Una pregunta genuina que tengas sobre esa carrera.",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "De todo el curso, ¿qué es lo más importante que vas a recordar sobre usar la IA de forma responsable?",
+            },
+            {
+              prompt: "¿Qué carrera en IA te suena más interesante, y qué te gustaría aprender después para explorarla?",
+            },
+          ],
+          recap: {
+            summary: "Un proyecto terminado se presenta con honestidad (problema, diseño, pruebas, limitaciones, supervisión y uso responsable), se mejora con la revisión, y se conecta con las personas reales que construyen y regulan la IA.",
+            keyPoints: [
+              "Presenta el problema, el diseño y resultados de prueba honestos, incluidas las limitaciones.",
+              "Planea la supervisión humana y el uso responsable para que se pueda confiar en el proyecto.",
+              "La IA la construyen y la regulan muchos roles, no solo quienes programan.",
+            ],
+          },
+          extension: {
+            title: "Escribe la etiqueta de \"uso responsable\" de tu proyecto",
+            body: [
+              "Algunos sistemas de IA ya se publican con una breve \"ficha del modelo\" o etiqueta de uso: para qué sirve el sistema, para qué no, cuáles son sus limitaciones conocidas y quién es responsable de supervisarlo.",
+              "Escribe una etiqueta de uso responsable de un párrafo para tu propio proyecto. Di para qué se debería y para qué no se debería usar, sus limitaciones principales, quién provee la supervisión y cómo protege la privacidad de las personas.",
+            ],
+          },
+        },
+      ],
+    },
   ],
 }
 
@@ -4303,6 +5479,323 @@ const zh: DeepPartial<IntroToAiCourse> = {
       {
         name: "打印出来的练习纸",
         note: "供更习惯在纸上做题的班级使用。",
+      },
+    ],
+  },
+  finalProject: {
+    title: "人工智能设计工作室：设计一个能帮上忙的人工智能",
+    overview: "运用这六周学到的全部内容，设计一个能帮助某个真实人群的人工智能工具。你要定义问题，判断人工智能是否真的合适，规划输入、输出、标签、特征或规则，画出原型草图，写出测试用例，并说明你打算如何让它保持公平、保护隐私、始终处于人的监督之下。这是一个设计与规划项目：你不会真的训练一个模型。",
+    choices: [
+      {
+        name: "帮忙分类的助手",
+        scenario: "某个团体很难快速把大量物品分门别类，比如图书馆整理还回来的书，或者社团整理照片。",
+        exampleGoal: "设计一个能把物品归入正确类别的人工智能。",
+        suitableBecause: "从大量带标签的例子中学着分类，非常适合用机器学习来做。",
+      },
+      {
+        name: "答疑小助手",
+        scenario: "大家反复问同样的问题，一个小团队应付不过来，比如学校的办公室或某款游戏的客服。",
+        exampleGoal: "设计一个基于规则的助手，回答常见问题，其余的转交给人来处理。",
+        suitableBecause: "意图明确的常见问题适合用决策树聊天机器人来应对，答不上来时再交给人。",
+      },
+      {
+        name: "公平的推荐器",
+        scenario: "一个社区想要一些推荐（书籍、活动或食谱），又不想把大家困在信息茧房里。",
+        exampleGoal: "设计一个推荐器，推荐新的选项并说明推荐的理由。",
+        suitableBecause: "推荐要用到相似度和用户反馈，正好让你练习如何避开信息茧房。",
+      },
+      {
+        name: "你自己的想法",
+        scenario: "你的学校或社区里有个问题，你觉得人工智能也许帮得上忙。",
+        exampleGoal: "定义你自己的问题，并设计一个人工智能（或者判断人工智能并不是合适的工具）。",
+        suitableBecause: "判断人工智能到底适不适合，本身就是好设计的一部分。",
+      },
+    ],
+    brief: [
+      {
+        label: "用户需求",
+        hint: "这是给谁用的？他们遇到了什么问题？",
+      },
+      {
+        label: "问题定义",
+        hint: "用一两句话说清楚具体的任务。",
+      },
+      {
+        label: "人工智能是合适的工具吗？",
+        hint: "说明人工智能为什么合适，或者为什么用更简单的工具反而更好。",
+      },
+      {
+        label: "输入与输出",
+        hint: "什么进去，什么出来？",
+      },
+      {
+        label: "标签、特征或规则",
+        hint: "它会从哪些例子、标签和特征中学习，或者它要遵循哪些规则？",
+      },
+      {
+        label: "原型草图",
+        hint: "描述或画出一个人会怎样使用它。",
+      },
+      {
+        label: "测试用例",
+        hint: "列出你会拿来测试的例子，包括棘手的边界情况。",
+      },
+      {
+        label: "局限",
+        hint: "它可能在哪里出错，或者对谁不公平？",
+      },
+      {
+        label: "公平、隐私与监督",
+        hint: "你打算怎样保护隐私、检查公平性，并让人始终说了算？如果结果错了，别人该怎么申诉？",
+      },
+    ],
+    requirements: [
+      {
+        label: "清晰的用户需求",
+        description: "点明一个真实的人群，以及他们面临的问题。",
+      },
+      {
+        label: "人工智能适用性的判断",
+        description: "运用输入输出以及「规则还是学习」的思路，论证人工智能是不是合适的工具。",
+      },
+      {
+        label: "设计好输入与输出",
+        description: "定义输入和输出，以及涉及的标签、特征或规则。",
+      },
+      {
+        label: "原型与测试用例",
+        description: "包含一份原型草图和至少三个测试用例，其中一个是边界情况。",
+      },
+      {
+        label: "负责任使用方案",
+        description: "涉及公平、隐私、局限、人的监督以及申诉渠道。",
+      },
+      {
+        label: "清楚的展示",
+        description: "把设计讲清楚，让别人既能听懂，也能提出质疑。",
+      },
+      {
+        label: "迭代说明（进阶）",
+        description: "描述测试之后你会做的一处改动。",
+      },
+    ],
+    rubric: [
+      {
+        name: "问题与适用性",
+        description: "问题定义得有多清楚，以及人工智能是不是合适的工具。",
+        levels: [
+          {
+            descriptor: "问题含糊不清，也没有分析人工智能是否合适。",
+          },
+          {
+            descriptor: "问题说出来了，但关于人工智能是否适用的分析比较单薄。",
+          },
+          {
+            descriptor: "问题清晰，对人工智能是否合适给出了扎实的论证。",
+          },
+          {
+            descriptor: "问题定义十分精准，适用性判断有说服力，理由充分。",
+          },
+        ],
+      },
+      {
+        name: "输入、输出与数据",
+        description: "输入输出设计的质量，以及标签、特征或规则的质量。",
+        levels: [
+          {
+            descriptor: "输入和输出缺失，或者交代不清。",
+          },
+          {
+            descriptor: "点出了输入和输出，但标签、特征或规则交代不清。",
+          },
+          {
+            descriptor: "输入输出清晰，标签、特征或规则的方案也合理。",
+          },
+          {
+            descriptor: "设计考虑周到、契合需求，标签、特征或规则都很切合实际。",
+          },
+        ],
+      },
+      {
+        name: "原型与测试",
+        description: "原型草图，以及测试用例的质量。",
+        levels: [
+          {
+            descriptor: "没有原型，也没有测试用例。",
+          },
+          {
+            descriptor: "有一个简单的原型，配了一两个简单的测试。",
+          },
+          {
+            descriptor: "原型清晰，至少有三个测试，其中包括一个边界情况。",
+          },
+          {
+            descriptor: "原型讲解到位，测试有力，能探到最可能出问题的地方。",
+          },
+        ],
+      },
+      {
+        name: "责任与展示",
+        description: "公平、隐私、监督、申诉渠道，以及展示是否清楚。",
+        levels: [
+          {
+            descriptor: "忽略了公平、隐私或监督，而且让人看不明白。",
+          },
+          {
+            descriptor: "提到了责任，但留有缺口，或者展示得不够清楚。",
+          },
+          {
+            descriptor: "把公平、隐私、监督和申诉渠道都交代清楚了。",
+          },
+          {
+            descriptor: "负责任使用方案周全细致，展示清楚，也乐于接受提问。",
+          },
+        ],
+      },
+    ],
+  },
+  finalAssessment: {
+    title: "课程检测：你学到的人工智能知识",
+    instructions: "一次涵盖六周内容的小测。回答每道题，并读一读解析。这是给你自己检验学习用的：不计分，也不会把任何内容发送到别处。",
+    questions: [
+      {
+        prompt: "要判断一个软件是人工智能而不是传统程序，最明显的标志是什么？",
+        explanation: "人工智能是从大量例子中学出规律，而不是只按人一条条手写的规则去执行。",
+        choices: [
+          {
+            text: "它从例子中学到了规律。",
+            explanation: "正确：从例子中学习正是人工智能的关键标志。",
+          },
+          {
+            text: "它运行得很快。",
+            explanation: "快慢并不能决定一个软件是不是人工智能。",
+          },
+          {
+            text: "它的界面很好看。",
+            explanation: "界面说明不了它会不会学习。",
+          },
+          {
+            text: "它在计算机上运行。",
+            explanation: "所有软件都在计算机上运行。",
+          },
+        ],
+      },
+      {
+        prompt: "判断这句话是对还是错。",
+        statement: "如果一个数据集里某一类的例子远远多于另一类，它就是不均衡的，可能会让模型变得不那么公平。",
+        explanation: "对：数据不均衡意味着模型见到的某些情况太少，在这些情况上就可能表现更差。",
+      },
+      {
+        prompt: "为什么要用模型没有训练过的数据来测试它？",
+        explanation: "用没见过的例子测试，才能看出模型是真的会举一反三，还是只是把训练数据背了下来。",
+        choices: [
+          {
+            text: "为了看它能不能推广到新的例子上。",
+            explanation: "正确：没见过的测试数据才能反映真实水平。",
+          },
+          {
+            text: "为了让训练变得更快。",
+            explanation: "测试和训练速度是两码事。",
+          },
+          {
+            text: "为了把多余的数据用掉。",
+            explanation: "测试数据是有用途的：衡量泛化能力。",
+          },
+          {
+            text: "因为训练数据总是错的。",
+            explanation: "训练数据并不总是错的；我们只是需要一次公平的检验。",
+          },
+        ],
+      },
+      {
+        prompt: "一个图片分类器把一张松饼的照片标成了狗。这属于哪一类错误？",
+        scenario: "模型对一个并不是狗的东西预测出了「狗」。",
+        explanation: "把不是狗的东西预测成「狗」，属于「狗」这一类的假阳性。",
+        choices: [
+          {
+            text: "「狗」的假阳性。",
+            explanation: "正确：它错误地报告说有「狗」。",
+          },
+          {
+            text: "「狗」的假阴性。",
+            explanation: "假阴性指的是漏掉了一只真正的狗。",
+          },
+          {
+            text: "完美的准确率。",
+            explanation: "它出错了，所以准确率并不完美。",
+          },
+          {
+            text: "输入错误。",
+            explanation: "图片本身没问题；错的是模型的预测。",
+          },
+        ],
+      },
+      {
+        prompt: "判断这句话是对还是错。",
+        statement: "如果语言模型的回答读起来很流畅、很有把握，那它就一定是真的。",
+        explanation: "错：语言模型预测的是接下来最可能出现的文字，所以流畅的回答照样可能是错的。一定要核实事实。",
+      },
+      {
+        prompt: "什么是信息茧房？",
+        explanation: "信息茧房指的是推荐系统一直给你看类似的东西，于是你很少见到新的或不一样的选项。",
+        choices: [
+          {
+            text: "推荐系统一直给你看类似的东西，却把不一样的藏了起来。",
+            explanation: "正确：这种越来越窄的情况就是信息茧房。",
+          },
+          {
+            text: "一种清洗数据的工具。",
+            explanation: "信息茧房不是这个意思。",
+          },
+          {
+            text: "一项隐私设置。",
+            explanation: "信息茧房说的是推荐范围越来越窄，不是某项设置。",
+          },
+          {
+            text: "一种相机滤镜。",
+            explanation: "它讲的是推荐，不是照片滤镜。",
+          },
+        ],
+      },
+      {
+        prompt: "以下哪些是负责任地使用人工智能的好做法？（把符合的都选出来。）",
+        explanation: "负责任的使用包括：尽量少收集数据、核对来源、留意偏见，以及保留人的监督和申诉渠道。",
+        choices: [
+          {
+            text: "只收集你确实需要的数据。",
+            explanation: "正确：数据收集得越少，隐私越有保障。",
+          },
+          {
+            text: "在相信人工智能生成的内容之前，先查证原始来源。",
+            explanation: "正确：独立求证能识破虚假信息。",
+          },
+          {
+            text: "让人工智能在没有人审核的情况下做重要决定。",
+            explanation: "重要的决定需要有人监督，也需要留出申诉的渠道。",
+          },
+          {
+            text: "留意偏见，以及对某些群体不公平的结果。",
+            explanation: "正确：检查不同群体之间是否公平，正是负责任的使用。",
+          },
+        ],
+      },
+      {
+        prompt: "把设计一个人工智能工具的步骤排成合理的顺序。",
+        explanation: "好的设计从用户需求和问题出发，先判断人工智能是否合适，再设计输入输出，做出原型，然后测试并改进。",
+        items: [
+          {
+            text: "定义用户需求和问题",
+          },
+          {
+            text: "判断人工智能是不是合适的工具",
+          },
+          {
+            text: "设计输入、输出，以及标签、特征或规则",
+          },
+          {
+            text: "做出原型，然后测试并改进",
+          },
+        ],
       },
     ],
   },
@@ -7563,6 +9056,1740 @@ const zh: DeepPartial<IntroToAiCourse> = {
         },
       ],
     },
+    {
+      title: "公平、隐私与可信的信息",
+      subtitle: "审视人工智能是否存在偏见，保护人们的数据，并核查你看到的内容是否值得信任。",
+      summary: "学生学习负责任地评判人工智能：数据不均衡如何造成偏见，而分组结果又如何把它揭示出来；隐私和知情同意为什么重要，数据最小化又如何降低风险；以及如何通过找到原始出处、核对上下文、独立确认来核实人工智能生成的内容和网上的内容，并且始终通过监督和申诉权，让人保持在掌控之中。",
+      bigQuestion: "我们怎么判断一个人工智能系统是否公平、是否尊重隐私，以及它给出的信息是否可信？",
+      estimatedTime: "2.5-3 小时",
+      objectives: [
+        "说明偏见如何来自不均衡的代表性，并读懂分组结果来发现它。",
+        "给隐私、个人数据和知情同意下定义，并把数据最小化应用到某个功能上。",
+        "利用原始出处、上下文和独立确认来核实内容。",
+        "说明为什么人工智能的重要决定需要人的监督和申诉权。",
+      ],
+      requiredConcepts: [
+        "偏见",
+        "代表性",
+        "分组结果",
+        "公平",
+        "隐私",
+        "知情同意",
+        "个人数据",
+        "数据最小化",
+        "深度伪造",
+        "错误信息",
+        "原始出处",
+        "上下文",
+        "独立确认",
+        "人的监督",
+        "申诉",
+      ],
+      lessons: [
+        {
+          title: "审视一个数据集是否公平",
+          summary: "了解不均衡的样例如何造成偏见，读懂分组结果，看清一个系统对谁管用，并审视一个数据集是否公平。",
+          estimatedTime: "50-60 分钟",
+          objectives: [
+            {
+              text: "给偏见和代表性下定义，并说明二者如何相互关联。",
+            },
+            {
+              text: "读懂分组结果，比较一个系统对不同群体的效果好坏。",
+            },
+            {
+              text: "说明当人工智能对不同群体区别对待时，公平意味着什么。",
+            },
+            {
+              text: "审视一个被描述的数据集，并指出它的样例在哪一方面不均衡。",
+            },
+          ],
+          materials: [
+            {
+              name: "在网页浏览器中打开的这节课",
+            },
+            {
+              name: "纸和笔，或者一个记事应用",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "偏见",
+              definition: "当一个系统对某些人或某些事物总是表现得更好或更差时，通常是因为它学习所用的样例。",
+            },
+            {
+              term: "代表性",
+              definition: "某个群体在数据集中出现得有多多。样例多，这个群体的代表性就好；样例少，就是代表性不足。",
+            },
+            {
+              term: "分组结果",
+              definition: "为每个群体分别测出的成绩，而不是用一个数字概括所有人，好让你看清系统对谁管用。",
+            },
+            {
+              term: "公平",
+              definition: "以人们会认为公道、合理的方式对待各个群体，不让某个群体在没有正当理由的情况下处于不利地位。",
+            },
+          ],
+          openingScenario: {
+            prompt: "语音助手几乎每次都能听懂一位朋友，却老是听错另一位口音不同的朋友。对两个人来说，软件是同一个。为什么它对两人的表现会差这么多？",
+            context: "记住你的第一个猜想，本课后面你会拿真实的分组数字来检验它。",
+          },
+          predictionPrompt: {
+            prompt: "预测一下：如果一个人脸识别系统主要是从成年人的照片中学习的，你觉得它在儿童照片上会同样好用吗？",
+            howToCheck: "阅读下面的概念和分组图表时，留意某个群体的样例数量，是否会改变系统对该群体的效果。",
+          },
+          concepts: [
+            {
+              title: "偏见来自样例，而不是计算机「想要」什么",
+              body: [
+                "计算机没有观点，也没有感情。我们说一个人工智能有偏见，意思是它总是对某些人或某些事物表现得更好。几乎无一例外，这都源于它学习所用的样例。",
+                "如果一个系统是从不均衡的样例中学习的，它就会擅长常见情况，而在少见情况上更弱。软件做的正是它被训练去做的事，不均衡是人给它的数据带来的。",
+              ],
+              examples: [
+                "主要用一种口音训练出的语音系统，对那种口音理解得最好。",
+                "主要用白天照片训练出的图片分类器，在夜里就吃力。",
+                "用正式书面语训练出的翻译工具，处理俚语就很差。",
+              ],
+            },
+            {
+              title: "代表性：样例里有谁，又有多少",
+              body: [
+                "代表性说的是每个群体在数据中出现得有多多。一个群体样例多，代表性就好；样例少，就是代表性不足。一个数据集可能有成千上万个样例，却仍然让某些群体几乎一个都没有。",
+                "代表性不足是偏见最大的来源之一。模型只能学到它见过的规律。如果某个群体在样例中几乎不出现，模型就没什么可学的，于是往往对那个群体犯更多错。",
+              ],
+              examples: [
+                "一个含 10,000 张狗照片的数据集，其中某个品种只有 20 张。",
+                "一份主要采自成年人、儿童很少的医学数据集。",
+                "一个手写数据集，印刷体很多，连笔字却极少。",
+              ],
+            },
+            {
+              title: "分组结果能显示单一总分所掩盖的东西",
+              body: [
+                "人很容易用一个数字来评判一个系统，比如「它的准确率有 92%」。但一个数字是所有人身上的平均值。它可能看着很棒，同时却在某个较小的群体上惨败，而那些错误被平均值埋掉了。",
+                "分组结果为每个群体分别测量准确率。把成绩拆开，你就能看出系统对谁管用、对谁不管用。关于公平的问题，几乎总是需要分组结果，而不只是一个总数。",
+              ],
+              examples: [
+                "总体 92%，但某个口音群体只有 74%。",
+                "总体准确率很高，但夜间照片的错误远多于白天照片。",
+                "一项平均下来通过的测试，对左手写字的人却经常出错。",
+              ],
+            },
+            {
+              title: "公平：有没有人在没有正当理由的情况下吃了亏？",
+              body: [
+                "公平意味着以人们会认为公道、合理的方式对待各个群体。它并不总是要求结果完全一样，但它要追问：是否有某个群体在吃亏，以及这个差距是否有正当理由。",
+                "公平是人的判断，不是计算机来决定的事。必须由人去看分组结果、判断某个差距是否可以接受，并承担起纠正它的责任，而这往往意味着去收集更均衡的样例。",
+              ],
+              examples: [
+                "判定 74% 与 92% 的准确率差距太大，不适合上线。",
+                "选择为代表性不足的群体收集更多样例。",
+                "追问：如果系统对某个特定群体出错，受害的是谁。",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "审视一个微笑检测器的数据集",
+            steps: [
+              "说清任务。一个相机应用想在所有人都在微笑时按下快门。输入：一张人脸。输出：「在微笑」或「没在微笑」。",
+              "看看代表性。训练集里有 8,000 张成年人照片，却只有 500 张幼儿照片。",
+              "预测后果。儿童样例这么少，模型几乎学不到孩子是怎么笑的，因此很可能在儿童身上犯更多错。",
+              "看分组结果，而不只是平均值。总体准确率是 90%，但按群体拆开，成年人是 94%，儿童只有 71%。",
+              "做出关于公平的判断。差距很大，而且儿童在没有正当理由的情况下吃了亏，所以公平的做法是收集更多儿童样例，在上线前重新测试。",
+            ],
+            takeaway: "审视一个数据集，先问谁的代表性不足，再看分组结果，判断这种不均衡是否变成了不公平的错误。",
+          },
+          visuals: [
+            {
+              title: "各群体的准确率：一个平均值掩盖了真实差距",
+              summary: "一张条形图，用百分比分别显示一个语音识别系统在四个口音群体上的准确率。总体平均为 88%，但各群体并不均衡：口音群体 A 为 94%，口音群体 B 为 91%，口音群体 C 为 82%，口音群体 D 为 74%。训练样例最少的 C 组和 D 组，成绩远低于平均水平，所以单一的总体数字掩盖了最好与最差群体之间约 20 个百分点的真实差距。",
+              caption: "把平均值拆开，就能清楚看到这个系统对某些群体明显比对另一些更管用。",
+              chart: {
+                unit: "准确率（%）",
+                bars: [
+                  {
+                    label: "总体平均",
+                  },
+                  {
+                    label: "口音群体 A",
+                  },
+                  {
+                    label: "口音群体 B",
+                  },
+                  {
+                    label: "口音群体 C",
+                  },
+                  {
+                    label: "口音群体 D",
+                  },
+                ],
+              },
+            },
+            {
+              title: "代表性与准确率差距正好对得上",
+              summary: "一张表，把每个口音群体的训练样例数量与它的准确率对应起来。A 组：5,000 个样例，准确率 94%。B 组：4,200 个样例，91%。C 组：900 个样例，82%。D 组：400 个样例，74%。样例最少的群体准确率最低，显示出代表性不足是怎样变成偏见的。",
+              table: {
+                columns: [
+                  "口音群体",
+                  "训练样例数",
+                  "准确率",
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "公平性审查",
+            goal: "审查一所虚构学校的理工科项目推荐系统：看清总体准确率如何掩盖了某个较小群体的糟糕结果，再通过限制一个替代特征、补充代表性不足的样例来纠正它。",
+            overview: "一所虚构的学校在推荐课后理工项目。一个透明的最近邻模型预测某个项目是否合适；你要把总体准确率与各群体（Hillside，以及更小、更远的 Riverside）的准确率作比较。这个有缺陷的模型过度依赖一个具有误导性的替代特征「住在学校附近」，它反映的是居住区域而不是适配程度，而且训练时来自 Riverside 的「合适」样例太少。调低那个替代特征的权重，补上缺失的样例，然后重新运行，并与有缺陷的基线作比较。全部内容都是虚构且确定性的；改善代表性有帮助，但绝不保证完全公平。",
+            steps: [
+              "先读总体准确率，再读各群体的准确率，留意其中的差距。",
+              "调低具有误导性的「靠近学校」替代特征的权重。",
+              "为代表性不足的 Riverside 群体补上缺失的「合适」样例。",
+              "重新运行，并比较修改前后的分组准确率、错误批准数和被漏掉的学生数。",
+            ],
+            materials: [
+              "本活动中内置的公平性审查",
+            ],
+            successCriteria: [
+              "找出了被总体数字掩盖的分组差距。",
+              "限制了替代特征，并补充了代表性不足的样例。",
+              "比较了修改前后的分组准确率，并指出公平有所改善但并无保证。",
+            ],
+            dataset: {
+              name: "理工科项目推荐系统审查数据集",
+              description: "一份用于学校理工科项目推荐系统的虚构、确定性数据集：带有群体标签（Hillside／Riverside）的学生记录、相关特征、一个具有误导性的「靠近学校」替代特征、群体之间不均衡的代表性，以及一个留出的测试集。不含真实或个人数据。",
+              columns: [
+                "群体",
+                "特征",
+                "替代特征",
+                "是否合适？",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "回答这些题，检验你能否发现偏见、读懂分组结果并判断公平。",
+            questions: [
+              {
+                prompt: "人工智能系统里的偏见，最常来自哪里？",
+                explanation: "计算机没有观点；偏见几乎总能追溯到训练数据中不均衡的样例。",
+                choices: [
+                  {
+                    text: "计算机认定自己不喜欢某个群体。",
+                    explanation: "软件没有喜好，它只是反映了自身数据中的规律。",
+                  },
+                  {
+                    text: "它学习所用的样例不均衡，所以某些群体学得比另一些好。",
+                    explanation: "正确：数据中代表性不均衡，是偏见最常见的来源。",
+                  },
+                  {
+                    text: "计算机太慢了。",
+                    explanation: "速度和一个系统有没有偏见毫无关系。",
+                  },
+                  {
+                    text: "只有系统被黑客入侵时才会出现偏见。",
+                    explanation: "偏见通常来自普通的不均衡数据，而不是入侵。",
+                  },
+                ],
+              },
+              {
+                prompt: "判断这句话是对还是错。",
+                statement: "单一的总体准确率数字，足以证明一个系统对每个群体都公平。",
+                explanation: "一个数字是平均值，可能掩盖某个较小群体的糟糕结果；要判断公平，需要分组结果。",
+              },
+              {
+                prompt: "根据分组结果，最合理的下一步是什么？",
+                scenario: "一个照片应用报告说总体准确率为 90%。按群体拆开后，成年人为 95%，儿童为 70%。训练集里的儿童照片非常少。",
+                explanation: "儿童成绩低，正好对应儿童样例太少，所以公平的做法是收集更多儿童样例并重新测试。",
+                choices: [
+                  {
+                    text: "直接上线，因为总体 90% 已经够好了。",
+                    explanation: "90% 的平均值掩盖了系统在儿童身上表现很差这一事实。",
+                  },
+                  {
+                    text: "收集更多儿童照片来让数据更均衡，然后重新测试。",
+                    explanation: "正确：更均衡的代表性，正好对准了造成差距的根源。",
+                  },
+                  {
+                    text: "把成年人的照片删掉，好让数字对得上。",
+                    explanation: "扔掉好数据既帮不了儿童，还会削弱系统对所有人的表现。",
+                  },
+                  {
+                    text: "什么都不做，因为计算机不可能有偏见。",
+                    explanation: "分组差距正是偏见的明确证据，应当加以处理。",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "设计一个更公平的数据集",
+            prompt: "挑一项简单的人工智能任务，在训练任何模型之前，先规划一个对各群体都公平的数据集。",
+            steps: [
+              "选一项任务，比如识读手写字，或者辨认宠物。",
+              "列出这个系统应当为之服务好的那些群体。",
+              "大致决定每个群体需要多少样例，才能让谁都不至于代表性不足。",
+              "写下你会如何用分组准确率、而不只是总体平均值来检查结果。",
+            ],
+            successCriteria: [
+              "至少写出三个系统应当服务的群体。",
+              "方案给每个群体的样例足够多，避免代表性不足。",
+              "方案用分组结果来检查公平性。",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "想一想你用过的某个工具，它对某些人可能比对另一些人更好用。它的数据里可能缺了谁的样例？",
+            },
+            {
+              prompt: "为什么一个系统只看总体成绩时显得公平，看分组结果时却可能并不公平？",
+            },
+          ],
+          recap: {
+            summary: "偏见通常来自不均衡的代表性，而只有分组结果才能揭示一个系统是否对每个群体都公平。",
+            keyPoints: [
+              "偏见指的是系统总是对某些群体比对另一些表现更好，通常源于它的样例。",
+              "代表性不足的群体往往会遇到更多错误，因为模型见到的样例更少。",
+              "单一的总体成绩可能掩盖真实差距；分组结果才显示系统对谁管用。",
+              "公平是人的判断：某个差距是否可以接受，又该如何纠正。",
+            ],
+          },
+          extension: {
+            title: "当准确率相同却依然不公平",
+            body: [
+              "有时两个群体的准确率一样，但错误对其中一个群体的影响要严重得多。设想一个把图书馆藏书标记为「逾期」的系统。一次错误标记，对一个群体可能只是小小的麻烦，对另一个群体却可能让他们完全借不到书。",
+              "挑一个人工智能可能做出的决定，描述这样一种情形：各群体准确率相同，却仍然导致不公平的后果，因为犯错的代价并不相等。你还需要哪些额外信息，才能察觉到这一点？",
+            ],
+          },
+        },
+        {
+          title: "保护隐私，最小化数据",
+          summary: "弄清什么算个人数据、知情同意为什么重要，以及数据最小化如何在少收集得多的情况下，仍让一个人工智能功能照常运转。",
+          estimatedTime: "45-55 分钟",
+          objectives: [
+            {
+              text: "给隐私和个人数据下定义，并各举出例子。",
+            },
+            {
+              text: "说明知情同意是什么意思，以及它为什么必须建立在被充分告知的基础上。",
+            },
+            {
+              text: "运用数据最小化，只保留某个功能真正需要的数据。",
+            },
+            {
+              text: "重新设计一个被描述的功能，让它少收集个人数据。",
+            },
+          ],
+          materials: [
+            {
+              name: "在网页浏览器中打开的这节课",
+            },
+            {
+              name: "纸和笔，或者一个记事应用",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "隐私",
+              definition: "一个人有权决定谁可以查看和使用关于自己的信息。",
+            },
+            {
+              term: "个人数据",
+              definition: "任何关于某个具体的人的信息，比如姓名、住址、精确位置、生日、照片或消息。",
+            },
+            {
+              term: "知情同意",
+              definition: "在被用通俗的语言告知这些数据会被怎样使用之后，一个人明确同意收集或使用自己的数据。",
+            },
+            {
+              term: "数据最小化",
+              definition: "只收集和保存某个功能真正需要用来运转的数据，多一点都不要。",
+            },
+          ],
+          openingScenario: {
+            prompt: "一个免费的手电筒应用，在点亮灯光之前，要求查看你的通讯录、你的精确位置和你的照片。手电筒只需要控制灯光。为什么一个应用会索取远超其功能所需的数据？",
+            context: "记住你的答案：到最后，你将能够重新设计一个功能，让它不再过度收集。",
+          },
+          predictionPrompt: {
+            prompt: "预测一下：要让一个天气应用显示今天的预报，哪一样就够了：你所在的城市，还是你的确切街道地址加上完整的位置历史？",
+            howToCheck: "阅读数据最小化的内容时，判断哪一个是仍能让这个功能完成任务的最小数据。",
+          },
+          concepts: [
+            {
+              title: "隐私与个人数据：什么需要保护",
+              body: [
+                "隐私是你决定谁可以查看和使用关于你的信息的权利。个人数据是任何关于某个具体的人的信息：姓名、家庭住址、精确位置、生日、一张露脸的照片，或者私人消息。",
+                "并非所有数据都是个人数据。「星期二下雨了」不是关于任何一个人的。但「小安 4:00 在公园」就是个人数据，因为它告诉了别人关于某个具体的人的事。人工智能功能常常依赖个人数据运转，这正是隐私在这里如此重要的原因。",
+              ],
+              examples: [
+                "个人数据：全名、家庭住址、精确的 GPS 位置、露脸照片。",
+                "通常不是个人数据：当前天气、公交时刻表。",
+                "敏感的个人数据：健康信息、私人消息。",
+              ],
+            },
+            {
+              title: "知情同意是明明白白的「愿意」，不是被藏起来的「愿意」",
+              body: [
+                "知情同意是指一个人明确同意收集或使用自己的数据。要让同意成为真正的同意，它必须是知情的：用通俗的语言告诉这个人，收集了哪些数据、用来做什么，而且他可以说不。",
+                "埋在小字条款里、默认勾选的方框，或者一个让人一头雾水的弹窗，都不算真正的同意，因为这个人从未真正理解，也没有自由地做出选择。好的设计会问得清清楚楚，并让「不同意」成为一个容易又安全的选项。",
+              ],
+              examples: [
+                "清晰的同意：「共享你的位置，以便我们显示附近的站点？是 / 否。」",
+                "不是真正的同意：一份长长的协议，把数据共享藏在第 40 段里。",
+                "不是真正的同意：一个应用非要你允许毫不相关的追踪，否则就不给用。",
+              ],
+            },
+            {
+              title: "数据最小化：只收集这项工作需要的东西",
+              body: [
+                "数据最小化是一条简单又强大的规则：只收集和保存某个功能真正需要用来运转的数据。如果一个功能用更少的数据就能完成任务，那它就应该那样做。你从未收集的数据，就不可能泄露、被滥用，或被不该看到的人看到。",
+                "要做到最小化，对每一项数据都问一句：「这个功能真的需要它才能运转吗？」天气预报需要的是你的大致区域，而不是你的确切地址或全部位置历史。砍掉多余的数据，能让功能照样好用，同时降低对人们的风险。",
+              ],
+              examples: [
+                "用你所在的城市、而不是你精确的 GPS 轨迹来做天气预报。",
+                "一个计步器只保存今天的总步数，而不是你走过的所有地方。",
+                "注册时只要一个昵称，而不是你的法定全名。",
+              ],
+            },
+            {
+              title: "数据更少，工作照旧：最小化的实际做法",
+              body: [
+                "最小化并不意味着把功能弄坏。大多数功能都可以重新设计成需要更少数据，办法是使用范围更宽或保存期更短的数据版本。不用精确位置，用一个大致区域。不永久保存，任务一结束就删掉。",
+                "这是由人做出的设计选择。当你构建或评判一个人工智能功能时，你可以坚持选那个既能完成任务、又收集最少个人数据的版本，这就是通过设计来尊重隐私，而不是碰运气。",
+              ],
+              examples: [
+                "在天气功能里，把「确切地址」变成「城市」。",
+                "对地图路线，把「永久保存」变成「行程结束后删除」。",
+                "对游戏排行榜，把「真实姓名和生日」变成「只要昵称」。",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "为校车追踪功能做数据最小化",
+            steps: [
+              "说清这个功能的任务。在校车还有大约五分钟到站时提醒学生，好让他动身去站点。",
+              "列出一个粗心的版本可能会收集什么。学生一整天的精确 GPS 位置、他的全名、他的家庭住址，以及他的全部位置历史。",
+              "对每一项都问一遍最小化的问题。要提醒「校车快到你的站点了」，这个功能需要的是学生使用的那一个站点，而不是一整天的行踪追踪。",
+              "用更少的数据重新设计。让学生从列表里选出自己的站点。只保存那个站点，并且只在校车运行期间把它和校车位置作比较。",
+              "检查知情同意。问得明明白白：「校车快到你的站点时提醒你？是 / 否」，并确保学生和家人都理解、也可以拒绝。",
+            ],
+            takeaway: "从这个功能真正的任务出发，只保留仍能完成任务的最小数据，并用清晰的方式征得同意。",
+          },
+          visuals: [
+            {
+              title: "重新设计一个功能，让它少收集",
+              summary: "一张校车追踪功能的前后对比图。之前（过度收集）：保存学生一整天的精确位置、法定全名、家庭住址，以及永久保留的完整位置历史。之后（最小化）：只保存学生选定的那一个校车站点，只在校车运行期间与校车位置作比较，并在当天结束时删除。「之后」的版本完成的是同一件事，也就是在校车临近时提醒学生，却保存了远远更少的个人数据。",
+              caption: "同样的任务，个人数据却少得多：最小化的设计降低了学生面临的风险。",
+            },
+            {
+              title: "这个功能真的需要它吗？",
+              summary: "一张表，逐项检验一个天气功能可能索取的数据是否真的必要。大致区域或城市：需要，因为预报是本地的。精确 GPS 地址：不需要，城市就够了。完整位置历史：不需要，只有当前区域才重要。通讯录：不需要，和天气毫无关系。经验法则是只保留标着「需要」的那些行。",
+              table: {
+                columns: [
+                  "索取的数据",
+                  "本地预报需要它吗？",
+                  "保留吗？",
+                ],
+                rows: [
+                  [
+                    "大致区域或城市",
+                    "需要，预报是本地的",
+                    "保留",
+                  ],
+                  [
+                    "精确 GPS 地址",
+                    "不需要，城市就够了",
+                    "舍弃",
+                  ],
+                  [
+                    "完整位置历史",
+                    "不需要，只有当前区域才重要",
+                    "舍弃",
+                  ],
+                  [
+                    "通讯录",
+                    "不需要，与天气无关",
+                    "舍弃",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "隐私与数据最小化实验室",
+            goal: "针对几个虚构的应用，把每一个数据字段归类为必需、有帮助、不必要或过于敏感，然后对照关于更安全替代方案、知情同意和保存时长的指引。",
+            overview: "挑一个虚构的应用（图书推荐、活动提醒、回收助手、学习计划或博物馆导览），逐个字段地看下去，包括名字、确切生日、年龄段、精确位置、语音录音、照片、设备标识等等，判断对那个用途来说它是必需的、有帮助但可选的、不必要的，还是过于敏感的。揭晓指引，看看每个字段为什么可能需要或不需要、有什么更安全的替代方案、是否需要征得同意、应保存多久，以及在设备本地处理是否能降低风险。目标是数据最小化：只收集真正必要的东西。不需要输入任何个人信息；应用和字段都是内置的。",
+            steps: [
+              "选一个应用，读一读它是做什么用的。",
+              "把每个数据字段归类：必需、有帮助、不必要，或过于敏感。",
+              "揭晓指引并作对照，读一读每一项的更安全替代方案、知情同意和保存时长。",
+              "留意同一个字段，如何在一个应用里是必需的，在另一个应用里却是不必要的。",
+            ],
+            materials: [
+              "本活动中内置的隐私实验室",
+            ],
+            successCriteria: [
+              "至少为一个应用把所有字段都归了类。",
+              "识别出了不必要和过于敏感的字段（数据最小化）。",
+              "读过了更安全的替代方案、同意方面的要求，以及保存时长的指引。",
+            ],
+            dataset: {
+              name: "应用情景与数据字段",
+              description: "五个内置的虚构应用情景和十三个可能的数据字段，每个都配有编写好的答案（推荐的归类、原因、更安全的替代方案、知情同意、保存时长、设备本地处理）。不会输入任何真实的个人数据。",
+              columns: [
+                null,
+                "数据字段",
+                "归类",
+                "更安全的替代方案",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "回答这些题，检验你是否理解个人数据、知情同意和数据最小化。",
+            questions: [
+              {
+                prompt: "下面哪些算个人数据？选出所有符合的。",
+                explanation: "个人数据是关于某个具体的人的信息；公开的公交时刻表不是关于任何一个人的。",
+                choices: [
+                  {
+                    text: "一个人的家庭住址",
+                    explanation: "正确：家庭住址是关于某个具体的人的信息。",
+                  },
+                  {
+                    text: "一张能看到某人脸部的照片",
+                    explanation: "正确：露脸照片能识别出某个具体的人，所以它是个人数据。",
+                  },
+                  {
+                    text: "一座城市的公开公交时刻表",
+                    explanation: "公开的时刻表不是关于任何一个人的，所以它不是个人数据。",
+                  },
+                  {
+                    text: "某个人此刻的精确位置",
+                    explanation: "正确：精确位置说明了某个具体的人在哪里，所以它是个人数据。",
+                  },
+                ],
+              },
+              {
+                prompt: "哪个选项最符合数据最小化？",
+                scenario: "一个问答游戏应用需要一个名字，显示在得分榜上。它给出了三种从每位玩家那里收集信息的方案。",
+                explanation: "排行榜只需要一个显示用的名字，所以昵称是仍能完成任务的最少个人数据。",
+                choices: [
+                  {
+                    text: "收集玩家自己输入的一个昵称。",
+                    explanation: "正确：昵称用最少的个人数据完成了任务。",
+                  },
+                  {
+                    text: "收集玩家的法定全名和生日。",
+                    explanation: "排行榜并不需要法定姓名或生日，所以这是过度收集。",
+                  },
+                  {
+                    text: "顺便把玩家的通讯录和位置也收集了。",
+                    explanation: "通讯录和位置与显示一个分数毫无关系，所以这远远超出了需要。",
+                  },
+                ],
+              },
+              {
+                prompt: "判断这句话是对还是错。",
+                statement: "把共享数据的条款藏在小字里、藏在用户多半不会读到的地方，仍然算作真正的知情同意。",
+                explanation: "知情同意意味着这个人被清楚地告知、并且可以自由选择；藏在小字里的数据共享不是知情同意。",
+              },
+            ],
+          },
+          challenge: {
+            title: "为你用的某个功能做最小化",
+            prompt: "挑一个常见的应用功能，重新设计它，让它在照常工作的同时收集最少的个人数据。",
+            steps: [
+              "用一句话描述这个功能和它真正的任务。",
+              "列出它可能会收集的个人数据。",
+              "把这项任务并不真正需要的都划掉。",
+              "写出最小化之后的版本，并为它写一个清晰的知情同意问句。",
+            ],
+            successCriteria: [
+              "把这个功能的任务说清楚了。",
+              "至少去掉了一项不必要的个人数据。",
+              "写出了清晰的知情同意问句，并给出容易拒绝的方式。",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "你设备上的哪个应用，你觉得收集的数据超出了它的功能所需？它可以不再索取什么？",
+            },
+            {
+              prompt: "为什么少收集个人数据，即便从来没人滥用过，也仍然是在保护人们？",
+            },
+          ],
+          recap: {
+            summary: "隐私就是掌控个人数据；同意必须建立在知情的基础上，而数据最小化只保留一个功能真正需要的东西。",
+            keyPoints: [
+              "个人数据是关于某个具体的人的信息，比如姓名、住址或精确位置。",
+              "真正的同意是知情且自愿给出的，而不是藏在小字里的。",
+              "数据最小化意味着只收集这个功能运转所必需的东西。",
+              "你从未收集的数据不会泄露、也不会被滥用，所以数据越少，风险越小。",
+            ],
+          },
+          extension: {
+            title: "「免费」应用背后的取舍",
+            body: [
+              "许多应用之所以免费，是因为它们收集并使用了用户的数据。这并不意味着每个免费应用都有害，但确实意味着「这个应用从我这里得到了什么？」是一个值得问的问题。",
+              "挑一个免费的应用或服务，描述其中可能的交换：用户得到了什么，而公司可能作为回报收集了哪些数据？按照数据最小化的标准，这些数据里有哪些是这个应用其实并不需要的？",
+            ],
+          },
+        },
+        {
+          title: "调查人工智能内容，并做出一个伦理决定",
+          summary: "学会通过找到原始出处、核对上下文、独立确认，来核实人工智能生成的内容和网上的内容，然后在人的监督和申诉权之下做出一个伦理决定。",
+          estimatedTime: "50-60 分钟",
+          objectives: [
+            {
+              text: "给深度伪造和错误信息下定义，并说明它们如何误导人。",
+            },
+            {
+              text: "通过找到一个说法的原始出处并核对上下文来核实它。",
+            },
+            {
+              text: "使用来自彼此独立且可信来源的独立确认。",
+            },
+            {
+              text: "说明为什么人工智能的重要决定需要人的监督和申诉权。",
+            },
+          ],
+          materials: [
+            {
+              name: "在网页浏览器中打开的这节课",
+            },
+            {
+              name: "纸和笔，或者一个记事应用",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "深度伪造",
+              definition: "由人工智能制作或篡改的照片、视频或音频，让某个人看起来在说或在做他其实并没有说过、做过的事。",
+            },
+            {
+              term: "错误信息",
+              definition: "传播开来的虚假或有误导性的信息，不论转发的人是否有意欺骗。",
+            },
+            {
+              term: "原始出处",
+              definition: "一个说法、一段引语或一张图片在被复制或转发之前，最早真正出现的地方。",
+            },
+            {
+              term: "上下文",
+              definition: "围绕某件事的完整来龙去脉，也就是何时、何地、为何发生，它赋予一个事实真正的含义。",
+            },
+            {
+              term: "独立确认",
+              definition: "用两个或更多彼此独立、并非互相照抄的可信来源来核对一个说法。",
+            },
+            {
+              term: "人的监督",
+              definition: "由人来复核人工智能的重要决定并对其负责，而不是让软件自己说了算。",
+            },
+            {
+              term: "申诉",
+              definition: "你有权要求由人来复核、并在必要时更改人工智能对你做出的某个决定。",
+            },
+          ],
+          openingScenario: {
+            prompt: "网上流传着一段视频，画面中一位著名科学家说了非常惊人的话。看起来、听起来都很真。在相信它或转发它之前，你会想先核实什么？",
+            context: "如今人工智能已经能造出以假乱真的图像、视频和音频，所以「看起来是真的」已经不足以让人相信一样东西了。",
+          },
+          predictionPrompt: {
+            prompt: "预测一下：如果同一个惊人说法出现在五个账号上，而它们都是照抄同一条帖子，这算不算五次独立确认？",
+            howToCheck: "阅读关于独立确认的内容时，判断同一个来源的复制品能否算作彼此独立的确认。",
+          },
+          concepts: [
+            {
+              title: "深度伪造与错误信息：为什么「看起来是真的」不算证据",
+              body: [
+                "深度伪造是指人工智能制作或篡改出来的照片、视频或音频，让某个人看起来在说或在做他从未做过的事。由于人工智能在这方面越来越强，一段视频完全可能看着、听着都很有说服力，实际上却是假的。",
+                "错误信息是指传播开来的虚假或有误导性的信息。它不一定是深度伪造，转发的人也未必想误导别人：一张真实的照片配上虚假的说明照样会流传。无论哪种情况，办法都一样：不要仅仅因为某样东西看着像真的、或者很多人转发过，就去相信它。",
+              ],
+              examples: [
+                "一段视频里，人物的口型和声音被人工智能改动，伪造出一句引语。",
+                "一张真实的旧照片被重新转发，并谎称是今天发生的事。",
+                "一个编造出来的「统计数字」，被重复太多次，以至于开始让人觉得是真的。",
+              ],
+            },
+            {
+              title: "找到原始出处，核对上下文",
+              body: [
+                "要核实一个说法，就把它追溯到原始出处，也就是它在被复制、转发之前最早真正出现的地方。一段引语的截图不是出处；真正的报道、视频或官方页面才是。如果你根本找不到任何原始出处，那就是一个警示信号。",
+                "然后核对上下文：何时、何地、为何发生。一张真实的照片如果年代久远、来自别的地方，或者缺了周围的来龙去脉，同样可能误导人。上下文正是把一个孤零零的事实，变成一个诚实的事实的东西。",
+              ],
+              examples: [
+                "把一句引语追溯到它被剪出来的那场完整访谈。",
+                "发现一张「突发」照片其实是好几年前某场活动的。",
+                "读完整段声明后发现，那句引语是从半句话里截断的。",
+              ],
+            },
+            {
+              title: "独立确认：彼此独立的来源，而不是回声",
+              body: [
+                "单一来源可能出错，所以有分量的说法需要独立确认：两个或更多彼此独立、并非互相照抄的可信来源。十个账号转发同一条帖子，仍然只是一个来源在回声，而不是十次确认。",
+                "要做独立确认，就去找那些自己独立得出这一说法的报道或记录：另一家新闻机构、一个官方页面、一位专家。如果彼此独立的来源都一致，这个说法为真的可能性就大得多。如果只有一个来源提到它，就继续保持谨慎。",
+              ],
+              examples: [
+                "两家不同的新闻机构，各自独立地报道了同一件事。",
+                "一家官方机构在自己的页面上确认自己发布的消息。",
+                "发现五个「来源」最后都指向同一条帖子。",
+              ],
+            },
+            {
+              title: "人的监督与申诉权",
+              body: [
+                "人工智能可以帮忙标记可能的伪造内容或整理信息，但它会出错，所以重要的决定需要人的监督，也就是由一个人来复核这个决定并对它负责。当一个决定会影响某人的生活时，这一点最为要紧，比如把一条帖子标记为虚假、给作业评分，或者封禁一个账号。",
+                "受人工智能决定影响的人，也应当拥有申诉权：可以要求由人来复核这个决定，并在人工智能弄错时予以更改。监督和申诉，正是我们让人、而不是软件，掌控重要决定的方式。",
+              ],
+              examples: [
+                "在任何帖子被删除之前，由人来复核人工智能标记出来的内容。",
+                "学生请老师重新核对一道由人工智能评分的答案。",
+                "在人工智能误封账号之后，用户向人工客服提出申诉。",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "调查一段惊人的爆红视频",
+            steps: [
+              "转发之前先停一停。这段视频既惊人又煽情，而这恰恰是错误信息传播最快的时候。",
+              "找到原始出处。去搜索完整视频或官方声明，而不只是别人转发的那个短片段。",
+              "核对上下文。你会发现这段片段是从一场更长的演讲里剪出来的，而那位讲者说的其实是相反的意思；这句引语被断章取义了。",
+              "做独立确认。去找一个彼此独立且可信的来源。没有任何独立媒体报道过这个惊人说法，这是一个强烈的信号，说明它并不属实。",
+              "在监督与申诉之下作决定。因为事关重大，是由一位人工审核员、而不是人工智能自己来复核并把它标注为具有误导性，而发帖者如果拿得出真实证据，可以提出申诉。",
+            ],
+            takeaway: "在对一个严肃说法采取行动之前，先按出处和上下文核实，再做独立确认，并让人保持在掌控之中、留有申诉的途径。",
+          },
+          visuals: [
+            {
+              title: "网络内容核查清单",
+              summary: "一个四步流程，用于在相信或转发之前核查一个说法。第 1 步：找到原始出处（它最早出现的地方，而不是一张截图）。第 2 步：核对上下文（何时、何地、为何发生）。第 3 步：做独立确认（两个或更多彼此独立、并非互相照抄的可信来源）。第 4 步：在人的监督之下作决定，并保留申诉权。任何一步没通过，就不要把它当作真的转发出去。",
+              caption: "按顺序走完这四步；某一步没通过的说法，就不该被当作真的转发出去。",
+            },
+            {
+              title: "真正的确认与回声之别",
+              summary: "一张表，用来分辨真正的独立确认和一个来源的回声。同一条原帖被转发五次：不是独立的，因为它们都追溯到同一个来源。两家不同的新闻机构各自独立报道：是独立的，因为它们分别得出了这一说法。一家官方机构确认自己发布的消息：既独立又可信。一个没有出处的匿名账号：不算确认，要谨慎对待。",
+              table: {
+                columns: [
+                  "你找到了什么",
+                  "算独立确认吗？",
+                ],
+                rows: [
+                  [
+                    "同一条原帖被转发了五次",
+                    "不算，是一个来源在回声",
+                  ],
+                  [
+                    "两家不同的新闻机构，各自独立报道",
+                    "算，是独立的",
+                  ],
+                  [
+                    "一家官方机构确认自己发布的消息",
+                    "算，是可信来源",
+                  ],
+                  [
+                    "一个没有附任何出处的匿名账号",
+                    "不算，相信之前先核实",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "内容调查与伦理决定",
+            goal: "用出处和上下文方面的证据去调查虚构的帖子，然后作为伦理委员会审议若干被提出的人工智能系统，并设计一套申诉流程。",
+            overview: "第 1 部分：调查一批虚构的帖子，包括一张诚实标注的人工智能插画、一张配了误导性说明的真实照片、一句伪造的引语、一个虚假的日期、一个没有出处的说法、一个来源可靠的说法，以及一条煽情的连环转发帖。对每一条，都做那七项出处与上下文核查（谁发布的、有没有原始出处、日期对不对、说明文字与上下文是否相符、有没有证据、是否有独立来源确认、它是否在催促你的情绪），并判断该相信、该质疑，还是暂不下结论。像手指怪异这类视觉「破绽」被视为不可靠依据，本活动也不声称能完美识别人工智能内容。第 2 部分：作为伦理委员会评估六个被提出的人工智能系统，选出一项决定和相应的保障措施，反馈依据的是你的保障措施是否与事关的轻重相称，而不是某个唯一「正确」答案。第 3 部分：设计一套申诉流程。全部为虚构；任何内容都不会被发送到任何地方。",
+            steps: [
+              "对每一条帖子，读完那七项证据核查，然后判断：相信、质疑，还是暂不下结论。",
+              "与推荐结论以及关于出处和上下文的教学说明作对照。",
+              "作为伦理委员会，为一个被提出的人工智能系统选出一项决定和相应的保障措施。",
+              "设计一套申诉流程：告知、说明理由、由谁复核、如何纠正、如何留档，以及推翻决定的权力。",
+            ],
+            materials: [
+              "本活动中内置的内容调查、伦理委员会和申诉流程设计器",
+            ],
+            successCriteria: [
+              "对帖子的判断依据的是出处和上下文的证据，而不是某个视觉小技巧。",
+              "做出了一项伦理决定，其保障措施与事关的轻重相称。",
+              "设计出一套完整的申诉流程，包含人的监督和纠错的途径。",
+            ],
+            dataset: {
+              name: "帖子、伦理情景与申诉流程设计器",
+              description: "一批内置的虚构帖子共八条（每条都配有七项出处与上下文的证据核查和一个推荐结论）、六个伦理委员会情景（附有事关的轻重、可能出现的差错和关键保障措施），以及一个分为六部分的申诉流程设计器。全部为虚构；不含真实账号、真实人物或个人数据。",
+              columns: [
+                "帖子／情景",
+                "证据或事关的轻重",
+                "推荐结论／保障措施",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "回答这些题，检验你能否核实内容，并就监督和申诉进行思考。",
+            questions: [
+              {
+                prompt: "把核实一个惊人说法的各个步骤排成合理的顺序。",
+                explanation: "核实的做法是：先找到原始出处，再核对它的上下文，然后用独立来源加以确认，最后才决定该怎么做。",
+                items: [
+                  {
+                    text: "找到这个说法出自的原始出处",
+                  },
+                  {
+                    text: "核对上下文：何时、何地、为何发生",
+                  },
+                  {
+                    text: "用两个或更多独立来源加以确认",
+                  },
+                  {
+                    text: "决定该怎么做，并由人来复核这个决定",
+                  },
+                ],
+              },
+              {
+                prompt: "下面哪一项才是对一个说法的真正独立确认？",
+                explanation: "独立确认需要彼此独立、各自得出这一说法的来源，而不是同一条帖子的复制品。",
+                choices: [
+                  {
+                    text: "同一条帖子被许多账号转发",
+                    explanation: "同一条帖子的转发只是一个来源在回声，不是独立确认。",
+                  },
+                  {
+                    text: "两个彼此独立且可信的来源，各自独立地报道了它",
+                    explanation: "正确：并非互相照抄的彼此独立来源，才是真正的独立确认。",
+                  },
+                  {
+                    text: "一个匿名账号说「相信我」",
+                    explanation: "一个没有署名、也没有出处的账号，根本算不上确认。",
+                  },
+                  {
+                    text: "因为这个说法很惊人，所以感觉它是真的",
+                    explanation: "感觉不是证据；越是惊人的说法，越需要核查。",
+                  },
+                ],
+              },
+              {
+                prompt: "处理这个人工智能决定，最负责任的做法是什么？",
+                scenario: "一个学校应用用人工智能标记它认为是抄袭的作文。它标记了普里娅的作文，而那篇其实是她自己写的。",
+                explanation: "人工智能会出错，所以应当由人来复核这个标记，普里娅也应当能够向人提出申诉。",
+                choices: [
+                  {
+                    text: "自动判零分，因为人工智能从不出错。",
+                    explanation: "人工智能确实会出错，所以不经人工复核就照着标记处理，是不公平的。",
+                  },
+                  {
+                    text: "让老师复核这个标记，并让普里娅申诉和解释。",
+                    explanation: "正确：人的监督加上申诉权，能保护人们不受人工智能差错的伤害。",
+                  },
+                  {
+                    text: "对普里娅隐瞒这个标记，让她无从争辩。",
+                    explanation: "隐瞒决定会剥夺一切申诉的机会，这对普里娅不公平。",
+                  },
+                  {
+                    text: "把这篇作文删掉，这样谁都不用做决定了。",
+                    explanation: "删掉她的作业既惩罚了普里娅，也依然没有给她一次公正的复核。",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "写一份核实指南",
+            prompt: "做一份简短的指南，让朋友在转发一条爆红帖子之前，能用它来判断这条帖子是否可信。",
+            steps: [
+              "写下这四个步骤：原始出处、上下文、独立确认，以及人工复核。",
+              "为每一步加上一个朋友可以问自己的、简单直白的问题。",
+              "加上一句话，说明什么时候一个决定需要人的监督和申诉的途径。",
+            ],
+            successCriteria: [
+              "四个核实步骤按清晰的顺序都出现了。",
+              "每一步都有一个简单、能用得上的问题。",
+              "指南中提到了人的监督和申诉权。",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "想一想某件惊人的事在网上传开的经历。有什么本可以帮人们在转发之前核实它？",
+            },
+            {
+              prompt: "为什么即使人工智能通常是对的，对它的决定提出申诉的权利依然重要？",
+            },
+          ],
+          recap: {
+            summary: "因为人工智能能够伪造并传播极具说服力的内容，所以要按出处和上下文核实、做独立确认，并让人保持在掌控之中、拥有申诉权。",
+            keyPoints: [
+              "深度伪造和错误信息意味着「看起来是真的」并不算证据。",
+              "把说法追溯到原始出处，并核对它周围的上下文。",
+              "独立确认需要彼此独立的来源，而不是同一条帖子的复制品。",
+              "人工智能的重要决定需要人的监督和申诉权。",
+            ],
+          },
+          extension: {
+            title: "当速度和准确彼此拉扯",
+            body: [
+              "在网上，抢先往往比说对更能吸引注意力，所以误导性内容可能在还没人核实之前就传开了。认真核实需要时间，而节奏飞快的信息流并不奖励这种时间。",
+              "描述一种情形：抢着转发的压力，与核实一个说法所需的步骤发生冲突。平台或个人可以做些什么，让「准确的选择」比「快的选择」更容易？",
+            ],
+          },
+        },
+      ],
+    },
+    {
+      title: "人工智能设计工作室",
+      subtitle: "把所学汇总起来：界定一个真实问题，判断人工智能是否合适，设计并测试一个原型，再负责任地把它展示出来。",
+      summary: "在收官这一周，学生像设计团队一样工作：把用户的需求转化为清晰的问题界定，判断人工智能是不是合适的工具，设计输入、输出、特征、标签和规则，做出并测试一个纸上原型，用测试用例找出它的局限，再诚实地展示成果，包含人的监督和负责任的使用，同时了解那些构建和治理人工智能的人的职业。这一周为单独进行的最终项目工作室和期末测评做准备。",
+      bigQuestion: "你要如何把一个想法，从一个真实问题一路做成一个经过测试、并被负责任地展示出来的人工智能项目？",
+      estimatedTime: "2.5-3 小时",
+      objectives: [
+        "把用户的需求转化为清晰的问题界定，并判断人工智能是否适合它。",
+        "设计一个系统的输入、输出、特征、标签和规则。",
+        "做出一个原型，用测试用例检验它，找出它的局限并进行迭代。",
+        "在有监督的前提下负责任地展示一个项目，并描述真实的人工智能职业。",
+      ],
+      requiredConcepts: [
+        "用户需求",
+        "问题界定",
+        "人工智能的适用性",
+        "输入",
+        "输出",
+        "特征",
+        "标签",
+        "规则",
+        "原型",
+        "测试用例",
+        "局限",
+        "监督",
+        "迭代",
+        "负责任的使用",
+      ],
+      lessons: [
+        {
+          title: "选对问题，也选对工具",
+          summary: "像真正的团队那样启动一个设计项目：说出一个用户需求，写下清晰的问题界定，并判断人工智能究竟是不是这项工作的合适工具。",
+          estimatedTime: "50-60 分钟",
+          objectives: [
+            {
+              text: "把用户需求转化为一句话说清楚的问题界定。",
+            },
+            {
+              text: "判断人工智能的适用性：决定一个问题更适合人工智能，还是更适合固定规则。",
+            },
+            {
+              text: "说出你的项目会用到的输入和输出。",
+            },
+            {
+              text: "说明为什么在动手做任何东西之前，选对问题很重要。",
+            },
+          ],
+          materials: [
+            {
+              name: "在网页浏览器中打开的这节课",
+            },
+            {
+              name: "纸和笔，或者一个记事应用",
+            },
+            {
+              name: "你第 1 至 5 周的笔记",
+              note: "用来回忆人工智能是怎样从样例中学习的。",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "用户需求",
+              definition: "某个具体的人或群体想要解决的一个真实问题，从他们的角度来描述。",
+            },
+            {
+              term: "问题界定",
+              definition: "用一句清晰的话说明你到底要解决什么、为谁解决。",
+            },
+            {
+              term: "人工智能的适用性",
+              definition: "一个问题与人工智能的契合程度。人工智能从大量样例中学习规律，而固定规则则是人可以直接写出来的。",
+            },
+            {
+              term: "输入",
+              definition: "系统会接收的信息，比如一张照片、一句话，或一组数字。",
+            },
+            {
+              term: "输出",
+              definition: "系统会返回的结果，比如一个标签、一个预测或一条建议。",
+            },
+          ],
+          openingScenario: {
+            prompt: "学校的一个社团说：「我们想用人工智能！」可是用来做什么呢？设计团队从来不从工具开始，而是从一个有问题的人开始。你的项目要解决的是谁的问题？这个问题究竟是什么？",
+            context: "这一周你要规划一个真实的项目。一切都从问题出发，而不是从技术出发。",
+          },
+          predictionPrompt: {
+            prompt: "预测一下：在「把图书馆书籍的照片分成小说和非小说」与「用正确的密码打开一扇门」这两个想法中，哪一个更适合人工智能？",
+            howToCheck: "边读边问：这项任务是不是杂乱到人没法写出精确规则，还是已经有一条清晰的规则能解决它。",
+          },
+          concepts: [
+            {
+              title: "从用户需求出发，而不是从工具出发",
+              body: [
+                "好项目都始于一个有真实问题的真实的人，也就是一个用户需求。「我们班的同学总记不清该把垃圾扔进哪个回收桶」是一个用户需求。「我想用人工智能」不是，它说的是一个工具，而不是一个问题。",
+                "当你从用户需求出发时，日后才能判断你的项目是否真的帮上了忙。描述需求时要站在用户的角度：他是谁，此刻什么事对他来说很难。",
+              ],
+              examples: [
+                "一位园丁分辨不出哪些叶子得了植物病害",
+                "新生第一天在校园里找不到教室",
+                "一个笔友社团收到成员看不懂的语言写的信息",
+              ],
+            },
+            {
+              title: "写下清晰的问题界定",
+              body: [
+                "有了用户需求之后，你要写下问题界定：用一句清晰的话说明你到底在解决什么、为谁解决。界定得越准，项目越不容易跑偏。「帮六年级学生根据一张照片，把教室垃圾分成可回收、堆肥和其他垃圾」就足够具体，既能动手做，也能测试。",
+                "像「让回收变得更好」这样含糊的界定没法测试，你永远不会知道自己有没有成功。好的问题界定会说清用户、任务，以及一个好结果是什么样。",
+              ],
+              examples: [
+                "含糊：「帮帮植物。」清晰：「告诉园丁一张番茄叶照片看起来是健康的还是有病的。」",
+                "含糊：「让上学更轻松。」清晰：「根据教室编号，给新生指出去那间教室的路线。」",
+              ],
+            },
+            {
+              title: "判断人工智能的适用性：它究竟是不是合适的工具？",
+              body: [
+                "并不是每个问题都需要人工智能。当一项任务杂乱到写不出精确规则，而你又有大量可供学习的样例时，人工智能才最出彩，比如从照片中分辨健康叶片和病叶。一个已经能被一条清晰规则解决的问题不需要人工智能：「密码匹配就解锁」是一条规则，不是一项学习任务。",
+                "要判断人工智能的适用性，问三个问题：这项任务是不是杂乱到没法手写规则？你能不能收集到大量带标签的样例？以及，系统偶尔出错是不是可以接受？如果答案都是肯定的，人工智能可能合适。如果一条简单规则就能解决，那就用规则：它更便宜、更清楚，也更容易核查。",
+              ],
+              examples: [
+                "适合人工智能：把垃圾照片分成可回收、堆肥或其他垃圾。",
+                "不适合人工智能：早上 7:00 打开走廊的灯，那是一条固定规则。",
+                "不适合人工智能：哪怕错一次都可能严重伤害到人的任务。",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "从一个模糊的愿望到一个能动手做的项目",
+            steps: [
+              "从这个愿望开始：「我想用人工智能来帮回收社团。」",
+              "找出用户需求：社团成员和其他同学常常把垃圾扔错桶，因为他们分不清什么是可回收的。",
+              "写出问题界定：「根据一件物品的照片，帮学生判断它该扔进可回收、堆肥、其他垃圾这三个桶中的哪一个。」",
+              "说出输入和输出：输入是一件物品的照片；输出是一个标签，「可回收」「堆肥」或「其他垃圾」。",
+              "检查人工智能的适用性：对精确规则来说太杂乱吗？是的，物品千差万别。能收集到大量带标签的照片吗？能。偶尔出错可以接受吗（仍有人来复核）？可以。人工智能合适。",
+            ],
+            takeaway: "一个能动手做的项目，具备真实的用户需求、一句话的问题界定、说得出的输入和输出，以及在适用性判断上的一个「是」。",
+          },
+          visuals: [
+            {
+              title: "这个问题该用人工智能吗？",
+              summary: "一棵关于人工智能适用性的决策树。起点：「一条清晰的规则能解决吗？」如果能，就用规则，而不是人工智能。如果不能，接着问：「能收集到大量带标签的样例吗？」如果不能，人工智能多半还派不上用场。如果能，接着问：「偶尔出错、并且有人来复核，可以接受吗？」如果不可以，就要非常谨慎，或者干脆不用人工智能。如果可以，人工智能可能很合适。",
+              caption: "规则能解决时就用规则；把人工智能留给那些有样例、又有人复核的杂乱任务。",
+            },
+            {
+              title: "问题界定核查表",
+              summary: "一张表，列出一个有力的问题界定应包含什么。用户：指明某个具体的人或群体。任务：说清究竟要判断或产出什么。输入：说明系统接收什么。输出：说明它返回什么。可检验：日后你能判断它有没有奏效。",
+              table: {
+                columns: [
+                  "组成部分",
+                  "它回答的问题",
+                  "薄弱的例子",
+                  "有力的例子",
+                ],
+                rows: [
+                  [
+                    "用户",
+                    "谁有这个问题？",
+                    "「人们」",
+                    "「刚入学的六年级新生」",
+                  ],
+                  [
+                    "任务",
+                    "我们究竟在解决什么？",
+                    "「帮忙指路」",
+                    "「根据教室编号给出到那间教室的路线」",
+                  ],
+                  [
+                    "输入",
+                    "什么进来？",
+                    "「一些信息」",
+                    "「一个教室编号」",
+                  ],
+                  [
+                    "输出",
+                    "什么出去？",
+                    "「一个答案」",
+                    "「一步步的路线指引」",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "问题与工具契合度工作室",
+            goal: "选定一个项目问题，写出它的问题界定，并判断人工智能是不是合适的工具。",
+            overview: "你将浏览一组候选问题，挑出一个（或者带来你自己的用户需求），把它变成一份能动手做的项目简介：一个用户需求、一句话的问题界定、说得出的输入和输出，以及关于人工智能适用性的判断。这就是你最终项目的种子。",
+            steps: [
+              "读一读候选问题，挑一个你感兴趣的，或者写下你自己的用户需求。",
+              "站在用户的角度写下这个需求：他是谁，什么事对他来说很难。",
+              "写一句话的问题界定，说清用户、任务，以及一个好结果是什么样。",
+              "说出你的系统会用到的输入和输出。",
+              "做一遍人工智能适用性检查，并写一句话：人工智能合适吗，还是一条简单规则就够了？",
+            ],
+            materials: [
+              "纸和笔，或者一个记事应用",
+            ],
+            successCriteria: [
+              "一个站在用户角度写下的需求。",
+              "一句话的问题界定，说清了用户、任务和一个可检验的结果。",
+              "说得出的输入和输出。",
+              "关于人工智能适用性的明确判断，并附一句话的理由。",
+            ],
+            dataset: {
+              name: "候选项目问题",
+              description: "一组内置的工作室起步问题：根据照片分类教室垃圾、标记有病害的植物叶片、给失物招领的物品归类、翻译笔友信息、按主题整理图书馆藏书，以及「用密码打开储物柜」（一个只需规则、应当排除的陷阱）。每张卡片都列出了大致的用户、一个可能的输入和一个可能的输出。",
+              columns: [
+                "问题",
+                "可能的用户",
+                "可能的输入",
+                "可能的输出",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "检验你能否界定一个问题，并判断人工智能是否适合它。",
+            questions: [
+              {
+                prompt: "哪一个是最有力的问题界定？",
+                explanation: "有力的问题界定会说清用户、具体任务，以及一个你日后能检验的结果。",
+                choices: [
+                  {
+                    text: "用人工智能让学校变得更好。",
+                    explanation: "这说的是一个工具和一个愿望，既没有具体用户，也没有任务或可检验的结果。",
+                  },
+                  {
+                    text: "根据教室编号给出路线，帮新生找到教室。",
+                    explanation: "正确：它说清了用户（新生）、任务（指路）和一个可检验的结果。",
+                  },
+                  {
+                    text: "用照片做点酷炫的东西。",
+                    explanation: "既没有用户，也没有任务，更没有任何你能检验的东西。",
+                  },
+                  {
+                    text: "让所有人的回收都变得更好。",
+                    explanation: "太含糊了：你永远没法判断它有没有奏效。",
+                  },
+                ],
+              },
+              {
+                prompt: "判断这句话是对还是错。",
+                statement: "如果一条清晰的规则已经能解决问题，你还是应该用人工智能，因为人工智能更先进。",
+                explanation: "错：如果一条简单规则管用，就用规则。它比人工智能更便宜、更清楚，也更容易核查。",
+              },
+              {
+                prompt: "哪个项目最适合用人工智能？",
+                scenario: "一个社团在两者之间选择：（A）在下课的那一刻准时打铃，或者（B）根据一张照片判断植物叶子看起来是健康的还是有病的。",
+                explanation: "打铃是一条清晰的时间规则。而分辨健康叶片和病叶很杂乱，需要大量带标签的样例，这正适合人工智能。",
+                choices: [
+                  {
+                    text: "下课时打铃",
+                    explanation: "那是一条固定的时间规则，不需要学习，所以人工智能并不合适。",
+                  },
+                  {
+                    text: "在照片里分辨健康的叶子和有病的叶子",
+                    explanation: "正确：它对手写规则来说太杂乱，又有可供学习的样例，所以人工智能合适。",
+                  },
+                  {
+                    text: "两者同样适合人工智能",
+                    explanation: "打铃是一条简单规则，并不需要人工智能。",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "三个问题，留下一个",
+            prompt: "想出三个用户需求，然后挑出最适合人工智能的那一个，并为你的选择辩护。",
+            steps: [
+              "写出三个不同的用户需求，每一个都站在一位真实用户的角度。",
+              "为每一个说出一个可能的输入和一个可能的输出。",
+              "对这三个都做一遍人工智能适用性检查，并挑出最合适的那个。",
+              "写两句话，为你挑中的那个比其他两个更适合人工智能作辩护。",
+            ],
+            successCriteria: [
+              "三个用户需求，每个都有输入和输出。",
+              "对每一个都做出了人工智能适用性判断。",
+              "挑出了一个问题，并配有两句话的辩护。",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "为什么人容易从工具出发（「我们来用人工智能吧」）而不是从问题出发？这样做又会出什么岔子？",
+            },
+            {
+              prompt: "写问题界定时，哪一部分最难：说清用户、任务，还是可检验的结果？",
+            },
+          ],
+          recap: {
+            summary: "出色的人工智能项目，都始于一个真实的用户需求、一份清晰的问题界定，以及对「人工智能究竟是不是合适工具」的一次诚实检验。",
+            keyPoints: [
+              "用户需求描述的是一个真实的人的问题，而不是你想用的某个工具。",
+              "问题界定要说清用户、任务、输入、输出，以及一个可检验的结果。",
+              "判断人工智能的适用性：规则管用时就用规则；把人工智能留给样例充足的杂乱任务。",
+            ],
+          },
+          extension: {
+            title: "是机会，还是噱头？",
+            body: [
+              "有些公司给产品加上「人工智能」，主要是为了营销，哪怕一条简单规则会更管用。这可能浪费钱，也让产品更难被信任和核查。",
+              "找一个宣传自己带有「人工智能」功能的真实产品或应用。判断这项任务是否真的需要人工智能，还是一条固定规则就够了。写一小段话说明你的判断。",
+            ],
+          },
+        },
+        {
+          title: "规划、做原型、做测试",
+          summary: "把你的问题变成一个能动手做、也能检验的方案：设计输入、输出、特征、标签和规则；做一个简单的原型；再用真实的测试用例来检验它。",
+          estimatedTime: "50-65 分钟",
+          objectives: [
+            {
+              text: "设计你的系统的输入、输出、特征、标签，以及任何规则。",
+            },
+            {
+              text: "说明什么是原型，并在纸上做一个简单的原型。",
+            },
+            {
+              text: "写出测试用例，并用它们找出局限。",
+            },
+            {
+              text: "根据测试所显示的结果，通过迭代改进你的设计。",
+            },
+          ],
+          materials: [
+            {
+              name: "在网页浏览器中打开的这节课",
+            },
+            {
+              name: "纸和笔，或者一个记事应用",
+            },
+            {
+              name: "你在第 1 课写下的问题界定",
+              note: "你会在它的基础上搭建方案。",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "特征",
+              definition: "关于某个输入的、可衡量的一条线索，系统用它来做判断，比如物品的颜色、形状或大小。",
+            },
+            {
+              term: "标签",
+              definition: "附在一个样例上的正确答案，比如把一张照片标注为「可回收」，好让系统从中学习。",
+            },
+            {
+              term: "规则",
+              definition: "由人写下的精确指令，比如「如果这件物品是玻璃瓶，就标注为可回收」。",
+            },
+            {
+              term: "原型",
+              definition: "一个想法的、快速而粗糙的第一版，做出来是为了在造出真东西之前先检验它怎么运作。",
+            },
+            {
+              term: "测试用例",
+              definition: "一个已知正确答案的例子，你把它送进原型，检验原型是否管用。",
+            },
+            {
+              term: "迭代",
+              definition: "反复走「制作、测试、改进」这个循环，让设计一次比一次更好。",
+            },
+          ],
+          openingScenario: {
+            prompt: "你已经有了问题界定：把一张垃圾照片分成可回收、堆肥或其他垃圾。系统会看哪些线索（特征）？你会教给它哪些标签？而在真正动手做任何东西之前，你又怎么知道自己的方案靠不靠谱？",
+            context: "这节课，你要把自己的想法变成一个真的能在纸上检验的方案。",
+          },
+          predictionPrompt: {
+            prompt: "预测一下：当你第一次用棘手的例子测试自己的原型时，它会大部分都答对，还是会在一些例子上失败？你觉得哪种例子会把它绊倒？",
+            howToCheck: "写完并「跑完」你的测试用例之后，把实际发生的情况和你的预测作比较。",
+          },
+          concepts: [
+            {
+              title: "设计各个部件：输入、输出、特征、标签和规则",
+              body: [
+                "动手之前，先设计各个部件。输入是进来的东西（一件物品的照片）。输出是出去的东西（一个标签：可回收、堆肥或其他垃圾）。标签则是你要教给系统、并用来核查它的那组正确答案。",
+                "特征是系统用来做判断的线索，比如物品的材质、形状，或者它是否湿了、是否有油。如果任务中有一部分既简单又清楚，你甚至可以加一条规则：「如果是干净的玻璃瓶，就标注为可回收。」好的方案会把这些都写清楚，好让任何人都能看懂一个判断是怎么做出来的。",
+              ],
+              examples: [
+                "输入：一件物品的照片。输出：三个标签中的一个。",
+                "特征：材质、是否湿了、是不是纸、上面有没有食物。",
+                "规则：「如果是香蕉皮，就标注为堆肥。」",
+              ],
+            },
+            {
+              title: "原型是为了检验而做的粗糙初版",
+              body: [
+                "原型是你这个想法的快速、粗糙版本，做出来是为了从中学习，而不是成品。你的原型可以在纸上：一叠「如果有这些特征，就用这个标签」的卡片，或者一张同学能用手跟着走的简单流程图。关键是把想法变得足够具体，好拿来试一试。",
+                "原型本来就该是不完美的。趁早、花很少的成本做一个，能让你免于花大力气去做错的东西。你完全可以把一个原型扔掉，那没关系，你留下了从中学到的东西。",
+              ],
+              examples: [
+                "纸上的流程图：「是纸吗？湿了吗？→ 标签」。",
+                "一叠决策卡片，朋友不用你解释就能照着走。",
+                "手绘的应用界面草图，标出输入和输出。",
+              ],
+            },
+            {
+              title: "测试用例揭示局限，迭代把它们修好",
+              body: [
+                "测试用例是一个已知正确答案的例子。你把它送进原型，看它给出的标签对不对。几个精心挑选的测试用例，包括棘手的那些，很快就能显示出你的设计在哪里崩掉。那些薄弱之处就是它的局限：它会出错或者拿不定主意的情形。",
+                "任何系统都有局限；目标是有意去把它们找出来，而不是日后被它们打个措手不及。当某个测试用例失败时，你就改进设计，再测一次。这个「一直重复直到更好」的循环就是迭代，也是真实产品被造出来的核心方式。",
+              ],
+              examples: [
+                "测试用例：一个油腻的比萨盒。正确标签：其他垃圾或堆肥，而不是可回收。",
+                "发现的局限：原型把所有盒子都标成「可回收」，所以油腻的那些就错了。",
+                "迭代：加一个「有没有食物油渍？」的特征，再加一条规则，把油腻的盒子送到别处。",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "为一个垃圾分类器做原型并测试",
+            steps: [
+              "设计各个部件：输入 = 一件物品的照片；输出 = 可回收／堆肥／其他垃圾；特征 = 材质、是不是纸、是否湿了、有没有食物油渍。",
+              "做一个纸上原型：决策卡片。「如果是剩饭剩菜 → 堆肥。如果是干净的纸或干净的瓶子 → 可回收。否则 → 其他垃圾。」",
+              "写下已知答案的测试用例：干净的水瓶（可回收）、香蕉皮（堆肥）、油腻的比萨盒（其他垃圾）、铝箔薯片袋（其他垃圾）。",
+              "用手跑一遍测试：原型答对了水瓶和香蕉皮，却把油腻的比萨盒标成了「可回收」，这是一次失败。",
+              "找出局限并迭代：加一个「有没有食物油渍？」的特征，再加一条规则，让油腻的纸类进其他垃圾。重新跑一遍测试用例；这次比萨盒通过了。",
+            ],
+            takeaway: "设计各个部件，做一个粗糙原型，用已知答案的用例来测试，找出它的局限，然后不断迭代直到变好。",
+          },
+          visuals: [
+            {
+              title: "制作、测试、改进的循环",
+              summary: "一个不断重复的四步循环。第 1 步：设计各个部件（输入、输出、特征、标签、规则）。第 2 步：做一个粗糙的原型。第 3 步：跑测试用例，记录哪些通过、哪些失败。第 4 步：找出局限并改进。一支箭头从第 4 步回到第 2 步，表示迭代。",
+              caption: "迭代意味着把这个循环走不止一遍，每一遍都更好一点。",
+            },
+            {
+              title: "一张测试用例表",
+              summary: "垃圾分类器的测试用例表。每一行都有一个例子、它已知的正确标签、原型给出的标签，以及通过还是失败。干净的水瓶：正确答案可回收，给出可回收，通过。香蕉皮：正确答案堆肥，给出堆肥，通过。油腻的比萨盒：正确答案其他垃圾，给出可回收，失败。铝箔薯片袋：正确答案其他垃圾，给出其他垃圾，通过。",
+              table: {
+                columns: [
+                  "测试用例",
+                  "正确标签",
+                  "原型给出的标签",
+                  "结果",
+                ],
+                rows: [
+                  [
+                    "干净的水瓶",
+                    "可回收",
+                    "可回收",
+                  ],
+                  [
+                    "香蕉皮",
+                    "堆肥",
+                    "堆肥",
+                  ],
+                  [
+                    "油腻的比萨盒",
+                    "其他垃圾",
+                    "可回收",
+                    "失败",
+                  ],
+                  [
+                    "铝箔薯片袋",
+                    "其他垃圾",
+                    "其他垃圾",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "原型方案工作室",
+            goal: "把你的问题界定，变成一份经过设计、做出原型并测试过、可以拿去展示的方案。",
+            overview: "用你在第 1 课确定的问题，设计输入、输出、特征、标签和任何规则；画出一个纸上原型；写至少四个测试用例，包括棘手的那些；用手「跑」一遍；再记下你发现的局限和你会做的一项改进。这将成为你最终项目的核心。",
+            steps: [
+              "设计各个部件：写出你的输入、输出、标签、三到五个特征，以及任何简单规则。",
+              "做一个纸上原型：画一张流程图，或者写出同学不用你帮忙就能照着走的决策卡片。",
+              "写至少四个已知正确答案的测试用例，其中包括两个棘手的。",
+              "用手把每个测试用例送进原型，并在测试用例表上记录通过还是失败。",
+              "列出失败所揭示的局限，并写下你接下来会做的一项改进（你的迭代）。",
+            ],
+            materials: [
+              "纸和笔，或者一个记事应用",
+            ],
+            successCriteria: [
+              "写出了输入、输出、标签、三到五个特征，以及任何规则。",
+              "一个同学不需要额外解释就能照着走的纸上原型。",
+              "至少四个已知答案的测试用例，包括棘手的，已跑过并标注了通过或失败。",
+              "至少找出一项局限，并提出一项改进（迭代）。",
+            ],
+            dataset: {
+              name: "测试用例入门包",
+              description: "一份内置的清单，教你怎样写好测试用例：既要有简单的例子，也要有边缘情况（湿的、油腻的、破损的、少见的），还要有可能两边都说得通的例子。另外附有一张空白的测试用例表模板（例子、正确标签、原型给出的标签、通过／失败）供你抄用。",
+              columns: [
+                "测试用例类型",
+                "为什么要包含它",
+                "示例提示",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "检验你能否规划、做原型并测试一个设计。",
+            questions: [
+              {
+                prompt: "在动手做系统之前，下面哪些是你应当设计好的？（选出所有符合的。）",
+                explanation: "输入、输出、特征和标签都属于设计的一部分。展示用的幻灯片是后面的事，不属于「决定怎样做判断」的设计。",
+                choices: [
+                  {
+                    text: "系统接收的输入",
+                    explanation: "正确：写清输入是设计的核心部分。",
+                  },
+                  {
+                    text: "它返回的输出",
+                    explanation: "正确：输出，包括那组标签，都必须经过设计。",
+                  },
+                  {
+                    text: "它用来做判断的特征",
+                    explanation: "正确：特征是系统所用的线索，所以属于设计的一部分。",
+                  },
+                  {
+                    text: "你展示用幻灯片的颜色",
+                    explanation: "幻灯片的颜色是之后展示的事，与系统怎样做判断无关。",
+                  },
+                ],
+              },
+              {
+                prompt: "把一轮原型制作中「制作、测试、改进」的循环排好顺序。",
+                explanation: "你先设计各个部件，做出粗糙原型，跑测试用例，然后找出局限并改进；这个循环还可以再来一遍。",
+                items: [
+                  {
+                    text: "设计各个部件（输入、输出、特征、标签、规则）",
+                  },
+                  {
+                    text: "做一个粗糙的原型",
+                  },
+                  {
+                    text: "跑测试用例，并记录通过还是失败",
+                  },
+                  {
+                    text: "找出局限并改进设计",
+                  },
+                ],
+              },
+              {
+                prompt: "这个团队接下来该做什么？",
+                scenario: "一个团队的纸上原型通过了所有简单的测试用例，却把一个油腻的比萨盒标成了「可回收」，而正确答案是其他垃圾。",
+                explanation: "一个失败的测试用例揭示了一处局限。正确的做法是迭代：改进设计（加一个关于油渍的特征或规则）并重新测试，而不是掩盖或无视这次失败。",
+                choices: [
+                  {
+                    text: "不理会那个油腻的盒子，因为简单的用例都通过了",
+                    explanation: "无视一个已知的失败，等于把一处真实的局限留在了设计里。",
+                  },
+                  {
+                    text: "改进设计以处理油渍，然后重新跑一遍测试用例",
+                    explanation: "正确：这就是迭代，修好测试所揭示的局限，再测一次。",
+                  },
+                  {
+                    text: "把油腻比萨盒那个测试用例删掉，好让它通过",
+                    explanation: "删掉一个难的测试用例，是在掩盖问题，而不是在解决它。",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "把你自己的原型难倒",
+            prompt: "使劲想办法让你自己的原型失败，然后用你学到的东西把它变得更好。",
+            steps: [
+              "写三个特别棘手的测试用例，专门用来绊倒你的原型。",
+              "用手跑一遍，记录哪些失败了。",
+              "对每一次失败，说出它揭示的那处局限。",
+              "提出一项改动（一次迭代），并预测它会不会修好那些失败。",
+            ],
+            successCriteria: [
+              "三个能给原型施加压力的棘手测试用例。",
+              "每一次失败都对应上一处说得出名字的局限。",
+              "提出一次迭代，并预测它的效果。",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "为什么先做一个粗糙的原型，比直接跳到成品版本更有用？",
+            },
+            {
+              prompt: "哪个测试用例让你对自己设计的局限了解最多？为什么？",
+            },
+          ],
+          recap: {
+            summary: "你把一个问题变成可检验的方案：设计各个部件，做一个粗糙原型，跑已知答案的测试用例，再通过迭代修好你发现的局限。",
+            keyPoints: [
+              "动手之前，先设计输入、输出、标签、特征和任何规则。",
+              "原型是花很少成本做出的粗糙版本，用来尽早检验一个想法。",
+              "测试用例揭示局限；迭代就是不断改进直到更好的那个循环。",
+            ],
+          },
+          extension: {
+            title: "测试到什么程度才算够？",
+            body: [
+              "真实的团队没法测试每一种可能的输入，所以他们会精心挑选测试用例：常见情况、边缘情况，以及出错代价最大的情况。一个医疗人工智能受到的测试，要比一个推荐表情符号的小游戏严格得多。",
+              "针对你的项目，判断哪些测试用例最重要，以及为什么。写一份简短的「测试计划」，说明在真实用户能够信任这个系统之前，你认为测试到什么程度才算够。",
+            ],
+          },
+        },
+        {
+          title: "展示、评议，并了解人工智能职业",
+          summary: "有力地收尾：诚实地展示你的项目，包括它的局限和它所需要的人的监督，给出并接受有用的反馈，再了解那些构建、治理和设计人工智能的人究竟在做什么。",
+          estimatedTime: "50-65 分钟",
+          objectives: [
+            {
+              text: "清楚地展示一个项目：问题、你的设计、你的测试，以及它的局限。",
+            },
+            {
+              text: "说明你的项目需要怎样的监督和负责任的使用，才能值得信任。",
+            },
+            {
+              text: "在评议中给出并接受具体、善意且有用的反馈。",
+            },
+            {
+              text: "描述几种真实的人工智能职业，也就是那些构建、治理和设计人工智能的人。",
+            },
+          ],
+          materials: [
+            {
+              name: "在网页浏览器中打开的这节课",
+            },
+            {
+              name: "纸和笔，或者一个记事应用",
+            },
+            {
+              name: "你在第 2 课做出的方案和测试结果",
+              note: "你要把它们展示出来。",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "局限",
+              definition: "系统会出错、拿不定主意，或者不该被信任的那些情形；诚实的项目会把它们坦率地说出来。",
+            },
+            {
+              term: "监督",
+              definition: "由人持续负责检查并纠正人工智能的判断，尤其是在出错会造成影响的时候。",
+            },
+            {
+              term: "负责任的使用",
+              definition: "以公平、诚实、安全且尊重他人隐私的方式使用人工智能，并清楚说明它能做什么、不能做什么。",
+            },
+            {
+              term: "人工智能职业",
+              definition: "人们构建、研究、治理或设计人工智能系统及其使用方式的工作。",
+            },
+          ],
+          openingScenario: {
+            prompt: "两个团队展示垃圾分类项目。一个说：「它完美无缺！」另一个说：「它大多数时候是对的，但对油腻的纸类比较吃力，所以那些会由人再看一遍。」你更信任哪个团队？为什么？",
+            context: "一场坦白说明局限和监督的展示，比一句夸下海口的断言更能赢得信任。",
+          },
+          predictionPrompt: {
+            prompt: "预测一下：最出色的项目，会是那些声称从不出错的，还是那些清楚说明自身局限、以及由谁在把关的？",
+            howToCheck: "边读边留意：为什么说出局限和监督，会让一个项目更值得信任，而不是更不值得。",
+          },
+          concepts: [
+            {
+              title: "诚实地展示：问题、设计、测试和局限",
+              body: [
+                "一场有力的展示会讲出一个清晰的故事：这是用户需求和问题界定，这是我的设计（输入、输出、特征、标签、规则），这是我怎么测试的，这是我的发现，包括它的局限。说出局限不是示弱，它说明你真正理解自己的系统。",
+                "别夸下海口。「它完美无缺」几乎从来不是真的，一旦有人发现一处失败，信任就会迅速崩塌。「它大多数情况都对，但在某某上比较吃力」既诚实，也正是有思考力的听众想听的。",
+              ],
+              examples: [
+                "「输入：一件物品的照片。输出：可回收、堆肥或其他垃圾。」",
+                "「9 个测试用例中通过了 7 个；它在油腻的纸类和发亮的铝箔上会失败。」",
+                "「因为它可能出错，所以那些拿不准的情况由人来复核。」",
+              ],
+            },
+            {
+              title: "监督和负责任的使用让项目值得信任",
+              body: [
+                "因为人工智能可能出错或不公平，一个负责任的项目会为人的监督做好安排：由一个人持续负责检查并纠正人工智能，尤其是在出错会造成影响的地方。你的展示应当说明谁在监督这个系统，以及什么时候监督。",
+                "负责任的使用还意味着保持公平、如实说明系统能做什么、保护人们的隐私，以及在风险过高的地方不使用人工智能。把整门课程串起来：公平、隐私、局限和人的决定，都会体现在一个项目被设计和被描述得有多负责任上。",
+              ],
+              examples: [
+                "「凡是分类器拿不准的物品，都由一名学生在丢弃前复核。」",
+                "「我们不收集任何人的姓名或面部，只收集物品的照片。」",
+                "「我们绝不会用它来决定关于某个人的重大事项。」",
+              ],
+            },
+            {
+              title: "反馈具体又善意时，评议最有效；而人工智能也是一份职业",
+              body: [
+                "在评议中，你既给出反馈也接受反馈。有用的反馈是具体的（「你那个油腻纸类的测试用例抓得真好；能不能为它加一条规则？」），而不是含糊的（「挺好的」）或刻薄的。好好接受反馈，意味着倾听、提问，并把它当作帮助而不是攻击。迭代在这里继续：评议常常会激发你的下一次改进。",
+                "构建人工智能也是一个不断成长的行业。机器学习工程师和数据科学家构建并训练模型。数据标注员制作系统学习所依据的带标签样例。人工智能伦理研究者、审计人员和政策制定者治理人工智能：检查它的公平性、安全性和隐私保护，并制定它可以如何被使用的规则。产品设计师和用户体验设计师决定人们实际如何与人工智能互动、如何保持掌控。教师、医生、艺术家以及许多其他人，也越来越多地把人工智能当作工具来用。你不必是程序员，也能影响人工智能被怎样构建和使用。",
+              ],
+              examples: [
+                "机器学习工程师：构建并训练模型。",
+                "数据标注员：制作供学习使用的带标签样例。",
+                "人工智能伦理研究者或审计人员：检查系统的公平性、安全性和隐私保护。",
+                "产品或用户体验设计师：设计人们如何使用人工智能并保持监督。",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "一场值得信任的两分钟展示",
+            steps: [
+              "说明问题：「新生分不清自己的垃圾该进哪个桶，所以我们根据一张照片把它分成可回收、堆肥或其他垃圾。」",
+              "展示设计：「输入是一件物品的照片；输出是三个标签之一；特征包括材质和食物油渍。」",
+              "汇报测试：「我们跑了九个测试用例，通过了七个；它在油腻的纸类和铝箔上会失败。」",
+              "说出局限和监督：「这些是真实的局限，所以凡是它拿不准的物品，都由人在丢弃前复核。」",
+              "以负责任的使用收尾：「我们只收集物品照片，绝不收集面部或姓名，也不会把它用在任何高风险的事情上。」",
+            ],
+            takeaway: "最值得信任的展示，会说明问题、设计、诚实的测试结果、局限，以及那份让使用保持负责任的人的监督。",
+          },
+          visuals: [
+            {
+              title: "夸下海口与诚实展示的对比",
+              summary: "之前（夸下海口）：「我们的人工智能能完美地分类垃圾！」没有局限，没有监督，一旦有人发现失败就会失去信任。之后（诚实）：「它在大多数情况下都能通过，但在油腻的纸类和铝箔上会失败，所以拿不准的物品由人复核，而且我们只使用物品照片。」它说明了局限、监督和负责任的使用，也赢得了更多信任。",
+              caption: "对局限和监督保持诚实，会让一个项目更值得信任，而不是更不值得。",
+            },
+            {
+              title: "谁在构建和治理人工智能",
+              summary: "一张人工智能职业表。机器学习工程师：构建并训练模型；核心技能是设计并测试系统。数据标注员：制作带标签的样例；核心技能是细致、一致地标注。人工智能伦理研究者或审计人员：在公平性、安全性和隐私方面治理人工智能；核心技能是发现危害并制定规则。产品或用户体验设计师：设计人们如何使用人工智能并保持监督；核心技能是理解用户。",
+              table: {
+                columns: [
+                  "角色",
+                  "他们做什么",
+                  "他们用到的一项技能",
+                ],
+                rows: [
+                  [
+                    "机器学习工程师",
+                    "构建并训练模型",
+                    "设计并测试系统",
+                  ],
+                  [
+                    "数据标注员",
+                    "制作带标签的样例",
+                    "细致、一致地标注",
+                  ],
+                  [
+                    "人工智能伦理研究者或审计人员",
+                    "在公平与安全方面治理人工智能",
+                    "发现危害、制定规则",
+                  ],
+                  [
+                    "产品或用户体验设计师",
+                    "设计人们如何使用人工智能",
+                    "理解真实的用户",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "展示与评议工作室",
+            goal: "诚实地展示你的项目，并借助一份评议量表给出并接受具体、有用的反馈。",
+            overview: "你要准备一场简短而诚实的项目展示，涵盖问题、设计、测试、局限、监督和负责任的使用，然后参加评议，用一份共享清单给其他团队具体又善意的反馈，也接受他们的反馈。这里的评议，可能会在最终项目之前再激发一次迭代。",
+            steps: [
+              "准备一场两分钟的展示，涵盖问题、设计、测试结果、局限、监督和负责任的使用。",
+              "向一位同伴或一个小组做展示。",
+              "作为评议者，用评议清单为每个项目至少给出两条具体又善意的反馈。",
+              "作为展示者，记下你收到的反馈，并挑出一项要做的改进（你的下一次迭代）。",
+              "讨论每个项目与哪些人工智能职业相关，以及你们对哪些感兴趣。",
+            ],
+            materials: [
+              "纸和笔，或者一个记事应用",
+            ],
+            successCriteria: [
+              "一场包含局限、监督和负责任使用的展示，而不只是讲哪些地方管用。",
+              "至少给别人两条具体又善意的反馈。",
+              "收到的反馈被记录下来，并挑出了下一项改进。",
+              "至少说出一个与你的项目相关的人工智能职业。",
+            ],
+            dataset: {
+              name: "项目评议量表",
+              description: "一份内置的评议清单，供各团队用来给反馈。各行涵盖：清晰的问题界定；合理的输入、输出、标签和特征；诚实的测试结果；写明的局限；一份人的监督方案；以及负责任的使用（公平、隐私、诚实）。每一行都有一个提示，以及写具体评语的空位。",
+              columns: [
+                "评议方面",
+                "要看什么",
+                "具体评语",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "检验你能否负责任地展示，并描述真实的人工智能工作。",
+            questions: [
+              {
+                prompt: "项目展示为什么应当包含它的局限？",
+                explanation: "如实说出局限能建立信任，也表明你理解自己的系统；把局限藏起来，一旦有人发现失败就会适得其反。",
+                choices: [
+                  {
+                    text: "为了让项目显得弱一点，好让没人来提问",
+                    explanation: "说出局限不是为了显得弱；它体现的是理解和诚实。",
+                  },
+                  {
+                    text: "因为对局限保持诚实能建立信任，也表明你理解这个系统",
+                    explanation: "正确：诚实的局限能赢得信任，也证明你了解自己的系统表现如何。",
+                  },
+                  {
+                    text: "因为每个项目都必须失败",
+                    explanation: "项目并不是必须失败；而是必须对真实的局限保持诚实。",
+                  },
+                  {
+                    text: "这样你就不用去测试了",
+                    explanation: "局限恰恰是通过测试才发现的；说出它们并不能代替测试。",
+                  },
+                ],
+              },
+              {
+                prompt: "判断这句话是对还是错。",
+                statement: "你必须是计算机程序员，才能在构建或治理人工智能中扮演任何角色。",
+                explanation: "错：数据标注员、伦理研究者、审计人员、政策制定者和设计师，都在塑造人工智能，却未必要去编程。",
+              },
+              {
+                prompt: "哪一种回应给出的评议反馈最有用？",
+                scenario: "一位同学展示了一个植物病害检测器，它通过了大部分测试，但没有用模糊照片测试过，而且也没有安排谁来复核它的判断。",
+                explanation: "具体的反馈会指出一处真实的缺口，并建议一个明确的下一步，这不同于含糊的夸奖或刻薄的否定。",
+                choices: [
+                  {
+                    text: "「挺好的。」",
+                    explanation: "含糊的夸奖，让展示者无从下手。",
+                  },
+                  {
+                    text: "「加一个模糊照片的测试用例，并说明谁来监督那些拿不准的结果。」",
+                    explanation: "正确：它具体、善意，并指向了明确的下一步迭代。",
+                  },
+                  {
+                    text: "「这永远做不成，别费劲了。」",
+                    explanation: "既刻薄又含糊：它不具体，也帮不了这个项目变好。",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "认识一份人工智能工作",
+            prompt: "去了解一种人工智能职业，并把它和你这周设计的项目联系起来。",
+            steps: [
+              "挑一个角色：机器学习工程师、数据标注员、人工智能伦理研究者或审计人员、政策制定者，或者人工智能产品与用户体验设计师。",
+              "写三到四句话，说明这个人日常在做什么，以及他用到的一项技能。",
+              "说明你自己的项目里，哪一部分会由这个角色来负责。",
+              "记下关于这份工作，你还想进一步了解的一件事。",
+            ],
+            successCriteria: [
+              "准确描述了一个人工智能角色，并写出它用到的一项技能。",
+              "这个角色与你项目某一部分之间有清晰的联系。",
+              "你对那份职业提出了一个真诚的问题。",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "纵观整门课程，关于负责任地使用人工智能，你最会记住的一点是什么？",
+            },
+            {
+              prompt: "哪一种人工智能职业让你最感兴趣？为了去探索它，你接下来想学些什么？",
+            },
+          ],
+          recap: {
+            summary: "一个完成的项目会被诚实地展示出来，包括问题、设计、测试、局限、监督和负责任的使用，会通过评议得到改进，也会与那些真正构建和治理人工智能的人联系起来。",
+            keyPoints: [
+              "展示问题、设计和诚实的测试结果，包括其中的局限。",
+              "规划好人的监督和负责任的使用，好让这个项目值得信任。",
+              "构建和治理人工智能的角色有很多，不只是程序员。",
+            ],
+          },
+          extension: {
+            title: "为你的项目写一份「负责任使用」说明",
+            body: [
+              "现在有些人工智能系统会随附一份简短的「模型卡」或使用说明：这个系统是做什么用的、不该用来做什么、它已知的局限，以及由谁负责监督它。",
+              "为你自己的项目写一段负责任使用说明。写明它应该和不应该被用来做什么、它的主要局限、由谁提供监督，以及它如何保护人们的隐私。",
+            ],
+          },
+        },
+      ],
+    },
   ],
 }
 
@@ -7637,6 +10864,323 @@ const pt: DeepPartial<IntroToAiCourse> = {
       {
         name: "Folhas de atividades impressas",
         note: "Para as turmas que preferem trabalhar no papel.",
+      },
+    ],
+  },
+  finalProject: {
+    title: "Estúdio de Design de IA: projete uma IA que ajude",
+    overview: "Usando tudo o que você aprendeu ao longo das seis semanas, projete uma ferramenta de IA que ajude um grupo real de pessoas. Você vai definir o problema, decidir se a IA realmente serve, planejar as entradas, as saídas, os rótulos, as características ou as regras, esboçar um protótipo, escrever casos de teste e explicar como manteria tudo justo, privado e sob supervisão humana. Este é um projeto de design e planejamento: você não vai treinar um modelo de verdade.",
+    choices: [
+      {
+        name: "Organizador útil",
+        scenario: "Um grupo tem dificuldade para separar muitos itens rapidamente, como uma biblioteca organizando livros devolvidos ou um clube organizando fotos.",
+        exampleGoal: "Projete uma IA que separe itens nas categorias certas.",
+        suitableBecause: "Classificar a partir de muitos exemplos rotulados combina bem com aprendizado de máquina.",
+      },
+      {
+        name: "Ajudante de perguntas",
+        scenario: "As pessoas fazem sempre as mesmas perguntas e uma equipe pequena não dá conta, como a secretaria de uma escola ou o suporte de um jogo.",
+        exampleGoal: "Projete um ajudante baseado em regras que responda às perguntas mais comuns e passe o resto para uma pessoa.",
+        suitableBecause: "Perguntas comuns com intenções claras combinam com um chatbot de árvore de decisão que recorre a um humano quando trava.",
+      },
+      {
+        name: "Recomendador justo",
+        scenario: "Uma comunidade quer sugestões (livros, atividades ou receitas) sem prender as pessoas numa bolha de filtros.",
+        exampleGoal: "Projete um recomendador que sugira opções novas e explique o porquê.",
+        suitableBecause: "As recomendações usam semelhança e retorno das pessoas, e deixam você praticar como evitar bolhas de filtros.",
+      },
+      {
+        name: "Sua própria ideia",
+        scenario: "Você tem um problema na sua escola ou comunidade com o qual acha que a IA poderia ajudar.",
+        exampleGoal: "Defina seu próprio problema e projete uma IA (ou decida que a IA não é a ferramenta certa).",
+        suitableBecause: "Decidir se a IA sequer serve já faz parte de um bom design.",
+      },
+    ],
+    brief: [
+      {
+        label: "Necessidade da pessoa usuária",
+        hint: "Para quem é isso, e que problema essa pessoa tem?",
+      },
+      {
+        label: "Definição do problema",
+        hint: "Enuncie a tarefa exata em uma ou duas frases.",
+      },
+      {
+        label: "A IA é a ferramenta certa?",
+        hint: "Explique por que a IA serve, ou por que uma ferramenta mais simples seria melhor.",
+      },
+      {
+        label: "Entradas e saídas",
+        hint: "O que entra e o que sai?",
+      },
+      {
+        label: "Rótulos, características ou regras",
+        hint: "De quais exemplos, rótulos e características ela aprenderia, ou que regras seguiria?",
+      },
+      {
+        label: "Esboço do protótipo",
+        hint: "Descreva ou desenhe como uma pessoa usaria isso.",
+      },
+      {
+        label: "Casos de teste",
+        hint: "Liste exemplos que você testaria, incluindo casos extremos complicados.",
+      },
+      {
+        label: "Limitações",
+        hint: "Onde ela poderia errar ou ser injusta?",
+      },
+      {
+        label: "Justiça, privacidade e supervisão",
+        hint: "Como você vai proteger a privacidade, verificar a justiça e manter uma pessoa no comando? Como alguém pode recorrer de um resultado errado?",
+      },
+    ],
+    requirements: [
+      {
+        label: "Necessidade clara da pessoa usuária",
+        description: "Nomeia um grupo real de pessoas e o problema que elas enfrentam.",
+      },
+      {
+        label: "Decisão sobre a adequação da IA",
+        description: "Argumenta se a IA é a ferramenta certa, usando as ideias de entrada e saída e de regras versus aprendizado.",
+      },
+      {
+        label: "Entradas e saídas projetadas",
+        description: "Define as entradas e as saídas, além dos rótulos e características ou das regras envolvidas.",
+      },
+      {
+        label: "Protótipo e casos de teste",
+        description: "Inclui um esboço do protótipo e pelo menos três casos de teste, sendo um deles um caso extremo.",
+      },
+      {
+        label: "Plano de uso responsável",
+        description: "Trata de justiça, privacidade, limitações, supervisão humana e recursos.",
+      },
+      {
+        label: "Apresentação clara",
+        description: "Explica o projeto de um jeito que outra pessoa consiga entender e questionar.",
+      },
+      {
+        label: "Nota de iteração (desafio extra)",
+        description: "Descreve uma mudança que você faria depois de testar.",
+      },
+    ],
+    rubric: [
+      {
+        name: "Problema e adequação",
+        description: "O quanto o problema está bem definido e se a IA é a ferramenta certa.",
+        levels: [
+          {
+            descriptor: "O problema é vago e não há raciocínio sobre se a IA serve.",
+          },
+          {
+            descriptor: "O problema está enunciado, mas o raciocínio sobre a adequação da IA é raso.",
+          },
+          {
+            descriptor: "Problema claro e um bom argumento sobre se a IA é a ferramenta certa.",
+          },
+          {
+            descriptor: "Definição do problema bem afiada, com uma decisão de adequação convincente e bem fundamentada.",
+          },
+        ],
+      },
+      {
+        name: "Entradas, saídas e dados",
+        description: "Qualidade do projeto de entradas e saídas e dos rótulos e características ou regras.",
+        levels: [
+          {
+            descriptor: "As entradas e saídas estão faltando ou não estão claras.",
+          },
+          {
+            descriptor: "As entradas e saídas estão nomeadas, mas os rótulos e características ou as regras não estão claros.",
+          },
+          {
+            descriptor: "Entradas e saídas claras, e um plano sensato de rótulos e características ou regras.",
+          },
+          {
+            descriptor: "Um projeto cuidadoso e bem ajustado, com rótulos, características ou regras realistas.",
+          },
+        ],
+      },
+      {
+        name: "Protótipo e testes",
+        description: "O esboço do protótipo e a qualidade dos casos de teste.",
+        levels: [
+          {
+            descriptor: "Sem protótipo nem casos de teste.",
+          },
+          {
+            descriptor: "Um protótipo básico com um ou dois testes simples.",
+          },
+          {
+            descriptor: "Um protótipo claro com pelo menos três testes, incluindo um caso extremo.",
+          },
+          {
+            descriptor: "Um protótipo bem explicado, com testes fortes que investigam as falhas mais prováveis.",
+          },
+        ],
+      },
+      {
+        name: "Responsabilidade e apresentação",
+        description: "Justiça, privacidade, supervisão, recursos e clareza da apresentação.",
+        levels: [
+          {
+            descriptor: "Ignora justiça, privacidade ou supervisão, e é difícil de acompanhar.",
+          },
+          {
+            descriptor: "Menciona a responsabilidade, mas deixa lacunas, ou a apresentação não está clara.",
+          },
+          {
+            descriptor: "Trata com clareza de justiça, privacidade, supervisão e recursos.",
+          },
+          {
+            descriptor: "Plano de uso responsável completo, apresentado com clareza e aberto a perguntas.",
+          },
+        ],
+      },
+    ],
+  },
+  finalAssessment: {
+    title: "Revisão do curso: o que você aprendeu sobre IA",
+    instructions: "Uma revisão curta das seis semanas. Responda cada pergunta e leia a explicação. Isto é para o seu próprio aprendizado: não há notas e nada é enviado para lugar nenhum.",
+    questions: [
+      {
+        prompt: "Qual é o sinal mais claro de que um programa é IA, e não um programa tradicional?",
+        explanation: "A IA aprende padrões a partir de muitos exemplos, em vez de apenas seguir regras que uma pessoa escreveu à mão.",
+        choices: [
+          {
+            text: "Ele aprendeu padrões a partir de exemplos.",
+            explanation: "Correto: aprender com exemplos é o sinal principal da IA.",
+          },
+          {
+            text: "Ele roda rápido.",
+            explanation: "A velocidade não decide se um programa é IA.",
+          },
+          {
+            text: "Ele tem uma interface bonita.",
+            explanation: "A interface não diz nada sobre se ele aprende.",
+          },
+          {
+            text: "Ele roda num computador.",
+            explanation: "Todo software roda num computador.",
+          },
+        ],
+      },
+      {
+        prompt: "Decida se a afirmação é verdadeira ou falsa.",
+        statement: "Um conjunto de dados com muito mais exemplos de uma categoria do que de outra está desequilibrado e pode deixar um modelo menos justo.",
+        explanation: "Verdadeiro: dados desequilibrados fazem o modelo ver poucos casos de alguns tipos, e ele pode ir pior com eles.",
+      },
+      {
+        prompt: "Por que testamos um modelo com dados nos quais ele não treinou?",
+        explanation: "Testar com exemplos inéditos verifica se o modelo generaliza, em vez de apenas decorar os dados de treino.",
+        choices: [
+          {
+            text: "Para ver se ele generaliza para exemplos novos.",
+            explanation: "Correto: dados de teste inéditos mostram o desempenho real.",
+          },
+          {
+            text: "Para deixar o treino mais rápido.",
+            explanation: "Testar é uma coisa separada da velocidade do treino.",
+          },
+          {
+            text: "Para gastar os dados que sobraram.",
+            explanation: "Os dados de teste têm uma finalidade: medir a generalização.",
+          },
+          {
+            text: "Porque os dados de treino estão sempre errados.",
+            explanation: "Os dados de treino nem sempre estão errados; nós só precisamos de um teste justo.",
+          },
+        ],
+      },
+      {
+        prompt: "Um classificador de fotos rotula a imagem de um muffin como cachorro. Que tipo de erro é esse?",
+        scenario: "O modelo previu \"cachorro\" para uma coisa que não é cachorro.",
+        explanation: "Prever \"cachorro\" quando não é cachorro é um falso positivo da categoria cachorro.",
+        choices: [
+          {
+            text: "Um falso positivo de \"cachorro\".",
+            explanation: "Correto: ele disse por engano que havia um \"cachorro\".",
+          },
+          {
+            text: "Um falso negativo de \"cachorro\".",
+            explanation: "Um falso negativo seria deixar passar um cachorro de verdade.",
+          },
+          {
+            text: "Acurácia perfeita.",
+            explanation: "Ele errou, então a acurácia não é perfeita.",
+          },
+          {
+            text: "Um erro de entrada.",
+            explanation: "A imagem era válida; o que estava errado era a previsão do modelo.",
+          },
+        ],
+      },
+      {
+        prompt: "Decida se a afirmação é verdadeira ou falsa.",
+        statement: "Se a resposta de um modelo de linguagem soa fluente e confiante, ela tem que ser verdadeira.",
+        explanation: "Falso: modelos de linguagem preveem qual texto vem a seguir, então uma resposta fluente ainda pode estar errada. Sempre confira os fatos.",
+      },
+      {
+        prompt: "O que é uma bolha de filtros?",
+        explanation: "Uma bolha de filtros é quando as recomendações continuam mostrando coisas parecidas, então você quase nunca vê opções novas ou diferentes.",
+        choices: [
+          {
+            text: "Quando as recomendações continuam mostrando coisas parecidas e escondem as diferentes.",
+            explanation: "Correto: esse estreitamento é uma bolha de filtros.",
+          },
+          {
+            text: "Uma ferramenta que limpa dados.",
+            explanation: "Não é isso que bolha de filtros significa.",
+          },
+          {
+            text: "Uma configuração de privacidade.",
+            explanation: "Uma bolha de filtros tem a ver com recomendações que se estreitam, não com uma configuração.",
+          },
+          {
+            text: "Um tipo de filtro de câmera.",
+            explanation: "É sobre recomendações, não sobre filtros de foto.",
+          },
+        ],
+      },
+      {
+        prompt: "Quais destas são boas formas de usar a IA com responsabilidade? (Escolha todas que valem.)",
+        explanation: "Uso responsável inclui coletar o mínimo de dados, conferir as fontes, ficar de olho no viés e manter a supervisão humana com um caminho para recorrer.",
+        choices: [
+          {
+            text: "Coletar só os dados de que você realmente precisa.",
+            explanation: "Correto: coletar o mínimo de dados protege a privacidade.",
+          },
+          {
+            text: "Conferir a fonte original antes de confiar em conteúdo de IA.",
+            explanation: "Correto: a confirmação independente pega a desinformação.",
+          },
+          {
+            text: "Deixar a IA tomar decisões importantes sem revisão humana.",
+            explanation: "Decisões importantes precisam de supervisão humana e de um caminho para recorrer.",
+          },
+          {
+            text: "Ficar de olho no viés e em resultados injustos para certos grupos.",
+            explanation: "Correto: verificar a justiça entre grupos é uso responsável.",
+          },
+        ],
+      },
+      {
+        prompt: "Coloque numa ordem sensata as etapas de projetar uma ferramenta de IA.",
+        explanation: "Um bom projeto parte da necessidade da pessoa usuária e do problema, decide se a IA serve, projeta as entradas e saídas, cria o protótipo e depois testa e melhora.",
+        items: [
+          {
+            text: "Definir a necessidade da pessoa usuária e o problema",
+          },
+          {
+            text: "Decidir se a IA é a ferramenta certa",
+          },
+          {
+            text: "Projetar as entradas, as saídas e os rótulos e características ou regras",
+          },
+          {
+            text: "Criar o protótipo, e depois testar e melhorar",
+          },
+        ],
       },
     ],
   },
@@ -10892,6 +14436,1740 @@ const pt: DeepPartial<IntroToAiCourse> = {
             body: [
               "Sistemas de recomendação muitas vezes são projetados para manter você assistindo, porque mais tempo assistido pode significar mais lucro para a empresa. Esse objetivo nem sempre coincide com o seu objetivo de aprender de forma ampla ou de usar bem o seu tempo.",
               "Explique como o objetivo de uma empresa (mais tempo assistido) e o de um usuário (variedade, tempo bem gasto) podem puxar para lados diferentes, e sugira uma mudança de projeto honesta que serviria melhor aos usuários mesmo que reduzisse o tempo assistido.",
+            ],
+          },
+        },
+      ],
+    },
+    {
+      title: "Justiça, privacidade e informação confiável",
+      subtitle: "Audite a IA em busca de vieses, proteja os dados das pessoas e verifique se dá para confiar no conteúdo que você vê.",
+      summary: "Os alunos aprendem a julgar a IA com responsabilidade: como dados desiguais criam viés e como os resultados por grupo o revelam; por que privacidade e consentimento importam e como a minimização de dados reduz o risco; e como verificar conteúdo feito por IA e conteúdo on-line achando a fonte original, conferindo o contexto e confirmando de forma independente, tudo isso mantendo as pessoas no comando por meio da supervisão e do direito de recurso.",
+      bigQuestion: "Como saber se um sistema de IA é justo, respeita a privacidade e nos dá informação em que podemos confiar?",
+      estimatedTime: "2,5-3 horas",
+      objectives: [
+        "Explicar como o viés vem de uma representação desigual e ler resultados por grupo para detectá-lo.",
+        "Definir privacidade, dados pessoais e consentimento, e aplicar a minimização de dados a um recurso.",
+        "Verificar conteúdo usando a fonte original, o contexto e a confirmação independente.",
+        "Explicar por que decisões importantes de uma IA precisam de supervisão humana e de direito de recurso.",
+      ],
+      requiredConcepts: [
+        "Viés",
+        "Representação",
+        "Resultado por grupo",
+        "Justiça",
+        "Privacidade",
+        "Consentimento",
+        "Dados pessoais",
+        "Minimização de dados",
+        "Deepfake",
+        "Desinformação",
+        "Fonte original",
+        "Contexto",
+        "Confirmação independente",
+        "Supervisão humana",
+        "Recurso",
+      ],
+      lessons: [
+        {
+          title: "Audite um conjunto de dados em busca de justiça",
+          summary: "Aprenda como exemplos desiguais criam viés, leia resultados por grupo para ver para quem um sistema funciona bem, e audite um conjunto de dados em busca de justiça.",
+          estimatedTime: "50-60 minutos",
+          objectives: [
+            {
+              text: "Definir viés e representação e explicar como eles se conectam.",
+            },
+            {
+              text: "Ler um resultado por grupo para comparar o quanto um sistema funciona bem para grupos diferentes.",
+            },
+            {
+              text: "Explicar o que significa justiça quando uma IA trata grupos de forma diferente.",
+            },
+            {
+              text: "Auditar um conjunto de dados descrito e apontar um jeito em que os exemplos dele estão desequilibrados.",
+            },
+          ],
+          materials: [
+            {
+              name: "Esta aula em um navegador web",
+            },
+            {
+              name: "Papel e lápis, ou um aplicativo de notas",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "Viés",
+              definition: "Quando um sistema funciona sistematicamente melhor ou pior para algumas pessoas ou coisas do que para outras, normalmente por causa dos exemplos com que ele aprendeu.",
+            },
+            {
+              term: "Representação",
+              definition: "O quanto um grupo aparece em um conjunto de dados. Um grupo está bem representado se tem muitos exemplos, e sub-representado se tem poucos.",
+            },
+            {
+              term: "Resultado por grupo",
+              definition: "Uma nota medida separadamente para cada grupo, em vez de um único número para todo mundo, para você ver para quem o sistema funciona bem.",
+            },
+            {
+              term: "Justiça",
+              definition: "Tratar os grupos de um jeito que as pessoas considerariam parelho e razoável, para que nenhum grupo fique em desvantagem sem um bom motivo.",
+            },
+          ],
+          openingScenario: {
+            prompt: "Um assistente de voz entende um amigo quase sempre, mas vive entendendo errado outro amigo que tem um sotaque diferente. O software é o mesmo para os dois. Por que ele funcionaria de forma tão diferente para cada um?",
+            context: "Guarde o seu primeiro palpite: mais adiante na aula você vai testá-lo contra números reais por grupo.",
+          },
+          predictionPrompt: {
+            prompt: "Preveja: se um sistema de reconhecimento facial aprendeu principalmente com fotos de adultos, você acha que ele vai funcionar igualmente bem com fotos de crianças?",
+            howToCheck: "Enquanto lê os conceitos e o gráfico por grupo abaixo, repare se a quantidade de exemplos de um grupo muda o quanto o sistema funciona bem para aquele grupo.",
+          },
+          concepts: [
+            {
+              title: "O viés vem dos exemplos, e não de o computador \"querer\" alguma coisa",
+              body: [
+                "Um computador não tem opiniões nem sentimentos. Quando dizemos que uma IA tem viés, queremos dizer que ela funciona sistematicamente melhor para algumas pessoas ou coisas do que para outras. Quase sempre isso acontece por causa dos exemplos com que ela aprendeu.",
+                "Se um sistema aprende com exemplos desiguais, ele fica bom nos casos comuns e mais fraco nos raros. O software está fazendo exatamente aquilo para o que foi treinado: a desigualdade veio dos dados que as pessoas deram a ele.",
+              ],
+              examples: [
+                "Um sistema de fala treinado principalmente com um sotaque entende melhor aquele sotaque.",
+                "Um classificador de fotos treinado principalmente com imagens diurnas tem dificuldade à noite.",
+                "Uma ferramenta de tradução treinada com escrita formal lida mal com gírias.",
+              ],
+            },
+            {
+              title: "Representação: quem aparece nos exemplos, e o quanto",
+              body: [
+                "Representação tem a ver com o quanto cada grupo aparece nos dados. Um grupo está bem representado quando tem muitos exemplos e sub-representado quando tem poucos. Um conjunto de dados pode ter milhares de exemplos e ainda assim deixar alguns grupos com quase nenhum.",
+                "A sub-representação é uma das maiores fontes de viés. Um modelo só consegue aprender padrões que ele viu. Se um grupo quase não aparece nos exemplos, o modelo tem pouco com que aprender, então tende a errar mais para aquele grupo.",
+              ],
+              examples: [
+                "Um conjunto de 10.000 fotos de cachorros com apenas 20 fotos de uma raça.",
+                "Um conjunto de dados médicos coletado principalmente com adultos, com poucas crianças.",
+                "Um conjunto de escrita à mão com muita letra de forma e pouquíssima letra cursiva.",
+              ],
+            },
+            {
+              title: "Os resultados por grupo mostram o que uma nota geral esconde",
+              body: [
+                "É tentador julgar um sistema por um único número, como \"ele tem 92 por cento de acurácia\". Mas um único número é uma média de todo mundo. Ele pode parecer ótimo e mesmo assim falhar feio para um grupo menor, cujos erros ficam enterrados na média.",
+                "Um resultado por grupo mede a acurácia separadamente para cada grupo. Quando você abre a nota, dá para ver para quem o sistema funciona bem e para quem funciona mal. Perguntas sobre justiça quase sempre precisam de resultados por grupo, e não só de um número geral.",
+              ],
+              examples: [
+                "92 por cento no geral, mas só 74 por cento para um grupo de sotaque.",
+                "Acurácia geral alta, mas muito mais erros em fotos noturnas do que em fotos diurnas.",
+                "Um teste que passa na média, mas falha com frequência para quem escreve com a mão esquerda.",
+              ],
+            },
+            {
+              title: "Justiça: alguém está ficando em desvantagem sem um bom motivo?",
+              body: [
+                "Justiça significa tratar os grupos de um jeito que as pessoas considerariam parelho e razoável. Nem sempre isso exige resultados idênticos, mas exige perguntar se algum grupo está ficando em desvantagem, e se há um bom motivo para essa diferença.",
+                "Justiça é um julgamento humano, não algo que o computador decide. São as pessoas que precisam olhar os resultados por grupo, decidir se uma diferença é aceitável e assumir a responsabilidade de corrigi-la, muitas vezes reunindo exemplos mais equilibrados.",
+              ],
+              examples: [
+                "Decidir que uma diferença de 74 por cento contra 92 por cento de acurácia é grande demais para lançar.",
+                "Escolher reunir mais exemplos dos grupos sub-representados.",
+                "Perguntar quem é prejudicado se o sistema errar com um grupo específico.",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "Auditando o conjunto de dados de um detector de sorrisos",
+            steps: [
+              "Diga qual é a tarefa. Um aplicativo de câmera tenta bater a foto quando todo mundo está sorrindo. Entrada: um rosto. Saída: \"sorrindo\" ou \"não sorrindo\".",
+              "Olhe a representação. O conjunto de treinamento tem 8.000 fotos de adultos e apenas 500 fotos de crianças pequenas.",
+              "Preveja o efeito. Com tão poucos exemplos de crianças, o modelo tem pouco com que aprender sobre como as crianças sorriem, então provavelmente vai errar mais com elas.",
+              "Confira o resultado por grupo, e não só a média. A acurácia geral é de 90 por cento, mas, aberta por grupo, é 94 por cento para adultos e 71 por cento para crianças.",
+              "Tome a decisão sobre justiça. A diferença é grande e as crianças ficam em desvantagem sem um bom motivo, então o conserto justo é reunir mais exemplos de crianças e testar de novo antes de lançar.",
+            ],
+            takeaway: "Audite um conjunto de dados perguntando quem está sub-representado, e depois confira os resultados por grupo para ver se essa desigualdade virou erros injustos.",
+          },
+          visuals: [
+            {
+              title: "Acurácia por grupo: uma média esconde uma diferença real",
+              summary: "Um gráfico de barras da acurácia de um sistema de reconhecimento de fala, medida separadamente para quatro grupos de sotaque, em porcentagem. A média geral é 88 por cento, mas os grupos são desiguais: grupo de sotaque A, 94 por cento; grupo de sotaque B, 91 por cento; grupo de sotaque C, 82 por cento; e grupo de sotaque D, 74 por cento. Os grupos C e D, que tiveram menos exemplos de treinamento, ficam bem abaixo da média, então o número geral sozinho esconde uma diferença real de cerca de 20 pontos entre o melhor e o pior grupo.",
+              caption: "Abra a média e fica claro que o sistema funciona melhor para alguns grupos do que para outros.",
+              chart: {
+                unit: "% de acurácia",
+                bars: [
+                  {
+                    label: "Média geral",
+                  },
+                  {
+                    label: "Grupo de sotaque A",
+                  },
+                  {
+                    label: "Grupo de sotaque B",
+                  },
+                  {
+                    label: "Grupo de sotaque C",
+                  },
+                  {
+                    label: "Grupo de sotaque D",
+                  },
+                ],
+              },
+            },
+            {
+              title: "A representação bate com a diferença de acurácia",
+              summary: "Uma tabela ligando quantos exemplos de treinamento cada grupo de sotaque teve à acurácia dele. Grupo A: 5.000 exemplos, 94 por cento de acurácia. Grupo B: 4.200 exemplos, 91 por cento. Grupo C: 900 exemplos, 82 por cento. Grupo D: 400 exemplos, 74 por cento. Os grupos com menos exemplos têm a menor acurácia, mostrando como a sub-representação vira viés.",
+              table: {
+                columns: [
+                  "Grupo de sotaque",
+                  "Exemplos de treinamento",
+                  "Acurácia",
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "Auditoria de justiça",
+            goal: "Auditar o recomendador de programas de ciência e tecnologia de uma escola fictícia: ver como uma acurácia geral esconde um resultado fraco para um grupo menor, e depois corrigir isso limitando uma característica substituta e acrescentando exemplos sub-representados.",
+            overview: "Uma escola inventada recomenda programas extracurriculares de ciência e tecnologia. Um modelo transparente de vizinhos mais próximos prevê se o programa combina; você compara a acurácia geral com a acurácia de cada grupo (Hillside e o menor e mais distante Riverside). O modelo defeituoso depende demais de uma característica substituta enganosa, \"mora perto do campus\", que reflete o bairro e não a afinidade, e ainda foi treinado com pouquíssimos exemplos de bom encaixe de Riverside. Reduza o peso dessa característica substituta e acrescente os exemplos que faltam, depois rode de novo e compare com a versão defeituosa. Tudo é fictício e determinístico; melhorar a representação ajuda, mas nunca garante justiça perfeita.",
+            steps: [
+              "Leia a acurácia geral e depois a acurácia de cada grupo; repare na diferença.",
+              "Reduza o peso da característica substituta enganosa \"perto do campus\".",
+              "Acrescente os exemplos de bom encaixe que faltam do grupo sub-representado de Riverside.",
+              "Rode de novo e compare a acurácia por grupo, as aprovações erradas e os alunos que ficaram de fora, antes e depois.",
+            ],
+            materials: [
+              "A auditoria de justiça já incluída nesta atividade",
+            ],
+            successCriteria: [
+              "A diferença por grupo escondida pelo número geral é identificada.",
+              "A característica substituta é limitada e exemplos sub-representados são acrescentados.",
+              "A acurácia por grupo de antes e depois é comparada, notando que a justiça melhorou mas não está garantida.",
+            ],
+            dataset: {
+              name: "Conjunto de auditoria do recomendador de programas de ciência e tecnologia",
+              description: "Um conjunto de dados fictício e determinístico para o recomendador de programas de ciência e tecnologia de uma escola: registros de alunos com um rótulo de grupo (Hillside/Riverside), características relevantes, uma característica substituta enganosa de \"perto do campus\", representação desigual entre grupos e um conjunto de teste guardado. Sem dados reais ou pessoais.",
+              columns: [
+                "Grupo",
+                "Características",
+                "Característica substituta",
+                "Bom encaixe?",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "Responda a estas perguntas para conferir se você sabe perceber viés, ler resultados por grupo e julgar justiça.",
+            questions: [
+              {
+                prompt: "De onde o viés em um sistema de IA vem com mais frequência?",
+                explanation: "Um computador não tem opiniões; o viés quase sempre é rastreado até exemplos desiguais nos dados de treinamento.",
+                choices: [
+                  {
+                    text: "O computador decide que não gosta de um grupo.",
+                    explanation: "Software não gosta nem desgosta de nada; ele só reflete padrões dos dados dele.",
+                  },
+                  {
+                    text: "Os exemplos com que ele aprendeu eram desiguais, então ele aprendeu alguns grupos melhor que outros.",
+                    explanation: "Correto: representação desigual nos dados é a fonte mais comum de viés.",
+                  },
+                  {
+                    text: "O computador é lento demais.",
+                    explanation: "Velocidade não tem nada a ver com um sistema ter viés ou não.",
+                  },
+                  {
+                    text: "Viés só acontece quando alguém invade o sistema.",
+                    explanation: "O viés costuma vir de dados desiguais comuns, e não de invasão.",
+                  },
+                ],
+              },
+              {
+                prompt: "Decida se a afirmação é verdadeira ou falsa.",
+                statement: "Um único número de acurácia geral basta para provar que um sistema é justo com todos os grupos.",
+                explanation: "Um único número é uma média que pode esconder resultados ruins para um grupo menor; para julgar justiça são necessários resultados por grupo.",
+              },
+              {
+                prompt: "Com base nos resultados por grupo, qual é o próximo passo mais razoável?",
+                scenario: "Um aplicativo de fotos informa 90 por cento de acurácia no geral. Aberta por grupo, ela é 95 por cento para adultos e 70 por cento para crianças. O conjunto de treinamento tinha pouquíssimas fotos de crianças.",
+                explanation: "A nota baixa com crianças bate com os pouquíssimos exemplos de crianças, então o conserto justo é reunir mais exemplos de crianças e testar de novo.",
+                choices: [
+                  {
+                    text: "Lançar, porque 90 por cento no geral já é bom o bastante.",
+                    explanation: "A média de 90 por cento esconde que o sistema funciona mal com crianças.",
+                  },
+                  {
+                    text: "Reunir mais fotos de crianças para equilibrar os dados, e depois testar de novo.",
+                    explanation: "Correto: uma representação mais equilibrada ataca diretamente a causa da diferença.",
+                  },
+                  {
+                    text: "Apagar as fotos de adultos para os números baterem.",
+                    explanation: "Jogar fora dados bons não ajuda as crianças e enfraquece o sistema para todo mundo.",
+                  },
+                  {
+                    text: "Nada, porque computadores não podem ter viés.",
+                    explanation: "A diferença por grupo é prova clara de um viés que precisa ser resolvido.",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "Crie um conjunto de dados mais justo",
+            prompt: "Escolha uma tarefa simples de IA e planeje um conjunto de dados que seria justo entre grupos, antes de treinar qualquer modelo.",
+            steps: [
+              "Escolha uma tarefa, como ler letra à mão ou reconhecer bichos de estimação.",
+              "Liste os grupos para os quais o sistema deveria funcionar bem.",
+              "Decida mais ou menos quantos exemplos cada grupo precisa para que nenhum fique sub-representado.",
+              "Escreva como você conferiria o resultado com uma acurácia por grupo, e não só com uma média geral.",
+            ],
+            successCriteria: [
+              "Pelo menos três grupos que o sistema deveria atender são nomeados.",
+              "Um plano dá a cada grupo exemplos suficientes para evitar sub-representação.",
+              "O plano confere a justiça usando resultados por grupo.",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "Pense em uma ferramenta que você usa e que talvez funcione melhor para algumas pessoas do que para outras. De quem podem estar faltando exemplos nos dados dela?",
+            },
+            {
+              prompt: "Por que um sistema pode parecer justo quando você lê só a nota geral dele, e ser injusto quando você lê os resultados por grupo?",
+            },
+          ],
+          recap: {
+            summary: "O viés costuma vir de representação desigual, e só os resultados por grupo revelam se um sistema é justo com todos os grupos.",
+            keyPoints: [
+              "Viés significa que um sistema funciona sistematicamente melhor para alguns grupos do que para outros, normalmente por causa dos exemplos dele.",
+              "Grupos sub-representados tendem a receber mais erros, porque o modelo viu menos deles.",
+              "Uma única nota geral pode esconder uma diferença real; os resultados por grupo mostram para quem o sistema funciona.",
+              "Justiça é um julgamento humano sobre se uma diferença é aceitável e como corrigi-la.",
+            ],
+          },
+          extension: {
+            title: "Quando acurácia igual ainda não é justiça",
+            body: [
+              "Às vezes dois grupos têm a mesma acurácia, mas os erros pesam mais para um deles. Imagine um sistema que marca livros da biblioteca como \"atrasados\". Uma marcação errada pode ser um aborrecimento pequeno para um grupo, mas impedir outro grupo de pegar livros emprestados.",
+              "Escolha uma decisão que uma IA poderia tomar e descreva um caso em que acurácia igual entre grupos ainda leva a um resultado injusto, porque o custo de um erro não é igual. Que informação a mais você precisaria para perceber isso?",
+            ],
+          },
+        },
+        {
+          title: "Proteja a privacidade e minimize os dados",
+          summary: "Aprenda o que conta como dados pessoais, por que o consentimento importa, e como a minimização de dados mantém um recurso de IA funcionando coletando muito menos sobre as pessoas.",
+          estimatedTime: "45-55 minutos",
+          objectives: [
+            {
+              text: "Definir privacidade e dados pessoais e dar exemplos de cada um.",
+            },
+            {
+              text: "Explicar o que significa consentimento e por que ele precisa ser informado.",
+            },
+            {
+              text: "Aplicar a minimização de dados para ficar só com os dados de que um recurso realmente precisa.",
+            },
+            {
+              text: "Redesenhar um recurso descrito para que ele colete menos dados pessoais.",
+            },
+          ],
+          materials: [
+            {
+              name: "Esta aula em um navegador web",
+            },
+            {
+              name: "Papel e lápis, ou um aplicativo de notas",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "Privacidade",
+              definition: "O direito de uma pessoa de controlar quem pode ver e usar informações sobre ela.",
+            },
+            {
+              term: "Dados pessoais",
+              definition: "Qualquer informação que seja sobre uma pessoa específica, como nome, endereço, localização exata, data de nascimento, foto ou mensagens.",
+            },
+            {
+              term: "Consentimento",
+              definition: "Uma pessoa concordar claramente que os dados dela sejam coletados ou usados, depois de lhe explicarem em linguagem simples o que vai acontecer com eles.",
+            },
+            {
+              term: "Minimização de dados",
+              definition: "Coletar e guardar só os dados de que um recurso realmente precisa para funcionar, e nada além disso.",
+            },
+          ],
+          openingScenario: {
+            prompt: "Um aplicativo de lanterna gratuito pede para ver os seus contatos, a sua localização exata e as suas fotos antes de acender a luz. Uma lanterna só precisa controlar a luz. Por que um aplicativo pediria muito mais dados do que a função dele exige?",
+            context: "Guarde a sua resposta: no fim você vai conseguir redesenhar um recurso para ele parar de coletar demais.",
+          },
+          predictionPrompt: {
+            prompt: "Preveja: para um aplicativo de previsão do tempo mostrar a previsão de hoje, o que basta: a sua cidade, ou o seu endereço exato e todo o seu histórico de localização?",
+            howToCheck: "Enquanto lê sobre minimização de dados, decida qual é o menor dado que ainda permite ao recurso fazer o trabalho dele.",
+          },
+          concepts: [
+            {
+              title: "Privacidade e dados pessoais: o que precisa de proteção",
+              body: [
+                "Privacidade é o seu direito de controlar quem pode ver e usar informações sobre você. Dados pessoais são qualquer informação sobre uma pessoa específica: um nome, um endereço residencial, uma localização exata, uma data de nascimento, a foto de um rosto ou mensagens privadas.",
+                "Nem todo dado é pessoal. \"Choveu na terça\" não é sobre ninguém em particular. Mas \"Ana estava no parque às 16h\" é dado pessoal, porque conta algo sobre uma pessoa específica. Recursos de IA muitas vezes funcionam com dados pessoais, e é justamente por isso que a privacidade importa aqui.",
+              ],
+              examples: [
+                "Dados pessoais: nome completo, endereço residencial, localização GPS exata, foto de rosto.",
+                "Normalmente não pessoais: o tempo agora, o horário de um ônibus público.",
+                "Dados pessoais sensíveis: informações de saúde, mensagens privadas.",
+              ],
+            },
+            {
+              title: "Consentimento é um sim informado, não um sim escondido",
+              body: [
+                "Consentimento é a pessoa concordar claramente que os dados dela sejam coletados ou usados. Para o consentimento ser real, ele precisa ser informado: a pessoa é avisada, em linguagem simples, de quais dados são coletados e para que servem, e pode dizer não.",
+                "Consentimento enterrado em letras miúdas, caixas já marcadas ou um pop-up confuso não é consentimento real, porque a pessoa nunca entendeu de verdade nem escolheu livremente. Um bom projeto pergunta com clareza e faz do \"não\" uma opção fácil e segura.",
+              ],
+              examples: [
+                "Consentimento claro: \"Compartilhar a sua localização para mostrarmos os pontos próximos? Sim / Não.\"",
+                "Não é consentimento real: um contrato longuíssimo que esconde o compartilhamento de dados no parágrafo 40.",
+                "Não é consentimento real: um aplicativo que não funciona a menos que você permita um rastreamento que nada tem a ver.",
+              ],
+            },
+            {
+              title: "Minimização de dados: colete só o que a função precisa",
+              body: [
+                "A minimização de dados é uma regra simples e poderosa: colete e guarde só os dados de que um recurso realmente precisa para funcionar. Se um recurso consegue fazer o trabalho dele com menos, ele deve fazer. Dados que você nunca coleta não podem vazar, ser usados indevidamente nem cair nas mãos erradas.",
+                "Para minimizar, pergunte de cada dado: \"o recurso realmente precisa disto para funcionar?\". Uma previsão do tempo precisa da sua região geral, não do seu endereço exato nem de todo o seu histórico de localização. Cortar os dados a mais mantém o recurso útil e reduz o risco para as pessoas.",
+              ],
+              examples: [
+                "Uma previsão que usa a sua cidade em vez do seu trajeto exato de GPS.",
+                "Um contador de passos que guarda o total de hoje, e não todos os lugares por onde você andou.",
+                "Um cadastro que pede um apelido em vez do seu nome completo de registro.",
+              ],
+            },
+            {
+              title: "Menos dados, o mesmo trabalho: minimização na prática",
+              body: [
+                "Minimizar não significa quebrar o recurso. A maior parte dos recursos pode ser redesenhada para precisar de menos, usando uma versão mais ampla ou de vida mais curta do dado. Em vez de uma localização exata, use uma região geral. Em vez de guardar o dado para sempre, apague-o quando a tarefa terminar.",
+                "Essa é uma escolha de projeto feita por pessoas. Quando você construir ou julgar um recurso de IA, pode insistir na versão que coleta o mínimo de dados pessoais e ainda faz o trabalho: isso é respeitar a privacidade por projeto, e não por acaso.",
+              ],
+              examples: [
+                "Transformar \"endereço exato\" em \"cidade\" para um recurso de previsão do tempo.",
+                "Transformar \"guardar para sempre\" em \"apagar quando a viagem terminar\" para uma rota de mapa.",
+                "Transformar \"nome real e data de nascimento\" em \"só apelido\" para o placar de um jogo.",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "Minimizando um recurso de rastreio do ônibus escolar",
+            steps: [
+              "Diga qual é a função do recurso. Avisar um aluno quando o ônibus dele estiver a uns cinco minutos, para ele ir até o ponto.",
+              "Liste o que uma versão descuidada poderia coletar. A localização GPS exata do aluno o dia todo, o nome completo dele, o endereço residencial e todo o histórico de localização.",
+              "Faça a pergunta da minimização para cada item. Para avisar \"o ônibus está perto do seu ponto\", o recurso precisa do único ponto que o aluno usa, e não de um dia inteiro de rastreamento.",
+              "Redesenhe com menos. Deixe o aluno escolher o ponto dele em uma lista. Guarde só esse ponto, e compare com a localização do ônibus apenas enquanto o ônibus estiver rodando.",
+              "Confira o consentimento. Pergunte com clareza: \"Avisar você quando o ônibus chegar perto do seu ponto? Sim / Não\", e garanta que o aluno e a família entendam e possam recusar.",
+            ],
+            takeaway: "Parta da função real do recurso, e depois fique só com o menor dado que ainda faça essa função, e peça por ele com um consentimento claro.",
+          },
+          visuals: [
+            {
+              title: "Redesenhando um recurso para coletar menos",
+              summary: "Uma comparação de antes e depois de um recurso de rastreio de ônibus escolar. Antes (coletando demais): guarda a localização exata do aluno o dia todo, o nome completo de registro, o endereço residencial e o histórico completo de localização, mantido para sempre. Depois (minimizado): guarda só o ponto de ônibus que o aluno escolheu, comparado com a localização do ônibus apenas enquanto o ônibus está rodando, e apagado no fim do dia. A versão de \"depois\" faz o mesmo trabalho, avisar o aluno quando o ônibus está perto, guardando muito menos dados pessoais.",
+              caption: "O mesmo trabalho, muito menos dados pessoais: o projeto minimizado reduz o risco para o aluno.",
+            },
+            {
+              title: "O recurso precisa mesmo disso?",
+              summary: "Uma tabela testando cada dado que um recurso de previsão do tempo poderia pedir, conforme ele seja realmente necessário. Região geral ou cidade: necessário, porque a previsão é local. Endereço GPS exato: não necessário, a cidade basta. Histórico completo de localização: não necessário, só a região atual importa. Lista de contatos: não necessário, nada a ver com o tempo. A regra prática é ficar só com as linhas marcadas como necessárias.",
+              table: {
+                columns: [
+                  "Dado solicitado",
+                  "Necessário para uma previsão local?",
+                  "Guardar?",
+                ],
+                rows: [
+                  [
+                    "Região geral ou cidade",
+                    "Sim, a previsão é local",
+                    "Guardar",
+                  ],
+                  [
+                    "Endereço GPS exato",
+                    "Não, a cidade basta",
+                    "Descartar",
+                  ],
+                  [
+                    "Histórico completo de localização",
+                    "Não, só a região atual importa",
+                    "Descartar",
+                  ],
+                  [
+                    "Lista de contatos",
+                    "Não, nada a ver com o tempo",
+                    "Descartar",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "Laboratório de privacidade e minimização de dados",
+            goal: "Para vários aplicativos fictícios, classificar cada campo de dados como obrigatório, útil, desnecessário ou sensível demais, e depois comparar com orientações sobre alternativas mais seguras, consentimento e por quanto tempo guardar os dados.",
+            overview: "Escolha um aplicativo fictício (recomendador de livros, lembrete de eventos, ajudante de reciclagem, planejador de estudos ou guia de museu) e vá campo por campo (primeiro nome, data de nascimento exata, faixa etária, localização exata, gravação de voz, foto, identificador do aparelho e mais), decidindo se ele é obrigatório, útil mas opcional, desnecessário ou sensível demais para aquela finalidade. Revele a orientação para ver por que cada campo pode ou não ser necessário, uma alternativa mais segura, se é preciso consentimento, por quanto tempo guardar, e se processar no próprio aparelho reduz o risco. O objetivo é a minimização de dados: coletar só o que é realmente necessário. Nada de pessoal é digitado; os aplicativos e campos já vêm prontos.",
+            steps: [
+              "Escolha um aplicativo e leia para que ele serve.",
+              "Classifique cada campo de dados: obrigatório, útil, desnecessário ou sensível demais.",
+              "Revele a orientação e compare, lendo a alternativa mais segura, o consentimento e o prazo de guarda de cada um.",
+              "Repare em como um mesmo campo pode ser obrigatório para um aplicativo e desnecessário para outro.",
+            ],
+            materials: [
+              "O laboratório de privacidade já incluído nesta atividade",
+            ],
+            successCriteria: [
+              "Todos os campos são classificados para pelo menos um aplicativo.",
+              "Campos desnecessários e sensíveis demais são reconhecidos (minimização de dados).",
+              "As alternativas mais seguras, as necessidades de consentimento e as orientações de guarda são lidas.",
+            ],
+            dataset: {
+              name: "Cenários de aplicativos e campos de dados",
+              description: "Cinco cenários de aplicativos fictícios já incluídos e treze campos de dados possíveis, cada um com um gabarito escrito (classificação recomendada, por quê, alternativa mais segura, consentimento, prazo de guarda, processamento no aparelho). Nenhum dado pessoal real é digitado.",
+              columns: [
+                null,
+                "Campo de dados",
+                "Classificação",
+                "Alternativa mais segura",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "Responda a estas perguntas para conferir se você entendeu dados pessoais, consentimento e minimização de dados.",
+            questions: [
+              {
+                prompt: "Quais destes contam como dados pessoais? Selecione todos que se aplicam.",
+                explanation: "Dados pessoais são informações sobre uma pessoa específica; o horário público de um ônibus não é sobre ninguém em particular.",
+                choices: [
+                  {
+                    text: "O endereço residencial de uma pessoa",
+                    explanation: "Correto: um endereço residencial é informação sobre uma pessoa específica.",
+                  },
+                  {
+                    text: "Uma foto mostrando o rosto de alguém",
+                    explanation: "Correto: a foto de um rosto identifica uma pessoa específica, então é dado pessoal.",
+                  },
+                  {
+                    text: "O horário público dos ônibus de uma cidade",
+                    explanation: "Um horário público não é sobre ninguém em particular, então não é dado pessoal.",
+                  },
+                  {
+                    text: "A localização exata de uma pessoa agora",
+                    explanation: "Correto: uma localização exata diz onde uma pessoa específica está, então é dado pessoal.",
+                  },
+                ],
+              },
+              {
+                prompt: "Qual alternativa segue melhor a minimização de dados?",
+                scenario: "Um aplicativo de jogo de perguntas precisa de um nome para mostrar na lista de pontuações. Ele oferece três opções do que coletar de cada jogador.",
+                explanation: "O placar só precisa de um nome de exibição, então um apelido é o menor dado pessoal que ainda faz o trabalho.",
+                choices: [
+                  {
+                    text: "Coletar um apelido que o jogador digita.",
+                    explanation: "Correto: um apelido faz o trabalho com o mínimo de dados pessoais.",
+                  },
+                  {
+                    text: "Coletar o nome completo de registro e a data de nascimento do jogador.",
+                    explanation: "O placar não precisa de nome de registro nem de data de nascimento, então isso coleta demais.",
+                  },
+                  {
+                    text: "Coletar também os contatos e a localização do jogador.",
+                    explanation: "Contatos e localização nada têm a ver com mostrar uma pontuação, então isso é muito mais do que o necessário.",
+                  },
+                ],
+              },
+              {
+                prompt: "Decida se a afirmação é verdadeira ou falsa.",
+                statement: "Esconder um acordo de compartilhamento de dados no fundo das letras miúdas, onde é improvável que as pessoas leiam, ainda conta como consentimento real e informado.",
+                explanation: "Consentimento informado significa que a pessoa é avisada com clareza e pode escolher livremente; compartilhamento de dados escondido em letras miúdas não é consentimento informado.",
+              },
+            ],
+          },
+          challenge: {
+            title: "Minimize um recurso que você usa",
+            prompt: "Escolha um recurso comum de aplicativo e redesenhe-o para coletar o mínimo de dados pessoais e ainda funcionar.",
+            steps: [
+              "Descreva o recurso e a função real dele em uma frase.",
+              "Liste os dados pessoais que ele poderia coletar.",
+              "Risque tudo de que a função não precisa de verdade.",
+              "Escreva a versão minimizada e uma pergunta de consentimento clara para ela.",
+            ],
+            successCriteria: [
+              "A função do recurso é enunciada com clareza.",
+              "Pelo menos um dado pessoal desnecessário é removido.",
+              "Uma pergunta de consentimento clara é escrita, com um jeito fácil de recusar.",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "Qual aplicativo do seu aparelho você acha que coleta mais dados do que a função dele precisa? O que ele poderia deixar de pedir?",
+            },
+            {
+              prompt: "Por que coletar menos dados pessoais protege as pessoas mesmo que ninguém nunca os use indevidamente?",
+            },
+          ],
+          recap: {
+            summary: "Privacidade é controlar os dados pessoais; o consentimento precisa ser informado, e a minimização de dados mantém só o que um recurso realmente precisa.",
+            keyPoints: [
+              "Dados pessoais são informações sobre uma pessoa específica, como nome, endereço ou localização exata.",
+              "Consentimento real é informado e dado livremente, e não escondido em letras miúdas.",
+              "Minimização de dados significa coletar só o que o recurso precisa para funcionar.",
+              "Dados que você nunca coleta não podem vazar nem ser usados indevidamente, então menos dados significa menos risco.",
+            ],
+          },
+          extension: {
+            title: "O compromisso por trás dos aplicativos \"gratuitos\"",
+            body: [
+              "Muitos aplicativos são gratuitos porque coletam e usam dados sobre quem os usa. Isso não torna todo aplicativo gratuito prejudicial, mas significa que vale a pena perguntar \"o que este aplicativo ganha comigo?\".",
+              "Escolha um aplicativo ou serviço gratuito e descreva a troca possível: o que a pessoa recebe, e que dados a empresa pode coletar em troca? Quais desses dados a minimização de dados diria que o aplicativo na verdade não precisa?",
+            ],
+          },
+        },
+        {
+          title: "Investigue conteúdo de IA e tome uma decisão ética",
+          summary: "Aprenda a verificar conteúdo feito por IA e conteúdo on-line achando a fonte original, conferindo o contexto e confirmando de forma independente, e depois tome uma decisão ética com supervisão humana e direito de recurso.",
+          estimatedTime: "50-60 minutos",
+          objectives: [
+            {
+              text: "Definir deepfake e desinformação e explicar como eles podem enganar.",
+            },
+            {
+              text: "Verificar uma afirmação achando a fonte original dela e conferindo o contexto.",
+            },
+            {
+              text: "Usar a confirmação independente de fontes separadas e confiáveis.",
+            },
+            {
+              text: "Explicar por que decisões importantes de uma IA precisam de supervisão humana e de direito de recurso.",
+            },
+          ],
+          materials: [
+            {
+              name: "Esta aula em um navegador web",
+            },
+            {
+              name: "Papel e lápis, ou um aplicativo de notas",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "Deepfake",
+              definition: "Uma foto, um vídeo ou um áudio feito ou alterado por IA para mostrar uma pessoa dizendo ou fazendo algo que ela não disse nem fez de verdade.",
+            },
+            {
+              term: "Desinformação",
+              definition: "Informação falsa ou enganosa que se espalha, quer quem compartilha tenha a intenção de enganar, quer não.",
+            },
+            {
+              term: "Fonte original",
+              definition: "O primeiro lugar de onde uma afirmação, citação ou imagem realmente veio, antes de ser copiada ou recompartilhada.",
+            },
+            {
+              term: "Contexto",
+              definition: "Toda a história em volta (quando, onde e por que algo aconteceu) que dá a um fato o significado real dele.",
+            },
+            {
+              term: "Confirmação independente",
+              definition: "Conferir uma afirmação em duas ou mais fontes separadas e confiáveis que não simplesmente copiaram uma à outra.",
+            },
+            {
+              term: "Supervisão humana",
+              definition: "Uma pessoa revisando e continuando responsável pelas decisões importantes de uma IA, em vez de deixar o software decidir sozinho.",
+            },
+            {
+              term: "Recurso",
+              definition: "O direito de pedir que uma pessoa revise e possivelmente mude uma decisão que uma IA tomou sobre você.",
+            },
+          ],
+          openingScenario: {
+            prompt: "Um vídeo se espalha na internet mostrando uma cientista famosa dizendo algo chocante. Parece e soa real. Antes de acreditar ou compartilhar, o que você iria querer conferir primeiro?",
+            context: "A IA já consegue criar imagens, vídeos e áudios falsos muito convincentes, então \"parece real\" não basta mais para confiar em algo.",
+          },
+          predictionPrompt: {
+            prompt: "Preveja: se a mesma afirmação surpreendente aparece em cinco contas que todas copiaram uma única publicação, isso conta como cinco confirmações independentes?",
+            howToCheck: "Enquanto lê sobre confirmação independente, decida se cópias de uma única fonte contam como confirmações separadas.",
+          },
+          concepts: [
+            {
+              title: "Deepfakes e desinformação: por que \"parece real\" não é prova",
+              body: [
+                "Um deepfake é uma foto, um vídeo ou um áudio que a IA criou ou alterou para mostrar uma pessoa dizendo ou fazendo algo que ela nunca fez. Como a IA fica cada vez melhor nisso, um vídeo pode parecer e soar convincente e ainda assim ser falso.",
+                "Desinformação é informação falsa ou enganosa que se espalha. Nem sempre é um deepfake, e quem compartilha nem sempre quer enganar: uma foto real pode circular com uma legenda falsa. De todo jeito, a solução é a mesma: não confie em algo só porque parece real ou porque muita gente compartilhou.",
+              ],
+              examples: [
+                "Um vídeo em que a boca e a voz de uma pessoa foram alteradas por IA para forjar uma citação.",
+                "Uma foto antiga e real recompartilhada com a alegação falsa de que aconteceu hoje.",
+                "Uma \"estatística\" inventada, repetida tantas vezes que começa a parecer verdade.",
+              ],
+            },
+            {
+              title: "Ache a fonte original e confira o contexto",
+              body: [
+                "Para verificar uma afirmação, rastreie-a até a fonte original: o primeiro lugar de onde ela realmente veio, antes de ser copiada e recompartilhada. Uma captura de tela de uma citação não é a fonte; a reportagem, o vídeo ou a página oficial de verdade são. Se você não consegue achar nenhuma fonte original, isso é um sinal de alerta.",
+                "Depois confira o contexto: quando, onde e por que aquilo aconteceu. Uma foto real pode enganar se for antiga, de outro lugar, ou se faltar a história em volta. O contexto é o que transforma um fato solto em um fato honesto.",
+              ],
+              examples: [
+                "Rastrear uma citação até a entrevista completa de onde ela foi recortada.",
+                "Descobrir que uma foto de \"última hora\" é na verdade de um evento de anos atrás.",
+                "Ler a declaração inteira e ver que uma citação foi cortada no meio da frase.",
+              ],
+            },
+            {
+              title: "Confirmação independente: fontes separadas, e não ecos",
+              body: [
+                "Uma fonte só pode estar errada, então afirmações fortes precisam de confirmação independente: duas ou mais fontes separadas e confiáveis que não simplesmente copiaram uma à outra. Dez contas recompartilhando a mesma publicação continuam sendo uma única fonte ecoando, e não dez confirmações.",
+                "Para confirmar de forma independente, procure reportagens ou registros que tenham chegado à afirmação por conta própria: outro veículo de imprensa, uma página oficial, uma pessoa especialista. Se fontes independentes concordam, é bem mais provável que a afirmação seja verdadeira. Se só uma fonte tem aquilo, continue cauteloso.",
+              ],
+              examples: [
+                "Dois veículos de imprensa distintos que cada um noticiou por conta própria.",
+                "A página da própria organização oficial confirmando o próprio anúncio dela.",
+                "Perceber que cinco \"fontes\" apontam todas para a mesma publicação única.",
+              ],
+            },
+            {
+              title: "Supervisão humana e o direito de recurso",
+              body: [
+                "A IA pode ajudar a sinalizar possíveis falsificações ou a organizar informação, mas ela erra, então decisões importantes precisam de supervisão humana: uma pessoa que revisa a decisão e continua responsável por ela. Isso importa mais quando uma decisão afeta a vida de alguém, como marcar uma publicação como falsa, avaliar um trabalho ou bloquear uma conta.",
+                "Quem é afetado por uma decisão de IA também deveria ter direito de recurso: poder pedir que uma pessoa revise a decisão e a mude se a IA errou. Supervisão e recurso são o jeito de manter as pessoas, e não o software, no comando das decisões que importam.",
+              ],
+              examples: [
+                "Uma pessoa revisando as publicações que uma IA sinalizou antes de qualquer uma ser removida.",
+                "Um aluno pedindo à professora que reveja uma resposta avaliada por IA.",
+                "Uma pessoa recorrendo a um humano depois de uma IA bloquear a conta dela por engano.",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "Investigando um vídeo viral chocante",
+            steps: [
+              "Pare antes de compartilhar. O vídeo é surpreendente e emocionante, que é justamente quando a desinformação se espalha mais rápido.",
+              "Ache a fonte original. Procure o vídeo completo ou a declaração oficial, e não só o trecho curto que alguém republicou.",
+              "Confira o contexto. Repare que o trecho foi recortado de uma palestra mais longa em que a pessoa disse o contrário; a citação foi tirada de contexto.",
+              "Confirme de forma independente. Procure uma fonte separada e confiável. Nenhum veículo independente noticia a afirmação chocante, um forte sinal de que ela não é real.",
+              "Decida com supervisão e recurso. Como há muito em jogo, uma pessoa moderadora, e não a IA sozinha, revisa e rotula como enganoso, e quem publicou pode recorrer se tiver provas reais.",
+            ],
+            takeaway: "Verifique por fonte e contexto, confirme de forma independente, e mantenha uma pessoa no comando com um caminho de recurso antes de agir diante de uma afirmação séria.",
+          },
+          visuals: [
+            {
+              title: "Uma lista de verificação para conteúdo on-line",
+              summary: "Um fluxo de quatro passos para conferir uma afirmação antes de acreditar ou compartilhar. Passo 1: ache a fonte original (o primeiro lugar de onde veio, e não uma captura de tela). Passo 2: confira o contexto (quando, onde e por que aconteceu). Passo 3: confirme de forma independente (duas ou mais fontes separadas e confiáveis que não copiaram uma à outra). Passo 4: decida com supervisão humana e mantenha um direito de recurso. Se algum passo falhar, não compartilhe aquilo como verdade.",
+              caption: "Siga os quatro passos em ordem; uma afirmação que falha em um passo não deve ser compartilhada como verdade.",
+            },
+            {
+              title: "Confirmação real contra um eco",
+              summary: "Uma tabela distinguindo confirmação independente real do eco de uma única fonte. Cinco republicações da mesma publicação original: não é independente, porque todas remetem a uma única fonte. Dois veículos de imprensa diferentes noticiando por conta própria: independente, porque chegaram à afirmação separadamente. Uma organização oficial confirmando a própria notícia: independente e confiável. Uma conta anônima sem fonte: não é confirmação, trate com cautela.",
+              table: {
+                columns: [
+                  "O que você encontrou",
+                  "É confirmação independente?",
+                ],
+                rows: [
+                  [
+                    "Cinco republicações da mesma publicação original",
+                    "Não, uma única fonte ecoando",
+                  ],
+                  [
+                    "Dois veículos de imprensa distintos, cada um noticiando por conta própria",
+                    "Sim, é independente",
+                  ],
+                  [
+                    "Uma organização oficial confirmando a própria notícia",
+                    "Sim, fonte confiável",
+                  ],
+                  [
+                    "Uma conta anônima sem nenhuma fonte ligada",
+                    "Não, verifique antes de confiar",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "Investigação de conteúdo e decisão ética",
+            goal: "Investigar publicações fictícias usando provas de fonte e contexto, e depois atuar como comitê de ética diante de sistemas de IA propostos e desenhar um processo de recurso.",
+            overview: "Parte 1: investigue uma coleção de publicações fictícias: uma ilustração de IA rotulada com honestidade, uma foto real com legenda enganosa, uma citação forjada, uma data falsa, uma afirmação sem fonte, uma afirmação com fonte confiável e uma corrente que apela às emoções. Para cada uma, faça as sete conferências de fonte e contexto (quem publicou, existe uma fonte original, a data está certa, a legenda combina com o contexto, há provas, fontes independentes confirmam, aquilo acelera as suas emoções) e julgue se deve confiar, questionar ou deixar sem confirmação. \"Pistas\" visuais, como mãos estranhas, são tratadas como pouco confiáveis, e a atividade não afirma detectar conteúdo de IA com perfeição. Parte 2: avalie seis sistemas de IA propostos como um comitê de ética, escolhendo uma decisão e salvaguardas, com retorno baseado em se as suas salvaguardas combinam com o que está em jogo, e não em uma única resposta \"certa\". Parte 3: desenhe um processo de recurso. Tudo fictício; nada é enviado a lugar nenhum.",
+            steps: [
+              "Para cada publicação, leia as sete conferências de provas e julgue: confiar, questionar ou deixar sem confirmação.",
+              "Compare com a recomendação e com a nota didática sobre fonte e contexto.",
+              "Como comitê de ética, escolha uma decisão e salvaguardas para um sistema de IA proposto.",
+              "Desenhe um processo de recurso: aviso, explicação, quem revisa, correção, documentação e possibilidade de reverter a decisão.",
+            ],
+            materials: [
+              "A investigação de conteúdo, o comitê de ética e o desenhador de recursos já incluídos nesta atividade",
+            ],
+            successCriteria: [
+              "As publicações são julgadas usando provas de fonte e contexto, e não um truque visual.",
+              "Uma decisão ética é tomada com salvaguardas que combinam com o que está em jogo.",
+              "Um processo de recurso completo é desenhado, com supervisão humana e um jeito de corrigir erros.",
+            ],
+            dataset: {
+              name: "Publicações, cenários de ética e desenhador de recursos",
+              description: "Uma coleção já incluída de oito publicações fictícias (cada uma com sete conferências de provas de fonte e contexto e um veredito recomendado), seis cenários para o comitê de ética (com o que está em jogo, os erros prováveis e as salvaguardas principais) e um desenhador de processo de recurso em seis partes. Tudo fictício; sem contas, pessoas ou dados pessoais reais.",
+              columns: [
+                "Publicação / cenário",
+                "Provas ou o que está em jogo",
+                "Veredito recomendado / salvaguardas",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "Responda a estas perguntas para conferir se você sabe verificar conteúdo e raciocinar sobre supervisão e recurso.",
+            questions: [
+              {
+                prompt: "Coloque em uma ordem sensata os passos de verificar uma afirmação surpreendente.",
+                explanation: "Verifique achando a fonte original, conferindo o contexto dela, confirmando com fontes independentes, e só então decidindo o que fazer.",
+                items: [
+                  {
+                    text: "Achar a fonte original de onde a afirmação veio",
+                  },
+                  {
+                    text: "Conferir o contexto: quando, onde e por que aconteceu",
+                  },
+                  {
+                    text: "Confirmá-la com duas ou mais fontes independentes",
+                  },
+                  {
+                    text: "Decidir o que fazer, com uma pessoa revisando a decisão",
+                  },
+                ],
+              },
+              {
+                prompt: "Qual destas é uma verdadeira confirmação independente de uma afirmação?",
+                explanation: "Confirmação independente exige fontes separadas que chegaram à afirmação por conta própria, e não cópias de uma única publicação.",
+                choices: [
+                  {
+                    text: "A mesma publicação recompartilhada por muitas contas",
+                    explanation: "Recompartilhamentos de uma publicação são uma única fonte ecoando, e não confirmação independente.",
+                  },
+                  {
+                    text: "Duas fontes separadas e confiáveis que cada uma noticiou por conta própria",
+                    explanation: "Correto: fontes separadas que não copiaram uma à outra são confirmação independente de verdade.",
+                  },
+                  {
+                    text: "Uma conta anônima que diz \"confie em mim\"",
+                    explanation: "Uma única conta sem nome e sem fonte não é confirmação nenhuma.",
+                  },
+                  {
+                    text: "A afirmação parecer verdadeira por ser surpreendente",
+                    explanation: "Uma sensação não é prova; afirmações surpreendentes precisam ainda mais de conferência.",
+                  },
+                ],
+              },
+              {
+                prompt: "Qual é o jeito mais responsável de lidar com esta decisão de IA?",
+                scenario: "Um aplicativo escolar usa IA para sinalizar redações que ele prevê terem sido copiadas. Ele sinaliza a redação de Priya, que ela mesma escreveu.",
+                explanation: "A IA pode errar, então uma pessoa deveria revisar a sinalização e Priya deveria poder recorrer a um humano.",
+                choices: [
+                  {
+                    text: "Dar zero automaticamente, porque a IA nunca erra.",
+                    explanation: "A IA erra sim, então agir com base na sinalização sem revisão humana é injusto.",
+                  },
+                  {
+                    text: "Fazer uma professora revisar a sinalização, e deixar Priya recorrer e explicar.",
+                    explanation: "Correto: supervisão humana somada ao direito de recurso protege as pessoas dos erros da IA.",
+                  },
+                  {
+                    text: "Esconder a sinalização de Priya para ela não poder contestar.",
+                    explanation: "Esconder a decisão elimina qualquer chance de recurso, o que é injusto com Priya.",
+                  },
+                  {
+                    text: "Apagar a redação para ninguém precisar decidir.",
+                    explanation: "Apagar o trabalho dela pune Priya e ainda assim não lhe dá uma revisão justa.",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "Escreva um guia de verificação",
+            prompt: "Faça um guia curto que um amigo possa usar para conferir se uma publicação viral é confiável antes de compartilhar.",
+            steps: [
+              "Escreva os quatro passos: fonte original, contexto, confirmação independente e uma conferência humana.",
+              "Para cada passo, acrescente uma pergunta simples que a pessoa possa se fazer.",
+              "Acrescente uma linha sobre quando uma decisão precisa de supervisão humana e de um caminho de recurso.",
+            ],
+            successCriteria: [
+              "Os quatro passos de verificação aparecem em uma ordem clara.",
+              "Cada passo tem uma pergunta simples e utilizável.",
+              "O guia menciona a supervisão humana e o direito de recurso.",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "Pense em uma vez em que algo surpreendente se espalhou on-line. O que teria ajudado as pessoas a conferir antes de compartilhar?",
+            },
+            {
+              prompt: "Por que o direito de recorrer de uma decisão de IA é importante, mesmo quando a IA costuma acertar?",
+            },
+          ],
+          recap: {
+            summary: "Como a IA consegue falsificar e espalhar conteúdo convincente, verifique por fonte e contexto, confirme de forma independente, e mantenha as pessoas no comando com direito de recurso.",
+            keyPoints: [
+              "Deepfakes e desinformação significam que \"parece real\" não é prova.",
+              "Rastreie as afirmações até a fonte original e confira o contexto em volta delas.",
+              "Confirmação independente exige fontes separadas, e não cópias de uma única publicação.",
+              "Decisões importantes de IA precisam de supervisão humana e de direito de recurso.",
+            ],
+          },
+          extension: {
+            title: "Quando a pressa briga com a exatidão",
+            body: [
+              "Na internet, ser o primeiro muitas vezes rende mais atenção do que estar certo, então conteúdo enganoso pode se espalhar antes que alguém verifique. Verificar com cuidado leva um tempo que um feed acelerado não recompensa.",
+              "Descreva uma situação em que a pressão para compartilhar rápido entra em conflito com os passos de verificar uma afirmação. O que uma plataforma, ou uma pessoa, poderia fazer para tornar a escolha correta mais fácil do que a rápida?",
+            ],
+          },
+        },
+      ],
+    },
+    {
+      title: "Estúdio de Design de IA",
+      subtitle: "Junte tudo: defina um problema real, decida se a IA se encaixa, projete e teste um protótipo, e apresente com responsabilidade.",
+      summary: "Na semana final, os alunos trabalham como uma equipe de design: transformam a necessidade de uma pessoa usuária em uma definição clara do problema, julgam se a IA é a ferramenta certa, projetam as entradas, saídas, características, rótulos e regras, constroem e testam um protótipo de papel, encontram as limitações dele por meio de casos de teste, e apresentam o resultado com honestidade, com supervisão humana e uso responsável, enquanto exploram as carreiras de quem constrói e regula a IA. Esta semana prepara os alunos para o estúdio do Projeto Final e para a Avaliação Final, que vêm à parte.",
+      bigQuestion: "Como levar uma ideia de um problema real até um projeto de IA testado e apresentado com responsabilidade?",
+      estimatedTime: "2,5-3 horas",
+      objectives: [
+        "Transformar a necessidade de uma pessoa usuária em uma definição clara do problema e julgar se a IA combina com ela.",
+        "Projetar as entradas, saídas, características, rótulos e regras de um sistema.",
+        "Construir um protótipo, testá-lo com casos de teste, achar as limitações dele e iterar.",
+        "Apresentar um projeto com responsabilidade, com supervisão, e descrever carreiras reais em IA.",
+      ],
+      requiredConcepts: [
+        "Necessidade da pessoa usuária",
+        "Definição do problema",
+        "Adequação da IA",
+        "Entrada",
+        "Saída",
+        "Característica",
+        "Rótulo",
+        "Regra",
+        "Protótipo",
+        "Caso de teste",
+        "Limitação",
+        "Supervisão",
+        "Iteração",
+        "Uso responsável",
+      ],
+      lessons: [
+        {
+          title: "Escolha o problema e a ferramenta certos",
+          summary: "Comece um projeto de design do jeito que as equipes de verdade fazem: aponte a necessidade de uma pessoa usuária, escreva uma definição clara do problema, e decida se a IA é sequer a ferramenta certa para a tarefa.",
+          estimatedTime: "50-60 minutos",
+          objectives: [
+            {
+              text: "Transformar a necessidade de uma pessoa usuária em uma definição do problema clara, de uma frase só.",
+            },
+            {
+              text: "Julgar a adequação da IA: decidir se um problema combina mais com IA ou com regras fixas.",
+            },
+            {
+              text: "Apontar a entrada e a saída que o seu projeto usaria.",
+            },
+            {
+              text: "Explicar por que escolher o problema certo importa antes de construir qualquer coisa.",
+            },
+          ],
+          materials: [
+            {
+              name: "Esta aula em um navegador web",
+            },
+            {
+              name: "Papel e lápis, ou um aplicativo de notas",
+            },
+            {
+              name: "Suas anotações das semanas 1 a 5",
+              note: "Para relembrar como a IA aprende com exemplos.",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "Necessidade da pessoa usuária",
+              definition: "Um problema real que uma pessoa ou grupo específico tem e quer resolver, descrito do ponto de vista dessa pessoa.",
+            },
+            {
+              term: "Definição do problema",
+              definition: "Uma afirmação clara, de uma frase só, sobre exatamente o que você está tentando resolver e para quem.",
+            },
+            {
+              term: "Adequação da IA",
+              definition: "O quanto um problema combina com a IA, que aprende padrões a partir de muitos exemplos, em comparação com uma regra fixa que uma pessoa simplesmente pode escrever.",
+            },
+            {
+              term: "Entrada",
+              definition: "A informação que o sistema receberia, como uma foto, uma frase ou um conjunto de números.",
+            },
+            {
+              term: "Saída",
+              definition: "O resultado que o sistema devolveria, como um rótulo, uma previsão ou uma sugestão.",
+            },
+          ],
+          openingScenario: {
+            prompt: "Um clube da escola diz: \"Queremos usar IA!\". Mas para quê? Uma equipe de design nunca começa pela ferramenta: ela começa por uma pessoa que tem um problema. De quem seria o problema que o seu projeto resolveria, e qual é ele exatamente?",
+            context: "Esta semana você planeja um projeto de verdade. Tudo começa pelo problema, e não pela tecnologia.",
+          },
+          predictionPrompt: {
+            prompt: "Preveja: destas duas ideias, \"separar fotos de livros da biblioteca em ficção e não ficção\" e \"destrancar uma porta com a senha correta\", qual combina mais com IA?",
+            howToCheck: "Enquanto lê, pergunte se cada tarefa é bagunçada demais para uma pessoa escrever regras exatas, ou se uma regra clara já resolve.",
+          },
+          concepts: [
+            {
+              title: "Comece por uma necessidade da pessoa usuária, e não por uma ferramenta",
+              body: [
+                "Bons projetos começam com uma pessoa real que tem um problema real: uma necessidade da pessoa usuária. \"As crianças da minha turma esquecem em qual lixeira de reciclagem jogar cada coisa\" é uma necessidade. \"Quero usar IA\" não é; isso aponta uma ferramenta, e não um problema.",
+                "Quando você parte de uma necessidade real, dá para saber depois se o seu projeto realmente ajudou. Descreva a necessidade do ponto de vista da pessoa usuária: quem ela é, e o que está difícil para ela agora.",
+              ],
+              examples: [
+                "Uma jardineira não consegue dizer quais folhas mostram doença na planta",
+                "Alunos novos se perdem procurando as salas no primeiro dia",
+                "Um clube de correspondência recebe mensagens em idiomas que os membros não leem",
+              ],
+            },
+            {
+              title: "Escreva uma definição clara do problema",
+              body: [
+                "Depois de ter uma necessidade, você escreve uma definição do problema: uma frase clara que diz exatamente o que você está resolvendo e para quem. Uma definição afiada evita que um projeto se perca. \"Ajudar alunos do sexto ano a separar o lixo da sala em reciclagem, compostagem e lixo comum a partir de uma foto\" é específica o bastante para construir e para testar.",
+                "Uma definição vaga como \"melhorar a reciclagem\" não pode ser testada: você nunca saberia se deu certo. Uma boa definição do problema aponta a pessoa usuária, a tarefa, e como é um bom resultado.",
+              ],
+              examples: [
+                "Vaga: \"Ajudar com plantas.\" Clara: \"Dizer a quem cultiva se a foto de uma folha de tomate parece saudável ou doente.\"",
+                "Vaga: \"Facilitar a escola.\" Clara: \"Dar a um aluno novo o caminho até uma sala a partir do número dela.\"",
+              ],
+            },
+            {
+              title: "Decida a adequação da IA: ela é sequer a ferramenta certa?",
+              body: [
+                "Nem todo problema precisa de IA. A IA brilha quando uma tarefa é bagunçada demais para escrever regras exatas, mas você tem muitos exemplos com que aprender, como diferenciar folhas saudáveis de doentes em fotos. Um problema que uma regra clara já resolve não precisa de IA: \"destrancar se a senha bater\" é uma regra, não uma tarefa de aprendizado.",
+                "Para julgar a adequação da IA, faça três perguntas: a tarefa é bagunçada demais para regras escritas à mão? Você conseguiria reunir muitos exemplos rotulados? E tudo bem se o sistema errar às vezes? Se as respostas forem sim, a IA pode se encaixar. Se uma regra simples funciona, use a regra: ela é mais barata, mais clara e mais fácil de conferir.",
+              ],
+              examples: [
+                "Boa combinação com IA: separar fotos de lixo em reciclagem, compostagem ou lixo comum.",
+                "Combinação ruim com IA: acender as luzes do corredor às 7h; isso é uma regra fixa.",
+                "Combinação ruim com IA: uma tarefa em que errar uma única vez poderia machucar seriamente alguém.",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "De um desejo vago a um projeto que dá para construir",
+            steps: [
+              "Comece pelo desejo: \"Quero usar IA para ajudar o clube de reciclagem\".",
+              "Ache a necessidade: os membros do clube e outros alunos muitas vezes jogam o lixo na lixeira errada porque não sabem o que é reciclável.",
+              "Escreva a definição do problema: \"Ajudar os alunos a decidir em qual de três lixeiras (reciclagem, compostagem ou lixo comum) um item vai, a partir de uma foto do item\".",
+              "Aponte entrada e saída: a entrada é a foto de um item; a saída é um rótulo: \"reciclagem\", \"compostagem\" ou \"lixo comum\".",
+              "Confira a adequação da IA: bagunçado demais para regras exatas? Sim, os itens variam muito. Dá para reunir muitas fotos rotuladas? Sim. Tudo bem errar às vezes, se uma pessoa confere? Sim. A IA se encaixa.",
+            ],
+            takeaway: "Um projeto que dá para construir tem uma necessidade real, uma definição do problema de uma frase, uma entrada e uma saída apontadas, e um sim na adequação da IA.",
+          },
+          visuals: [
+            {
+              title: "Este problema deve usar IA?",
+              summary: "Uma árvore de decisão para a adequação da IA. Início: \"Uma regra clara resolve?\". Se sim, use uma regra, e não IA. Se não, pergunte \"Dá para reunir muitos exemplos rotulados?\". Se não, a IA provavelmente ainda não vai funcionar. Se sim, pergunte \"Tudo bem se ela errar às vezes, com uma pessoa conferindo?\". Se não, tenha muito cuidado ou não use IA. Se sim, a IA pode ser uma boa escolha.",
+              caption: "Use uma regra quando uma regra funciona; guarde a IA para tarefas bagunçadas, com exemplos e conferência humana.",
+            },
+            {
+              title: "Lista de verificação da definição do problema",
+              summary: "Uma tabela do que uma boa definição do problema inclui. Pessoa usuária: aponta uma pessoa ou grupo específico. Tarefa: diz exatamente o que decidir ou produzir. Entrada: aponta o que o sistema recebe. Saída: aponta o que ele devolve. Testável: depois você conseguiria dizer se funcionou.",
+              table: {
+                columns: [
+                  "Parte",
+                  "Pergunta que ela responde",
+                  "Exemplo fraco",
+                  "Exemplo forte",
+                ],
+                rows: [
+                  [
+                    "Pessoa usuária",
+                    "Quem tem este problema?",
+                    "\"As pessoas\"",
+                    "\"Alunos novos do sexto ano\"",
+                  ],
+                  [
+                    "Tarefa",
+                    "O que exatamente estamos resolvendo?",
+                    "\"Ajudar com o caminho\"",
+                    "\"Dar o caminho até uma sala a partir do número dela\"",
+                  ],
+                  [
+                    "Entrada",
+                    "O que entra?",
+                    "\"Alguma informação\"",
+                    "\"Um número de sala\"",
+                  ],
+                  [
+                    "Saída",
+                    "O que sai?",
+                    "\"Uma resposta\"",
+                    "\"Instruções passo a passo\"",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "Estúdio de encaixe entre problema e ferramenta",
+            goal: "Escolher um problema para o projeto, escrever a definição do problema dele, e decidir se a IA é a ferramenta certa.",
+            overview: "Você vai analisar um conjunto de problemas candidatos, escolher um (ou trazer a sua própria necessidade de pessoa usuária), e transformá-lo em um resumo de projeto que dê para construir: uma necessidade, uma definição do problema de uma frase, uma entrada e uma saída apontadas, e uma decisão sobre a adequação da IA. Esta é a semente do seu Projeto Final.",
+            steps: [
+              "Leia os problemas candidatos e escolha um que te interesse, ou escreva a sua própria necessidade de pessoa usuária.",
+              "Escreva a necessidade do ponto de vista da pessoa usuária: quem ela é e o que está difícil.",
+              "Escreva uma definição do problema de uma frase, apontando a pessoa usuária, a tarefa e como é um bom resultado.",
+              "Aponte a entrada e a saída que o seu sistema usaria.",
+              "Faça a verificação de adequação da IA e escreva uma frase: a IA se encaixa, ou uma regra simples resolveria?",
+            ],
+            materials: [
+              "Papel e lápis, ou um aplicativo de notas",
+            ],
+            successCriteria: [
+              "Uma necessidade escrita do ponto de vista da pessoa usuária.",
+              "Uma definição do problema de uma frase que aponte a pessoa usuária, a tarefa e um resultado testável.",
+              "Uma entrada e uma saída apontadas.",
+              "Uma decisão clara sobre a adequação da IA, com um motivo de uma frase.",
+            ],
+            dataset: {
+              name: "Problemas candidatos para o projeto",
+              description: "Um conjunto já incluído de problemas iniciais para o estúdio: separar o lixo da sala a partir de uma foto, sinalizar folhas com doenças de plantas, agrupar itens de achados e perdidos, traduzir mensagens de correspondência, organizar livros da biblioteca por assunto, e \"destrancar um armário com uma senha\" (uma armadilha que só precisa de regras e deve ser descartada). Cada carta lista uma pessoa usuária aproximada, uma entrada possível e uma saída possível.",
+              columns: [
+                "Problema",
+                "Pessoa usuária possível",
+                "Entrada possível",
+                "Saída possível",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "Confira se você sabe definir um problema e julgar se a IA combina com ele.",
+            questions: [
+              {
+                prompt: "Qual é a definição do problema mais forte?",
+                explanation: "Uma definição forte aponta a pessoa usuária, a tarefa exata, e um resultado que você poderia testar depois.",
+                choices: [
+                  {
+                    text: "Usar IA para melhorar a escola.",
+                    explanation: "Isso aponta uma ferramenta e um desejo, e não uma pessoa usuária específica, uma tarefa ou um resultado testável.",
+                  },
+                  {
+                    text: "Ajudar alunos novos a achar uma sala dando o caminho a partir do número dela.",
+                    explanation: "Correto: aponta a pessoa usuária (alunos novos), a tarefa (o caminho) e um resultado testável.",
+                  },
+                  {
+                    text: "Fazer algo legal com fotos.",
+                    explanation: "Não há pessoa usuária, nem tarefa, nem nada que você pudesse testar.",
+                  },
+                  {
+                    text: "Melhorar a reciclagem para todo mundo.",
+                    explanation: "É vago demais: você nunca conseguiria dizer se funcionou.",
+                  },
+                ],
+              },
+              {
+                prompt: "Decida se a afirmação é verdadeira ou falsa.",
+                statement: "Se uma regra clara já resolve um problema, você ainda assim deve usar IA porque a IA é mais avançada.",
+                explanation: "Falso: se uma regra simples funciona, use a regra. Ela é mais barata, mais clara e mais fácil de conferir do que a IA.",
+              },
+              {
+                prompt: "Qual projeto combina melhor com IA?",
+                scenario: "Um clube está escolhendo entre: (A) tocar um sinal exatamente quando a aula acaba, ou (B) dizer, a partir de uma foto, se a folha de uma planta parece saudável ou doente.",
+                explanation: "O sinal é uma regra clara de horário. Diferenciar folhas saudáveis de doentes é bagunçado e precisa de muitos exemplos rotulados, o que combina com IA.",
+                choices: [
+                  {
+                    text: "Tocar um sinal quando a aula acaba",
+                    explanation: "Isso é uma regra fixa de horário: não precisa aprender nada, então a IA não se encaixa.",
+                  },
+                  {
+                    text: "Diferenciar uma folha saudável de uma doente em uma foto",
+                    explanation: "Correto: é bagunçado demais para regras à mão e tem exemplos com que aprender, então a IA se encaixa.",
+                  },
+                  {
+                    text: "Os dois combinam igualmente com IA",
+                    explanation: "O sinal é uma regra simples e não precisa de IA.",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "Três problemas, um escolhido",
+            prompt: "Proponha três necessidades de pessoas usuárias, depois escolha a que melhor combina com IA e defenda a sua escolha.",
+            steps: [
+              "Escreva três necessidades diferentes, cada uma do ponto de vista de uma pessoa usuária real.",
+              "Para cada uma, aponte uma entrada possível e uma saída possível.",
+              "Faça a verificação de adequação da IA nas três e escolha a que melhor combina.",
+              "Escreva duas frases defendendo por que a que você escolheu combina mais com IA do que as outras.",
+            ],
+            successCriteria: [
+              "Três necessidades de pessoas usuárias, cada uma com uma entrada e uma saída.",
+              "Uma decisão de adequação da IA para cada uma.",
+              "Um problema escolhido, com uma defesa de duas frases.",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "Por que é tentador começar pela ferramenta (\"vamos usar IA\") em vez de pelo problema, e o que dá errado quando você faz isso?",
+            },
+            {
+              prompt: "Qual parte de escrever uma definição do problema foi a mais difícil: apontar a pessoa usuária, a tarefa ou o resultado testável?",
+            },
+          ],
+          recap: {
+            summary: "Grandes projetos de IA partem de uma necessidade real, de uma definição clara do problema, e de uma verificação honesta de se a IA é sequer a ferramenta certa.",
+            keyPoints: [
+              "Uma necessidade de pessoa usuária descreve o problema de uma pessoa real, e não uma ferramenta que você quer usar.",
+              "Uma definição do problema aponta a pessoa usuária, a tarefa, a entrada, a saída e um resultado testável.",
+              "Julgue a adequação da IA: use uma regra quando uma regra funciona; guarde a IA para tarefas bagunçadas com muitos exemplos.",
+            ],
+          },
+          extension: {
+            title: "Oportunidade ou só barulho?",
+            body: [
+              "Às vezes as empresas acrescentam \"IA\" a um produto principalmente por marketing, mesmo quando uma regra simples funcionaria melhor. Isso pode desperdiçar dinheiro e tornar o produto mais difícil de confiar e de conferir.",
+              "Ache um produto ou aplicativo real que anuncie um recurso de \"IA\". Decida se a tarefa realmente precisa de IA ou se uma regra fixa resolveria. Escreva um parágrafo curto explicando o seu julgamento.",
+            ],
+          },
+        },
+        {
+          title: "Planeje, prototipe e teste",
+          summary: "Transforme o seu problema em um plano que dê para construir e conferir: projete as entradas, saídas, características, rótulos e regras; faça um protótipo simples; e teste com casos de teste de verdade.",
+          estimatedTime: "50-65 minutos",
+          objectives: [
+            {
+              text: "Projetar as entradas, saídas, características, rótulos e quaisquer regras do seu sistema.",
+            },
+            {
+              text: "Explicar o que é um protótipo e fazer um simples no papel.",
+            },
+            {
+              text: "Escrever casos de teste e usá-los para achar limitações.",
+            },
+            {
+              text: "Melhorar o seu projeto por meio da iteração, com base no que os testes mostram.",
+            },
+          ],
+          materials: [
+            {
+              name: "Esta aula em um navegador web",
+            },
+            {
+              name: "Papel e lápis, ou um aplicativo de notas",
+            },
+            {
+              name: "A sua definição do problema da aula 1",
+              note: "Você vai construir o plano em cima dela.",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "Característica",
+              definition: "Uma pista mensurável sobre uma entrada que o sistema usa para decidir, como a cor, o formato ou o tamanho de um item.",
+            },
+            {
+              term: "Rótulo",
+              definition: "A resposta certa ligada a um exemplo, como marcar uma foto com \"reciclagem\" para o sistema poder aprender com ela.",
+            },
+            {
+              term: "Regra",
+              definition: "Uma instrução exata que uma pessoa escreve, como \"se o item for uma garrafa de vidro, rotule como reciclagem\".",
+            },
+            {
+              term: "Protótipo",
+              definition: "Uma primeira versão rápida e tosca de uma ideia, feita para testar como funciona antes de construir a coisa de verdade.",
+            },
+            {
+              term: "Caso de teste",
+              definition: "Um exemplo com uma resposta certa conhecida que você passa pelo seu protótipo para conferir se ele funciona.",
+            },
+            {
+              term: "Iteração",
+              definition: "Repetir o ciclo de construir, testar e melhorar, para o projeto ficar melhor a cada vez.",
+            },
+          ],
+          openingScenario: {
+            prompt: "Você já tem uma definição do problema: separar a foto de um resíduo em reciclagem, compostagem ou lixo comum. Que pistas (características) o sistema olharia? Que rótulos você ensinaria a ele? E como você saberia, antes de construir qualquer coisa de verdade, se o seu plano presta?",
+            context: "Nesta aula você transforma a sua ideia em um plano que dá para testar de fato no papel.",
+          },
+          predictionPrompt: {
+            prompt: "Preveja: quando você testar o seu protótipo pela primeira vez com exemplos complicados, ele vai acertar a maioria ou vai falhar em alguns? Que tipo de exemplo você acha que vai derrubá-lo?",
+            howToCheck: "Depois de escrever e \"rodar\" os seus casos de teste, compare o que realmente aconteceu com a sua previsão.",
+          },
+          concepts: [
+            {
+              title: "Projete as peças: entradas, saídas, características, rótulos e regras",
+              body: [
+                "Antes de construir, projete as peças. A entrada é o que entra (a foto de um item). A saída é o que sai (um rótulo: reciclagem, compostagem ou lixo comum). Os rótulos são o conjunto de respostas certas que você ensinaria ao sistema e usaria para conferi-lo.",
+                "As características são as pistas que o sistema usa para decidir: o material de um item, o formato dele, ou se está molhado ou engordurado. Se uma parte da tarefa for simples e clara, você pode até acrescentar uma regra: \"se for uma garrafa de vidro limpa, rotule como reciclagem\". Um bom plano aponta tudo isso, para qualquer pessoa entender como uma decisão é tomada.",
+              ],
+              examples: [
+                "Entrada: foto de um item. Saída: um de três rótulos.",
+                "Características: material, está molhado, é papel, tem comida em cima.",
+                "Regra: \"se for casca de banana, rotule como compostagem\".",
+              ],
+            },
+            {
+              title: "Um protótipo é uma primeira versão tosca feita para testar",
+              body: [
+                "Um protótipo é uma versão rápida e tosca da sua ideia, feita para aprender com ela, e não o produto acabado. O seu pode ser no papel: um conjunto de cartas de \"se tiver estas características, então este rótulo\", ou um fluxograma simples que um colega consiga seguir na mão. A questão é tornar a ideia concreta o bastante para experimentar.",
+                "Protótipos são feitos para serem imperfeitos. Fazer um barato e cedo evita que você gaste muito esforço construindo a coisa errada. Você pode jogar um protótipo fora e tudo bem: você ficou com o que aprendeu.",
+              ],
+              examples: [
+                "Um fluxograma no papel: \"É papel? Está molhado? → rótulo\".",
+                "Um monte de cartas de decisão que um amigo consiga seguir sem você explicar.",
+                "Um rascunho à mão da tela do aplicativo, mostrando a entrada e a saída.",
+              ],
+            },
+            {
+              title: "Casos de teste revelam limitações, e a iteração as conserta",
+              body: [
+                "Um caso de teste é um exemplo com uma resposta certa conhecida. Você o passa pelo seu protótipo e vê se ele dá o rótulo certo. Um punhado de bons casos de teste, incluindo os complicados, mostra rapidinho onde o seu projeto quebra. Esses pontos fracos são as limitações dele: as situações em que ele erra ou não consegue decidir.",
+                "Todo sistema tem limitações; o objetivo é achá-las de propósito, e não ser surpreendido por elas depois. Quando um caso de teste falha, você melhora o projeto e testa de novo. Esse ciclo de repetir até melhorar é a iteração, o coração de como os produtos de verdade são feitos.",
+              ],
+              examples: [
+                "Caso de teste: uma caixa de pizza engordurada. Rótulo certo: lixo comum ou compostagem, não reciclagem.",
+                "Limitação encontrada: o protótipo rotula todas as caixas como \"reciclagem\", então as engorduradas ficam erradas.",
+                "Iteração: acrescentar uma característica de \"tem gordura de comida?\" e uma regra para mandar as caixas engorduradas para outro lugar.",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "Prototipando e testando um separador de resíduos",
+            steps: [
+              "Projete as peças: entrada = foto de um item; saída = reciclagem / compostagem / lixo comum; características = material, é papel, está molhado, tem gordura de comida.",
+              "Faça um protótipo de papel: cartas de decisão. \"Se for resto de comida → compostagem. Se for papel limpo ou garrafa limpa → reciclagem. Senão → lixo comum\".",
+              "Escreva casos de teste com respostas conhecidas: garrafa de água limpa (reciclagem), casca de banana (compostagem), caixa de pizza engordurada (lixo comum), saco de salgadinho metalizado (lixo comum).",
+              "Rode os testes na mão: o protótipo acerta a garrafa e a casca de banana, mas rotula a caixa de pizza engordurada como \"reciclagem\", uma falha.",
+              "Ache a limitação e itere: acrescente uma característica de \"tem gordura de comida?\" e uma regra para papel engordurado ir para o lixo comum. Rode os casos de teste de novo; agora a caixa de pizza passa.",
+            ],
+            takeaway: "Projete as peças, faça um protótipo tosco, teste com casos de resposta conhecida, ache as limitações dele, e itere até melhorar.",
+          },
+          visuals: [
+            {
+              title: "O ciclo de construir, testar e melhorar",
+              summary: "Um ciclo de quatro passos que se repete. Passo 1: projete as peças (entrada, saída, características, rótulos, regras). Passo 2: construa um protótipo tosco. Passo 3: rode os casos de teste e registre quais passam e quais falham. Passo 4: ache as limitações e melhore. Uma seta leva do passo 4 de volta ao passo 2, mostrando a iteração.",
+              caption: "Iterar significa dar mais de uma volta neste ciclo, melhorando a cada vez.",
+            },
+            {
+              title: "Uma folha de casos de teste",
+              summary: "Uma tabela de casos de teste do separador de resíduos. Cada linha tem um exemplo, o rótulo certo conhecido dele, o rótulo que o protótipo deu, e passou ou falhou. Garrafa de água limpa: certo reciclagem, deu reciclagem, passou. Casca de banana: certo compostagem, deu compostagem, passou. Caixa de pizza engordurada: certo lixo comum, deu reciclagem, falhou. Saco de salgadinho metalizado: certo lixo comum, deu lixo comum, passou.",
+              table: {
+                columns: [
+                  "Caso de teste",
+                  "Rótulo certo",
+                  "Rótulo do protótipo",
+                  "Resultado",
+                ],
+                rows: [
+                  [
+                    "Garrafa de água limpa",
+                    "Reciclagem",
+                    "Reciclagem",
+                  ],
+                  [
+                    "Casca de banana",
+                    "Compostagem",
+                    "Compostagem",
+                  ],
+                  [
+                    "Caixa de pizza engordurada",
+                    "Lixo comum",
+                    "Reciclagem",
+                    "Falhou",
+                  ],
+                  [
+                    "Saco de salgadinho metalizado",
+                    "Lixo comum",
+                    "Lixo comum",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "Estúdio do plano de protótipo",
+            goal: "Transformar a sua definição do problema em um plano projetado, prototipado e testado que você possa apresentar.",
+            overview: "Usando o seu problema da aula 1, você vai projetar as entradas, saídas, características, rótulos e quaisquer regras; rascunhar um protótipo de papel; escrever pelo menos quatro casos de teste, incluindo alguns complicados; \"rodá-los\" na mão; e anotar as limitações que achar e uma melhoria que faria. Isso vira o núcleo do seu Projeto Final.",
+            steps: [
+              "Projete as peças: aponte a sua entrada, a saída, os rótulos, de três a cinco características, e quaisquer regras simples.",
+              "Faça um protótipo de papel: desenhe um fluxograma ou escreva cartas de decisão que um colega consiga seguir sem a sua ajuda.",
+              "Escreva pelo menos quatro casos de teste com respostas certas conhecidas, incluindo dois complicados.",
+              "Passe cada caso de teste pelo seu protótipo na mão e registre passou ou falhou em uma folha de casos de teste.",
+              "Liste as limitações que as falhas revelaram, e escreva uma melhoria que você faria em seguida (a sua iteração).",
+            ],
+            materials: [
+              "Papel e lápis, ou um aplicativo de notas",
+            ],
+            successCriteria: [
+              "Entrada, saída, rótulos, de três a cinco características e quaisquer regras ficam apontados.",
+              "Um protótipo de papel que um colega consiga seguir sem explicação extra.",
+              "Pelo menos quatro casos de teste com respostas conhecidas, incluindo complicados, rodados e marcados como passou ou falhou.",
+              "Pelo menos uma limitação identificada e uma melhoria (iteração) proposta.",
+            ],
+            dataset: {
+              name: "Kit inicial de casos de teste",
+              description: "Uma lista já incluída para escrever bons casos de teste: inclua exemplos fáceis, casos-limite (molhado, engordurado, danificado, incomum) e exemplos que poderiam ir para os dois lados. Também inclui um modelo em branco de folha de casos de teste (exemplo, rótulo certo, rótulo do protótipo, passou/falhou) para copiar.",
+              columns: [
+                "Tipo de caso de teste",
+                "Por que incluir",
+                "Exemplo de proposta",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "Confira se você sabe planejar, prototipar e testar um projeto.",
+            questions: [
+              {
+                prompt: "Quais destas coisas você deve projetar antes de construir o seu sistema? (Escolha todas que se aplicam.)",
+                explanation: "Entradas, saídas, características e rótulos fazem todos parte do projeto. Os slides da apresentação vêm depois e não fazem parte de projetar como as decisões são tomadas.",
+                choices: [
+                  {
+                    text: "A entrada que o sistema recebe",
+                    explanation: "Correto: apontar a entrada é uma parte central do projeto.",
+                  },
+                  {
+                    text: "A saída que ele devolve",
+                    explanation: "Correto: a saída, incluindo o conjunto de rótulos, precisa ser projetada.",
+                  },
+                  {
+                    text: "As características que ele usa para decidir",
+                    explanation: "Correto: as características são as pistas que o sistema usa, então fazem parte do projeto.",
+                  },
+                  {
+                    text: "A cor dos slides da sua apresentação",
+                    explanation: "A cor dos slides é sobre apresentar depois, e não sobre como o sistema decide.",
+                  },
+                ],
+              },
+              {
+                prompt: "Coloque em ordem o ciclo de construir, testar e melhorar para uma rodada de prototipagem.",
+                explanation: "Você projeta as peças, constrói um protótipo tosco, roda os casos de teste, e então acha limitações e melhora; e o ciclo pode se repetir.",
+                items: [
+                  {
+                    text: "Projetar as peças (entrada, saída, características, rótulos, regras)",
+                  },
+                  {
+                    text: "Construir um protótipo tosco",
+                  },
+                  {
+                    text: "Rodar os casos de teste e registrar passou ou falhou",
+                  },
+                  {
+                    text: "Achar limitações e melhorar o projeto",
+                  },
+                ],
+              },
+              {
+                prompt: "O que a equipe deve fazer em seguida?",
+                scenario: "O protótipo de papel de uma equipe passa em todos os casos de teste fáceis, mas rotula uma caixa de pizza engordurada como \"reciclagem\" quando a resposta certa é lixo comum.",
+                explanation: "Um caso de teste que falhou revelou uma limitação. A resposta certa é iterar: melhorar o projeto (acrescentar uma característica ou regra de gordura) e testar de novo, e não esconder nem ignorar a falha.",
+                choices: [
+                  {
+                    text: "Ignorar a caixa engordurada porque os casos fáceis passaram",
+                    explanation: "Ignorar uma falha conhecida deixa uma limitação real dentro do projeto.",
+                  },
+                  {
+                    text: "Melhorar o projeto para lidar com gordura, e depois rodar os casos de teste de novo",
+                    explanation: "Correto: isso é iterar, consertar a limitação que o teste revelou e testar de novo.",
+                  },
+                  {
+                    text: "Apagar o caso de teste da caixa de pizza engordurada para ele passar",
+                    explanation: "Tirar um caso de teste difícil esconde o problema em vez de consertá-lo.",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "Quebre o seu próprio protótipo",
+            prompt: "Esforce-se para fazer o seu próprio protótipo falhar, e depois use o que aprender para melhorá-lo.",
+            steps: [
+              "Escreva três casos de teste especialmente complicados, pensados para derrubar o seu protótipo.",
+              "Rode-os na mão e registre quais falham.",
+              "Para cada falha, aponte a limitação que ela revela.",
+              "Proponha uma mudança (uma iteração) e preveja se ela consertaria as falhas.",
+            ],
+            successCriteria: [
+              "Três casos de teste complicados que pressionem o protótipo.",
+              "Cada falha ligada a uma limitação apontada.",
+              "Uma iteração proposta, com uma previsão do efeito dela.",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "Por que é útil construir um protótipo tosco em vez de pular direto para a versão acabada?",
+            },
+            {
+              prompt: "Qual caso de teste te ensinou mais sobre as limitações do seu projeto, e por quê?",
+            },
+          ],
+          recap: {
+            summary: "Você transforma um problema em um plano testável projetando as peças, construindo um protótipo tosco, rodando casos de teste de resposta conhecida, e iterando para consertar as limitações que achar.",
+            keyPoints: [
+              "Projete a entrada, a saída, os rótulos, as características e quaisquer regras antes de construir.",
+              "Um protótipo é uma versão tosca, feita barato, para testar uma ideia cedo.",
+              "Casos de teste revelam limitações; iteração é o ciclo de melhorar até ficar melhor.",
+            ],
+          },
+          extension: {
+            title: "Quanto teste é suficiente?",
+            body: [
+              "Equipes de verdade não conseguem testar todas as entradas possíveis, então escolhem os casos de teste com cuidado: casos comuns, casos-limite, e casos em que um erro pesaria mais. Uma IA médica é testada com muito mais rigor do que um joguinho que sugere emojis.",
+              "Para o seu projeto, decida quais casos de teste importam mais e por quê. Escreva um breve \"plano de teste\" explicando quanto teste você acha que basta antes que pessoas usuárias reais pudessem confiar neste sistema.",
+            ],
+          },
+        },
+        {
+          title: "Apresente, revise e explore as carreiras em IA",
+          summary: "Termine com força: apresente o seu projeto com honestidade, incluindo as limitações dele e a supervisão humana de que ele precisa, dê e receba retorno útil, e explore o que as pessoas que constroem, regulam e projetam IA realmente fazem.",
+          estimatedTime: "50-65 minutos",
+          objectives: [
+            {
+              text: "Apresentar um projeto com clareza: o problema, o seu projeto, os seus testes e as limitações dele.",
+            },
+            {
+              text: "Explicar a supervisão e o uso responsável de que o seu projeto precisa para ser confiável.",
+            },
+            {
+              text: "Dar e receber um retorno específico, gentil e útil em uma revisão.",
+            },
+            {
+              text: "Descrever várias carreiras reais em IA: as pessoas que constroem, regulam e projetam IA.",
+            },
+          ],
+          materials: [
+            {
+              name: "Esta aula em um navegador web",
+            },
+            {
+              name: "Papel e lápis, ou um aplicativo de notas",
+            },
+            {
+              name: "O seu plano e os seus resultados de teste da aula 2",
+              note: "Você vai apresentá-los.",
+            },
+          ],
+          vocabulary: [
+            {
+              term: "Limitação",
+              definition: "Uma situação em que um sistema erra, não consegue decidir, ou não deveria ser considerado confiável; algo que projetos honestos dizem abertamente.",
+            },
+            {
+              term: "Supervisão",
+              definition: "Uma pessoa continuar responsável por conferir e corrigir as decisões de uma IA, principalmente quando um erro pode pesar.",
+            },
+            {
+              term: "Uso responsável",
+              definition: "Usar a IA de um jeito justo, honesto e seguro, que respeite a privacidade das pessoas, deixando claro o que ela pode e o que não pode fazer.",
+            },
+            {
+              term: "Carreira em IA",
+              definition: "Um trabalho em que as pessoas constroem, estudam, regulam ou projetam sistemas de IA e o modo como eles são usados.",
+            },
+          ],
+          openingScenario: {
+            prompt: "Duas equipes apresentam projetos de separação de resíduos. Uma diz: \"Funciona perfeitamente!\". A outra diz: \"Ele acerta na maioria das vezes, mas tem dificuldade com papel engordurado, então uma pessoa confere esses casos\". Em qual equipe você confia mais, e por quê?",
+            context: "Uma apresentação honesta, que aponta limitações e supervisão, ganha mais confiança do que uma promessa grandiosa.",
+          },
+          predictionPrompt: {
+            prompt: "Preveja: os projetos mais fortes vão ser os que garantem não errar, ou os que explicam com clareza as limitações deles e como uma pessoa fica de olho?",
+            howToCheck: "Enquanto lê, repare por que apontar limitações e supervisão deixa um projeto mais confiável, e não menos.",
+          },
+          concepts: [
+            {
+              title: "Apresente com honestidade: problema, projeto, testes e limitações",
+              body: [
+                "Uma apresentação forte conta uma história clara: aqui está a necessidade da pessoa usuária e a definição do problema, aqui está o meu projeto (entrada, saída, características, rótulos, regras), foi assim que testei, e foi isto que encontrei, incluindo as limitações. Apontar limitações não é fraqueza; mostra que você entende o seu próprio sistema.",
+                "Evite prometer demais. \"Funciona perfeitamente\" quase nunca é verdade e perde a confiança no instante em que alguém acha uma falha. \"Acerta na maioria dos casos, mas tem dificuldade com X\" é honesto, e é exatamente o que um público atento quer ouvir.",
+              ],
+              examples: [
+                "\"Entrada: a foto de um item. Saída: reciclagem, compostagem ou lixo comum.\"",
+                "\"Passou em 7 de 9 casos de teste; falha com papel engordurado e alumínio brilhante.\"",
+                "\"Como ele pode errar, uma pessoa confere os casos duvidosos.\"",
+              ],
+            },
+            {
+              title: "Supervisão e uso responsável tornam um projeto confiável",
+              body: [
+                "Como a IA pode errar ou ser injusta, um projeto responsável planeja a supervisão humana: uma pessoa continua responsável por conferir e corrigir a IA, principalmente onde um erro pode pesar. A sua apresentação deve dizer quem supervisiona o sistema e quando.",
+                "Uso responsável também significa ser justo, ser honesto sobre o que o sistema consegue fazer, proteger a privacidade das pessoas, e não usar IA onde os riscos são altos demais. Amarre tudo do curso: justiça, privacidade, limitações e decisões humanas aparecem no quanto um projeto é projetado e descrito com responsabilidade.",
+              ],
+              examples: [
+                "\"Um aluno revisa qualquer item sobre o qual o separador esteja em dúvida, antes de ele ser jogado fora.\"",
+                "\"Não coletamos o nome nem o rosto de ninguém, só fotos dos itens.\"",
+                "\"Nunca usaríamos isto para decidir algo sério sobre uma pessoa.\"",
+              ],
+            },
+            {
+              title: "Revisões funcionam melhor com retorno específico e gentil, e a IA também é uma carreira",
+              body: [
+                "Em uma revisão, você dá e recebe retorno. Um retorno útil é específico (\"o seu caso de teste do papel engordurado é um ótimo achado; dá para acrescentar uma regra para ele?\") em vez de vago (\"está bom\") ou duro. Receber bem o retorno significa ouvir, fazer perguntas e tratá-lo como ajuda, e não como ataque. A iteração continua aqui: as revisões muitas vezes dão a faísca da sua próxima melhoria.",
+                "Construir IA também é uma área de trabalho em crescimento. Quem faz engenharia de aprendizado de máquina e ciência de dados constrói e treina modelos. Quem rotula e anota dados cria os exemplos rotulados com que os sistemas aprendem. Quem trabalha com ética da IA, auditoria e políticas públicas regula a IA, conferindo justiça, segurança e privacidade, e escrevendo as regras de como ela pode ser usada. Quem projeta produto e experiência do usuário decide como as pessoas realmente interagem com a IA e mantêm o controle. Professores, médicos, artistas e muitas outras pessoas usam cada vez mais a IA como ferramenta. Você não precisa ser programador para influenciar como a IA é construída e usada.",
+              ],
+              examples: [
+                "Engenheira de aprendizado de máquina: constrói e treina o modelo.",
+                "Pessoa que rotula ou anota dados: cria os exemplos rotulados para o aprendizado.",
+                "Especialista em ética da IA ou auditor: confere se os sistemas são justos, seguros e respeitam a privacidade.",
+                "Designer de produto ou de experiência do usuário: projeta como as pessoas usam a IA e mantêm a supervisão.",
+              ],
+            },
+          ],
+          workedExample: {
+            title: "Uma apresentação confiável de dois minutos",
+            steps: [
+              "Enuncie o problema: \"Alunos novos não sabem em qual lixeira o resíduo deles vai, então separamos uma foto em reciclagem, compostagem ou lixo comum\".",
+              "Mostre o projeto: \"A entrada é a foto de um item; a saída é um de três rótulos; as características incluem o material e a gordura de comida\".",
+              "Relate os testes: \"Rodamos nove casos de teste e passamos em sete; ele falha com papel engordurado e alumínio\".",
+              "Aponte as limitações e a supervisão: \"Esses são limites reais, então uma pessoa confere qualquer item sobre o qual ele esteja em dúvida, antes de jogar fora\".",
+              "Feche com o uso responsável: \"Coletamos só fotos de itens, nunca rostos ou nomes, e não usaríamos isto para nada de alto risco\".",
+            ],
+            takeaway: "A apresentação mais confiável enuncia o problema, o projeto, resultados de teste honestos, as limitações, e a supervisão humana que mantém o uso responsável.",
+          },
+          visuals: [
+            {
+              title: "Prometer demais contra apresentar com honestidade",
+              summary: "Antes (prometendo demais): \"Nossa IA separa resíduos perfeitamente!\": sem limitações, sem supervisão, e ela perde a confiança no instante em que alguém acha uma falha. Depois (honesto): \"Ela passa na maioria dos casos, mas falha com papel engordurado e alumínio, então uma pessoa confere os itens duvidosos, e usamos só fotos dos itens\": enuncia limitações, supervisão e uso responsável, e ganha mais confiança.",
+              caption: "Ser honesto sobre limites e supervisão deixa um projeto mais confiável, e não menos.",
+            },
+            {
+              title: "Quem constrói e regula a IA",
+              summary: "Uma tabela de carreiras em IA. Engenharia de aprendizado de máquina: constrói e treina modelos; a habilidade central é projetar e testar sistemas. Rotulagem e anotação de dados: cria os exemplos rotulados; a habilidade central é rotular com cuidado e consistência. Ética e auditoria da IA: regula a IA quanto a justiça, segurança e privacidade; a habilidade central é perceber danos e definir regras. Design de produto e de experiência do usuário: projeta como as pessoas usam a IA e mantêm a supervisão; a habilidade central é entender as pessoas usuárias.",
+              table: {
+                columns: [
+                  "Função",
+                  "O que faz",
+                  "Uma habilidade que usa",
+                ],
+                rows: [
+                  [
+                    "Engenharia de aprendizado de máquina",
+                    "Constrói e treina modelos",
+                    "Projetar e testar sistemas",
+                  ],
+                  [
+                    "Rotulagem e anotação de dados",
+                    "Cria os exemplos rotulados",
+                    "Rotular com cuidado e consistência",
+                  ],
+                  [
+                    "Ética e auditoria da IA",
+                    "Regula a IA quanto a justiça e segurança",
+                    "Perceber danos, definir regras",
+                  ],
+                  [
+                    "Design de produto e experiência do usuário",
+                    "Projeta como as pessoas usam a IA",
+                    "Entender pessoas usuárias reais",
+                  ],
+                ],
+              },
+            },
+          ],
+          activity: {
+            title: "Estúdio de apresentação e revisão",
+            goal: "Apresentar o seu projeto com honestidade e dar e receber um retorno específico e útil usando uma rubrica de revisão.",
+            overview: "Você vai preparar uma apresentação curta e honesta do seu projeto (problema, projeto, testes, limitações, supervisão e uso responsável) e depois participar de uma revisão, dando a outras equipes um retorno específico e gentil e recebendo o delas, com uma lista compartilhada. As revisões daqui podem dar a faísca de mais uma iteração antes do Projeto Final.",
+            steps: [
+              "Prepare uma apresentação de dois minutos cobrindo problema, projeto, resultados de teste, limitações, supervisão e uso responsável.",
+              "Apresente para um colega ou um grupo pequeno.",
+              "Como revisor, use a lista de revisão para dar pelo menos dois comentários específicos e gentis por projeto.",
+              "Como apresentador, anote o retorno que receber e escolha uma melhoria para fazer (a sua próxima iteração).",
+              "Conversem sobre com quais carreiras em IA cada projeto se conecta e quais interessam a vocês.",
+            ],
+            materials: [
+              "Papel e lápis, ou um aplicativo de notas",
+            ],
+            successCriteria: [
+              "Uma apresentação que inclua limitações, supervisão e uso responsável, e não só o que funciona.",
+              "Pelo menos dois comentários específicos e gentis dados a outras pessoas.",
+              "O retorno recebido fica anotado e uma próxima melhoria é escolhida.",
+              "Pelo menos uma carreira em IA com que o seu projeto se conecta é apontada.",
+            ],
+            dataset: {
+              name: "Rubrica de revisão de projetos",
+              description: "Uma lista de revisão já incluída que as equipes usam para dar retorno. As linhas cobrem: definição clara do problema; entrada, saída, rótulos e características sensatos; resultados de teste honestos; limitações apontadas; um plano de supervisão humana; e uso responsável (justiça, privacidade, honestidade). Cada linha tem uma proposta e espaço para um comentário específico.",
+              columns: [
+                "Área de revisão",
+                "O que procurar",
+                "Comentário específico",
+              ],
+            },
+          },
+          knowledgeCheck: {
+            instructions: "Confira se você sabe apresentar com responsabilidade e descrever o trabalho real com IA.",
+            questions: [
+              {
+                prompt: "Por que a apresentação de um projeto deve incluir as limitações dele?",
+                explanation: "Apontar limitações com honestidade constrói confiança e mostra que você entende o seu próprio sistema; escondê-las sai pela culatra quando uma falha aparece.",
+                choices: [
+                  {
+                    text: "Para o projeto parecer fraco e ninguém fazer perguntas",
+                    explanation: "Apontar limitações não é sobre parecer fraco; mostra compreensão e honestidade.",
+                  },
+                  {
+                    text: "Porque honestidade sobre os limites constrói confiança e mostra que você entende o sistema",
+                    explanation: "Correto: limites honestos conquistam confiança e provam que você sabe como o seu sistema se comporta.",
+                  },
+                  {
+                    text: "Porque todo projeto é obrigado a falhar",
+                    explanation: "Projetos não são obrigados a falhar; são obrigados a ser honestos sobre limites reais.",
+                  },
+                  {
+                    text: "Para você não precisar testar",
+                    explanation: "As limitações são achadas justamente testando; apontá-las não substitui os testes.",
+                  },
+                ],
+              },
+              {
+                prompt: "Decida se a afirmação é verdadeira ou falsa.",
+                statement: "Você precisa ser programador de computadores para ter qualquer papel na construção ou na regulação da IA.",
+                explanation: "Falso: quem rotula dados, quem trabalha com ética, auditoria, políticas públicas e design molda a IA sem necessariamente programá-la.",
+              },
+              {
+                prompt: "Qual resposta dá o retorno de revisão mais útil?",
+                scenario: "Um colega apresenta um detector de doenças de plantas que passou na maioria dos testes, mas não foi testado com fotos borradas, e não há plano de quem confere as decisões dele.",
+                explanation: "Um retorno específico aponta uma lacuna real e sugere um próximo passo concreto, diferente de um elogio vago ou de uma rejeição dura.",
+                choices: [
+                  {
+                    text: "\"Está bom.\"",
+                    explanation: "Um elogio vago não dá a quem apresenta nada em que agir.",
+                  },
+                  {
+                    text: "\"Acrescente um caso de teste com foto borrada e diga quem supervisiona os resultados duvidosos.\"",
+                    explanation: "Correto: é específico, gentil, e aponta iterações concretas.",
+                  },
+                  {
+                    text: "\"Isso nunca vai funcionar, nem se dê ao trabalho.\"",
+                    explanation: "Duro e vago: não é específico e não ajuda o projeto a melhorar.",
+                  },
+                ],
+              },
+            ],
+          },
+          challenge: {
+            title: "Conheça um trabalho com IA",
+            prompt: "Pesquise uma carreira em IA e conecte-a ao projeto que você criou nesta semana.",
+            steps: [
+              "Escolha uma função: engenharia de aprendizado de máquina, rotulagem de dados, ética ou auditoria de IA, políticas públicas, ou design de produto e experiência do usuário em IA.",
+              "Escreva três a quatro frases sobre o que essa pessoa faz no dia a dia e uma habilidade que ela usa.",
+              "Explique de qual parte do seu próprio projeto essa função cuidaria.",
+              "Anote uma coisa sobre esse trabalho que você gostaria de conhecer melhor.",
+            ],
+            successCriteria: [
+              "Uma função de IA descrita com precisão, junto com uma habilidade que ela usa.",
+              "Uma ligação clara entre a função e uma parte do seu projeto.",
+              "Uma pergunta genuína que você tem sobre essa carreira.",
+            ],
+          },
+          reflection: [
+            {
+              prompt: "Em todo o curso, qual é a coisa mais importante que você vai levar sobre usar a IA com responsabilidade?",
+            },
+            {
+              prompt: "Qual carreira em IA parece mais interessante para você, e o que você gostaria de aprender em seguida para explorá-la?",
+            },
+          ],
+          recap: {
+            summary: "Um projeto terminado é apresentado com honestidade (problema, projeto, testes, limitações, supervisão e uso responsável), melhorado pela revisão, e conectado às pessoas reais que constroem e regulam a IA.",
+            keyPoints: [
+              "Apresente o problema, o projeto e resultados de teste honestos, incluindo as limitações.",
+              "Planeje a supervisão humana e o uso responsável para o projeto poder ser confiável.",
+              "A IA é construída e regulada por muitas funções, e não só por quem programa.",
+            ],
+          },
+          extension: {
+            title: "Escreva o rótulo de \"uso responsável\" do seu projeto",
+            body: [
+              "Alguns sistemas de IA já são publicados com uma breve \"ficha do modelo\" ou rótulo de uso: para que o sistema serve, para que não serve, quais são as limitações conhecidas dele, e quem é responsável por supervisioná-lo.",
+              "Escreva um rótulo de uso responsável de um parágrafo para o seu próprio projeto. Diga para que ele deve e não deve ser usado, as principais limitações dele, quem faz a supervisão, e como ele protege a privacidade das pessoas.",
             ],
           },
         },

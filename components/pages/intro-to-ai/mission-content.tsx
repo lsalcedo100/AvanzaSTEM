@@ -9,19 +9,20 @@ import { introToAiCourse, introToAiLessonPath, introToAiPath } from "@/features/
 import { isCorrect } from "@/features/curriculums/intro-to-ai/quiz"
 import {
   MISSION_ID,
-  MISSION_SCENARIO,
-  MISSION_QUESTIONS,
-  MISSION_SECTIONS,
   MISSION_PASS_THRESHOLD,
-  RECOMMENDATION_DECISIONS,
-  REASON_FIELDS,
-  FINAL_REFLECTION_PROMPTS,
+  missionScenario,
+  missionQuestions,
+  missionSections,
+  recommendationDecisions,
+  reasonFields,
+  finalReflectionPrompts,
   parseRecommendation,
   evaluateRecommendation,
+  type MissionStrings,
   type RecommendationAnswer,
   type RecommendationDecision,
 } from "@/features/curriculums/intro-to-ai/mission"
-import { SKILLS } from "@/features/curriculums/intro-to-ai/skills"
+import { skillDefs, type SkillStrings } from "@/features/curriculums/intro-to-ai/skills"
 import { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { IntroToAiKnowledgeCheck } from "@/components/pages/intro-to-ai/knowledge-check"
 import { Breadcrumbs } from "@/components/pages/intro-to-ai/shared"
@@ -39,14 +40,22 @@ function lessonLocation(lessonId: string): { week: number; slug: string } | null
   }
   return null
 }
-function skillReviewLink(skillId: string | undefined) {
-  const skill = SKILLS.find((s) => s.id === skillId)
+function skillReviewLink(skillId: string | undefined, K: SkillStrings) {
+  const skill = skillDefs(K).find((s) => s.id === skillId)
   const loc = skill && lessonLocation(skill.lessonIds[0])
   return skill && loc ? { label: skill.label, href: introToAiLessonPath(loc.week, loc.slug) } : null
 }
 
 export function IntroToAiFinalAssessmentContent() {
-  const course = getIntroToAiCourse(useLanguage().language)
+  const { language, t } = useLanguage()
+  const S = t.courseUi.ai.shared
+  const M = t.courseUi.ai.mission
+  const MISSION_QUESTIONS = missionQuestions(M)
+  const MISSION_SECTIONS = missionSections(M)
+  const RECOMMENDATION_DECISIONS = recommendationDecisions(M)
+  const REASON_FIELDS = reasonFields(M)
+  const FINAL_REFLECTION_PROMPTS = finalReflectionPrompts(M)
+  const course = getIntroToAiCourse(language)
   const p = useIntroToAiProgress()
   const saved = p.progress.assessment
   const [rec, setRec] = useState<RecommendationAnswer>(() => parseRecommendation(undefined))
@@ -69,18 +78,20 @@ export function IntroToAiFinalAssessmentContent() {
   return (
     <div className="bg-background">
       <div className="mx-auto max-w-3xl px-6 py-10 md:py-14">
-        <Breadcrumbs trail={[{ label: "Intro to AI", href: introToAiPath }, { label: "AI Review Mission" }]} />
+        <Breadcrumbs trail={[{ label: S.courseTitle, href: introToAiPath }, { label: M.missionTitle }]} />
         <p ref={announceRef} className="sr-only" role="status" aria-live="polite" />
 
         <header className="mt-6 border-b border-border pb-6">
-          <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">AI Review Mission</h1>
+          <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">{M.missionTitle}</h1>
           <p className="mt-3 text-base leading-relaxed text-foreground/90">
-            You&apos;re on a review board checking a fictional AI product before it launches. Answer the questions, then write your recommendation. This is for your learning — there are no grades, nothing is sent anywhere, and you can retry any part.
+            {M.missionIntro}
           </p>
-          <p className="mt-3 rounded-md border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground"><span className="font-semibold">The product:</span> {MISSION_SCENARIO}</p>
+          <p className="mt-3 rounded-md border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground"><span className="font-semibold">{M.theProduct}</span> {missionScenario(M)}</p>
           {p.loaded && saved && (
             <p className="mt-3 text-sm font-medium text-muted-foreground" aria-live="polite">
-              Your last attempt: {saved.score} of {saved.total} concept questions correct.
+              {M.lastAttempt
+                .replace("{score}", String(saved.score))
+                .replace("{total}", String(saved.total))}
             </p>
           )}
         </header>
@@ -99,15 +110,17 @@ export function IntroToAiFinalAssessmentContent() {
         <div className="mt-8">
           <IntroToAiKnowledgeCheck
             key={`mission:${p.loaded}`}
-            instructions={`Answer all ${MISSION_QUESTIONS.length} questions across sections A–D. ${MISSION_PASS_THRESHOLD} correct is a strong pass — but you don't need a perfect score to finish the course.`}
+            instructions={M.checkInstructions
+              .replace("{n}", String(MISSION_QUESTIONS.length))
+              .replace("{pass}", String(MISSION_PASS_THRESHOLD))}
             questions={MISSION_QUESTIONS}
             passThreshold={MISSION_PASS_THRESHOLD}
             loaded={p.loaded}
             savedAnswers={saved?.answers}
-            saveLabel="Save my answers"
+            saveLabel={M.saveMyAnswers}
             onSave={(answers) => {
               p.saveAssessment(MISSION_QUESTIONS, answers)
-              announceRef.current && (announceRef.current.textContent = "Answers saved. See your strengths and what to review below.")
+              announceRef.current && (announceRef.current.textContent = M.answersSaved)
             }}
           />
         </div>
@@ -116,12 +129,12 @@ export function IntroToAiFinalAssessmentContent() {
         {p.loaded && saved && <FeedbackPanel answers={saved.answers} />}
 
         {/* E · Written recommendation */}
-        <section aria-label="Written recommendation" className="mt-10 border-t border-border pt-8">
-          <h2 className="text-xl font-bold text-foreground">E · Your recommendation</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Any of these can be the right call — what matters is your reasoning. Don&apos;t include private information.</p>
+        <section aria-label={M.writtenRecommendation} className="mt-10 border-t border-border pt-8">
+          <h2 className="text-xl font-bold text-foreground">{M.sectionETitle}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{M.sectionEIntro}</p>
 
           <fieldset className="mt-4">
-            <legend className="text-sm font-semibold text-foreground">Decision</legend>
+            <legend className="text-sm font-semibold text-foreground">{M.decisionLegend}</legend>
             <div className="mt-2 flex flex-wrap gap-2">
               {RECOMMENDATION_DECISIONS.map((d) => (
                 <button
@@ -154,19 +167,22 @@ export function IntroToAiFinalAssessmentContent() {
           </div>
           <p className="mt-3 text-sm" aria-live="polite">
             {recEval.complete ? (
-              <span className="font-semibold text-avanza-green-dark">Your recommendation covers a decision and all six reasons.</span>
+              <span className="font-semibold text-avanza-green-dark">{M.recComplete}</span>
             ) : (
               <span className="text-muted-foreground">
-                {recEval.hasDecision ? "Decision chosen" : "Choose a decision"} · {REASON_FIELDS.length - recEval.missing.length} of {REASON_FIELDS.length} reasons written.
+                {recEval.hasDecision ? M.decisionChosen : M.chooseDecision} ·{" "}
+                {M.reasonsWritten
+                  .replace("{done}", String(REASON_FIELDS.length - recEval.missing.length))
+                  .replace("{total}", String(REASON_FIELDS.length))}
               </span>
             )}
           </p>
         </section>
 
         {/* Final reflection */}
-        <section aria-label="Final reflection" className="mt-10 border-t border-border pt-8">
-          <h2 className="text-xl font-bold text-foreground">Final reflection</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Saved on this device. Don&apos;t include private information.</p>
+        <section aria-label={M.finalReflection} className="mt-10 border-t border-border pt-8">
+          <h2 className="text-xl font-bold text-foreground">{M.finalReflection}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{M.finalReflectionNote}</p>
           <div className="mt-4 space-y-4">
             {FINAL_REFLECTION_PROMPTS.map((r) => (
               <div key={r.id}>
@@ -186,10 +202,10 @@ export function IntroToAiFinalAssessmentContent() {
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Link href={`${introToAiPath}/completion`} className="inline-flex items-center rounded-md bg-avanza-green px-5 py-2.5 text-sm font-bold text-avanza-dark hover:bg-avanza-green-dark hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2">
-            Go to completion & certificate
+            {M.goToCompletion}
           </Link>
           <Link href={introToAiPath} className="inline-flex items-center rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-foreground hover:border-avanza-green/60 hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2">
-            Course overview
+            {M.courseOverview}
           </Link>
         </div>
       </div>
@@ -198,56 +214,69 @@ export function IntroToAiFinalAssessmentContent() {
 }
 
 function FeedbackPanel({ answers }: { answers: Record<string, string> }) {
-  const sections = MISSION_SECTIONS.map((s) => {
+  const t = useLanguage().t
+  const M: MissionStrings = t.courseUi.ai.mission
+  const K = t.courseUi.ai.skills
+  const MISSION_QUESTIONS = missionQuestions(M)
+  const sections = missionSections(M).map((s) => {
     const qs = s.questionIds.map((id) => MISSION_QUESTIONS.find((q) => q.id === id)!).filter(Boolean)
     const correct = qs.filter((q) => isCorrect(q, answers[q.id])).length
     return { section: s, qs, correct, total: qs.length }
   })
   const strengths = sections.filter((s) => s.correct === s.total)
   const toReview = sections.filter((s) => s.correct < s.total)
-  const reviewLinks = toReview.flatMap((s) => s.qs.filter((q) => !isCorrect(q, answers[q.id])).map((q) => skillReviewLink(q.skillId)).filter(Boolean))
+  const reviewLinks = toReview.flatMap((s) => s.qs.filter((q) => !isCorrect(q, answers[q.id])).map((q) => skillReviewLink(q.skillId, K)).filter(Boolean))
   const uniqueLinks = Array.from(new Map(reviewLinks.map((l) => [l!.href, l!])).values())
 
   return (
     <div className="mt-6 rounded-lg border border-border bg-secondary/30 p-5" aria-live="polite">
-      <p className="text-sm font-bold text-foreground">Your feedback</p>
+      <p className="text-sm font-bold text-foreground">{M.yourFeedback}</p>
       <div className="mt-2 grid gap-4 sm:grid-cols-2">
         <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-avanza-green-dark">Strengths</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-avanza-green-dark">{M.strengths}</p>
           {strengths.length > 0 ? (
             <ul className="mt-1 list-disc space-y-0.5 pl-5 text-sm text-foreground">
-              {strengths.map((s) => <li key={s.section.id}>{s.section.title} — all correct</li>)}
+              {strengths.map((s) => (
+                <li key={s.section.id}>{M.allCorrect.replace("{title}", s.section.title)}</li>
+              ))}
             </ul>
           ) : (
-            <p className="mt-1 text-sm text-muted-foreground">Keep going — read the explanations and try again.</p>
+            <p className="mt-1 text-sm text-muted-foreground">{M.keepGoing}</p>
           )}
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-avanza-orange-dark">Concepts to review</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-avanza-orange-dark">{M.conceptsToReview}</p>
           {toReview.length > 0 ? (
             <ul className="mt-1 list-disc space-y-0.5 pl-5 text-sm text-foreground">
-              {toReview.map((s) => <li key={s.section.id}>{s.section.title} ({s.correct}/{s.total})</li>)}
+              {toReview.map((s) => (
+                <li key={s.section.id}>
+                  {M.sectionScore
+                    .replace("{title}", s.section.title)
+                    .replace("{correct}", String(s.correct))
+                    .replace("{total}", String(s.total))}
+                </li>
+              ))}
             </ul>
           ) : (
-            <p className="mt-1 text-sm text-avanza-green-dark">Every section is complete — nicely done.</p>
+            <p className="mt-1 text-sm text-avanza-green-dark">{M.everySectionComplete}</p>
           )}
         </div>
       </div>
       {uniqueLinks.length > 0 && (
         <div className="mt-3">
-          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Lessons that can help</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{M.lessonsThatHelp}</p>
           <ul className="mt-1 flex flex-wrap gap-2">
             {uniqueLinks.map((l) => (
               <li key={l!.href}>
                 <Link href={l!.href} className="rounded-md border border-border px-2.5 py-1 text-xs font-semibold text-avanza-green-dark hover:border-avanza-green/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-1">
-                  Review: {l!.label}
+                  {M.reviewLink.replace("{label}", l!.label)}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
       )}
-      <p className="mt-3 text-xs text-muted-foreground">This is just for your learning — no ranking, no comparison with anyone else. Use “Try the check again” above to retry.</p>
+      <p className="mt-3 text-xs text-muted-foreground">{M.noRankingNote}</p>
     </div>
   )
 }

@@ -3,6 +3,13 @@
 import { useEffect, useRef, useState } from "react"
 import type { useIntroToAiProgress } from "@/components/ui/useIntroToAiProgress"
 import { SaveState } from "@/components/pages/intro-to-ai/ui"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Intro to AI chrome in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.shared
+}
+
 
 const NOTE_KEY = "course-notebook"
 const DEBOUNCE_MS = 700
@@ -13,6 +20,7 @@ const DEBOUNCE_MS = 700
  * Takes the shared progress hook so it stays in sync with resets elsewhere.
  */
 export function IntroToAiNotes({ progress }: { progress: ReturnType<typeof useIntroToAiProgress> }) {
+  const S = useS()
   const [pending, setPending] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -36,19 +44,18 @@ export function IntroToAiNotes({ progress }: { progress: ReturnType<typeof useIn
     <div>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <label htmlFor="course-notebook" className="text-sm font-bold text-foreground">
-          Your notebook
+          {S.yourNotebook}
         </label>
         {pending ? (
           <span className="text-xs text-muted-foreground" aria-live="polite">
-            Saving…
+            {S.saving}
           </span>
         ) : (
-          <SaveState status={progress.saveStatus} idleHint="Notes save automatically on this device" />
+          <SaveState status={progress.saveStatus} idleHint={S.notesIdleHint} />
         )}
       </div>
       <p className="mt-1 text-xs text-muted-foreground">
-        Jot down ideas as you go. Please don&apos;t enter your full name, address, passwords, or other private information — notes are
-        stored only in this browser on this device and are never sent anywhere.
+        {S.notesPrivacy}
       </p>
       <textarea
         id="course-notebook"
@@ -63,7 +70,7 @@ export function IntroToAiNotes({ progress }: { progress: ReturnType<typeof useIn
         }}
         rows={6}
         className="mt-2 w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green disabled:opacity-50"
-        placeholder="Type your notes here…"
+        placeholder={S.notesPlaceholder}
       />
     </div>
   )

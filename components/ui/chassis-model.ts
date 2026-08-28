@@ -33,7 +33,38 @@ const clamp = (n: number, lo = 0, hi = 100) => Math.max(lo, Math.min(hi, n))
 const SURFACE_GRIP: Record<Surface, number> = { smooth: 2, carpet: 3, slippery: 1 }
 
 export type Rating = "good" | "okay" | "poor"
-export type TestOutcome = { test: string; result: Rating; note: string }
+
+/** The four fixed tests, as stable ids. Display names live in the translations. */
+export type TestId = "straightLine" | "turning" | "smallRamp" | "slipperySurface"
+
+/**
+ * A stable id for one test outcome note. The model stays pure and
+ * language-independent; the Virtual Chassis Lab maps these to
+ * `t.courseUi.robotics.chassis` for display.
+ */
+export type NoteId =
+  | "straightSlipped"
+  | "straightTwitchy"
+  | "straightGood"
+  | "turnSpunOut"
+  | "turnWide"
+  | "turnGood"
+  | "rampStalled"
+  | "rampSlipped"
+  | "rampGood"
+  | "slipperyPoor"
+  | "slipperyOkay"
+
+/** A stable id for one piece of causal design feedback. */
+export type FeedbackId =
+  | "highCenterOfMass"
+  | "narrowSpacing"
+  | "poorTraction"
+  | "spinOut"
+  | "wheelsStickOut"
+  | "solidDesign"
+
+export type TestOutcome = { test: TestId; result: Rating; note: NoteId }
 
 export type ChassisReport = {
   /** 0-100, higher = harder to tip. */
@@ -45,8 +76,8 @@ export type ChassisReport = {
   /** Center-of-mass height 2-6 (lower is better). */
   centerOfMass: number
   tests: TestOutcome[]
-  /** Specific, causal feedback the student can act on. */
-  feedback: string[]
+  /** Specific, causal feedback the student can act on, as stable ids. */
+  feedback: FeedbackId[]
 }
 
 function tractionOn(config: ChassisConfig, surface: Surface): number {
@@ -63,62 +94,62 @@ export function evaluateChassis(config: ChassisConfig): ChassisReport {
   const traction = tractionOn(config, config.surface)
   const stability = clamp(config.wheelSpacing * 22 + (6 - centerOfMass) * 12 + 10)
 
-  const feedback: string[] = []
+  const feedback: FeedbackId[] = []
   const tests: TestOutcome[] = []
 
   // Straight-line test (chosen surface).
   if (traction < 45) {
-    tests.push({ test: "Straight line", result: "poor", note: "The wheels slipped instead of gripping, so it drifted." })
+    tests.push({ test: "straightLine", result: "poor", note: "straightSlipped" })
   } else if (speed > 80 && config.wheelSpacing < 2) {
-    tests.push({ test: "Straight line", result: "okay", note: "It was fast but a little twitchy on a narrow base." })
+    tests.push({ test: "straightLine", result: "okay", note: "straightTwitchy" })
   } else {
-    tests.push({ test: "Straight line", result: "good", note: "Drove straight and gripped the surface." })
+    tests.push({ test: "straightLine", result: "good", note: "straightGood" })
   }
 
   // Turning test.
   if (config.motorPower >= 3 && config.wheelSpacing <= 1) {
-    tests.push({ test: "Turning", result: "poor", note: "It spun out - too much speed on a narrow wheel base." })
+    tests.push({ test: "turning", result: "poor", note: "turnSpunOut" })
   } else if (config.wheelSpacing >= 3) {
-    tests.push({ test: "Turning", result: "okay", note: "It turned but a very wide base is slow to steer." })
+    tests.push({ test: "turning", result: "okay", note: "turnWide" })
   } else {
-    tests.push({ test: "Turning", result: "good", note: "Turned cleanly using the two wheels." })
+    tests.push({ test: "turning", result: "good", note: "turnGood" })
   }
 
   // Ramp / resistance test (needs torque + grip).
   if (torque < 45) {
-    tests.push({ test: "Small ramp", result: "poor", note: "Not enough torque to climb - it stalled." })
+    tests.push({ test: "smallRamp", result: "poor", note: "rampStalled" })
   } else if (tractionOn(config, config.surface) < 45) {
-    tests.push({ test: "Small ramp", result: "okay", note: "Strong enough, but it slipped near the top." })
+    tests.push({ test: "smallRamp", result: "okay", note: "rampSlipped" })
   } else {
-    tests.push({ test: "Small ramp", result: "good", note: "Climbed the ramp with power to spare." })
+    tests.push({ test: "smallRamp", result: "good", note: "rampGood" })
   }
 
   // Slippery-surface test (forced slippery).
   const slipperyTraction = tractionOn(config, "slippery")
   if (slipperyTraction < 40) {
-    tests.push({ test: "Slippery surface", result: "poor", note: "The wheels spun in place with little grip." })
+    tests.push({ test: "slipperySurface", result: "poor", note: "slipperyPoor" })
   } else {
-    tests.push({ test: "Slippery surface", result: "okay", note: "It moved slowly but kept some grip." })
+    tests.push({ test: "slipperySurface", result: "okay", note: "slipperyOkay" })
   }
 
   // Causal feedback tied to the design.
   if (centerOfMass >= 5) {
-    feedback.push("High center of mass: the robot is tall or top-heavy, so it tips easily. Lower the body or move the weight down.")
+    feedback.push("highCenterOfMass")
   }
   if (config.wheelSpacing <= 1) {
-    feedback.push("Narrow wheel spacing makes the base tippy and twitchy. Move the wheels farther apart.")
+    feedback.push("narrowSpacing")
   }
   if (traction < 45) {
-    feedback.push("Poor traction: the wheels slip. Try grippier or larger wheels, or add weight over the wheels.")
+    feedback.push("poorTraction")
   }
   if (config.motorPower >= 3 && config.wheelSpacing <= 1) {
-    feedback.push("Too much speed during turning on a narrow base makes it spin out. Slow down or widen the wheels.")
+    feedback.push("spinOut")
   }
   if (config.bodyWidth < config.wheelSpacing) {
-    feedback.push("The wheels stick out past the body, which can misalign them. Widen the body or narrow the spacing.")
+    feedback.push("wheelsStickOut")
   }
   if (stability >= 70 && tests.every((t) => t.result !== "poor")) {
-    feedback.push("Solid, stable design - low and wide with good grip.")
+    feedback.push("solidDesign")
   }
 
   return { stability, speed, torque, traction, centerOfMass, tests, feedback }

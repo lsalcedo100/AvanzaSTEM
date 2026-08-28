@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 import { generateSitePageMetadata } from "@/features/site/page-metadata"
 import { WorkshopFinderPage } from "@/components/pages/workshop-finder-page"
-import { LIBRARIES } from "@/features/workshops/locations"
+import { INTERNATIONAL_PARTNERS, LIBRARIES } from "@/features/workshops/locations"
 import { siteConfig } from "@/lib/site-config"
 
 export function generateMetadata(): Metadata {
@@ -27,36 +27,63 @@ const describedLibraries = LIBRARIES.filter(
   (library) => library.status !== "placeholder",
 )
 
+/**
+ * Partner venues abroad that have already hosted a program. The ones still in
+ * planning conversations are left out for the same reason as the New Jersey
+ * `placeholder` areas: nothing has been held there yet.
+ */
+const describedPartners = INTERNATIONAL_PARTNERS.filter(
+  (partner) => partner.status === "hosted",
+)
+
+const describedPlaces = [
+  ...describedLibraries.map((library) => ({
+    "@type": "Place",
+    name: library.name,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: library.city,
+      addressRegion: "NJ",
+      postalCode: library.zip,
+      addressCountry: "US",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: library.lat,
+      longitude: library.lng,
+    },
+  })),
+  ...describedPartners.map((partner) => ({
+    "@type": "Place",
+    name: partner.name,
+    alternateName: partner.localName,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Minhang",
+      addressRegion: "Shanghai",
+      addressCountry: "CN",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: partner.lat,
+      longitude: partner.lng,
+    },
+  })),
+]
+
 const workshopLocationsJsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Avanza STEM workshop locations",
   description:
-    "Public libraries in New Jersey where Avanza STEM runs free hands-on STEM workshops.",
+    "Public libraries in New Jersey, and partner libraries abroad, where Avanza STEM runs free hands-on STEM workshops.",
   url: `${siteConfig.url}/find-a-workshop`,
-  numberOfItems: describedLibraries.length,
-  itemListElement: describedLibraries.map(
-    (library, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: {
-        "@type": "Place",
-        name: library.name,
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: library.city,
-          addressRegion: "NJ",
-          postalCode: library.zip,
-          addressCountry: "US",
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: library.lat,
-          longitude: library.lng,
-        },
-      },
-    }),
-  ),
+  numberOfItems: describedPlaces.length,
+  itemListElement: describedPlaces.map((place, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: place,
+  })),
 }
 
 export default function FindAWorkshopRoute() {

@@ -39,13 +39,16 @@ import {
  * layout - no lesson text lives here.
  */
 export function EngineeringFundamentalsLessonContent({ slug }: { slug: string }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const L = t.courseUi.engineering.lesson
   const c = getEngineeringFundamentalsCurriculum(language)
   const lesson = findEngineeringLesson(language, slug) ?? c.lessons[0]
   const total = c.totalLessons
   const prev = previousEngineeringLesson(lesson.slug)
   const next = nextEngineeringLesson(lesson.slug)
-  const label = lesson.isFinal ? "Final challenge" : `Lesson ${lesson.order} of ${total}`
+  const label = lesson.isFinal
+    ? L.finalChallenge
+    : L.lessonOfTotal.replace("{n}", String(lesson.order)).replace("{total}", String(total))
 
   return (
     <div className="bg-background">
@@ -53,14 +56,14 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
       <article className="mx-auto max-w-3xl px-6 py-12 md:py-16">
         {/* 1. Lesson header */}
         <nav
-          aria-label="Lesson"
+          aria-label={L.navLesson}
           className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm"
         >
           <Link
             href={engineeringFundamentalsPath}
             className="font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
           >
-            Engineering Fundamentals
+            {L.courseTitle}
           </Link>
           <LessonNav prev={prev} next={next} compact />
         </nav>
@@ -76,8 +79,8 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
             {lesson.summary}
           </p>
           <dl className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
-            <HeaderDetail label="Estimated time" value={lesson.estimatedTime} />
-            <HeaderDetail label="Main project" value={lesson.projectName} />
+            <HeaderDetail label={L.estimatedTime} value={lesson.estimatedTime} />
+            <HeaderDetail label={L.mainProject} value={lesson.projectName} />
           </dl>
 
           {/* Lesson resources */}
@@ -86,26 +89,26 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
               href={engineeringWorksheetPath(lesson.slug)}
               className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-avanza-purple transition-colors hover:border-avanza-purple hover:bg-avanza-purple/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-purple focus-visible:ring-offset-2"
             >
-              Print student worksheet
+              {L.printWorksheet}
             </Link>
             <Link
               href={engineeringTeacherGuidePath(lesson.slug)}
               className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-avanza-purple transition-colors hover:border-avanza-purple hover:bg-avanza-purple/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-purple focus-visible:ring-offset-2"
             >
-              View parent/teacher guide
+              {L.viewGuide}
             </Link>
           </div>
         </header>
 
         {/* 2. The problem */}
-        <Section title="The problem">
+        <Section title={L.theProblem}>
           <p className="text-base leading-relaxed text-foreground/90">
             {lesson.problem ?? lesson.designBrief}
           </p>
           {lesson.constraints.length > 0 && (
             <div className="mt-5 rounded-md border border-border bg-secondary p-5">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                The rules
+                {L.theRules}
               </p>
               <ul className="mt-3 space-y-2">
                 {lesson.constraints.map((rule) => (
@@ -120,7 +123,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         </Section>
 
         {/* 3. Real-world connection */}
-        <Section title="Where you see this in real life">
+        <Section title={L.realLife}>
           {lesson.realWorldConnection ? (
             <>
               <p className="text-base leading-relaxed text-foreground/90">
@@ -148,11 +151,11 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         </Section>
 
         {/* 4. Key ideas */}
-        <Section title="Key ideas">
+        <Section title={L.keyIdeas}>
           {lesson.conceptsReviewed && lesson.conceptsReviewed.length > 0 && (
             <div className="mb-6">
               <p className="text-sm leading-relaxed text-foreground/90">
-                This final challenge brings together everything from the course:
+                {L.finalIntro}
               </p>
               <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-2 text-sm">
                 {lesson.conceptsReviewed.map((concept, i) => (
@@ -178,13 +181,13 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
 
         {/* Force / motion diagram */}
         {lesson.diagram && (
-          <Section title="See how it works">
+          <Section title={L.seeHowItWorks}>
             <EngineeringDiagram kind={lesson.diagram} />
           </Section>
         )}
 
         {/* 5. Materials */}
-        <Section title="Materials">
+        <Section title={L.materials}>
           <ul className="grid gap-x-10 gap-y-2 sm:grid-cols-2">
             {lesson.materials.map((item) => (
               <li key={item} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -196,7 +199,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
           {lesson.substitutions && lesson.substitutions.length > 0 && (
             <div className="mt-5">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                No problem if you are missing something
+                {L.noProblemMissing}
               </p>
               <ul className="mt-3 space-y-2">
                 {lesson.substitutions.map((sub) => (
@@ -212,9 +215,9 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
 
         {/* Material comparison (structure / motion / materials lessons) */}
         {lesson.comparedMaterials && lesson.comparedMaterials.length > 0 && (
-          <Section title="Compare your materials">
+          <Section title={L.compareMaterials}>
             <p className="text-sm text-muted-foreground">
-              Materials behave differently. Use this to decide which material does which job.
+              {L.compareMaterialsIntro}
             </p>
             <div className="mt-4">
               <EngineeringMaterialComparison
@@ -226,7 +229,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
 
         {/* Choose your solution path (final challenge only) */}
         {lesson.solutionPaths && lesson.solutionPaths.length > 0 && (
-          <Section title="Choose your solution path">
+          <Section title={L.choosePath}>
             <p className="text-sm text-muted-foreground">
               Pick one direction. There is no single right answer - each path can complete the
               mission if you design it well.
@@ -245,9 +248,9 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         )}
 
         {/* 6. Plan before building */}
-        <Section title="Plan before you build">
+        <Section title={L.planBeforeBuild}>
           <p className="text-sm text-muted-foreground">
-            Engineers plan before they build. Work through these before you pick up any tape.
+            {L.planIntro}
           </p>
           <ol className="mt-4 space-y-2">
             {c.planningPrompts.map((prompt, i) => (
@@ -263,7 +266,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         </Section>
 
         {/* 7. Build instructions */}
-        <Section title="Build it">
+        <Section title={L.buildIt}>
           <p className="text-sm text-muted-foreground">
             These are guides, not rules. Two students can follow them and build very different
             designs - that is the point.
@@ -288,7 +291,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         </Section>
 
         {/* 8. Testing challenge */}
-        <Section title="Testing challenge">
+        <Section title={L.testingChallenge}>
           <p className="text-sm leading-relaxed text-foreground/90">
             A design is only finished when it passes a fair test. Run each test the same way every
             time.
@@ -301,7 +304,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
                   {challenge.howTo}
                 </p>
                 <p className="mt-2 text-sm text-foreground/90">
-                  <span className="font-semibold">Measure:</span> {challenge.measure}
+                  <span className="font-semibold">{L.measure}</span> {challenge.measure}
                 </p>
               </li>
             ))}
@@ -309,7 +312,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         </Section>
 
         {/* 9. Record your results */}
-        <Section title="Record your results">
+        <Section title={L.recordResults}>
           <p className="text-sm text-muted-foreground">
             Write down what happens each time you test. Your numbers tell you what to improve. Print
             this page or copy the table into your notebook.
@@ -318,11 +321,11 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
             <table className="w-full border-collapse text-left text-sm">
               <thead>
                 <tr className="border-b border-border bg-secondary">
-                  <th className="px-4 py-3 font-semibold text-foreground">Test</th>
-                  <th className="px-4 py-3 font-semibold text-foreground">What to record</th>
-                  <th className="px-4 py-3 font-semibold text-foreground">Try 1</th>
-                  <th className="px-4 py-3 font-semibold text-foreground">Try 2</th>
-                  <th className="px-4 py-3 font-semibold text-foreground">Try 3</th>
+                  <th className="px-4 py-3 font-semibold text-foreground">{L.colTest}</th>
+                  <th className="px-4 py-3 font-semibold text-foreground">{L.colWhatToRecord}</th>
+                  <th className="px-4 py-3 font-semibold text-foreground">{L.colTry1}</th>
+                  <th className="px-4 py-3 font-semibold text-foreground">{L.colTry2}</th>
+                  <th className="px-4 py-3 font-semibold text-foreground">{L.colTry3}</th>
                 </tr>
               </thead>
               <tbody>
@@ -341,7 +344,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         </Section>
 
         {/* 10. Improve your design */}
-        <Section title="Improve your design">
+        <Section title={L.improveDesign}>
           <p className="text-sm text-muted-foreground">
             Your first version is a prototype, not the final answer. Change one thing based on what
             failed, then test again.
@@ -369,7 +372,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         </Section>
 
         {/* 11. Reflection questions */}
-        <Section title="Think about it">
+        <Section title={L.thinkAboutIt}>
           <ol className="space-y-3">
             {lesson.reflectionQuestions.map((question, i) => (
               <li key={question} className="grid grid-cols-[1.5rem_1fr] gap-3">
@@ -383,7 +386,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         </Section>
 
         {/* 12. Optional extension challenge */}
-        <Section title="Finished early? Try this">
+        <Section title={L.finishedEarly}>
           <ul className="space-y-2">
             {lesson.extensionChallenges.map((challenge) => (
               <li key={challenge} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -395,15 +398,15 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         </Section>
 
         {/* Design journal (interactive, saved to localStorage) */}
-        <Section title="Design journal">
+        <Section title={L.designJournal}>
           <DesignJournal slug={lesson.slug} />
         </Section>
 
         {/* Present your design (final challenge only) */}
         {lesson.presentationPrompts && lesson.presentationPrompts.length > 0 && (
-          <Section title="Present your design">
+          <Section title={L.presentDesign}>
             <p className="text-sm text-muted-foreground">
-              Share your finished design with the group. Be ready to answer:
+              {L.presentIntro}
             </p>
             <ol className="mt-4 space-y-3">
               {lesson.presentationPrompts.map((prompt, i) => (
@@ -419,7 +422,7 @@ export function EngineeringFundamentalsLessonContent({ slug }: { slug: string })
         )}
 
         {/* Facilitator notes (extra, for the adult running the session) */}
-        <Section title="Teacher notes">
+        <Section title={L.teacherNotes}>
           <div className="rounded-md border border-border bg-secondary p-5">
             <p className="text-sm leading-relaxed text-muted-foreground">{lesson.teacherNotes}</p>
           </div>
@@ -456,8 +459,11 @@ function LessonNav({
   next: EngineeringLesson | null
   compact?: boolean
 }) {
-  const prevLabel = prev ? (prev.isFinal ? "Final challenge" : `Lesson ${prev.order}`) : null
-  const nextLabel = next ? (next.isFinal ? "Final challenge" : `Lesson ${next.order}`) : null
+  const L = useLanguage().t.courseUi.engineering.lesson
+  const name = (lesson: EngineeringLesson) =>
+    lesson.isFinal ? L.finalChallenge : L.lessonLabel.replace("{n}", String(lesson.order))
+  const prevLabel = prev ? name(prev) : null
+  const nextLabel = next ? name(next) : null
 
   if (compact) {
     return (
@@ -489,7 +495,7 @@ function LessonNav({
           href={engineeringLessonPath(prev.slug)}
           className="font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
         >
-          &larr; Previous: {prevLabel}
+          &larr; {L.previousLabel.replace("{label}", prevLabel ?? "")}
         </Link>
       ) : (
         <span />
@@ -499,14 +505,14 @@ function LessonNav({
           href={engineeringLessonPath(next.slug)}
           className="text-right font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
         >
-          Next: {nextLabel} &rarr;
+          {L.nextLabel.replace("{label}", nextLabel ?? "")} &rarr;
         </Link>
       ) : (
         <Link
           href={engineeringFundamentalsPath}
           className="text-right font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
         >
-          Back to course overview &rarr;
+          {L.backToOverviewArrow} &rarr;
         </Link>
       )}
     </div>
@@ -540,10 +546,11 @@ function Dot() {
 
 /** A blank blueprint-grid box for sketching a design plan (also prints cleanly). */
 function SketchArea() {
+  const L = useLanguage().t.courseUi.engineering.lesson
   return (
     <div className="mt-6">
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Sketch your design
+        {L.sketchTitle}
       </p>
       <div
         className="mt-2 h-44 w-full rounded-md border border-dashed border-border"
@@ -555,7 +562,7 @@ function SketchArea() {
         aria-hidden
       />
       <p className="mt-2 text-xs text-muted-foreground">
-        Draw a rough plan here, or use your own notebook. Label the parts.
+        {L.sketchIntro}
       </p>
     </div>
   )

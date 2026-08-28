@@ -195,32 +195,70 @@ export const LIBRARIES: Library[] = [
 ]
 
 /** Country codes used to group and localise international partner names. */
-export type PartnerCountry = "EC" | "PE" | "CO"
+export type PartnerCountry = "CN" | "EC" | "PE" | "CO"
 
 export type InternationalPartner = {
   id: string
   name: string
+  /**
+   * Name in the venue's own script, shown alongside (or instead of, when the
+   * site is in that language) the English name.
+   */
+  localName?: string
+  /**
+   * Optional sub-country locality line under the name. Stored as a key rather
+   * than text so the finder can render it in the reader's language.
+   */
+  localityKey?: "minhang"
   country: PartnerCountry
   lat: number
   lng: number
+  /**
+   * `hosted` venues have already run Avanza STEM programming; `planned` ones are
+   * still in planning conversations. Defaults to `planned` where omitted.
+   */
+  status: "hosted" | "planned"
 }
 
 /**
- * Libraries and cultural institutions abroad that are in planning conversations
- * to run the Maker Mindset Series in their communities. These are not New
- * Jersey venues: the finder lists them in a dedicated "international partners"
- * section and plots them on the map (visible when the user zooms out), but they
- * are excluded from the New Jersey auto-framing and ZIP distance ranking.
- * Ordered strongest-interest first within each country. District-level
- * coordinates are used where an exact venue could not be geocoded.
+ * Libraries and cultural institutions abroad: `hosted` venues where Avanza STEM
+ * has already run programming, and `planned` ones still in planning
+ * conversations. These are not New Jersey venues: the finder lists them in a
+ * dedicated "international partners" section and plots them on the map (visible
+ * when the user zooms out), but they are excluded from the New Jersey
+ * auto-framing and ZIP distance ranking. Hosted venues come first, then
+ * planning conversations ordered strongest-interest first within each country.
+ * District-level coordinates are used where an exact venue could not be
+ * geocoded.
  */
 export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
+  {
+    id: "wenbo-shuijing",
+    name: "Wenbo Shuijing Community Reading Room",
+    localName: "文博水景社区阅览室",
+    localityKey: "minhang",
+    country: "CN",
+    lat: 31.06969,
+    lng: 121.403258,
+    status: "hosted",
+  },
+  {
+    id: "lanyu-books",
+    name: "Lanyu Books",
+    localName: "蓝玉书社",
+    localityKey: "minhang",
+    country: "CN",
+    lat: 31.02253,
+    lng: 121.40342,
+    status: "hosted",
+  },
   {
     id: "llano-grande",
     name: "Biblioteca Municipal de Llano Grande",
     country: "EC",
     lat: -0.112,
     lng: -78.4448,
+    status: "planned",
   },
   {
     id: "bnp-gestion-cultural",
@@ -228,6 +266,7 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "PE",
     lat: -12.0878,
     lng: -77.0051,
+    status: "planned",
   },
   {
     id: "san-isidro-infantil",
@@ -235,6 +274,7 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "PE",
     lat: -12.0979,
     lng: -77.0354,
+    status: "planned",
   },
   {
     id: "carmen-checa-la-victoria",
@@ -242,6 +282,7 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "PE",
     lat: -12.074,
     lng: -77.0182,
+    status: "planned",
   },
   {
     id: "rimac",
@@ -249,6 +290,7 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "PE",
     lat: -12.0203,
     lng: -77.0355,
+    status: "planned",
   },
   {
     id: "red-nacional-colombia",
@@ -256,5 +298,6 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "CO",
     lat: 4.6096,
     lng: -74.0685,
+    status: "planned",
   },
 ]

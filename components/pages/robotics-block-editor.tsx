@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
+import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 import { useReducedMotion } from "@/components/ui/useReducedMotion"
 import {
   ExecutionLimitError,
@@ -27,6 +29,7 @@ import {
   describeWorld,
   runMission,
   type MissionRunOutcome,
+  type SimFeedbackId,
 } from "@/features/curriculums/robotics/sim"
 
 /* -------------------------------------------------------------------------- */
@@ -55,34 +58,76 @@ const selectInput =
 export type StatementType = Statement["type"]
 
 /** Short, grade-4-6 friendly one-line help for each block. */
-const BLOCK_INFO: Record<StatementType, { label: string; help: string }> = {
-  move: { label: "Move", help: "Move forward — drive ahead one or more cells." },
-  turn: { label: "Turn", help: "Turn left or right by a number of degrees." },
-  setSpeed: { label: "Set speed", help: "Set how fast the motors spin (0–100)." },
-  stopMotors: { label: "Stop motors", help: "Stop the motors but keep the program going." },
-  moveForDuration: { label: "Drive for a time", help: "Drive for a number of milliseconds." },
-  wait: { label: "Wait", help: "Pause for a number of milliseconds." },
-  safeStop: { label: "Safe stop", help: "Stop safely and end the program." },
-  missionComplete: { label: "Mission complete", help: "Signal that the mission is done and stop." },
-  log: { label: "Log a value", help: "Write a number to the output log." },
-  repeat: { label: "Repeat", help: "Do the blocks inside a set number of times." },
-  forever: { label: "Forever", help: "Do the blocks inside over and over (needs a safe stop)." },
-  repeatUntil: { label: "Repeat until", help: "Repeat the blocks inside until something is true." },
-  waitUntil: { label: "Wait until", help: "Pause until something is true." },
-  if: { label: "If", help: "Do the blocks inside only if something is true." },
-  ifElse: { label: "If / else", help: "Do one set of blocks if true, another if false." },
-  setVar: { label: "Set variable", help: "Set a variable to a value." },
-  changeVar: { label: "Change variable", help: "Add a value to a variable (counting)." },
-  resetCounter: { label: "Reset counter", help: "Set a counter back to zero." },
-}
+type EditorStrings = Translations["courseUi"]["robotics"]["editor"]
+
+const blockInfo = (E: EditorStrings): Record<StatementType, { label: string; help: string }> => ({
+  move: { label: E.bMove, help: E.bMoveHelp },
+  turn: { label: E.bTurn, help: E.bTurnHelp },
+  setSpeed: { label: E.bSetSpeed, help: E.bSetSpeedHelp },
+  stopMotors: { label: E.bStopMotors, help: E.bStopMotorsHelp },
+  moveForDuration: { label: E.bMoveForDuration, help: E.bMoveForDurationHelp },
+  wait: { label: E.bWait, help: E.bWaitHelp },
+  safeStop: { label: E.bSafeStop, help: E.bSafeStopHelp },
+  missionComplete: { label: E.bMissionComplete, help: E.bMissionCompleteHelp },
+  log: { label: E.bLog, help: E.bLogHelp },
+  repeat: { label: E.bRepeat, help: E.bRepeatHelp },
+  forever: { label: E.bForever, help: E.bForeverHelp },
+  repeatUntil: { label: E.bRepeatUntil, help: E.bRepeatUntilHelp },
+  waitUntil: { label: E.bWaitUntil, help: E.bWaitUntilHelp },
+  if: { label: E.bIf, help: E.bIfHelp },
+  ifElse: { label: E.bIfElse, help: E.bIfElseHelp },
+  setVar: { label: E.bSetVar, help: E.bSetVarHelp },
+  changeVar: { label: E.bChangeVar, help: E.bChangeVarHelp },
+  resetCounter: { label: E.bResetCounter, help: E.bResetCounterHelp },
+})
+
+/** The screen-reader wording the pure simulator describers need. */
+const describeStrings = (E: EditorStrings) => ({
+  dirUp: E.dirUp,
+  dirRight: E.dirRight,
+  dirDown: E.dirDown,
+  dirLeft: E.dirLeft,
+  gridSize: E.gridSize,
+  startsAt: E.startsAt,
+  goalAt: E.goalAt,
+  oneWall: E.oneWall,
+  manyWalls: E.manyWalls,
+  lineAcross: E.lineAcross,
+  oneMarker: E.oneMarker,
+  manyMarkers: E.manyMarkers,
+  robotAt: E.robotAt,
+  distanceAhead: E.descDistanceAhead,
+  cell: E.cell,
+  cells: E.cells,
+  touchPressed: E.touchPressed,
+  touchClear: E.touchClear,
+  overLineYes: E.overLineYes,
+  overLineNo: E.overLineNo,
+  lightIs: E.lightIs,
+  inGoalZone: E.descInGoalZone,
+  notInGoalZone: E.descNotInGoalZone,
+})
+
+/** Display text for one simulator feedback id. */
+const simFeedbackText = (E: EditorStrings, id: SimFeedbackId): string =>
+  ({
+    ranTooLong: E.fbRanTooLong,
+    crossedZone: E.fbCrossedZone,
+    thresholdLate: E.fbThresholdLate,
+    stopAfterMove: E.fbStopAfterMove,
+    motorsCurve: E.fbMotorsCurve,
+    lineNoSteer: E.fbLineNoSteer,
+    countedTwice: E.fbCountedTwice,
+    didNotReachZone: E.fbDidNotReachZone,
+  })[id]
 
 /** Palette categories, in teaching order. */
-const PALETTE: { heading: string; blocks: StatementType[] }[] = [
-  { heading: "Events & execution", blocks: ["wait", "safeStop", "missionComplete"] },
-  { heading: "Movement", blocks: ["move", "turn", "setSpeed", "stopMotors", "moveForDuration"] },
-  { heading: "Control", blocks: ["repeat", "forever", "repeatUntil", "waitUntil", "if", "ifElse"] },
-  { heading: "Data", blocks: ["setVar", "changeVar", "resetCounter"] },
-  { heading: "Output", blocks: ["log"] },
+const palette = (E: EditorStrings): { heading: string; blocks: StatementType[] }[] => [
+  { heading: E.headEvents, blocks: ["wait", "safeStop", "missionComplete"] },
+  { heading: E.headMovement, blocks: ["move", "turn", "setSpeed", "stopMotors", "moveForDuration"] },
+  { heading: E.headControl, blocks: ["repeat", "forever", "repeatUntil", "waitUntil", "if", "ifElse"] },
+  { heading: E.headData, blocks: ["setVar", "changeVar", "resetCounter"] },
+  { heading: E.headOutput, blocks: ["log"] },
 ]
 
 const CONTAINER_SET = new Set<StatementType>(["repeat", "forever", "repeatUntil", "if", "ifElse"])
@@ -242,6 +287,7 @@ function NumberExprEditor({
   disabled: boolean
   onChange: (next: NumberExpr) => void
 }) {
+  const E = useLanguage().t.courseUi.robotics.editor
   return (
     <span className="inline-flex items-center gap-1">
       <label className="text-xs text-muted-foreground">
@@ -259,10 +305,10 @@ function NumberExprEditor({
             else onChange({ type: "light" })
           }}
         >
-          <option value="num">a number</option>
-          <option value="var">variable</option>
-          <option value="distance">distance sensor</option>
-          <option value="light">light sensor</option>
+          <option value="num">{E.optNumber}</option>
+          <option value="var">{E.optVariable}</option>
+          <option value="distance">{E.optDistanceSensor}</option>
+          <option value="light">{E.optLightSensor}</option>
         </select>
       </label>
       {expr.type === "num" && (
@@ -283,7 +329,7 @@ function NumberExprEditor({
           disabled={disabled || variables.length === 0}
           onChange={(e) => onChange({ type: "var", name: e.target.value })}
         >
-          {variables.length === 0 && <option value="">(add a variable first)</option>}
+          {variables.length === 0 && <option value="">{E.addVarFirst}</option>}
           {variables.map((v) => (
             <option key={v} value={v}>
               {v}
@@ -310,6 +356,7 @@ function BoolExprEditor({
   disabled: boolean
   onChange: (next: BoolExpr) => void
 }) {
+  const E = useLanguage().t.courseUi.robotics.editor
   const negated = expr.type === "not"
   const inner = expr.type === "not" ? expr.expr : expr
 
@@ -322,7 +369,7 @@ function BoolExprEditor({
       <label className="inline-flex items-center gap-1 text-xs text-muted-foreground">
         <input
           type="checkbox"
-          aria-label="Not (opposite)"
+          aria-label={E.notOpposite}
           className="accent-avanza-green"
           checked={negated}
           disabled={disabled}
@@ -334,7 +381,7 @@ function BoolExprEditor({
         not
       </label>
       <select
-        aria-label="Condition kind"
+        aria-label={E.conditionKind}
         className={selectInput}
         value={inner.type}
         disabled={disabled}
@@ -346,22 +393,22 @@ function BoolExprEditor({
           else if (kind === "onLine") setInner({ type: "onLine" })
         }}
       >
-        <option value="compare">compare numbers</option>
-        <option value="touch">touch sensor</option>
-        <option value="color">color under robot</option>
-        <option value="onLine">on a line</option>
+        <option value="compare">{E.optCompareNumbers}</option>
+        <option value="touch">{E.optTouchSensor}</option>
+        <option value="color">{E.optColorUnder}</option>
+        <option value="onLine">{E.optOnALine}</option>
       </select>
       {inner.type === "compare" && (
         <span className="inline-flex flex-wrap items-center gap-1">
           <NumberExprEditor
-            label="left"
+            label={E.optLeft}
             expr={inner.left}
             variables={variables}
             disabled={disabled}
             onChange={(left) => setInner({ ...inner, left })}
           />
           <select
-            aria-label="Compare operator"
+            aria-label={E.compareOperator}
             className={selectInput}
             value={inner.op}
             disabled={disabled}
@@ -374,7 +421,7 @@ function BoolExprEditor({
             ))}
           </select>
           <NumberExprEditor
-            label="right"
+            label={E.optRight}
             expr={inner.right}
             variables={variables}
             disabled={disabled}
@@ -384,7 +431,7 @@ function BoolExprEditor({
       )}
       {inner.type === "color" && (
         <select
-          aria-label="Color"
+          aria-label={E.colorLabel}
           className={selectInput}
           value={inner.color}
           disabled={disabled}
@@ -425,26 +472,27 @@ function StatementParams({
   disabled: boolean
   onChange: (next: Statement) => void
 }) {
+  const E = useLanguage().t.courseUi.robotics.editor
   switch (stmt.type) {
     case "move":
       return (
         <span className="inline-flex items-center gap-1">
           <select
-            aria-label="Move direction"
+            aria-label={E.moveDirection}
             className={selectInput}
             value={stmt.direction}
             disabled={disabled}
             onChange={(e) => onChange({ ...stmt, direction: e.target.value as "forward" })}
           >
-            <option value="forward">forward</option>
-            <option value="backward">backward</option>
+            <option value="forward">{E.optForward}</option>
+            <option value="backward">{E.optBackward}</option>
           </select>
           <label className="text-xs text-muted-foreground">
             cells
             <input
               type="number"
               min={1}
-              aria-label="Distance in cells"
+              aria-label={E.distanceInCells}
               className={numberInput + " ml-1"}
               value={stmt.distance}
               disabled={disabled}
@@ -457,21 +505,21 @@ function StatementParams({
       return (
         <span className="inline-flex items-center gap-1">
           <select
-            aria-label="Turn direction"
+            aria-label={E.turnDirection}
             className={selectInput}
             value={stmt.direction}
             disabled={disabled}
             onChange={(e) => onChange({ ...stmt, direction: e.target.value as "left" })}
           >
-            <option value="left">left</option>
-            <option value="right">right</option>
+            <option value="left">{E.optLeft}</option>
+            <option value="right">{E.optRight}</option>
           </select>
           <label className="text-xs text-muted-foreground">
             degrees
             <input
               type="number"
               step={90}
-              aria-label="Angle in degrees"
+              aria-label={E.angleDegrees}
               className={numberInput + " ml-1"}
               value={stmt.angle}
               disabled={disabled}
@@ -484,15 +532,15 @@ function StatementParams({
       return (
         <span className="inline-flex items-center gap-1">
           <select
-            aria-label="Motor target"
+            aria-label={E.motorTarget}
             className={selectInput}
             value={stmt.target}
             disabled={disabled}
             onChange={(e) => onChange({ ...stmt, target: e.target.value as "both" })}
           >
-            <option value="both">both motors</option>
-            <option value="left">left motor</option>
-            <option value="right">right motor</option>
+            <option value="both">{E.optBothMotors}</option>
+            <option value="left">{E.optLeftMotor}</option>
+            <option value="right">{E.optRightMotor}</option>
           </select>
           <label className="text-xs text-muted-foreground">
             speed
@@ -500,7 +548,7 @@ function StatementParams({
               type="number"
               min={0}
               max={100}
-              aria-label="Speed 0 to 100"
+              aria-label={E.speed0to100}
               className={numberInput + " ml-1"}
               value={stmt.speed}
               disabled={disabled}
@@ -513,7 +561,7 @@ function StatementParams({
       return (
         <span className="inline-flex items-center gap-1">
           <select
-            aria-label="Drive direction"
+            aria-label={E.driveDirection}
             className={selectInput}
             value={stmt.direction}
             disabled={disabled}
@@ -527,7 +575,7 @@ function StatementParams({
             <input
               type="number"
               min={0}
-              aria-label="Duration in milliseconds"
+              aria-label={E.durationMs}
               className={numberInput + " ml-1"}
               value={stmt.ms}
               disabled={disabled}
@@ -543,7 +591,7 @@ function StatementParams({
           <input
             type="number"
             min={0}
-            aria-label="Wait in milliseconds"
+            aria-label={E.waitMs}
             className={numberInput + " ml-1"}
             value={stmt.ms}
             disabled={disabled}
@@ -554,7 +602,7 @@ function StatementParams({
     case "log":
       return (
         <NumberExprEditor
-          label="value"
+          label={E.lblValue}
           expr={stmt.value}
           variables={variables}
           disabled={disabled}
@@ -568,7 +616,7 @@ function StatementParams({
           <input
             type="number"
             min={0}
-            aria-label="Repeat count"
+            aria-label={E.repeatCount}
             className={numberInput + " ml-1"}
             value={stmt.count}
             disabled={disabled}
@@ -597,9 +645,9 @@ function StatementParams({
             disabled={disabled}
             onChange={(name) => onChange({ ...stmt, name })}
           />
-          <span className="text-xs text-muted-foreground">to</span>
+          <span className="text-xs text-muted-foreground">{E.lblTo}</span>
           <NumberExprEditor
-            label="value"
+            label={E.lblValue}
             expr={stmt.value}
             variables={variables}
             disabled={disabled}
@@ -616,9 +664,9 @@ function StatementParams({
             disabled={disabled}
             onChange={(name) => onChange({ ...stmt, name })}
           />
-          <span className="text-xs text-muted-foreground">by</span>
+          <span className="text-xs text-muted-foreground">{E.lblBy}</span>
           <NumberExprEditor
-            label="amount"
+            label={E.lblAmount}
             expr={stmt.by}
             variables={variables}
             disabled={disabled}
@@ -651,9 +699,10 @@ function VarPicker({
   disabled: boolean
   onChange: (name: string) => void
 }) {
+  const E = useLanguage().t.courseUi.robotics.editor
   return (
     <select
-      aria-label="Variable name"
+      aria-label={E.varName}
       className={selectInput}
       value={value}
       disabled={disabled || variables.length === 0}
@@ -682,7 +731,8 @@ function BlockRow({
   siblingCount: number
   api: EditorApi
 }) {
-  const info = BLOCK_INFO[stmt.type]
+  const E = useLanguage().t.courseUi.robotics.editor
+  const info = blockInfo(E)[stmt.type]
   const isContainer = CONTAINER_SET.has(stmt.type)
   const isIfElse = stmt.type === "ifElse"
 
@@ -746,7 +796,7 @@ function BlockRow({
             list={(stmt as Extract<Statement, { body: Statement[] }>).body}
             path={[...path, { index, branch: "body" }]}
             api={api}
-            emptyHint="Empty — use “+ inside” to add blocks here."
+            emptyHint={E.emptyUseInside}
           />
         </div>
       )}
@@ -754,14 +804,14 @@ function BlockRow({
       {isIfElse && stmt.type === "ifElse" && (
         <div className="border-t border-border/70 pl-4">
           <p className="px-2 pt-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
-            Else
+            {E.elseLabel}
           </p>
           <div className="flex items-center justify-between gap-2 px-2 pb-1">
-            <span className="sr-only">Else branch</span>
+            <span className="sr-only">{E.elseBranch}</span>
             <button
               type="button"
               className={iconButton + " w-auto px-2"}
-              aria-label="Add a block inside the else branch"
+              aria-label={E.addInsideElse}
               disabled={api.disabled}
               onClick={() => api.insertInside(path, index, "elseBody")}
             >
@@ -772,7 +822,7 @@ function BlockRow({
             list={stmt.elseBody}
             path={[...path, { index, branch: "elseBody" }]}
             api={api}
-            emptyHint="Empty — add blocks that run when the condition is false."
+            emptyHint={E.emptyElse}
           />
         </div>
       )}
@@ -821,6 +871,7 @@ function WorldGrid({
   world: RobotWorld
   robot: { x: number; y: number; dir: number }
 }) {
+  const E = useLanguage().t.courseUi.robotics.editor
   const cell = 40
   const w = world.cols * cell
   const h = world.rows * cell
@@ -858,9 +909,11 @@ function WorldGrid({
           let fill = "var(--color-card, #ffffff)"
           if (wall) fill = "#6b7280"
           else if (line) fill = "#d1d5db"
-          const cellLabel = `Column ${x + 1}, row ${y + 1}${wall ? " — wall" : ""}${
-            line ? " — line" : ""
-          }${color ? ` — ${color} marker` : ""}`
+          const cellLabel =
+            E.cellLabel.replace("{col}", String(x + 1)).replace("{row}", String(y + 1)) +
+            (wall ? E.cellWall : "") +
+            (line ? E.cellLine : "") +
+            (color ? E.cellMarker.replace("{color}", color) : "")
           const ox = x * cell
           const oy = y * cell
           return (
@@ -935,10 +988,11 @@ function WorldGrid({
 
 /** Text legend so map meaning is not conveyed by colour alone. */
 function WorldLegend({ world }: { world: RobotWorld }) {
+  const E = useLanguage().t.courseUi.robotics.editor
   const items: { swatch: ReactNode; label: string }[] = [
     {
       swatch: <span aria-hidden className="text-avanza-green-dark">▲</span>,
-      label: "Robot (arrow points where it faces)",
+      label: E.legendRobot,
     },
   ]
   if (world.goal) {
@@ -948,17 +1002,17 @@ function WorldLegend({ world }: { world: RobotWorld }) {
           ▢
         </span>
       ),
-      label: "Goal zone (dashed outline)",
+      label: E.legendGoal,
     })
   }
   if (world.walls.length) {
-    items.push({ swatch: <span aria-hidden className="font-bold text-slate-700">✕</span>, label: "Wall (grey, X mark)" })
+    items.push({ swatch: <span aria-hidden className="font-bold text-slate-700">✕</span>, label: E.legendWall })
   }
   if (world.lines.length) {
-    items.push({ swatch: <span aria-hidden className="text-slate-600">– –</span>, label: "Line (dashed stripe)" })
+    items.push({ swatch: <span aria-hidden className="text-slate-600">– –</span>, label: E.legendLine })
   }
   if (Object.keys(world.colors).length) {
-    items.push({ swatch: <span aria-hidden className="text-slate-600">●</span>, label: "Coloured marker (dot)" })
+    items.push({ swatch: <span aria-hidden className="text-slate-600">●</span>, label: E.legendMarker })
   }
   return (
     <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
@@ -1004,15 +1058,18 @@ export function RoboticsBlockEditor({
    */
   allowedBlocks?: StatementType[]
 }) {
+  const E = useLanguage().t.courseUi.robotics.editor
   // Restrict the palette to the allowed block types when provided.
-  const palette = useMemo(() => {
-    if (!allowedBlocks) return PALETTE
+  const BLOCK_INFO = useMemo(() => blockInfo(E), [E])
+  const paletteGroups = useMemo(() => {
+    const full = palette(E)
+    if (!allowedBlocks) return full
     const allowed = new Set(allowedBlocks)
-    return PALETTE.map((group) => ({
+    return full.map((group) => ({
       ...group,
       blocks: group.blocks.filter((type) => allowed.has(type)),
     })).filter((group) => group.blocks.length > 0)
-  }, [allowedBlocks])
+  }, [allowedBlocks, E])
   const { loaded, progress, saveProgramAst, resetProgramAst, saveSimulatorResult } =
     useRoboticsProgress()
   const missionDef = useMemo(() => getMission(mission), [mission])
@@ -1075,7 +1132,7 @@ export function RoboticsBlockEditor({
       const next = gen.next()
       if (next.done) {
         setRunStatus((s) => (s === "error" ? s : "finished"))
-        setRunMessage("The program finished.")
+        setRunMessage(E.msgFinished)
         return false
       }
       const event = next.value as ExecEvent
@@ -1086,10 +1143,10 @@ export function RoboticsBlockEditor({
     } catch (err) {
       if (err instanceof ExecutionLimitError) {
         setRunStatus("error")
-        setRunMessage("This program ran too long — check for a loop that never ends.")
+        setRunMessage(E.msgTooLong)
       } else {
         setRunStatus("error")
-        setRunMessage("Something went wrong while running.")
+        setRunMessage(E.msgWentWrong)
       }
       return false
     }
@@ -1115,7 +1172,7 @@ export function RoboticsBlockEditor({
     setLog([])
     setStepCount(0)
     setCollisions(0)
-    setRunMessage("Robot back at the start.")
+    setRunMessage(E.msgBackAtStart)
   }, [clearTimer, world])
 
   // Restart the interval whenever speed changes mid-run.
@@ -1145,8 +1202,8 @@ export function RoboticsBlockEditor({
       setRunStatus(outcome.ranTooLong ? "error" : "finished")
       setRunMessage(
         outcome.ranTooLong
-          ? "This program ran too long — check for a loop that never ends."
-          : "The program finished. The robot jumped to the end (reduced motion is on).",
+          ? E.msgTooLong
+          : E.msgFinishedJumped,
       )
       return
     }
@@ -1156,14 +1213,14 @@ export function RoboticsBlockEditor({
     setLog([])
     setStepCount(0)
     setCollisions(0)
-    setRunMessage("Running…")
+    setRunMessage(E.msgRunning)
     setRunStatus("running")
   }, [program, world, clearTimer, reducedMotion, missionDef])
 
   const handlePause = useCallback(() => {
     clearTimer()
     setRunStatus("paused")
-    setRunMessage("Paused.")
+    setRunMessage(E.msgPaused)
   }, [clearTimer])
 
   const handleResume = useCallback(() => {
@@ -1181,14 +1238,14 @@ export function RoboticsBlockEditor({
       setStepCount(0)
       setCollisions(0)
       setRunStatus("paused")
-      setRunMessage("Stepped one block.")
+      setRunMessage(E.msgStepped)
       // advance one after the generator is set
       queueMicrotask(() => advance())
       return
     }
     setRunStatus("paused")
     advance()
-    setRunMessage("Stepped one block.")
+    setRunMessage(E.msgStepped)
   }, [runStatus, program, world, advance])
 
   // Drive the interval based on status/speed.
@@ -1207,7 +1264,7 @@ export function RoboticsBlockEditor({
       if (document.hidden && runStatus === "running") {
         clearTimer()
         setRunStatus("paused")
-        setRunMessage("Paused — the tab was in the background.")
+        setRunMessage(E.msgPausedBackground)
       }
     }
     document.addEventListener("visibilitychange", onVisibility)
@@ -1290,7 +1347,7 @@ export function RoboticsBlockEditor({
   }, [])
 
   const handleResetStarter = useCallback(() => {
-    if (!window.confirm("Reset this program back to the starter? Your changes here will be cleared.")) {
+    if (!window.confirm(E.confirmReset)) {
       return
     }
     resetProgramAst(specId)
@@ -1300,7 +1357,7 @@ export function RoboticsBlockEditor({
   }, [resetProgramAst, specId, missionDef.starter, stopRun])
 
   const handleLoadStarter = useCallback(() => {
-    if (!window.confirm("Load the starter program? This replaces your current blocks.")) return
+    if (!window.confirm(E.confirmLoadStarter)) return
     setProgram(missionDef.starter)
     setChallenge(null)
     stopRun()
@@ -1309,7 +1366,7 @@ export function RoboticsBlockEditor({
   const handleShowExample = useCallback(() => {
     if (
       !window.confirm(
-        "Show an example program? This replaces your current blocks with one worked solution so you can study it.",
+        E.confirmShowExample,
       )
     ) {
       return
@@ -1324,7 +1381,7 @@ export function RoboticsBlockEditor({
     stopRun()
     setChallenge(null)
     setSavedTrial(null)
-    setRunMessage("Mission reset. Ready to run.")
+    setRunMessage(E.msgMissionReset)
   }, [stopRun])
 
   const savedProgram = progress.savedProgramAsts[specId]?.program
@@ -1334,7 +1391,7 @@ export function RoboticsBlockEditor({
     setProgram(saved)
     setChallenge(null)
     stopRun()
-    setRunMessage("Loaded your saved program.")
+    setRunMessage(E.msgLoadedSaved)
   }, [progress.savedProgramAsts, specId, stopRun])
 
   /* ---- Expand / fullscreen ---- */
@@ -1357,14 +1414,14 @@ export function RoboticsBlockEditor({
 
   const statusLabel =
     runStatus === "running"
-      ? "Running"
+      ? E.statusRunning
       : runStatus === "paused"
-        ? "Paused"
+        ? E.statusPaused
         : runStatus === "finished"
-          ? "Finished"
+          ? E.statusFinished
           : runStatus === "error"
-            ? "Stopped (ran too long)"
-            : "Ready"
+            ? E.statusStoppedTooLong
+            : E.statusReady
 
   /* ---- Live, accessible robot-state summary ---- */
   // A minimal RobotState around the visible pose, enough for the sensors + text.
@@ -1385,8 +1442,8 @@ export function RoboticsBlockEditor({
   )
   const sensors = useMemo(() => readSensors(world, liveState), [world, liveState])
   const inGoal = world.goal ? robot.x === world.goal.x && robot.y === world.goal.y : false
-  const stateText = useMemo(() => describeState(world, liveState), [world, liveState])
-  const worldText = useMemo(() => describeWorld(world), [world])
+  const stateText = useMemo(() => describeState(world, liveState, describeStrings(E)), [world, liveState])
+  const worldText = useMemo(() => describeWorld(world, describeStrings(E)), [world])
 
   const [newVarName, setNewVarName] = useState("")
 
@@ -1396,7 +1453,7 @@ export function RoboticsBlockEditor({
     : "rounded-lg border border-border bg-card p-4 md:p-5"
 
   return (
-    <section className={shell} aria-label={title ?? "Block programming editor"}>
+    <section className={shell} aria-label={title ?? E.editorLabel}>
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 className="text-lg font-bold text-foreground">{title ?? missionDef.title}</h3>
@@ -1416,7 +1473,7 @@ export function RoboticsBlockEditor({
             aria-pressed={expanded}
             onClick={() => setExpanded((e) => !e)}
           >
-            {expanded ? "Close" : "Expand"}
+            {expanded ? E.close : E.expand}
             <span className="sr-only"> full-screen editor{expanded ? " (or press Escape)" : ""}</span>
           </button>
         </div>
@@ -1427,9 +1484,9 @@ export function RoboticsBlockEditor({
         <div className="min-w-0">
           {/* Palette */}
           <div className="rounded-md border border-border bg-secondary p-3">
-            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Add a block</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{E.addBlock}</p>
             <div className="mt-2 space-y-3">
-              {palette.map((group) => (
+              {paletteGroups.map((group) => (
                 <div key={group.heading}>
                   <p className="text-xs font-semibold text-foreground">{group.heading}</p>
                   <div className="mt-1 flex flex-wrap gap-1.5">
@@ -1441,7 +1498,7 @@ export function RoboticsBlockEditor({
                         title={BLOCK_INFO[type].help}
                         disabled={runningEdits}
                         onClick={() => addTopLevel(type)}
-                        aria-label={`Add ${BLOCK_INFO[type].label} block — ${BLOCK_INFO[type].help}`}
+                        aria-label={`${BLOCK_INFO[type].label} — ${BLOCK_INFO[type].help}`}
                       >
                         {BLOCK_INFO[type].label}
                       </button>
@@ -1453,10 +1510,10 @@ export function RoboticsBlockEditor({
 
             {/* Variables */}
             <div className="mt-4 border-t border-border pt-3">
-              <p className="text-xs font-semibold text-foreground">Variables &amp; counters</p>
+              <p className="text-xs font-semibold text-foreground">{E.variablesCounters}</p>
               <div className="mt-1 flex flex-wrap items-center gap-1.5">
                 {program.variables.length === 0 && (
-                  <span className="text-xs italic text-muted-foreground">None yet.</span>
+                  <span className="text-xs italic text-muted-foreground">{E.noneYet}</span>
                 )}
                 {program.variables.map((v) => (
                   <span
@@ -1478,7 +1535,7 @@ export function RoboticsBlockEditor({
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-1.5">
                 <label className="sr-only" htmlFor={`newvar-${specId}`}>
-                  New variable name
+                  {E.newVarName}
                 </label>
                 <input
                   id={`newvar-${specId}`}
@@ -1509,7 +1566,7 @@ export function RoboticsBlockEditor({
                     setNewVarName("")
                   }}
                 >
-                  Add variable
+                  {E.addVariable}
                 </button>
               </div>
             </div>
@@ -1517,34 +1574,34 @@ export function RoboticsBlockEditor({
 
           {/* Program body */}
           <div className="mt-4">
-            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Your program</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{E.yourProgram}</p>
             {seeded || !loaded ? (
               <div className="mt-2">
                 {program.body.length === 0 ? (
                   <p className="rounded-md border border-dashed border-border p-3 text-sm italic text-muted-foreground">
-                    No blocks yet. Use “Add a block” above to start.
+                    {E.noBlocksYet}
                   </p>
                 ) : (
                   <BlockList
                     list={program.body}
                     path={[]}
                     api={editApi}
-                    emptyHint="No blocks yet."
+                    emptyHint={E.noneYet}
                   />
                 )}
               </div>
             ) : (
-              <p className="mt-2 text-sm text-muted-foreground">Loading your saved program…</p>
+              <p className="mt-2 text-sm text-muted-foreground">{E.loadingProgram}</p>
             )}
           </div>
 
           {/* Program actions */}
           <div className="mt-4 flex flex-wrap gap-2">
             <button type="button" className={outlineButton} disabled={runningEdits} onClick={handleLoadStarter}>
-              Load starter
+              {E.loadStarter}
             </button>
             <button type="button" className={outlineButton} disabled={runningEdits} onClick={handleShowExample}>
-              Show an example
+              {E.showExample}
             </button>
             <button
               type="button"
@@ -1552,7 +1609,7 @@ export function RoboticsBlockEditor({
               disabled={runningEdits}
               onClick={handleResetStarter}
             >
-              Reset to starter
+              {E.resetToStarter}
             </button>
           </div>
         </div>
@@ -1563,7 +1620,7 @@ export function RoboticsBlockEditor({
             <WorldGrid world={world} robot={robot} />
             <WorldLegend world={world} />
             <p className="mt-2 text-xs text-muted-foreground">
-              <span className="font-semibold text-foreground">Map: </span>
+              <span className="font-semibold text-foreground">{E.map}</span>
               {worldText}
             </p>
           </div>
@@ -1574,75 +1631,75 @@ export function RoboticsBlockEditor({
               <button
                 type="button"
                 className={greenButton}
-                aria-label={runStatus === "paused" ? "Resume the run" : "Run the program"}
+                aria-label={runStatus === "paused" ? E.resumeAria : E.runAria}
                 disabled={!runnable}
                 onClick={runStatus === "paused" ? handleResume : handleRun}
               >
-                {runStatus === "paused" ? "Resume" : "Run"}
+                {runStatus === "paused" ? E.resume : E.run}
               </button>
             ) : (
               <button
                 type="button"
                 className={outlineButton}
-                aria-label="Pause the run"
+                aria-label={E.pauseAria}
                 onClick={handlePause}
               >
-                Pause
+                {E.pause}
               </button>
             )}
             <button
               type="button"
               className={outlineButton}
-              aria-label="Step forward one block"
+              aria-label={E.stepAria}
               disabled={!runnable || runStatus === "running"}
               onClick={handleStep}
             >
-              Step
+              {E.step}
             </button>
             <button
               type="button"
               className={outlineButton}
-              aria-label="Stop the run"
+              aria-label={E.stopAria}
               disabled={runStatus === "idle"}
               onClick={stopRun}
             >
-              Stop
+              {E.stop}
             </button>
             <button
               type="button"
               className={outlineButton}
-              aria-label="Reset robot to the start, keep the program"
+              aria-label={E.resetRobotAria}
               onClick={resetRobot}
             >
-              Reset robot
+              {E.resetRobot}
             </button>
             <button
               type="button"
               className={outlineButton}
-              aria-label="Reset the mission: robot to start and clear the check results"
+              aria-label={E.resetMissionAria}
               onClick={handleResetMission}
             >
-              Reset mission
+              {E.resetMission}
             </button>
             {savedProgram && (
               <button
                 type="button"
                 className={outlineButton}
-                aria-label="Restart from your last saved program"
+                aria-label={E.restartSavedAria}
                 onClick={handleRestartFromSaved}
               >
-                Restart from saved program
+                {E.restartSaved}
               </button>
             )}
             <label className="ml-1 inline-flex items-center gap-2 text-xs text-muted-foreground">
-              Speed
+              {E.speed}
               <input
                 type="range"
                 min={1}
                 max={4}
                 step={1}
                 value={speed}
-                aria-label="Run speed, 1x to 4x"
+                aria-label={E.speedAria}
                 className="accent-avanza-green"
                 onChange={(e) => setSpeed(Number(e.target.value))}
               />
@@ -1663,7 +1720,7 @@ export function RoboticsBlockEditor({
           </p>
 
           <p className="mt-2 text-sm text-muted-foreground" aria-live="polite">
-            {runMessage || (runnable ? "Ready to run." : "Fix the errors below before running.")}
+            {runMessage || (runnable ? E.readyToRun : E.fixErrorsFirst)}
             {" · "}
             <span className="font-semibold text-foreground">{stepCount} steps</span>
           </p>
@@ -1671,53 +1728,53 @@ export function RoboticsBlockEditor({
           {/* Live, accessible mission-state summary */}
           <div className="mt-3 rounded-md border border-border bg-card p-3" aria-live="polite">
             <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-              Robot state
+              {E.robotState}
             </p>
             <dl className="mt-1 grid grid-cols-2 gap-x-3 gap-y-1 text-sm text-foreground">
               <div className="flex justify-between gap-2">
-                <dt className="text-muted-foreground">Column</dt>
+                <dt className="text-muted-foreground">{E.column}</dt>
                 <dd className="font-semibold">{robot.x + 1}</dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-muted-foreground">Row</dt>
+                <dt className="text-muted-foreground">{E.row}</dt>
                 <dd className="font-semibold">{robot.y + 1}</dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-muted-foreground">Facing</dt>
+                <dt className="text-muted-foreground">{E.facing}</dt>
                 <dd className="font-semibold">
-                  {(["up", "right", "down", "left"] as const)[robot.dir] ?? "up"}
+                  {[E.dirUp, E.dirRight, E.dirDown, E.dirLeft][robot.dir] ?? E.dirUp}
                 </dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-muted-foreground">Distance ahead</dt>
+                <dt className="text-muted-foreground">{E.distanceAhead}</dt>
                 <dd className="font-semibold">
-                  {sensors.distance} cell{sensors.distance === 1 ? "" : "s"}
+                  {sensors.distance} {sensors.distance === 1 ? E.cell : E.cells}
                 </dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-muted-foreground">Touch</dt>
-                <dd className="font-semibold">{sensors.touch ? "pressed" : "clear"}</dd>
+                <dt className="text-muted-foreground">{E.touch}</dt>
+                <dd className="font-semibold">{sensors.touch ? E.pressed : E.clear}</dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-muted-foreground">On a line</dt>
-                <dd className="font-semibold">{sensors.onLine ? "yes" : "no"}</dd>
+                <dt className="text-muted-foreground">{E.onALine}</dt>
+                <dd className="font-semibold">{sensors.onLine ? E.yes : E.no}</dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-muted-foreground">Light</dt>
+                <dt className="text-muted-foreground">{E.light}</dt>
                 <dd className="font-semibold">{sensors.light}</dd>
               </div>
               {world.goal && (
                 <div className="flex justify-between gap-2">
-                  <dt className="text-muted-foreground">In goal zone</dt>
-                  <dd className="font-semibold">{inGoal ? "yes" : "no"}</dd>
+                  <dt className="text-muted-foreground">{E.inGoalZone}</dt>
+                  <dd className="font-semibold">{inGoal ? E.yes : E.no}</dd>
                 </div>
               )}
               <div className="flex justify-between gap-2">
-                <dt className="text-muted-foreground">Collisions</dt>
+                <dt className="text-muted-foreground">{E.collisions}</dt>
                 <dd className="font-semibold">{collisions}</dd>
               </div>
               <div className="flex justify-between gap-2">
-                <dt className="text-muted-foreground">Steps</dt>
+                <dt className="text-muted-foreground">{E.steps}</dt>
                 <dd className="font-semibold">{stepCount}</dd>
               </div>
             </dl>
@@ -1726,10 +1783,10 @@ export function RoboticsBlockEditor({
 
           {/* Log output */}
           <div className="mt-2">
-            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Log output</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{E.logOutput}</p>
             <p className="mt-1 rounded-md border border-border bg-card px-2 py-1 text-sm text-foreground">
               {log.length === 0 ? (
-                <span className="italic text-muted-foreground">Nothing logged yet.</span>
+                <span className="italic text-muted-foreground">{E.nothingLogged}</span>
               ) : (
                 log.join(", ")
               )}
@@ -1740,7 +1797,7 @@ export function RoboticsBlockEditor({
           <div className="mt-3" aria-live="polite">
             {errors.length > 0 && (
               <div className="rounded-md border border-red-400/60 bg-red-50 p-3 text-sm dark:bg-red-950/30">
-                <p className="font-semibold text-red-700 dark:text-red-300">Fix these before running:</p>
+                <p className="font-semibold text-red-700 dark:text-red-300">{E.fixTheseBeforeRunning}</p>
                 <ul className="mt-1 space-y-1">
                   {errors.map((e, i) => (
                     <li key={i} className="text-red-700 dark:text-red-300">
@@ -1766,22 +1823,22 @@ export function RoboticsBlockEditor({
             {/* Optional notes recorded with each saved result. */}
             <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
               <label className="text-xs text-muted-foreground">
-                Notes (optional)
+                {E.notesOptional}
                 <input
                   type="text"
                   className="mt-1 w-full rounded-md border border-border bg-card px-2 py-1 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
-                  placeholder="What happened this time?"
+                  placeholder={E.notesOptional}
                   value={notes}
                   maxLength={200}
                   onChange={(e) => setNotes(e.target.value)}
                 />
               </label>
               <label className="text-xs text-muted-foreground">
-                What did you change? (optional)
+                {E.whatChanged}
                 <input
                   type="text"
                   className="mt-1 w-full rounded-md border border-border bg-card px-2 py-1 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
-                  placeholder="e.g. added a stop after the sensor check"
+                  placeholder={E.notePlaceholder}
                   value={revisionMade}
                   maxLength={200}
                   onChange={(e) => setRevisionMade(e.target.value)}
@@ -1790,7 +1847,7 @@ export function RoboticsBlockEditor({
             </div>
 
             <button type="button" className={greenButton} onClick={handleCheck}>
-              Check challenge
+              {E.checkChallenge}
             </button>
 
             {savedTrial !== null && (
@@ -1802,18 +1859,18 @@ export function RoboticsBlockEditor({
             {challenge && (
               <div className="mt-3" aria-live="polite">
                 <p className="text-sm font-semibold text-foreground">
-                  {challenge.passed ? "All checks passed. Well done." : "Not quite yet — keep going."}
+                  {challenge.passed ? E.allChecksPassed : E.notQuiteYet}
                 </p>
                 {challenge.ranTooLong && (
                   <p className="mt-1 text-sm text-red-700 dark:text-red-300">
-                    This program ran too long — check for a loop that never ends.
+                    {E.msgTooLong}
                   </p>
                 )}
                 <ul className="mt-2 space-y-1">
                   {challenge.checks.map((c) => (
                     <li key={c.id} className="flex items-start gap-2 text-sm">
                       <span aria-hidden className="font-semibold text-foreground">
-                        {c.passed ? "Pass" : "Not yet"}
+                        {c.passed ? E.pass : E.notYet}
                       </span>
                       <span className={c.passed ? "text-muted-foreground" : "text-foreground/90"}>
                         {c.label}
@@ -1830,7 +1887,7 @@ export function RoboticsBlockEditor({
                     aria-live="polite"
                   >
                     <p className="font-semibold text-amber-800 dark:text-amber-200">
-                      What likely went wrong
+                      {E.whatWentWrong}
                     </p>
                     <ul className="mt-1 space-y-1">
                       {challenge.feedback.map((f, i) => (

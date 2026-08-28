@@ -32,15 +32,16 @@ import {
  * (visit + mark-complete) are client components.
  */
 export function MathAdventuresLessonContent({ slug }: { slug: string }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const L = t.courseUi.math.lesson
   const c = getMathAdventuresCurriculum(language)
   const lesson = findMathLesson(language, slug) ?? c.lessons[0]
   const total = c.totalWeeks
   const prev = getPreviousMathLesson(lesson.slug)
   const next = getNextMathLesson(lesson.slug)
   const label = lesson.isFinalProject
-    ? "Final project"
-    : `Week ${lesson.weekNumber} of ${total}`
+    ? L.finalProject
+    : L.weekOfTotal.replace("{n}", String(lesson.weekNumber)).replace("{total}", String(total))
 
   return (
     <div className="bg-background">
@@ -48,14 +49,14 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
       <article className="mx-auto max-w-3xl px-6 py-12 md:py-16">
         {/* 1. Lesson header */}
         <nav
-          aria-label="Lesson"
+          aria-label={L.navLesson}
           className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm"
         >
           <Link
             href={mathAdventuresPath}
             className="font-semibold text-avanza-teal-dark underline underline-offset-2 hover:text-avanza-teal"
           >
-            Math Adventures
+            {L.courseTitle}
           </Link>
           <LessonNav prev={prev} next={next} compact />
         </nav>
@@ -69,22 +70,22 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
             {lesson.description}
           </p>
           <dl className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
-            <HeaderDetail label="Estimated time" value={lesson.estimatedTime} />
-            <HeaderDetail label="Grade range" value={lesson.gradeRange} />
-            <HeaderDetail label="Skill focus" value={lesson.skillFocus.join(", ")} />
-            <HeaderDetail label="Theme" value={lesson.theme} />
+            <HeaderDetail label={L.estimatedTime} value={lesson.estimatedTime} />
+            <HeaderDetail label={L.gradeRange} value={lesson.gradeRange} />
+            <HeaderDetail label={L.skillFocus} value={lesson.skillFocus.join(", ")} />
+            <HeaderDetail label={L.theme} value={lesson.theme} />
           </dl>
         </header>
 
         {/* 2. Intro story / real-world problem */}
-        <Section title="The story">
+        <Section title={L.theStory}>
           <div className="rounded-lg border border-border bg-secondary p-5 md:p-6">
             <p className="text-base leading-relaxed text-foreground/90">{lesson.introStory}</p>
           </div>
         </Section>
 
         {/* 3. What you'll learn */}
-        <Section title="What you'll learn">
+        <Section title={L.whatYoullLearn}>
           <ul className="space-y-3">
             {lesson.learningGoals.map((goal) => (
               <li key={goal} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -96,7 +97,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
         </Section>
 
         {/* 4. Key concepts and vocabulary */}
-        <Section title="Key ideas">
+        <Section title={L.keyIdeas}>
           <ul className="space-y-2">
             {lesson.keyConcepts.map((concept) => (
               <li key={concept} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -107,7 +108,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
           </ul>
 
           <h3 className="mt-8 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Words to know
+            {L.wordsToKnow}
           </h3>
           <dl className="mt-3 divide-y divide-border border-t border-b border-border">
             {lesson.vocabulary.map((term) => (
@@ -120,7 +121,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
         </Section>
 
         {/* 5. Main lesson + worked examples */}
-        <Section title="The lesson">
+        <Section title={L.theLesson}>
           <div className="space-y-4">
             {lesson.mainLesson.map((paragraph) => (
               <p key={paragraph} className="text-base leading-relaxed text-foreground/90">
@@ -130,7 +131,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
           </div>
 
           <h3 className="mt-8 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Worked examples
+            {L.workedExamples}
           </h3>
           <div className="mt-4 grid gap-4">
             {lesson.examples.map((example) => (
@@ -146,15 +147,12 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
         </Section>
 
         {/* 6 + 7. Interactive practice / mini-game area */}
-        <Section title="Try it: interactive practice">
-          <p className="text-sm text-muted-foreground">
-            This is the week&apos;s practice game. Work through it right here - try each step
-            yourself, then check your thinking.
-          </p>
+        <Section title={L.tryIt}>
+          <p className="text-sm text-muted-foreground">{L.practiceIntro}</p>
 
           <div className="mt-5 rounded-lg border border-border p-5 md:p-6">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Activity
+              {L.activity}
             </p>
             <h3 className="mt-1 text-lg font-bold text-foreground">
               {lesson.interactiveActivity.title}
@@ -170,11 +168,11 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
         </Section>
 
         {/* 8. Hands-on challenge */}
-        <Section title="Hands-on challenge">
+        <Section title={L.handsOnChallenge}>
           <h3 className="text-lg font-bold text-foreground">{lesson.handsOnChallenge.title}</h3>
 
           <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            What you need
+            {L.whatYouNeed}
           </p>
           <ul className="mt-2 grid gap-x-10 gap-y-2 sm:grid-cols-2">
             {lesson.materials.map((item) => (
@@ -186,7 +184,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
           </ul>
 
           <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Steps
+            {L.steps}
           </p>
           <ol className="mt-2 space-y-4">
             {lesson.handsOnChallenge.instructions.map((step, i) => (
@@ -200,16 +198,14 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
           </ol>
 
           <p className="mt-5 rounded-md border border-border bg-secondary px-4 py-3 text-sm text-foreground/90">
-            <span className="font-semibold text-foreground">You&apos;ve got it when:</span>{" "}
+            <span className="font-semibold text-foreground">{L.gotItWhen}</span>{" "}
             {lesson.handsOnChallenge.successLooksLike}
           </p>
         </Section>
 
         {/* 9. Checkpoint / review with reveal-able answers */}
-        <Section title="Checkpoint">
-          <p className="text-sm text-muted-foreground">
-            Quick checks before you move on. Try each one first, then reveal the answer.
-          </p>
+        <Section title={L.checkpoint}>
+          <p className="text-sm text-muted-foreground">{L.checkpointIntro}</p>
           <ol className="mt-5 space-y-3">
             {lesson.checkpointQuestions.map((item, i) => (
               <li key={item.question} className="rounded-lg border border-border p-5">
@@ -223,7 +219,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
                 </div>
                 <details className="group mt-3">
                   <summary className="inline-flex cursor-pointer list-none items-center rounded-md border border-border px-3 py-1.5 text-xs font-semibold text-avanza-teal-dark transition-colors hover:border-avanza-teal hover:bg-avanza-teal/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal focus-visible:ring-offset-2 group-open:border-avanza-teal">
-                    Show answer
+                    {L.showAnswer}
                   </summary>
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
                 </details>
@@ -233,7 +229,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
         </Section>
 
         {/* 10. Reflection */}
-        <Section title="Think about it">
+        <Section title={L.thinkAboutIt}>
           <div className="rounded-lg border border-border bg-secondary p-5">
             <p className="text-base leading-relaxed text-foreground/90">
               {lesson.reflectionQuestion}
@@ -242,7 +238,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
         </Section>
 
         {/* 11. Challenge problem + extension */}
-        <Section title="Challenge problem">
+        <Section title={L.challengeProblem}>
           <div className="rounded-lg border border-border p-5">
             <p className="text-sm font-medium leading-relaxed text-foreground">
               {lesson.challengeProblem.prompt}
@@ -250,7 +246,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
             <div className="mt-4 flex flex-wrap gap-3">
               <details className="group">
                 <summary className="inline-flex cursor-pointer list-none items-center rounded-md border border-border px-3 py-1.5 text-xs font-semibold text-avanza-teal-dark transition-colors hover:border-avanza-teal hover:bg-avanza-teal/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal focus-visible:ring-offset-2 group-open:border-avanza-teal">
-                  Show hint
+                  {L.showHint}
                 </summary>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {lesson.challengeProblem.hint}
@@ -258,7 +254,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
               </details>
               <details className="group">
                 <summary className="inline-flex cursor-pointer list-none items-center rounded-md border border-border px-3 py-1.5 text-xs font-semibold text-avanza-teal-dark transition-colors hover:border-avanza-teal hover:bg-avanza-teal/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal focus-visible:ring-offset-2 group-open:border-avanza-teal">
-                  Show answer
+                  {L.showAnswer}
                 </summary>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {lesson.challengeProblem.answer}
@@ -269,7 +265,7 @@ export function MathAdventuresLessonContent({ slug }: { slug: string }) {
 
           <div className="mt-6 rounded-md border border-border bg-secondary p-5">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Extension &middot; go further
+              {L.extension}
             </p>
             <p className="mt-2 text-sm leading-relaxed text-foreground/90">
               {lesson.extensionChallenge}
@@ -298,11 +294,13 @@ function LessonNav({
   next: MathLesson | null
   compact?: boolean
 }) {
-  const prevLabel = prev ? (prev.isFinalProject ? "Final project" : `Week ${prev.weekNumber}`) : null
+  const L = useLanguage().t.courseUi.math.lesson
+  const week = (lesson: MathLesson) => L.weekLabel.replace("{n}", String(lesson.weekNumber))
+  const prevLabel = prev ? (prev.isFinalProject ? L.finalProject : week(prev)) : null
   const nextLabel = next
     ? next.isFinalProject
-      ? "Final project"
-      : `Week ${next.weekNumber}: ${next.title}`
+      ? L.finalProject
+      : L.weekTitleLine.replace("{n}", String(next.weekNumber)).replace("{title}", next.title)
     : null
 
   if (compact) {
@@ -321,7 +319,7 @@ function LessonNav({
             href={mathLessonPath(next.slug)}
             className="font-semibold text-avanza-teal-dark underline underline-offset-2 hover:text-avanza-teal"
           >
-            {next.isFinalProject ? "Final project" : `Week ${next.weekNumber}`} &rarr;
+            {next.isFinalProject ? L.finalProject : week(next)} &rarr;
           </Link>
         )}
       </span>
@@ -335,7 +333,7 @@ function LessonNav({
           href={mathLessonPath(prev.slug)}
           className="font-semibold text-avanza-teal-dark underline underline-offset-2 hover:text-avanza-teal"
         >
-          &larr; Previous: {prevLabel}
+          &larr; {L.previousLabel.replace("{label}", prevLabel ?? "")}
         </Link>
       ) : (
         <span />
@@ -345,14 +343,14 @@ function LessonNav({
           href={mathLessonPath(next.slug)}
           className="text-right font-semibold text-avanza-teal-dark underline underline-offset-2 hover:text-avanza-teal"
         >
-          Next: {nextLabel} &rarr;
+          {L.nextLabel.replace("{label}", nextLabel ?? "")} &rarr;
         </Link>
       ) : (
         <Link
           href={mathAdventuresPath}
           className="text-right font-semibold text-avanza-teal-dark underline underline-offset-2 hover:text-avanza-teal"
         >
-          Finish course &middot; back to hub &rarr;
+          {L.finishCourse} &rarr;
         </Link>
       )}
     </div>

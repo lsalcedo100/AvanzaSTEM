@@ -14,7 +14,7 @@
 import type { IntroToAiCourse, KnowledgeCheckQuestion, Lesson } from "./types.ts"
 import { scoreCheck } from "./quiz.ts"
 import { parseStudio, projectComplete as studioComplete, STUDIO_ACTIVITY_ID } from "./final-project.ts"
-import { FINAL_REFLECTION_PROMPTS } from "./mission.ts"
+import { FINAL_REFLECTION_IDS } from "./mission.ts"
 
 export const INTRO_TO_AI_PROGRESS_VERSION = 1 as const
 export const INTRO_TO_AI_STORAGE_KEY = `avanza-intro-to-artificial-intelligence-progress-v${INTRO_TO_AI_PROGRESS_VERSION}`
@@ -382,7 +382,7 @@ export function finalProjectComplete(p: IntroToAiProgress): boolean {
 
 /** At least one final-course-reflection prompt has a saved answer. */
 export function finalReflectionComplete(p: IntroToAiProgress): boolean {
-  return FINAL_REFLECTION_PROMPTS.some((r) => (p.reflections[r.id] ?? "").trim().length > 0)
+  return FINAL_REFLECTION_IDS.some((id) => (p.reflections[id] ?? "").trim().length > 0)
 }
 
 export type CompletionRequirement = { id: string; label: string; met: boolean }

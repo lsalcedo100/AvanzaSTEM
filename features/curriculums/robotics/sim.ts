@@ -104,7 +104,22 @@ export function traceRun(program: Program, world: RobotWorld, maxSteps: number =
 /* Behavioural feedback                                                       */
 /* -------------------------------------------------------------------------- */
 
-export type SimFeedback = { level: "info" | "warning"; message: string }
+/**
+ * A stable id for one piece of run feedback. The simulator stays pure and
+ * language-independent; the block editor maps these to
+ * `t.courseUi.robotics.editor` for display.
+ */
+export type SimFeedbackId =
+  | "ranTooLong"
+  | "crossedZone"
+  | "thresholdLate"
+  | "stopAfterMove"
+  | "motorsCurve"
+  | "lineNoSteer"
+  | "countedTwice"
+  | "didNotReachZone"
+
+export type SimFeedback = { level: "info" | "warning"; message: SimFeedbackId }
 
 function collect(program: Program): Statement[] {
   const all: Statement[] = []
@@ -171,29 +186,29 @@ export function feedbackFor(trace: SimTrace, program: Program, mission: Mission,
   const s = trace.finalState
 
   if (trace.ranTooLong) {
-    out.push({ level: "warning", message: "The program ran for too long - check for a loop that never ends, or add a safe stop." })
+    out.push({ level: "warning", message: "ranTooLong" })
     return out
   }
   if (passed) return out
 
   // Crossed the goal/delivery zone then ended elsewhere.
   if (world.goal && trace.visitedGoal && (s.x !== world.goal.x || s.y !== world.goal.y)) {
-    out.push({ level: "warning", message: "The robot stopped after crossing the delivery zone. Add a stop as soon as it reaches the zone." })
+    out.push({ level: "warning", message: "crossedZone" })
   }
 
   // Hit an obstacle despite having a distance check -> reacted too late.
   if (trace.collisions > 0 && usesDistanceCondition(program)) {
-    out.push({ level: "warning", message: "The distance threshold triggered too late at the current speed. Try reacting when the distance is a little larger." })
+    out.push({ level: "warning", message: "thresholdLate" })
   }
 
   // Move-then-stop at the top level and a collision -> stop ran after the move.
   if (trace.collisions > 0 && moveThenStopAtTop(program)) {
-    out.push({ level: "warning", message: "The robot touched the obstacle because the stop command ran after the movement command. Check the sensor before moving." })
+    out.push({ level: "warning", message: "stopAfterMove" })
   }
 
   // Mismatched motor speeds -> the robot curves.
   if (speedMismatch(program)) {
-    out.push({ level: "warning", message: "The left and right motor speeds caused the robot to curve. Match the speeds to drive straight." })
+    out.push({ level: "warning", message: "motorsCurve" })
   }
 
   // Line-following: saw the line but never turned.
@@ -201,7 +216,7 @@ export function feedbackFor(trace: SimTrace, program: Program, mission: Mission,
     const sawLine = trace.frames.some((f) => f.sensors.onLine)
     const dirs = new Set(trace.frames.map((f) => f.dir))
     if (sawLine && dirs.size <= 1) {
-      out.push({ level: "warning", message: "The robot detected the line but your condition did not change its direction. Use the sensor to steer." })
+      out.push({ level: "warning", message: "lineNoSteer" })
     }
   }
 
@@ -210,13 +225,13 @@ export function feedbackFor(trace: SimTrace, program: Program, mission: Mission,
     const markers = redMarkerCount(world)
     const overCounted = Object.values(s.vars).some((v) => v > markers)
     if (overCounted) {
-      out.push({ level: "warning", message: "The counter increased several times for the same object. Only count once each time you first detect it." })
+      out.push({ level: "warning", message: "countedTwice" })
     }
   }
 
   // No collision, no goal reached, nothing specific -> a gentle general nudge.
   if (out.length === 0 && world.goal && (s.x !== world.goal.x || s.y !== world.goal.y)) {
-    out.push({ level: "info", message: "The robot did not reach the zone. Check each check below and adjust one thing at a time." })
+    out.push({ level: "info", message: "didNotReachZone" })
   }
 
   return out
@@ -292,33 +307,92 @@ export function buildResultRecord(args: {
 /* Accessibility: text descriptions of the world + state                      */
 /* -------------------------------------------------------------------------- */
 
-const DIR_WORDS: Record<Dir, string> = { 0: "up", 1: "right", 2: "down", 3: "left" }
+/**
+ * Strings the accessibility describers need. Passing them in keeps this module
+ * pure and free of any dependency on the translations barrel.
+ */
+export type SimDescribeStrings = {
+  dirUp: string
+  dirRight: string
+  dirDown: string
+  dirLeft: string
+  gridSize: string
+  startsAt: string
+  goalAt: string
+  oneWall: string
+  manyWalls: string
+  lineAcross: string
+  oneMarker: string
+  manyMarkers: string
+  robotAt: string
+  distanceAhead: string
+  cell: string
+  cells: string
+  touchPressed: string
+  touchClear: string
+  overLineYes: string
+  overLineNo: string
+  lightIs: string
+  inGoalZone: string
+  notInGoalZone: string
+}
+
+const dirWords = (d: SimDescribeStrings): Record<Dir, string> => ({
+  0: d.dirUp,
+  1: d.dirRight,
+  2: d.dirDown,
+  3: d.dirLeft,
+})
 
 /** A plain-text description of the mission map, for screen readers. */
-export function describeWorld(world: RobotWorld): string {
-  const parts: string[] = [`A ${world.cols} by ${world.rows} grid.`]
-  parts.push(`The robot starts at column ${world.start.x + 1}, row ${world.start.y + 1}, facing ${DIR_WORDS[world.start.dir]}.`)
-  if (world.goal) parts.push(`The goal zone is at column ${world.goal.x + 1}, row ${world.goal.y + 1}.`)
-  if (world.walls.length) parts.push(`There ${world.walls.length === 1 ? "is 1 wall" : `are ${world.walls.length} walls`}.`)
-  if (world.lines.length) parts.push(`A line runs across ${world.lines.length} cells.`)
+export function describeWorld(world: RobotWorld, d: SimDescribeStrings): string {
+  const DIR = dirWords(d)
+  const parts: string[] = [
+    d.gridSize.replace("{cols}", String(world.cols)).replace("{rows}", String(world.rows)),
+  ]
+  parts.push(
+    d.startsAt
+      .replace("{col}", String(world.start.x + 1))
+      .replace("{row}", String(world.start.y + 1))
+      .replace("{dir}", DIR[world.start.dir]),
+  )
+  if (world.goal) {
+    parts.push(
+      d.goalAt.replace("{col}", String(world.goal.x + 1)).replace("{row}", String(world.goal.y + 1)),
+    )
+  }
+  if (world.walls.length) {
+    parts.push(
+      world.walls.length === 1 ? d.oneWall : d.manyWalls.replace("{n}", String(world.walls.length)),
+    )
+  }
+  if (world.lines.length) parts.push(d.lineAcross.replace("{n}", String(world.lines.length)))
   const markers = Object.keys(world.colors).length
-  if (markers) parts.push(`There ${markers === 1 ? "is 1 coloured marker" : `are ${markers} coloured markers`}.`)
+  if (markers) {
+    parts.push(markers === 1 ? d.oneMarker : d.manyMarkers.replace("{n}", String(markers)))
+  }
   return parts.join(" ")
 }
 
 /** A live, structured text summary of the robot + sensors, for screen readers. */
-export function describeState(world: RobotWorld, state: RobotState): string {
+export function describeState(world: RobotWorld, state: RobotState, d: SimDescribeStrings): string {
+  const DIR = dirWords(d)
   const sensors = readSensors(world, state)
   const bits = [
-    `Robot at column ${state.x + 1}, row ${state.y + 1}, facing ${DIR_WORDS[state.dir]}.`,
-    `Distance ahead: ${sensors.distance} cell${sensors.distance === 1 ? "" : "s"}.`,
-    `Touch: ${sensors.touch ? "pressed" : "clear"}.`,
-    `Over a line: ${sensors.onLine ? "yes" : "no"}.`,
-    `Light: ${sensors.light}.`,
+    d.robotAt
+      .replace("{col}", String(state.x + 1))
+      .replace("{row}", String(state.y + 1))
+      .replace("{dir}", DIR[state.dir]),
+    d.distanceAhead
+      .replace("{n}", String(sensors.distance))
+      .replace("{unit}", sensors.distance === 1 ? d.cell : d.cells),
+    sensors.touch ? d.touchPressed : d.touchClear,
+    sensors.onLine ? d.overLineYes : d.overLineNo,
+    d.lightIs.replace("{n}", String(sensors.light)),
   ]
   if (world.goal) {
     const atGoal = state.x === world.goal.x && state.y === world.goal.y
-    bits.push(atGoal ? "In the goal zone." : "Not in the goal zone.")
+    bits.push(atGoal ? d.inGoalZone : d.notInGoalZone)
   }
   return bits.join(" ")
 }

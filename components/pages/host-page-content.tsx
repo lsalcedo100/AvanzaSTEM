@@ -4,6 +4,11 @@ import { useState } from "react"
 import { Package, Users, Star } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
+import {
+  INTERNATIONAL_PARTNERS,
+  LIBRARIES,
+  type PartnerCountry,
+} from "@/features/workshops/locations"
 
 type FormStatus = "idle" | "submitting" | "success" | "error"
 type ContactErrorCode =
@@ -106,6 +111,8 @@ export function HostPageContent() {
     { step: "4", title: t.hostPage.step4Title, body: t.hostPage.step4Body },
   ]
 
+  // Every venue that has already hosted a program: the New Jersey libraries
+  // first, then the partners abroad.
   const venues = [
     {
       name: t.workshopsPage.cliftonLibrary,
@@ -123,6 +130,56 @@ export function HostPageContent() {
       name: t.workshopsPage.roselandLibrary,
       description: t.hostPage.roselandDescription,
     },
+    {
+      name: t.workshopsPage.wayneLibrary,
+      description: t.hostPage.wayneDescription,
+    },
+    {
+      name: t.workshopsPage.veronaLibrary,
+      description: t.hostPage.veronaDescription,
+    },
+    {
+      name: t.workshopsPage.littleFallsLibrary,
+      description: t.hostPage.littleFallsDescription,
+    },
+    {
+      name: t.workshopsPage.wenboLibrary,
+      description: t.hostPage.wenboDescription,
+    },
+    {
+      name: t.workshopsPage.lanyuLibrary,
+      description: t.hostPage.lanyuDescription,
+    },
+  ]
+
+  const countryName: Record<PartnerCountry, string> = {
+    CN: t.home.finderCountryChina,
+    EC: t.home.finderCountryEcuador,
+    PE: t.home.finderCountryPeru,
+    CO: t.home.finderCountryColombia,
+  }
+
+  // Venues that have not hosted yet: New Jersey libraries with dates on the
+  // calendar, then the partners abroad still in planning conversations. Read
+  // from the same module the workshop finder uses, so a venue never has to be
+  // added in two places.
+  const plannedVenues = [
+    ...LIBRARIES.filter((library) => library.status === "upcoming").map(
+      (library) => ({
+        id: library.id,
+        name: library.name,
+        place: `${library.city}, NJ`,
+        badge: t.hostPage.scheduledBadge,
+      }),
+    ),
+    ...INTERNATIONAL_PARTNERS.filter((partner) => partner.status === "planned").map(
+      (partner) => ({
+        id: partner.id,
+        name: partner.name,
+        place: countryName[partner.country],
+        badge: t.hostPage.inPlanningBadge,
+      }),
+    ),
   ]
 
   function getContactErrorMessage(code: ContactErrorCode | string) {
@@ -281,6 +338,36 @@ export function HostPageContent() {
               </FadeIn>
             ))}
           </div>
+
+          {plannedVenues.length > 0 && (
+            <div className="mt-16">
+              <FadeIn className="text-center">
+                <h3 className="text-2xl font-extrabold text-foreground md:text-3xl">
+                  {t.hostPage.plannedTitle}
+                </h3>
+                <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  {t.hostPage.plannedNote}
+                </p>
+              </FadeIn>
+              <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {plannedVenues.map((venue, i) => (
+                  <FadeIn as="li" key={venue.id} delay={i * 60}>
+                    <div className="flex h-full items-start justify-between gap-3 rounded-2xl border border-border bg-card p-5 shadow-sm">
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold leading-snug text-card-foreground">
+                          {venue.name}
+                        </p>
+                        <p className="mt-1 text-xs text-muted-foreground">{venue.place}</p>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-avanza-teal/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-avanza-teal-dark">
+                        {venue.badge}
+                      </span>
+                    </div>
+                  </FadeIn>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </section>
 

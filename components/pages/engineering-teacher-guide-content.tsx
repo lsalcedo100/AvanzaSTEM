@@ -23,11 +23,14 @@ import {
  * adult should ask instead of fixing the design.
  */
 export function EngineeringTeacherGuideContent({ slug }: { slug: string }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const H = t.courseUi.engineering.handouts
   const c = getEngineeringFundamentalsCurriculum(language)
   const lesson = findEngineeringLesson(language, slug) ?? c.lessons[0]
   const total = c.totalLessons
-  const label = lesson.isFinal ? "Final challenge" : `Lesson ${lesson.order} of ${total}`
+  const label = lesson.isFinal
+    ? H.finalChallenge
+    : H.lessonOfTotal.replace("{n}", String(lesson.order)).replace("{total}", String(total))
   const guide = lesson.teacherGuide
 
   return (
@@ -40,26 +43,28 @@ export function EngineeringTeacherGuideContent({ slug }: { slug: string }) {
               href={engineeringLessonPath(lesson.slug)}
               className="font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
             >
-              &larr; Back to {lesson.isFinal ? "the final challenge" : `Lesson ${lesson.order}`}
+              &larr;{" "}
+              {lesson.isFinal
+                ? H.backToFinal
+                : H.backToLesson.replace("{n}", String(lesson.order))}
             </Link>
           </nav>
           <p className="mt-6 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Parent &amp; teacher guide
+            {H.tgTitle}
           </p>
           <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">
             {lesson.title}
           </h1>
           <p className="mt-3 text-base leading-relaxed text-foreground/90">
-            How to run this lesson: what to set up, what to watch for, and what to say. No
-            engineering background needed.
+            {H.tgIntro}
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <PrintButton label="Print this guide" tone="purple" />
+            <PrintButton label={H.tgPrintGuide} tone="purple" />
             <Link
               href={engineeringWorksheetPath(lesson.slug)}
               className="text-sm font-semibold text-avanza-purple underline underline-offset-2 hover:text-avanza-purple-dark"
             >
-              Student worksheet
+              {H.tgStudentWorksheet}
             </Link>
           </div>
         </div>
@@ -68,36 +73,38 @@ export function EngineeringTeacherGuideContent({ slug }: { slug: string }) {
         <article className="mt-10 print:mt-0">
           <header className="border-b-2 border-foreground pb-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Engineering Fundamentals &middot; {label} &middot; Facilitator guide
+              {H.courseTitle} &middot; {label} &middot; {H.tgFacilitatorGuide}
             </p>
             <h2 className="mt-2 text-2xl font-bold text-foreground">{lesson.title}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Project: {lesson.projectName}</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {H.tgProject.replace("{name}", lesson.projectName)}
+            </p>
           </header>
 
-          <Field title="Estimated time">
+          <Field title={H.tgEstimatedTime}>
             <p className="text-sm leading-relaxed text-foreground/90">{lesson.estimatedTime}</p>
           </Field>
 
           {guide ? (
             <>
-              <ListField title="Setup instructions" items={guide.setup} />
-              <ListField title="Materials prep" items={guide.materialsPrep} />
-              <ListField title="Safety notes" items={guide.safetyNotes} />
-              <ListField title="What students should learn" items={guide.learningObjectives} />
-              <ListField title="Common failure points" items={guide.commonFailures} />
-              <ListField title="Questions to ask students" items={guide.questionsToAsk} />
+              <ListField title={H.tgSetup} items={guide.setup} />
+              <ListField title={H.tgMaterialsPrep} items={guide.materialsPrep} />
+              <ListField title={H.tgSafetyNotes} items={guide.safetyNotes} />
+              <ListField title={H.tgLearningObjectives} items={guide.learningObjectives} />
+              <ListField title={H.tgCommonFailures} items={guide.commonFailures} />
+              <ListField title={H.tgQuestionsToAsk} items={guide.questionsToAsk} />
 
-              <Field title="Easier version">
+              <Field title={H.tgEasierVersion}>
                 <p className="text-sm leading-relaxed text-foreground/90">{guide.easierVersion}</p>
               </Field>
-              <Field title="Harder version">
+              <Field title={H.tgHarderVersion}>
                 <p className="text-sm leading-relaxed text-foreground/90">{guide.harderVersion}</p>
               </Field>
 
-              <ListField title="Cleanup tips" items={guide.cleanup} />
+              <ListField title={H.tgCleanup} items={guide.cleanup} />
             </>
           ) : (
-            <Field title="Facilitator notes">
+            <Field title={H.tgFacilitatorNotes}>
               <p className="text-sm leading-relaxed text-foreground/90">{lesson.teacherNotes}</p>
             </Field>
           )}

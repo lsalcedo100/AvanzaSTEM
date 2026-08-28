@@ -1,6 +1,15 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
+
+type InteractionStrings = Translations["courseUi"]["engineering"]["interactions"]
+
+/** The lesson interaction copy in the reader's language. */
+function useI(): InteractionStrings {
+  return useLanguage().t.courseUi.engineering.interactions
+}
 
 /* ---------------------------------------------------------------------------
  * Failure point selector
@@ -16,97 +25,64 @@ type FailureOption = {
   suggestions: string[]
 }
 
-const FAILURE_OPTIONS: FailureOption[] = [
+const failureOptions = (I: InteractionStrings): FailureOption[] => [
   {
     key: "middle-bent",
-    label: "The middle bent",
-    suggestions: [
-      "Add a support underneath the middle.",
-      "Shorten the span so there is less distance to hold up.",
-      "Fold or layer the material to make it stiffer.",
-      "Move the weight closer to the supports.",
-    ],
+    label: I.fMiddleBent,
+    suggestions: [I.fMiddleBent1, I.fMiddleBent2, I.fMiddleBent3, I.fMiddleBent4],
   },
   {
     key: "side-collapsed",
-    label: "A side collapsed",
-    suggestions: [
-      "Brace the sides with triangles.",
-      "Connect the two sides so they move together.",
-      "Use a stiffer material or a second layer on the side that failed.",
-      "Widen the base so the sides are less likely to fold.",
-    ],
+    label: I.fSideCollapsed,
+    suggestions: [I.fSideCollapsed1, I.fSideCollapsed2, I.fSideCollapsed3, I.fSideCollapsed4],
   },
   {
     key: "tape-loose",
-    label: "The tape came loose",
-    suggestions: [
-      "Use less force on the joint.",
-      "Add more surface area for the tape to hold.",
-      "Support the joint with another piece behind it.",
-      "Test with smaller weights first, then add more slowly.",
-    ],
+    label: I.fTapeLoose,
+    suggestions: [I.fTapeLoose1, I.fTapeLoose2, I.fTapeLoose3, I.fTapeLoose4],
   },
   {
     key: "base-tipped",
-    label: "The base tipped over",
-    suggestions: [
-      "Widen the base so it covers more ground.",
-      "Lower the heavy parts closer to the bottom.",
-      "Add a little weight to the base to hold it down.",
-      "Spread the feet or supports farther apart.",
-    ],
+    label: I.fBaseTipped,
+    suggestions: [I.fBaseTipped1, I.fBaseTipped2, I.fBaseTipped3, I.fBaseTipped4],
   },
   {
     key: "object-slipped",
-    label: "The object slipped",
-    suggestions: [
-      "Add texture or a hook to the grip.",
-      "Make the grip close tighter around the object.",
-      "Use a deeper cup or pocket to hold it.",
-      "Slow down as you lift and move it.",
-    ],
+    label: I.fObjectSlipped,
+    suggestions: [I.fObjectSlipped1, I.fObjectSlipped2, I.fObjectSlipped3, I.fObjectSlipped4],
   },
   {
     key: "too-heavy",
-    label: "It was too heavy",
-    suggestions: [
-      "Remove any material you do not really need.",
-      "Use lighter materials where you can.",
-      "Keep the heavy parts low and small.",
-      "Replace solid parts with an open frame.",
-    ],
+    label: I.fTooHeavy,
+    suggestions: [I.fTooHeavy1, I.fTooHeavy2, I.fTooHeavy3, I.fTooHeavy4],
   },
   {
     key: "unbalanced",
-    label: "It was unbalanced",
-    suggestions: [
-      "Widen the base.",
-      "Move the weight toward the center.",
-      "Make both sides more even.",
-      "Test slowly before adding more weight.",
-    ],
+    label: I.fUnbalanced,
+    suggestions: [I.fUnbalanced1, I.fUnbalanced2, I.fUnbalanced3, I.fUnbalanced4],
   },
   {
     key: "no-smooth-motion",
-    label: "It did not move smoothly",
+    label: I.fNoSmoothMotion,
     suggestions: [
-      "Loosen a joint that is pinched too tight.",
-      "Tighten a joint that is too loose and floppy.",
-      "Reduce rubbing where two parts drag on each other.",
-      "Check that the pivot lines up straight.",
+      I.fNoSmoothMotion1,
+      I.fNoSmoothMotion2,
+      I.fNoSmoothMotion3,
+      I.fNoSmoothMotion4,
     ],
   },
 ]
 
 export function FailurePointSelector() {
+  const I = useI()
+  const FAILURE_OPTIONS = failureOptions(I)
   const [selected, setSelected] = useState<string | null>(null)
   const active = FAILURE_OPTIONS.find((option) => option.key === selected) ?? null
 
   return (
     <div>
       <p className="text-sm text-muted-foreground">
-        What failed first when you tested it? Pick one to see ways to fix it.
+        {I.failureIntro}
       </p>
 
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -134,7 +110,7 @@ export function FailurePointSelector() {
         {active && (
           <div className="rounded-md border border-border bg-secondary p-5">
             <p className="text-sm font-semibold text-foreground">
-              Ways to fix &ldquo;{active.label.toLowerCase()}&rdquo;
+              {I.waysToFix.replace("{label}", active.label.toLowerCase())}
             </p>
             <ul className="mt-3 space-y-2">
               {active.suggestions.map((suggestion) => (
@@ -145,7 +121,7 @@ export function FailurePointSelector() {
               ))}
             </ul>
             <p className="mt-4 text-sm text-muted-foreground">
-              Change one thing, then test again to see if it helped.
+              {I.changeOneThing}
             </p>
           </div>
         )}
@@ -169,15 +145,13 @@ type JournalNotes = {
   learned: string
 }
 
-const JOURNAL_FIELDS: { key: keyof JournalNotes; label: string; placeholder: string }[] = [
-  { key: "firstIdea", label: "My first idea", placeholder: "What was your plan before you built it?" },
-  {
-    key: "testing",
-    label: "What happened during testing",
-    placeholder: "What did you see when you tested it?",
-  },
-  { key: "changed", label: "What I changed", placeholder: "What did you change after testing, and why?" },
-  { key: "learned", label: "What I learned", placeholder: "What do you know now that you did not before?" },
+const journalFields = (
+  I: InteractionStrings,
+): { key: keyof JournalNotes; label: string; placeholder: string }[] => [
+  { key: "firstIdea", label: I.jFirstIdea, placeholder: I.jFirstIdeaPh },
+  { key: "testing", label: I.jTesting, placeholder: I.jTestingPh },
+  { key: "changed", label: I.jChanged, placeholder: I.jChangedPh },
+  { key: "learned", label: I.jLearned, placeholder: I.jLearnedPh },
 ]
 
 function emptyNotes(): JournalNotes {
@@ -206,6 +180,8 @@ function loadNotes(slug: string): JournalNotes {
 }
 
 export function DesignJournal({ slug }: { slug: string }) {
+  const I = useI()
+  const JOURNAL_FIELDS = journalFields(I)
   const [notes, setNotes] = useState<JournalNotes>(emptyNotes)
   const [loaded, setLoaded] = useState(false)
 
@@ -227,7 +203,7 @@ export function DesignJournal({ slug }: { slug: string }) {
   const isEmpty = Object.values(notes).every((value) => value.trim() === "")
 
   const handleClear = () => {
-    if (window.confirm("Clear your notes for this lesson? This cannot be undone.")) {
+    if (window.confirm(I.clearConfirm)) {
       setNotes(emptyNotes())
     }
   }
@@ -235,8 +211,7 @@ export function DesignJournal({ slug }: { slug: string }) {
   return (
     <div>
       <p className="text-sm text-muted-foreground">
-        Jot down your thinking as you work. Your notes are saved on this device only - they are
-        optional and private to you.
+        {I.journalIntro}
       </p>
 
       <div className="mt-4 space-y-4">
@@ -265,7 +240,7 @@ export function DesignJournal({ slug }: { slug: string }) {
 
       <div className="mt-4 flex items-center gap-4">
         <p className="text-xs text-muted-foreground" aria-live="polite">
-          {loaded ? "Saved on this device" : "Loading your notes…"}
+          {loaded ? I.savedOnDevice : I.loadingNotes}
         </p>
         {loaded && !isEmpty && (
           <button
@@ -273,7 +248,7 @@ export function DesignJournal({ slug }: { slug: string }) {
             onClick={handleClear}
             className="text-xs font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-purple focus-visible:ring-offset-2"
           >
-            Clear notes
+            {I.clearNotes}
           </button>
         )}
       </div>

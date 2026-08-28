@@ -3,7 +3,16 @@
 import { useState } from "react"
 import { ArrowRight, Check, Info, Minus, Plus, X } from "lucide-react"
 import { MathActivityVisual } from "@/components/ui/math-diagrams"
+import { useLanguage } from "@/components/providers/language-provider"
 import type { MathInteractiveActivity } from "@/features/curriculums/math-adventures"
+import type { Translations } from "@/i18n/translations"
+
+type ActivityStrings = Translations["courseUi"]["math"]["activities"]
+
+/** The activity chrome and problem text in the reader's language. */
+function useA(): ActivityStrings {
+  return useLanguage().t.courseUi.math.activities
+}
 
 /**
  * The interactive practice area for a lesson. Routes each lesson's
@@ -127,6 +136,7 @@ function ChoiceQuiz({
   renderOption?: (option: string) => React.ReactNode
   layout?: "list" | "grid"
 }) {
+  const A = useA()
   const [index, setIndex] = useState(0)
   const [choice, setChoice] = useState<number | null>(null)
   const [correctCount, setCorrectCount] = useState(0)
@@ -160,11 +170,16 @@ function ChoiceQuiz({
   if (done) {
     return (
       <div>
-        <Feedback tone="correct" title={`You got ${correctCount} of ${questions.length} right.`}>
-          Nice reasoning. Try again to see if you can explain every answer.
+        <Feedback
+          tone="correct"
+          title={A.quizScore
+            .replace("{n}", String(correctCount))
+            .replace("{total}", String(questions.length))}
+        >
+          {A.quizScoreNote}
         </Feedback>
         <button type="button" onClick={restart} className={`mt-4 ${outlineBtn}`}>
-          Try again
+          {A.tryAgain}
         </button>
       </div>
     )
@@ -173,7 +188,9 @@ function ChoiceQuiz({
   return (
     <div>
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Question {index + 1} of {questions.length}
+        {A.questionOfTotal
+          .replace("{n}", String(index + 1))
+          .replace("{total}", String(questions.length))}
       </p>
       <p className="mt-3 text-base leading-relaxed text-foreground">{question.prompt}</p>
       {question.note && <p className="mt-1 text-sm text-muted-foreground">{question.note}</p>}
@@ -210,12 +227,12 @@ function ChoiceQuiz({
               </span>
               {choice !== null && isAnswer && (
                 <span className="inline-flex items-center gap-1 text-xs text-avanza-teal-dark">
-                  <Check aria-hidden className="h-3.5 w-3.5" /> correct
+                  <Check aria-hidden className="h-3.5 w-3.5" /> {A.correctTag}
                 </span>
               )}
               {choice !== null && isChosen && !isAnswer && (
                 <span className="inline-flex items-center gap-1 text-xs text-avanza-orange">
-                  <X aria-hidden className="h-3.5 w-3.5" /> your pick
+                  <X aria-hidden className="h-3.5 w-3.5" /> {A.yourPick}
                 </span>
               )}
             </button>
@@ -225,11 +242,11 @@ function ChoiceQuiz({
 
       {choice !== null && (
         <>
-          <Feedback tone={isCorrect ? "correct" : "incorrect"} title={isCorrect ? "Correct." : "Not quite."}>
+          <Feedback tone={isCorrect ? "correct" : "incorrect"} title={isCorrect ? A.correctTitle : A.notQuite}>
             {question.explanation}
           </Feedback>
           <button type="button" onClick={next} className={`mt-4 ${primaryBtn}`}>
-            {index + 1 >= questions.length ? "See results" : "Next question"}
+            {index + 1 >= questions.length ? A.seeResults : A.nextQuestion}
           </button>
         </>
       )}
@@ -249,11 +266,10 @@ type Clue =
   | { kind: "digit"; place: "ones" | "tens" | "hundreds"; value: number }
   | { kind: "multiple"; value: number }
 
-type Mystery = { title: string; clues: Clue[]; answer: number }
+type Mystery = { clues: Clue[]; answer: number }
 
 const MYSTERIES: Mystery[] = [
   {
-    title: "Case #1",
     clues: [
       { kind: "gt", value: 40 },
       { kind: "lt", value: 70 },
@@ -264,7 +280,6 @@ const MYSTERIES: Mystery[] = [
     answer: 50,
   },
   {
-    title: "Case #2",
     clues: [
       { kind: "gt", value: 20 },
       { kind: "lt", value: 40 },
@@ -275,7 +290,6 @@ const MYSTERIES: Mystery[] = [
     answer: 37,
   },
   {
-    title: "Case #3",
     clues: [
       { kind: "gt", value: 60 },
       { kind: "lt", value: 80 },
@@ -285,7 +299,6 @@ const MYSTERIES: Mystery[] = [
     answer: 70,
   },
   {
-    title: "Case #4",
     clues: [
       { kind: "gt", value: 100 },
       { kind: "lt", value: 150 },
@@ -303,20 +316,23 @@ function digitOf(n: number, place: "ones" | "tens" | "hundreds"): number {
   return Math.floor(abs / 100) % 10
 }
 
-function clueText(c: Clue): string {
+function clueText(c: Clue, A: ActivityStrings): string {
   switch (c.kind) {
     case "gt":
-      return `I am greater than ${c.value}.`
+      return A.clueGt.replace("{n}", String(c.value))
     case "lt":
-      return `I am less than ${c.value}.`
+      return A.clueLt.replace("{n}", String(c.value))
     case "even":
-      return "I am an even number."
+      return A.clueEven
     case "odd":
-      return "I am an odd number."
-    case "digit":
-      return `I have a ${c.value} in the ${c.place} place.`
+      return A.clueOdd
+    case "digit": {
+      const place =
+        c.place === "ones" ? A.placeOnes : c.place === "tens" ? A.placeTens : A.placeHundreds
+      return A.clueDigit.replace("{v}", String(c.value)).replace("{place}", place)
+    }
     case "multiple":
-      return `I am a multiple of ${c.value}.`
+      return A.clueMultiple.replace("{n}", String(c.value))
   }
 }
 
@@ -338,6 +354,7 @@ function clueTest(c: Clue, n: number): boolean {
 }
 
 function MysteryNumberLab() {
+  const A = useA()
   const [index, setIndex] = useState(0)
   const [guess, setGuess] = useState("")
   const [checked, setChecked] = useState<number | null>(null)
@@ -364,7 +381,7 @@ function MysteryNumberLab() {
   return (
     <div>
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        {mystery.title} &middot; find the mystery number
+        {A.mysteryCase.replace("{n}", String(index + 1))} &middot; {A.mysterySubtitle}
       </p>
 
       <ul className="mt-3 space-y-2">
@@ -380,10 +397,10 @@ function MysteryNumberLab() {
                 <X aria-hidden className="mt-0.5 h-4 w-4 flex-none text-avanza-orange" />
               )}
               <span>
-                {clueText(c)}
+                {clueText(c, A)}
                 {results !== null && (
                   <span className="ml-1 font-semibold text-muted-foreground">
-                    {pass ? "(this clue fits)" : "(this clue does not fit)"}
+                    {pass ? A.clueFits : A.clueNotFits}
                   </span>
                 )}
               </span>
@@ -395,7 +412,7 @@ function MysteryNumberLab() {
       <form onSubmit={handleSubmit} className="mt-5 flex flex-wrap items-end gap-3">
         <div>
           <label htmlFor="mystery-guess" className="block text-sm font-semibold text-foreground">
-            Your answer
+            {A.yourAnswer}
           </label>
           <input
             id="mystery-guess"
@@ -408,34 +425,34 @@ function MysteryNumberLab() {
           />
         </div>
         <button type="submit" className={primaryBtn}>
-          Check answer
+          {A.checkAnswer}
         </button>
         <button type="button" onClick={newMystery} className={outlineBtn}>
-          New mystery
+          {A.newMystery}
         </button>
       </form>
 
       {checked === null && guess !== "" && (
-        <Feedback tone="neutral" title="Enter a whole number to check it against the clues." />
+        <Feedback tone="neutral" title={A.enterWholeNumber} />
       )}
 
       {checked !== null &&
         (allPass ? (
-          <Feedback tone="correct" title={`Solved it - ${checked} fits every clue.`}>
-            A good detective checks the number against all of the clues at once, not just one.
+          <Feedback tone="correct" title={A.solvedIt.replace("{n}", String(checked))}>
+            {A.solvedNote}
           </Feedback>
         ) : (
-          <Feedback tone="incorrect" title={`${checked} does not fit yet.`}>
-            Look at the clues marked with an &times;. Use them to cross out numbers until only one is
-            left.
+          <Feedback tone="incorrect" title={A.doesNotFit.replace("{n}", String(checked))}>
+            {A.doesNotFitNote}
           </Feedback>
         ))}
 
       <div className="mt-4">
         {revealed ? (
           <p className="text-sm text-muted-foreground">
-            The mystery number was{" "}
-            <span className="font-semibold text-foreground">{mystery.answer}</span>.
+            {A.mysteryWasPrefix}
+            <span className="font-semibold text-foreground">{mystery.answer}</span>
+            {A.mysteryWasSuffix}
           </p>
         ) : (
           <button
@@ -443,7 +460,7 @@ function MysteryNumberLab() {
             onClick={() => setRevealed(true)}
             className="text-sm font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal focus-visible:ring-offset-2"
           >
-            Stuck? Reveal the answer
+            {A.stuckReveal}
           </button>
         )}
       </div>
@@ -459,67 +476,30 @@ type Op = "add" | "subtract" | "multiply" | "divide"
 
 type OpProblem = { text: string; op: Op; answer: number; why: string }
 
-const OP_META: Record<Op, { label: string; symbol: string }> = {
-  add: { label: "Add", symbol: "+" },
-  subtract: { label: "Subtract", symbol: "−" },
-  multiply: { label: "Multiply", symbol: "×" },
-  divide: { label: "Divide", symbol: "÷" },
-}
+const opMeta = (A: ActivityStrings): Record<Op, { label: string; symbol: string }> => ({
+  add: { label: A.opAdd, symbol: "+" },
+  subtract: { label: A.opSubtract, symbol: "−" },
+  multiply: { label: A.opMultiply, symbol: "×" },
+  divide: { label: A.opDivide, symbol: "÷" },
+})
 
 const OP_ORDER: Op[] = ["add", "subtract", "multiply", "divide"]
 
-const OP_PROBLEMS: OpProblem[] = [
-  {
-    text: "A shelf has 4 rows of books with 6 books in each row. How many books in all?",
-    op: "multiply",
-    answer: 24,
-    why: "Equal groups - rows of the same size - means multiply: 4 × 6 = 24.",
-  },
-  {
-    text: "There are 15 apples. You give away 6. How many are left?",
-    op: "subtract",
-    answer: 9,
-    why: "Taking some away means subtract: 15 − 6 = 9.",
-  },
-  {
-    text: "You have 8 red marbles and 7 blue marbles. How many marbles in total?",
-    op: "add",
-    answer: 15,
-    why: "Joining two groups means add: 8 + 7 = 15.",
-  },
-  {
-    text: "20 stickers are shared equally among 5 friends. How many does each friend get?",
-    op: "divide",
-    answer: 4,
-    why: "Sharing equally means divide: 20 ÷ 5 = 4.",
-  },
-  {
-    text: "A box holds 9 crayons. How many crayons are in 3 boxes?",
-    op: "multiply",
-    answer: 27,
-    why: "Three equal boxes of 9 means multiply: 3 × 9 = 27.",
-  },
-  {
-    text: "A book has 40 pages. You have read 25. How many pages are left?",
-    op: "subtract",
-    answer: 15,
-    why: "Finding what is left means subtract: 40 − 25 = 15.",
-  },
-  {
-    text: "24 cookies are put into bags of 6. How many bags can you fill?",
-    op: "divide",
-    answer: 4,
-    why: "Making equal groups from a total means divide: 24 ÷ 6 = 4.",
-  },
-  {
-    text: "There are 12 boys and 13 girls in the class. How many students altogether?",
-    op: "add",
-    answer: 25,
-    why: "“Altogether” joins the groups, so add: 12 + 13 = 25.",
-  },
+const opProblems = (A: ActivityStrings): OpProblem[] => [
+  { text: A.opText1, op: "multiply", answer: 24, why: A.opWhy1 },
+  { text: A.opText2, op: "subtract", answer: 9, why: A.opWhy2 },
+  { text: A.opText3, op: "add", answer: 15, why: A.opWhy3 },
+  { text: A.opText4, op: "divide", answer: 4, why: A.opWhy4 },
+  { text: A.opText5, op: "multiply", answer: 27, why: A.opWhy5 },
+  { text: A.opText6, op: "subtract", answer: 15, why: A.opWhy6 },
+  { text: A.opText7, op: "divide", answer: 4, why: A.opWhy7 },
+  { text: A.opText8, op: "add", answer: 25, why: A.opWhy8 },
 ]
 
 function OperationSort() {
+  const A = useA()
+  const OP_META = opMeta(A)
+  const OP_PROBLEMS = opProblems(A)
   const [index, setIndex] = useState(0)
   const [choice, setChoice] = useState<Op | null>(null)
   const [correctCount, setCorrectCount] = useState(0)
@@ -553,12 +533,16 @@ function OperationSort() {
   if (done) {
     return (
       <div>
-        <Feedback tone="correct" title={`You matched ${correctCount} of ${OP_PROBLEMS.length} problems.`}>
-          The trick is to ask what is happening in the story: joining, taking away, making equal
-          groups, or sharing.
+        <Feedback
+          tone="correct"
+          title={A.opMatched
+            .replace("{n}", String(correctCount))
+            .replace("{total}", String(OP_PROBLEMS.length))}
+        >
+          {A.opMatchedNote}
         </Feedback>
         <button type="button" onClick={restart} className={`mt-4 ${outlineBtn}`}>
-          Try again
+          {A.tryAgain}
         </button>
       </div>
     )
@@ -567,7 +551,9 @@ function OperationSort() {
   return (
     <div>
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Problem {index + 1} of {OP_PROBLEMS.length}
+        {A.problemOfTotal
+          .replace("{n}", String(index + 1))
+          .replace("{total}", String(OP_PROBLEMS.length))}
       </p>
 
       <p className="mt-3 text-base leading-relaxed text-foreground">{problem.text}</p>
@@ -603,12 +589,12 @@ function OperationSort() {
               <span>{meta.label}</span>
               {choice !== null && isAnswer && (
                 <span className="inline-flex items-center gap-1 text-xs text-avanza-teal-dark">
-                  <Check aria-hidden className="h-3.5 w-3.5" /> correct
+                  <Check aria-hidden className="h-3.5 w-3.5" /> {A.correctTag}
                 </span>
               )}
               {choice !== null && isChosen && !isAnswer && (
                 <span className="inline-flex items-center gap-1 text-xs text-avanza-orange">
-                  <X aria-hidden className="h-3.5 w-3.5" /> your pick
+                  <X aria-hidden className="h-3.5 w-3.5" /> {A.yourPick}
                 </span>
               )}
             </button>
@@ -620,16 +606,15 @@ function OperationSort() {
         <>
           <Feedback
             tone={isCorrect ? "correct" : "incorrect"}
-            title={
-              isCorrect
-                ? `Yes - this is a ${OP_META[problem.op].label.toLowerCase()} problem.`
-                : `Not quite - this is a ${OP_META[problem.op].label.toLowerCase()} problem.`
-            }
+            title={(isCorrect ? A.opYes : A.opNo).replace(
+              "{op}",
+              OP_META[problem.op].label.toLowerCase(),
+            )}
           >
             {problem.why}
           </Feedback>
           <button type="button" onClick={next} className={`mt-4 ${primaryBtn}`}>
-            {index + 1 >= OP_PROBLEMS.length ? "See results" : "Next problem"}
+            {index + 1 >= OP_PROBLEMS.length ? A.seeResults : A.nextProblem}
           </button>
         </>
       )}
@@ -643,29 +628,30 @@ function OperationSort() {
 
 type Pattern = { terms: number[]; missingIndex: number; answer: number; rule: string }
 
-const STANDARD_PATTERNS: Pattern[] = [
-  { terms: [2, 4, 6, 0, 10], missingIndex: 3, answer: 8, rule: "Add 2 each time (count by 2s)." },
-  { terms: [5, 10, 15, 20, 0], missingIndex: 4, answer: 25, rule: "Add 5 each time (count by 5s)." },
-  { terms: [20, 17, 14, 0, 8], missingIndex: 3, answer: 11, rule: "Subtract 3 each time." },
-  { terms: [1, 2, 4, 8, 0], missingIndex: 4, answer: 16, rule: "Double the number each time." },
-  { terms: [10, 20, 0, 40, 50], missingIndex: 2, answer: 30, rule: "Add 10 each time." },
+const standardPatterns = (A: ActivityStrings): Pattern[] => [
+  { terms: [2, 4, 6, 0, 10], missingIndex: 3, answer: 8, rule: A.rule1 },
+  { terms: [5, 10, 15, 20, 0], missingIndex: 4, answer: 25, rule: A.rule2 },
+  { terms: [20, 17, 14, 0, 8], missingIndex: 3, answer: 11, rule: A.rule3 },
+  { terms: [1, 2, 4, 8, 0], missingIndex: 4, answer: 16, rule: A.rule4 },
+  { terms: [10, 20, 0, 40, 50], missingIndex: 2, answer: 30, rule: A.rule5 },
 ]
 
-const HARDER_PATTERNS: Pattern[] = [
-  { terms: [1, 2, 4, 7, 0], missingIndex: 4, answer: 11, rule: "The gap grows by 1 each time: +1, +2, +3, +4." },
-  { terms: [1, 3, 9, 0, 81], missingIndex: 3, answer: 27, rule: "Multiply by 3 each time." },
-  { terms: [1, 3, 6, 10, 0], missingIndex: 4, answer: 15, rule: "Add one more each time: +2, +3, +4, +5 (triangular numbers)." },
-  { terms: [1, 4, 9, 16, 0], missingIndex: 4, answer: 25, rule: "The square numbers: 1×1, 2×2, 3×3, 4×4, 5×5." },
-  { terms: [2, 3, 5, 8, 0], missingIndex: 4, answer: 13, rule: "Add the two numbers before it." },
+const harderPatterns = (A: ActivityStrings): Pattern[] => [
+  { terms: [1, 2, 4, 7, 0], missingIndex: 4, answer: 11, rule: A.hrule1 },
+  { terms: [1, 3, 9, 0, 81], missingIndex: 3, answer: 27, rule: A.hrule2 },
+  { terms: [1, 3, 6, 10, 0], missingIndex: 4, answer: 15, rule: A.hrule3 },
+  { terms: [1, 4, 9, 16, 0], missingIndex: 4, answer: 25, rule: A.hrule4 },
+  { terms: [2, 3, 5, 8, 0], missingIndex: 4, answer: 13, rule: A.hrule5 },
 ]
 
 function PatternMachine() {
+  const A = useA()
   const [harder, setHarder] = useState(false)
   const [index, setIndex] = useState(0)
   const [guess, setGuess] = useState("")
   const [checked, setChecked] = useState<number | null>(null)
 
-  const patterns = harder ? HARDER_PATTERNS : STANDARD_PATTERNS
+  const patterns = harder ? harderPatterns(A) : standardPatterns(A)
   const pattern = patterns[index]
   const isCorrect = checked !== null && checked === pattern.answer
 
@@ -692,9 +678,9 @@ function PatternMachine() {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Find the missing number
+          {A.findMissing}
         </p>
-        <div className="inline-flex rounded-md border border-border p-0.5" role="group" aria-label="Difficulty">
+        <div className="inline-flex rounded-md border border-border p-0.5" role="group" aria-label={A.difficulty}>
           <button
             type="button"
             onClick={() => setMode(false)}
@@ -704,7 +690,7 @@ function PatternMachine() {
               (!harder ? "bg-avanza-teal text-primary-foreground" : "text-muted-foreground hover:text-foreground")
             }
           >
-            Standard
+            {A.standard}
           </button>
           <button
             type="button"
@@ -715,7 +701,7 @@ function PatternMachine() {
               (harder ? "bg-avanza-teal text-primary-foreground" : "text-muted-foreground hover:text-foreground")
             }
           >
-            Harder
+            {A.harder}
           </button>
         </div>
       </div>
@@ -726,7 +712,7 @@ function PatternMachine() {
             i === pattern.missingIndex ? (
               <span key={i}>
                 <label htmlFor="pattern-guess" className="sr-only">
-                  Missing number in the sequence
+                  {A.missingInSequence}
                 </label>
                 <input
                   id="pattern-guess"
@@ -736,7 +722,7 @@ function PatternMachine() {
                   onChange={(e) => setGuess(e.target.value)}
                   className="h-12 w-16 rounded-md border-2 border-dashed border-avanza-teal bg-background text-center font-mono text-lg font-bold text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal"
                   placeholder="?"
-                  aria-label="Missing number"
+                  aria-label={A.missingNumber}
                 />
               </span>
             ) : (
@@ -747,22 +733,22 @@ function PatternMachine() {
 
         <div className="mt-4 flex flex-wrap gap-3">
           <button type="submit" className={primaryBtn}>
-            Check
+            {A.check}
           </button>
           <button type="button" onClick={newPattern} className={outlineBtn}>
-            New pattern
+            {A.newPattern}
           </button>
         </div>
       </form>
 
       {checked !== null &&
         (isCorrect ? (
-          <Feedback tone="correct" title={`Right - the missing number is ${pattern.answer}.`}>
+          <Feedback tone="correct" title={A.patternRight.replace("{n}", String(pattern.answer))}>
             {pattern.rule}
           </Feedback>
         ) : (
-          <Feedback tone="incorrect" title={`${checked} is not the missing number.`}>
-            Look at how each number changes to reach the next. {pattern.rule}
+          <Feedback tone="incorrect" title={A.patternWrong.replace("{n}", String(checked))}>
+            {A.patternWrongNote} {pattern.rule}
           </Feedback>
         ))}
     </div>
@@ -784,6 +770,7 @@ function expandedForm(h: number, t: number, o: number): string {
 }
 
 function PlaceValueBuilder() {
+  const A = useA()
   const [targetIndex, setTargetIndex] = useState(0)
   const [h, setH] = useState(0)
   const [t, setT] = useState(0)
@@ -793,7 +780,7 @@ function PlaceValueBuilder() {
   const built = h * 100 + t * 10 + o
   const matches = built === target
   const symbol = built < target ? "<" : built > target ? ">" : "="
-  const word = built < target ? "less than" : built > target ? "greater than" : "equal to"
+  const word = built < target ? A.wordLess : built > target ? A.wordGreater : A.wordEqual
 
   const newNumber = () => {
     setTargetIndex((i) => (i + 1) % PV_TARGETS.length)
@@ -805,15 +792,15 @@ function PlaceValueBuilder() {
   return (
     <div>
       <p className="text-sm text-foreground">
-        Build the number{" "}
-        <span className="font-mono text-lg font-bold text-avanza-teal-dark">{target}</span> using
-        hundreds, tens, and ones.
+        {A.pvBuildPrefix}
+        <span className="font-mono text-lg font-bold text-avanza-teal-dark">{target}</span>
+        {A.pvBuildSuffix}
       </p>
 
       <div className="mt-5 grid grid-cols-3 gap-3">
-        <PlaceColumn label="Hundreds" unit="hundred" value={h} onChange={setH} />
-        <PlaceColumn label="Tens" unit="ten" value={t} onChange={setT} />
-        <PlaceColumn label="Ones" unit="one" value={o} onChange={setO} />
+        <PlaceColumn label={A.pvHundreds} unit={A.unitHundred} value={h} onChange={setH} />
+        <PlaceColumn label={A.pvTens} unit={A.unitTen} value={t} onChange={setT} />
+        <PlaceColumn label={A.pvOnes} unit={A.unitOne} value={o} onChange={setO} />
       </div>
 
       <BaseTenBlocks h={h} t={t} o={o} />
@@ -821,13 +808,13 @@ function PlaceValueBuilder() {
       <dl className="mt-5 grid gap-3 sm:grid-cols-2">
         <div className="rounded-md border border-border p-4">
           <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Standard form
+            {A.standardForm}
           </dt>
           <dd className="mt-1 font-mono text-2xl font-bold text-foreground">{built}</dd>
         </div>
         <div className="rounded-md border border-border p-4">
           <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Expanded form
+            {A.expandedForm}
           </dt>
           <dd className="mt-1 font-mono text-lg font-semibold text-foreground">
             {expandedForm(h, t, o)}
@@ -836,19 +823,34 @@ function PlaceValueBuilder() {
       </dl>
 
       {matches ? (
-        <Feedback tone="correct" title={`You built ${target}.`}>
-          {target} is {h} hundred{h === 1 ? "" : "s"}, {t} ten{t === 1 ? "" : "s"}, and {o} one
-          {o === 1 ? "" : "s"} - which is {expandedForm(h, t, o)}.
+        <Feedback tone="correct" title={A.pvBuilt.replace("{n}", String(target))}>
+          {A.pvBuiltNote
+            .replace("{target}", String(target))
+            .replace("{h}", String(h))
+            .replace("{hw}", h === 1 ? A.hundredSingular : A.hundredPlural)
+            .replace("{t}", String(t))
+            .replace("{tw}", t === 1 ? A.tenSingular : A.tenPlural)
+            .replace("{o}", String(o))
+            .replace("{ow}", o === 1 ? A.oneSingular : A.onePlural)
+            .replace("{expanded}", expandedForm(h, t, o))}
         </Feedback>
       ) : (
-        <Feedback tone="neutral" title={`Keep going: ${built} ${symbol} ${target}.`}>
-          Your number {built} is {word} the target {target}. Adjust the hundreds, tens, and ones to
-          match.
+        <Feedback
+          tone="neutral"
+          title={A.pvKeepGoing
+            .replace("{built}", String(built))
+            .replace("{symbol}", symbol)
+            .replace("{target}", String(target))}
+        >
+          {A.pvKeepGoingNote
+            .replace("{built}", String(built))
+            .replace("{word}", word)
+            .replace("{target}", String(target))}
         </Feedback>
       )}
 
       <button type="button" onClick={newNumber} className={`mt-4 ${outlineBtn}`}>
-        New number
+        {A.newNumber}
       </button>
     </div>
   )
@@ -865,6 +867,7 @@ function PlaceColumn({
   value: number
   onChange: (n: number) => void
 }) {
+  const A = useA()
   const dec = () => onChange(Math.max(0, value - 1))
   const inc = () => onChange(Math.min(9, value + 1))
 
@@ -879,7 +882,7 @@ function PlaceColumn({
           type="button"
           onClick={dec}
           disabled={value === 0}
-          aria-label={`Remove one ${unit}`}
+          aria-label={A.removeOne.replace("{unit}", unit)}
           className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-foreground transition-colors hover:border-avanza-teal hover:bg-avanza-teal/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Minus aria-hidden className="h-4 w-4" />
@@ -888,7 +891,7 @@ function PlaceColumn({
           type="button"
           onClick={inc}
           disabled={value === 9}
-          aria-label={`Add one ${unit}`}
+          aria-label={A.addOne.replace("{unit}", unit)}
           className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-foreground transition-colors hover:border-avanza-teal hover:bg-avanza-teal/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Plus aria-hidden className="h-4 w-4" />
@@ -904,13 +907,17 @@ function PlaceColumn({
  * assistive tech rather than announcing every block.
  */
 function BaseTenBlocks({ h, t, o }: { h: number; t: number; o: number }) {
+  const A = useA()
   if (h === 0 && t === 0 && o === 0) return null
 
   return (
     <div
       className="mt-4 flex flex-wrap items-end gap-4 rounded-md border border-border bg-secondary p-4"
       role="img"
-      aria-label={`Base-ten blocks showing ${h} hundreds, ${t} tens, and ${o} ones.`}
+      aria-label={A.baseTenBlocks
+        .replace("{h}", String(h))
+        .replace("{t}", String(t))
+        .replace("{o}", String(o))}
     >
       {h > 0 && (
         <div className="flex flex-wrap items-end gap-1">
@@ -960,6 +967,7 @@ function FractionBar({
   onToggle?: (i: number) => void
   ariaLabel?: string
 }) {
+  const A = useA()
   return (
     <div
       className="flex w-full max-w-sm overflow-hidden rounded-md border border-border"
@@ -974,7 +982,10 @@ function FractionBar({
             key={i}
             type="button"
             aria-pressed={shaded[i]}
-            aria-label={`Part ${i + 1} of ${parts}${shaded[i] ? ", shaded" : ""}`}
+            aria-label={
+              A.fracPartLabel.replace("{i}", String(i + 1)).replace("{n}", String(parts)) +
+              (shaded[i] ? A.fracShadedSuffix : "")
+            }
             onClick={() => onToggle(i)}
             className={`${base} transition-colors hover:bg-avanza-teal/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-avanza-teal`}
           />
@@ -1001,7 +1012,7 @@ type FractionRound =
       explanation: string
     }
 
-const FRACTION_ROUNDS: FractionRound[] = [
+const fractionRounds = (A: ActivityStrings): FractionRound[] => [
   { kind: "build", parts: 2, target: 1, frac: "1/2" },
   { kind: "build", parts: 4, target: 3, frac: "3/4" },
   { kind: "build", parts: 3, target: 2, frac: "2/3" },
@@ -1009,25 +1020,25 @@ const FRACTION_ROUNDS: FractionRound[] = [
   { kind: "build", parts: 8, target: 5, frac: "5/8" },
   {
     kind: "compare",
-    prompt: "Which is the bigger fraction?",
+    prompt: A.fracCmpPrompt1,
     left: { n: 1, d: 2 },
     right: { n: 1, d: 4 },
     answer: "left",
-    explanation:
-      "1/2 is bigger. Cutting a whole into fewer parts makes each part larger, so one half is more than one fourth.",
+    explanation: A.fracCmpExp1,
   },
   {
     kind: "compare",
-    prompt: "Are these two fractions equal?",
+    prompt: A.fracCmpPrompt2,
     left: { n: 1, d: 2 },
     right: { n: 2, d: 4 },
     answer: "equal",
-    explanation:
-      "They are equal. 1/2 and 2/4 shade the same amount of the bar, so they are equivalent fractions.",
+    explanation: A.fracCmpExp2,
   },
 ]
 
 function FractionShop() {
+  const A = useA()
+  const FRACTION_ROUNDS = fractionRounds(A)
   const [index, setIndex] = useState(0)
   const round = FRACTION_ROUNDS[index]
 
@@ -1036,7 +1047,9 @@ function FractionShop() {
   return (
     <div>
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Task {index + 1} of {FRACTION_ROUNDS.length}
+        {A.taskOfTotal
+          .replace("{n}", String(index + 1))
+          .replace("{total}", String(FRACTION_ROUNDS.length))}
       </p>
 
       <div className="mt-3">
@@ -1048,13 +1061,14 @@ function FractionShop() {
       </div>
 
       <button type="button" onClick={nextRound} className={`mt-4 ${outlineBtn}`}>
-        Next task <ArrowRight aria-hidden className="h-4 w-4" />
+        {A.nextTask} <ArrowRight aria-hidden className="h-4 w-4" />
       </button>
     </div>
   )
 }
 
 function FractionBuild({ parts, target, frac }: { parts: number; target: number; frac: string }) {
+  const A = useA()
   const [shaded, setShaded] = useState<boolean[]>(() => Array.from({ length: parts }, () => false))
   const [checked, setChecked] = useState(false)
 
@@ -1069,32 +1083,37 @@ function FractionBuild({ parts, target, frac }: { parts: number; target: number;
   return (
     <div>
       <p className="text-sm text-foreground">
-        Shade the bar to show{" "}
-        <span className="font-mono text-base font-bold text-avanza-teal-dark">{frac}</span>. Click a
-        part to shade or unshade it.
+        {A.fracBuildPrefix}
+        <span className="font-mono text-base font-bold text-avanza-teal-dark">{frac}</span>
+        {A.fracBuildSuffix}
       </p>
 
       <div className="mt-3">
         <FractionBar parts={parts} shaded={shaded} onToggle={toggle} />
       </div>
       <p className="mt-2 text-sm text-muted-foreground">
-        Shaded: <span className="font-semibold text-foreground">{count}</span> of {parts} equal parts
+        {A.fracShadedLabel} <span className="font-semibold text-foreground">{count}</span>{" "}
+        {A.fracShadedOf.replace("{n}", String(parts))}
       </p>
 
       <button type="button" onClick={() => setChecked(true)} className={`mt-3 ${primaryBtn}`}>
-        Check
+        {A.check}
       </button>
 
       {checked &&
         (isCorrect ? (
-          <Feedback tone="correct" title={`That's ${frac}.`}>
-            The denominator {parts} is how many equal parts the whole is cut into; the numerator{" "}
-            {target} is how many you shaded.
+          <Feedback tone="correct" title={A.fracCorrect.replace("{frac}", frac)}>
+            {A.fracCorrectNote.replace("{d}", String(parts)).replace("{n}", String(target))}
           </Feedback>
         ) : (
-          <Feedback tone="incorrect" title={`You shaded ${count}, but ${frac} needs ${target}.`}>
-            The bottom number ({parts}) is the equal parts; the top number ({target}) is how many to
-            shade.
+          <Feedback
+            tone="incorrect"
+            title={A.fracWrong
+              .replace("{count}", String(count))
+              .replace("{frac}", frac)
+              .replace("{target}", String(target))}
+          >
+            {A.fracWrongNote.replace("{d}", String(parts)).replace("{n}", String(target))}
           </Feedback>
         ))}
     </div>
@@ -1102,13 +1121,14 @@ function FractionBuild({ parts, target, frac }: { parts: number; target: number;
 }
 
 function FractionCompare({ round }: { round: Extract<FractionRound, { kind: "compare" }> }) {
+  const A = useA()
   const [choice, setChoice] = useState<"left" | "right" | "equal" | null>(null)
   const isCorrect = choice === round.answer
 
   const options: { key: "left" | "right" | "equal"; label: string }[] = [
-    { key: "left", label: `${round.left.n}/${round.left.d} is bigger` },
-    { key: "right", label: `${round.right.n}/${round.right.d} is bigger` },
-    { key: "equal", label: "They are equal" },
+    { key: "left", label: A.fracBiggerLabel.replace("{frac}", `${round.left.n}/${round.left.d}`) },
+    { key: "right", label: A.fracBiggerLabel.replace("{frac}", `${round.right.n}/${round.right.d}`) },
+    { key: "equal", label: A.fracEqualLabel },
   ]
 
   return (
@@ -1125,7 +1145,7 @@ function FractionCompare({ round }: { round: Extract<FractionRound, { kind: "com
               <FractionBar
                 parts={f.d}
                 shaded={countArray(f.n, f.d)}
-                ariaLabel={`${f.n} of ${f.d} parts shaded`}
+                ariaLabel={A.fracPartsShaded.replace("{n}", String(f.n)).replace("{d}", String(f.d))}
               />
             </div>
           </div>
@@ -1159,7 +1179,7 @@ function FractionCompare({ round }: { round: Extract<FractionRound, { kind: "com
       </div>
 
       {choice !== null && (
-        <Feedback tone={isCorrect ? "correct" : "incorrect"} title={isCorrect ? "Correct." : "Not quite."}>
+        <Feedback tone={isCorrect ? "correct" : "incorrect"} title={isCorrect ? A.correctTitle : A.notQuite}>
           {round.explanation}
         </Feedback>
       )}
@@ -1171,60 +1191,20 @@ function FractionCompare({ round }: { round: Extract<FractionRound, { kind: "com
 /* 6. Measurement Match  (Week 6: Measurement Mission)                        */
 /* -------------------------------------------------------------------------- */
 
-const MEASUREMENT_QUESTIONS: QuizQuestion[] = [
-  {
-    prompt: "About how long is a new pencil?",
-    note: "Estimate first, then pick the sensible measurement.",
-    options: ["18 centimeters", "18 meters", "18 kilometers"],
-    correctIndex: 0,
-    explanation: "Pencils are small, so we use centimeters. 18 meters is bus-length; 18 km is a long walk.",
-  },
-  {
-    prompt: "About how tall is a classroom door?",
-    options: ["2 centimeters", "2 meters", "2 kilometers"],
-    correctIndex: 1,
-    explanation: "A door is about 2 meters tall. 2 cm is a coin; 2 km is far too big.",
-  },
-  {
-    prompt: "About how much does one apple weigh?",
-    options: ["150 grams", "150 kilograms", "150 milliliters"],
-    correctIndex: 0,
-    explanation: "Light objects use grams. 150 kg is heavier than a person; milliliters measure liquid, not weight.",
-  },
-  {
-    prompt: "About how much water does a small drink bottle hold?",
-    options: ["500 milliliters", "500 liters", "500 grams"],
-    correctIndex: 0,
-    explanation: "Capacity of a bottle is in milliliters. 500 L would fill a bathtub many times over.",
-  },
-  {
-    prompt: "About how long is a school bus?",
-    options: ["12 meters", "12 centimeters", "12 millimeters"],
-    correctIndex: 0,
-    explanation: "Big objects use meters. 12 cm is the size of a phone; 12 mm is smaller than a fingernail.",
-  },
-  {
-    prompt: "About how much does a watermelon weigh?",
-    options: ["4 kilograms", "4 grams", "4 centimeters"],
-    correctIndex: 0,
-    explanation: "Heavy objects use kilograms. 4 g is about a paperclip; centimeters measure length, not weight.",
-  },
-  {
-    prompt: "About how much water does a bathtub hold?",
-    options: ["200 liters", "200 milliliters", "200 kilometers"],
-    correctIndex: 0,
-    explanation: "Large amounts of liquid use liters. 200 mL is one cup; kilometers measure distance.",
-  },
-  {
-    prompt: "About how tall is a coffee mug?",
-    options: ["10 centimeters", "10 meters", "10 kilograms"],
-    correctIndex: 0,
-    explanation: "A mug is a few centimeters tall. 10 m is a building; kilograms measure weight, not height.",
-  },
+const measurementQuestions = (A: ActivityStrings): QuizQuestion[] => [
+  { prompt: A.msQ1, note: A.msEstimateNote, options: [A.msQ1a, A.msQ1b, A.msQ1c], correctIndex: 0, explanation: A.msE1 },
+  { prompt: A.msQ2, options: [A.msQ2a, A.msQ2b, A.msQ2c], correctIndex: 1, explanation: A.msE2 },
+  { prompt: A.msQ3, options: [A.msQ3a, A.msQ3b, A.msQ3c], correctIndex: 0, explanation: A.msE3 },
+  { prompt: A.msQ4, options: [A.msQ4a, A.msQ4b, A.msQ4c], correctIndex: 0, explanation: A.msE4 },
+  { prompt: A.msQ5, options: [A.msQ5a, A.msQ5b, A.msQ5c], correctIndex: 0, explanation: A.msE5 },
+  { prompt: A.msQ6, options: [A.msQ6a, A.msQ6b, A.msQ6c], correctIndex: 0, explanation: A.msE6 },
+  { prompt: A.msQ7, options: [A.msQ7a, A.msQ7b, A.msQ7c], correctIndex: 0, explanation: A.msE7 },
+  { prompt: A.msQ8, options: [A.msQ8a, A.msQ8b, A.msQ8c], correctIndex: 0, explanation: A.msE8 },
 ]
 
 function MeasurementMatch() {
-  return <ChoiceQuiz questions={MEASUREMENT_QUESTIONS} />
+  const A = useA()
+  return <ChoiceQuiz questions={measurementQuestions(A)} />
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1243,20 +1223,21 @@ type ShapeKey =
   | "cylinder"
   | "square-pyramid"
 
-const SHAPE_LABEL: Record<ShapeKey, string> = {
-  triangle: "Triangle",
-  square: "Square",
-  rectangle: "Rectangle",
-  circle: "Circle",
-  pentagon: "Pentagon",
-  hexagon: "Hexagon",
-  cube: "Cube",
-  sphere: "Sphere",
-  cylinder: "Cylinder",
-  "square-pyramid": "Square pyramid",
-}
+const shapeLabels = (A: ActivityStrings): Record<ShapeKey, string> => ({
+  triangle: A.shTriangle,
+  square: A.shSquare,
+  rectangle: A.shRectangle,
+  circle: A.shCircle,
+  pentagon: A.shPentagon,
+  hexagon: A.shHexagon,
+  cube: A.shCube,
+  sphere: A.shSphere,
+  cylinder: A.shCylinder,
+  "square-pyramid": A.shSquarePyramid,
+})
 
 function ShapeGlyph({ shape }: { shape: ShapeKey }) {
+  const SHAPE_LABEL = shapeLabels(useA())
   const fill = "var(--avanza-teal)"
   const common = { stroke: "currentColor", strokeWidth: 1.5, fill, fillOpacity: 0.18 }
   return (
@@ -1304,53 +1285,20 @@ type ShapeQuestion = {
   explanation: string
 }
 
-const SHAPE_QUESTIONS: ShapeQuestion[] = [
-  {
-    prompt: "Which shape has exactly 3 sides and 3 corners?",
-    options: ["triangle", "square", "circle"],
-    correctIndex: 0,
-    explanation: "A triangle has 3 straight sides and 3 corners. A square has 4; a circle has none.",
-  },
-  {
-    prompt: "Which shape is a rectangle?",
-    options: ["hexagon", "rectangle", "triangle"],
-    correctIndex: 1,
-    explanation: "A rectangle has 4 sides and 4 square corners, with opposite sides the same length.",
-  },
-  {
-    prompt: "Which 2D shape has 6 sides?",
-    options: ["pentagon", "hexagon", "square"],
-    correctIndex: 1,
-    explanation: "A hexagon has 6 sides. A pentagon has 5, and a square has 4.",
-  },
-  {
-    prompt: "Which shape has 4 lines of symmetry?",
-    options: ["rectangle", "square", "triangle"],
-    correctIndex: 1,
-    explanation: "A square folds into matching halves 4 ways. A rectangle has only 2 lines of symmetry.",
-  },
-  {
-    prompt: "Which 3D shape has 6 square faces?",
-    options: ["sphere", "cube", "cylinder"],
-    correctIndex: 1,
-    explanation: "A cube has 6 square faces, 12 edges, and 8 vertices.",
-  },
-  {
-    prompt: "Which 3D shape has no flat faces and rolls in every direction?",
-    options: ["sphere", "cube", "square-pyramid"],
-    correctIndex: 0,
-    explanation: "A sphere is perfectly round with no flat faces, so it rolls any way.",
-  },
-  {
-    prompt: "Which 3D shape has a square base and 4 triangle faces meeting at a point?",
-    options: ["cylinder", "cube", "square-pyramid"],
-    correctIndex: 2,
-    explanation: "A square pyramid has 5 faces: 1 square base and 4 triangles that meet at the top point.",
-  },
+const shapeQuestions = (A: ActivityStrings): ShapeQuestion[] => [
+  { prompt: A.shQ1, options: ["triangle", "square", "circle"], correctIndex: 0, explanation: A.shE1 },
+  { prompt: A.shQ2, options: ["hexagon", "rectangle", "triangle"], correctIndex: 1, explanation: A.shE2 },
+  { prompt: A.shQ3, options: ["pentagon", "hexagon", "square"], correctIndex: 1, explanation: A.shE3 },
+  { prompt: A.shQ4, options: ["rectangle", "square", "triangle"], correctIndex: 1, explanation: A.shE4 },
+  { prompt: A.shQ5, options: ["sphere", "cube", "cylinder"], correctIndex: 1, explanation: A.shE5 },
+  { prompt: A.shQ6, options: ["sphere", "cube", "square-pyramid"], correctIndex: 0, explanation: A.shE6 },
+  { prompt: A.shQ7, options: ["cylinder", "cube", "square-pyramid"], correctIndex: 2, explanation: A.shE7 },
 ]
 
 function GeometryShapeHunt() {
-  const questions: QuizQuestion[] = SHAPE_QUESTIONS.map((q) => ({
+  const A = useA()
+  const SHAPE_LABEL = shapeLabels(A)
+  const questions: QuizQuestion[] = shapeQuestions(A).map((q) => ({
     prompt: q.prompt,
     options: q.options,
     correctIndex: q.correctIndex,
@@ -1384,63 +1332,65 @@ type BudgetScenario = {
   time: QuizQuestion
 }
 
-const BUDGET_SCENARIOS: BudgetScenario[] = [
+const budgetScenarios = (A: ActivityStrings): BudgetScenario[] => [
   {
-    name: "School supplies",
+    name: A.bsSupplies,
     budget: 15,
     items: [
-      { name: "Notebook", price: 3 },
-      { name: "Pencils", price: 2 },
-      { name: "Backpack", price: 9 },
-      { name: "Markers", price: 5 },
-      { name: "Eraser", price: 1 },
-      { name: "Glue", price: 2 },
+      { name: A.biNotebook, price: 3 },
+      { name: A.biPencils, price: 2 },
+      { name: A.biBackpack, price: 9 },
+      { name: A.biMarkers, price: 5 },
+      { name: A.biEraser, price: 1 },
+      { name: A.biGlue, price: 2 },
     ],
     time: {
-      prompt: "The store opens at 9:00 and you shop for 45 minutes. What time do you leave?",
+      prompt: A.btQ1,
       options: ["9:45", "9:30", "10:15"],
       correctIndex: 0,
-      explanation: "45 minutes after 9:00 is 9:45.",
+      explanation: A.btE1,
     },
   },
   {
-    name: "Party planning",
+    name: A.bsParty,
     budget: 20,
     items: [
-      { name: "Balloons", price: 4 },
-      { name: "Cake", price: 10 },
-      { name: "Cups", price: 3 },
-      { name: "Juice", price: 5 },
-      { name: "Party hats", price: 6 },
-      { name: "Banner", price: 4 },
+      { name: A.biBalloons, price: 4 },
+      { name: A.biCake, price: 10 },
+      { name: A.biCups, price: 3 },
+      { name: A.biJuice, price: 5 },
+      { name: A.biPartyHats, price: 6 },
+      { name: A.biBanner, price: 4 },
     ],
     time: {
-      prompt: "The party runs from 3:00 to 4:30. How long is it?",
-      options: ["1 hour 30 minutes", "1 hour", "2 hours"],
+      prompt: A.btQ2,
+      options: [A.btQ2a, A.btQ2b, A.btQ2c],
       correctIndex: 0,
-      explanation: "From 3:00 to 4:30 is one hour (to 4:00) plus 30 minutes, so 1 hour 30 minutes.",
+      explanation: A.btE2,
     },
   },
   {
-    name: "Amusement park snacks",
+    name: A.bsSnacks,
     budget: 12,
     items: [
-      { name: "Popcorn", price: 5 },
-      { name: "Drink", price: 3 },
-      { name: "Pretzel", price: 4 },
-      { name: "Cotton candy", price: 4 },
-      { name: "Ice cream", price: 6 },
+      { name: A.biPopcorn, price: 5 },
+      { name: A.biDrink, price: 3 },
+      { name: A.biPretzel, price: 4 },
+      { name: A.biCottonCandy, price: 4 },
+      { name: A.biIceCream, price: 6 },
     ],
     time: {
-      prompt: "A ride opens at 10:00 and you wait 25 minutes in line. What time do you board?",
+      prompt: A.btQ3,
       options: ["10:25", "10:15", "10:35"],
       correctIndex: 0,
-      explanation: "25 minutes after 10:00 is 10:25.",
+      explanation: A.btE3,
     },
   },
 ]
 
 function BudgetBuilder() {
+  const A = useA()
+  const BUDGET_SCENARIOS = budgetScenarios(A)
   const [scenarioIndex, setScenarioIndex] = useState(0)
   const [selected, setSelected] = useState<number[]>([])
 
@@ -1459,7 +1409,7 @@ function BudgetBuilder() {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Choose a scenario">
+      <div className="flex flex-wrap gap-2" role="group" aria-label={A.chooseScenario}>
         {BUDGET_SCENARIOS.map((s, i) => (
           <button
             key={s.name}
@@ -1479,8 +1429,9 @@ function BudgetBuilder() {
       </div>
 
       <p className="mt-4 text-sm text-foreground">
-        Budget: <span className="font-mono text-base font-bold text-avanza-teal-dark">${scenario.budget}</span>. Pick
-        the items you want and keep the total at or under budget.
+        {A.budgetPrefix}
+        <span className="font-mono text-base font-bold text-avanza-teal-dark">${scenario.budget}</span>
+        {A.budgetSuffix}
       </p>
 
       <ul className="mt-3 space-y-2">
@@ -1520,34 +1471,38 @@ function BudgetBuilder() {
 
       <dl className="mt-4 grid grid-cols-2 gap-3">
         <div className="rounded-md border border-border p-3">
-          <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Total</dt>
+          <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{A.btTotal}</dt>
           <dd className="mt-1 font-mono text-xl font-bold text-foreground">${total}</dd>
         </div>
         <div className="rounded-md border border-border p-3">
           <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            {over ? "Over by" : "Money left"}
+            {over ? A.btOverBy : A.btMoneyLeft}
           </dt>
           <dd className="mt-1 font-mono text-xl font-bold text-foreground">${Math.abs(remaining)}</dd>
         </div>
       </dl>
 
       {selected.length === 0 ? (
-        <Feedback tone="neutral" title="Pick some items to start planning.">
-          Watch the total and the money left change as you add each item.
+        <Feedback tone="neutral" title={A.btPickItems}>
+          {A.btPickItemsNote}
         </Feedback>
       ) : over ? (
-        <Feedback tone="incorrect" title={`Over budget by $${Math.abs(remaining)}.`}>
-          Your total ${total} is more than the ${scenario.budget} budget. Remove an item to fit.
+        <Feedback tone="incorrect" title={A.btOverTitle.replace("{n}", String(Math.abs(remaining)))}>
+          {A.btOverNote
+            .replace("{total}", String(total))
+            .replace("{budget}", String(scenario.budget))}
         </Feedback>
       ) : (
-        <Feedback tone="correct" title={`Within budget with $${remaining} to spare.`}>
-          Your total is ${total}, which is at or under the ${scenario.budget} budget.
+        <Feedback tone="correct" title={A.btWithinTitle.replace("{n}", String(remaining))}>
+          {A.btWithinNote
+            .replace("{total}", String(total))
+            .replace("{budget}", String(scenario.budget))}
         </Feedback>
       )}
 
       <div className="mt-6 border-t border-border pt-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Time check
+          {A.btTimeCheck}
         </p>
         <div className="mt-3">
           <ChoiceQuiz key={scenarioIndex} questions={[scenario.time]} />
@@ -1561,7 +1516,7 @@ function BudgetBuilder() {
 /* 9. Graph Builder  (Week 9: Data Detective)                                 */
 /* -------------------------------------------------------------------------- */
 
-const GRAPH_CATEGORIES = ["Apple", "Banana", "Grapes", "Orange"]
+const graphCategories = (A: ActivityStrings) => [A.gbApple, A.gbBanana, A.gbGrapes, A.gbOrange]
 const GRAPH_START = [8, 5, 4, 3]
 
 /** Grouped tally marks for a count (a light nod to tally charts). */
@@ -1579,6 +1534,8 @@ function Tally({ n }: { n: number }) {
 }
 
 function GraphBuilder() {
+  const A = useA()
+  const GRAPH_CATEGORIES = graphCategories(A)
   const [counts, setCounts] = useState<number[]>(GRAPH_START)
 
   const set = (i: number, value: number) =>
@@ -1592,10 +1549,7 @@ function GraphBuilder() {
 
   return (
     <div>
-      <p className="text-sm text-foreground">
-        This survey asked, &ldquo;What is your favorite fruit?&rdquo; Adjust the votes and watch the
-        bar graph update, then answer the questions from the graph.
-      </p>
+      <p className="text-sm text-foreground">{A.gbIntro}</p>
 
       {/* Editable data + live bar graph */}
       <div className="mt-4 space-y-2">
@@ -1607,7 +1561,7 @@ function GraphBuilder() {
                 type="button"
                 onClick={() => set(i, counts[i] - 1)}
                 disabled={counts[i] === 0}
-                aria-label={`One fewer vote for ${cat}`}
+                aria-label={A.gbOneFewer.replace("{cat}", cat)}
                 className="flex h-9 w-9 items-center justify-center rounded border border-border text-foreground hover:border-avanza-teal hover:bg-avanza-teal/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal disabled:opacity-40"
               >
                 <Minus aria-hidden className="h-3.5 w-3.5" />
@@ -1616,7 +1570,7 @@ function GraphBuilder() {
                 type="button"
                 onClick={() => set(i, counts[i] + 1)}
                 disabled={counts[i] === 12}
-                aria-label={`One more vote for ${cat}`}
+                aria-label={A.gbOneMore.replace("{cat}", cat)}
                 className="flex h-9 w-9 items-center justify-center rounded border border-border text-foreground hover:border-avanza-teal hover:bg-avanza-teal/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-teal disabled:opacity-40"
               >
                 <Plus aria-hidden className="h-3.5 w-3.5" />
@@ -1638,7 +1592,7 @@ function GraphBuilder() {
 
       <div className="mt-3 rounded-md border border-border bg-secondary p-3">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Same data as tally marks
+          {A.gbTallyTitle}
         </p>
         <ul className="mt-2 space-y-1">
           {GRAPH_CATEGORIES.map((cat, i) => (
@@ -1653,23 +1607,23 @@ function GraphBuilder() {
       {/* Read-the-graph questions, checked against the live data */}
       <div className="mt-6 space-y-4 border-t border-border pt-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Read the graph
+          {A.gbReadGraph}
         </p>
         <GraphCategoryQuestion
-          prompt="Which fruit has the most votes?"
+          prompt={A.gbQMost}
           categories={GRAPH_CATEGORIES}
           correctIndexes={maxIndexes}
         />
         <GraphCategoryQuestion
-          prompt="Which fruit has the fewest votes?"
+          prompt={A.gbQFewest}
           categories={GRAPH_CATEGORIES}
           correctIndexes={minIndexes}
         />
         <GraphNumericQuestion
-          prompt="How many more votes for Apple than Grapes? (the difference)"
+          prompt={A.gbQDiff}
           answer={diffAppleGrapes}
         />
-        <GraphNumericQuestion prompt="What is the total number of votes?" answer={total} />
+        <GraphNumericQuestion prompt={A.gbQTotal} answer={total} />
       </div>
     </div>
   )
@@ -1684,6 +1638,7 @@ function GraphCategoryQuestion({
   categories: string[]
   correctIndexes: number[]
 }) {
+  const A = useA()
   const [choice, setChoice] = useState<number | null>(null)
   const correct = choice !== null && correctIndexes.includes(choice)
 
@@ -1710,10 +1665,8 @@ function GraphCategoryQuestion({
         })}
       </div>
       {choice !== null && (
-        <Feedback tone={correct ? "correct" : "incorrect"} title={correct ? "Correct." : "Look again."}>
-          {correct
-            ? "That category's bar matches the graph."
-            : "Compare the bar heights and pick the one that fits."}
+        <Feedback tone={correct ? "correct" : "incorrect"} title={correct ? A.correctTitle : A.gbLookAgain}>
+          {correct ? A.gbCatCorrect : A.gbCatWrong}
         </Feedback>
       )}
     </div>
@@ -1721,6 +1674,7 @@ function GraphCategoryQuestion({
 }
 
 function GraphNumericQuestion({ prompt, answer }: { prompt: string; answer: number }) {
+  const A = useA()
   const [value, setValue] = useState("")
   const [submitted, setSubmitted] = useState<number | null>(null)
   const correct = submitted !== null && submitted === answer
@@ -1745,14 +1699,12 @@ function GraphNumericQuestion({ prompt, answer }: { prompt: string; answer: numb
           aria-label={prompt}
         />
         <button type="submit" className={primaryBtn}>
-          Check
+          {A.check}
         </button>
       </div>
       {submitted !== null && (
-        <Feedback tone={correct ? "correct" : "incorrect"} title={correct ? "Correct." : "Not yet."}>
-          {correct
-            ? "That matches the current graph."
-            : "Read the bars again and add or subtract carefully."}
+        <Feedback tone={correct ? "correct" : "incorrect"} title={correct ? A.correctTitle : A.gbNotYet}>
+          {correct ? A.gbNumCorrect : A.gbNumWrong}
         </Feedback>
       )}
     </form>
@@ -1771,45 +1723,47 @@ type MazeStep = {
   explanation: string
 }
 
-const MAZE_STEPS: MazeStep[] = [
+const mazeSteps = (A: ActivityStrings): MazeStep[] => [
   {
-    place: "Bakery",
-    clue: "The baker offers you the biggest slice. Which fraction is largest?",
+    place: A.mzPlace1,
+    clue: A.mzClue1,
     options: ["1/2", "1/4", "1/8"],
     correctIndex: 0,
-    explanation: "1/2 is the largest — fewer parts means each part is bigger.",
+    explanation: A.mzExp1,
   },
   {
-    place: "Bank",
-    clue: "The vault code is greater than 20, less than 30, with a 5 in the ones place.",
+    place: A.mzPlace2,
+    clue: A.mzClue2,
     options: ["25", "15", "52"],
     correctIndex: 0,
-    explanation: "25 is between 20 and 30 and has a 5 in the ones place. 15 is too small; 52 is too big.",
+    explanation: A.mzExp2,
   },
   {
-    place: "Park",
-    clue: "The park sign is a shape with 3 sides and 3 corners. Which shape is it?",
-    options: ["Triangle", "Square", "Circle"],
+    place: A.mzPlace3,
+    clue: A.mzClue3,
+    options: [A.shTriangle, A.shSquare, A.shCircle],
     correctIndex: 0,
-    explanation: "A triangle has 3 sides and 3 corners.",
+    explanation: A.mzExp3,
   },
   {
-    place: "Ticket booth",
-    clue: "A ticket costs $4. You pay with a $10 bill. How much change do you get?",
+    place: A.mzPlace4,
+    clue: A.mzClue4,
     options: ["$6", "$14", "$40"],
     correctIndex: 0,
-    explanation: "Change is $10 − $4 = $6.",
+    explanation: A.mzExp4,
   },
   {
-    place: "Clock tower",
-    clue: "It is 3:00 now. The show starts in 45 minutes. What time does it start?",
+    place: A.mzPlace5,
+    clue: A.mzClue5,
     options: ["3:45", "3:30", "4:15"],
     correctIndex: 0,
-    explanation: "45 minutes after 3:00 is 3:45.",
+    explanation: A.mzExp5,
   },
 ]
 
 function LogicMaze() {
+  const A = useA()
+  const MAZE_STEPS = mazeSteps(A)
   const [step, setStep] = useState(0)
   const [picked, setPicked] = useState<number | null>(null)
   const [done, setDone] = useState(false)
@@ -1832,7 +1786,7 @@ function LogicMaze() {
   return (
     <div>
       {/* Path indicator */}
-      <ol className="flex items-center gap-2" aria-label="Progress through Math City">
+      <ol className="flex items-center gap-2" aria-label={A.mzProgress}>
         {MAZE_STEPS.map((s, i) => {
           const state =
             done || i < step
@@ -1856,11 +1810,11 @@ function LogicMaze() {
 
       {done ? (
         <div className="mt-5">
-          <Feedback tone="correct" title="You reached the center of Math City.">
-            You used fractions, place value, shapes, money, and time to solve every clue.
+          <Feedback tone="correct" title={A.mzDone}>
+            {A.mzDoneNote}
           </Feedback>
           <button type="button" onClick={restart} className={`mt-4 ${outlineBtn}`}>
-            Play again
+            {A.mzPlayAgain}
           </button>
         </div>
       ) : (
@@ -1896,16 +1850,16 @@ function LogicMaze() {
           {picked !== null &&
             (correct ? (
               <>
-                <Feedback tone="correct" title="Correct - the path opens.">
+                <Feedback tone="correct" title={A.mzPathOpens}>
                   {current.explanation}
                 </Feedback>
                 <button type="button" onClick={advance} className={`mt-4 ${primaryBtn}`}>
-                  {step + 1 >= MAZE_STEPS.length ? "Reach the center" : "Move ahead"}{" "}
+                  {step + 1 >= MAZE_STEPS.length ? A.mzReachCenter : A.mzMoveAhead}{" "}
                   <ArrowRight aria-hidden className="h-4 w-4" />
                 </button>
               </>
             ) : (
-              <Feedback tone="incorrect" title="That path is blocked. Try another.">
+              <Feedback tone="incorrect" title={A.mzPathBlocked}>
                 {current.explanation}
               </Feedback>
             ))}

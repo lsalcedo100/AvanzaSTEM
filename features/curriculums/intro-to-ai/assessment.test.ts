@@ -4,23 +4,35 @@ import assert from "node:assert/strict"
 import { introToAiCourse } from "./index.ts"
 import { partialScore, isCorrect, scoreCheck } from "./quiz.ts"
 import {
-  SKILLS,
-  STATUS_LABEL,
+  skillDefs,
+  statusLabels,
   computeSkillStates,
   computeSkillState,
   buildCheckThresholds,
   summarizeSkills,
 } from "./skills.ts"
 import {
-  MISSION_QUESTIONS,
-  MISSION_SECTIONS,
-  RECOMMENDATION_DECISIONS,
-  REASON_FIELDS,
-  FINAL_REFLECTION_PROMPTS,
+  missionQuestions,
+  missionSections,
+  recommendationDecisions,
+  reasonFields,
+  finalReflectionPrompts,
   evaluateRecommendation,
   parseRecommendation,
   emptyRecommendation,
 } from "./mission.ts"
+import { translations } from "../../../i18n/translations.ts"
+
+// The mission text is localized; the structure under test is the same in every
+// language, so these assertions read the English strings.
+const M = translations.en.courseUi.ai.mission
+const SKILLS = skillDefs(translations.en.courseUi.ai.skills)
+const STATUS_LABEL = statusLabels(translations.en.courseUi.ai.skills)
+const MISSION_QUESTIONS = missionQuestions(M)
+const MISSION_SECTIONS = missionSections(M)
+const RECOMMENDATION_DECISIONS = recommendationDecisions(M)
+const REASON_FIELDS = reasonFields(M)
+const FINAL_REFLECTION_PROMPTS = finalReflectionPrompts(M)
 import {
   emptyIntroToAiProgress,
   courseCompletionRequirements,
@@ -69,7 +81,7 @@ test("there are twelve skills with labels and understandable statuses", () => {
 })
 
 test("empty progress => every skill not-attempted", () => {
-  const states = computeSkillStates(emptyIntroToAiProgress(), introToAiCourse, false)
+  const states = computeSkillStates(emptyIntroToAiProgress(), introToAiCourse, false, SKILLS)
   assert.equal(states.length, 12)
   assert.ok(states.every((s) => s.status === "not-attempted"))
   assert.equal(summarizeSkills(states)["not-attempted"], 12)

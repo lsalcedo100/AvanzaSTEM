@@ -117,22 +117,22 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
     // position 1.81, 3.38% CTR).
     title: "Free STEM Curriculum for Kids: Python, Engineering & AI",
     description:
-      "Explore free STEM curriculum paths for kids in Python, engineering, science, robotics, math, and AI, with hands-on project guides to start learning now.",
+      "Free STEM curriculum resources for kids, teachers, and homeschool families: Python, engineering, science, robotics, math, and AI, with lessons and worksheets.",
   },
   es: {
     title: "Curriculos STEM en desarrollo | Avanza STEM",
     description:
-      "Conoce los temas de curriculo que Avanza STEM esta desarrollando, incluyendo Python, ingenieria, ciencias, matematicas, robotica e IA para jovenes estudiantes.",
+      "Recursos de curriculo STEM gratuitos para ninos, maestros y familias que educan en casa: Python, ingenieria, ciencias, matematicas, robotica e IA.",
   },
   zh: {
     title: "正在开发的 STEM 课程 | Avanza STEM",
     description:
-      "预览 Avanza STEM 正在开发的课程主题，包括面向年轻学生的 Python、工程、科学、数学、机器人和 AI 课程。",
+      "面向儿童、老师和在家教育家庭的免费 STEM 课程资源：Python、工程、科学、数学、机器人和 AI 学习路径，附课程、练习页与教师指南。",
   },
   pt: {
     title: "Currículo de STEM Gratuito para Crianças: Python, Engenharia e IA",
     description:
-      "Explore trilhas gratuitas de currículo de STEM para crianças em Python, engenharia, ciências, robótica, matemática e IA, com guias de projeto práticos para começar agora.",
+      "Recursos gratuitos de currículo de STEM para crianças, professores e famílias que ensinam em casa: Python, engenharia, ciências, robótica, matemática e IA.",
   },
 }
 

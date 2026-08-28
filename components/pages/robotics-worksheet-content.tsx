@@ -25,9 +25,13 @@ function WriteSpace({ className = "h-16" }: { className?: string }) {
  * link) lives in a `print-hidden` container so it stays off the printout.
  */
 export function RoboticsWorksheetContent({ slug }: { slug: string }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const ui = t.courseUi.robotics
+  const W = ui.worksheet
   const weekModule = findRoboticsModule(language, slug) ?? getRoboticsModules(language)[0]
-  const label = weekModule.isFinal ? "Final project" : `Week ${weekModule.week}`
+  const label = weekModule.isFinal
+    ? ui.finalProject
+    : ui.lesson.weekLabel.replace("{n}", String(weekModule.week))
 
   return (
     <article className="bg-background">
@@ -45,8 +49,8 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
 
         {/* Name / date line for students */}
         <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-foreground">
-          <p>Name: ______________________________</p>
-          <p>Date: ____________________</p>
+          <p>{W.name}</p>
+          <p>{W.date}</p>
         </div>
 
         {/* Header */}
@@ -59,7 +63,7 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
 
         {/* Key ideas */}
         <section className="mt-10">
-          <h2 className="text-xl font-bold text-foreground">Key ideas</h2>
+          <h2 className="text-xl font-bold text-foreground">{W.keyIdeas}</h2>
           <div className="mt-4 space-y-4">
             {weekModule.concepts.map((concept) => (
               <div key={concept.id}>
@@ -74,7 +78,7 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
 
         {/* Words to know */}
         <section className="mt-10">
-          <h2 className="text-xl font-bold text-foreground">Words to know</h2>
+          <h2 className="text-xl font-bold text-foreground">{W.wordsToKnow}</h2>
           <dl className="mt-4 space-y-3">
             {weekModule.vocabulary.map((term) => (
               <div key={term.term} className="text-sm leading-relaxed">
@@ -87,13 +91,13 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
 
         {/* Your activity */}
         <section className="mt-10">
-          <h2 className="text-xl font-bold text-foreground">Your activity</h2>
+          <h2 className="text-xl font-bold text-foreground">{W.yourActivity}</h2>
           <div className="mt-4 space-y-8">
             {weekModule.activities.map((activity) => (
               <div key={activity.id}>
                 <h3 className="font-bold text-foreground">{activity.title}</h3>
                 <p className="mt-1 text-sm text-foreground/90">
-                  <span className="font-semibold text-foreground">Goal: </span>
+                  <span className="font-semibold text-foreground">{W.goal}</span>
                   {activity.goal}
                 </p>
                 {activity.shared.length > 0 && (
@@ -103,7 +107,7 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
                     ))}
                   </ol>
                 )}
-                <p className="mt-4 text-sm font-semibold text-foreground">Write what happened:</p>
+                <p className="mt-4 text-sm font-semibold text-foreground">{W.writeWhatHappened}</p>
                 <WriteSpace className="h-24" />
               </div>
             ))}
@@ -113,9 +117,9 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
         {/* Predict */}
         {weekModule.predictionPrompts.length > 0 && (
           <section className="mt-10">
-            <h2 className="text-xl font-bold text-foreground">Predict</h2>
+            <h2 className="text-xl font-bold text-foreground">{W.predict}</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Write your guess before you test.
+              {W.writeGuess}
             </p>
             <div className="mt-4 space-y-6">
               {weekModule.predictionPrompts.map((prompt) => (
@@ -131,14 +135,14 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
         {/* Test and record */}
         {weekModule.testRecords.length > 0 && (
           <section className="mt-10">
-            <h2 className="text-xl font-bold text-foreground">Test and record</h2>
+            <h2 className="text-xl font-bold text-foreground">{W.testAndRecord}</h2>
             <div className="mt-4 space-y-6">
               {weekModule.testRecords.map((record) => (
                 <div key={record.id}>
                   <h3 className="font-bold text-foreground">{record.title}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">{record.instructions}</p>
                   <p className="mt-2 text-sm text-foreground/90">
-                    <span className="font-semibold text-foreground">Record: </span>
+                    <span className="font-semibold text-foreground">{W.record}</span>
                     {record.measure}
                   </p>
                   <div className="mt-3 overflow-x-auto">
@@ -176,9 +180,9 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
 
         {/* Knowledge check */}
         <section className="mt-10">
-          <h2 className="text-xl font-bold text-foreground">Knowledge check</h2>
+          <h2 className="text-xl font-bold text-foreground">{W.knowledgeCheck}</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Answer each question. For choice questions, circle the best answer.
+            {W.answerEach}
           </p>
           <ol className="mt-4 list-decimal space-y-5 pl-5">
             {weekModule.knowledgeCheck.questions.map((question) => (
@@ -213,7 +217,9 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
                 )}
 
                 {question.kind === "true-false" && (
-                  <p className="mt-2 text-foreground/90">Circle one: &nbsp; True &nbsp; / &nbsp; False</p>
+                  <p className="mt-2 text-foreground/90">
+                    {W.circleOne} &nbsp; {W.trueLabel} &nbsp; / &nbsp; {W.falseLabel}
+                  </p>
                 )}
 
                 {question.kind === "ordering" && (
@@ -258,7 +264,7 @@ export function RoboticsWorksheetContent({ slug }: { slug: string }) {
         {/* Reflect */}
         {weekModule.reflection.length > 0 && (
           <section className="mt-10">
-            <h2 className="text-xl font-bold text-foreground">Reflect</h2>
+            <h2 className="text-xl font-bold text-foreground">{W.reflect}</h2>
             <div className="mt-4 space-y-6">
               {weekModule.reflection.map((prompt) => (
                 <div key={prompt.id}>

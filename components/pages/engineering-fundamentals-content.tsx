@@ -60,7 +60,7 @@ export function EngineeringFundamentalsContent() {
         facts={el.facts}
         media={{
           src: "/images/workshops/past-engineering.jpg",
-          alt: "Students building a structure together at an Avanza STEM engineering workshop",
+          alt: el.heroAlt,
         }}
         mediaCaption={el.mediaCaption}
         note={el.note}

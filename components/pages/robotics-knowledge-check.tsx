@@ -18,6 +18,7 @@ import {
   scoreQuiz,
 } from "@/features/curriculums/robotics/quiz"
 import { useRoboticsProgress } from "@/components/ui/useRoboticsProgress"
+import { useLanguage } from "@/components/providers/language-provider"
 
 /** Deterministically rotate a list by one, so ordering/matching don't start solved. */
 function rotate<T>(list: T[]): T[] {
@@ -36,6 +37,7 @@ const optionBase =
  * No points, streaks, or badges - just the reasoning and the score.
  */
 export function RoboticsKnowledgeCheck({ check }: { check: KnowledgeCheck }) {
+  const C = useLanguage().t.courseUi.robotics.check
   const { loaded, saveQuizAttempt, progress } = useRoboticsProgress()
   const saved = progress.knowledgeChecks[check.id]
 
@@ -58,7 +60,7 @@ export function RoboticsKnowledgeCheck({ check }: { check: KnowledgeCheck }) {
 
   const submit = () => {
     if (!everyAnswered) {
-      setError("Answer every question before saving your score.")
+      setError(C.answerAllFirst)
       return
     }
     setError("")
@@ -102,7 +104,7 @@ export function RoboticsKnowledgeCheck({ check }: { check: KnowledgeCheck }) {
             disabled={!loaded}
             className="inline-flex items-center rounded-md bg-avanza-green px-5 py-2.5 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
           >
-            Save my score
+            {C.saveScore}
           </button>
         ) : (
           <button
@@ -110,14 +112,15 @@ export function RoboticsKnowledgeCheck({ check }: { check: KnowledgeCheck }) {
             onClick={retry}
             className="inline-flex items-center rounded-md border border-border px-5 py-2.5 text-sm font-semibold text-avanza-green-dark transition-colors hover:border-avanza-green hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
           >
-            Try the check again
+            {C.tryAgain}
           </button>
         )}
 
         <p className="text-sm text-muted-foreground" aria-live="polite">
           {submitted
-            ? `${score} of ${total} correct${passed ? " - passed" : " - review the ones you missed and try again"}`
-            : `${answered} of ${total} answered`}
+            ? C.scoreLine.replace("{score}", String(score)).replace("{total}", String(total)) +
+              (passed ? C.passedSuffix : C.reviewSuffix)
+            : C.answeredLine.replace("{answered}", String(answered)).replace("{total}", String(total))}
         </p>
       </div>
 
@@ -189,17 +192,18 @@ function QuestionBody(props: QuestionProps) {
 
 /** The shared answer explanation shown once a question is revealed. */
 function Explanation({ question, answer, revealed }: QuestionProps) {
+  const C = useLanguage().t.courseUi.robotics.check
   if (!revealed) return null
   const correct = isAnswerCorrect(question, answer)
   return (
     <div className="mt-3 rounded-md bg-secondary px-3 py-2 text-sm" aria-live="polite">
       <p className={correct ? "font-semibold text-avanza-green-dark" : "font-semibold text-avanza-orange-dark"}>
-        {correct ? "Correct" : "Not quite"}
+        {correct ? C.correct : C.notQuite}
       </p>
       <p className="mt-1 text-foreground/90">{question.explanation}</p>
       {question.kind === "short" && (
         <p className="mt-2 text-muted-foreground">
-          <span className="font-semibold text-foreground">A strong answer: </span>
+          <span className="font-semibold text-foreground">{C.strongAnswer}</span>
           {question.sampleAnswer}
         </p>
       )}
@@ -208,6 +212,7 @@ function Explanation({ question, answer, revealed }: QuestionProps) {
 }
 
 function SingleChoice({ question, answer, revealed, loaded, onAnswer, onReveal, onChange }: QuestionProps & { question: OptionQuestion }) {
+  const C = useLanguage().t.courseUi.robotics.check
   return (
     <div className="space-y-2" role="group" aria-label={question.prompt}>
       {question.options.map((opt) => {
@@ -245,6 +250,7 @@ function SingleChoice({ question, answer, revealed, loaded, onAnswer, onReveal, 
 }
 
 function MultipleChoice({ question, answer, revealed, loaded, onAnswer, onReveal, onChange }: QuestionProps & { question: MultipleChoiceQuestion }) {
+  const C = useLanguage().t.courseUi.robotics.check
   const selected = new Set(answer ? answer.split(",").filter(Boolean) : [])
   const toggle = (id: string) => {
     const next = new Set(selected)
@@ -254,7 +260,7 @@ function MultipleChoice({ question, answer, revealed, loaded, onAnswer, onReveal
   }
   return (
     <div>
-      <p className="mb-2 text-xs text-muted-foreground">Select all that apply.</p>
+      <p className="mb-2 text-xs text-muted-foreground">{C.selectAll}</p>
       <div className="space-y-2" role="group" aria-label={question.prompt}>
         {question.options.map((opt) => {
           const chosen = selected.has(opt.id)
@@ -290,7 +296,7 @@ function MultipleChoice({ question, answer, revealed, loaded, onAnswer, onReveal
           disabled={!loaded || selected.size === 0}
           className="mt-3 text-sm font-semibold text-avanza-green-dark underline underline-offset-2 disabled:opacity-50"
         >
-          Check my answer
+          {C.checkAnswer}
         </button>
       ) : (
         <ChangeButton onChange={onChange} />
@@ -300,12 +306,13 @@ function MultipleChoice({ question, answer, revealed, loaded, onAnswer, onReveal
 }
 
 function TrueFalse({ question, answer, revealed, loaded, onAnswer, onReveal, onChange }: QuestionProps & { question: TrueFalseQuestion }) {
+  const C = useLanguage().t.courseUi.robotics.check
   return (
     <div>
       <p className="text-sm text-foreground/90">&ldquo;{question.statement}&rdquo;</p>
       <div className="mt-2 flex gap-2">
         {[true, false].map((value) => {
-          const label = value ? "True" : "False"
+          const label = value ? C.trueLabel : C.falseLabel
           const chosen = answer === String(value)
           const state =
             revealed && question.answer === value
@@ -338,6 +345,7 @@ function TrueFalse({ question, answer, revealed, loaded, onAnswer, onReveal, onC
 }
 
 function Ordering({ question, answer, revealed, loaded, onAnswer, onReveal, onChange }: QuestionProps & { question: OrderingQuestion }) {
+  const C = useLanguage().t.courseUi.robotics.check
   const current = answer ? answer.split(",").filter(Boolean) : rotate(question.items.map((i) => i.id))
   const label = (id: string) => question.items.find((i) => i.id === id)?.text ?? id
   const move = (index: number, delta: number) => {
@@ -349,7 +357,7 @@ function Ordering({ question, answer, revealed, loaded, onAnswer, onReveal, onCh
   }
   return (
     <div>
-      <p className="mb-2 text-xs text-muted-foreground">Use the arrows to put these in order.</p>
+      <p className="mb-2 text-xs text-muted-foreground">{C.useArrows}</p>
       <ol className="space-y-2">
         {current.map((id, i) => (
           <li key={id} className="flex items-center gap-3 rounded-md border border-border px-3 py-2 text-sm">
@@ -361,7 +369,7 @@ function Ordering({ question, answer, revealed, loaded, onAnswer, onReveal, onCh
                   type="button"
                   onClick={() => move(i, -1)}
                   disabled={!loaded || i === 0}
-                  aria-label={`Move "${label(id)}" up`}
+                  aria-label={C.moveUp.replace("{item}", label(id))}
                   className="rounded border border-border px-2 py-0.5 text-xs disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
                 >
                   ↑
@@ -370,7 +378,7 @@ function Ordering({ question, answer, revealed, loaded, onAnswer, onReveal, onCh
                   type="button"
                   onClick={() => move(i, 1)}
                   disabled={!loaded || i === current.length - 1}
-                  aria-label={`Move "${label(id)}" down`}
+                  aria-label={C.moveDown.replace("{item}", label(id))}
                   className="rounded border border-border px-2 py-0.5 text-xs disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
                 >
                   ↓
@@ -390,7 +398,7 @@ function Ordering({ question, answer, revealed, loaded, onAnswer, onReveal, onCh
           disabled={!loaded}
           className="mt-3 text-sm font-semibold text-avanza-green-dark underline underline-offset-2 disabled:opacity-50"
         >
-          Check my order
+          {C.checkOrder}
         </button>
       ) : (
         <ChangeButton onChange={onChange} />
@@ -400,6 +408,7 @@ function Ordering({ question, answer, revealed, loaded, onAnswer, onReveal, onCh
 }
 
 function Matching({ question, answer, revealed, loaded, onAnswer, onReveal, onChange }: QuestionProps & { question: MatchingQuestion }) {
+  const C = useLanguage().t.courseUi.robotics.check
   const map: Record<string, string> = (() => {
     try {
       return answer ? (JSON.parse(answer) as Record<string, string>) : {}
@@ -414,7 +423,7 @@ function Matching({ question, answer, revealed, loaded, onAnswer, onReveal, onCh
   const complete = question.pairs.every((p) => map[p.id])
   return (
     <div>
-      <p className="mb-2 text-xs text-muted-foreground">Choose the match for each item.</p>
+      <p className="mb-2 text-xs text-muted-foreground">{C.chooseMatch}</p>
       <div className="space-y-2">
         {question.pairs.map((pair) => {
           const chosen = map[pair.id]
@@ -427,13 +436,13 @@ function Matching({ question, answer, revealed, loaded, onAnswer, onReveal, onCh
             <div key={pair.id} className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
               <span className="text-sm font-medium text-foreground/90 sm:w-1/2">{pair.left}</span>
               <select
-                aria-label={`Match for ${pair.left}`}
+                aria-label={C.matchFor.replace("{item}", pair.left)}
                 value={chosen ?? ""}
                 onChange={(e) => setPair(pair.id, e.target.value)}
                 disabled={!loaded || revealed}
                 className={`rounded-md border border-border bg-card px-3 py-1.5 text-sm ${right} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green disabled:opacity-70 sm:w-1/2`}
               >
-                <option value="">Choose...</option>
+                <option value="">{C.chooseDots}</option>
                 {rights.map((r) => (
                   <option key={r.id} value={r.id}>
                     {r.right}
@@ -451,7 +460,7 @@ function Matching({ question, answer, revealed, loaded, onAnswer, onReveal, onCh
           disabled={!loaded || !complete}
           className="mt-3 text-sm font-semibold text-avanza-green-dark underline underline-offset-2 disabled:opacity-50"
         >
-          Check my matches
+          {C.checkMatches}
         </button>
       ) : (
         <ChangeButton onChange={onChange} />
@@ -461,6 +470,7 @@ function Matching({ question, answer, revealed, loaded, onAnswer, onReveal, onCh
 }
 
 function ShortResponse({ question, answer, revealed, loaded, onAnswer, onReveal, onChange }: QuestionProps & { question: ShortResponseQuestion }) {
+  const C = useLanguage().t.courseUi.robotics.check
   return (
     <div>
       <textarea
@@ -469,7 +479,7 @@ function ShortResponse({ question, answer, revealed, loaded, onAnswer, onReveal,
         onChange={(e) => onAnswer(e.target.value)}
         disabled={!loaded || revealed}
         rows={2}
-        placeholder="Write your answer..."
+        placeholder={C.writeAnswer}
         className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green disabled:opacity-70"
       />
       {!revealed ? (
@@ -479,7 +489,7 @@ function ShortResponse({ question, answer, revealed, loaded, onAnswer, onReveal,
           disabled={!loaded || answer.trim().length === 0}
           className="mt-2 text-sm font-semibold text-avanza-green-dark underline underline-offset-2 disabled:opacity-50"
         >
-          Check my answer
+          {C.checkAnswer}
         </button>
       ) : (
         <ChangeButton onChange={onChange} />
@@ -490,13 +500,14 @@ function ShortResponse({ question, answer, revealed, loaded, onAnswer, onReveal,
 
 /** A "Change my answer" control for retrying a revealed question. */
 function ChangeButton({ onChange }: { onChange: () => void }) {
+  const C = useLanguage().t.courseUi.robotics.check
   return (
     <button
       type="button"
       onClick={onChange}
       className="mt-3 text-sm font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green"
     >
-      Change my answer
+      {C.changeAnswer}
     </button>
   )
 }

@@ -102,22 +102,22 @@ const projectsIndexMetadataByLanguage: Record<Language, { title: string; descrip
     // Was 94 characters and truncated in the SERP; 478 impressions at 0.84% CTR.
     title: "Free STEM Projects for Kids: Bridges, Circuits & Python",
     description:
-      "Free step-by-step STEM projects for kids, parents, and teachers: truss bridges, simple circuits, Python programs, rubber band cars, and science fair experiments.",
+      "Free STEM project resources for kids, parents, and teachers: truss bridges, simple circuits, Python programs, rubber band cars, and science fair projects.",
   },
   es: {
     title: "Proyectos STEM para Niños - Avanza STEM",
     description:
-      "Proyectos STEM gratuitos para niños: construye puentes, circuitos eléctricos, programa en Python, lanza volcanes y más. Guías paso a paso para jóvenes estudiantes hispanos.",
+      "Recursos y proyectos STEM gratuitos para niños, familias y maestros: puentes, circuitos eléctricos, Python, volcanes y más, con guías paso a paso.",
   },
   zh: {
     title: "STEM 儿童项目 - Avanza STEM",
     description:
-      "为儿童提供免费的动手 STEM 项目：搭建桥梁、制作电路灯、用 Python 编程、发射火山等。为西班牙裔学生提供的分步指南。",
+      "面向儿童、家长和老师的免费 STEM 项目资源：搭建桥梁、制作电路灯、用 Python 编程、发射火山等，全部附分步指南。",
   },
   pt: {
     title: "Projetos de STEM Gratuitos para Crianças: Pontes, Circuitos e Python",
     description:
-      "Projetos de STEM gratuitos e passo a passo para crianças, pais e professores: pontes treliçadas, circuitos simples, programas em Python, carrinhos a elástico e experimentos de feira de ciências.",
+      "Recursos e projetos de STEM gratuitos para crianças, pais e professores: pontes, circuitos, Python, carrinhos a elástico e experimentos de feira de ciências.",
   },
 }
 

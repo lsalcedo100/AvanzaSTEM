@@ -3,6 +3,13 @@
 import { useEffect, useId, useRef } from "react"
 import { AlertTriangle, Check, CircleAlert } from "lucide-react"
 import type { SaveStatus } from "@/components/ui/useIntroToAiProgress"
+import { useLanguage } from "@/components/providers/language-provider"
+
+/** The Intro to AI chrome in the reader's language. */
+function useS() {
+  return useLanguage().t.courseUi.ai.shared
+}
+
 
 /**
  * A restrained save-state indicator. Text-first (never color-only), with a small
@@ -10,20 +17,21 @@ import type { SaveStatus } from "@/components/ui/useIntroToAiProgress"
  * the result. No spinners or distracting animation.
  */
 export function SaveState({ status, idleHint }: { status: SaveStatus; idleHint?: string }) {
+  const S = useS()
   return (
     <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground" aria-live="polite">
       {status === "saved" && (
         <>
-          <Check className="h-3.5 w-3.5 text-avanza-green-dark" aria-hidden /> Saved on this device
+          <Check className="h-3.5 w-3.5 text-avanza-green-dark" aria-hidden /> {S.savedOnDevice}
         </>
       )}
       {status === "error" && (
         <>
           <CircleAlert className="h-3.5 w-3.5 text-avanza-orange-dark" aria-hidden />
-          <span className="text-avanza-orange-dark">Couldn&apos;t save — your browser may be blocking storage</span>
+          <span className="text-avanza-orange-dark">{S.saveError}</span>
         </>
       )}
-      {status === "idle" && (idleHint ?? "Saved automatically on this device")}
+      {status === "idle" && (idleHint ?? S.savedAutomatically)}
     </p>
   )
 }
@@ -37,8 +45,8 @@ export function ConfirmDialog({
   open,
   title,
   description,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
+  confirmLabel,
+  cancelLabel,
   destructive = false,
   onConfirm,
   onCancel,
@@ -52,6 +60,7 @@ export function ConfirmDialog({
   onConfirm: () => void
   onCancel: () => void
 }) {
+  const S = useS()
   const titleId = useId()
   const descId = useId()
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -128,7 +137,7 @@ export function ConfirmDialog({
             onClick={onCancel}
             className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-avanza-green/60 hover:bg-avanza-green/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
           >
-            {cancelLabel}
+            {cancelLabel ?? S.cancel}
           </button>
           <button
             type="button"
@@ -139,7 +148,7 @@ export function ConfirmDialog({
                 : "inline-flex items-center rounded-md bg-avanza-green px-4 py-2 text-sm font-bold text-avanza-dark transition-colors hover:bg-avanza-green-dark hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-green focus-visible:ring-offset-2"
             }
           >
-            {confirmLabel}
+            {confirmLabel ?? S.confirm}
           </button>
         </div>
       </div>

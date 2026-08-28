@@ -1,6 +1,7 @@
 "use client"
 
 import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 import {
   findRoboticsModule,
   getRoboticsModules,
@@ -18,27 +19,29 @@ import { PrintButton } from "@/components/ui/print-button"
 
 const PATH_ORDER: EquipmentPathId[] = ["kit", "simulator", "unplugged"]
 
-const PATH_LABELS: Record<string, string> = {
-  kit: "Kit",
-  simulator: "Simulator",
-  unplugged: "Unplugged",
-}
+type TeacherStrings = Translations["courseUi"]["robotics"]["teacher"]
+
+const pathLabels = (T: TeacherStrings): Record<string, string> => ({
+  kit: T.pathKit,
+  simulator: T.pathSimulator,
+  unplugged: T.pathUnplugged,
+})
 
 /** A plain-language correct answer for the teacher answer key, per question kind. */
-function answerKeyText(question: KnowledgeCheckQuestion): string {
+function answerKeyText(question: KnowledgeCheckQuestion, T: TeacherStrings): string {
   switch (question.kind) {
     case "single":
     case "trace":
     case "scenario": {
       const correct = question.options.find((o) => o.id === question.correctOptionId)
-      return correct?.text ?? "See explanation"
+      return correct?.text ?? T.seeExplanation
     }
     case "multiple": {
       const correct = question.options.filter((o) => o.correct).map((o) => o.text)
       return correct.join("; ")
     }
     case "true-false":
-      return question.answer ? "True" : "False"
+      return question.answer ? T.trueLabel : T.falseLabel
     case "ordering":
       return question.correctOrder
         .map((id) => question.items.find((it) => it.id === id)?.text ?? id)
@@ -60,9 +63,13 @@ function answerKeyText(question: KnowledgeCheckQuestion): string {
  * `RoboticsModule` and mirrors the lesson page's clean, printable style.
  */
 export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const ui = t.courseUi.robotics
+  const T = ui.teacher
   const weekModule = findRoboticsModule(language, slug) ?? getRoboticsModules(language)[0]
-  const label = weekModule.isFinal ? "Final project" : `Week ${weekModule.week}: ${weekModule.title}`
+  const label = weekModule.isFinal
+    ? ui.finalProject
+    : ui.progress.weekTitleLine.replace("{n}", String(weekModule.week)).replace("{title}", weekModule.title)
   const guidance = weekModule.teacherGuidance
 
   return (
@@ -81,7 +88,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
               href={roboticsWorksheetPath(weekModule.slug)}
               className="font-semibold text-avanza-green-dark underline underline-offset-2 hover:text-avanza-green"
             >
-              Printable worksheet
+              {ui.lesson.printableWorksheet}
             </Link>
           </div>
           <PrintButton tone="green" />
@@ -92,25 +99,25 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
         {/* Header */}
         <header>
           <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Parent &amp; teacher guide
+            {ui.lesson.teacherGuide}
           </p>
           <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">{label}</h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">Session length: </span>
+            <span className="font-semibold text-foreground">{T.sessionLength}</span>
             {weekModule.estimatedTime}
           </p>
         </header>
 
         {/* Learning purpose */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Learning purpose</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.learningPurpose}</h2>
           <p className="mt-3 text-sm leading-relaxed text-foreground/90">{weekModule.summary}</p>
         </section>
 
         {/* Learning goals / expected outcomes */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Expected student outcomes</h2>
-          <p className="mt-1 text-sm text-muted-foreground">By the end of this week, students can:</p>
+          <h2 className="text-xl font-bold text-foreground">{T.expectedOutcomes}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{T.byEndStudents}</p>
           <ul className="mt-4 space-y-2">
             {weekModule.learningGoals.map((goal) => (
               <li key={goal.id} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -123,7 +130,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Suggested pacing */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Suggested pacing</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.suggestedPacing}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             About {weekModule.estimatedTime}. Adjust to your group - these are guides, not limits.
           </p>
@@ -131,9 +138,9 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
             <table className="w-full border-collapse text-left text-sm">
               <thead>
                 <tr>
-                  <th className="border border-border bg-secondary px-3 py-2 font-semibold text-foreground">Step</th>
-                  <th className="border border-border bg-secondary px-3 py-2 font-semibold text-foreground">Focus</th>
-                  <th className="border border-border bg-secondary px-3 py-2 font-semibold text-foreground">Minutes</th>
+                  <th className="border border-border bg-secondary px-3 py-2 font-semibold text-foreground">{T.step}</th>
+                  <th className="border border-border bg-secondary px-3 py-2 font-semibold text-foreground">{T.focus}</th>
+                  <th className="border border-border bg-secondary px-3 py-2 font-semibold text-foreground">{T.minutes}</th>
                 </tr>
               </thead>
               <tbody>
@@ -153,10 +160,10 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Before you start */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Before you start</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.beforeYouStart}</h2>
           <div className="mt-4 space-y-6">
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Set up</h3>
+              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{T.setUp}</h3>
               <ul className="mt-3 space-y-2">
                 {guidance.setup.map((item, i) => (
                   <li key={i} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -167,7 +174,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Prepare ahead</h3>
+              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{T.prepareAhead}</h3>
               <ul className="mt-3 space-y-2">
                 {guidance.prep.map((item, i) => (
                   <li key={i} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -182,18 +189,18 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Materials */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Materials</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.materials}</h2>
           <ul className="mt-4 space-y-3">
             {weekModule.materials.map((material) => (
               <li key={material.id} className="text-sm leading-relaxed text-foreground/90">
                 <span className="font-semibold text-foreground">{material.name}</span>
                 {material.optional && (
                   <span className="ml-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Optional
+                    {T.optional}
                   </span>
                 )}
                 <span className="ml-2 text-xs text-muted-foreground">
-                  ({material.paths.map((p) => PATH_LABELS[p] ?? p).join(", ")})
+                  ({material.paths.map((p) => pathLabels(T)[p] ?? p).join(", ")})
                 </span>
                 {material.note && (
                   <span className="mt-1 block text-sm text-muted-foreground">{material.note}</span>
@@ -205,7 +212,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Safety */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Safety</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.safety}</h2>
           <ul className="mt-4 space-y-3">
             {weekModule.safetyNotes.map((note) => (
               <li key={note.id} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -224,7 +231,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
                   {note.text}
                   {note.paths && note.paths.length > 0 && (
                     <span className="ml-2 text-xs text-muted-foreground">
-                      ({note.paths.map((p) => PATH_LABELS[p] ?? p).join(", ")})
+                      ({note.paths.map((p) => pathLabels(T)[p] ?? p).join(", ")})
                     </span>
                   )}
                 </span>
@@ -235,7 +242,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Full safety briefing (course-wide reference) */}
         <section className="mt-12 print-avoid-break">
-          <h2 className="text-xl font-bold text-foreground">Full safety briefing</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.fullSafetyBriefing}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Review these once with your group. They apply across the whole course; the notes above
             are what matters most this week.
@@ -247,7 +254,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
                   {cat.title}
                   {cat.paths && cat.paths.length > 0 && (
                     <span className="ml-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      {cat.paths.map((p) => PATH_LABELS[p] ?? p).join(", ")}
+                      {cat.paths.map((p) => pathLabels(T)[p] ?? p).join(", ")}
                     </span>
                   )}
                 </h3>
@@ -266,7 +273,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Running the session */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Running the session</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.runningSession}</h2>
           <ol className="mt-4 space-y-3">
             {guidance.facilitation.map((step, i) => (
               <li key={i} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -279,7 +286,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Common misconceptions */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Common misconceptions</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.commonMisconceptions}</h2>
           <ul className="mt-4 space-y-2">
             {guidance.commonMisconceptions.map((item, i) => (
               <li key={i} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -292,7 +299,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Questions to ask */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Questions to ask</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.questionsToAsk}</h2>
           <ul className="mt-4 space-y-2">
             {guidance.questionsToAsk.map((item, i) => (
               <li key={i} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -305,18 +312,18 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Adaptations: easier / harder / group */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Classroom &amp; group adaptations</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.adaptations}</h2>
           <div className="mt-4 space-y-4">
             <div className="rounded-lg border border-border p-5">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Make it easier</h3>
+              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{T.makeEasier}</h3>
               <p className="mt-2 text-sm leading-relaxed text-foreground/90">{guidance.easierVersion}</p>
             </div>
             <div className="rounded-lg border border-border p-5">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Make it harder</h3>
+              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{T.makeHarder}</h3>
               <p className="mt-2 text-sm leading-relaxed text-foreground/90">{guidance.harderVersion}</p>
             </div>
             <div className="rounded-lg border border-border p-5">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Groups &amp; whole class</h3>
+              <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{T.groupsWholeClass}</h3>
               <p className="mt-2 text-sm leading-relaxed text-foreground/90">
                 In pairs or small groups, give each student a role that rotates - driver (builds or
                 types), navigator (reads the plan), and recorder (fills the worksheet) - so everyone
@@ -331,7 +338,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Hardware and no-hardware notes */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Hardware and no-hardware notes</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.hardwareNotes}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Every activity this week runs three ways - all three teach the same core idea, so pick
             whichever fits your room. No specific product is required.
@@ -341,7 +348,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
               const mats = weekModule.materials.filter((m) => m.paths.includes(path))
               return (
                 <div key={path} className="rounded-lg border border-border p-4">
-                  <h3 className="text-sm font-bold text-foreground">{PATH_LABELS[path]}</h3>
+                  <h3 className="text-sm font-bold text-foreground">{pathLabels(T)[path]}</h3>
                   {mats.length > 0 ? (
                     <ul className="mt-2 space-y-1 text-sm text-foreground/90">
                       {mats.map((m) => (
@@ -349,7 +356,7 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-2 text-sm text-muted-foreground">Uses the shared materials above.</p>
+                    <p className="mt-2 text-sm text-muted-foreground">{T.usesSharedMaterials}</p>
                   )}
                 </div>
               )
@@ -367,16 +374,16 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
           if (tips.length === 0) return null
           return (
             <section className="mt-12">
-              <h2 className="text-xl font-bold text-foreground">Troubleshooting</h2>
+              <h2 className="text-xl font-bold text-foreground">{T.troubleshooting}</h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Common problems from this week&apos;s activities and what to try.
+                {T.troubleshootingIntro}
               </p>
               <ul className="mt-4 space-y-3">
                 {tips.map((t, i) => (
                   <li key={i} className="text-sm leading-relaxed text-foreground/90">
                     <span className="font-semibold text-foreground">{t.problem}</span>
                     <span className="ml-2 text-xs uppercase tracking-wide text-muted-foreground">
-                      {PATH_LABELS[t.path]}
+                      {pathLabels(T)[t.path]}
                     </span>
                     <span className="mt-0.5 block text-muted-foreground">Try: {t.fix}</span>
                   </li>
@@ -388,9 +395,9 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
 
         {/* Knowledge-check answer key */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-foreground">Knowledge-check answer key</h2>
+          <h2 className="text-xl font-bold text-foreground">{T.answerKey}</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Answers are shown here for the adult only - the student worksheet keeps them hidden.
+            {T.answerKeyIntro}
           </p>
           <ol className="mt-4 space-y-6">
             {weekModule.knowledgeCheck.questions.map((question, i) => (
@@ -399,11 +406,11 @@ export function RoboticsTeacherGuideContent({ slug }: { slug: string }) {
                   {i + 1}. {question.prompt}
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-foreground/90">
-                  <span className="font-semibold text-avanza-green-dark">Correct answer: </span>
-                  {answerKeyText(question)}
+                  <span className="font-semibold text-avanza-green-dark">{T.correctAnswer}</span>
+                  {answerKeyText(question, T)}
                 </p>
                 <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                  <span className="font-semibold text-foreground">Why: </span>
+                  <span className="font-semibold text-foreground">{T.why}</span>
                   {question.explanation}
                 </p>
               </li>
