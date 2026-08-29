@@ -126,7 +126,7 @@ export function AboutPageContent() {
                   />
                 </div>
                 <figcaption className="mt-3 text-center text-sm text-muted-foreground">
-                  us trying to look tuff
+                  {t.aboutPage.teamPhotoCaption}
                 </figcaption>
               </figure>
             </FadeIn>

@@ -26,6 +26,7 @@ import {
   Target,
 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 import { FadeIn } from "@/components/ui/animate"
 import {
   MAX_ELECTRONS,
@@ -58,30 +59,29 @@ type ParticleKind = "proton" | "neutron" | "electron"
 
 const SHELL_CAPACITIES = [2, 8, 18, 32, 32, 18, 8]
 
-const TERM_TOOLTIPS = {
-  proton:
-    "A positive particle in the nucleus. The number of protons determines the element.",
-  neutron:
-    "A neutral particle in the nucleus. Neutrons change the isotope and mass number.",
-  electron:
-    "A negative particle outside the nucleus. Electrons change the atom's charge.",
-  atomicNumber: "The number of protons.",
-  massNumber: "Protons plus neutrons.",
-  isotope: "The same element with a different number of neutrons.",
-  ion: "An atom with unequal numbers of protons and electrons.",
-  charge: "Protons minus electrons.",
-  neutralAtom: "An atom with equal numbers of protons and electrons.",
-  stableIsotope: "An isotope whose nucleus does not quickly break apart.",
-}
+/** The glossary tooltips, in the reader's language. */
+const termTooltips = (t: Translations) => ({
+  proton: t.home.atomProtonIs,
+  neutron: t.home.atomNeutronIs,
+  electron: t.home.atomElectronIs,
+  atomicNumber: t.home.atomProtonsAre,
+  massNumber: t.home.atomMassIs,
+  isotope: t.home.atomIsotopeIs,
+  ion: t.home.atomIonIs,
+  charge: t.home.atomChargeIs,
+  neutralAtom: t.home.atomNeutralIs,
+  stableIsotope: t.home.atomStableIs,
+})
 
 export function AtomBuilder() {
   const { t } = useLanguage()
+  const TERM_TOOLTIPS = termTooltips(t)
   const [protons, setProtons] = useState(1)
   const [neutrons, setNeutrons] = useState(0)
   const [electrons, setElectrons] = useState(1)
   const [reduced, setReduced] = useState(false)
   const [changeMessage, setChangeMessage] = useState(
-    "Start with neutral Hydrogen-1: 1 proton, 0 neutrons, and 1 electron.",
+    t.home.atomStartHydrogen,
   )
   const [mode, setMode] = useState<AtomGameMode>("sandbox")
   const [progress, setProgress] = useState<AtomGameProgress>(() =>
@@ -91,7 +91,7 @@ export function AtomBuilder() {
   const [moves, setMoves] = useState(0)
   const [mistakes, setMistakes] = useState(0)
   const [missionFeedback, setMissionFeedback] = useState(
-    "Choose a mission and build the atom described.",
+    t.home.atomChooseMission,
   )
   const [completion, setCompletion] = useState<LevelCompletion | null>(null)
   const [anim, setAnim] = useState<{
@@ -146,11 +146,11 @@ export function AtomBuilder() {
 
       if (loaded.lastSelectedMode === "sandbox") {
         setCounts(loaded.lastSandboxAtom)
-        setChangeMessage("Restored your last sandbox atom.")
+        setChangeMessage(t.home.atomRestoredSandbox)
         return
       }
 
-      startLevel(firstUnlocked, "Level loaded. Build the mission atom.")
+      startLevel(firstUnlocked, t.home.atomLevelLoaded)
     }, 0)
 
     return () => window.clearTimeout(timeout)
@@ -257,7 +257,7 @@ export function AtomBuilder() {
 
   const reset = () => {
     if (mode === "challenge") {
-      startLevel(currentLevel, "Mission reset. Try a clean build.")
+      startLevel(currentLevel, t.home.atomMissionReset)
       return
     }
 
@@ -265,7 +265,7 @@ export function AtomBuilder() {
     setNeutrons(0)
     setElectrons(1)
     setChangeMessage(
-      "Reset to neutral Hydrogen-1: 1 proton makes hydrogen, 0 neutrons makes Hydrogen-1, and 1 electron balances the charge.",
+      t.home.atomResetNeutral,
     )
     const sandboxAtom = { protons: 1, neutrons: 0, electrons: 1 }
     const nextProgress = {
@@ -290,7 +290,7 @@ export function AtomBuilder() {
 
     if (nextMode === "sandbox") {
       setCounts(nextProgress.lastSandboxAtom)
-      setChangeMessage("Sandbox Mode restored your saved atom.")
+      setChangeMessage(t.home.atomSandboxRestored)
       return
     }
 
@@ -299,7 +299,7 @@ export function AtomBuilder() {
       : CHALLENGE_LEVELS.find((level) => isLevelUnlocked(nextProgress, level)) ??
         CHALLENGE_LEVELS[0]
     setSelectedLevelId(unlockedLevel.id)
-    startLevel(unlockedLevel, "Challenge Mode ready. Build the mission atom.")
+    startLevel(unlockedLevel, t.home.atomChallengeReady)
   }
 
   const chooseLevel = (levelId: string) => {
@@ -371,12 +371,12 @@ export function AtomBuilder() {
           <div className="mx-auto mt-9 flex w-fit rounded-full bg-white p-1 shadow-sm ring-1 ring-avanza-dark/10">
             <ModeButton
               active={mode === "sandbox"}
-              label="Sandbox Mode"
+              label={t.home.atomSandboxMode}
               onClick={() => chooseMode("sandbox")}
             />
             <ModeButton
               active={mode === "challenge"}
-              label="Challenge Mode"
+              label={t.home.atomChallengeMode}
               onClick={() => chooseMode("challenge")}
             />
           </div>
@@ -464,9 +464,9 @@ export function AtomBuilder() {
                   <StatusIcon state={visualState} />
                   <div className="min-w-0">
                     <p className="text-[11px] font-extrabold uppercase tracking-widest text-avanza-dark/60">
-                      {getStabilityStatusLabel(analysis)}
+                      {getStabilityStatusLabel(analysis, t)}
                       {" · "}
-                      {getIonStatusLabel(analysis)}
+                      {getIonStatusLabel(analysis, t)}
                     </p>
                     <p className="mt-1 text-sm font-bold leading-relaxed text-avanza-dark">
                       {analysis.shortExplanation}
@@ -484,7 +484,7 @@ export function AtomBuilder() {
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div>
                         <p className="text-[10px] font-extrabold uppercase tracking-widest text-white/55">
-                          Challenge progress
+                          {t.home.atomChallengeProgress}
                         </p>
                         <p className="mt-1 text-sm font-bold">
                           Moves: {moves} · Mistakes: {mistakes}
@@ -528,7 +528,7 @@ export function AtomBuilder() {
                 ) : (
                   <div className="rounded-2xl bg-white/8 p-4 text-sm text-white/82 ring-1 ring-white/10">
                     <p className="text-[10px] font-extrabold uppercase tracking-widest text-white/55">
-                      Sandbox Mode
+                      {t.home.atomSandboxMode}
                     </p>
                     <p className="mt-1 font-bold text-white">
                       Explore freely. Every atom still uses the same validation
@@ -584,12 +584,12 @@ export function AtomBuilder() {
                       )}
                     >
                       <StatusIcon state={visualState} className="h-3.5 w-3.5" />
-                      {getStabilityStatusLabel(analysis)}
+                      {getStabilityStatusLabel(analysis, t)}
                     </span>
                   </div>
                   <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
                     <ElementStat
-                      label="Atomic no."
+                      label={t.home.atomAtomicNo}
                       value={analysis.atomicNumber}
                       tooltip={TERM_TOOLTIPS.atomicNumber}
                     />
@@ -604,8 +604,8 @@ export function AtomBuilder() {
                       tooltip={TERM_TOOLTIPS.charge}
                     />
                     <ElementStat
-                      label="Type"
-                      value={getIonShortLabel(analysis)}
+                      label={t.home.atomType}
+                      value={getIonShortLabel(analysis, t)}
                       tooltip={
                         analysis.neutralIonStatus === "neutral"
                           ? TERM_TOOLTIPS.neutralAtom
@@ -667,7 +667,7 @@ export function AtomBuilder() {
                 <div className="rounded-2xl bg-white/8 p-4 text-sm leading-relaxed text-white/82 ring-1 ring-white/10">
                   <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-widest text-white/55">
                     <Sparkles className="h-3.5 w-3.5" />
-                    What changed?
+                    {t.home.atomWhatChanged}
                   </p>
                   <p className="mt-1 font-bold text-white">{changeMessage}</p>
                 </div>
@@ -858,6 +858,7 @@ function ChallengePanel({
   onChooseLevel: (levelId: string) => void
   onNextLevel: () => void
 }) {
+  const { t } = useLanguage()
   const nextLevel = CHALLENGE_LEVELS[currentLevel.number]
   const unlockedAchievements = ACHIEVEMENTS.filter((achievement) =>
     progress.achievementIds.includes(achievement.id),
@@ -905,7 +906,7 @@ function ChallengePanel({
               <div>
                 <p className="flex items-center gap-1.5 text-sm font-extrabold">
                   <CheckCircle2 className="h-4 w-4 text-avanza-green" />
-                  Level complete
+                  {t.home.atomLevelComplete}
                 </p>
                 <p className="mt-1 text-xs font-bold text-avanza-dark/65">
                   Score {completion.score} · {completion.stars} star
@@ -918,7 +919,7 @@ function ChallengePanel({
                   onClick={onNextLevel}
                   className="rounded-full bg-avanza-dark px-4 py-2 text-xs font-extrabold text-white transition-colors hover:bg-avanza-purple"
                 >
-                  Next level
+                  {t.home.atomNextLevel}
                 </button>
               )}
             </div>
@@ -940,7 +941,7 @@ function ChallengePanel({
 
       <div className="rounded-2xl bg-white/8 p-4 ring-1 ring-white/10">
         <p className="text-[10px] font-extrabold uppercase tracking-widest text-white/55">
-          Missions
+          {t.home.atomMissions}
         </p>
         <div className="mt-3 grid grid-cols-5 gap-2">
           {CHALLENGE_LEVELS.map((level) => {
@@ -953,7 +954,7 @@ function ChallengePanel({
                 type="button"
                 onClick={() => onChooseLevel(level.id)}
                 disabled={!unlocked}
-                title={unlocked ? level.title : "Complete earlier levels to unlock this."}
+                title={unlocked ? level.title : t.home.atomCompleteEarlier}
                 className={cn(
                   "flex h-11 items-center justify-center rounded-xl text-sm font-extrabold transition-colors ring-1",
                   selected
@@ -983,7 +984,7 @@ function ChallengePanel({
       <div className="rounded-2xl bg-white/8 p-4 ring-1 ring-white/10">
         <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-widest text-white/55">
           <Award className="h-3.5 w-3.5" />
-          Achievements
+          {t.home.atomAchievements}
         </p>
         {unlockedAchievements.length > 0 ? (
           <div className="mt-3 flex flex-wrap gap-2">
@@ -999,7 +1000,7 @@ function ChallengePanel({
           </div>
         ) : (
           <p className="mt-2 text-xs font-bold text-white/60">
-            Complete missions to unlock achievements.
+            {t.home.atomUnlockHint}
           </p>
         )}
       </div>
@@ -1034,6 +1035,7 @@ function InfoTooltip({
   tooltip: string
   dark?: boolean
 }) {
+  const { t } = useLanguage()
   return (
     <span
       tabIndex={0}
@@ -1051,19 +1053,19 @@ function InfoTooltip({
   )
 }
 
-function getStabilityStatusLabel(analysis: AtomAnalysis): string {
-  if (analysis.neutralIonStatus === "not-an-atom") return "Not an atom"
-  if (analysis.validStatus === "invalid") return "Invalid isotope"
-  if (analysis.stabilityStatus === "stable") return "Known stable isotope"
-  if (analysis.stabilityStatus === "unstable") return "Unstable isotope"
-  return "Stability not labeled"
+function getStabilityStatusLabel(analysis: AtomAnalysis, t: Translations): string {
+  if (analysis.neutralIonStatus === "not-an-atom") return t.home.atomNotAnAtom
+  if (analysis.validStatus === "invalid") return t.home.atomInvalidIsotope
+  if (analysis.stabilityStatus === "stable") return t.home.atomKnownStable
+  if (analysis.stabilityStatus === "unstable") return t.home.atomUnstable
+  return t.home.atomStabilityUnknown
 }
 
-function getIonStatusLabel(analysis: AtomAnalysis): string {
-  if (analysis.neutralIonStatus === "not-an-atom") return "No ion status"
-  if (analysis.neutralIonStatus === "neutral") return "Neutral atom"
-  if (analysis.ionChargeStatus === "cation") return "Positive ion / cation"
-  return "Negative ion / anion"
+function getIonStatusLabel(analysis: AtomAnalysis, t: Translations): string {
+  if (analysis.neutralIonStatus === "not-an-atom") return t.home.atomNoIonStatus
+  if (analysis.neutralIonStatus === "neutral") return t.home.atomNeutralAtom
+  if (analysis.ionChargeStatus === "cation") return t.home.atomCation
+  return t.home.atomAnion
 }
 
 type VisualState =
@@ -1096,6 +1098,7 @@ function StatusIcon({
   state: VisualState
   className?: string
 }) {
+  const { t } = useLanguage()
   const base = cn("shrink-0", className)
   if (state === "invalid")
     return <AlertTriangle className={cn(base, "text-avanza-orange")} />
@@ -1110,10 +1113,10 @@ function StatusIcon({
   return <CircleDot className={cn(base, "text-avanza-dark/70")} />
 }
 
-function getIonShortLabel(analysis: AtomAnalysis): string {
+function getIonShortLabel(analysis: AtomAnalysis, t: Translations): string {
   if (analysis.neutralIonStatus === "not-an-atom") return "—"
-  if (analysis.neutralIonStatus === "neutral") return "Neutral"
-  return analysis.ionChargeStatus === "cation" ? "Cation +" : "Anion −"
+  if (analysis.neutralIonStatus === "neutral") return t.home.atomNeutralShort
+  return analysis.ionChargeStatus === "cation" ? t.home.atomCationShort : t.home.atomAnionShort
 }
 
 function ElementStat({
@@ -1217,6 +1220,7 @@ function AtomSVG({
   animDelta: number
   elementChanged: boolean
 }) {
+  const { t } = useLanguage()
   const size = 400
   const cx = size / 2
   const cy = size / 2
@@ -1270,7 +1274,7 @@ function AtomSVG({
       role="img"
       aria-label={`Atom diagram: ${
         analysis.elementName ? analysis.isotopeName : "no element yet"
-      }, charge ${analysis.chargeLabel}, ${getStabilityStatusLabel(analysis)}`}
+      }, charge ${analysis.chargeLabel}, ${getStabilityStatusLabel(analysis, t)}`}
     >
       <defs>
         <radialGradient id="atomBg" cx="50%" cy="50%" r="60%">
@@ -1534,7 +1538,7 @@ function AtomSVG({
           fontWeight="700"
           fill="#9ca3af"
         >
-          Add a proton to begin
+          {t.home.atomAddProton}
         </text>
       )}
     </svg>

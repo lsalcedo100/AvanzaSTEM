@@ -431,21 +431,21 @@ export function MarbleRun() {
 
   const getPlacementProblem = useCallback(
     (row: number, col: number, kind: BuildablePieceKind) => {
-      if (runState === "running") return "Editing is locked while the marble is running."
+      if (runState === "running") return t.gamesPage.mrEditingLocked
       if (row === level.start.row && col === level.start.col) {
-        return "The release point is fixed."
+        return t.gamesPage.mrReleaseFixed
       }
       if (row === level.goal.row && col === level.goal.col) {
-        return "The cup is fixed."
+        return t.gamesPage.mrCupFixed
       }
 
       const fixed = fixedByKey.get(cellKey(row, col))
-      if (fixed?.kind === "wall") return "Fixed walls cannot be replaced."
-      if (fixed?.kind === "hazard") return "Hazard cells cannot hold pieces."
-      if (fixed?.kind === "wrong") return "That miss marker is fixed."
-      if (fixed?.kind === "piece") return "That piece is locked into the level."
+      if (fixed?.kind === "wall") return t.gamesPage.mrWallsFixed
+      if (fixed?.kind === "hazard") return t.gamesPage.mrHazardCells
+      if (fixed?.kind === "wrong") return t.gamesPage.mrMissFixed
+      if (fixed?.kind === "piece") return t.gamesPage.mrPieceLocked
       if (placedByKey.has(cellKey(row, col))) {
-        return "Select the existing piece, rotate it, or erase it first."
+        return t.gamesPage.mrSelectFirst
       }
       if (remaining[kind] <= 0) return `No ${PIECE_LABELS[kind].toLowerCase()} pieces left.`
       return null
@@ -490,7 +490,7 @@ export function MarbleRun() {
     setSelectedCell(null)
     setRunState("editing")
     setFailureCell(null)
-    setStatusMessage("Piece removed.")
+    setStatusMessage(t.gamesPage.mrPieceRemoved)
     clearTrail()
   }, [clearTrail, placedByKey, runState, selectedCell])
 
@@ -515,14 +515,14 @@ export function MarbleRun() {
 
       if (tool === "erase") {
         if (!existing) {
-          setStatusMessage("There is no placed piece in that cell.")
+          setStatusMessage(t.gamesPage.mrNoPiece)
           return
         }
         setPlacements((current) => current.filter((placement) => pieceKey(placement) !== clickedKey))
         setSelectedCell(null)
         setRunState("editing")
         setFailureCell(null)
-        setStatusMessage("Piece removed.")
+        setStatusMessage(t.gamesPage.mrPieceRemoved)
         clearTrail()
         return
       }
@@ -796,7 +796,7 @@ export function MarbleRun() {
     setActiveBounceCell(null)
     const result = simulateCourse(level, placements)
     setRunState("running")
-    setStatusMessage("Running the marble.")
+    setStatusMessage(t.gamesPage.mrRunning)
     animateSimulation(result)
   }, [animateSimulation, level, placements, runState])
 
@@ -805,7 +805,7 @@ export function MarbleRun() {
     setSelectedCell(null)
     setFailureCell(null)
     setActiveBounceCell(null)
-    setStatusMessage("Marble reset. Your placed pieces are still on the board.")
+    setStatusMessage(t.gamesPage.mrMarbleReset)
     resetMarbleVisuals()
   }, [resetMarbleVisuals])
 
@@ -815,7 +815,7 @@ export function MarbleRun() {
     setRunState("editing")
     setFailureCell(null)
     setActiveBounceCell(null)
-    setStatusMessage("Board cleared.")
+    setStatusMessage(t.gamesPage.mrBoardCleared)
     resetMarbleVisuals()
   }, [resetMarbleVisuals])
 
@@ -841,7 +841,7 @@ export function MarbleRun() {
       if (!nextLevel) return false
 
       if (!options?.force && !isLevelUnlocked(index)) {
-        setStatusMessage("Complete the previous level to unlock this course.")
+        setStatusMessage(t.gamesPage.mrCompletePrev)
         return false
       }
 
@@ -878,11 +878,11 @@ export function MarbleRun() {
   const goNext = useCallback(() => {
     if (runState !== "success") return
     if (levelIndex >= MARBLE_RUN_LEVELS.length - 1) {
-      setStatusMessage("Final course complete. You solved every marble run.")
+      setStatusMessage(t.gamesPage.mrFinalComplete)
       return
     }
     if (!isLevelUnlocked(levelIndex + 1)) {
-      setStatusMessage("Complete this course to unlock the next one.")
+      setStatusMessage(t.gamesPage.mrCompleteToUnlock)
       return
     }
     loadLevel(levelIndex + 1)
@@ -892,7 +892,7 @@ export function MarbleRun() {
     if (runState === "running") return
 
     const confirmed = window.confirm(
-      "Reset marble run progress? This will lock every level except Level 1 and clear your saved bests.",
+      t.gamesPage.mrResetConfirm,
     )
     if (!confirmed) return
 
@@ -904,7 +904,7 @@ export function MarbleRun() {
       // Ignore storage failures; the in-memory reset still applies immediately.
     }
     loadLevel(0, { force: true })
-    setStatusMessage("Progress reset. Level 1 is unlocked.")
+    setStatusMessage(t.gamesPage.mrProgressReset)
   }, [loadLevel, runState])
 
   useEffect(() => {
@@ -1076,7 +1076,7 @@ export function MarbleRun() {
                   <>
                     <p className="font-semibold">{hoverProblem ?? statusMessage}</p>
                     <p className="mt-1 text-xs text-[#6b7478]">
-                      Rotate with R, erase with Delete, then launch the marble.
+                      {t.gamesPage.mrRotateHint}
                     </p>
                   </>
                 )}
@@ -1087,7 +1087,7 @@ export function MarbleRun() {
               <div>
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#7a5524]">
-                    Levels
+                    {t.gamesPage.mrLevels}
                   </h3>
                   <button
                     type="button"
@@ -1095,7 +1095,7 @@ export function MarbleRun() {
                     onClick={resetProgress}
                     className="text-xs font-bold text-[#7b6247] underline decoration-[#c6ad80] underline-offset-4 transition-colors hover:text-[#3f3328] disabled:cursor-not-allowed disabled:opacity-45"
                   >
-                    Reset progress
+                    {t.gamesPage.mrResetProgress}
                   </button>
                 </div>
                 <div className="mt-3 flex gap-2 overflow-x-auto pb-1 lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0">
@@ -1144,7 +1144,7 @@ export function MarbleRun() {
 
               <div className="mt-5 border-t border-[#e4c98e] pt-4">
                 <h3 className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#7a5524]">
-                  Tool Tray
+                  {t.gamesPage.mrToolTray}
                 </h3>
                 <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-2">
                   {BUILD_TOOLS.map((kind) => {
@@ -1190,33 +1190,33 @@ export function MarbleRun() {
                     <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#f2efe8] text-[#6f5840]">
                       <Eraser className="h-5 w-5" aria-hidden="true" />
                     </span>
-                    <span>Erase</span>
+                    <span>{t.gamesPage.mrErase}</span>
                   </button>
                 </div>
               </div>
 
               <div className="mt-5 border-t border-[#e4c98e] pt-4">
                 <h3 className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#7a5524]">
-                  Launch Controls
+                  {t.gamesPage.mrLaunchControls}
                 </h3>
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   <ControlButton primary disabled={runState === "running"} icon={Play} onClick={runSimulation}>
-                    Run
+                    {t.gamesPage.mrRun}
                   </ControlButton>
                   <ControlButton disabled={runState === "running"} icon={RotateCcw} onClick={resetMarble}>
-                    Reset
+                    {t.gamesPage.mrReset}
                   </ControlButton>
                   <ControlButton disabled={runState === "running"} icon={Trash2} onClick={clearBoard}>
-                    Clear
+                    {t.gamesPage.mrClear}
                   </ControlButton>
                   <ControlButton disabled={runState === "running"} icon={Wrench} onClick={restartLevel}>
-                    Restart
+                    {t.gamesPage.mrRestart}
                   </ControlButton>
                   <ControlButton disabled={runState === "running"} icon={RotateCcw} onClick={rotateActive}>
-                    Rotate
+                    {t.gamesPage.mrRotate}
                   </ControlButton>
                   <ControlButton disabled={runState === "running" || !selectedPiece} icon={Eraser} onClick={eraseSelected}>
-                    Erase
+                    {t.gamesPage.mrErase}
                   </ControlButton>
                 </div>
               </div>
@@ -1290,6 +1290,7 @@ function LevelCompleteCard({
   onReplay: () => void
   onResetProgress: () => void
 }) {
+  const { t } = useLanguage()
   if (final) {
     return (
       <div className="relative overflow-hidden rounded-lg border border-[#88bd6d] bg-[#f3fde9] p-4 [animation:win-banner-pop_260ms_ease-out]">
@@ -1303,7 +1304,7 @@ function LevelCompleteCard({
             <Trophy className="h-6 w-6" aria-hidden="true" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-lg font-extrabold text-[#275322]">Challenge Complete!</p>
+            <p className="text-lg font-extrabold text-[#275322]">{t.gamesPage.mrChallengeComplete}</p>
             <p className="mt-1 text-sm text-[#3f6c37]">
               You finished {completedCount} of {levelCount} marble machine levels.
             </p>
@@ -1314,14 +1315,14 @@ function LevelCompleteCard({
                 className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[#88bd6d] bg-white px-3 py-2 text-sm font-extrabold text-[#315f2b] hover:bg-[#ecf9e5]"
               >
                 <RotateCcw className="h-4 w-4" aria-hidden="true" />
-                Replay Levels
+                {t.gamesPage.mrReplayLevels}
               </button>
               <button
                 type="button"
                 onClick={onResetProgress}
                 className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[#d3bb82] bg-[#fff8ea] px-3 py-2 text-sm font-extrabold text-[#6d4a16] hover:bg-[#fff1c8]"
               >
-                Reset Progress
+                {t.gamesPage.mrResetProgressBtn}
               </button>
             </div>
           </div>
@@ -1337,8 +1338,8 @@ function LevelCompleteCard({
           <Sparkles className="h-5 w-5" aria-hidden="true" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-lg font-extrabold text-[#275322]">Level Complete!</p>
-          <p className="mt-1 text-sm text-[#3f6c37]">Nice build. The next marble course is ready.</p>
+          <p className="text-lg font-extrabold text-[#275322]">{t.gamesPage.mrLevelComplete}</p>
+          <p className="mt-1 text-sm text-[#3f6c37]">{t.gamesPage.mrNiceBuild}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <button
               type="button"
@@ -1346,7 +1347,7 @@ function LevelCompleteCard({
               className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[#1e7c55] bg-[#2eb66c] px-3 py-2 text-sm font-extrabold text-white shadow-[0_4px_0_#176642] hover:bg-[#28a761]"
             >
               <Play className="h-4 w-4" aria-hidden="true" />
-              Next Level
+              {t.gamesPage.mrNextLevel}
             </button>
             <button
               type="button"
@@ -1354,7 +1355,7 @@ function LevelCompleteCard({
               className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[#d3bb82] bg-white px-3 py-2 text-sm font-extrabold text-[#5f4b25] hover:bg-[#fff8ea]"
             >
               <RotateCcw className="h-4 w-4" aria-hidden="true" />
-              Improve Score
+              {t.gamesPage.mrImproveScore}
             </button>
           </div>
         </div>
@@ -1364,6 +1365,7 @@ function LevelCompleteCard({
 }
 
 function FailureCard({ message, onTryAgain }: { message: string; onTryAgain: () => void }) {
+  const { t } = useLanguage()
   return (
     <div className="rounded-lg border border-[#e28b7a] bg-[#fff0ec] p-4 [animation:win-banner-pop_180ms_ease-out]">
       <div className="flex items-start gap-3">
@@ -1371,7 +1373,7 @@ function FailureCard({ message, onTryAgain }: { message: string; onTryAgain: () 
           <Target className="h-5 w-5" aria-hidden="true" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-base font-extrabold text-[#7c2c22]">Try a New Route</p>
+          <p className="text-base font-extrabold text-[#7c2c22]">{t.gamesPage.mrTryNewRoute}</p>
           <p className="mt-1 text-sm font-semibold text-[#7c2c22]">{message}</p>
           <button
             type="button"
@@ -1379,7 +1381,7 @@ function FailureCard({ message, onTryAgain }: { message: string; onTryAgain: () 
             className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg border border-[#d94d39] bg-white px-3 py-2 text-sm font-extrabold text-[#7c2c22] hover:bg-[#fff8f5]"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            Try Again
+            {t.gamesPage.mrTryAgain}
           </button>
         </div>
       </div>

@@ -31,6 +31,11 @@ import {
   type Vec,
 } from "./catapult-physics"
 import { createLevelUpSounds, playRandomLevelUpSound, stopLevelUpSounds } from "./level-up-sounds"
+import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
+
+/** The catapult wording, threaded through the pure game reducer. */
+type Msg = Translations["gamesPage"]
 
 const DEBUG_COLLISION = false
 
@@ -205,6 +210,8 @@ type TerminalHit = {
 let effectId = 0
 
 export function CatapultLab() {
+  const { t } = useLanguage()
+  const M = t.gamesPage
   const [game, setGame] = useState<GameState>(() => createLevelState(0))
   const [angle, setAngle] = useState(LEVELS[0].startAngle)
   const [power, setPower] = useState(LEVELS[0].startPower)
@@ -415,7 +422,7 @@ export function CatapultLab() {
       last = now
 
       setGame((previous) => {
-        const next = advanceGame(previous, dt)
+        const next = advanceGame(previous, dt, M)
         gameRef.current = next
         return next
       })
@@ -556,7 +563,7 @@ export function CatapultLab() {
         phase: "firing",
         firstShotSceneTime: previous.firstShotSceneTime ?? previous.sceneTime,
         shotsUsed: previous.shotsUsed + 1,
-        status: "In flight.",
+        status: t.gamesPage.clInFlight,
         trail: [activeProjectile.position],
         projectile: activeProjectile,
         activeShot: {
@@ -789,10 +796,10 @@ export function CatapultLab() {
               </div>
 
               <div className="grid grid-cols-4 border border-[#d6d8d2] text-sm md:min-w-[520px]">
-                <TopStat label="Targets" value={`${targetsHit}/${game.targets.length}`} />
-                <TopStat label="Shots" value={`${game.shotsUsed}/${level.shotLimit}`} />
-                <TopStat label="Score" value={String(game.score)} />
-                <TopStat label="Best" value={bestScore === undefined ? "--" : String(bestScore)} />
+                <TopStat label={t.gamesPage.clTargets} value={`${targetsHit}/${game.targets.length}`} />
+                <TopStat label={t.gamesPage.clShots} value={`${game.shotsUsed}/${level.shotLimit}`} />
+                <TopStat label={t.gamesPage.clScore} value={String(game.score)} />
+                <TopStat label={t.gamesPage.clBest} value={bestScore === undefined ? "--" : String(bestScore)} />
               </div>
             </div>
 
@@ -805,7 +812,7 @@ export function CatapultLab() {
                   canAim && "cursor-crosshair",
                 )}
                 role="img"
-                aria-label="Projectile puzzle playfield"
+                aria-label={t.gamesPage.clPlayfield}
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
@@ -971,10 +978,10 @@ export function CatapultLab() {
 
             <div className="grid gap-3 border-t border-[#d6d8d2] bg-white px-4 py-4 lg:grid-cols-[1fr_auto] lg:items-center md:px-5">
               <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                <Readout label="Angle" value={`${angle} deg`} />
-                <Readout label="Power" value={`${power} m/s`} />
-                <Readout label="Projectile" value={PROJECTILE_SPECS[selectedProjectileKind].label} />
-                <Readout label="Shots Left" value={String(shotsRemaining)} />
+                <Readout label={t.gamesPage.clAngle} value={`${angle} deg`} />
+                <Readout label={t.gamesPage.clPower} value={`${power} m/s`} />
+                <Readout label={t.gamesPage.clProjectile} value={PROJECTILE_SPECS[selectedProjectileKind].label} />
+                <Readout label={t.gamesPage.clShotsLeft} value={String(shotsRemaining)} />
               </div>
 
               <div className="flex flex-wrap gap-2 lg:justify-end">
@@ -985,7 +992,7 @@ export function CatapultLab() {
                   disabled={!canAim}
                   className="border border-[#1d211c] bg-[#d96d1f] px-4 py-2 text-sm font-extrabold text-white transition hover:enabled:bg-[#c65f18] disabled:cursor-not-allowed disabled:border-[#b8bbb4] disabled:bg-[#d7d9d3] disabled:text-[#73786f]"
                 >
-                  Fire
+                  {t.gamesPage.clFire}
                 </button>
               </div>
             </div>
@@ -993,7 +1000,7 @@ export function CatapultLab() {
             <div className="grid gap-4 border-t border-[#d6d8d2] px-4 py-4 md:grid-cols-[1fr_1.25fr] md:px-5">
               <div className="grid gap-3 sm:grid-cols-2">
                 <ControlSlider
-                  label="Angle"
+                  label={t.gamesPage.clAngle}
                   value={angle}
                   min={MIN_ANGLE}
                   max={MAX_ANGLE}
@@ -1002,7 +1009,7 @@ export function CatapultLab() {
                   onChange={setAngle}
                 />
                 <ControlSlider
-                  label="Power"
+                  label={t.gamesPage.clPower}
                   value={power}
                   min={MIN_POWER}
                   max={MAX_POWER}
@@ -1170,7 +1177,7 @@ function playSingleSound(sound: HTMLAudioElement | null) {
   })
 }
 
-function advanceGame(state: GameState, dt: number): GameState {
+function advanceGame(state: GameState, dt: number, M: Msg): GameState {
   const level = LEVELS[state.levelIndex]
   const agedEffects = ageEffects(state.effects, dt)
 
@@ -1180,7 +1187,7 @@ function advanceGame(state: GameState, dt: number): GameState {
 
     while (remaining > 0 && next.phase === "firing" && next.activeShot) {
       const step = Math.min(FIXED_STEP, remaining)
-      next = advanceShot(next, step)
+      next = advanceShot(next, step, M)
       remaining -= step
     }
 
@@ -1208,11 +1215,11 @@ function advanceGame(state: GameState, dt: number): GameState {
       nextPhase: null,
       status:
         nextPhase === "levelFailed"
-          ? state.result?.reason ?? "No shots remaining."
+          ? state.result?.reason ?? M.clNoShots
           : nextPhase === "levelComplete"
             ? state.levelIndex === LEVELS.length - 1
-              ? "Final line clear."
-              : "Level clear."
+              ? M.clFinalLineClear
+              : M.clLevelClear
             : state.status,
     }
   }
@@ -1228,7 +1235,7 @@ function advanceGame(state: GameState, dt: number): GameState {
   return state
 }
 
-function advanceShot(state: GameState, dt: number): GameState {
+function advanceShot(state: GameState, dt: number, M: Msg): GameState {
   const shot = state.activeShot
   if (!shot) return state
 
@@ -1287,7 +1294,7 @@ function advanceShot(state: GameState, dt: number): GameState {
     })
     score = scoreFromBreakdown(scoreBreakdown)
     hitsThisShot += 1
-    resolution = formatTargetResolution(hitsThisShot)
+    resolution = formatTargetResolution(hitsThisShot, M)
     status = resolution
     targets = targets.map((current) =>
       current.id === target.id ? { ...current, hit: true, hitAt: sceneTime } : current,
@@ -1328,7 +1335,7 @@ function advanceShot(state: GameState, dt: number): GameState {
       ...nextProjectile,
       velocity: multiply(nextProjectile.velocity, 0.86),
     }
-    resolution = resolution ?? "Cover broken."
+    resolution = resolution ?? M.clCoverBroken
     status = resolution
   }
 
@@ -1366,7 +1373,7 @@ function advanceShot(state: GameState, dt: number): GameState {
         impactMarks: appendImpactMark(impactMarks, bounceEffect),
         score,
         scoreBreakdown,
-        status: "Bounce used.",
+        status: M.clBounceUsed,
         trail: nextTrail,
         projectile: bounced,
         activeShot: { ...shot, projectile: bounced, hitsThisShot, resolution },
@@ -1374,7 +1381,7 @@ function advanceShot(state: GameState, dt: number): GameState {
       }
     }
 
-    const message = resolution ?? classifyTerminalHit(terminalHit, targets, shot.kind, spec)
+    const message = resolution ?? classifyTerminalHit(terminalHit, targets, shot.kind, spec, M)
     const resolvedProjectile = {
       ...nextProjectile,
       position: terminalHit.point,
@@ -1405,6 +1412,7 @@ function advanceShot(state: GameState, dt: number): GameState {
         lastSegment: { from: previousPosition, to: terminalHit.point },
       },
       message,
+      M,
     )
   }
 
@@ -1419,18 +1427,19 @@ function advanceShot(state: GameState, dt: number): GameState {
         impactMarks,
         score,
         scoreBreakdown,
-        status: resolution ?? "Target cleared.",
+        status: resolution ?? M.clTargetCleared,
         trail: nextTrail,
         projectile: nextProjectile,
         activeShot: { ...shot, projectile: nextProjectile, hitsThisShot, resolution },
         lastSegment: { from: previousPosition, to: currentPosition },
       },
-      resolution ?? "Target cleared.",
+      resolution ?? M.clTargetCleared,
+      M,
     )
   }
 
   if (isOutOfBounds(nextProjectile.position)) {
-    const message = resolution ?? classifyMiss(nextProjectile.position, targets)
+    const message = resolution ?? classifyMiss(nextProjectile.position, targets, M)
 
     return finishShot(
       {
@@ -1449,6 +1458,7 @@ function advanceShot(state: GameState, dt: number): GameState {
         lastSegment: { from: previousPosition, to: currentPosition },
       },
       message,
+      M,
     )
   }
 
@@ -1459,8 +1469,8 @@ function advanceShot(state: GameState, dt: number): GameState {
     const message =
       resolution ??
       (shot.kind === "bouncy" && nextProjectile.bouncesUsed >= spec.maxBounces
-        ? "Bounce spent."
-        : "Shot stopped.")
+        ? M.clBounceSpent
+        : M.clShotStopped)
 
     return finishShot(
       {
@@ -1479,6 +1489,7 @@ function advanceShot(state: GameState, dt: number): GameState {
         lastSegment: { from: previousPosition, to: currentPosition },
       },
       message,
+      M,
     )
   }
 
@@ -1499,7 +1510,7 @@ function advanceShot(state: GameState, dt: number): GameState {
   }
 }
 
-function finishShot(state: GameState, message: string): GameState {
+function finishShot(state: GameState, message: string, M: Msg): GameState {
   const level = LEVELS[state.levelIndex]
   const complete = state.targets.every((target) => target.hit)
   const failed = !complete && state.shotsUsed >= level.shotLimit
@@ -1524,7 +1535,7 @@ function finishShot(state: GameState, message: string): GameState {
     phase: "resolving",
     score,
     scoreBreakdown,
-    status: complete ? "Level clear." : failed ? "No shots remaining." : message,
+    status: complete ? M.clLevelClear : failed ? M.clNoShots : message,
     activeShot: null,
     resolveTimer: RESOLVE_DELAY,
     nextPhase,
@@ -1593,18 +1604,18 @@ function getGroundHit(from: Vec, to: Vec, radius: number): TerminalHit | null {
   }
 }
 
-function classifyMiss(point: Vec, targets: TargetState[]) {
+function classifyMiss(point: Vec, targets: TargetState[], M: Msg) {
   const openTargets = targets.filter((target) => !target.hit)
   if (openTargets.length === 0) return "Missed."
 
-  if (isOutOfBounds(point)) return "Out of bounds."
+  if (isOutOfBounds(point)) return M.clOutOfBounds
 
   const minX = Math.min(...openTargets.map((target) => target.x))
   const maxX = Math.max(...openTargets.map((target) => target.x))
 
-  if (point.x < minX - 8) return "Short."
-  if (point.x > maxX + 8) return "Overshot."
-  return point.y < 2.5 ? "Too low." : "Missed."
+  if (point.x < minX - 8) return M.clShort
+  if (point.x > maxX + 8) return M.clOvershot
+  return point.y < 2.5 ? M.clTooLow : M.clMissed
 }
 
 function classifyTerminalHit(
@@ -1612,20 +1623,21 @@ function classifyTerminalHit(
   targets: TargetState[],
   projectileKind: ProjectileKind,
   spec: (typeof PROJECTILE_SPECS)[ProjectileKind],
+  M: Msg,
 ) {
   if (
     projectileKind === "bouncy" &&
     spec.maxBounces > 0
   ) {
-    return "Bounce spent."
+    return M.clBounceSpent
   }
 
   if (terminalHit.kind === "obstacle") {
-    if (terminalHit.obstacle?.kind === "weak") return "Blocked by weak cover. Heavy required."
-    return "Blocked by cover."
+    if (terminalHit.obstacle?.kind === "weak") return M.clBlockedWeak
+    return M.clBlockedCover
   }
 
-  return classifyMiss(terminalHit.point, targets)
+  return classifyMiss(terminalHit.point, targets, M)
 }
 
 function emptyScoreBreakdown(): ScoreBreakdown {
@@ -1673,9 +1685,9 @@ function getTimedElapsedSeconds(state: GameState) {
   return Math.max(0, state.sceneTime - state.firstShotSceneTime)
 }
 
-function formatTargetResolution(hitsThisShot: number) {
-  if (hitsThisShot <= 1) return "Target cleared."
-  return `${hitsThisShot} targets cleared.`
+function formatTargetResolution(hitsThisShot: number, M: Msg) {
+  if (hitsThisShot <= 1) return M.clTargetCleared
+  return M.clTargetsCleaved.replace("{n}", String(hitsThisShot))
 }
 
 function createLevelResult(
@@ -2175,6 +2187,8 @@ function ResultPanel({
   onRetry: () => void
   onNext: () => void
 }) {
+  const { t } = useLanguage()
+  const M = t.gamesPage
   const cleared = phase === "levelComplete"
   const finalScore = Number.isFinite(result.finalScore)
     ? result.finalScore
@@ -2188,14 +2202,14 @@ function ResultPanel({
             Level {levelIndex + 1} {cleared ? "clear" : "failed"}
           </p>
           <h3 className="mt-1 text-xl font-extrabold text-[#1d211c]">
-            {cleared ? "Level clear." : (result.reason ?? "No shots remaining.")}
+            {cleared ? M.clLevelClear : (result.reason ?? M.clNoShots)}
           </h3>
           <div className="mt-3 grid gap-2 text-sm text-[#3e453c] sm:grid-cols-2 lg:grid-cols-5">
-            <ResultLine label="Targets cleared" value={`${result.targetsCleared}/${result.totalTargets}`} />
-            <ResultLine label="Shots used" value={`${result.shotsUsed}/${result.shotLimit}`} />
-            <ResultLine label="Time bonus" value={String(result.timeBonus ?? 0)} />
-            <ResultLine label="Remaining shot bonus" value={String(result.remainingShotBonus ?? 0)} />
-            <ResultLine label="Final score" value={String(finalScore)} strong />
+            <ResultLine label={M.clTargetsCleared} value={`${result.targetsCleared}/${result.totalTargets}`} />
+            <ResultLine label={M.clShotsUsed} value={`${result.shotsUsed}/${result.shotLimit}`} />
+            <ResultLine label={M.clTimeBonus} value={String(result.timeBonus ?? 0)} />
+            <ResultLine label={M.clShotBonus} value={String(result.remainingShotBonus ?? 0)} />
+            <ResultLine label={M.clFinalScore} value={String(finalScore)} strong />
           </div>
         </div>
 
@@ -2205,7 +2219,7 @@ function ResultPanel({
             onClick={onRetry}
             className="border border-[#9fa49a] bg-white px-4 py-2 text-sm font-bold text-[#252a23] transition hover:bg-[#f1f2ed]"
           >
-            Retry Level
+            {M.clRetryLevel}
           </button>
           {cleared && !isLastLevel && (
             <button
@@ -2213,7 +2227,7 @@ function ResultPanel({
               onClick={onNext}
               className="border border-[#1d211c] bg-[#252a23] px-4 py-2 text-sm font-extrabold text-white transition hover:bg-[#11140f]"
             >
-              Next Level
+              {M.clNextLevel}
             </button>
           )}
         </div>
@@ -2252,10 +2266,12 @@ function ProjectilePicker({
   disabled: boolean
   onChange: (kind: ProjectileKind) => void
 }) {
+  const { t } = useLanguage()
+  const M = t.gamesPage
   return (
     <div>
       <div className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#5c6259]">
-        Projectile Type
+        {M.clProjectileType}
       </div>
       <div className="mt-1 grid gap-2 sm:grid-cols-2">
         {allowed.map((kind) => {

@@ -1,4 +1,5 @@
 import { type EngineeringDiagramKind } from "@/features/curriculums/engineering-fundamentals"
+import { useLanguage } from "@/components/providers/language-provider"
 
 /**
  * Simple force/motion figures for the Engineering Fundamentals lessons.
@@ -74,11 +75,12 @@ const labelProps = {
 } as const
 
 function BridgeForces() {
+  const { t } = useLanguage()
   const arrow = "bridge-arrow"
   return (
     <Figure
-      label="A bridge deck resting on two supports, with the load pushing down in the middle and the supports pushing up."
-      caption="The load pushes down; the supports push up."
+      label={t.courseUi.edBridgeAlt}
+      caption={t.courseUi.edBridgeNote}
     >
       <ArrowMarker id={arrow} />
       {/* Ground */}
@@ -91,27 +93,28 @@ function BridgeForces() {
       {/* Load arrow (down, center) */}
       <line x1="160" y1="46" x2="160" y2="92" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
       <text x="160" y="38" textAnchor="middle" {...labelProps}>
-        Load
+        {t.courseUi.edLoad}
       </text>
       {/* Support reaction arrows (up) */}
       <line x1="62" y1="150" x2="62" y2="116" stroke="currentColor" strokeWidth="1.5" markerEnd={`url(#${arrow})`} />
       <line x1="258" y1="150" x2="258" y2="116" stroke="currentColor" strokeWidth="1.5" markerEnd={`url(#${arrow})`} />
       <text x="62" y="192" textAnchor="middle" {...labelProps}>
-        Support
+        {t.courseUi.edSupport}
       </text>
       <text x="258" y="192" textAnchor="middle" {...labelProps}>
-        Support
+        {t.courseUi.edSupport}
       </text>
     </Figure>
   )
 }
 
 function Lever() {
+  const { t } = useLanguage()
   const arrow = "lever-arrow"
   return (
     <Figure
-      label="A lever bar resting on a pivot, with a push down on the long end lifting a load on the short end."
-      caption="A push on the long end lifts the load. The bar turns around the pivot."
+      label={t.courseUi.edLeverAlt}
+      caption={t.courseUi.edLeverNote}
     >
       <ArrowMarker id={arrow} />
       {/* Ground */}
@@ -121,28 +124,29 @@ function Lever() {
       {/* Fulcrum / pivot */}
       <path d="M120,100 L104,150 L136,150 Z" fill="none" stroke="currentColor" strokeWidth="1.5" />
       <text x="120" y="176" textAnchor="middle" {...labelProps}>
-        Pivot
+        {t.courseUi.edPivot}
       </text>
       {/* Load box on short (left) end */}
       <rect x="48" y="78" width="20" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" />
       <text x="58" y="66" textAnchor="middle" {...labelProps}>
-        Load
+        {t.courseUi.edLoad}
       </text>
       {/* Push arrow (down) on long (right) end */}
       <line x1="256" y1="54" x2="256" y2="94" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
       <text x="256" y="46" textAnchor="middle" {...labelProps}>
-        Push
+        {t.courseUi.edPush}
       </text>
     </Figure>
   )
 }
 
 function Flight() {
+  const { t } = useLanguage()
   const arrow = "flight-arrow"
   return (
     <Figure
-      label="A glider with arrows: lift pushing up, weight pulling down, drag pushing back, and motion forward."
-      caption="Weight pulls down, lift holds up, drag slows it, motion carries it forward."
+      label={t.courseUi.edGliderAlt}
+      caption={t.courseUi.edGliderNote}
     >
       <ArrowMarker id={arrow} />
       {/* Glider body (simple dart at center) */}
@@ -150,28 +154,29 @@ function Flight() {
       {/* Lift (up) */}
       <line x1="160" y1="90" x2="160" y2="44" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
       <text x="160" y="36" textAnchor="middle" {...labelProps}>
-        Lift
+        {t.courseUi.edLift}
       </text>
       {/* Weight (down) */}
       <line x1="160" y1="110" x2="160" y2="158" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
       <text x="160" y="176" textAnchor="middle" {...labelProps}>
-        Weight
+        {t.courseUi.edWeight}
       </text>
       {/* Drag (back, left) */}
       <line x1="146" y1="100" x2="92" y2="100" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
       <text x="84" y="104" textAnchor="end" {...labelProps}>
-        Drag
+        {t.courseUi.edDrag}
       </text>
       {/* Motion (forward, right) */}
       <line x1="184" y1="100" x2="236" y2="100" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
       <text x="244" y="104" textAnchor="start" {...labelProps}>
-        Motion
+        {t.courseUi.edMotion}
       </text>
     </Figure>
   )
 }
 
 function MaterialLayers() {
+  const { t } = useLanguage()
   const arrow = "layers-arrow"
   // Layer separator lines, with x-edges interpolated along the cup's sloped sides.
   const bands = [
@@ -185,14 +190,14 @@ function MaterialLayers() {
   }
   return (
     <Figure
-      label="A cup filled with layers of cotton, sand, and gravel. Cloudy water goes in the top and clearer water comes out the bottom."
-      caption="Water passes through layers of material and comes out clearer."
+      label={t.courseUi.edFilterAlt}
+      caption={t.courseUi.edFilterNote}
     >
       <ArrowMarker id={arrow} />
       {/* Cloudy water in */}
       <line x1="160" y1="24" x2="160" y2="50" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
       <text x="160" y="16" textAnchor="middle" {...labelProps}>
-        Cloudy water
+        {t.courseUi.edCloudyWater}
       </text>
       {/* Cup */}
       <path d="M110,55 L210,55 L192,175 L128,175 Z" fill="none" stroke="currentColor" strokeWidth="1.5" />
@@ -212,7 +217,7 @@ function MaterialLayers() {
       {/* Clearer water out */}
       <line x1="160" y1="178" x2="160" y2="200" stroke="currentColor" strokeWidth="2" markerEnd={`url(#${arrow})`} />
       <text x="160" y="209" textAnchor="middle" {...labelProps}>
-        Clearer water
+        {t.courseUi.edClearerWater}
       </text>
     </Figure>
   )

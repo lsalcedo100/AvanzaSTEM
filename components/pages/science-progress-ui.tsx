@@ -125,7 +125,7 @@ export function ScienceCourseProgress() {
             onClick={handleReset}
             className="text-sm font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-avanza-orange focus-visible:ring-offset-2"
           >
-            Reset progress
+            {ui.sciResetProgress}
           </button>
         )}
       </div>
@@ -139,7 +139,7 @@ export function ScienceCourseProgress() {
  * yet completed) is gently marked "Recommended next" once a student has started.
  */
 export function ScienceWeekList() {
-  const { lessons, shared } = useCourse()
+  const { lessons, shared, ui } = useCourse()
   const { loaded, status, currentWeek, hasProgress, allComplete } = useScienceProgress()
 
   return (
@@ -205,13 +205,13 @@ export function ScienceWeekList() {
               <dl className="mt-4 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
                 <div>
                   <dt className="text-sm font-semibold text-muted-foreground">
-                    Experiment
+                    {ui.sciExperiment}
                   </dt>
                   <dd className="mt-0.5 text-foreground/90">{lesson.activityTitle}</dd>
                 </div>
                 <div>
                   <dt className="text-sm font-semibold text-muted-foreground">
-                    Main idea
+                    {ui.sciMainIdea}
                   </dt>
                   <dd className="mt-0.5 text-foreground/90">{lesson.mainConcepts[0]}</dd>
                 </div>
