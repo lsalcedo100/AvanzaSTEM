@@ -388,7 +388,7 @@ function BridgeControls({
           <span className="absolute left-0">{t.home.bridgeRangeSafe}</span>
           {hasDiscoveredWarning && (
             <span className="absolute -translate-x-1/2 text-center" style={{ left: `${warningPosition}%` }}>
-              Danger!
+              {t.home.bridgeDanger}
             </span>
           )}
           {hasDiscoveredFailure && (

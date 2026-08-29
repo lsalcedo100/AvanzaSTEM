@@ -830,7 +830,7 @@ export function CodePathRobot() {
                     <button
                       type="button"
                       onClick={() => setStarsTipDismissed(true)}
-                      aria-label="Dismiss stars tip"
+                      aria-label={t.gamesPage.cprDismissTip}
                       className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition hover:bg-white/50"
                     >
                       <X className="h-4 w-4" />
@@ -1234,6 +1234,7 @@ function RobotGridSVG({
   failed: boolean
   robotPalette: RobotPalette | null
 }) {
+  const { t } = useLanguage()
   const size = 360
   const cellSize = size / Math.max(level.cols, level.rows)
   const W = cellSize * level.cols
@@ -1254,7 +1255,7 @@ function RobotGridSVG({
       viewBox={`0 0 ${size} ${size}`}
       className="h-full w-full"
       role="img"
-      aria-label="Code-the-path grid"
+      aria-label={t.gamesPage.cprGrid}
     >
       <defs>
         <pattern id="rgridChecker" width={cellSize * 2} height={cellSize * 2} patternUnits="userSpaceOnUse">

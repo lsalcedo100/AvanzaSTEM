@@ -195,6 +195,7 @@ const BRIDGE_BOTTOM = Array.from({ length: BRIDGE_PANELS + 1 }, (_, i) => bridge
 const BRIDGE_WEIGHTS = ["#14a58c", "#3b2f17", "#dfe12b", "#3b3fc0", "#7b1338"]
 
 function BridgePreview() {
+  const { t } = useLanguage()
   const points = (nodes: { x: number; y: number }[]) =>
     nodes.map((n) => `${n.x},${n.y}`).join(" ")
   const mid = BRIDGE_BOTTOM[BRIDGE_PANELS / 2]
@@ -205,7 +206,7 @@ function BridgePreview() {
       preserveAspectRatio="xMidYMid slice"
       className="h-full w-full"
       role="img"
-      aria-label="Truss bridge lab preview: weight stacked on a sagging deck"
+      aria-label={t.home.labBridgeAlt}
     >
       <defs>
         <linearGradient id="lab-bridge-sky" x1="0" y1="0" x2="0" y2="1">
@@ -356,13 +357,14 @@ function TowerPlank({
 }
 
 function TowerPreview() {
+  const { t } = useLanguage()
   return (
     <svg
       viewBox="0 0 320 180"
       preserveAspectRatio="xMidYMid slice"
       className="h-full w-full"
       role="img"
-      aria-label="Tower lab preview: wooden blocks stacked toward the goal line"
+      aria-label={t.home.labTowerAlt}
     >
       <defs>
         <pattern id="lab-tower-grid" width="16" height="16" patternUnits="userSpaceOnUse">
@@ -433,13 +435,14 @@ const ATOM_SHELLS = [
 ]
 
 function AtomPreview() {
+  const { t } = useLanguage()
   return (
     <svg
       viewBox="0 0 320 180"
       preserveAspectRatio="xMidYMid slice"
       className="h-full w-full"
       role="img"
-      aria-label="Atom lab preview: an oxygen nucleus inside two electron shells"
+      aria-label={t.home.labAtomAlt}
     >
       <defs>
         <radialGradient id="lab-atom-bg" cx="50%" cy="45%" r="70%">

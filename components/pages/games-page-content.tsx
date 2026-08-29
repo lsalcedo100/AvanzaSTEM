@@ -185,16 +185,16 @@ export function GamesPageContent() {
       <section className="bg-avanza-dark py-16 md:py-20">
         <FadeIn className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-3xl font-extrabold text-primary-foreground md:text-4xl">
-            More games coming soon.
+            {t.gamesPage.gpMoreComing}
           </h2>
           <p className="mt-4 text-base text-primary-foreground/70">
-            Have an idea for a STEM game we should build? Tell us, we love new ideas.
+            {t.gamesPage.gpHaveIdea}
           </p>
           <a
             href="mailto:liam@avanzastem.org?subject=Game%20idea"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-avanza-green px-7 py-3.5 text-base font-extrabold text-avanza-dark shadow-lg transition-all duration-300 hover:scale-[1.04]"
           >
-            Share an idea
+            {t.gamesPage.gpShareIdea}
             <ArrowRight className="h-4 w-4" />
           </a>
         </FadeIn>

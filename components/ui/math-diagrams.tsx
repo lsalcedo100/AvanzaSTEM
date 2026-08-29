@@ -1,3 +1,6 @@
+"use client"
+
+import { useLanguage } from "@/components/providers/language-provider"
 import type { MathActivityType } from "@/features/curriculums/math-adventures"
 
 /**
@@ -28,6 +31,7 @@ export function MathActivityVisual({ type }: { type: MathActivityType }) {
 
 /** A 0-10 number line with evenly spaced, numbered ticks. */
 function NumberLineViz() {
+  const { t } = useLanguage()
   const width = 560
   const height = 72
   const marginX = 24
@@ -40,7 +44,7 @@ function NumberLineViz() {
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="img"
-        aria-label="A number line from 0 to 10 with a tick at each whole number."
+        aria-label={t.courseUi.math.progress.mdNumberLine}
         className="w-full text-muted-foreground"
       >
         <line x1={marginX} y1={y} x2={width - marginX} y2={y} stroke="currentColor" strokeWidth={1.5} />
@@ -70,6 +74,7 @@ function NumberLineViz() {
 
 /** A whole bar split into four equal parts with three shaded (three fourths). */
 function FractionBarViz() {
+  const { t } = useLanguage()
   const width = 560
   const height = 80
   const marginX = 24
@@ -84,7 +89,7 @@ function FractionBarViz() {
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="img"
-        aria-label="A fraction bar split into four equal parts with three parts shaded, showing three fourths."
+        aria-label={t.courseUi.math.progress.mdFractionBar}
         className="w-full text-muted-foreground"
       >
         {Array.from({ length: parts }, (_, i) => (
@@ -117,6 +122,7 @@ function FractionBarViz() {
 
 /** A four-bar graph with a baseline, standing in for a simple data display. */
 function BarGraphViz() {
+  const { t } = useLanguage()
   const width = 560
   const height = 150
   const marginX = 32
@@ -130,7 +136,7 @@ function BarGraphViz() {
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="img"
-        aria-label="A bar graph with four bars of different heights sharing one baseline."
+        aria-label={t.courseUi.math.progress.mdBarGraph}
         className="w-full text-muted-foreground"
       >
         <line x1={marginX} y1={baseY} x2={width - marginX} y2={baseY} stroke="currentColor" strokeWidth={1.5} />
@@ -197,6 +203,7 @@ function PlaceValueViz() {
 
 /** A plain square grid ("math paper"), a neutral anchor for any activity. */
 function GridViz() {
+  const { t } = useLanguage()
   return (
     <Frame>
       <div
@@ -207,7 +214,7 @@ function GridViz() {
           backgroundSize: "28px 28px",
         }}
         role="img"
-        aria-label="A blank square grid for working out the activity on paper."
+        aria-label={t.courseUi.math.progress.mdBlankGrid}
       />
     </Frame>
   )

@@ -4,6 +4,7 @@ import { WhyWeExistSection } from "@/components/pages/home/WhyWeExistSection"
 import { WhatStudentsDoSection } from "@/components/pages/home/WhatStudentsDoSection"
 import { InteractiveLabTeasers } from "@/components/pages/home/InteractiveLabTeasers"
 import { WhoItsForSection } from "@/components/pages/home/WhoItsForSection"
+import { SocialProof } from "@/components/ui/social-proof"
 import { GetInvolvedSection } from "@/components/pages/home/GetInvolvedSection"
 import { generateHomeMetadata } from "@/features/home/metadata"
 import type { Language } from "@/i18n/translations"
@@ -25,6 +26,7 @@ export default function LocaleHomePage() {
       <WhatStudentsDoSection />
       <InteractiveLabTeasers />
       <WhoItsForSection />
+      <SocialProof />
       <GetInvolvedSection />
     </>
   )

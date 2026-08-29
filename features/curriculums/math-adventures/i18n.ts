@@ -425,7 +425,7 @@ const es: DeepPartial<MathCurriculum> = {
       ],
       learningGoals: [
         "Identificar el valor de cada dígito en números de hasta cuatro cifras.",
-        "Escribir un número en forma desarrollada (2,345 = 2,000 + 300 + 40 + 5) y volver a la forma normal.",
+        "Escribir un número en forma desarrollada (2.345 = 2.000 + 300 + 40 + 5) y volver a la forma normal.",
         "Comparar números de cuatro cifras empezando por el valor posicional más grande.",
       ],
       keyConcepts: [
@@ -436,22 +436,23 @@ const es: DeepPartial<MathCurriculum> = {
       introStory: "Bienvenido a la ciudad del valor posicional, donde cada dígito tiene su dirección. Las unidades viven en la calle de las Unidades, las decenas en la avenida de las Decenas, las centenas en el bulevar de las Centenas, y las unidades de millar allá arriba en la loma de los Millares. Mueve un dígito a otra calle y su valor entero cambia: un 7 en la calle de las Unidades vale 7, pero muévelo al bulevar de las Centenas y de pronto vale 700. Hoy tú eres quien planea la ciudad.",
       mainLesson: [
         "En nuestro sistema numérico, cada lugar vale diez veces el que está a su derecha. Primero las unidades, luego las decenas (diez unidades), después las centenas (diez decenas) y luego los millares (diez centenas). Por eso, mover un dígito una calle hacia la izquierda lo hace diez veces más grande.",
-        "En 2,345 el 2 vive en la loma de los Millares y vale 2,000; el 3 vale 300; el 4 vale 40; y el 5 vale 5. Leer cada dígito según su calle es como hallas su verdadero valor.",
-        "La forma desarrollada escribe esos valores como una suma: 2,345 = 2,000 + 300 + 40 + 5. Hace visible la estructura escondida y ayuda muchísimo al sumar o restar números grandes.",
-        "Para comparar dos números, empieza en el lugar más grande y avanza a la derecha hasta que los dígitos sean distintos. Al comparar 3,412 y 3,398: los millares empatan (3 = 3), pero en el lugar de las centenas el 4 le gana al 3, así que 3,412 es mayor. Una vez que hallas una diferencia, ya no tienes que revisar los lugares más pequeños.",
+        "En 2.345 el 2 vive en la loma de los Millares y vale 2.000; el 3 vale 300; el 4 vale 40; y el 5 vale 5. Leer cada dígito según su calle es como hallas su verdadero valor.",
+        "La forma desarrollada escribe esos valores como una suma: 2.345 = 2.000 + 300 + 40 + 5. Hace visible la estructura escondida y ayuda muchísimo al sumar o restar números grandes.",
+        "Para comparar dos números, empieza en el lugar más grande y avanza a la derecha hasta que los dígitos sean distintos. Al comparar 3.412 y 3.398: los millares empatan (3 = 3), pero en el lugar de las centenas el 4 le gana al 3, así que 3.412 es mayor. Una vez que hallas una diferencia, ya no tienes que revisar los lugares más pequeños.",
       ],
       examples: [
         {
-          problem: "¿Cuál es el valor del 6 en 4,682?",
+          problem: "¿Cuál es el valor del 6 en 4.682?",
           explanation: "El 6 está en el lugar de las centenas (el bulevar de las Centenas), así que vale 6 centenas, o sea 600.",
         },
         {
-          problem: "Escribe 5,207 en forma desarrollada.",
+          problem: "Escribe 5.207 en forma desarrollada.",
           explanation: "5 millares + 2 centenas + 0 decenas + 7 unidades. El 0 muestra que no hay decenas, pero mantiene a los demás dígitos en su lugar.",
         },
         {
-          problem: "Compara 3,412 y 3,398.",
-          explanation: "Los millares son iguales (3 = 3). En el lugar de las centenas, 4 es mayor que 3, así que 3,412 es el número más grande. No hace falta revisar las decenas ni las unidades.",
+          problem: "Compara 3.412 y 3.398.",
+          solution: "3.412 > 3.398",
+          explanation: "Los millares son iguales (3 = 3). En el lugar de las centenas, 4 es mayor que 3, así que 3.412 es el número más grande. No hace falta revisar las decenas ni las unidades.",
         },
       ],
       interactiveActivity: {
@@ -474,22 +475,22 @@ const es: DeepPartial<MathCurriculum> = {
       },
       checkpointQuestions: [
         {
-          question: "¿Cuál es el valor del 8 en 8,140?",
-          answer: "8,000 (está en el lugar de los millares).",
+          question: "¿Cuál es el valor del 8 en 8.140?",
+          answer: "8.000 (está en el lugar de los millares).",
         },
         {
-          question: "Escribe 3,406 en forma desarrollada.",
+          question: "Escribe 3.406 en forma desarrollada.",
         },
         {
-          question: "¿Cuál es mayor, 6,721 o 6,712?",
-          answer: "6,721. Los millares y las centenas empatan; en el lugar de las decenas, el 2 le gana al 1.",
+          question: "¿Cuál es mayor, 6.721 o 6.712?",
+          answer: "6.721. Los millares y las centenas empatan; en el lugar de las decenas, el 2 le gana al 1.",
         },
       ],
-      reflectionQuestion: "¿Por qué el mismo dígito, como el 5, significa cantidades distintas en 5,000, 500 y 50? Explícalo usando la idea de calles o lugares.",
+      reflectionQuestion: "¿Por qué el mismo dígito, como el 5, significa cantidades distintas en 5.000, 500 y 50? Explícalo usando la idea de calles o lugares.",
       challengeProblem: {
         prompt: "Usa los dígitos 4, 0, 7 y 2 exactamente una vez cada uno para formar el mayor número posible de cuatro cifras y el menor número posible de cuatro cifras. ¿Cuál es la diferencia entre ellos?",
         hint: "Para el mayor, pon los dígitos más grandes a la izquierda. Para el menor, pon los dígitos pequeños a la izquierda, pero un número no puede empezar con 0.",
-        answer: "El mayor es 7,420 y el menor es 2,047. Su diferencia es 7,420 - 2,047 = 5,373.",
+        answer: "El mayor es 7.420 y el menor es 2.047. Su diferencia es 7.420 - 2.047 = 5.373.",
       },
       extensionChallenge: "Extiende la ciudad del valor posicional hasta las decenas de millar. Forma un número de cinco cifras, escríbelo en forma desarrollada y explica qué tan lejos está la torre de las Decenas de Millar de la calle de las Unidades.",
       vocabulary: [
@@ -3103,7 +3104,7 @@ const pt: DeepPartial<MathCurriculum> = {
       ],
       learningGoals: [
         "Identificar o valor de cada algarismo em números até a casa dos milhares.",
-        "Escrever um número na forma decomposta (2,345 = 2,000 + 300 + 40 + 5) e voltar à forma normal.",
+        "Escrever um número na forma decomposta (2.345 = 2.000 + 300 + 40 + 5) e voltar à forma normal.",
         "Comparar números de quatro algarismos começando pela maior ordem.",
       ],
       keyConcepts: [
@@ -3114,22 +3115,23 @@ const pt: DeepPartial<MathCurriculum> = {
       introStory: "Bem-vindo à cidade do valor posicional, onde cada algarismo tem um endereço. As unidades moram na rua das Unidades, as dezenas na avenida das Dezenas, as centenas no bulevar das Centenas, e os milhares lá em cima na colina dos Milhares. Mude um algarismo de rua e o valor dele inteiro muda: um 7 na rua das Unidades vale 7, mas mova-o para o bulevar das Centenas e de repente ele vale 700. Hoje quem planeja a cidade é você.",
       mainLesson: [
         "No nosso sistema de numeração, cada casa vale dez vezes a que está à direita dela. Primeiro as unidades, depois as dezenas (dez unidades), depois as centenas (dez dezenas) e então os milhares (dez centenas). É por isso que mover um algarismo uma rua para a esquerda o deixa dez vezes maior.",
-        "Em 2,345 o 2 mora na colina dos Milhares e vale 2,000; o 3 vale 300; o 4 vale 40; e o 5 vale 5. Ler cada algarismo pela rua dele é como você acha o verdadeiro valor.",
-        "A forma decomposta escreve esses valores como uma soma: 2,345 = 2,000 + 300 + 40 + 5. Ela deixa visível a estrutura escondida e ajuda muito ao somar ou subtrair números grandes.",
-        "Para comparar dois números, comece na maior casa e vá para a direita até os algarismos ficarem diferentes. Comparando 3,412 e 3,398: os milhares empatam (3 = 3), mas na casa das centenas o 4 ganha do 3, então 3,412 é maior. Depois de achar uma diferença, você nunca precisa conferir as casas menores.",
+        "Em 2.345 o 2 mora na colina dos Milhares e vale 2.000; o 3 vale 300; o 4 vale 40; e o 5 vale 5. Ler cada algarismo pela rua dele é como você acha o verdadeiro valor.",
+        "A forma decomposta escreve esses valores como uma soma: 2.345 = 2.000 + 300 + 40 + 5. Ela deixa visível a estrutura escondida e ajuda muito ao somar ou subtrair números grandes.",
+        "Para comparar dois números, comece na maior casa e vá para a direita até os algarismos ficarem diferentes. Comparando 3.412 e 3.398: os milhares empatam (3 = 3), mas na casa das centenas o 4 ganha do 3, então 3.412 é maior. Depois de achar uma diferença, você nunca precisa conferir as casas menores.",
       ],
       examples: [
         {
-          problem: "Qual é o valor do 6 em 4,682?",
+          problem: "Qual é o valor do 6 em 4.682?",
           explanation: "O 6 está na casa das centenas (o bulevar das Centenas), então ele vale 6 centenas, ou seja, 600.",
         },
         {
-          problem: "Escreva 5,207 na forma decomposta.",
+          problem: "Escreva 5.207 na forma decomposta.",
           explanation: "5 milhares + 2 centenas + 0 dezenas + 7 unidades. O 0 mostra que não há dezenas, mas mantém os outros algarismos no lugar.",
         },
         {
-          problem: "Compare 3,412 e 3,398.",
-          explanation: "Os milhares são iguais (3 = 3). Na casa das centenas, 4 é maior que 3, então 3,412 é o número maior. Não é preciso conferir dezenas nem unidades.",
+          problem: "Compare 3.412 e 3.398.",
+          solution: "3.412 > 3.398",
+          explanation: "Os milhares são iguais (3 = 3). Na casa das centenas, 4 é maior que 3, então 3.412 é o número maior. Não é preciso conferir dezenas nem unidades.",
         },
       ],
       interactiveActivity: {
@@ -3152,22 +3154,22 @@ const pt: DeepPartial<MathCurriculum> = {
       },
       checkpointQuestions: [
         {
-          question: "Qual é o valor do 8 em 8,140?",
-          answer: "8,000 (ele está na casa dos milhares).",
+          question: "Qual é o valor do 8 em 8.140?",
+          answer: "8.000 (ele está na casa dos milhares).",
         },
         {
-          question: "Escreva 3,406 na forma decomposta.",
+          question: "Escreva 3.406 na forma decomposta.",
         },
         {
-          question: "Qual é maior, 6,721 ou 6,712?",
-          answer: "6,721. Milhares e centenas empatam; na casa das dezenas, o 2 ganha do 1.",
+          question: "Qual é maior, 6.721 ou 6.712?",
+          answer: "6.721. Milhares e centenas empatam; na casa das dezenas, o 2 ganha do 1.",
         },
       ],
-      reflectionQuestion: "Por que o mesmo algarismo, como o 5, significa quantidades diferentes em 5,000, 500 e 50? Explique usando a ideia de ruas ou casas.",
+      reflectionQuestion: "Por que o mesmo algarismo, como o 5, significa quantidades diferentes em 5.000, 500 e 50? Explique usando a ideia de ruas ou casas.",
       challengeProblem: {
         prompt: "Use os algarismos 4, 0, 7 e 2 exatamente uma vez cada um para formar o maior número possível de quatro algarismos e o menor número possível de quatro algarismos. Qual é a diferença entre eles?",
         hint: "Para o maior, ponha os algarismos maiores à esquerda. Para o menor, ponha os algarismos pequenos à esquerda, mas um número não pode começar com 0.",
-        answer: "O maior é 7,420 e o menor é 2,047. A diferença entre eles é 7,420 - 2,047 = 5,373.",
+        answer: "O maior é 7.420 e o menor é 2.047. A diferença entre eles é 7.420 - 2.047 = 5.373.",
       },
       extensionChallenge: "Estenda a cidade do valor posicional até as dezenas de milhar. Forme um número de cinco algarismos, escreva-o na forma decomposta e explique a que distância a torre das Dezenas de Milhar fica da rua das Unidades.",
       vocabulary: [

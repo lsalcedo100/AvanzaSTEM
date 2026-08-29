@@ -232,7 +232,7 @@ export function WorkshopFinderPage() {
                     <button
                       type="button"
                       onClick={clearZip}
-                      aria-label="Clear"
+                      aria-label={t.home.wfClearZip}
                       className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-avanza-dark/40 transition-colors hover:bg-avanza-dark/5 hover:text-avanza-dark"
                     >
                       <X className="h-4 w-4" />

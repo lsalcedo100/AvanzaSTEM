@@ -67,7 +67,7 @@ export function RoboticsJournalContent() {
             {j.intro}
           </p>
         </div>
-        <PrintButton tone="green" />
+        <PrintButton label={ui.journal.printJournal} tone="green" />
       </div>
 
       <div className="mt-10 space-y-10">

@@ -464,6 +464,11 @@ const en = {
     atomEyebrow: "Chemistry bench",
     atomTitle: "Build an atom, name an element",
     atomDesc: "Add or remove protons, neutrons, and electrons. The number of protons decides which element you have. Try making oxygen with 8 protons. Oxygen is the element in O2 that your body uses from the air.",
+    labBridgeAlt: "Truss bridge lab preview: weight stacked on a sagging deck",
+    wfClearZip: "Clear",
+    labTowerAlt: "Tower lab preview: wooden blocks stacked toward the goal line",
+    labAtomAlt: "Atom lab preview: an oxygen nucleus inside two electron shells",
+    bridgeDanger: "Danger!",
     atomProtonIs: "A positive particle in the nucleus. The number of protons determines the element.",
     atomNeutronIs: "A neutral particle in the nucleus. Neutrons change the isotope and mass number.",
     atomElectronIs: "A negative particle outside the nucleus. Electrons change the atom's charge.",
@@ -1100,6 +1105,11 @@ const en = {
   },
 
   gamesPage: {
+    gpMoreComing: "More games coming soon.",
+    gpHaveIdea: "Have an idea for a STEM game we should build? Tell us, we love new ideas.",
+    gpShareIdea: "Share an idea",
+    cprDismissTip: "Dismiss stars tip",
+    cprGrid: "Code-the-path grid",
     clShort: "Short.",
     clOvershot: "Overshot.",
     clMissed: "Missed.",
@@ -1958,6 +1968,14 @@ const en = {
   },
 
   hostPage: {
+    mailSubject: "Avanza STEM hosting inquiry from",
+    mailAnonymous: "a community partner",
+    mailGreeting: "Hi Avanza STEM,",
+    mailIntro: "I'd like to partner or host a workshop.",
+    mailName: "Name or organization:",
+    mailEmail: "Email:",
+    mailVenue: "Venue or organization:",
+    mailMessage: "Message:",
     eyebrow: "Partner With Us",
     title: "Bring Avanza STEM to Your Community",
     description: "We partner with libraries, schools, and community centers to deliver free hands-on STEM workshops wherever kids are.",
@@ -2019,6 +2037,33 @@ const en = {
   },
 
   // Workshops page
+  socialProof: {
+    eyebrow: "In their own words",
+    title: "What people are saying",
+    description:
+      "Partner libraries and community groups describe the Maker Mindset Series in their own posts, to their own communities.",
+    postedOnInstagram: "on Instagram",
+    postedOnFacebook: "on Facebook",
+    quotes: {
+      // Verbatim from each source's own public post. Do not reword: these are
+      // real statements by real partners, quoted as they wrote them. Emoji that
+      // sat mid-sentence are dropped and omitted passages marked with an
+      // ellipsis; nothing else changes.
+      "chathams-facebook":
+        "The Maker Mindset Series, hosted by Liam Salcedo & Tommy Qi, high school students from Seton Hall Prep, brought students together at The Library of the Chathams for three fun, hands-on STEM workshops. … More than just learning about engineering, coding, and AI, the program gave students the ability to be curious, creative, & collaborative in a welcoming community space.",
+      "roseland-instagram":
+        "A big thank you to Liam Salcedo and Tommy Qi, two rising seniors at Seton Hall Prep, for bringing “The Maker Mindset” STEM series to the Roseland Library! During this three-part series, participants ages 8 and up learned how to build and test suspension bridges, Python coding basics, and how artificial intelligence works through fun and interactive approaches.",
+      "troop13-facebook":
+        "For his Eagle Community Service Project, Liam, 17, planned and ran a series of Saturday STEM workshops for kids at the Clifton Public Library last December and January. Liam's goal was to give local children access to engaging STEM opportunities they might not otherwise have access to. … He used it as a springboard to launch Avanza STEM, a youth-led, free STEM resource offering workshops and more, focused on reaching Hispanic and underrepresented students.",
+    },
+    statsEyebrow: "Where the series has run",
+    statHosted: "New Jersey libraries have hosted the series",
+    statScheduled: "more have sessions on the calendar",
+    statTowns: "New Jersey towns reached so far",
+    statInternational: "partner venues abroad have hosted it",
+    statsNote:
+      "Every session is free, materials included, and taught in English and Spanish.",
+  },
   workshopsPage: {
     title: "The Maker Mindset Series",
     description: "Avanza STEM's signature hands on STEM workshop series helps younger students build, code, and explore AI through three connected sessions. It is usually hosted through libraries and community partners so families can learn in trusted local spaces.",
@@ -2457,6 +2502,7 @@ const en = {
     },
     science: {
       heroEyebrow: "6-week science course",
+      heroAlt: "Students running a hands-on science experiment at an Avanza STEM workshop",
       title: "Science Experiments",
       lead: "Six weeks of hands-on experiments where students learn to think like scientists and engineers - asking questions, testing ideas, and explaining what they find.",
       facts: [
@@ -5571,6 +5617,10 @@ const en = {
         finishCourse: "Finish course · back to hub",
       },
       progress: {
+      mdNumberLine: "A number line from 0 to 10 with a tick at each whole number.",
+      mdFractionBar: "A fraction bar split into four equal parts with three parts shaded, showing three fourths.",
+      mdBarGraph: "A bar graph with four bars of different heights sharing one baseline.",
+      mdBlankGrid: "A blank square grid for working out the activity on paper.",
         completed: "Complete",
         inProgress: "In progress",
         notStarted: "Not started",
@@ -6375,6 +6425,7 @@ const en = {
         reflect: "Reflect",
       },
       journal: {
+        printJournal: "Print this journal",
         title: "Design journal",
         intro: "Every week's journal prompts in one place. Return here to record your sketches, tests, and decisions as you build.",
         savedNote: "Your entries are saved automatically on this device as you finish each field.",
@@ -7080,6 +7131,11 @@ const es: Translations = {
     atomEyebrow: "Mesa de quimica",
     atomTitle: "Arma un atomo y nombra el elemento",
     atomDesc: "Agrega o quita protones, neutrones y electrones. La cantidad de protones decide que elemento es. Prueba con oxigeno con 8 protones. El oxigeno es el elemento en O2 que tu cuerpo usa del aire.",
+    labBridgeAlt: "Vista previa del laboratorio del puente de armadura: peso apilado sobre un tablero que se hunde",
+    wfClearZip: "Borrar",
+    labTowerAlt: "Vista previa del laboratorio de la torre: bloques de madera apilados hacia la línea de meta",
+    labAtomAlt: "Vista previa del laboratorio del átomo: un núcleo de oxígeno dentro de dos capas de electrones",
+    bridgeDanger: "¡Peligro!",
     atomProtonIs: "Una partícula positiva del núcleo. La cantidad de protones determina el elemento.",
     atomNeutronIs: "Una partícula neutra del núcleo. Los neutrones cambian el isótopo y el número de masa.",
     atomElectronIs: "Una partícula negativa fuera del núcleo. Los electrones cambian la carga del átomo.",
@@ -7710,6 +7766,11 @@ const es: Translations = {
   },
 
   gamesPage: {
+    gpMoreComing: "Pronto habrá más juegos.",
+    gpHaveIdea: "¿Tienes una idea para un juego STEM que deberíamos hacer? Cuéntanos, nos encantan las ideas nuevas.",
+    gpShareIdea: "Compartir una idea",
+    cprDismissTip: "Cerrar el consejo de las estrellas",
+    cprGrid: "Cuadrícula para programar el camino",
     clShort: "Se quedó corto.",
     clOvershot: "Se pasó.",
     clMissed: "Falló.",
@@ -8570,6 +8631,14 @@ const es: Translations = {
   },
 
   hostPage: {
+    mailSubject: "Consulta para ser sede de Avanza STEM de parte de",
+    mailAnonymous: "un aliado de la comunidad",
+    mailGreeting: "Hola, Avanza STEM:",
+    mailIntro: "Me gustaría ser aliado o ser sede de un taller.",
+    mailName: "Nombre u organización:",
+    mailEmail: "Correo electrónico:",
+    mailVenue: "Lugar u organización:",
+    mailMessage: "Mensaje:",
     eyebrow: "Asociate Con Nosotros",
     title: "Lleva Avanza STEM a Tu Comunidad",
     description: "Nos asociamos con bibliotecas, escuelas y centros comunitarios para ofrecer talleres STEM gratuitos y practicos donde esten los ninos.",
@@ -8630,6 +8699,29 @@ const es: Translations = {
     backHome: "Volver al Inicio",
   },
 
+  socialProof: {
+    eyebrow: "En sus propias palabras",
+    title: "Lo que dice la gente",
+    description:
+      "Las bibliotecas aliadas y los grupos comunitarios describen la Serie Mentalidad de Creador en sus propias publicaciones, dirigidas a sus propias comunidades.",
+    postedOnInstagram: "en Instagram",
+    postedOnFacebook: "en Facebook",
+    quotes: {
+      "chathams-facebook":
+        "La Serie Mentalidad de Creador, dirigida por Liam Salcedo y Tommy Qi, estudiantes de secundaria de Seton Hall Prep, reunió a los estudiantes en la Biblioteca de los Chathams para tres talleres de STEM divertidos y prácticos. … Más allá de aprender sobre ingeniería, programación e inteligencia artificial, el programa les dio a los estudiantes la posibilidad de ser curiosos, creativos y colaborativos en un espacio comunitario acogedor.",
+      "roseland-instagram":
+        "¡Muchas gracias a Liam Salcedo y Tommy Qi, dos estudiantes próximos a cursar el último año en Seton Hall Prep, por traer la serie de STEM “The Maker Mindset” a la Biblioteca de Roseland! Durante esta serie de tres partes, los participantes de 8 años en adelante aprendieron a construir y poner a prueba puentes colgantes, fundamentos de programación en Python y cómo funciona la inteligencia artificial, todo de forma divertida e interactiva.",
+      "troop13-facebook":
+        "Para su Proyecto de Servicio Comunitario Eagle, Liam, de 17 años, planificó y dirigió una serie de talleres de STEM los sábados para niños en la Biblioteca Pública de Clifton, en diciembre y enero pasados. Su objetivo era dar a los niños de la zona acceso a oportunidades de STEM atractivas que de otro modo quizá no tendrían. … Lo usó como trampolín para lanzar Avanza STEM, un recurso de STEM gratuito y dirigido por jóvenes que ofrece talleres y mucho más, centrado en llegar a estudiantes hispanos y de comunidades subrepresentadas.",
+    },
+    statsEyebrow: "Dónde se ha realizado la serie",
+    statHosted: "bibliotecas de Nueva Jersey han organizado la serie",
+    statScheduled: "más ya tienen sesiones en el calendario",
+    statTowns: "municipios de Nueva Jersey alcanzados hasta ahora",
+    statInternational: "sedes aliadas en el extranjero la han organizado",
+    statsNote:
+      "Cada sesión es gratuita, incluye los materiales y se imparte en inglés y español.",
+  },
   workshopsPage: {
     title: "Serie Mentes Creadoras",
     description: "La serie principal de talleres STEM practicos de Avanza STEM ayuda a estudiantes jovenes a construir, programar y explorar IA en tres sesiones conectadas. Normalmente se organiza mediante bibliotecas y socios comunitarios para que las familias aprendan en espacios locales de confianza.",
@@ -9066,6 +9158,7 @@ const es: Translations = {
     },
     science: {
       heroEyebrow: "Curso de ciencias de 6 semanas",
+      heroAlt: "Estudiantes haciendo un experimento de ciencias con las manos en un taller de Avanza STEM",
       title: "Experimentos de Ciencia",
       lead: "Seis semanas de experimentos prácticos en los que los estudiantes aprenden a pensar como científicos e ingenieros: hacen preguntas, prueban ideas y explican lo que descubren.",
       facts: [
@@ -12177,6 +12270,10 @@ const es: Translations = {
         finishCourse: "Terminar el curso · volver al inicio",
       },
       progress: {
+      mdNumberLine: "Una recta numérica del 0 al 10 con una marca en cada número entero.",
+      mdFractionBar: "Una barra de fracciones dividida en cuatro partes iguales con tres coloreadas, que muestra tres cuartos.",
+      mdBarGraph: "Una gráfica de barras con cuatro barras de distinta altura sobre una misma línea base.",
+      mdBlankGrid: "Una cuadrícula en blanco para resolver la actividad en papel.",
         completed: "Completa",
         inProgress: "En curso",
         notStarted: "Sin empezar",
@@ -12981,6 +13078,7 @@ const es: Translations = {
         reflect: "Reflexiona",
       },
       journal: {
+        printJournal: "Imprimir este diario",
         title: "Bitácora de diseño",
         intro: "Todas las consignas de la bitácora, semana por semana, en un solo lugar. Vuelve aquí para anotar tus bocetos, tus pruebas y tus decisiones mientras construyes.",
         savedNote: "Tus respuestas se guardan solas en este dispositivo conforme terminas cada campo.",
@@ -13671,6 +13769,11 @@ const zh: Translations = {
     atomEyebrow: "化学工作台",
     atomTitle: "搭一个原子，叫出元素的名字",
     atomDesc: "添加或删掉质子、中子和电子。质子的数量决定了它是哪种元素。试着用 8 个质子做氧。氧是空气中的 O2 里、身体会使用的元素。",
+    labBridgeAlt: "桁架桥实验室预览：重物压在下沉的桥面上",
+    wfClearZip: "清除",
+    labTowerAlt: "高塔实验室预览：木块朝着目标线越堆越高",
+    labAtomAlt: "原子实验室预览：氧原子核外面套着两层电子壳",
+    bridgeDanger: "危险！",
     atomProtonIs: "原子核里带正电的粒子。质子的数量决定了这是哪种元素。",
     atomNeutronIs: "原子核里不带电的粒子。中子会改变同位素和质量数。",
     atomElectronIs: "原子核外带负电的粒子。电子会改变原子的电荷。",
@@ -14301,6 +14404,11 @@ const zh: Translations = {
   },
 
   gamesPage: {
+    gpMoreComing: "更多游戏即将推出。",
+    gpHaveIdea: "有什么 STEM 游戏点子想让我们做？告诉我们吧，我们很喜欢新想法。",
+    gpShareIdea: "分享一个点子",
+    cprDismissTip: "关闭星星提示",
+    cprGrid: "编程走迷宫的格子板",
     clShort: "太短了。",
     clOvershot: "飞过头了。",
     clMissed: "没打中。",
@@ -15155,6 +15263,14 @@ const zh: Translations = {
   },
 
   hostPage: {
+    mailSubject: "Avanza STEM 承办咨询，来自",
+    mailAnonymous: "一位社区伙伴",
+    mailGreeting: "Avanza STEM 你好：",
+    mailIntro: "我想成为合作伙伴，或者承办一场工作坊。",
+    mailName: "姓名或机构：",
+    mailEmail: "邮箱：",
+    mailVenue: "场地或机构：",
+    mailMessage: "留言：",
     eyebrow: "与我们合作",
     title: "把 Avanza STEM 带到你的社区",
     description: "我们与图书馆、学校和社区中心合作，在孩子们所在的地方提供免费的动手 STEM 工作坊。",
@@ -15215,6 +15331,29 @@ const zh: Translations = {
     backHome: "返回首页",
   },
 
+  socialProof: {
+    eyebrow: "合作伙伴这样说",
+    title: "大家怎么说",
+    description:
+      "合作图书馆和社区团体在自己的帖子里，向自己的社区这样描述“创客思维系列”。",
+    postedOnInstagram: "发布于 Instagram",
+    postedOnFacebook: "发布于 Facebook",
+    quotes: {
+      "chathams-facebook":
+        "由 Seton Hall Prep 的高中生 Liam Salcedo 和 Tommy Qi 主持的“创客思维系列”，把学生们聚集到查塔姆图书馆，参加了三场有趣的动手 STEM 工作坊。……除了学习工程、编程和人工智能之外，这个项目还让学生们能够在一个温暖的社区空间里保持好奇、发挥创意、彼此协作。",
+      "roseland-instagram":
+        "非常感谢 Seton Hall Prep 即将升入毕业年级的两位学生 Liam Salcedo 和 Tommy Qi，把“创客思维”STEM 系列带到了罗斯兰图书馆！在这个三部分的系列中，8 岁及以上的参与者学习了如何搭建和测试悬索桥、Python 编程基础，以及人工智能的运作原理，整个过程既有趣又充满互动。",
+      "troop13-facebook":
+        "作为他的鹰级童军社区服务项目，17 岁的 Liam 在去年十二月和今年一月，在克利夫顿公共图书馆策划并主持了一系列周六 STEM 工作坊。他的目标是让当地孩子接触到他们原本可能接触不到的精彩 STEM 机会。……他以此为跳板创立了 Avanza STEM，一个由青少年主导、免费的 STEM 资源平台，提供工作坊等多种活动，致力于服务西语裔和其他代表性不足的学生。",
+    },
+    statsEyebrow: "系列举办地点",
+    statHosted: "所新泽西图书馆举办过该系列",
+    statScheduled: "所已在日程上安排了课程",
+    statTowns: "个新泽西城镇已经覆盖",
+    statInternational: "家海外合作场馆举办过该系列",
+    statsNote:
+      "每一节课都免费、提供全部材料，并以英文和西班牙文授课。",
+  },
   workshopsPage: {
     title: "小小创客系列",
     description: "小小创客系列是 Avanza STEM 的核心动手 STEM 工作坊项目，帮助低年级学生通过三个相互连接的课程学习建造、编程和 AI。该系列通常由图书馆或社区伙伴承办，让家庭可以在值得信任的本地空间学习。",
@@ -15651,6 +15790,7 @@ const zh: Translations = {
     },
     science: {
       heroEyebrow: "为期 6 周的科学课程",
+      heroAlt: "学生们在 Avanza STEM 工作坊上动手做科学实验",
       title: "科学实验",
       lead: "六周的动手实验，学生学会像科学家和工程师那样思考：提出问题、检验想法，并解释自己的发现。",
       facts: [
@@ -18762,6 +18902,10 @@ const zh: Translations = {
         finishCourse: "完成课程 · 返回课程主页",
       },
       progress: {
+      mdNumberLine: "一条从 0 到 10 的数轴，每个整数上都有一个刻度。",
+      mdFractionBar: "一根分数条被平均分成四份，涂了三份，表示四分之三。",
+      mdBarGraph: "一张条形图，四根高低不同的条形共用一条基线。",
+      mdBlankGrid: "一张空白的方格纸，用来在纸上做这个活动。",
         completed: "已完成",
         inProgress: "进行中",
         notStarted: "未开始",
@@ -19566,6 +19710,7 @@ const zh: Translations = {
         reflect: "反思",
       },
       journal: {
+        printJournal: "打印这本日志",
         title: "设计日志",
         intro: "把每一周的日志题目都集中在这里。搭建过程中随时回到这一页，记下你的草图、测试和决定。",
         savedNote: "你每填完一栏，答案就会自动保存在这台设备上。",
@@ -20250,6 +20395,11 @@ const pt: Translations = {
     atomEyebrow: "Bancada de química",
     atomTitle: "Monte um átomo e descubra o elemento",
     atomDesc: "Adicione ou tire prótons, nêutrons e elétrons. A quantidade de prótons decide qual é o elemento. Teste o oxigênio, com 8 prótons. O oxigênio é o elemento do O2 que seu corpo aproveita do ar.",
+    labBridgeAlt: "Prévia do laboratório da ponte treliçada: peso empilhado sobre um tabuleiro que afunda",
+    wfClearZip: "Limpar",
+    labTowerAlt: "Prévia do laboratório da torre: blocos de madeira empilhados até a linha de meta",
+    labAtomAlt: "Prévia do laboratório do átomo: um núcleo de oxigênio dentro de duas camadas de elétrons",
+    bridgeDanger: "Perigo!",
     atomProtonIs: "Uma partícula positiva do núcleo. A quantidade de prótons determina o elemento.",
     atomNeutronIs: "Uma partícula neutra do núcleo. Os nêutrons mudam o isótopo e o número de massa.",
     atomElectronIs: "Uma partícula negativa fora do núcleo. Os elétrons mudam a carga do átomo.",
@@ -20880,6 +21030,11 @@ const pt: Translations = {
   },
 
   gamesPage: {
+    gpMoreComing: "Em breve, mais jogos.",
+    gpHaveIdea: "Tem uma ideia de jogo STEM que a gente deveria fazer? Conte para nós, adoramos ideias novas.",
+    gpShareIdea: "Compartilhar uma ideia",
+    cprDismissTip: "Fechar a dica das estrelas",
+    cprGrid: "Grade para programar o caminho",
     clShort: "Ficou curto.",
     clOvershot: "Passou do alvo.",
     clMissed: "Errou.",
@@ -21740,6 +21895,14 @@ const pt: Translations = {
   },
 
   hostPage: {
+    mailSubject: "Consulta sobre sediar a Avanza STEM enviada por",
+    mailAnonymous: "um parceiro da comunidade",
+    mailGreeting: "Olá, Avanza STEM,",
+    mailIntro: "Gostaria de ser parceiro ou sediar uma oficina.",
+    mailName: "Nome ou organização:",
+    mailEmail: "E-mail:",
+    mailVenue: "Local ou organização:",
+    mailMessage: "Mensagem:",
     eyebrow: "Seja Nosso Parceiro",
     title: "Leve a Avanza STEM Para a Sua Comunidade",
     description: "Fazemos parceria com bibliotecas, escolas e centros comunitários para oferecer oficinas de STEM gratuitas e práticas onde as crianças estão.",
@@ -21800,6 +21963,29 @@ const pt: Translations = {
     backHome: "Voltar ao Início",
   },
 
+  socialProof: {
+    eyebrow: "Nas palavras deles",
+    title: "O que as pessoas estão dizendo",
+    description:
+      "Bibliotecas parceiras e grupos comunitários descrevem a Série Mentalidade Maker em suas próprias publicações, para suas próprias comunidades.",
+    postedOnInstagram: "no Instagram",
+    postedOnFacebook: "no Facebook",
+    quotes: {
+      "chathams-facebook":
+        "A Série Mentalidade Maker, conduzida por Liam Salcedo e Tommy Qi, estudantes do ensino médio da Seton Hall Prep, reuniu os alunos na Biblioteca de Chathams para três oficinas de STEM divertidas e práticas. … Mais do que aprender sobre engenharia, programação e inteligência artificial, o programa deu aos alunos a chance de serem curiosos, criativos e colaborativos em um espaço comunitário acolhedor.",
+      "roseland-instagram":
+        "Muito obrigado a Liam Salcedo e Tommy Qi, dois alunos que estão entrando no último ano na Seton Hall Prep, por trazerem a série de STEM “The Maker Mindset” para a Biblioteca de Roseland! Durante esta série de três partes, os participantes a partir dos 8 anos aprenderam a construir e testar pontes suspensas, noções básicas de programação em Python e como a inteligência artificial funciona, de um jeito divertido e interativo.",
+      "troop13-facebook":
+        "Para seu Projeto de Serviço Comunitário Eagle, Liam, de 17 anos, planejou e conduziu uma série de oficinas de STEM aos sábados para crianças na Biblioteca Pública de Clifton, em dezembro e janeiro passados. O objetivo de Liam era dar às crianças da região acesso a oportunidades de STEM envolventes que elas talvez não tivessem de outra forma. … Ele usou isso como trampolim para lançar a Avanza STEM, um recurso de STEM gratuito e liderado por jovens que oferece oficinas e muito mais, com foco em alcançar estudantes hispânicos e sub-representados.",
+    },
+    statsEyebrow: "Onde a série já aconteceu",
+    statHosted: "bibliotecas de Nova Jersey já realizaram a série",
+    statScheduled: "outras já têm sessões no calendário",
+    statTowns: "cidades de Nova Jersey alcançadas até agora",
+    statInternational: "espaços parceiros no exterior já a realizaram",
+    statsNote:
+      "Toda sessão é gratuita, com materiais inclusos, e ensinada em inglês e espanhol.",
+  },
   workshopsPage: {
     title: "Série Mentes Criadoras",
     description: "A principal série de oficinas práticas de STEM da Avanza STEM ajuda estudantes jovens a construir, programar e explorar IA em três encontros conectados. Costuma ser realizada com bibliotecas e parceiros comunitários, para que as famílias aprendam em espaços locais de confiança.",
@@ -22236,6 +22422,7 @@ const pt: Translations = {
     },
     science: {
       heroEyebrow: "Curso de ciências de 6 semanas",
+      heroAlt: "Estudantes fazendo um experimento de ciências com as mãos em uma oficina da Avanza STEM",
       title: "Experimentos de Ciências",
       lead: "Seis semanas de experimentos práticos em que os estudantes aprendem a pensar como cientistas e engenheiros: fazem perguntas, testam ideias e explicam o que descobrem.",
       facts: [
@@ -25347,6 +25534,10 @@ const pt: Translations = {
         finishCourse: "Terminar o curso · voltar ao início",
       },
       progress: {
+      mdNumberLine: "Uma reta numérica de 0 a 10 com uma marca em cada número inteiro.",
+      mdFractionBar: "Uma barra de frações dividida em quatro partes iguais com três pintadas, mostrando três quartos.",
+      mdBarGraph: "Um gráfico de barras com quatro barras de alturas diferentes sobre uma mesma linha de base.",
+      mdBlankGrid: "Uma grade quadriculada em branco para resolver a atividade no papel.",
         completed: "Concluída",
         inProgress: "Em andamento",
         notStarted: "Não iniciada",
@@ -26151,6 +26342,7 @@ const pt: Translations = {
         reflect: "Refletir",
       },
       journal: {
+        printJournal: "Imprimir este diário",
         title: "Diário de projeto",
         intro: "Todas as propostas do diário, semana a semana, num lugar só. Volte aqui para registrar os seus desenhos, testes e decisões enquanto constrói.",
         savedNote: "As suas respostas são salvas sozinhas neste aparelho conforme você termina cada campo.",

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
+import { SocialProof } from "@/components/ui/social-proof"
 import {
   Gallery,
   codingFeatureImage,
@@ -267,6 +268,8 @@ export function WorkshopsPageContent() {
           </div>
         </div>
       </section>
+
+      <SocialProof />
 
       <section className="bg-background py-20">
         <div className="mx-auto max-w-6xl px-6">

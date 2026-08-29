@@ -3,7 +3,9 @@
 import { useState } from "react"
 import { Package, Users, Star } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
+import type { Translations } from "@/i18n/translations"
 import { FadeIn } from "@/components/ui/animate"
+import { SocialProof } from "@/components/ui/social-proof"
 import {
   INTERNATIONAL_PARTNERS,
   LIBRARIES,
@@ -59,18 +61,18 @@ function isValidContactSubmission({ name, email, venue, message }: ContactFields
   )
 }
 
-function buildMailtoHref({ name, email, venue, message }: ContactFields) {
-  const subject = `Avanza STEM hosting inquiry from ${name || "a community partner"}`
+function buildMailtoHref({ name, email, venue, message }: ContactFields, h: Translations["hostPage"]) {
+  const subject = `${h.mailSubject} ${name || h.mailAnonymous}`
   const body = [
-    "Hi Avanza STEM,",
+    h.mailGreeting,
     "",
-    "I'd like to partner or host a workshop.",
+    h.mailIntro,
     "",
-    `Name or organization: ${name}`,
-    `Email: ${email}`,
-    `Venue or organization: ${venue}`,
+    `${h.mailName} ${name}`,
+    `${h.mailEmail} ${email}`,
+    `${h.mailVenue} ${venue}`,
     "",
-    "Message:",
+    h.mailMessage,
     message,
   ].join("\n")
 
@@ -224,7 +226,7 @@ export function HostPageContent() {
     setFallbackHref("")
 
     function openEmailDraft() {
-      const mailtoHref = buildMailtoHref(contactFields)
+      const mailtoHref = buildMailtoHref(contactFields, t.hostPage)
       setFallbackHref(mailtoHref)
       setErrorMessage(t.hostPage.formMailtoFallback)
       setStatus("error")
@@ -370,6 +372,8 @@ export function HostPageContent() {
           )}
         </div>
       </section>
+
+      <SocialProof className="bg-secondary" />
 
       <section className="bg-avanza-dark py-20">
         <div className="mx-auto max-w-2xl px-6">

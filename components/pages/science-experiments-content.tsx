@@ -58,7 +58,7 @@ export function ScienceExperimentsContent() {
         facts={sl.facts}
         media={{
           src: "/images/workshops/past-science.jpg",
-          alt: "Students running a hands-on science experiment at an Avanza STEM workshop",
+          alt: sl.heroAlt,
         }}
         mediaCaption={sl.mediaCaption}
         note={sl.note}
