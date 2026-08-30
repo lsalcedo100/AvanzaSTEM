@@ -14,8 +14,13 @@ export function generateStaticParams() {
   return LOCALIZED_LANGUAGES.map((locale) => ({ locale }))
 }
 
-export function generateMetadata(): Metadata {
-  return generateRoboticsJournalMetadata()
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  return generateRoboticsJournalMetadata(locale as Language)
 }
 
 export default function LocaleRoboticsJournalPage() {

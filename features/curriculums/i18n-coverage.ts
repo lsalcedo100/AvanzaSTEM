@@ -115,6 +115,76 @@ const RESERVED_WORDS = new Set([
 ].map((word) => word.toLowerCase()))
 
 /**
+ * Paths whose leaf is a stored key rather than prose. `rubric[].levels[].label`
+ * is typed `"Beginning" | "Developing" | "Proficient" | "Exemplary"` and is what
+ * a saved self-evaluation is keyed on, so `DeepPartial` refuses to translate it
+ * and an overlay must not try. The student never reads these: the robotics final
+ * project renders them through `t.courseUi.rubricLevels`, and the Intro to AI
+ * rubric is only validated, never displayed.
+ */
+const IDENTIFIER_PATHS = [/(^|\.)rubric\[\d+\]\.levels\[\d+\]\.label$/]
+
+/**
+ * Metric units, spelled the same in every language we ship. Longest first so the
+ * alternation below prefers "cm" and "km" over a bare "m".
+ */
+const METRIC_UNITS = "mm|cm|km|kg|ml|m|g|l"
+
+/**
+ * A worked answer written as notation rather than a sentence: "348 < 384",
+ * "407 = 400 + 0 + 7", "$25 - $18 = $7", "3 cm (30 - 27 = 3).". The digits and
+ * operators carry the whole meaning, so repeating them is correct. Anything with
+ * a word in it fails this test and is still reported.
+ */
+const MATH_NOTATION = new RegExp(
+  `^(?:[\\d\\s.,:;/×x%°+\\-<>=$()]|\\b(?:${METRIC_UNITS})\\b)+$`,
+  "i",
+)
+
+/**
+ * Cognates and loanwords that are genuinely the right word in the target
+ * language, reviewed one at a time on 2026-08-29 against the surrounding
+ * overlay prose. `pt` "Face", for instance, sits beside a Portuguese definition
+ * the overlay author wrote deliberately; `es` "variable" and `pt` "string" are
+ * the words those courses actually use.
+ *
+ * Keep this list exact and per-language, never a shared set: "Color" is right in
+ * Spanish and wrong in Portuguese ("Cor"), and every entry here is a gap the
+ * report will stop showing, so it should only grow after a human has looked.
+ */
+const REVIEWED_COGNATES: Partial<Record<Language, Set<string>>> = {
+  es: new Set([
+    "Color",
+    "Deepfake",
+    "Drones",
+    "Motor",
+    "Robot",
+    "Sensor",
+    "Variable",
+    "error",
+    "plan",
+    "variable",
+  ]),
+  pt: new Set([
+    "Banana",
+    "Deepfake",
+    "Drones",
+    "Face",
+    "Imagine",
+    "Item",
+    "Motor",
+    "Observe",
+    "Pixel",
+    "Sensor",
+    "Torque",
+    "item",
+    "prompt",
+    "string",
+  ]),
+  zh: new Set([]),
+}
+
+/**
  * Values that are the same word in every language we ship, or are not really
  * text at all: numerals, measurements, code identifiers, and single symbols.
  * Counting these as untranslated would bury the real gaps in noise.
@@ -122,8 +192,9 @@ const RESERVED_WORDS = new Set([
 function isLanguageNeutral(value: string): boolean {
   const trimmed = value.trim()
   if (trimmed.length <= 3) return true
-  // Pure numbers, measurements, ranges: "45-60", "2 cm", "1/2", "100%".
-  if (/^[\d\s.,:/×x%°+-]+$/.test(trimmed)) return true
+  // Pure numbers, measurements, ranges: "45-60", "2 cm", "1/2", "100%", and
+  // worked answers written as notation: "348 < 384", "$25 - $18 = $7".
+  if (MATH_NOTATION.test(trimmed)) return true
   // Looks like code or a path rather than a sentence. The dotted form catches
   // attribute calls such as "random.choice()" and "str.upper()".
   if (/^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z0-9_]+)*\(|^\//.test(trimmed)) return true
@@ -157,9 +228,11 @@ function walk(
   path: string,
   counters: { total: number; translated: number },
   gaps: CoverageGap[],
+  language: Language,
 ): void {
   if (typeof base === "string") {
     if (isLanguageNeutral(base)) return
+    if (REVIEWED_COGNATES[language]?.has(base.trim())) return
     counters.total += 1
     if (base === localized) {
       gaps.push({ path, value: base.length > 60 ? `${base.slice(0, 60)}...` : base })
@@ -170,19 +243,29 @@ function walk(
   }
   if (Array.isArray(base)) {
     base.forEach((entry, index) => {
-      walk(entry, (localized as unknown[] | undefined)?.[index], `${path}[${index}]`, counters, gaps)
+      walk(
+        entry,
+        (localized as unknown[] | undefined)?.[index],
+        `${path}[${index}]`,
+        counters,
+        gaps,
+        language,
+      )
     })
     return
   }
   if (base && typeof base === "object") {
     for (const key of Object.keys(base as Record<string, unknown>)) {
       if (IDENTIFIER_KEYS.has(key)) continue
+      const childPath = path ? `${path}.${key}` : key
+      if (IDENTIFIER_PATHS.some((pattern) => pattern.test(childPath))) continue
       walk(
         (base as Record<string, unknown>)[key],
         (localized as Record<string, unknown> | undefined)?.[key],
-        path ? `${path}.${key}` : key,
+        childPath,
         counters,
         gaps,
+        language,
       )
     }
   }
@@ -204,7 +287,7 @@ export function courseCoverage(
 ): CoverageReport {
   const counters = { total: 0, translated: 0 }
   const gaps: CoverageGap[] = []
-  walk(course.resolve("en"), course.resolve(language), "", counters, gaps)
+  walk(course.resolve("en"), course.resolve(language), "", counters, gaps, language)
   return {
     course: course.name,
     language,

@@ -23,8 +23,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; week: string; lesson: string }>
 }): Promise<Metadata> {
-  const { week, lesson } = await params
-  return generateIntroToAiLessonMetadata(Number(week), lesson)
+  const { locale, week, lesson } = await params
+  return generateIntroToAiLessonMetadata(Number(week), lesson, locale as Language)
 }
 
 export default async function LocaleIntroToAiLessonPage({

@@ -1,36 +1,36 @@
 import type { MetadataRoute } from 'next'
-import { localizedBlogArticles } from '@/features/blog/posts'
+import { localizedBlogArticles } from '../features/blog/posts.ts'
 import {
   introToPythonCurriculum,
   introToPythonPath,
   introToPythonTeacherGuidePath,
   introToPythonWeekPath,
   introToPythonWorksheetsPath,
-} from '@/features/curriculums/intro-to-python'
+} from '../features/curriculums/intro-to-python/index.ts'
 import {
   engineeringFundamentalsCurriculum,
   engineeringFundamentalsPath,
   engineeringLessonPath,
   engineeringTeacherGuidePath,
   engineeringWorksheetPath,
-} from '@/features/curriculums/engineering-fundamentals'
+} from '../features/curriculums/engineering-fundamentals/index.ts'
 import {
   scienceExperimentsCurriculum,
   scienceExperimentsPath,
   scienceLessonPath,
-} from '@/features/curriculums/science-experiments'
+} from '../features/curriculums/science-experiments/index.ts'
 import {
   mathAdventuresCurriculum,
   mathAdventuresPath,
   mathLessonPath,
-} from '@/features/curriculums/math-adventures'
+} from '../features/curriculums/math-adventures/index.ts'
 import {
   roboticsCurriculum,
   roboticsLessonPath,
   roboticsPath,
   roboticsTeacherGuidePath,
   roboticsWorksheetPath,
-} from '@/features/curriculums/robotics'
+} from '../features/curriculums/robotics/index.ts'
 import {
   introToAiCourse,
   introToAiFinalAssessmentPath,
@@ -39,18 +39,17 @@ import {
   introToAiLessonPath,
   introToAiPath,
   introToAiWeekPath,
-} from '@/features/curriculums/intro-to-ai'
-import { engineeringCurriculumHasTranslation } from '@/features/curriculums/engineering-fundamentals/i18n'
-import { introToAiCourseHasTranslation } from '@/features/curriculums/intro-to-ai/i18n'
-import { pythonCurriculumHasTranslation } from '@/features/curriculums/intro-to-python/i18n'
-import { mathCurriculumHasTranslation } from '@/features/curriculums/math-adventures/i18n'
-import { roboticsCurriculumHasTranslation } from '@/features/curriculums/robotics/i18n'
-import { scienceCurriculumHasTranslation } from '@/features/curriculums/science-experiments/i18n'
-import { DICTIONARY_TRANSLATED_COURSE_PATHS } from '@/features/curriculums/metadata'
-import { projectGuides } from '@/features/projects/data'
-import { enOnlyAlternates, languageAlternates, localizedPath } from '@/lib/i18n-routes'
-import { siteConfig } from '@/lib/site-config'
-import { VALID_LANGUAGES, type Language } from '@/i18n/translations'
+} from '../features/curriculums/intro-to-ai/index.ts'
+import { engineeringCurriculumHasTranslation } from '../features/curriculums/engineering-fundamentals/i18n.ts'
+import { introToAiCourseHasTranslation } from '../features/curriculums/intro-to-ai/i18n.ts'
+import { pythonCurriculumHasTranslation } from '../features/curriculums/intro-to-python/i18n.ts'
+import { mathCurriculumHasTranslation } from '../features/curriculums/math-adventures/i18n.ts'
+import { roboticsCurriculumHasTranslation } from '../features/curriculums/robotics/i18n.ts'
+import { scienceCurriculumHasTranslation } from '../features/curriculums/science-experiments/i18n.ts'
+import { projectGuides } from '../features/projects/data.ts'
+import { enOnlyAlternates, languageAlternates, localizedPath } from '../lib/i18n-routes.ts'
+import { siteConfig } from '../lib/site-config.ts'
+import { VALID_LANGUAGES, type Language } from '../i18n/translations.ts'
 
 // A course is advertised as translated only when every non-English locale has
 // an overlay for it. The overlays are filled in course by course, so this is
@@ -162,14 +161,11 @@ const COURSE_PATHS: { translated: boolean; paths: string[] }[] = [
 // The flat pages and the home, blog and project routes are all translated, so
 // nothing outside the untranslated courses belongs in here.
 //
-// An untranslated course still has a handful of pages - its overview, and the
-// AI completion page - built entirely from dictionary copy rather than from
-// curriculum data. Those render as real translations under /es, /zh and /pt, so
-// they are exempted here and emitted for every locale.
+// All six courses now ship complete es/zh/pt overlays, so this set is empty and
+// every route is emitted for all four locales. It stays because the next course
+// added will land before its overlays do.
 const ENGLISH_ONLY_PATHS = new Set(
-  COURSE_PATHS.filter((course) => !course.translated)
-    .flatMap((course) => course.paths)
-    .filter((path) => !DICTIONARY_TRANSLATED_COURSE_PATHS.has(path)),
+  COURSE_PATHS.filter((course) => !course.translated).flatMap((course) => course.paths),
 )
 
 // lastModified dates below reflect the last meaningful content update for each
@@ -187,15 +183,15 @@ const ENGLISH_ONLY_PATHS = new Set(
 // 2026-06-16 dates even though posts.ts was edited on 2026-08-14, because that
 // commit removed an unused authorId field and changed nothing a reader sees.
 const staticRoutes = [
-  { path: '/', priority: 1.0, changeFrequency: 'weekly', lastModified: '2026-08-14' },
+  { path: '/', priority: 1.0, changeFrequency: 'weekly', lastModified: '2026-08-29' },
   { path: '/resources', priority: 0.9, changeFrequency: 'weekly', lastModified: '2026-08-28' },
   { path: '/about', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-12' },
   { path: '/projects', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-04' },
   { path: '/games', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-16' },
   { path: '/blog', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-08-14' },
-  { path: '/workshops', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-08-14' },
+  { path: '/workshops', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-08-29' },
   { path: '/find-a-workshop', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-08-14' },
-  { path: '/host', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-02' },
+  { path: '/host', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-08-29' },
   { path: '/gallery', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-08-14' },
   { path: '/curriculums', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-16' },
   { path: '/curriculums/intro-to-python', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-07' },

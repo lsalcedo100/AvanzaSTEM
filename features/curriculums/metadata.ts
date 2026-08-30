@@ -14,47 +14,52 @@ import {
 } from "./science-experiments/i18n.ts"
 import { siteConfig } from "../../lib/site-config.ts"
 import {
-  getIntroToPythonWeek,
   introToPythonTeacherGuidePath,
   introToPythonWeekPath,
   introToPythonWorksheetsPath,
 } from "./intro-to-python/index.ts"
-import { engineeringCurriculumHasTranslation } from "./engineering-fundamentals/i18n.ts"
-import { introToAiCourseHasTranslation } from "./intro-to-ai/i18n.ts"
-import { mathCurriculumHasTranslation } from "./math-adventures/i18n.ts"
-import { roboticsCurriculumHasTranslation } from "./robotics/i18n.ts"
 import {
-  engineeringFundamentalsCurriculum,
+  engineeringCurriculumHasTranslation,
+  findEngineeringLesson,
+  getEngineeringFundamentalsCurriculum,
+} from "./engineering-fundamentals/i18n.ts"
+import {
+  findAiLesson,
+  findAiWeek,
+  getIntroToAiCourse,
+  introToAiCourseHasTranslation,
+} from "./intro-to-ai/i18n.ts"
+import {
+  findMathLesson,
+  getMathAdventuresCurriculum,
+  mathCurriculumHasTranslation,
+} from "./math-adventures/i18n.ts"
+import {
+  findRoboticsModule,
+  getRoboticsCurriculum,
+  roboticsCurriculumHasTranslation,
+} from "./robotics/i18n.ts"
+import {
   engineeringFundamentalsPath,
   engineeringLessonPath,
   engineeringTeacherGuidePath,
   engineeringWorksheetPath,
-  getEngineeringLesson,
 } from "./engineering-fundamentals/index.ts"
 import {
-  getScienceLesson,
-  scienceExperimentsCurriculum,
   scienceExperimentsPath,
   scienceLessonPath,
 } from "./science-experiments/index.ts"
 import {
-  getMathLessonBySlug,
-  mathAdventuresCurriculum,
   mathAdventuresPath,
   mathLessonPath,
 } from "./math-adventures/index.ts"
 import {
-  getRoboticsModule,
-  roboticsCurriculum,
   roboticsLessonPath,
   roboticsPath,
   roboticsTeacherGuidePath,
   roboticsWorksheetPath,
 } from "./robotics/index.ts"
 import {
-  getLesson as getIntroToAiLesson,
-  getWeek as getIntroToAiWeek,
-  introToAiCourse,
   introToAiCompletionPath,
   introToAiFinalAssessmentPath,
   introToAiFinalProjectPath,
@@ -78,6 +83,16 @@ import {
  * informative part first (site name, then course name). Nothing here is
  * rendered on the page.
  */
+/**
+ * Open Graph card for a locale.
+ *
+ * `public/images/` ships one per language; every generator used to hardcode the
+ * English card, so a link shared from /es or /zh previewed in English.
+ */
+function ogImagePath(language: Language): string {
+  return `/images/og-default-${language}.png`
+}
+
 const TITLE_MAX = 60
 const DESCRIPTION_MAX = 158
 
@@ -120,9 +135,9 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
       "Free STEM curriculum resources for kids, teachers, and homeschool families: Python, engineering, science, robotics, math, and AI, with lessons and worksheets.",
   },
   es: {
-    title: "Curriculos STEM en desarrollo | Avanza STEM",
+    title: "Currículo STEM gratuito para niños: Python, ingeniería e IA",
     description:
-      "Recursos de curriculo STEM gratuitos para ninos, maestros y familias que educan en casa: Python, ingenieria, ciencias, matematicas, robotica e IA.",
+      "Recursos gratuitos de currículo STEM para niños, maestros y familias que educan en casa: Python, ingeniería, ciencias, robótica, matemáticas e IA.",
   },
   zh: {
     title: "正在开发的 STEM 课程 | Avanza STEM",
@@ -136,29 +151,6 @@ const metadataByLanguage: Record<Language, { title: string; description: string 
   },
 }
 
-/**
- * Course pages whose visible copy comes from the UI dictionary in
- * `i18n/translations.ts` rather than from the curriculum data.
- *
- * The overlays for Robotics, Math Adventures, Engineering Fundamentals and
- * Intro to AI are still empty, so those courses' lesson, worksheet and
- * teacher-guide pages really do render English bodies under a translated shell
- * and are right to canonicalize to English. Their overview pages are the
- * exception: everything a reader sees on them is dictionary copy, so /es, /zh
- * and /pt are genuine translations - 44-89% of the visible text differs from
- * English - and pointing their canonical at the English URL was telling Google
- * to drop fifteen real pages.
- *
- * Entries leave this set the moment the course itself gains overlays: at that
- * point `hasTranslation` covers every page, including these.
- */
-export const DICTIONARY_TRANSLATED_COURSE_PATHS: ReadonlySet<string> = new Set([
-  roboticsPath,
-  mathAdventuresPath,
-  engineeringFundamentalsPath,
-  introToAiPath,
-  introToAiCompletionPath,
-])
 
 /**
  * Canonical + hreflang for a course page.
@@ -166,12 +158,14 @@ export const DICTIONARY_TRANSLATED_COURSE_PATHS: ReadonlySet<string> = new Set([
  * A course only advertises localized alternates once its content is actually
  * translated. Until then the localized route still exists and renders (with
  * translated chrome and English lesson text), but it points its canonical at
- * the English URL rather than claiming to be a distinct translation - unless
- * the page draws its copy from the dictionary, per the set above.
+ * the English URL rather than claiming to be a distinct translation.
+ *
+ * All six courses now ship complete es/zh/pt overlays, so in practice every
+ * course page takes the localized branch. The English branch stays for the
+ * next course added before its overlays land.
  */
 function courseAlternates(path: string, language: Language, translated: boolean) {
-  const localized = translated || DICTIONARY_TRANSLATED_COURSE_PATHS.has(path)
-  return localized
+  return translated
     ? { canonical: localizedPath(path, language), languages: languageAlternates(path) }
     : { canonical: path, languages: enOnlyAlternates(path) }
 }
@@ -194,7 +188,7 @@ export function generateCurriculumsMetadata(language: Language = "en"): Metadata
       type: "website",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
           alt: "Avanza STEM Curriculums",
@@ -205,7 +199,7 @@ export function generateCurriculumsMetadata(language: Language = "en"): Metadata
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
@@ -239,7 +233,7 @@ export function generateIntroToPythonWeekMetadata(
       type: "article",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
           alt: `Intro to Python - Week ${lesson.week}: ${lesson.title}`,
@@ -250,7 +244,7 @@ export function generateIntroToPythonWeekMetadata(
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
@@ -276,7 +270,7 @@ export function generateIntroToPythonTeacherGuideMetadata(language: Language = "
       type: "article",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
           alt: "Intro to Python teacher and librarian guide",
@@ -287,7 +281,7 @@ export function generateIntroToPythonTeacherGuideMetadata(language: Language = "
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
@@ -313,7 +307,7 @@ export function generateIntroToPythonWorksheetsMetadata(language: Language = "en
       type: "article",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
           alt: "Intro to Python printable student worksheets",
@@ -324,7 +318,7 @@ export function generateIntroToPythonWorksheetsMetadata(language: Language = "en
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
@@ -355,7 +349,7 @@ export function generateIntroToPythonMetadata(language: Language = "en"): Metada
       type: "website",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
           alt: "Intro to Python Programming curriculum",
@@ -366,17 +360,16 @@ export function generateIntroToPythonMetadata(language: Language = "en"): Metada
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
 
 export function generateMathAdventuresMetadata(language: Language = "en"): Metadata {
-  const c = mathAdventuresCurriculum
-  const title =
-    "Math Adventures: 10-Week Course (Grades 2-5)"
-  const description =
-    "A 10-week math course for grades 2-5. Each week turns one big idea - place value, fractions, geometry, data - into a hands-on adventure with a final project."
+  const m = translations[language].courseMeta
+  const course = getMathAdventuresCurriculum(language)
+  const title = clampTitle(m.mathHubTitle)
+  const description = clampDescription(m.mathHubDesc)
 
   return {
     title,
@@ -389,15 +382,15 @@ export function generateMathAdventuresMetadata(language: Language = "en"): Metad
     openGraph: {
       title,
       description,
-      url: `${siteConfig.url}${mathAdventuresPath}`,
+      url: `${siteConfig.url}${localizedPath(mathAdventuresPath, language)}`,
       siteName: siteConfig.name,
       type: "website",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
-          alt: `${c.title} curriculum`,
+          alt: course.title,
         },
       ],
     },
@@ -405,41 +398,44 @@ export function generateMathAdventuresMetadata(language: Language = "en"): Metad
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
 
-export function generateMathLessonMetadata(slug: string): Metadata {
-  const lesson = getMathLessonBySlug(slug)
+export function generateMathLessonMetadata(slug: string, language: Language = "en"): Metadata {
+  const lesson = findMathLesson(language, slug)
   if (!lesson) {
     return { title: "Lesson not found | Avanza STEM" }
   }
 
   const path = mathLessonPath(slug)
-  const label = lesson.isFinalProject ? "Final Project" : `Week ${lesson.weekNumber}`
-  const title = clampTitle(`${label}: ${lesson.title}`, "Math Adventures")
+  const m = translations[language].courseMeta
+  const label = lesson.isFinalProject
+    ? m.finalProject
+    : formatTemplate(translations[language].courseUi.shared.weekNumber, { n: lesson.weekNumber })
+  const title = clampTitle(
+    formatTemplate(m.labelTitle, { label, title: lesson.title }),
+    m.shortMath,
+  )
   const description = clampDescription(lesson.description)
 
   return {
     title,
     description,
-    alternates: {
-      canonical: path,
-      languages: enOnlyAlternates(path),
-    },
+    alternates: courseAlternates(path, language, mathCurriculumHasTranslation(language)),
     openGraph: {
       title,
       description,
-      url: `${siteConfig.url}${path}`,
+      url: `${siteConfig.url}${localizedPath(path, language)}`,
       siteName: siteConfig.name,
       type: "article",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
-          alt: `Math Adventures - ${label}: ${lesson.title}`,
+          alt: formatTemplate(m.altLesson, { course: m.shortMath, label, title: lesson.title }),
         },
       ],
     },
@@ -447,17 +443,16 @@ export function generateMathLessonMetadata(slug: string): Metadata {
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
 
 export function generateEngineeringFundamentalsMetadata(language: Language = "en"): Metadata {
-  const c = engineeringFundamentalsCurriculum
-  const title =
-    "Engineering Fundamentals: 6-Week Course (Grades 2-5)"
-  const description =
-    "A 6-week hands-on engineering course for grades 2-5. Build, test, and redesign towers, bridges, gliders, and machines from everyday materials - no computer."
+  const m = translations[language].courseMeta
+  const course = getEngineeringFundamentalsCurriculum(language)
+  const title = clampTitle(m.engineeringHubTitle)
+  const description = clampDescription(m.engineeringHubDesc)
 
   return {
     title,
@@ -470,15 +465,15 @@ export function generateEngineeringFundamentalsMetadata(language: Language = "en
     openGraph: {
       title,
       description,
-      url: `${siteConfig.url}${engineeringFundamentalsPath}`,
+      url: `${siteConfig.url}${localizedPath(engineeringFundamentalsPath, language)}`,
       siteName: siteConfig.name,
       type: "website",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
-          alt: `${c.title} curriculum`,
+          alt: course.title,
         },
       ],
     },
@@ -486,41 +481,49 @@ export function generateEngineeringFundamentalsMetadata(language: Language = "en
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
 
-export function generateEngineeringLessonMetadata(slug: string): Metadata {
-  const lesson = getEngineeringLesson(slug)
+export function generateEngineeringLessonMetadata(
+  slug: string,
+  language: Language = "en",
+): Metadata {
+  const lesson = findEngineeringLesson(language, slug)
   if (!lesson) {
     return { title: "Lesson not found | Avanza STEM" }
   }
 
   const path = engineeringLessonPath(slug)
-  const label = lesson.isFinal ? "Final Challenge" : `Lesson ${lesson.order}`
-  const title = clampTitle(`${label}: ${lesson.title}`, "Engineering Fundamentals")
+  const m = translations[language].courseMeta
+  const label = engineeringResourceLabel(slug, language)
+  const title = clampTitle(
+    formatTemplate(m.labelTitle, { label, title: lesson.title }),
+    m.shortEngineering,
+  )
   const description = clampDescription(lesson.summary)
 
   return {
     title,
     description,
-    alternates: {
-      canonical: path,
-      languages: enOnlyAlternates(path),
-    },
+    alternates: courseAlternates(path, language, engineeringCurriculumHasTranslation(language)),
     openGraph: {
       title,
       description,
-      url: `${siteConfig.url}${path}`,
+      url: `${siteConfig.url}${localizedPath(path, language)}`,
       siteName: siteConfig.name,
       type: "article",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
-          alt: `Engineering Fundamentals - ${label}: ${lesson.title}`,
+          alt: formatTemplate(m.altLesson, {
+            course: m.shortEngineering,
+            label,
+            title: lesson.title,
+          }),
         },
       ],
     },
@@ -528,49 +531,58 @@ export function generateEngineeringLessonMetadata(slug: string): Metadata {
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
 
-function engineeringResourceLabel(slug: string): string {
-  const lesson = getEngineeringLesson(slug)
+function engineeringResourceLabel(slug: string, language: Language): string {
+  const lesson = findEngineeringLesson(language, slug)
+  const m = translations[language].courseMeta
   if (!lesson) return "Lesson"
-  return lesson.isFinal ? "Final Challenge" : `Lesson ${lesson.order}`
+  return lesson.isFinal ? m.finalChallenge : formatTemplate(m.lessonNumber, { n: lesson.order })
 }
 
-export function generateEngineeringWorksheetMetadata(slug: string): Metadata {
-  const lesson = getEngineeringLesson(slug)
+export function generateEngineeringWorksheetMetadata(
+  slug: string,
+  language: Language = "en",
+): Metadata {
+  const lesson = findEngineeringLesson(language, slug)
   if (!lesson) {
     return { title: "Worksheet not found | Avanza STEM" }
   }
 
   const path = engineeringWorksheetPath(slug)
-  const label = engineeringResourceLabel(slug)
-  const title = clampTitle(`${label} Worksheet: ${lesson.title}`, "Engineering")
+  const m = translations[language].courseMeta
+  const label = engineeringResourceLabel(slug, language)
+  const title = clampTitle(
+    formatTemplate(m.worksheetTitle, { label, title: lesson.title }),
+    m.shortEngineering,
+  )
   const description = clampDescription(
-    `Printable worksheet for ${label}, ${lesson.projectName}: the problem, a materials checklist, sketch area, test results table, and reflection questions.`,
+    formatTemplate(m.engineeringWorksheetDesc, { label, project: lesson.projectName }),
   )
 
   return {
     title,
     description,
-    alternates: {
-      canonical: path,
-      languages: enOnlyAlternates(path),
-    },
+    alternates: courseAlternates(path, language, engineeringCurriculumHasTranslation(language)),
     openGraph: {
       title,
       description,
-      url: `${siteConfig.url}${path}`,
+      url: `${siteConfig.url}${localizedPath(path, language)}`,
       siteName: siteConfig.name,
       type: "article",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
-          alt: `Engineering Fundamentals worksheet - ${label}: ${lesson.title}`,
+          alt: formatTemplate(m.altWorksheet, {
+            course: m.shortEngineering,
+            label,
+            title: lesson.title,
+          }),
         },
       ],
     },
@@ -578,43 +590,49 @@ export function generateEngineeringWorksheetMetadata(slug: string): Metadata {
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
 
-export function generateEngineeringTeacherGuideMetadata(slug: string): Metadata {
-  const lesson = getEngineeringLesson(slug)
+export function generateEngineeringTeacherGuideMetadata(
+  slug: string,
+  language: Language = "en",
+): Metadata {
+  const lesson = findEngineeringLesson(language, slug)
   if (!lesson) {
     return { title: "Guide not found | Avanza STEM" }
   }
 
   const path = engineeringTeacherGuidePath(slug)
-  const label = engineeringResourceLabel(slug)
-  const title = clampTitle(`${label} Teacher Guide: ${lesson.title}`, "Engineering")
-  const description = clampDescription(
-    `Facilitator guide for ${label} of Engineering Fundamentals: setup, materials prep, safety notes, common failure points, and easier and harder versions.`,
+  const m = translations[language].courseMeta
+  const label = engineeringResourceLabel(slug, language)
+  const title = clampTitle(
+    formatTemplate(m.guideTitle, { label, title: lesson.title }),
+    m.shortEngineering,
   )
+  const description = clampDescription(formatTemplate(m.engineeringGuideDesc, { label }))
 
   return {
     title,
     description,
-    alternates: {
-      canonical: path,
-      languages: enOnlyAlternates(path),
-    },
+    alternates: courseAlternates(path, language, engineeringCurriculumHasTranslation(language)),
     openGraph: {
       title,
       description,
-      url: `${siteConfig.url}${path}`,
+      url: `${siteConfig.url}${localizedPath(path, language)}`,
       siteName: siteConfig.name,
       type: "article",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
-          alt: `Engineering Fundamentals teacher guide - ${label}: ${lesson.title}`,
+          alt: formatTemplate(m.altGuide, {
+            course: m.shortEngineering,
+            label,
+            title: lesson.title,
+          }),
         },
       ],
     },
@@ -622,7 +640,7 @@ export function generateEngineeringTeacherGuideMetadata(slug: string): Metadata 
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
@@ -651,7 +669,7 @@ export function generateScienceExperimentsMetadata(language: Language = "en"): M
       type: "website",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
           alt: `${c.title} curriculum`,
@@ -662,7 +680,7 @@ export function generateScienceExperimentsMetadata(language: Language = "en"): M
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
@@ -693,7 +711,7 @@ export function generateScienceLessonMetadata(slug: string, language: Language =
       type: "article",
       images: [
         {
-          url: "/images/og-default-en.png",
+          url: ogImagePath(language),
           width: 1200,
           height: 630,
           alt: `${course.title} - ${label}: ${lesson.title}`,
@@ -704,7 +722,7 @@ export function generateScienceLessonMetadata(slug: string, language: Language =
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
@@ -728,107 +746,139 @@ function roboticsMetadata(
     openGraph: {
       title,
       description,
-      url: `${siteConfig.url}${path}`,
+      url: `${siteConfig.url}${localizedPath(path, language)}`,
       siteName: siteConfig.name,
       type,
-      images: [{ url: "/images/og-default-en.png", width: 1200, height: 630, alt }],
+      images: [{ url: ogImagePath(language), width: 1200, height: 630, alt }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
 
 export function generateRoboticsMetadata(language: Language = "en"): Metadata {
-  const title = clampTitle("Robotics & Automation: 8-Week Course (Grades 4-6)")
-  const description =
-    "An 8-week robotics course for grades 4-6. Build a robot that moves, program it, add sensors, and debug it - with a kit, a browser simulator, or unplugged."
-  return roboticsMetadata(
-    title,
-    description,
-    roboticsPath,
-    "website",
-    `${roboticsCurriculum.title} course`,
-    language,
-  )
+  const m = translations[language].courseMeta
+  const course = getRoboticsCurriculum(language)
+  const title = clampTitle(m.roboticsHubTitle)
+  const description = clampDescription(m.roboticsHubDesc)
+  return roboticsMetadata(title, description, roboticsPath, "website", course.title, language)
 }
 
-export function generateRoboticsLessonMetadata(slug: string): Metadata {
-  const courseModule = getRoboticsModule(slug)
+export function generateRoboticsLessonMetadata(
+  slug: string,
+  language: Language = "en",
+): Metadata {
+  const courseModule = findRoboticsModule(language, slug)
   if (!courseModule) return { title: "Lesson not found | Avanza STEM" }
-  const label = courseModule.isFinal ? "Final Project" : `Week ${courseModule.week}`
-  const title = clampTitle(`${label}: ${courseModule.title}`, "Robotics")
+  const m = translations[language].courseMeta
+  const label = courseModule.isFinal
+    ? m.finalProject
+    : formatTemplate(translations[language].courseUi.shared.weekNumber, { n: courseModule.week })
+  const title = clampTitle(
+    formatTemplate(m.labelTitle, { label, title: courseModule.title }),
+    m.shortRobotics,
+  )
   const description = clampDescription(courseModule.summary)
   return roboticsMetadata(
     title,
     description,
     roboticsLessonPath(slug),
     "article",
-    `Robotics & Automation - ${label}: ${courseModule.title}`,
+    formatTemplate(m.altLesson, { course: m.shortRobotics, label, title: courseModule.title }),
+    language,
   )
 }
 
-export function generateRoboticsWorksheetMetadata(slug: string): Metadata {
-  const courseModule = getRoboticsModule(slug)
+export function generateRoboticsWorksheetMetadata(
+  slug: string,
+  language: Language = "en",
+): Metadata {
+  const courseModule = findRoboticsModule(language, slug)
   if (!courseModule) return { title: "Worksheet not found | Avanza STEM" }
-  const label = courseModule.isFinal ? "Final Project" : `Week ${courseModule.week}`
-  const title = clampTitle(`${label} Worksheet: ${courseModule.title}`, "Robotics")
-  const description = clampDescription(
-    `Printable worksheet for ${label} of the Robotics & Automation course: key ideas, vocabulary, activity space, testing tables, and reflection questions.`,
+  const m = translations[language].courseMeta
+  const label = courseModule.isFinal
+    ? m.finalProject
+    : formatTemplate(translations[language].courseUi.shared.weekNumber, { n: courseModule.week })
+  const title = clampTitle(
+    formatTemplate(m.worksheetTitle, { label, title: courseModule.title }),
+    m.shortRobotics,
   )
+  const description = clampDescription(formatTemplate(m.roboticsWorksheetDesc, { label }))
   return roboticsMetadata(
     title,
     description,
     roboticsWorksheetPath(slug),
     "article",
-    `Robotics & Automation worksheet - ${label}: ${courseModule.title}`,
+    formatTemplate(m.altWorksheet, { course: m.shortRobotics, label, title: courseModule.title }),
+    language,
   )
 }
 
-export function generateRoboticsTeacherGuideMetadata(slug: string): Metadata {
-  const courseModule = getRoboticsModule(slug)
+export function generateRoboticsTeacherGuideMetadata(
+  slug: string,
+  language: Language = "en",
+): Metadata {
+  const courseModule = findRoboticsModule(language, slug)
   if (!courseModule) return { title: "Guide not found | Avanza STEM" }
-  const label = courseModule.isFinal ? "Final Project" : `Week ${courseModule.week}`
-  const title = clampTitle(`${label} Teacher Guide: ${courseModule.title}`, "Robotics")
-  const description = clampDescription(
-    `Facilitator guide for ${label} of Robotics & Automation: setup, materials prep, common misconceptions, questions to ask, and easier and harder versions.`,
+  const m = translations[language].courseMeta
+  const label = courseModule.isFinal
+    ? m.finalProject
+    : formatTemplate(translations[language].courseUi.shared.weekNumber, { n: courseModule.week })
+  const title = clampTitle(
+    formatTemplate(m.guideTitle, { label, title: courseModule.title }),
+    m.shortRobotics,
   )
+  const description = clampDescription(formatTemplate(m.roboticsGuideDesc, { label }))
   return roboticsMetadata(
     title,
     description,
     roboticsTeacherGuidePath(slug),
     "article",
-    `Robotics & Automation teacher guide - ${label}: ${courseModule.title}`,
+    formatTemplate(m.altGuide, { course: m.shortRobotics, label, title: courseModule.title }),
+    language,
   )
 }
 
-export function generateRoboticsReviewMetadata(): Metadata {
-  const title = clampTitle("Course Review", "Robotics & Automation")
-  const description =
-    "Review your progress through the 8-week Robotics & Automation course: what you completed, your knowledge-check scores, and where to pick back up."
-  return roboticsMetadata(title, description, `${roboticsPath}/review`, "website", "Robotics & Automation course review")
-}
-
-export function generateRoboticsJournalMetadata(): Metadata {
-  const title = clampTitle("Design Journal", "Robotics & Automation")
-  const description =
-    "Your robotics design journal: saved sketches, plans, and reflections from every week of the Robotics & Automation course, ready to review or print."
-  return roboticsMetadata(title, description, `${roboticsPath}/journal`, "website", "Robotics & Automation design journal")
-}
-
-export function generateRoboticsFinalProjectMetadata(): Metadata {
-  const title = clampTitle("Capstone Brief: Design a Robot That Helps", "Robotics")
-  const description =
-    "The Robotics & Automation capstone: choose a mission, plan it, build a robot that uses a sensor, a loop, and a condition, then test it three times."
+export function generateRoboticsReviewMetadata(language: Language = "en"): Metadata {
+  const m = translations[language].courseMeta
+  const title = clampTitle(m.roboticsReviewTitle, m.shortRobotics)
   return roboticsMetadata(
     title,
-    description,
+    clampDescription(m.roboticsReviewDesc),
+    `${roboticsPath}/review`,
+    "website",
+    `${m.shortRobotics} - ${m.roboticsReviewTitle}`,
+    language,
+  )
+}
+
+export function generateRoboticsJournalMetadata(language: Language = "en"): Metadata {
+  const m = translations[language].courseMeta
+  const title = clampTitle(m.roboticsJournalTitle, m.shortRobotics)
+  return roboticsMetadata(
+    title,
+    clampDescription(m.roboticsJournalDesc),
+    `${roboticsPath}/journal`,
+    "website",
+    `${m.shortRobotics} - ${m.roboticsJournalTitle}`,
+    language,
+  )
+}
+
+export function generateRoboticsFinalProjectMetadata(language: Language = "en"): Metadata {
+  const m = translations[language].courseMeta
+  const title = clampTitle(m.roboticsCapstoneTitle, m.shortRobotics)
+  return roboticsMetadata(
+    title,
+    clampDescription(m.roboticsCapstoneDesc),
     `${roboticsPath}/final-project`,
     "article",
-    "Robotics & Automation final project",
+    `${m.shortRobotics} - ${m.roboticsCapstoneTitle}`,
+    language,
   )
 }
 
@@ -851,86 +901,116 @@ function introToAiMetadata(
     openGraph: {
       title,
       description,
-      url: `${siteConfig.url}${path}`,
+      url: `${siteConfig.url}${localizedPath(path, language)}`,
       siteName: siteConfig.name,
       type,
-      images: [{ url: "/images/og-default-en.png", width: 1200, height: 630, alt }],
+      images: [{ url: ogImagePath(language), width: 1200, height: 630, alt }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og-default-en.png"],
+      images: [ogImagePath(language)],
     },
   }
 }
 
 export function generateIntroToAiMetadata(language: Language = "en"): Metadata {
-  const title = clampTitle("Intro to AI: 6-Week Course for Kids (Grades 5-8)")
-  const description =
-    "A six-week AI course for grades 5-8. Learn what AI is and is not, how data trains a model, where it fails, and how to use it responsibly. No coding required."
+  const m = translations[language].courseMeta
+  const course = getIntroToAiCourse(language)
   return introToAiMetadata(
-    title,
-    description,
+    clampTitle(m.aiHubTitle),
+    clampDescription(m.aiHubDesc),
     introToAiPath,
     "website",
-    `${introToAiCourse.title} course`,
+    course.title,
     language,
   )
 }
 
-export function generateIntroToAiWeekMetadata(week: number): Metadata {
-  const courseWeek = getIntroToAiWeek(week)
-  if (!courseWeek) return generateIntroToAiMetadata()
-  const title = clampTitle(`Week ${courseWeek.week}: ${courseWeek.title}`, "Intro to AI")
-  const description = clampDescription(courseWeek.summary)
+export function generateIntroToAiWeekMetadata(
+  week: number,
+  language: Language = "en",
+): Metadata {
+  const courseWeek = findAiWeek(language, week)
+  if (!courseWeek) return generateIntroToAiMetadata(language)
+  const m = translations[language].courseMeta
+  const title = clampTitle(
+    formatTemplate(m.aiWeekTitle, { n: courseWeek.week, title: courseWeek.title }),
+    m.shortAi,
+  )
   return introToAiMetadata(
     title,
-    description,
+    clampDescription(courseWeek.summary),
     introToAiWeekPath(courseWeek.week),
     "website",
-    `Intro to Artificial Intelligence - Week ${courseWeek.week}: ${courseWeek.title}`,
+    formatTemplate(m.altLesson, {
+      course: m.shortAi,
+      label: formatTemplate(translations[language].courseUi.shared.weekNumber, { n: courseWeek.week }),
+      title: courseWeek.title,
+    }),
+    language,
   )
 }
 
-export function generateIntroToAiLessonMetadata(week: number, lessonSlug: string): Metadata {
-  const lesson = getIntroToAiLesson(week, lessonSlug)
-  if (!lesson) return generateIntroToAiWeekMetadata(week)
-  const title = clampTitle(`${lesson.title} (Week ${week})`, "Intro to AI")
-  const description = clampDescription(lesson.summary)
+export function generateIntroToAiLessonMetadata(
+  week: number,
+  lessonSlug: string,
+  language: Language = "en",
+): Metadata {
+  const lesson = findAiLesson(language, week, lessonSlug)
+  if (!lesson) return generateIntroToAiWeekMetadata(week, language)
+  const m = translations[language].courseMeta
+  const title = clampTitle(
+    formatTemplate(m.aiLessonTitle, { title: lesson.title, n: week }),
+    m.shortAi,
+  )
   return introToAiMetadata(
     title,
-    description,
+    clampDescription(lesson.summary),
     introToAiLessonPath(week, lessonSlug),
     "article",
-    `Intro to Artificial Intelligence - ${lesson.title}`,
+    formatTemplate(m.altLesson, {
+      course: m.shortAi,
+      label: formatTemplate(translations[language].courseUi.shared.weekNumber, { n: week }),
+      title: lesson.title,
+    }),
+    language,
   )
 }
 
-export function generateIntroToAiFinalProjectMetadata(): Metadata {
-  const title = clampTitle("Final Project: AI Design Studio", "Intro to AI")
-  const description =
-    "The Intro to AI capstone: design an AI tool that helps real people. Define the problem, decide whether AI fits, prototype it, and plan for fairness and privacy."
-  return introToAiMetadata(title, description, introToAiFinalProjectPath, "article", "Intro to Artificial Intelligence final project")
+export function generateIntroToAiFinalProjectMetadata(language: Language = "en"): Metadata {
+  const m = translations[language].courseMeta
+  return introToAiMetadata(
+    clampTitle(m.aiFinalProjectTitle, m.shortAi),
+    clampDescription(m.aiFinalProjectDesc),
+    introToAiFinalProjectPath,
+    "article",
+    `${m.shortAi} - ${m.aiFinalProjectTitle}`,
+    language,
+  )
 }
 
-export function generateIntroToAiFinalAssessmentMetadata(): Metadata {
-  const title = clampTitle("Final Assessment", "Intro to AI")
-  const description =
-    "A short, self-paced check across all six weeks of the Intro to Artificial Intelligence course. No grades and nothing is sent anywhere."
-  return introToAiMetadata(title, description, introToAiFinalAssessmentPath, "website", "Intro to Artificial Intelligence final assessment")
+export function generateIntroToAiFinalAssessmentMetadata(language: Language = "en"): Metadata {
+  const m = translations[language].courseMeta
+  return introToAiMetadata(
+    clampTitle(m.aiAssessmentTitle, m.shortAi),
+    clampDescription(m.aiAssessmentDesc),
+    introToAiFinalAssessmentPath,
+    "website",
+    `${m.shortAi} - ${m.aiAssessmentTitle}`,
+    language,
+  )
 }
 
 export function generateIntroToAiCompletionMetadata(language: Language = "en"): Metadata {
-  const title = clampTitle("Course Completion", "Intro to AI")
-  const description =
-    "Finish the six-week Intro to Artificial Intelligence course, review what you learned, and print a certificate of completion."
+  const m = translations[language].courseMeta
   return introToAiMetadata(
-    title,
-    description,
+    clampTitle(m.aiCompletionTitle, m.shortAi),
+    clampDescription(m.aiCompletionDesc),
     introToAiCompletionPath,
     "website",
-    "Intro to Artificial Intelligence completion",
+    `${m.shortAi} - ${m.aiCompletionTitle}`,
     language,
   )
 }

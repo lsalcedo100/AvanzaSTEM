@@ -25,8 +25,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; lesson: string }>
 }): Promise<Metadata> {
-  const { lesson } = await params
-  return generateEngineeringTeacherGuideMetadata(lesson)
+  const { locale, lesson } = await params
+  return generateEngineeringTeacherGuideMetadata(lesson, locale as Language)
 }
 
 export default async function LocaleEngineeringTeacherGuidePage({

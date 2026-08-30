@@ -37,6 +37,7 @@ export type Testimonial = {
 export type TestimonialId =
   | "chathams-facebook"
   | "roseland-instagram"
+  | "wayne-facebook"
   | "troop13-facebook"
 
 /**
@@ -49,9 +50,8 @@ export const TESTIMONIALS: Testimonial[] = [
     id: "chathams-facebook",
     source: "Library of the Chathams",
     platform: "facebook",
-    // Account page: we have a screenshot of the post but not its permalink.
-    url: "https://www.facebook.com/chathamlibrary/",
-    permalink: false,
+    url: "https://www.facebook.com/chathamlibrary/posts/pfbid0BxEFWWx1Q52USThVPLozV21GfLeNzK2rLnDCsSjfu7cTj7EVeo3jtK2Uu8LfUo1Jl",
+    permalink: true,
     date: "2026-06-18",
   },
   {
@@ -62,6 +62,14 @@ export const TESTIMONIALS: Testimonial[] = [
     url: "https://www.instagram.com/p/DZsiQcNEeY9/",
     permalink: true,
     date: "2026-06-17",
+  },
+  {
+    id: "wayne-facebook",
+    source: "Wayne Public Library",
+    platform: "facebook",
+    url: "https://www.facebook.com/WPLWayneNJ/posts/-ya-creates-maker-mindset-series-where-students-explore-engineering-coding-and-a/1509552097868816/",
+    permalink: true,
+    date: "2026-08-13",
   },
   {
     id: "troop13-facebook",

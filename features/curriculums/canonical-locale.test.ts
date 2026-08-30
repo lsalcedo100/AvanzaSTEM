@@ -10,6 +10,25 @@ import {
   generateIntroToPythonWorksheetsMetadata,
   generateScienceExperimentsMetadata,
   generateScienceLessonMetadata,
+  generateEngineeringFundamentalsMetadata,
+  generateEngineeringLessonMetadata,
+  generateEngineeringTeacherGuideMetadata,
+  generateEngineeringWorksheetMetadata,
+  generateIntroToAiCompletionMetadata,
+  generateIntroToAiFinalAssessmentMetadata,
+  generateIntroToAiFinalProjectMetadata,
+  generateIntroToAiLessonMetadata,
+  generateIntroToAiMetadata,
+  generateIntroToAiWeekMetadata,
+  generateMathAdventuresMetadata,
+  generateMathLessonMetadata,
+  generateRoboticsFinalProjectMetadata,
+  generateRoboticsJournalMetadata,
+  generateRoboticsLessonMetadata,
+  generateRoboticsMetadata,
+  generateRoboticsReviewMetadata,
+  generateRoboticsTeacherGuideMetadata,
+  generateRoboticsWorksheetMetadata,
 } from "./metadata.ts"
 
 /**
@@ -61,6 +80,104 @@ const translatedPages: { name: string; path: string; metadata: (language: Langua
     name: "Science Experiments lesson",
     path: "/courses/science-experiments/states-of-matter",
     metadata: (language) => generateScienceLessonMetadata("states-of-matter", language),
+  },
+  // Robotics, Math Adventures, Engineering Fundamentals and Intro to AI reached
+  // full es/zh/pt coverage on 2026-08-29. Until their metadata generators were
+  // given a `language`, 243 translated pages canonicalized to the English URL -
+  // the same defect this file was opened for, at five times the scale. Every
+  // page *type* of each course is pinned below, because the bug lives in the
+  // one generator a reviewer does not happen to open.
+  {
+    name: "Robotics hub",
+    path: "/courses/robotics",
+    metadata: (language) => generateRoboticsMetadata(language),
+  },
+  {
+    name: "Robotics lesson",
+    path: "/courses/robotics/what-makes-something-a-robot",
+    metadata: (language) => generateRoboticsLessonMetadata("what-makes-something-a-robot", language),
+  },
+  {
+    name: "Robotics worksheet",
+    path: "/courses/robotics/what-makes-something-a-robot/worksheet",
+    metadata: (language) =>
+      generateRoboticsWorksheetMetadata("what-makes-something-a-robot", language),
+  },
+  {
+    name: "Robotics teacher guide",
+    path: "/courses/robotics/what-makes-something-a-robot/teacher-guide",
+    metadata: (language) =>
+      generateRoboticsTeacherGuideMetadata("what-makes-something-a-robot", language),
+  },
+  {
+    name: "Robotics review",
+    path: "/courses/robotics/review",
+    metadata: (language) => generateRoboticsReviewMetadata(language),
+  },
+  {
+    name: "Robotics journal",
+    path: "/courses/robotics/journal",
+    metadata: (language) => generateRoboticsJournalMetadata(language),
+  },
+  {
+    name: "Robotics final project",
+    path: "/courses/robotics/final-project",
+    metadata: (language) => generateRoboticsFinalProjectMetadata(language),
+  },
+  {
+    name: "Math Adventures hub",
+    path: "/courses/math-adventures",
+    metadata: (language) => generateMathAdventuresMetadata(language),
+  },
+  {
+    name: "Math Adventures lesson",
+    path: "/courses/math-adventures/number-detectives",
+    metadata: (language) => generateMathLessonMetadata("number-detectives", language),
+  },
+  {
+    name: "Engineering Fundamentals hub",
+    path: "/courses/engineering-fundamentals",
+    metadata: (language) => generateEngineeringFundamentalsMetadata(language),
+  },
+  {
+    name: "Engineering Fundamentals lesson",
+    path: "/courses/engineering-fundamentals/lesson-1",
+    metadata: (language) => generateEngineeringLessonMetadata("lesson-1", language),
+  },
+  {
+    name: "Engineering Fundamentals worksheet",
+    path: "/courses/engineering-fundamentals/lesson-1/worksheet",
+    metadata: (language) => generateEngineeringWorksheetMetadata("lesson-1", language),
+  },
+  {
+    name: "Engineering Fundamentals teacher guide",
+    path: "/courses/engineering-fundamentals/lesson-1/teacher-guide",
+    metadata: (language) => generateEngineeringTeacherGuideMetadata("lesson-1", language),
+  },
+  {
+    name: "Intro to AI hub",
+    path: "/courses/intro-to-artificial-intelligence",
+    metadata: (language) => generateIntroToAiMetadata(language),
+  },
+  {
+    name: "Intro to AI week",
+    path: "/courses/intro-to-artificial-intelligence/week/2",
+    metadata: (language) => generateIntroToAiWeekMetadata(2, language),
+  },
+  {
+    name: "Intro to AI final project",
+    path: "/courses/intro-to-artificial-intelligence/final-project",
+    metadata: (language) => generateIntroToAiFinalProjectMetadata(language),
+  },
+  {
+    name: "Intro to AI final assessment",
+    path: "/courses/intro-to-artificial-intelligence/final-assessment",
+    metadata: (language) => generateIntroToAiFinalAssessmentMetadata(language),
+  },
+  {
+    name: "Intro to AI completion",
+    path: "/courses/intro-to-artificial-intelligence/completion",
+    metadata: (language) => generateIntroToAiCompletionMetadata(language),
   },
 ]
 

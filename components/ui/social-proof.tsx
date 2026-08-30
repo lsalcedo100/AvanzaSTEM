@@ -3,7 +3,6 @@
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import type { Language } from "@/i18n/translations"
-import { LIBRARIES, INTERNATIONAL_PARTNERS } from "@/features/workshops/locations"
 import { TESTIMONIALS } from "@/features/workshops/testimonials"
 import { cn } from "@/lib/utils"
 
@@ -16,43 +15,14 @@ const DATE_LOCALES: Record<Language, string> = {
 }
 
 /**
- * Public statements about the series from partner venues and community groups,
- * plus reach figures.
+ * Public statements about the series from partner venues and community groups.
  *
- * The figures are derived from LIBRARIES / INTERNATIONAL_PARTNERS rather than
- * written down, so adding a venue updates them and there is no second copy of
- * the counts to drift out of date. `placeholder` entries are planning areas
- * rather than venues, so they are excluded from every figure here.
+ * Every quote here is traceable to a post the source published under its own
+ * name; see features/workshops/testimonials.ts for the attribution rules.
  */
-export function SocialProof({
-  showStats = true,
-  className,
-}: {
-  showStats?: boolean
-  className?: string
-}) {
+export function SocialProof({ className }: { className?: string }) {
   const { t, language } = useLanguage()
   const copy = t.socialProof
-
-  const realVenues = LIBRARIES.filter((l) => l.status !== "placeholder")
-  const stats = [
-    {
-      value: LIBRARIES.filter((l) => l.status === "active").length,
-      label: copy.statHosted,
-    },
-    {
-      value: LIBRARIES.filter((l) => l.status === "upcoming").length,
-      label: copy.statScheduled,
-    },
-    {
-      value: new Set(realVenues.map((l) => l.city)).size,
-      label: copy.statTowns,
-    },
-    {
-      value: INTERNATIONAL_PARTNERS.filter((p) => p.status === "hosted").length,
-      label: copy.statInternational,
-    },
-  ]
 
   const formatDate = (iso: string) =>
     new Intl.DateTimeFormat(DATE_LOCALES[language], {
@@ -62,7 +32,7 @@ export function SocialProof({
     }).format(new Date(`${iso}T00:00:00Z`))
 
   return (
-    <section className={cn("bg-background py-20", className)}>
+    <section className={cn("bg-background py-16", className)}>
       <div className="mx-auto max-w-6xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-bold uppercase tracking-wider text-avanza-green">
@@ -78,27 +48,27 @@ export function SocialProof({
 
         {/* CSS columns rather than a grid: the quotes differ a lot in length,
             and a grid would stretch every card in a row to match the tallest. */}
-        <div className="mt-12 gap-8 md:columns-2">
+        <div className="mt-10 gap-6 md:columns-2">
           {TESTIMONIALS.map((quote, i) => (
             <FadeIn
               key={quote.id}
               delay={i * 100}
               rootMargin="0px 0px -60px 0px"
-              className="mb-8 break-inside-avoid"
+              className="mb-6 break-inside-avoid"
             >
-              <figure className="relative h-full overflow-hidden rounded-2xl border border-avanza-green/20 bg-card p-7 shadow-sm sm:p-8">
+              <figure className="relative h-full overflow-hidden rounded-xl border border-avanza-green/20 bg-card p-6 shadow-sm">
                 <div
-                  className="absolute inset-y-0 left-0 w-1.5 bg-avanza-green"
+                  className="absolute inset-y-0 left-0 w-1 bg-avanza-green"
                   aria-hidden="true"
                 />
-                <blockquote className="leading-relaxed text-card-foreground sm:text-lg">
+                <blockquote className="text-sm leading-relaxed text-card-foreground sm:text-base">
                   {copy.quotes[quote.id]}
                 </blockquote>
-                <figcaption className="mt-6 border-t border-border/70 pt-5">
-                  <cite className="block not-italic text-base font-extrabold text-card-foreground">
+                <figcaption className="mt-5 border-t border-border/70 pt-4">
+                  <cite className="block not-italic text-sm font-extrabold text-card-foreground">
                     {quote.source}
                   </cite>
-                  <span className="mt-1 block text-sm text-muted-foreground">
+                  <span className="mt-1 block text-xs text-muted-foreground">
                     <a
                       href={quote.url}
                       target="_blank"
@@ -128,34 +98,6 @@ export function SocialProof({
             </FadeIn>
           ))}
         </div>
-
-        {showStats && (
-          <FadeIn delay={120}>
-            <div className="mt-6 rounded-2xl border border-border bg-secondary/60 p-8 sm:p-10">
-              <p className="text-center text-sm font-bold uppercase tracking-wider text-avanza-teal">
-                {copy.statsEyebrow}
-              </p>
-              <dl className="mt-8 grid grid-cols-2 gap-8 lg:grid-cols-4">
-                {stats.map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <dt className="sr-only">{stat.label}</dt>
-                    <dd>
-                      <span className="block text-4xl font-extrabold leading-none text-avanza-green md:text-5xl">
-                        {stat.value}
-                      </span>
-                      <span className="mt-3 block text-sm leading-snug text-muted-foreground">
-                        {stat.label}
-                      </span>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-              <p className="mt-8 border-t border-border/70 pt-6 text-center text-sm leading-relaxed text-muted-foreground">
-                {copy.statsNote}
-              </p>
-            </div>
-          </FadeIn>
-        )}
       </div>
     </section>
   )

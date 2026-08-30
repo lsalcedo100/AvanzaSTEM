@@ -25,8 +25,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; lesson: string }>
 }): Promise<Metadata> {
-  const { lesson } = await params
-  return generateMathLessonMetadata(lesson)
+  const { locale, lesson } = await params
+  return generateMathLessonMetadata(lesson, locale as Language)
 }
 
 export default async function LocaleMathLessonPage({
