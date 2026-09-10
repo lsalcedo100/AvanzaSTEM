@@ -518,7 +518,7 @@ function AccuracyExtension({ run }: { run: ModelRun }) {
         </li>
       </ol>
       <p className="mt-3 text-muted-foreground">
-        Now compare with the category results — Safe {safe.correct}/{safe.total} and Not safe {unsafe.correct}/{unsafe.total}. A high overall
+        Now compare with the category results: Safe {safe.correct}/{safe.total} and Not safe {unsafe.correct}/{unsafe.total}. A high overall
         percent can still hide a category the model handles poorly, which is why we look at both.
       </p>
     </div>

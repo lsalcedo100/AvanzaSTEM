@@ -1,7 +1,7 @@
 import type { Translations } from "@/i18n/translations"
 
 /**
- * Section 2 — "For parents and educators".
+ * Section 2: "For parents and educators".
  *
  * A compact, practical Q&A. Every answer is grounded in real site behaviour:
  * no login/account exists, progress is saved in the browser via localStorage

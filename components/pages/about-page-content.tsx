@@ -107,7 +107,7 @@ export function AboutPageContent() {
               ))}
               <div className="mt-6">
                 <p className="text-lg font-semibold text-foreground">
-                  — {t.aboutPage.whySignatureName}
+                 – {t.aboutPage.whySignatureName}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {t.aboutPage.whySignatureRole}

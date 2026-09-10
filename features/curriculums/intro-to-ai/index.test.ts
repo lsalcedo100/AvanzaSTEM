@@ -246,7 +246,7 @@ test("completion needs lessons + assessment attempted + project + reflection (no
   // Lessons done but the mission has not been attempted, and no project/reflection.
   assert.equal(isCourseComplete(p, introToAiCourse), false)
 
-  // Attempt the assessment (even a low score counts — completion is not gated on a passing score).
+  // Attempt the assessment (even a low score counts; completion is not gated on a passing score).
   p = saveAssessmentAttempt(p, introToAiCourse.finalAssessment.questions, {}, AT)
   // Still not complete: the final project and a final reflection are also required.
   assert.equal(isCourseComplete(p, introToAiCourse), false)

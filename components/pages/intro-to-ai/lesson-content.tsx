@@ -70,7 +70,7 @@ export function IntroToAiLessonContent({ week, slug }: { week: number; slug: str
           </Link>
         </div>
 
-        {/* Lesson header — compact, not sticky, readable on mobile. */}
+        {/* Lesson header: compact, not sticky, readable on mobile. */}
         <header className="mt-6 border-b border-border pb-8">
           <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             {L.weekLessonTime

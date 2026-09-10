@@ -10,7 +10,7 @@
  */
 
 /* ========================================================================== */
-/* Activity 1 — AI Detective                                                  */
+/* Activity 1: AI Detective                                                  */
 /* ========================================================================== */
 
 export type DetectiveCategory = "ml" | "fixed-rule" | "non-ai" | "uncertain"
@@ -19,7 +19,7 @@ export const DETECTIVE_CATEGORIES: { id: DetectiveCategory; label: string; short
   { id: "ml", label: "Machine-learning system", short: "Learns patterns from examples" },
   { id: "fixed-rule", label: "Fixed-rule automation or traditional program", short: "Follows rules a person wrote" },
   { id: "non-ai", label: "Non-AI tool", short: "A tool a person directly controls" },
-  { id: "uncertain", label: "Not enough information", short: "Could be more than one — we can't tell yet" },
+  { id: "uncertain", label: "Not enough information", short: "Could be more than one, we can't tell yet" },
 ]
 
 export type DetectiveSystem = {
@@ -84,14 +84,14 @@ export const AI_DETECTIVE_SYSTEMS: DetectiveSystem[] = [
     input: "Motion detected by a sensor",
     output: "The door opens or closes",
     evidence: [
-      { id: "e1", text: "It opens whenever motion is sensed — one simple rule" },
+      { id: "e1", text: "It opens whenever motion is sensed, one simple rule" },
       { id: "e2", text: "It does not recognize who or what is moving" },
       { id: "e3", text: "A person set the rule 'motion → open'" },
     ],
     bestCategory: "fixed-rule",
     alsoReasonable: ["non-ai"],
     reasoning:
-      "The door follows one fixed rule: if the sensor sees motion, open. It doesn't learn or recognize anything, so it is fixed-rule automation — automatic, but not AI.",
+      "The door follows one fixed rule: if the sensor sees motion, open. It doesn't learn or recognize anything, so it is fixed-rule automation: automatic, but not AI.",
     ruleOrPattern: "Fixed rule: motion detected → open.",
   },
   {
@@ -176,7 +176,7 @@ export const AI_DETECTIVE_SYSTEMS: DetectiveSystem[] = [
     bestCategory: "ml",
     alsoReasonable: ["uncertain"],
     reasoning:
-      "Most modern spam filters use machine learning trained on labeled email, so 'machine-learning system' fits best. But implementations vary — some also use simple fixed blocklist rules — so 'not enough information' can be reasonable if you don't know the details.",
+      "Most modern spam filters use machine learning trained on labeled email, so 'machine-learning system' fits best. But implementations vary: some also use simple fixed blocklist rules, so 'not enough information' can be reasonable if you don't know the details.",
     ruleOrPattern: "Usually a learned pattern, sometimes mixed with fixed rules.",
     infoNeeded: "Whether this particular filter learns from examples or only uses fixed blocklists.",
   },
@@ -194,7 +194,7 @@ export const AI_DETECTIVE_SYSTEMS: DetectiveSystem[] = [
     bestCategory: "non-ai",
     alsoReasonable: [],
     reasoning:
-      "The car does exactly what the person commands and makes no decisions itself. It's a non-AI tool controlled by a human — not automation and not AI.",
+      "The car does exactly what the person commands and makes no decisions itself. It's a non-AI tool controlled by a human, not automation and not AI.",
     ruleOrPattern: "Neither: a person is in direct control.",
   },
   {
@@ -267,7 +267,7 @@ export function getDetectiveSystem(id: string): DetectiveSystem | undefined {
 }
 
 /* ========================================================================== */
-/* Activity 2 — Human Rule Builder                                            */
+/* Activity 2: Human Rule Builder                                            */
 /* ========================================================================== */
 
 export type CreatureFeatures = {
@@ -391,7 +391,7 @@ export const WITHHELD_CREATURES: Creature[] = [
   {
     id: "cr-voidling",
     name: "Voidling",
-    description: "A small green creature with no wings, no legs, and no antennae. It lives on land and does not glow — an unusual combination.",
+    description: "A small green creature with no wings, no legs, and no antennae. It lives on land and does not glow, an unusual combination.",
     features: { hasWings: false, legs: 0, bodyColor: "green", hasAntennae: false, bodyShape: "round", livesInWater: false, canGlow: false },
     canonicalCategory: "Land Creature",
   },
@@ -424,7 +424,7 @@ export type ClassifyResult = {
 /**
  * Applies rules in order; the FIRST matching rule decides the category. Returns
  * `{ category: null }` when no rule matches (an honest "unclassified"). Purely
- * deterministic — no randomness.
+ * deterministic, no randomness.
  */
 export function classify(rules: Rule[], creature: Creature): ClassifyResult {
   for (const rule of rules) {
@@ -520,7 +520,7 @@ export function runRulesOver(rules: Rule[], creatures: Creature[]): CreatureRun[
 }
 
 /* ========================================================================== */
-/* Weekly challenge — Device Investigation example library                    */
+/* Weekly challenge: Device Investigation example library                    */
 /* ========================================================================== */
 
 export type DeviceExample = {
@@ -553,11 +553,11 @@ export const DEVICE_EXAMPLES: DeviceExample[] = [
     name: "Photo search ('find dogs')",
     input: "Your photos and a search word",
     output: "Photos that match the word",
-    possibleFixedRules: "None obvious — 'what is a dog' is hard to write as a rule",
+    possibleFixedRules: "None obvious: 'what is a dog' is hard to write as a rule",
     possibleLearnedPatterns: "Learned what dogs look like from many labeled images",
     suggestedCategory: "ml",
     evidence: "Recognizing objects in any photo needs learned patterns.",
-    infoNeeded: "Little — image search is a classic machine-learning task.",
+    infoNeeded: "Little: image search is a classic machine-learning task.",
   },
   {
     id: "dev-elevator",
@@ -565,7 +565,7 @@ export const DEVICE_EXAMPLES: DeviceExample[] = [
     input: "Button presses",
     output: "Moves to the chosen floor and opens",
     possibleFixedRules: "Go to requested floors in an efficient order",
-    possibleLearnedPatterns: "Usually none — most elevators just follow rules",
+    possibleLearnedPatterns: "Usually none: most elevators just follow rules",
     suggestedCategory: "fixed-rule",
     evidence: "Elevators follow scheduling rules, not learned patterns.",
     infoNeeded: "Whether it uses any prediction of busy times (rare).",

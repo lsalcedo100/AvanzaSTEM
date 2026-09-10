@@ -195,7 +195,7 @@ function nearlyDoneProgress(): IntroToAiProgress {
   return p
 }
 
-test("completion needs lessons + assessment attempted + project + reflection — never a perfect score", () => {
+test("completion needs lessons + assessment attempted + project + reflection, never a perfect score", () => {
   const empty = emptyIntroToAiProgress()
   assert.equal(isCourseComplete(empty, introToAiCourse), false)
   assert.ok(courseCompletionRequirements(empty, introToAiCourse).every((r) => !r.met))
@@ -206,7 +206,7 @@ test("completion needs lessons + assessment attempted + project + reflection —
   assert.equal(finalReflectionComplete(done), true)
   assert.equal(isCourseComplete(done, introToAiCourse), true)
 
-  // A low (non-perfect) assessment score still completes — attempt is enough.
+  // A low (non-perfect) assessment score still completes: attempt is enough.
   const lowScore = nearlyDoneProgress()
   lowScore.assessment = { answers: {}, score: 1, total: 10, savedAt: "now" }
   assert.equal(isCourseComplete(lowScore, introToAiCourse), true)

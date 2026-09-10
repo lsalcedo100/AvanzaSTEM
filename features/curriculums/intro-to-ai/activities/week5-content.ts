@@ -1,16 +1,16 @@
 /**
- * Week 5 — Synthetic content / misinformation investigation + AI ethics committee
+ * Week 5: Synthetic content / misinformation investigation + AI ethics committee
  * + appeal design (framework-free, deterministic).
  *
  * Everything is fictional: invented publishers, posts, schools, and proposals. No
  * real private individuals. The verification model is based on SOURCE and CONTEXT
- * evidence — not on "spot the weird hands." The course explicitly does NOT claim it
+ * evidence, not on "spot the weird hands." The course explicitly does NOT claim it
  * can perfectly detect AI-generated content; real images can appear in false posts,
  * and AI images can be honestly labeled.
  */
 
 /* ========================================================================== */
-/* Activity 3 — Misinformation investigation                                   */
+/* Activity 3: Misinformation investigation                                    */
 /* ========================================================================== */
 
 import { translations, type Translations } from "../../../../i18n/translations.ts"
@@ -120,7 +120,7 @@ export function evidenceScore(post: Post, S: Week5ContentStrings = EN): { good: 
 }
 
 /* ========================================================================== */
-/* Activity 4 — AI ethics committee                                            */
+/* Activity 4: AI ethics committee                                             */
 /* ========================================================================== */
 
 export type Stakes = "low" | "high"

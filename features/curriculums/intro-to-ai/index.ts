@@ -1,5 +1,5 @@
 /**
- * Intro to Artificial Intelligence — course assembly, metadata, helpers, and
+ * Intro to Artificial Intelligence: course assembly, metadata, helpers, and
  * runtime validation.
  *
  * This is the single entry point for the six-week, grades 5–8 AI course. It pulls
@@ -65,7 +65,7 @@ const skills: Skill[] = [
 const requiredMaterials: Material[] = [
   { id: "mat-browser", name: "A web browser on a school Chromebook, tablet, or laptop", optional: false, note: "No installs. Works on school-issued devices." },
   { id: "mat-notes", name: "Paper and pencil, or a notes app", optional: false },
-  { id: "mat-datasets", name: "Built-in datasets", optional: false, note: "Provided inside the course — no downloads or accounts." },
+  { id: "mat-datasets", name: "Built-in datasets", optional: false, note: "Provided inside the course, no downloads or accounts." },
 ]
 
 const optionalMaterials: Material[] = [
@@ -81,17 +81,17 @@ const finalProject: FinalProject = {
   id: "final-project",
   title: "AI Design Studio: design an AI that helps",
   overview:
-    "Working from what you learned all six weeks, design an AI tool that helps a real group of people. You will define the problem, decide whether AI actually fits, plan the inputs, outputs, labels, features, or rules, sketch a prototype, write test cases, and explain how you would keep it fair, private, and under human oversight. This is a design and planning project — you will not train a real model.",
+    "Working from what you learned all six weeks, design an AI tool that helps a real group of people. You will define the problem, decide whether AI actually fits, plan the inputs, outputs, labels, features, or rules, sketch a prototype, write test cases, and explain how you would keep it fair, private, and under human oversight. This is a design and planning project; you will not train a real model.",
   choices: [
-    { id: "fp-choice-sorter", name: "Helpful sorter", scenario: "A group struggles to sort many items quickly — like a library sorting returned books or a club organizing photos.", exampleGoal: "Design an AI that sorts items into the right categories.", suitableBecause: "Sorting from many labeled examples is a good fit for machine learning." },
-    { id: "fp-choice-assistant", name: "Question helper", scenario: "People keep asking the same questions and a small team can't keep up — like a school office or a game's help desk.", exampleGoal: "Design a rule-based helper that answers common questions and hands off the rest to a person.", suitableBecause: "Common questions with clear intents fit a decision-tree chatbot with a human fallback." },
-    { id: "fp-choice-recommender", name: "Fair recommender", scenario: "A community wants suggestions — books, activities, or recipes — without trapping people in a filter bubble.", exampleGoal: "Design a recommender that suggests new options and explains why.", suitableBecause: "Recommendations use similarity and feedback, and let you practice avoiding filter bubbles." },
+    { id: "fp-choice-sorter", name: "Helpful sorter", scenario: "A group struggles to sort many items quickly, like a library sorting returned books or a club organizing photos.", exampleGoal: "Design an AI that sorts items into the right categories.", suitableBecause: "Sorting from many labeled examples is a good fit for machine learning." },
+    { id: "fp-choice-assistant", name: "Question helper", scenario: "People keep asking the same questions and a small team can't keep up, like a school office or a game's help desk.", exampleGoal: "Design a rule-based helper that answers common questions and hands off the rest to a person.", suitableBecause: "Common questions with clear intents fit a decision-tree chatbot with a human fallback." },
+    { id: "fp-choice-recommender", name: "Fair recommender", scenario: "A community wants suggestions (books, activities, or recipes) without trapping people in a filter bubble.", exampleGoal: "Design a recommender that suggests new options and explains why.", suitableBecause: "Recommendations use similarity and feedback, and let you practice avoiding filter bubbles." },
     { id: "fp-choice-own", name: "Your own idea", scenario: "You have a problem in your school or community that you think AI could help with.", exampleGoal: "Define your own problem and design an AI (or decide AI is not the right tool).", suitableBecause: "Deciding whether AI fits at all is part of good design." },
   ],
   brief: [
     { id: "fp-brief-need", label: "User need", hint: "Who is this for, and what problem do they have?" },
     { id: "fp-brief-problem", label: "Problem definition", hint: "State the exact task in one or two sentences." },
-    { id: "fp-brief-suitability", label: "Is AI the right tool?", hint: "Explain why AI fits — or why a simpler tool would be better." },
+    { id: "fp-brief-suitability", label: "Is AI the right tool?", hint: "Explain why AI fits, or why a simpler tool would be better." },
     { id: "fp-brief-io", label: "Inputs and outputs", hint: "What goes in, and what comes out?" },
     { id: "fp-brief-data", label: "Labels, features, or rules", hint: "What examples, labels, and features would it learn from, or what rules would it follow?" },
     { id: "fp-brief-prototype", label: "Prototype sketch", hint: "Describe or sketch how a person would use it." },
@@ -168,7 +168,7 @@ const finalAssessment: FinalAssessment = {
   id: "final-assessment",
   title: "Course check: what you learned about AI",
   instructions:
-    "A short check across all six weeks. Answer each question and read the explanation. This is for your own learning — there are no grades and nothing is sent anywhere.",
+    "A short check across all six weeks. Answer each question and read the explanation. This is for your own learning; there are no grades and nothing is sent anywhere.",
   passThreshold: 6,
   questions: [
     {
@@ -177,7 +177,7 @@ const finalAssessment: FinalAssessment = {
       prompt: "What is the clearest sign that software is AI rather than a traditional program?",
       explanation: "AI learns patterns from many examples instead of only following rules a person wrote by hand.",
       choices: [
-        { id: "fa-q1-a", text: "It learned patterns from examples.", correct: true, explanation: "Correct — learning from examples is the key sign of AI." },
+        { id: "fa-q1-a", text: "It learned patterns from examples.", correct: true, explanation: "Correct. Learning from examples is the key sign of AI." },
         { id: "fa-q1-b", text: "It runs quickly.", correct: false, explanation: "Speed doesn't decide whether software is AI." },
         { id: "fa-q1-c", text: "It has a nice interface.", correct: false, explanation: "The interface says nothing about whether it learns." },
         { id: "fa-q1-d", text: "It runs on a computer.", correct: false, explanation: "All software runs on a computer." },
@@ -189,7 +189,7 @@ const finalAssessment: FinalAssessment = {
       prompt: "Decide if the statement is true or false.",
       statement: "A dataset with far more examples of one category than another is unbalanced and can make a model less fair.",
       answer: true,
-      explanation: "True — unbalanced data means the model sees too few of some cases and can perform worse for them.",
+      explanation: "True. Unbalanced data means the model sees too few of some cases and can perform worse for them.",
     },
     {
       id: "fa-q3",
@@ -197,7 +197,7 @@ const finalAssessment: FinalAssessment = {
       prompt: "Why do we test a model on data it did not train on?",
       explanation: "Testing on unseen examples checks whether the model generalizes instead of just memorizing training data.",
       choices: [
-        { id: "fa-q3-a", text: "To see if it generalizes to new examples.", correct: true, explanation: "Correct — unseen test data shows real performance." },
+        { id: "fa-q3-a", text: "To see if it generalizes to new examples.", correct: true, explanation: "Correct. Unseen test data shows real performance." },
         { id: "fa-q3-b", text: "To make training faster.", correct: false, explanation: "Testing is separate from training speed." },
         { id: "fa-q3-c", text: "To use up extra data.", correct: false, explanation: "Test data has a purpose: measuring generalization." },
         { id: "fa-q3-d", text: "Because training data is always wrong.", correct: false, explanation: "Training data isn't always wrong; we just need a fair test." },
@@ -210,7 +210,7 @@ const finalAssessment: FinalAssessment = {
       scenario: "The model predicted 'dog' for something that is not a dog.",
       explanation: "Predicting 'dog' when it is not a dog is a false positive for the dog category.",
       choices: [
-        { id: "fa-q4-a", text: "A false positive for 'dog'.", correct: true, explanation: "Correct — it wrongly said 'dog' was present." },
+        { id: "fa-q4-a", text: "A false positive for 'dog'.", correct: true, explanation: "Correct. It wrongly said 'dog' was present." },
         { id: "fa-q4-b", text: "A false negative for 'dog'.", correct: false, explanation: "A false negative would be missing a real dog." },
         { id: "fa-q4-c", text: "Perfect accuracy.", correct: false, explanation: "It made a mistake, so accuracy isn't perfect." },
         { id: "fa-q4-d", text: "An input error.", correct: false, explanation: "The image was valid; the model's prediction was wrong." },
@@ -222,7 +222,7 @@ const finalAssessment: FinalAssessment = {
       prompt: "Decide if the statement is true or false.",
       statement: "If a language model's answer sounds fluent and confident, it must be factually true.",
       answer: false,
-      explanation: "False — language models predict likely next text, so fluent output can still be wrong. Always check facts.",
+      explanation: "False. Language models predict likely next text, so fluent output can still be wrong. Always check facts.",
     },
     {
       id: "fa-q6",
@@ -230,7 +230,7 @@ const finalAssessment: FinalAssessment = {
       prompt: "What is a filter bubble?",
       explanation: "A filter bubble is when recommendations keep showing similar things, so you rarely see new or different options.",
       choices: [
-        { id: "fa-q6-a", text: "When recommendations keep showing you similar things and hide different ones.", correct: true, explanation: "Correct — that narrowing is a filter bubble." },
+        { id: "fa-q6-a", text: "When recommendations keep showing you similar things and hide different ones.", correct: true, explanation: "Correct. That narrowing is a filter bubble." },
         { id: "fa-q6-b", text: "A tool that cleans data.", correct: false, explanation: "That's not what a filter bubble means." },
         { id: "fa-q6-c", text: "A privacy setting.", correct: false, explanation: "A filter bubble is about narrowed recommendations, not a setting." },
         { id: "fa-q6-d", text: "A type of camera filter.", correct: false, explanation: "It's about recommendations, not photo filters." },
@@ -242,10 +242,10 @@ const finalAssessment: FinalAssessment = {
       prompt: "Which of these are good ways to use AI responsibly? (Choose all that apply.)",
       explanation: "Responsible use includes minimizing data collection, checking sources, watching for bias, and keeping human oversight with a way to appeal.",
       choices: [
-        { id: "fa-q7-a", text: "Collect only the data you actually need.", correct: true, explanation: "Correct — data minimization protects privacy." },
-        { id: "fa-q7-b", text: "Check the original source before trusting AI content.", correct: true, explanation: "Correct — independent confirmation catches misinformation." },
+        { id: "fa-q7-a", text: "Collect only the data you actually need.", correct: true, explanation: "Correct. Data minimization protects privacy." },
+        { id: "fa-q7-b", text: "Check the original source before trusting AI content.", correct: true, explanation: "Correct. Independent confirmation catches misinformation." },
         { id: "fa-q7-c", text: "Let AI make important decisions with no human review.", correct: false, explanation: "Important decisions need human oversight and a way to appeal." },
-        { id: "fa-q7-d", text: "Watch for bias and unfair group-level results.", correct: true, explanation: "Correct — checking fairness across groups is responsible use." },
+        { id: "fa-q7-d", text: "Watch for bias and unfair group-level results.", correct: true, explanation: "Correct. Checking fairness across groups is responsible use." },
       ],
     },
     {
@@ -277,7 +277,7 @@ export const introToAiCourse: IntroToAiCourse = {
   subtitle:
     "A six-week course where students in grades 5–8 learn what AI really is, how data trains a model, where AI makes mistakes, and how to use it responsibly.",
   description:
-    "Discover what AI is and how it works through age-appropriate activities. Explore how data teaches a model, how image and text AI work and where they fail, and how to use AI fairly and safely — finishing by designing your own AI in a design studio. No coding experience required.",
+    "Discover what AI is and how it works through age-appropriate activities. Explore how data teaches a model, how image and text AI work and where they fail, and how to use AI fairly and safely, finishing by designing your own AI in a design studio. No coding experience required.",
   gradeRange: "Grades 5-8",
   totalWeeks: 6,
   duration: "6 weeks",
@@ -285,7 +285,7 @@ export const introToAiCourse: IntroToAiCourse = {
   requirements: [
     "No coding experience required",
     "Works in a web browser on school Chromebooks, tablets, or laptops",
-    "Built-in datasets are provided — no downloads or accounts",
+    "Built-in datasets are provided, no downloads or accounts",
     "No camera or microphone required",
     "No personal information required",
   ],
@@ -293,7 +293,7 @@ export const introToAiCourse: IntroToAiCourse = {
     "Tell artificial intelligence apart from ordinary software and automation.",
     "Explain how examples, labels, and features train a model, and why balanced, correctly-labeled data matters.",
     "Read a model's accuracy and confidence, and interpret false positives, false negatives, and a confusion matrix.",
-    "Describe how chatbots, language models, and recommendation systems work — and where they go wrong.",
+    "Describe how chatbots, language models, and recommendation systems work, and where they go wrong.",
     "Check AI for bias, protect privacy, verify information, and know when humans must stay in charge.",
     "Design, prototype, test, and present a responsible AI solution to a real problem.",
   ],
@@ -334,7 +334,7 @@ export function weekParams(): { week: string }[] {
   return weekNumbers().map((week) => ({ week: String(week) }))
 }
 
-/** The first lesson of the first week — the "begin" destination. */
+/** The first lesson of the first week: the "begin" destination. */
 export function firstLesson(): { week: number; lesson: Lesson } {
   const w = introToAiCourse.weeks[0]
   return { week: w.week, lesson: w.lessons[0] }

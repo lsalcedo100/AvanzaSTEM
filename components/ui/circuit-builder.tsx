@@ -73,7 +73,7 @@ function sandboxGrid(): Cell[][] {
 const SANDBOX_TOOLS: Tool[] = ["hand", "wire", "bulb", "switch", "battery", "eraser"]
 
 // Optional sandbox challenges. Each maps to a live condition read straight from
-// the simulation, so they tick off as the player explores — they never gate the
+// the simulation, so they tick off as the player explores; they never gate the
 // board (sandbox is free play first).
 const SANDBOX_CHALLENGES: { id: string; labelKey: keyof ReturnType<typeof useLanguage>["t"]["gamesPage"] }[] = [
   { id: "light", labelKey: "circuitChallengeLight" },
@@ -160,7 +160,7 @@ export function CircuitBuilder() {
 }
 
 // ---------------------------------------------------------------------------
-// Home menu — the three entry points: Levels (the main game), Sandbox, How to Play
+// Home menu: the three entry points: Levels (the main game), Sandbox, How to Play
 // ---------------------------------------------------------------------------
 
 function HomeMenu({
@@ -180,7 +180,7 @@ function HomeMenu({
 
   return (
     <div className="mt-12 grid gap-4 md:grid-cols-3">
-      {/* Start Levels — the primary, puzzle-mode call to action. */}
+      {/* Start Levels: the primary, puzzle-mode call to action. */}
       <button
         type="button"
         onClick={onLevels}
@@ -209,7 +209,7 @@ function HomeMenu({
         </div>
       </button>
 
-      {/* Sandbox — free experiment area. */}
+      {/* Sandbox: free experiment area. */}
       <button
         type="button"
         onClick={onSandbox}
@@ -249,7 +249,7 @@ function HomeMenu({
 }
 
 // ---------------------------------------------------------------------------
-// How to Play — a first-class explainer screen (distinct from the quick in-game
+// How to Play: a first-class explainer screen (distinct from the quick in-game
 // tutorial overlay): the goal, the tools, the live read-out, and the two modes.
 // ---------------------------------------------------------------------------
 
@@ -455,8 +455,8 @@ function LevelPlay({
   const [showTutorial, setShowTutorial] = useState(false)
   // Bumped each time the level is freshly solved to retrigger the celebration.
   const [celebrateKey, setCelebrateKey] = useState(0)
-  // The score locked in when this attempt was first solved (parts, time, stars)
-  // — shown on the complete screen. Null until solved.
+  // The score locked in when this attempt was first solved (parts, time, stars),
+  // shown on the complete screen. Null until solved.
   const [solveStats, setSolveStats] = useState<SolveResult | null>(null)
   // Live stopwatch, counting up from the attempt's start until the solve.
   const [elapsedMs, setElapsedMs] = useState(0)
@@ -471,7 +471,7 @@ function LevelPlay({
     try {
       if (!window.localStorage.getItem(TUTORIAL_SEEN_KEY)) setShowTutorial(true)
     } catch {
-      // localStorage may be blocked — just skip the auto-open.
+      // localStorage may be blocked; just skip the auto-open.
     }
   }, [level.id])
 
@@ -529,7 +529,7 @@ function LevelPlay({
   }, [solved, level.id])
 
   function editCell(r: number, c: number) {
-    // Explain the block instead of silently ignoring a locked-tile click — but
+    // Explain the block instead of silently ignoring a locked-tile click, but
     // a locked switch is still fair game (you can always flip a switch).
     if (grid[r][c].locked && tool !== "hand" && grid[r][c].kind !== "switch") {
       setFlash(t.gamesPage.circuitPlaceFixed)
@@ -854,7 +854,7 @@ function Sandbox({ onExit }: { onExit: () => void }) {
               </span>
             </div>
             <div className="flex gap-2">
-              {/* Clear Board wipes everything — a sandbox-only action. */}
+              {/* Clear Board wipes everything: a sandbox-only action. */}
               <button
                 type="button"
                 onClick={() => {
@@ -908,7 +908,7 @@ function Sandbox({ onExit }: { onExit: () => void }) {
             </li>
           </ul>
 
-          {/* Optional challenges — a gentle checklist, never a requirement. */}
+          {/* Optional challenges: a gentle checklist, never a requirement. */}
           <div className="mt-auto rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-avanza-orange" />
@@ -983,7 +983,7 @@ const TOOL_DESC: Record<Tool, keyof ReturnType<typeof useLanguage>["t"]["gamesPa
 function applyTool(prev: Cell[][], r: number, c: number, tool: Tool): Cell[][] {
   const current = prev[r][c]
 
-  // A direct click on a switch flips it — with any tool except the eraser, and
+  // A direct click on a switch flips it, with any tool except the eraser, and
   // even on a level-fixed switch. This makes "close the switch" beginner-obvious
   // and means you can toggle a switch without first picking the Hand tool.
   if (current.kind === "switch" && tool !== "eraser") {
@@ -992,7 +992,7 @@ function applyTool(prev: Cell[][], r: number, c: number, tool: Tool): Cell[][] {
     return next
   }
 
-  // The Hand tool only ever flips switches (handled above) — never places.
+  // The Hand tool only ever flips switches (handled above), never places.
   if (tool === "hand") return prev
 
   // Locked scaffolding can't be replaced or erased.
@@ -1116,7 +1116,7 @@ function useCircuitKeyboard({
 
 /** Can the active tool act on this cell? Used for highlighting & prevention. */
 function canPlace(cell: Cell, tool: Tool): boolean {
-  // Any non-eraser tool can flip a switch by clicking it — even a locked one.
+  // Any non-eraser tool can flip a switch by clicking it, even a locked one.
   if (cell.kind === "switch" && tool !== "eraser") return true
   if (tool === "hand") return false // hand only flips switches (handled above)
   if (cell.locked) return false // fixed scaffolding can't be edited
@@ -1134,7 +1134,7 @@ function shouldPaint(cell: Cell, tool: Tool): boolean {
   return false
 }
 
-/** The cell a tool would create — used to preview a ghost before placing. */
+/** The cell a tool would create: used to preview a ghost before placing. */
 function toolCell(tool: Tool): Cell | null {
   switch (tool) {
     case "wire":
@@ -1334,7 +1334,7 @@ const STATE_SUFFIX: Record<string, string> = {
 }
 
 /**
- * A plain-language read-out of what the circuit is doing and why — the
+ * A plain-language read-out of what the circuit is doing and why: the
  * educational heart of the game. It reads straight from the simulation, so the
  * words always match the picture and the lit/not-lit result.
  */
@@ -1366,7 +1366,7 @@ function ExplanationBar({
   // A dead-end stub is worth calling out even when the main loop works.
   const showDeadEnd = sim.deadEndCells.size > 0 && success
   // When the circuit works with more than one bulb, explain how those bulbs are
-  // wired to each other — the series vs parallel lesson at the heart of the game.
+  // wired to each other: the series vs parallel lesson at the heart of the game.
   const typeSuffix = CIRCUIT_TYPE_SUFFIX[sim.circuitType]
   const typeExplainer = success && typeSuffix ? gp[`circuit${typeSuffix}Body`] : null
 
@@ -1404,7 +1404,7 @@ const CIRCUIT_TYPE_SUFFIX: Record<string, string | null> = {
   mixed: "TypeMixed",
 }
 
-/** A compact colour-coded status chip for the right-hand panel — mirrors the
+/** A compact colour-coded status chip for the right-hand panel; mirrors the
  *  circuit state so the panel reacts live as the player builds. */
 function LiveStatus({
   sim,
@@ -1550,7 +1550,7 @@ function ToolBtn({
       onClick={onClick}
       title={title}
       aria-pressed={active}
-      aria-label={title ? `${label} — ${title}` : label}
+      aria-label={title ? `${label}: ${title}` : label}
       className={cn(
         // Min height keeps every tool an easy tap target on touch screens.
         "inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-extrabold transition",
@@ -1561,7 +1561,7 @@ function ToolBtn({
     >
       <Icon className="h-4 w-4 shrink-0" />
       {label}
-      {/* A check makes the selected tool unmistakable — not colour alone. */}
+      {/* A check makes the selected tool unmistakable, not colour alone. */}
       {active && <Check className="h-3.5 w-3.5" strokeWidth={3.5} />}
     </button>
   )
@@ -1912,7 +1912,7 @@ type GlyphProps = {
   active: boolean
 }
 
-/** A path that threads through the centre to every connected side — the track
+/** A path that threads through the centre to every connected side: the track
  *  the current-flow dashes animate along. */
 function throughPath(sides: Side[]): string {
   if (sides.length === 0) return ""
@@ -2033,7 +2033,7 @@ function BulbGlyph({ connected, lit, brightness, powered, shorted, bypassed }: G
   const live = powered || shorted
   // Brightness is a 0–3 level (1 = dim, 2 = medium, 3 = bright). Normalise to
   // 0–1 so a brighter bulb glows bigger and warmer and a dim series bulb stays
-  // visibly smaller — the whole point of the series/parallel lesson.
+  // visibly smaller: the whole point of the series/parallel lesson.
   const b = Math.max(0, Math.min(3, brightness)) / 3
   const glowR = 8 + 11 * b
   const glowO = 0.16 + 0.52 * b
@@ -2123,7 +2123,7 @@ function SwitchGlyph({ cell, potential, powered }: GlyphProps) {
 function BatteryGlyph({ cell, connected, powered, shorted, active }: GlyphProps) {
   const horizontal = cell.orientation !== "v"
   const color = wireColor(powered, shorted)
-  // Draw a terminal lead solid when it's wired, dashed when it dangles — so a
+  // Draw a terminal lead solid when it's wired, dashed when it dangles, so a
   // loose terminal never looks connected. Wired leads glow when powered.
   const lead = (side: Side, x1: number, y1: number, x2: number, y2: number) => {
     const wired = connected.has(side)

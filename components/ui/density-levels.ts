@@ -103,14 +103,14 @@ export type Round =
   // Compute the object's density from its mass and volume.
   | { type: "calc"; objectId: ObjectKey }
 
-/** Which distinct object(s) a round exercises — used for the "test 10 objects" badge. */
+/** Which distinct object(s) a round exercises; used for the "test 10 objects" badge. */
 export function roundObjects(round: Round): ObjectKey[] {
   return round.type === "order" ? [] : [round.objectId]
 }
 
 // --- sink / float ----------------------------------------------------------
 
-/** "float" or "sink" — the correct answer for a sink/float round in water. */
+/** "float" or "sink": the correct answer for a sink/float round in water. */
 export function sinkFloatAnswer(objectId: ObjectKey): "float" | "sink" {
   return floatsInWater(OBJECT_BY_ID[objectId].density) ? "float" : "sink"
 }
@@ -154,7 +154,7 @@ export function orderAnswer(liquids: LiquidKey[]): LiquidKey[] {
 export function orderOptions(liquids: LiquidKey[]): LiquidKey[][] {
   const correct = orderAnswer(liquids)
   const reversed = [...correct].reverse()
-  // A single adjacent swap of the first two — a plausible "close but wrong".
+  // A single adjacent swap of the first two: a plausible "close but wrong".
   const swapped = [...correct]
   if (swapped.length >= 2) [swapped[0], swapped[1]] = [swapped[1], swapped[0]]
   const seen = new Set<string>()
@@ -213,7 +213,7 @@ export const POINTS_PER_CORRECT = 100
 
 /** Points awarded for a correct answer given the current in-a-row streak
  *  (streak counts THIS answer). A gentle bonus rewards consistency; wrong
- *  answers simply score 0 — never negative — to keep it kid-friendly. */
+ *  answers simply score 0, never negative, to keep it kid-friendly. */
 export function roundPoints(streak: number): number {
   return POINTS_PER_CORRECT + Math.min(Math.max(streak - 1, 0), 5) * 20
 }
@@ -237,7 +237,7 @@ export type DensityLevel = {
   id: number
   titleLoc: Loc
   goalLoc: Loc
-  /** Marks a tower/layer-ordering level — a perfect here earns Layer Master. */
+  /** Marks a tower/layer-ordering level: a perfect here earns Layer Master. */
   tower?: boolean
   rounds: Round[]
 }
@@ -344,7 +344,7 @@ export const LEVELS: DensityLevel[] = [
     id: 7,
     titleLoc: { en: "Engineering Materials", es: "Materiales de ingeniería", zh: "工程材料", pt: "Materiais de engenharia" },
     goalLoc: {
-      en: "Metals on mercury! Most metals sink in water — but mercury is far denser.",
+      en: "Metals on mercury! Most metals sink in water, but mercury is far denser.",
       es: "¡Metales sobre mercurio! Casi todos los metales se hunden en agua, pero el mercurio es mucho más denso.",
       zh: "金属遇上水银！大多数金属在水里会沉——但水银的密度大得多。",
       pt: "Metais no mercúrio! A maioria dos metais afunda na água, mas o mercúrio é bem mais denso.",

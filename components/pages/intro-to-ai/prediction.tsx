@@ -15,7 +15,7 @@ function useS() {
 /**
  * Predict-then-check. The student writes a short prediction, which is saved to
  * progress and shown back to them when they reveal how to check it. Predictions
- * are never marked right or wrong — the point is to commit to a guess first.
+ * are never marked right or wrong: the point is to commit to a guess first.
  * Keyboard- and touch-friendly; save failures surface via the save-state text.
  */
 export function IntroToAiPrediction({

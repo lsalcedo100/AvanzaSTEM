@@ -1,5 +1,5 @@
 /**
- * Week 3 image-recognition lab — deterministic, framework-free engine.
+ * Week 3 image-recognition lab: deterministic, framework-free engine.
  *
  * There is NO fake training, NO randomness, and NO network. Every image is a small
  * grayscale pixel grid GENERATED locally by a pure rasterizer (so "an image is
@@ -10,7 +10,7 @@
  * This is intentionally the lightest possible approach (a local feature extractor +
  * k-NN, options 2–3 in the phase's preferred order): no GPU, WebGL, WASM, canvas,
  * web worker, or remote model. It therefore runs on the lowest-spec school device
- * and IS its own fallback — there is no heavier tier to degrade from.
+ * and IS its own fallback; there is no heavier tier to degrade from.
  *
  * Assets: all illustrations are generated from the specs below; nothing is fetched
  * at runtime and no third-party image is used, so no external license applies.
@@ -509,7 +509,7 @@ export function getImage(id: string, S: Week3Strings = EN): ImageRecord | undefi
 }
 
 /* ========================================================================== */
-/* Edge cases — "Confuse the Model" challenges                                */
+/* Edge cases: "Confuse the Model" challenges                                 */
 /* ========================================================================== */
 
 export type EdgeCase = {
@@ -541,7 +541,7 @@ export function edgeCasesForTopic(topic: TopicId, S: Week3Strings = EN): EdgeCas
 }
 
 /* ========================================================================== */
-/* Classifier — nearest neighbors over features, with similarity confidence   */
+/* Classifier: nearest neighbors over features, with similarity confidence    */
 /* ========================================================================== */
 
 /** Precompute a record's feature vector (deterministic; safe to memoize). */
@@ -578,7 +578,7 @@ export type ClassifyResult = {
 
 /**
  * k-NN classification. Confidence is the fraction of the k neighbors' total
- * similarity that belongs to the winning category — a real number from the model,
+ * similarity that belongs to the winning category, a real number from the model,
  * never an arbitrary value. Deterministic: neighbor ties break by image id.
  */
 export function classify(training: ImageRecord[], targetFeatures: FeatureVector, k = 3): ClassifyResult {
@@ -633,7 +633,7 @@ export function categoryName(topic: Topic, id: string): string {
 }
 
 /* ========================================================================== */
-/* Evaluation — accuracy, per-category, confusion matrix, FP/FN               */
+/* Evaluation: accuracy, per-category, confusion matrix, FP/FN                */
 /* ========================================================================== */
 
 export type Evaluation = {

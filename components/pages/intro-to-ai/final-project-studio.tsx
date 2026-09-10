@@ -207,7 +207,7 @@ export function IntroToAiFinalProjectContent() {
           <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{S.fpEyebrow}</p>
           <h1 className="mt-2 text-3xl font-extrabold text-foreground md:text-4xl">{S.fpTitle}</h1>
           <p className="mt-3 text-base leading-relaxed text-foreground/90">
-            Work through each section like a design notebook. Your draft saves automatically on this device — nothing is sent anywhere. Don&apos;t include your full name, school, or contact details.
+            Work through each section like a design notebook. Your draft saves automatically on this device; nothing is sent anywhere. Don&apos;t include your full name, school, or contact details.
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <span className={`text-sm font-semibold ${complete ? "text-avanza-green-dark" : "text-muted-foreground"}`}>
@@ -333,7 +333,7 @@ type SetFn = <S extends keyof StudioProject>(sec: S, key: keyof StudioProject[S]
 function SetupSection({ project, onPick }: { project: StudioProject; onPick: (t: ProjectType) => void }) {
   const S = useS()
   return (
-    <SectionShell title={S.fpChooseType} intro="Pick a direction. You can change it later — your problem, privacy, fairness, and oversight work is kept, but the data plan and prototype (which are tied to the type) will be cleared.">
+    <SectionShell title={S.fpChooseType} intro="Pick a direction. You can change it later; your problem, privacy, fairness, and oversight work is kept, but the data plan and prototype (which are tied to the type) will be cleared.">
       <div className="space-y-3" role="radiogroup" aria-label={S.fpProjectType}>
         {PROJECT_TYPES.map((t) => {
           const selected = project.type === t.id

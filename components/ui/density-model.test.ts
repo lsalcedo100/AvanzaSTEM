@@ -1,6 +1,6 @@
 // Plain-assertion validation for the Density Tower physics model.
 //
-// Not wired into a test runner (the project has none) — run it directly:
+// Not wired into a test runner (the project has none); run it directly:
 //
 //     npx tsx components/ui/density-model.test.ts
 //
@@ -81,7 +81,7 @@ scenario("describeDrop finds the correct resting layer", () => {
   assert("cork floats", c1.kind === "floats")
   assert("…on the lightest liquid (water)", c1.kind === "floats" && c1.restKey === "water")
 
-  // Ice (0.92) floats on water (0.92 vs 1.00) — but hovers vs oil (0.92 ≈ 0.92).
+  // Ice (0.92) floats on water (0.92 vs 1.00), but hovers vs oil (0.92 ≈ 0.92).
   assert("ice floats on water", describeDrop(ICE, [water]).kind === "floats")
   assert("ice hovers on oil (equal)", describeDrop(ICE, [oil]).kind === "hover")
 

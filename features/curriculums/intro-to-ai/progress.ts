@@ -1,5 +1,5 @@
 /**
- * Intro to AI — progress persistence (pure, framework-free).
+ * Intro to AI: progress persistence (pure, framework-free).
  *
  * Mirrors the pattern used by `robotics-progress.ts`: all logic here is pure and
  * takes an injected `StorageLike`, so it is fully unit-testable and SSR-safe. The
@@ -388,7 +388,7 @@ export function finalReflectionComplete(p: IntroToAiProgress): boolean {
 export type CompletionRequirement = { id: string; label: string; met: boolean }
 
 /**
- * Meaningful completion requirements — never a perfect quiz score, no camera,
+ * Meaningful completion requirements: never a perfect quiz score, no camera,
  * upload, real name, or account. Completion needs: all lessons done, the final
  * assessment ATTEMPTED (not passed), the final project complete, and at least one
  * final reflection saved. The teacher `unlockAll` override marks everything met.

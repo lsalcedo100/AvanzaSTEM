@@ -180,8 +180,7 @@ export function FairnessAuditActivity({ activity, progress }: ActivityComponentP
               >
                 <span className="font-semibold text-foreground">
                   {S.faStudentBtn.replace("{group}", groupLabel(r.group, S))}
-                </span>{" "}
-                —{" "}
+                </span>,{" "}
                 {S.faStudentDetail
                   .replace("{interest}", interestLabel(r.features.interest, S))
                   .replace("{schedule}", r.features.scheduleFree ? S.faFree : S.faBusy)

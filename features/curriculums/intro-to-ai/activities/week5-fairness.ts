@@ -1,11 +1,11 @@
 /**
- * Week 5 — Fairness Audit engine (framework-free, deterministic).
+ * Week 5: Fairness Audit engine (framework-free, deterministic).
  *
  * A fictional school's after-school STEM-program recommender. A transparent
  * nearest-neighbor classifier predicts whether a student is a "good fit" using a
  * set of WEIGHTED features; the audit compares OVERALL accuracy with GROUP-LEVEL
  * accuracy to reveal a gap the overall number hides. No randomness, no real or
- * personal data — every student, group, and neighborhood is invented.
+ * personal data: every student, group, and neighborhood is invented.
  *
  * The unfairness has two real causes the student can fix:
  *  1. A misleading PROXY feature ("lives near campus") that the flawed model
@@ -15,7 +15,7 @@
  *     students, so good-fit Riverside students have no similar example to match.
  *
  * Lowering the proxy weight and/or adding good-fit Riverside examples raises
- * Riverside's group accuracy — but never guarantees perfect fairness.
+ * Riverside's group accuracy, but never guarantees perfect fairness.
  */
 
 /* ========================================================================== */
@@ -52,7 +52,7 @@ export type StudentRecord = {
   id: string
   group: Group
   features: StudentFeatures
-  /** Ground-truth "good fit" — independent of the proxy by construction. */
+  /** Ground-truth "good fit": independent of the proxy by construction. */
   goodFit: boolean
 }
 
@@ -110,7 +110,7 @@ export const TRAINING: StudentRecord[] = [
   rec("h-art2", "Hillside", { interest: "art", scheduleFree: true, pastStem: 0, nearCampus: true }),
   rec("h-cod3", "Hillside", { interest: "coding", scheduleFree: false, pastStem: 0, nearCampus: true }),
   rec("h-rob3", "Hillside", { interest: "robotics", scheduleFree: false, pastStem: 0, nearCampus: true }),
-  // Riverside (minority, far): the base data has ONLY not-fit students — the
+  // Riverside (minority, far): the base data has ONLY not-fit students: the
   // representation problem. Each mirrors a good-fit test student's interest.
   rec("r-rob1", "Riverside", { interest: "robotics", scheduleFree: false, pastStem: 0, nearCampus: false }),
   rec("r-rob2", "Riverside", { interest: "robotics", scheduleFree: false, pastStem: 1, nearCampus: false }),
@@ -120,7 +120,7 @@ export const TRAINING: StudentRecord[] = [
   rec("r-sci2", "Riverside", { interest: "science", scheduleFree: false, pastStem: 1, nearCampus: false }),
 ]
 
-// Good-fit Riverside students the base training was missing — the student can add
+// Good-fit Riverside students the base training was missing: the student can add
 // them to improve representation.
 export const ADDABLE: StudentRecord[] = [
   rec("r-add1", "Riverside", { interest: "robotics", scheduleFree: true, pastStem: 2, nearCampus: false }),
@@ -174,7 +174,7 @@ export function predictFit(training: StudentRecord[], target: StudentFeatures, w
 }
 
 /* ========================================================================== */
-/* Evaluation — overall + group-level, with FP/FN                              */
+/* Evaluation: overall + group-level, with FP/FN                              */
 /* ========================================================================== */
 
 export type GroupMetrics = { group: Group; correct: number; total: number; accuracy: number; falsePos: number; falseNeg: number; trainingCount: number }

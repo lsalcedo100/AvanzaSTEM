@@ -9,7 +9,7 @@ import type { CurriculumCopy, CurriculumEntry } from "@/features/curriculums/cat
  * The whole card is one link (no nested interactive elements), so it is fully
  * keyboard-operable and the visible "View curriculum" affordance is decorative
  * markup rather than a second focus stop. All content comes from the typed
- * catalog via {@link CurriculumCopy} — nothing is duplicated per course here.
+ * catalog via {@link CurriculumCopy}; nothing is duplicated per course here.
  *
  * Design: moderate radius, a single restrained border, no heavy shadow, no
  * status badge, no topic pills, and no decorative icons. Cards use flex so a
@@ -43,7 +43,7 @@ export function CurriculumCard({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          // No authentic photo for this course — restrained graph-paper panel
+          // No authentic photo for this course, restrained graph-paper panel
           // rather than a stock or AI-generated image.
           <div className="notebook-grid h-full w-full bg-secondary" aria-hidden="true" />
         )}
@@ -52,7 +52,7 @@ export function CurriculumCard({
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-lg font-bold text-card-foreground">{copy.title}</h3>
 
-        {/* Consistent, plain-text metadata line — not pills. */}
+        {/* Consistent, plain-text metadata line, not pills. */}
         <p className="mt-1.5 text-xs font-medium text-muted-foreground">{copy.meta}</p>
 
         {/* Concrete outcome. flex-1 pushes the "learn" line + action to the

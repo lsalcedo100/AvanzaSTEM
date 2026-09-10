@@ -17,7 +17,7 @@ export function Container({
 
 /**
  * Left-aligned section heading (eyebrow + title + optional description). Replaces
- * the page's centered `text-center` heading blocks — the redesign deliberately
+ * the page's centered `text-center` heading blocks: the redesign deliberately
  * breaks the symmetric, centered look flagged as "generic".
  */
 export function SectionHeader({

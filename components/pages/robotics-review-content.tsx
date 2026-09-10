@@ -523,8 +523,8 @@ export function RoboticsReviewContent() {
               >
                 <p className="font-semibold text-foreground">
                   {lookup
-                    ? `Week ${lookup.module.week} — ${lookup.prompt.prompt}`
-                    : `${entry.moduleId} — ${entry.promptId}`}
+                    ? `Week ${lookup.module.week}: ${lookup.prompt.prompt}`
+                    : `${entry.moduleId}: ${entry.promptId}`}
                 </p>
                 <p className="mt-1 whitespace-pre-wrap text-muted-foreground">{entry.value}</p>
               </li>

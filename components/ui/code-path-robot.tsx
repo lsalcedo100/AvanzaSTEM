@@ -78,7 +78,7 @@ const L10_MAIN = [
 const L10_ALCOVES = [{ x: 0, y: 6 }, { x: 3, y: 4 }, { x: 5, y: 4 }]
 
 // Every level below is verified solvable with a breadth-first search over
-// (x, y, dir, starsCollected) before shipping — see the level design notes.
+// (x, y, dir, starsCollected) before shipping; see the level design notes.
 // Levels 4-10 are each a distinct layout (pillars, a diagonal barrier, two
 // rooms with a door, a sweeping corridor, a staircase with alcoves, three
 // chained rooms, a sawtooth maze) rather than the same shape resized.
@@ -110,7 +110,7 @@ const LEVELS: Level[] = [
     stars: [{ x: 4, y: 4 }, { x: 0, y: 0 }],
     goal: { x: 4, y: 0 },
   },
-  // Pillar courtyard — a few scattered single-cell obstacles in an open room.
+  // Pillar courtyard: a few scattered single-cell obstacles in an open room.
   {
     id: 4,
     cols: 5,
@@ -120,7 +120,7 @@ const LEVELS: Level[] = [
     stars: [],
     goal: { x: 4, y: 0 },
   },
-  // Diagonal barrier — a slanted wall splits the room; go around one end.
+  // Diagonal barrier: a slanted wall splits the room; go around one end.
   {
     id: 5,
     cols: 6,
@@ -130,7 +130,7 @@ const LEVELS: Level[] = [
     stars: [{ x: 0, y: 0 }],
     goal: { x: 5, y: 0 },
   },
-  // Two rooms, one door — a divider with a single gap; collect a star on each side.
+  // Two rooms, one door: a divider with a single gap; collect a star on each side.
   {
     id: 6,
     cols: 6,
@@ -140,7 +140,7 @@ const LEVELS: Level[] = [
     stars: [{ x: 1, y: 1 }, { x: 4, y: 4 }],
     goal: { x: 5, y: 0 },
   },
-  // Long sweeping corridor — three big turns, longer straight runs to count carefully.
+  // Long sweeping corridor: three big turns, longer straight runs to count carefully.
   {
     id: 7,
     cols: 7,
@@ -150,7 +150,7 @@ const LEVELS: Level[] = [
     stars: [],
     goal: { x: 6, y: 0 },
   },
-  // Staircase with alcoves — a tight zigzag with two dead-end pockets to detour into.
+  // Staircase with alcoves: a tight zigzag with two dead-end pockets to detour into.
   {
     id: 8,
     cols: 7,
@@ -160,7 +160,7 @@ const LEVELS: Level[] = [
     stars: L8_ALCOVES,
     goal: { x: 6, y: 0 },
   },
-  // Three chained rooms — two doors in sequence, a star tucked in each of the first two.
+  // Three chained rooms: two doors in sequence, a star tucked in each of the first two.
   {
     id: 9,
     cols: 8,
@@ -173,7 +173,7 @@ const LEVELS: Level[] = [
     stars: [{ x: 1, y: 1 }, { x: 4, y: 4 }],
     goal: { x: 7, y: 0 },
   },
-  // Sawtooth maze — the longest, most twisting path with three alcove detours.
+  // Sawtooth maze: the longest, most twisting path with three alcove detours.
   {
     id: 10,
     cols: 8,
@@ -910,7 +910,7 @@ export function CodePathRobot() {
                   </div>
                 </div>
 
-                {/* Block list (drop target) — shows a live placeholder preview while dragging */}
+                {/* Block list (drop target): shows a live placeholder preview while dragging */}
                 <ol
                   ref={listRef}
                   style={{ touchAction: "none" }}
@@ -986,7 +986,7 @@ export function CodePathRobot() {
                 </ol>
 
                 {drag?.kind === "program" ? (
-                  /* Large delete drop zone — replaces the palette/run controls only while
+                  /* Large delete drop zone: replaces the palette/run controls only while
                      dragging an existing program block, so it's impossible to miss. */
                   <div
                     ref={deleteZoneRef}

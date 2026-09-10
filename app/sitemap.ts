@@ -212,7 +212,7 @@ const staticRoutes = [
 ] as const
 
 const blogLastModified: Record<string, string> = {
-  // Original 7 posts — dates reflect last meaningful content/code edit per git history
+  // Original 7 posts: dates reflect last meaningful content/code edit per git history
   'why-every-kid-should-learn-to-code': '2026-06-16',
   '5-easy-science-experiments': '2026-06-16',
   'how-to-build-the-strongest-popsicle-stick-bridge': '2026-06-16',

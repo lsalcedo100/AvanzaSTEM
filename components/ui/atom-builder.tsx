@@ -1306,7 +1306,7 @@ function AtomSVG({
             <g
               // Re-key on electron count so the orbit and every label's
               // counter-rotation remount together and stay perfectly in
-              // phase — otherwise labels added later drift out of upright.
+              // phase; otherwise labels added later drift out of upright.
               key={`spin-${count}`}
               style={{
                 transformOrigin: `${cx}px ${cy}px`,

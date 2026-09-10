@@ -1,11 +1,11 @@
 /**
- * Final Project Studio — data model, validation, and migration (framework-free).
+ * Final Project Studio: data model, validation, and migration (framework-free).
  *
  * A guided, persistent project notebook where students design, prototype, test,
  * and present a responsible AI helper OR conclude that AI should not be used. The
  * studio state is a single versioned object serialized to the SAME localStorage
  * used by every other activity (via the progress hook's `activities` record, under
- * the reserved key below) — no second storage system is introduced. Everything
+ * the reserved key below); no second storage system is introduced. Everything
  * here is pure and deterministic so it is fully unit-testable; the React studio
  * component holds only UI concerns (debounced save, dialogs, focus).
  *
@@ -249,7 +249,7 @@ export function parseStudio(raw: string | undefined): StudioProject {
 }
 
 /* ========================================================================== */
-/* Changing project type — what would be lost                                  */
+/* Changing project type: what would be lost                                  */
 /* ========================================================================== */
 
 /** Sections whose content is tied to the project type (lost on a type change). */
@@ -274,10 +274,10 @@ const filled = (s: string) => s.trim().length > 0
 
 /**
  * Builds the requirement checklist. Safety sections (limitations, privacy,
- * fairness, oversight/appeal, tests) are REQUIRED — a project is never "complete"
+ * fairness, oversight/appeal, tests) are REQUIRED: a project is never "complete"
  * while they are blank. When the student concludes AI should NOT be used, the
  * build-specific requirements (plan, prototype, fairness group-testing) relax,
- * because there is nothing to build — but the policy reasoning stays required.
+ * because there is nothing to build, but the policy reasoning stays required.
  */
 export function validateProject(p: StudioProject, S: FinalProjectStrings = EN): Requirement[] {
   const type = getProjectType(p.type, S)
@@ -289,64 +289,64 @@ export function validateProject(p: StudioProject, S: FinalProjectStrings = EN): 
 
   add("type", sec("setup"), lbl("type"), !!p.type)
 
-  // Section 1 — define
+  // Section 1: define
   add("d-title", sec("define"), lbl("d-title"), filled(p.define.title))
   add("d-who", sec("define"), lbl("d-who"), filled(p.define.who))
   add("d-why", sec("define"), lbl("d-why"), filled(p.define.whyMatters))
   add("d-evidence", sec("define"), lbl("d-evidence"), filled(p.define.evidence))
 
-  // Section 2 — appropriateness
+  // Section 2: appropriateness
   add("a-usai", sec("appropriate"), lbl("a-usai"), p.appropriateness.useAi !== "")
   add("a-conc", sec("appropriate"), lbl("a-conc"), filled(p.appropriateness.conclusion))
   add("a-ifwrong", sec("appropriate"), lbl("a-ifwrong"), filled(p.appropriateness.ifWrong))
 
-  // Section 3 — inputs/outputs
+  // Section 3: inputs/outputs
   add("io-in", sec("io"), lbl("io-in"), filled(p.io.inputs))
   add("io-out", sec("io"), lbl("io-out"), filled(p.io.outputs))
   add("io-missing", sec("io"), lbl("io-missing"), filled(p.io.missingUnclear))
 
-  // Section 4 — plan (relaxed when not using AI, or for policy-only types the plan is the proposal)
+  // Section 4: plan (relaxed when not using AI, or for policy-only types the plan is the proposal)
   if (type) {
     const planRequired = !notUsingAi || !!type.policyOnly
     const planMet = type.planFields.every((f) => filled(p.plan[f.id] ?? ""))
     add("plan", sec("plan"), lbl("plan").replace("{name}", type.name), planMet, planRequired)
   }
 
-  // Section 5 — prototype (relaxed when not using AI)
+  // Section 5: prototype (relaxed when not using AI)
   add("proto", sec("prototype"), lbl("proto"), filled(p.prototype.flow) || filled(p.prototype.notes) || filled(p.prototype.importSnapshot), !notUsingAi)
 
-  // Section 6 — tests (>= 6 cases covering all six kinds, each with an input and a pass/fail)
+  // Section 6: tests (>= 6 cases covering all six kinds, each with an input and a pass/fail)
   const kindsCovered = new Set(p.tests.filter((t) => filled(t.input)).map((t) => t.kind))
   const completeTests = p.tests.filter((t) => filled(t.input) && t.pass !== "").length
   add("tests-count", sec("tests"), lbl("tests-count"), completeTests >= 6)
   add("tests-kinds", sec("tests"), lbl("tests-kinds"), TEST_KIND_IDS.every((k) => kindsCovered.has(k)))
 
-  // Section 7 — limitations (safety)
+  // Section 7: limitations (safety)
   add("lim-cannot", sec("limitations"), lbl("lim-cannot"), filled(p.limitations.cannotHandle))
   add("lim-refuse", sec("limitations"), lbl("lim-refuse"), filled(p.limitations.refuse))
   add("lim-review", sec("limitations"), lbl("lim-review"), filled(p.limitations.humanReview))
 
-  // Section 8 — privacy (safety)
+  // Section 8: privacy (safety)
   add("pr-necessary", sec("privacy"), lbl("pr-necessary"), filled(p.privacy.necessary))
   add("pr-donot", sec("privacy"), lbl("pr-donot"), filled(p.privacy.doNotCollect))
   add("pr-processing", sec("privacy"), lbl("pr-processing"), filled(p.privacy.processing))
   add("pr-retention", sec("privacy"), lbl("pr-retention"), filled(p.privacy.retention))
   add("pr-delete", sec("privacy"), lbl("pr-delete"), filled(p.privacy.deleteCorrect))
 
-  // Section 9 — fairness (safety; group-testing relaxed when not using AI)
+  // Section 9: fairness (safety; group-testing relaxed when not using AI)
   add("fa-rep", sec("fairness"), lbl("fa-rep"), filled(p.fairness.represented))
   add("fa-missing", sec("fairness"), lbl("fa-missing"), filled(p.fairness.missing))
   add("fa-invest", sec("fairness"), lbl("fa-invest"), filled(p.fairness.investigate))
   add("fa-group", sec("fairness"), lbl("fa-group"), filled(p.fairness.groupTesting), !notUsingAi)
 
-  // Section 10 — oversight & appeal (safety)
+  // Section 10: oversight & appeal (safety)
   add("ov-reviewer", sec("oversight"), lbl("ov-reviewer"), filled(p.oversight.reviewer))
   add("ov-final", sec("oversight"), lbl("ov-final"), filled(p.oversight.finalDecision))
   add("ov-explain", sec("oversight"), lbl("ov-explain"), filled(p.oversight.explanation))
   add("ov-correct", sec("oversight"), lbl("ov-correct"), filled(p.oversight.correction))
   add("ov-override", sec("oversight"), lbl("ov-override"), filled(p.oversight.override))
 
-  // Section 11 — wrap-up
+  // Section 11: wrap-up
   add("wrap-next", sec("presentation"), lbl("wrap-next"), filled(p.wrapUp.nextImprovement))
 
   return req

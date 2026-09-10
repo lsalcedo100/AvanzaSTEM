@@ -48,7 +48,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Courses — direct links so each course landing is reachable from
+          {/* Courses: direct links so each course landing is reachable from
               every page (better crawl depth), including the standalone IDE. */}
           <div>
             <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-avanza-green">

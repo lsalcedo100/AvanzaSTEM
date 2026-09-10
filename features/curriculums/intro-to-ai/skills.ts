@@ -1,9 +1,9 @@
 /**
- * Intro to AI — skill tracking (framework-free, deterministic).
+ * Intro to AI: skill tracking (framework-free, deterministic).
  *
  * Twelve named skills, each shown with an understandable status rather than a
  * single overall percentage. Status is derived transparently from the student's
- * saved progress — attempted/passed knowledge checks, completed lessons, and (for
+ * saved progress: attempted/passed knowledge checks, completed lessons, and (for
  * the design skill) a completed final project. The rules are documented here and
  * asserted by tests. No response text is ever scored by an AI; this only reads the
  * objective, locally-stored signals.

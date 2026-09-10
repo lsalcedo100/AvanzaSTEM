@@ -1,5 +1,5 @@
 /**
- * Intro to AI — pure knowledge-check grading.
+ * Intro to AI: pure knowledge-check grading.
  *
  * Framework-free so it can be unit-tested and shared by the interactive
  * knowledge-check component and the final assessment. Answers are encoded as

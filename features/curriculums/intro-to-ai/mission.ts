@@ -1,11 +1,11 @@
 /**
- * AI Review Mission — the scenario-based final assessment (framework-free).
+ * AI Review Mission: the scenario-based final assessment (framework-free).
  *
  * The student reviews a fictional AI product and answers objective questions
  * (concepts, result interpretation, fairness/privacy, misinformation) plus writes a
  * final recommendation. Objective questions reuse the shared knowledge-check grader;
  * the written recommendation is evaluated by whether the REQUIRED REASONING is
- * present — never marked wrong just for differing from a preset choice. Everything
+ * present; never marked wrong just for differing from a preset choice. Everything
  * is fictional and local; no response is sent to any AI grader.
  */
 import type { KnowledgeCheckQuestion } from "./types.ts"
@@ -81,7 +81,7 @@ export const missionQuestions = (M: MissionStrings): KnowledgeCheckQuestion[] =>
     ],
   },
 
-  /* B · Result interpretation (3) — each shows a chart/table first */
+  /* B · Result interpretation (3): each shows a chart/table first */
   {
     id: "m-b1",
     kind: "single",
@@ -254,7 +254,7 @@ export function emptyRecommendation(): RecommendationAnswer {
 }
 
 /**
- * Evaluates the written recommendation by the PRESENCE of required reasoning — a
+ * Evaluates the written recommendation by the PRESENCE of required reasoning: a
  * decision must be chosen and every reason area must have a real answer. Any of the
  * four decisions can be valid; it is never "wrong" merely for differing from a
  * preset choice.
@@ -278,7 +278,7 @@ export function parseRecommendation(raw: string | undefined): RecommendationAnsw
   }
 }
 
-export const MISSION_PASS_THRESHOLD = 7 // of 10 objective questions — not perfection
+export const MISSION_PASS_THRESHOLD = 7 // of 10 objective questions, not perfection
 
 /* ---- Final course reflection (saved as course reflections) ---- */
 

@@ -365,7 +365,7 @@ export function PythonIdeWorkspace() {
             type="button"
             onClick={runCode}
             disabled={isBusy || code.trim().length === 0}
-            title={`${t.home.pyIdeTipRun} — ${t.home.pyIdeRunShortcut}`}
+            title={`${t.home.pyIdeTipRun} (${t.home.pyIdeRunShortcut})`}
             className="inline-flex h-9 items-center gap-1.5 rounded-md bg-avanza-green px-3.5 text-sm font-semibold text-avanza-dark transition-colors hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isBusy ? (

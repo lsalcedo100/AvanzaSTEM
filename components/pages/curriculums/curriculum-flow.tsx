@@ -4,11 +4,11 @@ import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-
 import type { Language, Translations } from "@/i18n/translations"
 
 /**
- * Section 1 — "What you'll do in each curriculum".
+ * Section 1: "What you'll do in each curriculum".
  *
  * Two parts:
  *  1. The four-stage learning arc (Learn / Try / Build / Improve) as plain
- *     editorial rows separated by subtle dividers — no numbered circles, icons,
+ *     editorial rows separated by subtle dividers, no numbered circles, icons,
  *     rounded cards, pills, badges, or connecting arrows.
  *  2. A preview of one *real* lesson, rendered straight from the Science course
  *     data (Week 1) so nothing here is placeholder content, in the reader's
@@ -26,7 +26,7 @@ export function CurriculumFlow({
 
   return (
     <>
-      {/* Four-stage learning arc — editorial rows with hairline dividers. */}
+      {/* Four-stage learning arc: editorial rows with hairline dividers. */}
       <dl className="mt-8 divide-y divide-border border-y border-border">
         {s.stages.map((stage) => (
           <div key={stage.title} className="grid gap-1 py-5 sm:grid-cols-[10rem_1fr] sm:gap-6">

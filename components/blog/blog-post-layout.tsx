@@ -233,7 +233,7 @@ export function PostQuote({ text, attribution }: { text: string; attribution: st
     <blockquote className="border-l-4 border-avanza-purple/40 pl-5">
       <p className="text-base leading-7 break-words text-foreground/80 italic">&ldquo;{text}&rdquo;</p>
       <footer className="mt-2 text-sm font-semibold break-words text-muted-foreground">
-        — {attribution}
+       – {attribution}
       </footer>
     </blockquote>
   )

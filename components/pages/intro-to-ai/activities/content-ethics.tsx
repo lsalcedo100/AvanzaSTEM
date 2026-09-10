@@ -97,7 +97,7 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
       <p ref={announceRef} className="sr-only" role="status" aria-live="polite" />
       <p className="mt-3 rounded-md bg-secondary px-3 py-2 text-xs text-muted-foreground">Every post, school, and person here is fictional. No real accounts are visited. Don&apos;t put personal details in your notes.</p>
 
-      {/* Part 1 — misinformation */}
+      {/* Part 1: misinformation */}
       <h4 className="mt-4 text-sm font-bold text-foreground">{S.cePart1}</h4>
       <p className="mt-1 text-sm text-muted-foreground">
         {S.ceVisualTell}
@@ -161,7 +161,7 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
       </ul>
       <p className="mt-2 text-xs text-muted-foreground">{S.ceCannotDetect}</p>
 
-      {/* Part 2 — ethics committee */}
+      {/* Part 2: ethics committee */}
       <h4 className="mt-8 border-t border-border pt-6 text-sm font-bold text-foreground">{S.cePart2}</h4>
       <div className="mt-2 flex flex-wrap gap-2">
         {ethicsScenarios(S).map((s) => (
@@ -253,7 +253,7 @@ export function ContentEthicsActivity({ activity, progress }: ActivityComponentP
         </div>
       )}
 
-      {/* Part 3 — appeal design */}
+      {/* Part 3: appeal design */}
       <h4 className="mt-8 border-t border-border pt-6 text-sm font-bold text-foreground">{S.cePart3}</h4>
       <p className="mt-1 text-sm text-muted-foreground">{S.cePart3Intro}</p>
       <div className="mt-3 space-y-3">

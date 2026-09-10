@@ -104,7 +104,7 @@ export function DensityChallenge({ progress, sound }: { progress: Progress; soun
 }
 
 // ---------------------------------------------------------------------------
-// Menu — level select, badges, collection/daily entry points, reset
+// Menu: level select, badges, collection/daily entry points, reset
 // ---------------------------------------------------------------------------
 
 function Menu({
@@ -299,7 +299,7 @@ function Menu({
 }
 
 // ---------------------------------------------------------------------------
-// Round model — turns a Round into a prompt, options and an explanation
+// Round model: turns a Round into a prompt, options and an explanation
 // ---------------------------------------------------------------------------
 
 type Option = { key: string; label: string; correct: boolean }
@@ -484,7 +484,7 @@ function LevelPlay({
       setRoundIdx((i) => i + 1)
       return
     }
-    // Finished — commit progress and show the end screen.
+    // Finished: commit progress and show the end screen.
     const accuracy = tally.total > 0 ? tally.correct / tally.total : 0
     const perfect = tally.correct === level.rounds.length
     const { newObjects, newBadges } = progress.finishLevel({

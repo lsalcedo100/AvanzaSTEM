@@ -61,7 +61,7 @@ function load(): DensityProgress {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return base
     const p = JSON.parse(raw) as Partial<DensityProgress>
-    // Merge defensively — an older/partial payload must never crash the game.
+    // Merge defensively: an older/partial payload must never crash the game.
     const starterMerged = Array.from(
       new Set([...STARTER_OBJECT_IDS, ...(p.unlockedObjects ?? [])]),
     ) as ObjectKey[]

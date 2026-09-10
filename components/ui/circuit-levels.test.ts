@@ -1,6 +1,6 @@
 // Plain-assertion validation examples for the circuit engine.
 //
-// These are not wired into a test runner (the project has none) — they are a
+// These are not wired into a test runner (the project has none); they are a
 // self-contained sanity check you can run directly:
 //
 //     npx tsx components/ui/circuit-levels.test.ts
@@ -57,7 +57,7 @@ const batV: Cell = { kind: "battery", orientation: "v" } // + south, − north
 const batH: Cell = { kind: "battery", orientation: "h" } // + east, − west
 
 // ---------------------------------------------------------------------------
-// 1. Working circuit — one bulb on a complete loop.
+// 1. Working circuit: one bulb on a complete loop.
 // ---------------------------------------------------------------------------
 scenario("Working circuit", () => {
   const g = mk(3, 4, {
@@ -74,7 +74,7 @@ scenario("Working circuit", () => {
 })
 
 // ---------------------------------------------------------------------------
-// 2. Open circuit — same loop with one wire missing.
+// 2. Open circuit: same loop with one wire missing.
 // ---------------------------------------------------------------------------
 scenario("Open circuit", () => {
   const g = mk(3, 4, {
@@ -90,7 +90,7 @@ scenario("Open circuit", () => {
 })
 
 // ---------------------------------------------------------------------------
-// 3. Short circuit — a bare-wire loop with no load.
+// 3. Short circuit: a bare-wire loop with no load.
 // ---------------------------------------------------------------------------
 scenario("Short circuit", () => {
   const g = mk(3, 3, {
@@ -106,7 +106,7 @@ scenario("Short circuit", () => {
 })
 
 // ---------------------------------------------------------------------------
-// 4. Series circuit — two bulbs on the same single loop, both light.
+// 4. Series circuit: two bulbs on the same single loop, both light.
 // ---------------------------------------------------------------------------
 scenario("Series circuit", () => {
   const g = mk(3, 4, {
@@ -150,7 +150,7 @@ scenario("Series dims with more bulbs", () => {
 })
 
 // ---------------------------------------------------------------------------
-// 5. Parallel circuit — two bulbs each on their own branch, both light.
+// 5. Parallel circuit: two bulbs each on their own branch, both light.
 // ---------------------------------------------------------------------------
 scenario("Parallel circuit", () => {
   const g = mk(3, 3, {
@@ -180,7 +180,7 @@ scenario("Parallel branch keeps working when another breaks", () => {
   const g = mk(3, 4, {
     "0,0": wire, "0,1": wire, "0,2": wire, "0,3": wire,
     "1,0": batV, "1,1": bulb,              "1,3": bulb,
-    "2,0": wire, "2,1": wire, "2,2": wire, /* (2,3) MISSING — breaks rung B */
+    "2,0": wire, "2,1": wire, "2,2": wire, /* (2,3) MISSING, breaks rung B */
   })
   const sim = simulate(g)
   assert("intact branch still lit", sim.litBulbs.has("1,1"))

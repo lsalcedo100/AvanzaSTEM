@@ -1498,7 +1498,7 @@ export function RoboticsBlockEditor({
                         title={BLOCK_INFO[type].help}
                         disabled={runningEdits}
                         onClick={() => addTopLevel(type)}
-                        aria-label={`${BLOCK_INFO[type].label} — ${BLOCK_INFO[type].help}`}
+                        aria-label={`${BLOCK_INFO[type].label}: ${BLOCK_INFO[type].help}`}
                       >
                         {BLOCK_INFO[type].label}
                       </button>
@@ -1852,7 +1852,7 @@ export function RoboticsBlockEditor({
 
             {savedTrial !== null && (
               <p className="mt-2 text-xs font-semibold text-avanza-green-dark" aria-live="polite">
-                Saved result — trial {savedTrial}.
+                Saved result: trial {savedTrial}.
               </p>
             )}
 
@@ -1880,7 +1880,7 @@ export function RoboticsBlockEditor({
                   ))}
                 </ul>
 
-                {/* Likely-cause hints — never reveal the solution. */}
+                {/* Likely-cause hints: never reveal the solution. */}
                 {challenge.feedback.length > 0 && (
                   <div
                     className="mt-3 rounded-md border border-amber-400/60 bg-amber-50 p-3 text-sm dark:bg-amber-950/30"

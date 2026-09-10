@@ -17,9 +17,9 @@ export default function HomePage() {
     <>
       <HeroSection />
       <WhyWeExistSection />
+      <WhoItsForSection />
       <WhatStudentsDoSection />
       <InteractiveLabTeasers />
-      <WhoItsForSection />
       <SocialProof />
       <GetInvolvedSection />
     </>

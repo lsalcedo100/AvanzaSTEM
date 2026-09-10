@@ -27,7 +27,7 @@ function useS() {
   return useLanguage().t.courseUi.ai.week3
 }
 
-// Weak start: the model has only ever seen circles and squares — never a triangle.
+// Weak start: the model has only ever seen circles and squares, never a triangle.
 // It therefore misses every triangle until the student adds some.
 const FIRST_TRAINING_IDS = ["sh-circle-1", "sh-circle-2", "sh-sq-1", "sh-sq-2"]
 // Ids only, so the list is the same in every language.
@@ -127,7 +127,7 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
     >
       <p ref={announceRef} className="sr-only" role="status" aria-live="polite" />
 
-      {/* Part 1 — Confuse the model */}
+      {/* Part 1: Confuse the model */}
       <h4 className="mt-4 text-sm font-bold text-foreground">{S.ciPart1}</h4>
       <p className="mt-1 text-sm text-muted-foreground">{S.ciPart1Intro}</p>
       <ul className="mt-3 space-y-4">
@@ -219,10 +219,10 @@ export function ConfuseImproveActivity({ activity, progress }: ActivityComponent
         })}
       </ul>
 
-      {/* Part 2 — Improve */}
+      {/* Part 2: Improve */}
       <h4 className="mt-8 border-t border-border pt-6 text-sm font-bold text-foreground">{S.ciPart2}</h4>
       <p className="mt-1 text-sm text-muted-foreground">
-        The starter model has only ever seen circles and squares — it has never seen a triangle, so it misses every one. Add up to {ADD_LIMIT} more varied pictures
+        The starter model has only ever seen circles and squares: it has never seen a triangle, so it misses every one. Add up to {ADD_LIMIT} more varied pictures
         (try some triangles!) and retrain to see if it improves.
       </p>
 

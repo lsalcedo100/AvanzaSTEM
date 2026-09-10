@@ -66,7 +66,7 @@ function note(
   osc.stop(start + duration + 0.02)
 }
 
-/** A short filtered-noise burst — used for pour/splash water textures. */
+/** A short filtered-noise burst, used for pour/splash water textures. */
 function noiseBurst(ctx: AudioContext, start: number, duration: number, cutoff: number, peak = 0.08) {
   const frames = Math.floor(ctx.sampleRate * duration)
   const buffer = ctx.createBuffer(1, frames, ctx.sampleRate)
@@ -111,7 +111,7 @@ export function playSound(name: SoundName) {
       note(ctx, 988, t + 0.11, 0.2, 0.12, "triangle")
       break
     case "incorrect":
-      // Soft, low, non-harsh "hmm" — never a buzzer.
+      // Soft, low, non-harsh "hmm", never a buzzer.
       note(ctx, 300, t, 0.16, 0.1, "sine")
       note(ctx, 240, t + 0.13, 0.22, 0.1, "sine")
       break

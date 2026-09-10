@@ -72,7 +72,7 @@ export const LEVELS: Level[] = [
     ],
     successExplanation:
       "You learned that OR is used when one of several conditions can trigger something, like a smoke alarm or heat sensor.",
-    realWorldConnection: "Smoke detectors, alarms, and notifications often use OR — any one trigger is enough.",
+    realWorldConnection: "Smoke detectors, alarms, and notifications often use OR: any one trigger is enough.",
     badge: BADGES_BY_LEVEL[2],
   },
   {
@@ -93,7 +93,7 @@ export const LEVELS: Level[] = [
     },
     target: rows1((a) => [a ? 0 : 1]),
     hints: [
-      "Compare the input to the output in each row — are they ever the same?",
+      "Compare the input to the output in each row. Are they ever the same?",
       "When A is ON, the output is OFF, and when A is OFF, the output is ON.",
       "This is the NOT gate.",
     ],
@@ -148,7 +148,7 @@ export const LEVELS: Level[] = [
     target: rows2((a, b) => [a & b ? 0 : 1]),
     hints: [
       "Find the one row where the output is different from the rest.",
-      "The output turns off only when both inputs are ON — every other case is ON.",
+      "The output turns off only when both inputs are ON; every other case is ON.",
       "This is the NAND gate.",
     ],
     successExplanation:
@@ -175,12 +175,12 @@ export const LEVELS: Level[] = [
     target: rows2((a, b) => [a | b ? 0 : 1]),
     hints: [
       "Find the one row where the output is different from the rest.",
-      "The output turns on only when both inputs are OFF — every other case is OFF.",
+      "The output turns on only when both inputs are OFF; every other case is OFF.",
       "This is the NOR gate.",
     ],
     successExplanation:
       "You learned that NOR is the opposite of OR. It only switches on when every condition is false.",
-    realWorldConnection: "A \"do not disturb\" indicator can use NOR — quiet only when nothing at all is active.",
+    realWorldConnection: "A \"do not disturb\" indicator can use NOR: quiet only when nothing at all is active.",
     badge: BADGES_BY_LEVEL[6],
   },
   {
@@ -209,7 +209,7 @@ export const LEVELS: Level[] = [
       "Then decide what gate combines g1's result with C so either one being true is enough.",
       "g1 should be AND, and g2 should be OR.",
     ],
-    successExplanation: "You learned that gates can be chained — one gate's output becomes another gate's input.",
+    successExplanation: "You learned that gates can be chained: one gate's output becomes another gate's input.",
     realWorldConnection: "Smart sensors often combine several rules this way: a motion sensor AND darkness, OR a manual override.",
     badge: BADGES_BY_LEVEL[7],
   },
@@ -243,7 +243,7 @@ export const LEVELS: Level[] = [
     },
     target: rows2((a, b) => [a ^ b, a & b]),
     hints: [
-      "Look at the Sum column first — when are A and B different?",
+      "Look at the Sum column first. When are A and B different?",
       "Sum needs the gate that's true when exactly one input is on. Carry needs the gate that's true only when both are on.",
       "Sum = XOR(A, B). Carry = AND(A, B).",
     ],
@@ -277,7 +277,7 @@ export const LEVELS: Level[] = [
       "Then combine \"door open\" with \"teacher NOT present\" so both must be true.",
       "g1 should be NOT(B), and g2 should be AND(A, g1).",
     ],
-    successExplanation: "You translated a real sentence into Boolean logic — the same skill used to write real security software.",
+    successExplanation: "You translated a real sentence into Boolean logic, the same skill used to write real security software.",
     realWorldConnection: "Real security systems, smart locks, and alarms are built by turning sentences like this into AND/OR/NOT logic.",
     badge: BADGES_BY_LEVEL[9],
   },

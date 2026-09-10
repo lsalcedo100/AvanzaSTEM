@@ -32,7 +32,7 @@ export function CurriculumsPageContent() {
 
   return (
     <>
-      {/* Compact, left-aligned intro — a resource entrance, not a landing hero.
+      {/* Compact, left-aligned intro: a resource entrance, not a landing hero.
           Reduced height and no top newsletter box, so the catalog is reachable
           with minimal scroll (the CTA also jumps straight to it). */}
       <section className="border-b border-purple-200 bg-gradient-to-br from-[#fbf7ff] via-purple-100 to-purple-300 py-10 sm:py-12">
@@ -44,7 +44,7 @@ export function CurriculumsPageContent() {
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
               {s.heroDesc}
             </p>
-            {/* Plain-text info line — deliberately not pills or badges. */}
+            {/* Plain-text info line: deliberately not pills or badges. */}
             <p className="mt-4 text-sm text-muted-foreground">{s.heroInfoLine}</p>
             <a
               href="#curriculum-catalog"
@@ -56,7 +56,7 @@ export function CurriculumsPageContent() {
         </Container>
       </section>
 
-      {/* Featured path — the most complete course, above the full catalog */}
+      {/* Featured path: the most complete course, above the full catalog */}
       <FadeIn>
         <FeaturedCurriculum c={c} />
       </FadeIn>
@@ -101,7 +101,7 @@ export function CurriculumsPageContent() {
         </Container>
       </section>
 
-      {/* Section 1 — What you'll do in each curriculum (+ a real lesson preview) */}
+      {/* Section 1: What you'll do in each curriculum (+ a real lesson preview) */}
       <section className="bg-background py-16 sm:py-20">
         <Container>
           <FadeIn>
@@ -115,7 +115,7 @@ export function CurriculumsPageContent() {
         </Container>
       </section>
 
-      {/* Section 2 — For parents and educators */}
+      {/* Section 2: For parents and educators */}
       <section className="bg-secondary py-16 sm:py-20">
         <Container>
           <FadeIn>
@@ -128,7 +128,7 @@ export function CurriculumsPageContent() {
         </Container>
       </section>
 
-      {/* Compact newsletter — a smaller secondary action near the footer */}
+      {/* Compact newsletter: a smaller secondary action near the footer */}
       <FadeIn rootMargin="0px 0px -30px 0px">
         <CurriculumNewsletter
           sectionId={CURRICULUM_SIGNUP_ID}

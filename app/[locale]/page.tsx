@@ -23,9 +23,9 @@ export default function LocaleHomePage() {
     <>
       <HeroSection />
       <WhyWeExistSection />
+      <WhoItsForSection />
       <WhatStudentsDoSection />
       <InteractiveLabTeasers />
-      <WhoItsForSection />
       <SocialProof />
       <GetInvolvedSection />
     </>

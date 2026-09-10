@@ -1,10 +1,10 @@
 /**
- * Week 4 — Recommendation-System Builder engine (framework-free, deterministic).
+ * Week 4: Recommendation-System Builder engine (framework-free, deterministic).
  *
  * A transparent, content-based recommender over a fictional local catalog. There
  * is NO external service and NO personal data. It builds a preference profile from
  * the items a student rates, scores each other item by weighted feature similarity,
- * and — crucially — produces a plain-language explanation and per-feature
+ * and, crucially, produces a plain-language explanation and per-feature
  * contribution list for EVERY recommendation. The same inputs always rank the same
  * way. It also supports a filter-bubble experiment and an "explore" option.
  */
@@ -278,7 +278,7 @@ export function narrowness(recs: Recommendation[]): number {
   return dist.length === 0 ? 0 : dist[0].share
 }
 
-/** How many different topics appear in the feed — a simple variety measure. */
+/** How many different topics appear in the feed, a simple variety measure. */
 export function distinctTopics(recs: Recommendation[]): number {
   return new Set(recs.map((r) => r.item.topic)).size
 }

@@ -1,5 +1,5 @@
 /**
- * Week 4 — Next-Text Prediction Lab engine (framework-free, deterministic).
+ * Week 4: Next-Text Prediction Lab engine (framework-free, deterministic).
  *
  * A small local n-gram model built from a curated, age-appropriate corpus. There
  * is NO external language model and NO network. Prediction is a real, transparent
@@ -20,7 +20,7 @@ import { translations, type Translations } from "../../../../i18n/translations.t
 
 /**
  * Short sentences chosen so that context genuinely changes the prediction (e.g.
- * "storm" vs "parade"). Repetition is intentional — it weights the counts so the
+ * "storm" vs "parade"). Repetition is intentional: it weights the counts so the
  * probabilities are interesting but still hand-checkable.
  */
 export type Week4TextStrings = Translations["courseUi"]["ai"]["week4Text"]

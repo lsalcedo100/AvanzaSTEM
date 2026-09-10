@@ -1,9 +1,9 @@
 /**
- * Intro to Artificial Intelligence — typed curriculum model.
+ * Intro to Artificial Intelligence: typed curriculum model.
  *
  * Single source of truth for the *shape* of the six-week, grades 5–8 AI course.
  * All course content (Weeks 1–6, the final project, and the final assessment) is
- * authored as data that conforms to these types — see `intro-to-ai-week-1.ts` …
+ * authored as data that conforms to these types; see `intro-to-ai-week-1.ts` …
  * `intro-to-ai-week-6.ts` and `intro-to-ai.ts`. Presentation and state logic live
  * in components/hooks and never hard-code lesson copy.
  *
@@ -155,7 +155,7 @@ export type VisualExplanation = {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Activities (briefings during this phase — no interactive engine yet)       */
+/* Activities (briefings during this phase, no interactive engine yet)        */
 /* -------------------------------------------------------------------------- */
 
 /**
@@ -244,7 +244,7 @@ type QuestionBase = {
   explanation: string
   /** Optional skill this question provides evidence for (see intro-to-ai-skills). */
   skillId?: string
-  /** Optional table/chart/prose shown before the choices — powers the
+  /** Optional table/chart/prose shown before the choices; powers the
    *  result-interpretation and table/chart-interpretation question types by
    *  reusing the single/multiple choice engine. */
   context?: VisualExplanation

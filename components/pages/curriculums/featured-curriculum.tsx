@@ -10,7 +10,7 @@ import { Container } from "./section"
 
 /**
  * Editorial spotlight on the most complete course (Intro to AI). Deliberately
- * restrained — no gradient panel, promo banner, or oversized rounded card: a
+ * restrained, no gradient panel, promo banner, or oversized rounded card: a
  * hairline-bordered two-column block that reads like the lead item in a course
  * catalog. Horizontal on desktop, stacked on mobile.
  *
@@ -45,7 +45,7 @@ export function FeaturedCurriculum({
               <span className="font-semibold text-foreground">{copy.learnLabel}:</span>{" "}
               {copy.learn}
             </p>
-            {/* Primary action — solid, so the featured course is the clearest
+            {/* Primary action: solid, so the featured course is the clearest
                 starting point vs. the outlined per-card actions. */}
             <Link
               href={entry.href}

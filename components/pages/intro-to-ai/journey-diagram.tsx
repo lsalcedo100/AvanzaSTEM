@@ -1,7 +1,7 @@
 /**
  * Purposeful, accessible course illustration for Intro to AI.
  *
- * A restrained diagrammatic composition — NOT AI-marketing imagery. It shows the
+ * A restrained diagrammatic composition, NOT AI-marketing imagery. It shows the
  * four things students actually do in this course: label example data, split it
  * into training and testing, read a prediction, and find and fix a mistake. Pure
  * inline SVG (no next/image, no external asset), theme-aware via `currentColor`,
@@ -40,7 +40,7 @@ export function JourneyDiagram({ variant = "full", className }: { variant?: "ful
           <polygon points="308,56 308,64 314,60" />
         </g>
 
-        {/* 1 · Label — a small data table with a tag */}
+        {/* 1 · Label: a small data table with a tag */}
         <g transform="translate(20,24)">
           <rect x="0" y="0" width="72" height="52" rx="6" className="text-border" stroke="currentColor" fill="none" strokeWidth="1.5" />
           <g className="text-muted-foreground" stroke="currentColor" strokeWidth="1">
@@ -55,7 +55,7 @@ export function JourneyDiagram({ variant = "full", className }: { variant?: "ful
           </g>
         </g>
 
-        {/* 2 · Train / Test — a split box */}
+        {/* 2 · Train / Test: a split box */}
         <g transform="translate(120,24)">
           <rect x="0" y="0" width="72" height="52" rx="6" className="text-border" stroke="currentColor" fill="none" strokeWidth="1.5" />
           <g className="text-avanza-teal" fill="currentColor">
@@ -66,7 +66,7 @@ export function JourneyDiagram({ variant = "full", className }: { variant?: "ful
           </g>
         </g>
 
-        {/* 3 · Predict — a result with a check */}
+        {/* 3 · Predict: a result with a check */}
         <g transform="translate(220,24)">
           <rect x="0" y="0" width="72" height="52" rx="6" className="text-border" stroke="currentColor" fill="none" strokeWidth="1.5" />
           <g className="text-muted-foreground" stroke="currentColor" strokeWidth="1.5" fill="none">
@@ -81,7 +81,7 @@ export function JourneyDiagram({ variant = "full", className }: { variant?: "ful
           </g>
         </g>
 
-        {/* 4 · Fix a mistake — an X corrected to a check */}
+        {/* 4 · Fix a mistake: an X corrected to a check */}
         <g transform="translate(320,24)">
           <rect x="0" y="0" width="60" height="52" rx="6" className="text-border" stroke="currentColor" fill="none" strokeWidth="1.5" />
           <g className="text-avanza-orange" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round">

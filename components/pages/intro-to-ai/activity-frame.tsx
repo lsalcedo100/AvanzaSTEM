@@ -16,7 +16,7 @@ function useS(): SharedStrings {
 }
 
 /**
- * The generic frame every activity renders inside — both the current briefings
+ * The generic frame every activity renders inside: both the current briefings
  * (no interactive engine yet) and the real deterministic activities added later.
  * It provides the standard slots (controls, results, feedback), a reset action,
  * a save-state line, and accessible banners for the non-ready states. Status

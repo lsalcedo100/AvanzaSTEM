@@ -117,7 +117,7 @@ export function ChatbotBuilderActivity({ activity, progress }: ActivityComponent
   }
   const restart = () => {
     setConvo(initialConvoState)
-    setTranscript((t) => [...t, { id: uid("sys"), role: "bot", text: `— conversation restarted —\n${spec.welcome}` }])
+    setTranscript((t) => [...t, { id: uid("sys"), role: "bot", text: `(conversation restarted)\n${spec.welcome}` }])
     announce(S.cbConvoRestarted)
   }
   const clearTranscript = () => {

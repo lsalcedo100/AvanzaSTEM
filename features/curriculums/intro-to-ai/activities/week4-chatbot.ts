@@ -1,5 +1,5 @@
 /**
- * Week 4 — Rule-Based Chatbot Builder engine (framework-free, deterministic).
+ * Week 4: Rule-Based Chatbot Builder engine (framework-free, deterministic).
  *
  * There is NO external chatbot or generative-AI API. Matching is real, ordered,
  * keyword-based rule matching over normalized text: the same message always

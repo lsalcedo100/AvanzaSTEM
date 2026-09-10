@@ -5,7 +5,7 @@ import type { Translations } from "@/i18n/translations"
 /**
  * Side-by-side comparison of the six paths (grades, length, setting, and what
  * students build) so a parent or teacher can pick without opening every course.
- * All values come from the typed catalog + real course data — no invented stats.
+ * All values come from the typed catalog + real course data, no invented stats.
  *
  * Renders as a real `<table>` on md+ and stacks into readable rows on mobile.
  */

@@ -3,7 +3,7 @@ import type { Translations } from "../../i18n/translations.ts"
 /**
  * How students primarily work in a path. Used by the comparison section (and,
  * in a later phase, a filter). Derived from each course's real `format[]` /
- * facilitator data in `features/curriculums/*` — not invented.
+ * facilitator data in `features/curriculums/*`, not invented.
  */
 export type LearningSetting = "online" | "hands-on" | "unplugged"
 
@@ -38,7 +38,7 @@ export type CurriculumGroup = "hands-on" | "technology"
  */
 export type CurriculumEntry = {
   id: CurriculumId
-  /** Canonical course route. These hrefs are load-bearing — keep them exact. */
+  /** Canonical course route. These hrefs are load-bearing; keep them exact. */
   href: string
   /**
    * Card art. Normally a real Avanza STEM workshop/robotics photo; Math uses a
@@ -57,7 +57,7 @@ export type CurriculumEntry = {
   weeks: number
   /**
    * Number of lessons shown on the card ("N lessons"). Equals the course's
-   * totalWeeks / totalLessons / totalModules — normalized to "lessons" for a
+   * totalWeeks / totalLessons / totalModules, normalized to "lessons" for a
    * consistent card metadata line.
    */
   lessons: number
@@ -174,7 +174,7 @@ export const featuredCurriculum: CurriculumEntry =
   curriculumCatalog.find((entry) => entry.featured) ?? curriculumCatalog[0]
 
 /**
- * Real Avanza STEM photo for the featured section (an actual AI workshop —
+ * Real Avanza STEM photo for the featured section (an actual AI workshop,
  * already used on the blog). Kept separate from the AI card, which uses the
  * in-course JourneyDiagram, so the two treatments read as intentionally
  * different rather than a duplicated image.

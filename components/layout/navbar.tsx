@@ -15,6 +15,11 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  /**
+   * Set while a page-tagged element is scrolled under the bar (see the effect
+   * below). Only pages that opt in ever set it.
+   */
+  const [yielded, setYielded] = useState(false)
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -35,6 +40,7 @@ export function Navbar() {
     }
   }
 
+  const navRef = useRef<HTMLElement>(null)
   const desktopLangRef = useRef<HTMLDivElement>(null)
   const mobileLangRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
@@ -68,6 +74,63 @@ export function Navbar() {
       if (raf) window.cancelAnimationFrame(raf)
     }
   }, [])
+
+  /**
+   * Some pages put a full-bleed element directly beneath the floating bar — the
+   * workshop finder's map is the case this exists for — where the bar sits on
+   * top of the content instead of over page background. Those pages tag the
+   * element with `data-navbar-yield`, and the bar fades out for exactly as long
+   * as that element is passing behind it.
+   *
+   * The bar measures itself rather than assuming a height, since it changes
+   * size when it collapses into the pill. Pages without the attribute never
+   * enter this branch, so nothing else on the site changes behaviour.
+   */
+  useEffect(() => {
+    const target = document.querySelector<HTMLElement>("[data-navbar-yield]")
+    // Nothing on this page opts in; the previous page's cleanup already reset.
+    if (!target) return
+
+    let isYielded = false
+    let raf = 0
+
+    const measure = () => {
+      raf = 0
+      const nav = navRef.current
+      if (!nav) return
+      const band = nav.getBoundingClientRect()
+      const rect = target.getBoundingClientRect()
+      // A few pixels of hysteresis, so a pin nudging the layout at the boundary
+      // cannot flicker the bar in and out.
+      if (!isYielded) {
+        if (rect.top < band.bottom && rect.bottom > band.top) {
+          isYielded = true
+          setYielded(true)
+          // A bar fading out must not leave an open dropdown behind it.
+          setLangOpen(false)
+          setMobileOpen(false)
+        }
+      } else if (rect.top >= band.bottom + 8 || rect.bottom <= band.top - 8) {
+        isYielded = false
+        setYielded(false)
+      }
+    }
+
+    const schedule = () => {
+      if (raf) return
+      raf = window.requestAnimationFrame(measure)
+    }
+
+    schedule()
+    window.addEventListener("scroll", schedule, { passive: true })
+    window.addEventListener("resize", schedule)
+    return () => {
+      window.removeEventListener("scroll", schedule)
+      window.removeEventListener("resize", schedule)
+      if (raf) window.cancelAnimationFrame(raf)
+      setYielded(false)
+    }
+  }, [pathname])
 
   const topNavLinks = [
     { href: "/projects", label: t.nav.projects },
@@ -110,10 +173,22 @@ export function Navbar() {
 
   return (
     <nav
-      className={`sticky z-50 transition-[top,padding,background-color] duration-300 ease-out print:hidden ${
+      ref={navRef}
+      /*
+       * `inert` rather than opacity alone: a bar faded to zero is still
+       * focusable and still read by screen readers, so tabbing would land on
+       * links nobody can see.
+       */
+      inert={yielded}
+      aria-hidden={yielded || undefined}
+      className={`sticky z-50 transition-[top,padding,background-color,opacity,transform] duration-300 ease-out print:hidden ${
         scrolled
           ? "top-3 bg-transparent px-3 sm:top-4 sm:px-6"
           : "top-0 bg-avanza-navbar px-0"
+      } ${
+        yielded
+          ? "pointer-events-none -translate-y-1 opacity-0"
+          : "translate-y-0 opacity-100"
       }`}
     >
       <div

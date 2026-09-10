@@ -3,7 +3,7 @@
  *
  * A safe, fully fictional "space fruit" dataset plus a transparent, deterministic
  * classifier (k-nearest-neighbors over encoded features). Framework-free so every
- * result is a pure function of the data and the student's choices — there is NO
+ * result is a pure function of the data and the student's choices: there is NO
  * randomness, NO network, and NO fake "training" anywhere. The React components in
  * components/pages/intro-to-ai/activities/ render this logic.
  *
@@ -104,7 +104,7 @@ export type SpaceFruit = {
   description: string
   features: SpaceFruitFeatures
   /** The lesson's correct answer for this fruit (ground truth). Never shown as
-   *  "objectively true" of the real world — it is the made-up game rule. */
+   *  "objectively true" of the real world: it is the made-up game rule. */
   canonicalLabel: SpaceFruitLabel
   /** A stored/assigned label that MAY differ from `canonicalLabel` (used by the
    *  flawed dataset and the labeling workspace). Undefined = not yet labeled. */
@@ -164,7 +164,7 @@ export function localizeFruits(list: SpaceFruit[], S: Week2Strings): SpaceFruit[
 }
 
 /* ========================================================================== */
-/* Canonical dataset — correct + balanced, split into training and testing    */
+/* Canonical dataset: correct + balanced, split into training and testing    */
 /* ========================================================================== */
 
 /** Builds a fruit, filling in the description and canonical label from the rule. */
@@ -210,13 +210,13 @@ export const CANONICAL_TEST: SpaceFruit[] = [
   fruit("te-04", "Craterspine", { color: "violet", shape: "star", texture: "spiky", environment: "crater", seeds: 2, sweetness: 3, glow: 4, size: 5 }),
   fruit("te-05", "Deepcoil", { color: "azure", shape: "spiral", texture: "bumpy", environment: "cavern", seeds: 1, sweetness: 2, glow: 5, size: 4 }),
   fruit("te-06", "Palestar", { color: "violet", shape: "star", texture: "smooth", environment: "crater", seeds: 1, sweetness: 4, glow: 3, size: 6 }),
-  // Spiky but only mildly glowing — "not safe" comes from spikiness alone (a rarer pattern).
+  // Spiky but only mildly glowing: "not safe" comes from spikiness alone (a rarer pattern).
   fruit("te-07", "Barbcone", { color: "azure", shape: "star", texture: "spiky", environment: "cavern", seeds: 3, sweetness: 2, glow: 2, size: 5 }),
   fruit("te-08", "Softamber", { color: "amber", shape: "round", texture: "fuzzy", environment: "canopy", seeds: 3, sweetness: 7, glow: 2, size: 7 }),
 ]
 
 /* ========================================================================== */
-/* Labeling workspace dataset (Activity 1) — unlabeled, with planted flaws     */
+/* Labeling workspace dataset (Activity 1): unlabeled, with planted flaws     */
 /* ========================================================================== */
 
 /**
@@ -243,17 +243,17 @@ export const WORKSPACE_EXAMPLES: SpaceFruit[] = [
   wsFruit("ws-09", "Rosedrop", { color: "crimson", shape: "oval", texture: "smooth", environment: "dune", seeds: 5, sweetness: 8, glow: 1, size: 9 }, ["sweetness"]),
   wsFruit("ws-10", "Barbcone", { color: "azure", shape: "star", texture: "spiky", environment: "cavern", seeds: 3, sweetness: 2, glow: 2, size: 5 }),
   wsFruit("ws-11", "Spikecoil", { color: "violet", shape: "spiral", texture: "spiky", environment: "crater", seeds: 1, sweetness: 3, glow: 1, size: 4 }),
-  // Missing texture (an incomplete example — and texture is one of the two features
+  // Missing texture (an incomplete example, and texture is one of the two features
   // that decides the label, so this one is genuinely hard to label).
   wsFruit("ws-12", "Dunedrop", { color: "amber", shape: "round", texture: "bumpy", environment: "dune", seeds: 3, sweetness: 7, glow: 1, size: 7 }, ["texture"]),
   wsFruit("ws-13", "Sweetreef", { color: "teal", shape: "oval", texture: "smooth", environment: "reef", seeds: 6, sweetness: 9, glow: 0, size: 10 }),
   // Same meaningful features as ws-01, different id (a "different id, identical
-  // features" duplicate — distinct from the exact copy at ws-06).
+  // features" duplicate, distinct from the exact copy at ws-06).
   wsFruit("ws-14", "Dawnberry twin", { color: "crimson", shape: "round", texture: "smooth", environment: "canopy", seeds: 6, sweetness: 8, glow: 0, size: 10 }),
 ]
 
 /* ========================================================================== */
-/* Flawed dataset (Activity 4) — duplicates, wrong labels, imbalance           */
+/* Flawed dataset (Activity 4): duplicates, wrong labels, imbalance           */
 /* ========================================================================== */
 
 /** Builds a flawed row with an explicit stored label (which may be wrong). */
@@ -277,7 +277,7 @@ export const FLAWED_TRAINING: SpaceFruit[] = [
   flaw("fl-08", "Reefplum", { color: "amber", shape: "oval", texture: "fuzzy", environment: "reef", seeds: 4, sweetness: 9, glow: 1, size: 8 }, "safe"),
   flaw("fl-09", "Greenpod", { color: "teal", shape: "round", texture: "bumpy", environment: "canopy", seeds: 9, sweetness: 6, glow: 0, size: 13 }, "safe"),
   flaw("fl-10", "Amberbud", { color: "amber", shape: "round", texture: "fuzzy", environment: "canopy", seeds: 2, sweetness: 7, glow: 2, size: 6 }, "safe"),
-  // Correctly labeled not-safe fruits (too few of them — the imbalance).
+  // Correctly labeled not-safe fruits (too few of them, the imbalance).
   flaw("fl-11", "Starflare", { color: "violet", shape: "star", texture: "spiky", environment: "crater", seeds: 2, sweetness: 3, glow: 4, size: 5 }, "unsafe"),
   flaw("fl-12", "Glowcoil", { color: "azure", shape: "spiral", texture: "bumpy", environment: "cavern", seeds: 1, sweetness: 2, glow: 5, size: 4 }, "unsafe"),
   // Duplicate rows (same features as an earlier row).
@@ -359,7 +359,7 @@ export function incompleteIds(examples: SpaceFruit[]): Set<string> {
 /**
  * Ids whose STORED label disagrees with the canonical (correct) label. Because
  * this is a fictional teaching dataset, "incorrect" means "does not match the
- * lesson's answer key" — not a claim about the real world. Incomplete examples are
+ * lesson's answer key", not a claim about the real world. Incomplete examples are
  * skipped (we can't judge a label without the deciding feature).
  */
 export function incorrectLabelIds(examples: SpaceFruit[]): Set<string> {
@@ -409,7 +409,7 @@ export function balanceRatio(examples: SpaceFruit[], useCanonical = false): numb
 }
 
 /* ========================================================================== */
-/* Deterministic model — k-nearest neighbors over encoded features             */
+/* Deterministic model: k-nearest neighbors over encoded features             */
 /* ========================================================================== */
 
 /** Per-feature distance in [0,1]. Categorical: 0 if equal, 1 if different.
@@ -423,7 +423,7 @@ function featureDistance(key: FeatureKey, a: SpaceFruitFeatures, b: SpaceFruitFe
 
 /**
  * Total distance between two fruits: the sum of the eight per-feature distances
- * (range 0–8). Smaller = more similar. Fully transparent and deterministic — the
+ * (range 0–8). Smaller = more similar. Fully transparent and deterministic: the
  * same two fruits always give the same distance.
  */
 export function distance(a: SpaceFruitFeatures, b: SpaceFruitFeatures): number {
@@ -499,7 +499,7 @@ export type ModelRun = {
 
 /**
  * Runs the model over a test set. The test fruit's ACTUAL label is always its
- * canonical (correct) label — test data is never mislabeled. Deterministic.
+ * canonical (correct) label: test data is never mislabeled. Deterministic.
  */
 export function runModel(training: SpaceFruit[], test: SpaceFruit[], k = 3): ModelRun {
   const perCategory: Record<SpaceFruitLabel, CategoryScore> = {
@@ -519,7 +519,7 @@ export function runModel(training: SpaceFruit[], test: SpaceFruit[], k = 3): Mod
       actual,
       correct,
       prediction:
-        prediction ?? { label: predicted, neighbors: [], safeVotes: 0, unsafeVotes: 0, explanation: "No training data — the model cannot make a real prediction." },
+        prediction ?? { label: predicted, neighbors: [], safeVotes: 0, unsafeVotes: 0, explanation: "No training data: the model cannot make a real prediction." },
     }
   })
   const correct = results.filter((r) => r.correct).length
@@ -581,7 +581,7 @@ export function validateSplit(training: SpaceFruit[], test: SpaceFruit[], S: Wee
 }
 
 /* ========================================================================== */
-/* Experiment conditions (Activity 3 — Change the Data)                        */
+/* Experiment conditions (Activity 3: Change the Data)                        */
 /* ========================================================================== */
 
 export type ExperimentId = "balanced" | "unbalanced" | "incorrect"

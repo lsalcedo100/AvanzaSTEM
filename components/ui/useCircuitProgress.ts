@@ -7,7 +7,7 @@ const STORAGE_KEY = "avanza-circuit-game-progress-v2"
 const LEGACY_KEY = "avanza-circuit-game-progress-v1"
 
 /** What we remember about a single level. Bests are only ever raised, never
- *  lowered — replaying and doing worse can't take away what you already earned. */
+ *  lowered; replaying and doing worse can't take away what you already earned. */
 export type LevelRecord = {
   solved: boolean
   /** Best stars earned, 0–3. */

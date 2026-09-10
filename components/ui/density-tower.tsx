@@ -189,7 +189,7 @@ function ModeTab({
 }
 
 // ---------------------------------------------------------------------------
-// Free Lab — open-ended experiment (no score, no locks besides object unlocks)
+// Free Lab: open-ended experiment (no score, no locks besides object unlocks)
 // ---------------------------------------------------------------------------
 
 function DensityFreeLab({
@@ -458,7 +458,7 @@ function DensityFreeLab({
           />
           <div className="relative flex flex-col items-center gap-4 overflow-hidden rounded-3xl bg-white p-6 shadow-[0_28px_64px_-30px_rgba(26,26,46,0.35)] ring-1 ring-avanza-dark/10 sm:p-7">
             <div className="flex w-full items-stretch justify-center gap-2 sm:gap-3">
-              {/* Reference density scale — explains WHY layers sort */}
+              {/* Reference density scale: explains WHY layers sort */}
               <div className="flex w-14 shrink-0 flex-col py-1 text-center sm:w-[72px]">
                 <p className="text-[8px] font-extrabold uppercase leading-tight tracking-wide text-slate-400">
                   {t.gamesPage.densityScaleTop}
@@ -511,7 +511,7 @@ function DensityFreeLab({
                   aria-hidden="true"
                   className="relative z-10 mx-auto h-4 w-24 rounded-t-md border-2 border-b-0 border-slate-300/80 bg-gradient-to-b from-white to-slate-200"
                 />
-                {/* Glass interior — overflow-hidden clips every layer + object */}
+                {/* Glass interior: overflow-hidden clips every layer + object */}
                 <div
                   className={cn(
                     "relative z-10 h-[360px] w-full overflow-hidden rounded-b-[22px] rounded-t-lg border-2 border-slate-300/80 shadow-[inset_0_2px_6px_rgba(255,255,255,0.6),inset_0_-10px_20px_-10px_rgba(0,0,0,0.15)] transition-shadow duration-500",
@@ -570,7 +570,7 @@ function DensityFreeLab({
                     })}
                   </div>
 
-                  {/* Dropped objects — fall in, slow through the layers, then
+                  {/* Dropped objects: fall in, slow through the layers, then
                       bob (float) or settle (sink). */}
                   {placedObjects.map((o) => {
                     const jy = jitter(o.id, 2, 5)
@@ -609,7 +609,7 @@ function DensityFreeLab({
                     )
                   })}
 
-                  {/* Glass gloss overlay — wet under-the-surface sheen */}
+                  {/* Glass gloss overlay: wet under-the-surface sheen */}
                   <div
                     aria-hidden="true"
                     className="pointer-events-none absolute inset-0 z-20"
@@ -628,7 +628,7 @@ function DensityFreeLab({
                     className="pointer-events-none absolute inset-y-4 left-[24%] z-20 w-0.5 rounded-full bg-white/40"
                   />
 
-                  {/* Measurement marks — graduated to the 9-unit fill scale */}
+                  {/* Measurement marks: graduated to the 9-unit fill scale */}
                   <div
                     aria-hidden="true"
                     className="pointer-events-none absolute inset-y-0 right-0 z-30 w-9"
@@ -840,8 +840,8 @@ function DensityFreeLab({
                       }
                       aria-label={`${liquidName(k)}, ρ ${info.density} g/cm³, ${comparisonLabel(
                         info.density,
-                      )}${safety ? ` — ${safety}` : ""}${
-                        disabled ? ` — ${t.gamesPage.densityLockedHint}` : ""
+                      )}${safety ? `, ${safety}` : ""}${
+                        disabled ? `, ${t.gamesPage.densityLockedHint}` : ""
                       }`}
                       className={cn(
                         "group flex min-h-[68px] flex-col items-start gap-1 rounded-2xl bg-white/5 p-2.5 text-left ring-1 ring-white/10 transition",
@@ -930,7 +930,7 @@ function DensityFreeLab({
                             onClick={() => drop(o.id)}
                             aria-label={`${objectName(o.id)}, ${materialName(
                               o.id,
-                            )}, ρ ${o.density} g/cm³ — ${comparisonLabel(
+                            )}, ρ ${o.density} g/cm³, ${comparisonLabel(
                               o.density,
                             )}`}
                             className={cn(
@@ -1008,7 +1008,7 @@ function DensityFreeLab({
         </div>
       </div>
 
-      {/* Learning cards — the "why" behind the experiment */}
+      {/* Learning cards: the "why" behind the experiment */}
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         {/* Density formula */}
         <div className="rounded-3xl bg-white p-6 shadow-[0_18px_44px_-30px_rgba(26,26,46,0.35)] ring-1 ring-avanza-dark/10">

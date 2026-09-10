@@ -1,12 +1,12 @@
 /**
- * Week 5 — Privacy & Data Minimization Lab engine (framework-free, deterministic).
+ * Week 5: Privacy & Data Minimization Lab engine (framework-free, deterministic).
  *
  * For each fictional app scenario and each possible data field, an authored answer
  * key gives the recommended classification plus guidance: why the data may or may
  * not be needed, a safer alternative, whether consent is needed, how long to keep
  * it, and whether on-device processing could reduce risk. No real data is
  * collected; students only classify built-in fields. Privacy here is about
- * collecting the minimum necessary — not just passwords.
+ * collecting the minimum necessary, not just passwords.
  */
 
 import { translations, type Translations } from "../../../../i18n/translations.ts"

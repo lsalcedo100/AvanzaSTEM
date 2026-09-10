@@ -34,23 +34,23 @@ export type ActivityComponentProps = {
 export type ActivityComponent = (props: ActivityComponentProps) => ReactNode
 
 const REGISTRY: Partial<Record<ActivityKind, ActivityComponent>> = {
-  // Week 1 — real, deterministic activities.
+  // Week 1: real, deterministic activities.
   "ai-detective": AiDetectiveActivity,
   "rule-builder": RuleBuilderActivity,
   "device-investigation": DeviceInvestigationActivity,
-  // Week 2 — the data lab (space-fruit dataset + transparent kNN model).
+  // Week 2: the data lab (space-fruit dataset + transparent kNN model).
   "feature-labeling": DatasetWorkspaceActivity,
   "train-test-split": TrainTestSplitActivity,
   "dataset-repair": DatasetRepairActivity,
-  // Week 3 — the image-recognition lab (generated pixel images + feature kNN).
+  // Week 3: the image-recognition lab (generated pixel images + feature kNN).
   "classifier-walkthrough": ClassifierWalkthroughActivity,
   "train-test-classifier": ImageClassifierLabActivity,
   "confusion-improve": ConfuseImproveActivity,
-  // Week 4 — chatbot builder, next-text prediction, recommendation builder.
+  // Week 4: chatbot builder, next-text prediction, recommendation builder.
   "rule-chatbot": ChatbotBuilderActivity,
   "next-text-prediction": TextPredictionActivity,
   "recommendation-audit": RecommendationBuilderActivity,
-  // Week 5 — fairness audit, privacy lab, content investigation + ethics + appeal.
+  // Week 5: fairness audit, privacy lab, content investigation + ethics + appeal.
   "fairness-audit": FairnessAuditActivity,
   "privacy-minimize": PrivacyMinimizeActivity,
   "content-investigation": ContentEthicsActivity,

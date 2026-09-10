@@ -21,7 +21,7 @@ export type ObjectKey =
   | "mysteryB"
 
 // Categories are structured so new groups can be added by dropping in more
-// entries below — nothing else needs to change.
+// entries below; nothing else needs to change.
 export type ObjectCategory = "everyday" | "nature" | "engineering" | "mystery"
 
 export interface DensityObject {
@@ -35,9 +35,9 @@ export interface DensityObject {
   /** Localized real-world note shown in the collection. */
   noteLoc: Loc
   category: ObjectCategory
-  /** grams — simplified for kids; kept so mass ≈ density × volume. */
+  /** grams: simplified for kids; kept so mass ≈ density × volume. */
   mass: number
-  /** cm³ — simplified for kids. */
+  /** cm³: simplified for kids. */
   volume: number
   /** g/cm³ */
   density: number
@@ -56,7 +56,7 @@ export const DENSITY_OBJECTS: DensityObject[] = [
     nameLoc: { en: "Cork", es: "Corcho", zh: "软木塞", pt: "Rolha" },
     materialLoc: { en: "Tree bark", es: "Corteza de árbol", zh: "树皮", pt: "Casca de árvore" },
     blurbLoc: {
-      en: "Super light — it always floats to the top.",
+      en: "Super light: it always floats to the top.",
       es: "Súper ligero: siempre flota hasta arriba.",
       zh: "非常轻——总是浮到最上面。",
       pt: "Superleve: sempre sobe até o topo.",
@@ -79,7 +79,7 @@ export const DENSITY_OBJECTS: DensityObject[] = [
     nameLoc: { en: "Ice cube", es: "Cubo de hielo", zh: "冰块", pt: "Cubo de gelo" },
     materialLoc: { en: "Frozen water", es: "Agua congelada", zh: "冻结的水", pt: "Água congelada" },
     blurbLoc: {
-      en: "Frozen water floats — that's why icebergs don't sink.",
+      en: "Frozen water floats: that's why icebergs don't sink.",
       es: "El agua congelada flota: por eso los icebergs no se hunden.",
       zh: "冻结的水会浮——所以冰山不会沉下去。",
       pt: "A água congelada flutua, e é por isso que os icebergs não afundam.",
@@ -108,7 +108,7 @@ export const DENSITY_OBJECTS: DensityObject[] = [
       pt: "O metal é pesado para o tamanho dele, então afunda rápido.",
     },
     noteLoc: {
-      en: "Old pennies were mostly copper — about 9× denser than water.",
+      en: "Old pennies were mostly copper: about 9× denser than water.",
       es: "Las monedas antiguas eran casi todo cobre: unas 9 veces más densas que el agua.",
       zh: "旧硬币几乎都是铜——密度约为水的 9 倍。",
       pt: "As moedas antigas eram quase todas de cobre, cerca de 9× mais densas que a água.",
@@ -200,7 +200,7 @@ export const DENSITY_OBJECTS: DensityObject[] = [
       pt: "Esse tipo de plástico é leve o suficiente para flutuar.",
     },
     noteLoc: {
-      en: "Some plastics float and some sink — it depends on the type.",
+      en: "Some plastics float and some sink: it depends on the type.",
       es: "Algunos plásticos flotan y otros se hunden: depende del tipo.",
       zh: "有些塑料会浮、有些会沉——取决于种类。",
       pt: "Alguns plásticos flutuam e outros afundam, depende do tipo.",
@@ -217,7 +217,7 @@ export const DENSITY_OBJECTS: DensityObject[] = [
     nameLoc: { en: "Rock", es: "Roca", zh: "石头", pt: "Pedra" },
     materialLoc: { en: "Granite", es: "Granito", zh: "花岗岩", pt: "Granito" },
     blurbLoc: {
-      en: "Much denser than water — it drops straight to the bottom.",
+      en: "Much denser than water: it drops straight to the bottom.",
       es: "Mucho más densa que el agua: se va derecho al fondo.",
       zh: "密度比水大得多——会直接沉到底。",
       pt: "Muito mais densa que a água: vai direto para o fundo.",
@@ -263,7 +263,7 @@ export const DENSITY_OBJECTS: DensityObject[] = [
     nameLoc: { en: "Steel bolt", es: "Perno de acero", zh: "钢螺栓", pt: "Parafuso de aço" },
     materialLoc: { en: "Steel", es: "Acero", zh: "钢", pt: "Aço" },
     blurbLoc: {
-      en: "Heavy metal — it sinks in water, but floats on mercury!",
+      en: "Heavy metal: it sinks in water, but floats on mercury!",
       es: "Metal pesado: se hunde en agua, ¡pero flota en mercurio!",
       zh: "重金属——在水里会沉，但能浮在水银上！",
       pt: "Metal pesado: afunda na água, mas flutua no mercúrio!",
@@ -286,7 +286,7 @@ export const DENSITY_OBJECTS: DensityObject[] = [
     nameLoc: { en: "Gold ring", es: "Anillo de oro", zh: "金戒指", pt: "Anel de ouro" },
     materialLoc: { en: "Gold", es: "Oro", zh: "黄金", pt: "Ouro" },
     blurbLoc: {
-      en: "One of the heaviest things here — it sinks instantly.",
+      en: "One of the heaviest things here: it sinks instantly.",
       es: "Una de las cosas más pesadas aquí: se hunde al instante.",
       zh: "这里最重的东西之一——瞬间下沉。",
       pt: "Uma das coisas mais pesadas daqui: afunda na hora.",
@@ -315,7 +315,7 @@ export const DENSITY_OBJECTS: DensityObject[] = [
       pt: "Surpresa! Este sólido é mais leve que a água, então flutua.",
     },
     noteLoc: {
-      en: "Candle wax is a solid that still floats — density beats being solid.",
+      en: "Candle wax is a solid that still floats: density beats being solid.",
       es: "La cera de vela es un sólido que aún flota: la densidad importa más que ser sólido.",
       zh: "蜡烛蜡是固体却依然会浮——决定沉浮的是密度而非软硬。",
       pt: "A cera de vela é um sólido que mesmo assim flutua, porque a densidade vale mais do que ser sólido.",
@@ -332,7 +332,7 @@ export const DENSITY_OBJECTS: DensityObject[] = [
     nameLoc: { en: "Lead sinker", es: "Plomada", zh: "铅坠", pt: "Chumbada" },
     materialLoc: { en: "Lead", es: "Plomo", zh: "铅", pt: "Chumbo" },
     blurbLoc: {
-      en: "Surprise! Tiny but incredibly heavy — it plummets.",
+      en: "Surprise! Tiny but incredibly heavy: it plummets.",
       es: "¡Sorpresa! Pequeño pero increíblemente pesado: se desploma.",
       zh: "惊喜！体积虽小却重得惊人——直接坠底。",
       pt: "Surpresa! Pequenina, mas incrivelmente pesada: despenca.",
@@ -385,7 +385,7 @@ export function objectFloatsInWater(o: DensityObject): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Illustrated vector art — one consistent flat "lab-game" style:
+// Illustrated vector art, one consistent flat "lab-game" style:
 //   • single dark outline weight (STROKE_W) with rounded joins
 //   • flat fills + soft white highlight overlays (no gradients → no id clashes)
 //   • a faint contact shadow so objects feel grounded, not pasted on

@@ -7,7 +7,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MAX_EMAIL_LENGTH = 254
 
 /**
- * Compact newsletter signup for the bottom of the Curriculums page — a modest
+ * Compact newsletter signup for the bottom of the Curriculums page, a modest
  * secondary action, deliberately smaller than the course catalog and not an
  * oversized gradient callout.
  *
@@ -90,7 +90,7 @@ export function CurriculumNewsletter({
             aria-labelledby={headingId}
             className="mt-5 flex flex-col gap-3 sm:flex-row"
           >
-            {/* Honeypot — hidden from users, checked server-side. */}
+            {/* Honeypot: hidden from users, checked server-side. */}
             <div aria-hidden="true" className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden">
               <label htmlFor={websiteId}>{t.blogPage.websiteField}</label>
               <input id={websiteId} name="website" type="text" tabIndex={-1} autoComplete="off" />

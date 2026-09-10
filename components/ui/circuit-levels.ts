@@ -76,9 +76,9 @@ function batteryTerminals(c: Cell): { plus: Side; minus: Side } {
 
 /** Every discrete state the circuit can be in, from the player's point of view. */
 export type CircuitState =
-  | "working" // current flows through every required load — success
+  | "working" // current flows through every required load: success
   | "open" // the loop is broken somewhere, no current can flow
-  | "short" // + and − are joined by bare wire, bypassing the load — dangerous
+  | "short" // + and − are joined by bare wire, bypassing the load: dangerous
   | "incomplete" // parts are placed but they do not yet form a loop
   | "bulb-disconnected" // a bulb is not on the current path (dead-end / one-sided)
   | "bulb-bypassed" // a wire runs around the bulb, so it never gets current
@@ -88,7 +88,7 @@ export type CircuitState =
   | "invalid" // nothing meaningful to analyse yet
 
 /**
- * How the *lit* bulbs are wired relative to each other — the lesson the game is
+ * How the *lit* bulbs are wired relative to each other: the lesson the game is
  * teaching. Detected from the solved network, not guessed from the layout.
  * - "single":   exactly one bulb is lit (no series/parallel to compare).
  * - "series":   every lit bulb sits on one shared loop; they split the voltage.
@@ -121,12 +121,12 @@ export type SimResult = {
   bypassedBulbs: Set<string>
   /** "r,c" of conductive cells wired on only one side (dead-end stubs). */
   deadEndCells: Set<string>
-  /** Actual connections per cell — the sides that truly touch a neighbour. */
+  /** Actual connections per cell: the sides that truly touch a neighbour. */
   connections: Map<string, Set<Side>>
-  /** Layout connections (switches treated as closed) — used to orient glyphs. */
+  /** Layout connections (switches treated as closed): used to orient glyphs. */
   potentialConnections: Map<string, Set<Side>>
   /** "r,c" of cells worth flagging as the break/fault (open switch, loose
-   *  battery terminal, dead-end stub, disconnected bulb) — for highlighting. */
+   *  battery terminal, dead-end stub, disconnected bulb), for highlighting. */
   breakPoints: Set<string>
 }
 
@@ -189,7 +189,7 @@ type Core = {
  *
  * The trick that keeps the physics honest: **wires and closed switches are
  * zero-resistance**, so we merge all of their sides into one "node" (a single
- * electrical point). **Bulbs and the battery are NOT merged** — a bulb is a
+ * electrical point). **Bulbs and the battery are NOT merged**: a bulb is a
  * load that sits *between* two nodes, and the battery's two terminals must stay
  * apart so current is forced to travel the long way round through the circuit.
  */
@@ -259,7 +259,7 @@ function buildCore(grid: Cell[][], treatSwitchesClosed = false): Core {
         if (live.has(side) && openSidesForCell(nb).has(OPPOSITE[side])) {
           connected.add(side)
         }
-        // Merge nodes using the (possibly switch-relaxed) solver view — done
+        // Merge nodes using the (possibly switch-relaxed) solver view, done
         // independently so a relaxed switch still joins its neighbours.
         if (openSides(cell).has(side) && openSides(nb).has(OPPOSITE[side])) {
           union(portKey(r, c, side), portKey(ny, nx, OPPOSITE[side]))
@@ -349,8 +349,8 @@ function reachable(
 // Simplified physics: how bright is each bulb, and are the bulbs in series or
 // parallel? We model every bulb as an identical resistor and the battery as a
 // 1-volt source, then solve for the voltage at each electrical node. The
-// voltage a bulb sees tells us how brightly it glows — a single bulb gets the
-// whole volt, two in series split it in half, three share a third each — which
+// voltage a bulb sees tells us how brightly it glows: a single bulb gets the
+// whole volt, two in series split it in half, three share a third each, which
 // is exactly the "more bulbs in series ⇒ dimmer" idea the game teaches. It is
 // deliberately simple (unit resistances, one battery) rather than a full SPICE.
 // ---------------------------------------------------------------------------
@@ -362,7 +362,7 @@ function gaussianSolve(A: number[][], n: number) {
     for (let r = col + 1; r < n; r++) {
       if (Math.abs(A[r][col]) > Math.abs(A[pivot][col])) pivot = r
     }
-    if (Math.abs(A[pivot][col]) < 1e-9) continue // singular column — leave at 0
+    if (Math.abs(A[pivot][col]) < 1e-9) continue // singular column: leave at 0
     const tmp = A[col]
     A[col] = A[pivot]
     A[pivot] = tmp
@@ -381,7 +381,7 @@ function gaussianSolve(A: number[][], n: number) {
  * Node voltages for the load network: the battery pins its − terminal to 0 and
  * its + terminal to 1, bulbs are unit resistors, and Kirchhoff's current law at
  * every other node gives one equation each. Nodes not connected to the battery
- * (floating branches) are left out — their bulbs never light anyway.
+ * (floating branches) are left out; their bulbs never light anyway.
  */
 function solveNodeVoltages(core: Core): Map<string, number> {
   const V = new Map<string, number>()
@@ -428,7 +428,7 @@ function solveNodeVoltages(core: Core): Map<string, number> {
       [e.b, e.a],
     ]) {
       const ip = idx.get(p)
-      if (ip == null) continue // p is a fixed terminal — handled from q's own row
+      if (ip == null) continue // p is a fixed terminal: handled from q's own row
       A[ip][ip] += 1
       const fq = fixedVoltage(q)
       if (fq != null) A[ip][N] += fq // known neighbour → move to the right-hand side
@@ -464,7 +464,7 @@ function bulbVoltage(voltages: Map<string, number>, terminals: string[]): number
   return v
 }
 
-/** What a single lit bulb looks like electrically — used to classify the whole. */
+/** What a single lit bulb looks like electrically: used to classify the whole. */
 type LitBulbInfo = {
   /** True when one of the bulb's terminals sits on the battery's + node. */
   spansPlus: boolean
@@ -475,7 +475,7 @@ type LitBulbInfo = {
 /**
  * Classify the lit bulbs as series / parallel / mixed from the solved network.
  * - A bulb wired straight across + and − sees the *full* battery voltage; a bulb
- *   sharing a loop with others sees only a fraction — that fraction is how we
+ *   sharing a loop with others sees only a fraction: that fraction is how we
  *   tell "in series with something" apart from "on its own branch".
  * - Counting the bulbs that touch + tells us how many independent branches leave
  *   the battery: one branch ⇒ a single series loop, two or more ⇒ parallel.
@@ -558,7 +558,7 @@ export function simulate(grid: Cell[][]): SimResult {
         // The bulb lights when current can enter one terminal from + and leave
         // another terminal toward − (using the rest of the network, not this
         // bulb itself). That is exactly what a completed series/parallel loop
-        // provides — and exactly what a dead-end branch cannot.
+        // provides, and exactly what a dead-end branch cannot.
         outer: for (let i = 0; i < terminals.length; i++) {
           for (let j = 0; j < terminals.length; j++) {
             if (i === j) continue
@@ -741,7 +741,7 @@ export function countKind(grid: Cell[][], kind: CellKind): number {
 }
 
 // ---------------------------------------------------------------------------
-// Explainer helpers — each answers one question about the circuit so the game
+// Explainer helpers: each answers one question about the circuit so the game
 // (and its tests) can describe *why* a circuit does or doesn't work.
 // ---------------------------------------------------------------------------
 
@@ -794,7 +794,7 @@ export function getOpenBreakPoints(
   return out
 }
 
-/** Conductive cells wired on only one side — a lead that goes nowhere. */
+/** Conductive cells wired on only one side: a lead that goes nowhere. */
 export function getDeadEndWires(grid: Cell[][]): { r: number; c: number }[] {
   const { deadEndCells } = simulate(grid)
   return Array.from(deadEndCells).map((id) => {
@@ -871,7 +871,7 @@ export type Level = {
   /** 3-star target: solving with at most this many parts on the board earns
    *  the full three stars. Using more still solves the level (two stars). */
   targetParts: number
-  /** Optional bonus challenge — encouraging flavour text shown on the goal and
+  /** Optional bonus challenge: encouraging flavour text shown on the goal and
    *  complete screens (e.g. "Can you avoid short circuits?"). Purely cosmetic. */
   challenge?: Loc
   /** Three escalating hints: 1) general nudge, 2) points at the problem,
@@ -913,7 +913,7 @@ export function checkSolved(level: Level, sim: SimResult, grid: Cell[][]): boole
   return true
 }
 
-/** How many parts (non-empty cells) sit on the board — the "parts used" score. */
+/** How many parts (non-empty cells) sit on the board: the "parts used" score. */
 export function partsUsed(grid: Cell[][]): number {
   let n = 0
   for (const row of grid) for (const cell of row) if (cell.kind !== "empty") n++
@@ -935,7 +935,7 @@ export function computeStars(level: Level, grid: Cell[][], hintsUsed: boolean): 
 }
 
 export const LEVELS: Level[] = [
-  // 1 — Complete a simple circuit to light one bulb.
+  // 1: Complete a simple circuit to light one bulb.
   {
     id: 1,
     targetParts: 10,
@@ -983,13 +983,13 @@ export const LEVELS: Level[] = [
         set(1, 0, batV)
         set(1, 3, wire)
         set(2, 0, wire)
-        // (2,1) intentionally missing — the player adds it
+        // (2,1) intentionally missing: the player adds it
         set(2, 2, wire)
         set(2, 3, wire)
       }),
   },
 
-  // 2 — Add or close a switch to complete the circuit.
+  // 2: Add or close a switch to complete the circuit.
   {
     id: 2,
     targetParts: 10,
@@ -1037,14 +1037,14 @@ export const LEVELS: Level[] = [
       }),
   },
 
-  // 3 — Fix a missing wire in a broken circuit.
+  // 3: Fix a missing wire in a broken circuit.
   {
     id: 3,
     targetParts: 12,
     title: { en: "Broken loop", es: "Circuito roto", zh: "断掉的回路", pt: "Circuito rompido" },
     hints: [
       {
-        en: "This loop was working — one small piece went missing.",
+        en: "This loop was working: one small piece went missing.",
         es: "Este circuito funcionaba: falta una pieza pequeña.",
         zh: "这个回路本来是好的——少了一小段。",
         pt: "Este circuito funcionava, mas sumiu uma pecinha.",
@@ -1078,7 +1078,7 @@ export const LEVELS: Level[] = [
         set(0, 3, wire)
         set(0, 4, wire)
         set(1, 0, batV)
-        // (1,4) missing — the gap on the right rail
+        // (1,4) missing: the gap on the right rail
         set(2, 0, wire)
         set(2, 1, wire)
         set(2, 2, { kind: "switch", closed: true })
@@ -1087,7 +1087,7 @@ export const LEVELS: Level[] = [
       }),
   },
 
-  // 4 — Light two bulbs in series.
+  // 4: Light two bulbs in series.
   {
     id: 4,
     targetParts: 10,
@@ -1106,7 +1106,7 @@ export const LEVELS: Level[] = [
         pt: "Você precisa de duas lâmpadas acesas, e há uma casa vazia.",
       },
       {
-        en: "A plain wire would light only one bulb — the gap wants a bulb.",
+        en: "A plain wire would light only one bulb: the gap wants a bulb.",
         es: "Un cable simple encendería solo un foco: el hueco necesita un foco.",
         zh: "光放电线只能点亮一盏——缺口需要一盏灯。",
         pt: "Um fio simples acenderia só uma lâmpada; a falha pede uma lâmpada.",
@@ -1135,13 +1135,13 @@ export const LEVELS: Level[] = [
         set(1, 0, batV)
         set(1, 3, wire)
         set(2, 0, wire)
-        // (2,1) missing — player drops the 2nd bulb here (a plain wire only lights one)
+        // (2,1) missing: player drops the 2nd bulb here (a plain wire only lights one)
         set(2, 2, wire)
         set(2, 3, wire)
       }),
   },
 
-  // 5 — Light two bulbs in parallel.
+  // 5: Light two bulbs in parallel.
   {
     id: 5,
     targetParts: 9,
@@ -1180,7 +1180,7 @@ export const LEVELS: Level[] = [
         set(0, 1, bulb)
         set(0, 2, wire)
         set(1, 0, wire)
-        // (1,1) missing — player adds the parallel bulb
+        // (1,1) missing: player adds the parallel bulb
         set(1, 2, wire)
         set(2, 0, wire)
         set(2, 1, batH)
@@ -1188,7 +1188,7 @@ export const LEVELS: Level[] = [
       }),
   },
 
-  // 6 — One switch controls two bulbs.
+  // 6: One switch controls two bulbs.
   {
     id: 6,
     targetParts: 10,
@@ -1242,7 +1242,7 @@ export const LEVELS: Level[] = [
       }),
   },
 
-  // 7 — Each bulb controlled by its own switch.
+  // 7: Each bulb controlled by its own switch.
   {
     id: 7,
     targetParts: 12,
@@ -1285,7 +1285,7 @@ export const LEVELS: Level[] = [
         set(0, 2, bulb)
         set(0, 3, wire)
         set(1, 0, wire)
-        // (1,1) missing — player adds the second switch here
+        // (1,1) missing: player adds the second switch here
         set(1, 2, bulb)
         set(1, 3, wire)
         set(2, 0, wire)
@@ -1295,7 +1295,7 @@ export const LEVELS: Level[] = [
       }),
   },
 
-  // 8 — Fix a short circuit.
+  // 8: Fix a short circuit.
   {
     id: 8,
     targetParts: 8,
@@ -1314,7 +1314,7 @@ export const LEVELS: Level[] = [
         pt: "A corrente dá voltas no circuito, mas nada está usando ela.",
       },
       {
-        en: "A loop of only wire is a short circuit — it needs a load.",
+        en: "A loop of only wire is a short circuit: it needs a load.",
         es: "Un circuito de puro cable es un cortocircuito: necesita una carga.",
         zh: "全是电线的回路会短路——它需要一个负载。",
         pt: "Um circuito só de fio é um curto-circuito: ele precisa de uma carga.",
@@ -1327,7 +1327,7 @@ export const LEVELS: Level[] = [
       },
     ],
     goal: {
-      en: "This loop is all wire with no load — a dead short! Replace one wire with a bulb so the current has something to power.",
+      en: "This loop is all wire with no load: a dead short! Replace one wire with a bulb so the current has something to power.",
       es: "Este circuito es puro cable sin carga: ¡un cortocircuito! Reemplaza un cable por un foco para que la corriente tenga algo que alimentar.",
       zh: "这个回路全是电线、没有负载——短路了！把其中一段电线换成灯泡，让电流有东西可以点亮。",
       pt: "Este circuito é só fio, sem carga nenhuma, ou seja, um curto! Troque um fio por uma lâmpada para a corrente ter algo para alimentar.",
@@ -1347,7 +1347,7 @@ export const LEVELS: Level[] = [
       }),
   },
 
-  // 9 — Fewest parts.
+  // 9: Fewest parts.
   {
     id: 9,
     targetParts: 8,
@@ -1372,7 +1372,7 @@ export const LEVELS: Level[] = [
         pt: "A corrente precisa sair do lado + e voltar ao lado − passando pela lâmpada.",
       },
       {
-        en: "Wire the shortest loop you can around the outside — try 6 wires or fewer.",
+        en: "Wire the shortest loop you can around the outside: try 6 wires or fewer.",
         es: "Haz el circuito más corto posible por el borde: intenta con 6 cables o menos.",
         zh: "沿着外圈接出最短的回路——试试用 6 段电线以内。",
         pt: "Faça o circuito mais curto que conseguir pela borda e tente com 6 fios ou menos.",
@@ -1393,7 +1393,7 @@ export const LEVELS: Level[] = [
       }),
   },
 
-  // 10 — Repair a house circuit with multiple branches.
+  // 10: Repair a house circuit with multiple branches.
   {
     id: 10,
     targetParts: 14,
@@ -1406,7 +1406,7 @@ export const LEVELS: Level[] = [
     title: { en: "House rewire", es: "Cablea la casa", zh: "房屋线路维修", pt: "Reforma elétrica da casa" },
     hints: [
       {
-        en: "Every room should light up — check each one.",
+        en: "Every room should light up: check each one.",
         es: "Cada cuarto debe encenderse: revisa uno por uno.",
         zh: "每个房间都要亮——逐个检查。",
         pt: "Todo cômodo precisa acender, então confira um por um.",
@@ -1434,17 +1434,17 @@ export const LEVELS: Level[] = [
     success: { allBulbsLit: true, minLit: 3, noShort: true },
     build: () =>
       board(3, 5, (set) => {
-        // top rail (minus) — broken above room 3
+        // top rail (minus): broken above room 3
         set(0, 0, wire)
         set(0, 1, wire)
         set(0, 2, wire)
-        // (0,3) missing — broken rail
+        // (0,3) missing: broken rail
         set(0, 4, wire)
         // battery bridges the rails on the left
         set(1, 0, batV)
         // room bulbs between the rails
         set(1, 1, bulb) // room 1 (works)
-        // (1,2) missing — room 2 needs a bulb
+        // (1,2) missing: room 2 needs a bulb
         set(1, 3, bulb) // room 3 (dark until the rail is fixed)
         // bottom rail (plus)
         set(2, 0, wire)
@@ -1455,7 +1455,7 @@ export const LEVELS: Level[] = [
       }),
   },
 
-  // 11 — Two bulbs in series: close the loop, then see them share (and dim).
+  // 11: Two bulbs in series: close the loop, then see them share (and dim).
   {
     id: 11,
     targetParts: 10,
@@ -1468,7 +1468,7 @@ export const LEVELS: Level[] = [
     title: { en: "Sharing the current", es: "Compartiendo la corriente", zh: "共享电流", pt: "Dividindo a corrente" },
     hints: [
       {
-        en: "The loop is nearly complete — one wire is missing on the bottom-right.",
+        en: "The loop is nearly complete: one wire is missing on the bottom-right.",
         es: "El circuito casi está completo: falta un cable abajo a la derecha.",
         zh: "回路快接好了——右下角还缺一段电线。",
         pt: "O circuito está quase pronto, mas falta um fio no canto inferior direito.",
@@ -1487,7 +1487,7 @@ export const LEVELS: Level[] = [
       },
     ],
     goal: {
-      en: "Close the loop so both bulbs light in series. They sit on one shared path — so they split the battery's energy and each glows dimmer than a single bulb would. (Erase either bulb and the whole path goes dark!)",
+      en: "Close the loop so both bulbs light in series. They sit on one shared path, so they split the battery's energy and each glows dimmer than a single bulb would. (Erase either bulb and the whole path goes dark!)",
       es: "Cierra el circuito para que ambos focos se enciendan en serie. Están en un mismo camino, así que reparten la energía de la pila y cada uno brilla más tenue que un solo foco. (¡Borra cualquiera de los focos y todo el camino se apaga!)",
       zh: "闭合回路，让两盏灯串联点亮。它们在同一条路径上，因此分享电池的能量，每盏都比单独一盏更暗。（擦掉任意一盏灯，整条路径都会熄灭！）",
       pt: "Feche o circuito para as duas lâmpadas acenderem em série. Elas ficam em um único caminho compartilhado, então dividem a energia da pilha e cada uma brilha mais fraco do que uma lâmpada sozinha. (Apague qualquer uma das duas e o caminho inteiro apaga!)",
@@ -1505,11 +1505,11 @@ export const LEVELS: Level[] = [
         set(2, 0, wire)
         set(2, 1, bulb)
         set(2, 2, wire)
-        // (2,3) intentionally missing — add it to close the series loop
+        // (2,3) intentionally missing: add it to close the series loop
       }),
   },
 
-  // 12 — Parallel branches required: a single series loop is NOT accepted.
+  // 12: Parallel branches required: a single series loop is NOT accepted.
   {
     id: 12,
     targetParts: 11,
@@ -1541,7 +1541,7 @@ export const LEVELS: Level[] = [
       },
     ],
     goal: {
-      en: "Light both bulbs so each stays BRIGHT. They must be in parallel — each bulb on its own branch back to the battery, so each gets the full voltage. A single series loop lights them dimly and will NOT be accepted here.",
+      en: "Light both bulbs so each stays BRIGHT. They must be in parallel: each bulb on its own branch back to the battery, so each gets the full voltage. A single series loop lights them dimly and will NOT be accepted here.",
       es: "Enciende ambos focos para que cada uno quede BRILLANTE. Deben estar en paralelo: cada foco en su propia rama de vuelta a la pila, para que cada uno reciba todo el voltaje. Un solo lazo en serie los enciende tenues y NO será aceptado aquí.",
       zh: "点亮两盏灯，让每盏都保持明亮。它们必须并联——每盏灯都有自己回到电池的支路，从而获得完整的电压。单个串联回路只会让它们暗淡发光，在这里不会被接受。",
       pt: "Acenda as duas lâmpadas mantendo as duas FORTES. Elas precisam estar em paralelo, cada lâmpada no próprio ramo de volta à pilha, para cada uma receber a tensão inteira. Um único circuito em série deixa as duas fracas e NÃO vai ser aceito aqui.",

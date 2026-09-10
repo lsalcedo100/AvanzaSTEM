@@ -101,7 +101,7 @@ test("student training selection changes predictions", () => {
   const topic = TOPICS[0]
   const target = testSet(topic.id).find((im) => im.label === "circle")!
   const full = classifyImage(trainingPool(topic.id), target, 3).predicted
-  // Train with only triangles and squares — the model can no longer pick circle.
+  // Train with only triangles and squares: the model can no longer pick circle.
   const noCircles = trainingPool(topic.id).filter((im) => im.label !== "circle")
   const limited = classifyImage(noCircles, target, 3).predicted
   assert.equal(full, "circle")
@@ -177,7 +177,7 @@ test("each topic-relevant edge case classifies deterministically", () => {
 test("compareModels shows the improvement workflow: a model that never saw triangles misses them, and adding triangles fixes them", () => {
   const topic = TOPICS[0]
   const test = testSet(topic.id)
-  // Weak first model: only circles and squares — no triangle examples at all.
+  // Weak first model: only circles and squares: no triangle examples at all.
   const weak = trainingPool(topic.id).filter((im) => im.label !== "triangle")
   const cmp = compareModels(topic, weak, trainingPool(topic.id), test, 3)
   assert.equal(cmp.first.total, test.length)

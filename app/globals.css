@@ -264,7 +264,7 @@
   100% { opacity: 0; transform: translateX(-50%) scaleY(1); }
 }
 
-/* Falls in from above, slows, and settles — reinforces "things sink/rise to
+/* Falls in from above, slows, and settles; reinforces "things sink/rise to
    their level". Ease-out gives the deceleration through the layers. */
 @keyframes density-drop {
   0% { transform: translateY(-330px); }

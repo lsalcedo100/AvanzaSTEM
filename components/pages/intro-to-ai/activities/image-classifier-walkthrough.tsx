@@ -95,7 +95,7 @@ export function ClassifierWalkthroughActivity({ activity, progress }: ActivityCo
           <div className="mt-2 flex items-start gap-3">
             <PixelImage spec={selected.spec} alt={selected.description} size={128} />
             <p className="text-sm text-muted-foreground">
-              {selected.description} The computer stores this {GRID_SIZE}×{GRID_SIZE} grid as {GRID_SIZE * GRID_SIZE} numbers — one brightness value per pixel.
+              {selected.description} The computer stores this {GRID_SIZE}×{GRID_SIZE} grid as {GRID_SIZE * GRID_SIZE} numbers, one brightness value per pixel.
             </p>
           </div>
         </div>
@@ -168,7 +168,7 @@ function ConfidentWrong() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Optional local image upload — private, on-device only                       */
+/* Optional local image upload, private, on-device only                        */
 /* -------------------------------------------------------------------------- */
 
 function canvasSupported(): boolean {
@@ -246,7 +246,7 @@ function OptionalImageUpload() {
     <div className="mt-6 rounded-md border border-dashed border-border p-4">
       <p className="text-sm font-bold text-foreground">{S.wtOptionalUpload}</p>
       <p className="mt-1 text-sm text-muted-foreground">
-        Everything above works with the built-in pictures — this is an extra. If you upload a picture, it is shrunk to a {GRID_SIZE}×{GRID_SIZE} grid and
+        Everything above works with the built-in pictures; this is an extra. If you upload a picture, it is shrunk to a {GRID_SIZE}×{GRID_SIZE} grid and
         classified <strong>entirely on your device</strong>. It is never saved and never sent to any service. Draw a big circle, triangle, or square on white
         paper for the best result.
       </p>
