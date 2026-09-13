@@ -27,7 +27,7 @@ import {
 /**
  * Google Maps needs a billing-enabled browser key. When one is not configured
  * (local checkouts, previews, or a key that fails auth at runtime) the map
- * falls back to Leaflet on OpenStreetMap tiles, which needs no key. Both
+ * falls back to Leaflet on Esri National Geographic tiles, which need no key. Both
  * engines draw the same HTML pins through the same adapter, so the page looks
  * and behaves the same either way.
  */
@@ -39,16 +39,26 @@ const GOOGLE_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
  */
 const GOOGLE_MAP_ID = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || "DEMO_MAP_ID"
 
-const OSM_TILES = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-const OSM_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+/**
+ * Esri's National Geographic basemap rather than standard OpenStreetMap tiles.
+ * At the continental zoom the Latin America panel sits at (Panama to southern
+ * Chile), OSM draws little more than flat beige land, while this one keeps
+ * coloured relief, ocean depth, borders and major cities. Its tiles stop at
+ * zoom 16, so the map is capped there too rather than zooming into blank tiles.
+ */
+const BASEMAP_TILES =
+  "https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"
+const BASEMAP_MAX_ZOOM = 16
+/** Kept to one line: the worldwide view repeats it under three narrow panels. */
+const BASEMAP_ATTRIBUTION =
+  'Tiles &copy; <a href="https://www.esri.com">Esri</a> &amp; National Geographic'
 
 const TONE = {
   upcoming: "#8b5cf6",
   active: "#f97316",
   placeholder: "#1a1a2e",
   hosted: "#f97316",
-  planned: "#1abc9c",
+  scheduled: "#1abc9c",
 } as const
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -348,6 +358,7 @@ function createLeafletAdapter(
   const map = L.map(container, {
     center: [20, 0],
     zoom: 2,
+    maxZoom: BASEMAP_MAX_ZOOM,
     zoomSnap: 0.25,
     worldCopyJump: false,
     scrollWheelZoom: false,
@@ -360,7 +371,13 @@ function createLeafletAdapter(
     attributionControl: true,
   })
 
-  L.tileLayer(OSM_TILES, { attribution: OSM_ATTRIBUTION, maxZoom: 19 }).addTo(map)
+  L.tileLayer(BASEMAP_TILES, {
+    attribution: BASEMAP_ATTRIBUTION,
+    maxZoom: BASEMAP_MAX_ZOOM,
+  }).addTo(map)
+  // The inset panels are too narrow for the "Leaflet" prefix as well as the
+  // tile credit; the full map keeps it.
+  if (!interactive) map.attributionControl.setPrefix(false)
 
   let markers: any[] = []
   const els = new Map<string, HTMLElement>()
@@ -644,7 +661,7 @@ export type MapLabels = {
   notScheduled: string
   nextSession: string
   tentative: string
-  planned: string
+  scheduled: string
   hosted: string
   minhang: string
 }
@@ -659,7 +676,7 @@ export type ReachLabels = {
   countries: string
   continents: string
   venues: string
-  planning: string
+  planned: string
 }
 
 export function WorkshopFinderMap({
@@ -695,7 +712,7 @@ export function WorkshopFinderMap({
     upcoming: string
     active: string
     coming: string
-    planned: string
+    scheduled: string
     you: string
   }
   labels: MapLabels
@@ -768,7 +785,7 @@ export function WorkshopFinderMap({
         id: partner.id,
         lat: partner.lat,
         lng: partner.lng,
-        tone: hosted ? TONE.hosted : TONE.planned,
+        tone: hosted ? TONE.hosted : TONE.scheduled,
         title: headline,
         active: partner.id === activeId,
         selectable: true,
@@ -777,7 +794,7 @@ export function WorkshopFinderMap({
           `<div style="min-width:180px;font-family:inherit">` +
           `<p style="margin:0;font-weight:800;font-size:13px;color:#1a1a2e">${escapeHtml(headline)}</p>` +
           `<p style="margin:2px 0 0;font-size:11px;color:#6b7280">${escapeHtml(place)}</p>` +
-          `<p style="margin:6px 0 0;font-size:11px;font-weight:700;color:${hosted ? "#c2410c" : "#0f766e"}">${escapeHtml(hosted ? labels.hosted : labels.planned)}</p>` +
+          `<p style="margin:6px 0 0;font-size:11px;font-weight:700;color:${hosted ? "#c2410c" : "#0f766e"}">${escapeHtml(hosted ? labels.hosted : labels.scheduled)}</p>` +
           `</div>`,
       }
     }
@@ -880,7 +897,7 @@ export function WorkshopFinderMap({
           ? view === "world"
             ? (
                 /* Three tall columns rather than a wide stack: northern New
-                   Jersey and the Andean capitals are both tall, narrow
+                   Jersey and the Latin American venues are both tall, narrow
                    footprints, so a portrait panel fills with pins where a
                    landscape one fills with ocean. */
                 <div className="absolute inset-0 grid grid-rows-3 gap-px bg-avanza-dark/12 lg:grid-cols-3 lg:grid-rows-1">
@@ -939,13 +956,13 @@ export function WorkshopFinderMap({
         <Stat value={REACH.countries} label={reachLabels.countries} />
         <Stat value={REACH.continents} label={reachLabels.continents} />
         <Stat value={REACH.venues} label={reachLabels.venues} />
-        <Stat value={REACH.planning} label={reachLabels.planning} muted />
+        <Stat value={REACH.planned} label={reachLabels.planned} muted />
 
         <div className="flex w-full flex-wrap items-center gap-x-3.5 gap-y-1.5 text-[10px] font-bold uppercase tracking-wider text-avanza-dark/50 xl:ml-auto xl:w-auto">
           <LegendDot className="bg-avanza-purple" label={legend.upcoming} />
           <LegendDot className="bg-avanza-orange" label={legend.active} />
           <LegendDot className="bg-avanza-dark" label={legend.coming} />
-          <LegendDot className="bg-avanza-teal" label={legend.planned} />
+          <LegendDot className="bg-avanza-teal" label={legend.scheduled} />
           {userLatLng && <LegendDot className="bg-avanza-green" label={legend.you} />}
         </div>
       </div>
@@ -1132,6 +1149,17 @@ function PinStyles() {
         box-shadow: 0 18px 40px -18px rgba(26,26,46,0.4) !important;
       }
       .afz-map .leaflet-popup-tip { box-shadow: none !important; }
+      /* Leaflet 1.9 blends tiles with plus-lighter to hide seams, but at the
+         fractional zooms these panels fit to, the anti-aliased tile edges add
+         up to bright white grid lines across the basemap. Plain compositing
+         leaves no visible seam. */
+      .afz-map .leaflet-tile-container img.leaflet-tile {
+        mix-blend-mode: normal;
+      }
+      .afz-map .leaflet-control-attribution {
+        font-size: 10px;
+        line-height: 1.4;
+      }
       .afz-map .gm-style-iw { border-radius: 12px !important; }
       /* Clamp both engines' stacking inside the map so panes, controls and
          popups can never escape and overlap the navbar (z-50) or page text. */

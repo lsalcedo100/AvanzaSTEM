@@ -142,6 +142,8 @@ export function WorkshopFinderPage() {
       EC: t.home.finderCountryEcuador,
       PE: t.home.finderCountryPeru,
       CO: t.home.finderCountryColombia,
+      PA: t.home.finderCountryPanama,
+      CL: t.home.finderCountryChile,
     }),
     [t],
   )
@@ -151,7 +153,7 @@ export function WorkshopFinderPage() {
       upcoming: t.home.finderLegendUpcoming,
       active: t.home.finderLegendActive,
       coming: t.home.finderLegendComing,
-      planned: t.home.finderPlannedBadge,
+      scheduled: t.home.finderScheduledBadge,
       you: t.home.finderLegendYou,
     }),
     [t],
@@ -164,7 +166,7 @@ export function WorkshopFinderPage() {
       notScheduled: t.home.finderNotScheduled,
       nextSession: t.home.finderNextSession,
       tentative: t.home.finderTentative,
-      planned: t.home.finderPlannedBadge,
+      scheduled: t.home.finderScheduledBadge,
       hosted: t.home.finderHostedBadge,
       minhang: t.home.finderLocalityMinhang,
     }),
@@ -189,7 +191,7 @@ export function WorkshopFinderPage() {
       countries: t.home.finderReachCountries,
       continents: t.home.finderReachContinents,
       venues: t.home.finderReachVenues,
-      planning: t.home.finderReachPlanning,
+      planned: t.home.finderReachPlanned,
     }),
     [t],
   )
@@ -567,11 +569,11 @@ function LocationSection({
   )
 }
 
-const COUNTRY_ORDER: PartnerCountry[] = ["CN", "EC", "PE", "CO"]
+const COUNTRY_ORDER: PartnerCountry[] = ["CN", "EC", "PE", "CO", "PA", "CL"]
 
 /**
  * Partner libraries abroad, grouped by country: venues we have already run at
- * are badged as hosted, the rest as planning conversations.
+ * are badged as hosted, the rest as scheduled.
  */
 function InternationalSection({
   t,
@@ -589,6 +591,8 @@ function InternationalSection({
     EC: t.home.finderCountryEcuador,
     PE: t.home.finderCountryPeru,
     CO: t.home.finderCountryColombia,
+    PA: t.home.finderCountryPanama,
+    CL: t.home.finderCountryChile,
   }
 
   const localityLabel = { minhang: t.home.finderLocalityMinhang }
@@ -654,7 +658,7 @@ function InternationalSection({
                     >
                       {partner.status === "hosted"
                         ? t.home.finderHostedBadge
-                        : t.home.finderPlannedBadge}
+                        : t.home.finderScheduledBadge}
                     </span>
                   </button>
                 </li>

@@ -28,9 +28,8 @@ const describedLibraries = LIBRARIES.filter(
 )
 
 /**
- * Partner venues abroad that have already hosted a program. The ones still in
- * planning conversations are left out for the same reason as the New Jersey
- * `placeholder` areas: nothing has been held there yet.
+ * Partner venues abroad that have already hosted a program. Scheduled ones are
+ * left out until a session has actually been held there.
  */
 const describedPartners = INTERNATIONAL_PARTNERS.filter(
   (partner) => partner.status === "hosted",

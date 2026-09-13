@@ -159,13 +159,15 @@ export function HostPageContent() {
     EC: t.home.finderCountryEcuador,
     PE: t.home.finderCountryPeru,
     CO: t.home.finderCountryColombia,
+    PA: t.home.finderCountryPanama,
+    CL: t.home.finderCountryChile,
   }
 
   // Venues that have not hosted yet: New Jersey libraries with dates on the
-  // calendar, then the partners abroad still in planning conversations. Read
+  // calendar, then the partners abroad with sessions scheduled. Read
   // from the same module the workshop finder uses, so a venue never has to be
   // added in two places.
-  const plannedVenues = [
+  const scheduledVenues = [
     ...LIBRARIES.filter((library) => library.status === "upcoming").map(
       (library) => ({
         id: library.id,
@@ -174,12 +176,12 @@ export function HostPageContent() {
         badge: t.hostPage.scheduledBadge,
       }),
     ),
-    ...INTERNATIONAL_PARTNERS.filter((partner) => partner.status === "planned").map(
+    ...INTERNATIONAL_PARTNERS.filter((partner) => partner.status === "scheduled").map(
       (partner) => ({
         id: partner.id,
         name: partner.name,
         place: countryName[partner.country],
-        badge: t.hostPage.inPlanningBadge,
+        badge: t.hostPage.scheduledBadge,
       }),
     ),
   ]
@@ -341,7 +343,7 @@ export function HostPageContent() {
             ))}
           </div>
 
-          {plannedVenues.length > 0 && (
+          {scheduledVenues.length > 0 && (
             <div className="mt-16">
               <FadeIn className="text-center">
                 <h3 className="text-2xl font-extrabold text-foreground md:text-3xl">
@@ -352,7 +354,7 @@ export function HostPageContent() {
                 </p>
               </FadeIn>
               <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {plannedVenues.map((venue, i) => (
+                {scheduledVenues.map((venue, i) => (
                   <FadeIn as="li" key={venue.id} delay={i * 60}>
                     <div className="flex h-full items-start justify-between gap-3 rounded-2xl border border-border bg-card p-5 shadow-sm">
                       <div className="min-w-0">

@@ -195,7 +195,7 @@ export const LIBRARIES: Library[] = [
 ]
 
 /** Country codes used to group and localise international partner names. */
-export type PartnerCountry = "CN" | "EC" | "PE" | "CO"
+export type PartnerCountry = "CN" | "EC" | "PE" | "CO" | "PA" | "CL"
 
 export type InternationalPartner = {
   id: string
@@ -214,20 +214,20 @@ export type InternationalPartner = {
   lat: number
   lng: number
   /**
-   * `hosted` venues have already run Avanza STEM programming; `planned` ones are
-   * still in planning conversations. Defaults to `planned` where omitted.
+   * `hosted` venues have already run Avanza STEM programming; `scheduled` ones
+   * have Maker Mindset Series sessions on the way.
    */
-  status: "hosted" | "planned"
+  status: "hosted" | "scheduled"
 }
 
 /**
  * Libraries and cultural institutions abroad: `hosted` venues where Avanza STEM
- * has already run programming, and `planned` ones still in planning
- * conversations. These are not New Jersey venues: the finder lists them in a
+ * has already run programming, and `scheduled` ones with sessions on the way.
+ * These are not New Jersey venues: the finder lists them in a
  * dedicated "international partners" section and plots them on the map (visible
  * when the user zooms out), but they are excluded from the New Jersey
- * auto-framing and ZIP distance ranking. Hosted venues come first, then
- * planning conversations ordered strongest-interest first within each country.
+ * auto-framing and ZIP distance ranking. Hosted venues come first, then the
+ * scheduled ones, grouped by country.
  * District-level coordinates are used where an exact venue could not be
  * geocoded.
  */
@@ -258,7 +258,7 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "EC",
     lat: -0.112,
     lng: -78.4448,
-    status: "planned",
+    status: "scheduled",
   },
   {
     id: "bnp-gestion-cultural",
@@ -266,7 +266,7 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "PE",
     lat: -12.0878,
     lng: -77.0051,
-    status: "planned",
+    status: "scheduled",
   },
   {
     id: "san-isidro-infantil",
@@ -274,7 +274,7 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "PE",
     lat: -12.0979,
     lng: -77.0354,
-    status: "planned",
+    status: "scheduled",
   },
   {
     id: "carmen-checa-la-victoria",
@@ -282,7 +282,7 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "PE",
     lat: -12.074,
     lng: -77.0182,
-    status: "planned",
+    status: "scheduled",
   },
   {
     id: "rimac",
@@ -290,7 +290,31 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "PE",
     lat: -12.0203,
     lng: -77.0355,
-    status: "planned",
+    status: "scheduled",
+  },
+  {
+    id: "calarca",
+    name: "Biblioteca Pública Municipal de Calarcá",
+    country: "CO",
+    lat: 4.5187,
+    lng: -75.6437,
+    status: "scheduled",
+  },
+  {
+    id: "suesca",
+    name: "Biblioteca Pública Municipal Luis Felipe Cortés",
+    country: "CO",
+    lat: 5.1035,
+    lng: -73.7985,
+    status: "scheduled",
+  },
+  {
+    id: "cali-infantil-juvenil",
+    name: "Biblioteca Infantil y Juvenil del Centro Cultural de Cali",
+    country: "CO",
+    lat: 3.4495,
+    lng: -76.5349,
+    status: "scheduled",
   },
   {
     id: "red-nacional-colombia",
@@ -298,6 +322,46 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "CO",
     lat: 4.6096,
     lng: -74.0685,
-    status: "planned",
+    status: "scheduled",
+  },
+  {
+    id: "chitre",
+    name: "Biblioteca Pública Cristóbal Rodríguez",
+    country: "PA",
+    lat: 7.9612,
+    lng: -80.4286,
+    status: "scheduled",
+  },
+  {
+    id: "la-villa-de-los-santos",
+    name: "Biblioteca Pública Héctor Conte Bermúdez",
+    country: "PA",
+    lat: 7.9358,
+    lng: -80.4166,
+    status: "scheduled",
+  },
+  {
+    id: "nicomedes-guzman",
+    name: "Biblioteca Municipal Nicomedes Guzmán",
+    country: "CL",
+    lat: -33.4381,
+    lng: -70.666,
+    status: "scheduled",
+  },
+  {
+    id: "la-florida",
+    name: "Biblioteca Pública Municipal de La Florida",
+    country: "CL",
+    lat: -33.548,
+    lng: -70.59,
+    status: "scheduled",
+  },
+  {
+    id: "pitrufquen",
+    name: "Biblioteca Pública Municipal de Pitrufquén",
+    country: "CL",
+    lat: -38.9855,
+    lng: -72.6435,
+    status: "scheduled",
   },
 ]

@@ -1,11 +1,11 @@
 /**
  * Geographic regions for the workshop finder map.
  *
- * The venues sit in three tight clusters (northern New Jersey, the Andean
- * capitals, and one district of Shanghai) separated by two oceans. Framing all
- * of them in a single Web Mercator view means ~200° of longitude, which at the
- * map column's portrait aspect ratio is mostly empty water: the reach reads as
- * three specks rather than as three continents.
+ * The venues sit in three clusters (northern New Jersey, Latin America from
+ * Panama down to southern Chile, and one district of Shanghai) separated by two
+ * oceans. Framing all of them in a single Web Mercator view means ~200° of
+ * longitude, which at the map column's portrait aspect ratio is mostly empty
+ * water: the reach reads as three specks rather than as three continents.
  *
  * So the finder frames one cluster at a time, and its "worldwide" view lays the
  * three clusters out as inset panels side by side (the device a US map uses for
@@ -57,7 +57,7 @@ function boundsOf(
   return { south, west, north, east }
 }
 
-const LATAM_COUNTRIES: PartnerCountry[] = ["EC", "PE", "CO"]
+const LATAM_COUNTRIES: PartnerCountry[] = ["EC", "PE", "CO", "PA", "CL"]
 
 const njPoints = LIBRARIES.map((l) => ({ lat: l.lat, lng: l.lng }))
 const latamPoints = INTERNATIONAL_PARTNERS.filter((p) =>
@@ -95,7 +95,7 @@ export const MAP_REGIONS: MapRegion[] = [
     id: "latam",
     bounds: boundsOf(latamPoints),
     siteCount: latamPoints.length,
-    venueCount: 0,
+    venueCount: latamPoints.length,
     maxZoom: 9,
   },
   {
@@ -123,6 +123,8 @@ const CONTINENT_BY_COUNTRY: Record<PartnerCountry | "US", string> = {
   EC: "south-america",
   PE: "south-america",
   CO: "south-america",
+  PA: "north-america",
+  CL: "south-america",
 }
 
 const reachCountries = new Set<PartnerCountry | "US">([
@@ -131,10 +133,10 @@ const reachCountries = new Set<PartnerCountry | "US">([
 ])
 
 /**
- * Headline numbers for the reach strip under the map. Counted honestly: a
- * "venue" has hosted a program or has a session booked, and everything still in
- * a planning conversation (the New Jersey `placeholder` areas and the
- * `planned` partners) is counted separately as planning.
+ * Headline numbers for the reach strip under the map. A "venue" has hosted a
+ * program or has a session scheduled (every partner abroad is one or the
+ * other); the New Jersey `placeholder` areas are not venues yet and are counted
+ * separately as planned.
  */
 export const REACH = {
   countries: reachCountries.size,
@@ -143,8 +145,6 @@ export const REACH = {
   ).size,
   venues:
     LIBRARIES.filter((l) => l.status !== "placeholder").length +
-    INTERNATIONAL_PARTNERS.filter((p) => p.status === "hosted").length,
-  planning:
-    LIBRARIES.filter((l) => l.status === "placeholder").length +
-    INTERNATIONAL_PARTNERS.filter((p) => p.status === "planned").length,
+    INTERNATIONAL_PARTNERS.length,
+  planned: LIBRARIES.filter((l) => l.status === "placeholder").length,
 }
