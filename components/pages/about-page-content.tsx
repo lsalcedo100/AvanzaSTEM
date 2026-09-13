@@ -5,8 +5,7 @@ import { ArrowRight, HandHeart } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { LightboxImage } from "@/components/ui/lightbox-image"
-import { CountUp } from "@/components/ui/count-up"
-import { siteStats } from "@/features/site-stats"
+import { WhoItsForSection } from "@/components/pages/home/WhoItsForSection"
 
 export function AboutPageContent() {
   const { t } = useLanguage()
@@ -265,27 +264,7 @@ export function AboutPageContent() {
         </div>
       </section>
 
-      <section className="bg-avanza-dark py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-8 text-center md:grid-cols-4">
-            {[
-              { ...siteStats.studentsReached, label: t.aboutPage.studentsReached },
-              { ...siteStats.curriculumTopics, label: t.aboutPage.curriculumTopics },
-              { ...siteStats.diyProjects, label: t.aboutPage.diyProjects },
-              { ...siteStats.workshopsHosted, label: t.aboutPage.workshopsHosted },
-            ].map((stat, i) => (
-              <FadeIn key={stat.label} delay={i * 80}>
-                <div className="rounded-2xl border border-primary-foreground/10 p-8">
-                  <p className="text-4xl font-extrabold text-avanza-green">
-                    <CountUp to={stat.to} suffix={stat.suffix} />
-                  </p>
-                  <p className="mt-2 text-sm font-semibold text-primary-foreground/70">{stat.label}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
+      <WhoItsForSection />
 
       <section className="bg-gradient-to-br from-avanza-purple to-avanza-teal py-16">
         <FadeIn className="mx-auto max-w-4xl px-6 text-center">
