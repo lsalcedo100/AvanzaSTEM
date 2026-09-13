@@ -214,6 +214,8 @@ export function AboutPageContent() {
         </div>
       </section>
 
+      <WhoItsForSection />
+
       {/* GET INVOLVED + SUPPORT */}
       <section className="bg-background py-20">
         <div className="mx-auto max-w-7xl px-6">
@@ -263,8 +265,6 @@ export function AboutPageContent() {
           </div>
         </div>
       </section>
-
-      <WhoItsForSection />
 
       <section className="bg-gradient-to-br from-avanza-purple to-avanza-teal py-16">
         <FadeIn className="mx-auto max-w-4xl px-6 text-center">
