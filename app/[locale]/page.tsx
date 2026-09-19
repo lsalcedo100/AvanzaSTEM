@@ -6,7 +6,7 @@ import { InteractiveLabTeasers } from "@/components/pages/home/InteractiveLabTea
 import { WhoItsForSection } from "@/components/pages/home/WhoItsForSection"
 import { SocialProof } from "@/components/ui/social-proof"
 import { GetInvolvedSection } from "@/components/pages/home/GetInvolvedSection"
-import { generateHomeMetadata } from "@/features/home/metadata"
+import { generateHomeMetadata, getHomeWebPageJsonLd } from "@/features/home/metadata"
 import type { Language } from "@/i18n/translations"
 
 export async function generateMetadata({
@@ -18,9 +18,21 @@ export async function generateMetadata({
   return generateHomeMetadata(locale as Language)
 }
 
-export default function LocaleHomePage() {
+export default async function LocaleHomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getHomeWebPageJsonLd(locale as Language)),
+        }}
+      />
       <HeroSection />
       <WhyWeExistSection />
       <WhoItsForSection />

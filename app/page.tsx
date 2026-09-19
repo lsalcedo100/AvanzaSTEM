@@ -6,15 +6,21 @@ import { InteractiveLabTeasers } from "@/components/pages/home/InteractiveLabTea
 import { WhoItsForSection } from "@/components/pages/home/WhoItsForSection"
 import { SocialProof } from "@/components/ui/social-proof"
 import { GetInvolvedSection } from "@/components/pages/home/GetInvolvedSection"
-import { generateHomeMetadata } from "@/features/home/metadata"
+import { generateHomeMetadata, getHomeWebPageJsonLd } from "@/features/home/metadata"
 
 export function generateMetadata(): Metadata {
   return generateHomeMetadata("en")
 }
 
+const homeWebPageJsonLd = getHomeWebPageJsonLd("en")
+
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeWebPageJsonLd) }}
+      />
       <HeroSection />
       <WhyWeExistSection />
       <WhoItsForSection />

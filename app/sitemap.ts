@@ -183,15 +183,15 @@ const ENGLISH_ONLY_PATHS = new Set(
 // 2026-06-16 dates even though posts.ts was edited on 2026-08-14, because that
 // commit removed an unused authorId field and changed nothing a reader sees.
 const staticRoutes = [
-  { path: '/', priority: 1.0, changeFrequency: 'weekly', lastModified: '2026-08-29' },
+  { path: '/', priority: 1.0, changeFrequency: 'weekly', lastModified: '2026-09-09' },
   { path: '/resources', priority: 0.9, changeFrequency: 'weekly', lastModified: '2026-08-28' },
-  { path: '/about', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-12' },
+  { path: '/about', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-09-19' },
   { path: '/projects', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-04' },
   { path: '/games', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-16' },
-  { path: '/blog', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-08-14' },
+  { path: '/blog', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-08-27' },
   { path: '/workshops', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-08-29' },
-  { path: '/find-a-workshop', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-08-14' },
-  { path: '/host', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-08-29' },
+  { path: '/find-a-workshop', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-09-12' },
+  { path: '/host', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-09-19' },
   { path: '/gallery', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-08-14' },
   { path: '/curriculums', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-16' },
   { path: '/curriculums/intro-to-python', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-07' },

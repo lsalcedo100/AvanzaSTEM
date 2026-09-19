@@ -8,6 +8,7 @@ import { ImageLightboxProvider } from '@/components/providers/image-lightbox-pro
 import { LanguageProvider } from '@/components/providers/language-provider'
 import { SkipToContent } from '@/components/layout/skip-to-content'
 import { generateHomeMetadata } from '@/features/home/metadata'
+import { translations } from '@/i18n/translations'
 import { siteConfig } from '@/lib/site-config'
 import { publisherLogoUrl } from '@/lib/structured-data'
 
@@ -66,6 +67,14 @@ const organizationJsonLd = {
   },
   image: `${siteConfig.url}/images/og-default-en.png`,
   alternateName: 'AvanzaSTEM',
+  // The home hero headline, read from the key the <h1> renders so the entity's
+  // stated slogan is always the tagline visitors actually see.
+  slogan: translations.en.home.heroTitle,
+  founder: {
+    '@type': 'Person',
+    name: 'Liam Salcedo',
+    url: `${siteConfig.url}/about`,
+  },
   email: 'liam@avanzastem.org',
   description:
     'A youth-led program publishing free STEM resources for kids - project guides, course paths, printable worksheets and browser labs - and running free hands-on STEM workshops for students, with a special focus on Hispanic and underrepresented communities.',
@@ -95,7 +104,9 @@ const webSiteJsonLd = {
   '@type': 'WebSite',
   '@id': `${siteConfig.url}/#website`,
   name: siteConfig.name,
+  alternateName: 'AvanzaSTEM',
   url: siteConfig.url,
+  description: translations.en.home.heroTitle,
   inLanguage: ['en', 'es', 'zh', 'pt'],
   publisher: { '@id': `${siteConfig.url}/#organization` },
 }
