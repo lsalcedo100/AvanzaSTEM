@@ -4,7 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import type { ReactNode } from "react"
 import { useLanguage } from "@/components/providers/language-provider"
-import type { Language, Translations } from "@/i18n/translations"
+import type { Translations } from "@/i18n/translations"
 import { FadeIn } from "@/components/ui/animate"
 import { SocialProof } from "@/components/ui/social-proof"
 import {
@@ -19,9 +19,10 @@ import {
 import {
   INTERNATIONAL_PARTNERS,
   LIBRARIES,
-  type InternationalPartner,
   type PartnerCountry,
 } from "@/features/workshops/locations"
+import { ScheduledVenues } from "@/components/ui/scheduled-venues"
+import { groupByCountry } from "@/features/workshops/schedule"
 import { cn } from "@/lib/utils"
 
 type FormStatus = "idle" | "submitting" | "success" | "error"
@@ -105,51 +106,12 @@ const hostTheme: CourseTheme = {
   line: "#a8e6c0",
 }
 
-/** BCP 47 tags for month names on the calendar. "pt" is Brazilian Portuguese sitewide. */
-const DATE_LOCALES: Record<Language, string> = {
-  en: "en-US",
-  es: "es",
-  zh: "zh-CN",
-  pt: "pt-BR",
-}
-
 // The rosters below are the same module the workshop finder reads, so a venue
 // never has to be added in two places. They are pure data, grouped once here.
 const HOSTED_LIBRARIES = LIBRARIES.filter((library) => library.status === "active")
-const UPCOMING_LIBRARIES = LIBRARIES.filter((library) => library.status === "upcoming")
 const HOSTED_ABROAD = groupByCountry(
   INTERNATIONAL_PARTNERS.filter((partner) => partner.status === "hosted"),
 )
-const SCHEDULED_ABROAD = groupByCountry(
-  INTERNATIONAL_PARTNERS.filter((partner) => partner.status === "scheduled"),
-)
-
-/** Groups partners by country, keeping the data file's order of first appearance. */
-function groupByCountry(
-  partners: InternationalPartner[],
-): [PartnerCountry, InternationalPartner[]][] {
-  const groups = new Map<PartnerCountry, InternationalPartner[]>()
-  for (const partner of partners) {
-    const group = groups.get(partner.country)
-    if (group) group.push(partner)
-    else groups.set(partner.country, [partner])
-  }
-  return [...groups.entries()]
-}
-
-/** "September 2026", or "September 2026 – October 2026" when a series spans months. */
-function formatSessionMonths(sessions: string[], language: Language) {
-  const format = new Intl.DateTimeFormat(DATE_LOCALES[language], {
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  })
-  const label = (iso: string) => format.format(new Date(`${iso}T00:00:00Z`))
-  const first = label(sessions[0])
-  const last = label(sessions[sessions.length - 1])
-  return first === last ? first : `${first} – ${last}`
-}
-
 const inputClass =
   "w-full rounded-md border border-white/20 bg-white/8 px-4 py-3 text-white placeholder:text-white/40 focus-visible:border-[var(--c-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-avanza-dark disabled:opacity-60"
 
@@ -455,37 +417,7 @@ export function HostPageContent() {
         lead={h.calendarLead}
         aside={<CourseTextLink href="/find-a-workshop">{h.calendarLink}</CourseTextLink>}
       >
-        <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-          {UPCOMING_LIBRARIES.length > 0 && (
-            <div>
-              <GroupHeading>{h.regionNewJersey}</GroupHeading>
-              <ul>
-                {UPCOMING_LIBRARIES.map((library) => (
-                  <VenueRow
-                    key={library.id}
-                    name={library.name}
-                    detail={
-                      library.sessions
-                        ? formatSessionMonths(library.sessions, language)
-                        : `${library.city}, NJ`
-                    }
-                    note={library.tentative ? h.datesPending : undefined}
-                  />
-                ))}
-              </ul>
-            </div>
-          )}
-          {SCHEDULED_ABROAD.map(([country, partners]) => (
-            <div key={country}>
-              <GroupHeading>{countryName[country]}</GroupHeading>
-              <ul>
-                {partners.map((partner) => (
-                  <VenueRow key={partner.id} name={partner.name} />
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <ScheduledVenues />
       </Section>
 
       <SocialProof />

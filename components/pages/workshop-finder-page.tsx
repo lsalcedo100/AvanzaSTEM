@@ -161,7 +161,6 @@ export function WorkshopFinderPage() {
 
   const mapLabels = useMemo(
     () => ({
-      noUpcomingDate: t.home.finderNoUpcomingDate,
       planningArea: t.home.finderPlanningArea,
       notScheduled: t.home.finderNotScheduled,
       nextSession: t.home.finderNextSession,
@@ -431,7 +430,7 @@ export function WorkshopFinderPage() {
               ) : active.status === "active" ? (
                 <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold">
                   <CalendarDays className="h-3 w-3" />
-                  {t.home.finderNoUpcomingDate}
+                  {t.home.finderHostedBadge}
                 </p>
               ) : (
                 <div className="mt-3 space-y-1.5">
@@ -547,7 +546,7 @@ function LocationSection({
                   ) : isCurrentSite ? (
                     <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-avanza-green/10 px-2 py-0.5 text-[11px] font-bold text-avanza-green">
                       <CalendarDays className="h-3 w-3" />
-                      {t.home.finderNoUpcomingDate}
+                      {t.home.finderHostedBadge}
                     </p>
                   ) : (
                     <span className="mt-2 inline-block rounded-full bg-avanza-dark/5 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-avanza-dark/60">

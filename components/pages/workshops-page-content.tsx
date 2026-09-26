@@ -6,11 +6,11 @@ import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"
 import { SocialProof } from "@/components/ui/social-proof"
+import { ScheduledVenues } from "@/components/ui/scheduled-venues"
 import {
   Gallery,
   codingFeatureImage,
   galleryPhoto,
-  preExpansionGalleryImages,
 } from "@/components/ui/gallery"
 
 const buildingWorkshopImage =
@@ -20,6 +20,11 @@ const codingThumbnailImage = codingFeatureImage.full
 // never swap these out from under the cards.
 const veronaWorkshopImage = galleryPhoto(319).full
 const littleFallsWorkshopImage = galleryPhoto(357).full
+// September 2026 series venues, chosen from the gallery by their position in
+// the newest-first lightbox (17, 3 and 13 of 393) and pinned here by number.
+const westOrangeWorkshopImage = galleryPhoto(377).full
+const cedarGroveWorkshopImage = galleryPhoto(391).full
+const berkeleyHeightsWorkshopImage = galleryPhoto(381).full
 // A room shot rather than a session photo: the Shanghai venues do not allow
 // photography while a program is running. Wenbo Shuijing has no photo at all,
 // so its card renders without an image.
@@ -82,6 +87,115 @@ export function WorkshopsPageContent() {
       title: t.workshopsPage.interactiveTeaching,
       description: t.workshopsPage.interactiveTeachingDesc,
     },
+  ]
+
+  // Two fixed columns rather than a grid or CSS columns. A grid row is as
+  // tall as its tallest cell, which left large gaps under shorter cards, and
+  // CSS columns let the browser choose the split, which stranded the short
+  // Llano Grande card at the bottom of the right column. Each column stacks
+  // its cards directly under the previous one, and the split keeps the two
+  // columns ending close together. New Jersey libraries first, then partner
+  // venues abroad.
+  const pastProgramColumns: PastProgramCardProps[][] = [
+    [
+      {
+        name: t.workshopsPage.cliftonLibrary,
+        image: "/images/workshops/past-science.jpg",
+        imageAlt: t.workshopsPage.cliftonImageAlt,
+        description: t.workshopsPage.cliftonDesc,
+      },
+      {
+        name: t.workshopsPage.allwoodLibrary,
+        image: "/images/workshops/past-coding.jpg",
+        imageAlt: t.workshopsPage.allwoodImageAlt,
+        description: t.workshopsPage.allwoodDesc,
+      },
+      {
+        name: t.workshopsPage.chathamsLibrary,
+        image: galleryPhoto(156).full,
+        imageAlt: t.workshopsPage.chathamsImageAlt,
+        imageBoxClassName: "h-80 sm:h-[28rem]",
+        description: t.workshopsPage.chathamsDesc,
+      },
+      {
+        name: t.workshopsPage.roselandLibrary,
+        image: "/images/workshops/roseland-free-public-library-coding.jpeg",
+        imageAlt: t.workshopsPage.roselandImageAlt,
+        imageBoxClassName: "aspect-[3794/2846]",
+        imageClassName: "object-contain",
+        description: t.workshopsPage.roselandDesc,
+      },
+      {
+        name: t.workshopsPage.wayneLibrary,
+        image: "/images/workshops/wayne-public-library.png",
+        imageAlt: t.workshopsPage.wayneImageAlt,
+        imageBoxClassName: "aspect-[1448/1086]",
+        imageClassName: "object-contain",
+        description: t.workshopsPage.wayneDesc,
+      },
+      {
+        name: t.workshopsPage.veronaLibrary,
+        image: veronaWorkshopImage,
+        imageAlt: t.workshopsPage.veronaImageAlt,
+        description: t.workshopsPage.veronaDesc,
+      },
+      // Partner venue abroad. No photo chosen yet; add `image: galleryPhoto(n).full`
+      // and an `imageAlt`.
+      {
+        name: t.workshopsPage.llanoGrandeLibrary,
+        description: t.workshopsPage.llanoGrandeDesc,
+      },
+    ],
+    [
+      {
+        name: t.workshopsPage.littleFallsLibrary,
+        image: littleFallsWorkshopImage,
+        imageAlt: t.workshopsPage.littleFallsImageAlt,
+        imageBoxClassName: "aspect-[4/3]",
+        imageClassName: "object-contain",
+        description: t.workshopsPage.littleFallsDesc,
+      },
+      // September 2026 series venues. The photos are 4:3, so the box matches
+      // that ratio to show them uncropped.
+      {
+        name: t.workshopsPage.westOrangeLibrary,
+        image: westOrangeWorkshopImage,
+        imageAlt: t.workshopsPage.westOrangeImageAlt,
+        imageBoxClassName: "aspect-[4/3]",
+        description: t.workshopsPage.westOrangeDesc,
+      },
+      {
+        name: t.workshopsPage.cedarGroveLibrary,
+        image: cedarGroveWorkshopImage,
+        imageAlt: t.workshopsPage.cedarGroveImageAlt,
+        imageBoxClassName: "aspect-[4/3]",
+        description: t.workshopsPage.cedarGroveDesc,
+      },
+      {
+        name: t.workshopsPage.berkeleyHeightsLibrary,
+        image: berkeleyHeightsWorkshopImage,
+        imageAlt: t.workshopsPage.berkeleyHeightsImageAlt,
+        imageBoxClassName: "aspect-[4/3]",
+        description: t.workshopsPage.berkeleyHeightsDesc,
+      },
+      // Partner venues abroad. Wenbo Shuijing has no photo and Lanyu Books only
+      // a room shot, so each card carries its own note explaining why.
+      {
+        name: t.workshopsPage.wenboLibrary,
+        description: t.workshopsPage.wenboDesc,
+        credit: translationCredit,
+        note: t.workshopsPage.wenboPhotoNote,
+      },
+      {
+        name: t.workshopsPage.lanyuLibrary,
+        image: lanyuWorkshopImage,
+        imageAlt: t.workshopsPage.lanyuImageAlt,
+        imageBoxClassName: "aspect-[4/3]",
+        description: t.workshopsPage.lanyuDesc,
+        credit: translationCredit,
+        note: t.workshopsPage.lanyuPhotoNote,
+      },
+    ],
   ]
 
   return (
@@ -174,98 +288,48 @@ export function WorkshopsPageContent() {
             </h2>
           </FadeIn>
 
-          <div className="mt-12 grid gap-8 sm:grid-cols-2">
-            <FadeIn delay={0}>
-              <PastProgramCard
-                name={t.workshopsPage.cliftonLibrary}
-                image="/images/workshops/past-science.jpg"
-                imageAlt={t.workshopsPage.cliftonImageAlt}
-                description={t.workshopsPage.cliftonDesc}
-              />
-            </FadeIn>
-            <FadeIn delay={100}>
-              <PastProgramCard
-                name={t.workshopsPage.allwoodLibrary}
-                image="/images/workshops/past-coding.jpg"
-                imageAlt={t.workshopsPage.allwoodImageAlt}
-                description={t.workshopsPage.allwoodDesc}
-              />
-            </FadeIn>
-            <FadeIn delay={200}>
-              <PastProgramCard
-                name={t.workshopsPage.chathamsLibrary}
-                image={preExpansionGalleryImages[18].full}
-                imageAlt={t.workshopsPage.chathamsImageAlt}
-                imageBoxClassName="h-80 sm:h-[28rem]"
-                description={t.workshopsPage.chathamsDesc}
-              />
-            </FadeIn>
-            <FadeIn delay={300}>
-              <PastProgramCard
-                name={t.workshopsPage.roselandLibrary}
-                image="/images/workshops/roseland-free-public-library-coding.jpeg"
-                imageAlt={t.workshopsPage.roselandImageAlt}
-                imageBoxClassName="aspect-[3794/2846]"
-                imageClassName="object-contain"
-                description={t.workshopsPage.roselandDesc}
-              />
-            </FadeIn>
-            <FadeIn delay={400}>
-              <PastProgramCard
-                name={t.workshopsPage.wayneLibrary}
-                image="/images/workshops/wayne-public-library.png"
-                imageAlt={t.workshopsPage.wayneImageAlt}
-                imageBoxClassName="aspect-[1448/1086]"
-                imageClassName="object-contain"
-                description={t.workshopsPage.wayneDesc}
-              />
-            </FadeIn>
-            {/* Verona and Little Falls share one grid cell. As separate cells
-                Little Falls would start a new row, leaving dead space under
-                Verona while the taller Wayne card finished its row. */}
-            <div className="flex flex-col gap-8">
-              <FadeIn delay={500}>
-                <PastProgramCard
-                  name={t.workshopsPage.veronaLibrary}
-                  image={veronaWorkshopImage}
-                  imageAlt={t.workshopsPage.veronaImageAlt}
-                  description={t.workshopsPage.veronaDesc}
-                />
-              </FadeIn>
-              <FadeIn delay={600}>
-                <PastProgramCard
-                  name={t.workshopsPage.littleFallsLibrary}
-                  image={littleFallsWorkshopImage}
-                  imageAlt={t.workshopsPage.littleFallsImageAlt}
-                  imageBoxClassName="aspect-[4/3]"
-                  imageClassName="object-contain"
-                  description={t.workshopsPage.littleFallsDesc}
-                />
-              </FadeIn>
-            </div>
-            {/* Partner venues abroad, listed after the New Jersey libraries.
-                Wenbo Shuijing has no photo and Lanyu Books only a room shot,
-                so each card carries its own note explaining why. */}
-            <FadeIn delay={700}>
-              <PastProgramCard
-                name={t.workshopsPage.wenboLibrary}
-                description={t.workshopsPage.wenboDesc}
-                credit={translationCredit}
-                note={t.workshopsPage.wenboPhotoNote}
-              />
-            </FadeIn>
-            <FadeIn delay={800}>
-              <PastProgramCard
-                name={t.workshopsPage.lanyuLibrary}
-                image={lanyuWorkshopImage}
-                imageAlt={t.workshopsPage.lanyuImageAlt}
-                imageBoxClassName="aspect-[4/3]"
-                description={t.workshopsPage.lanyuDesc}
-                credit={translationCredit}
-                note={t.workshopsPage.lanyuPhotoNote}
-              />
-            </FadeIn>
+          <div className="mt-12 grid gap-8 sm:grid-cols-2 sm:items-start">
+            {pastProgramColumns.map((column, c) => (
+              <div key={c} className="flex flex-col gap-8">
+                {column.map((program, i) => (
+                  <FadeIn key={program.name} delay={i * 100}>
+                    <PastProgramCard {...program} />
+                  </FadeIn>
+                ))}
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
+
+      {/* Venues with sessions scheduled: the same schedule the Host page shows,
+          from the data the finder reads. The copy is shared with that page. */}
+      <section className="bg-background py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <FadeIn>
+            <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
+              <div className="max-w-2xl">
+                <p className="text-sm font-bold uppercase tracking-wider text-avanza-green">
+                  {t.hostPage.calendarEyebrow}
+                </p>
+                <h2 className="mt-3 text-3xl font-extrabold text-foreground md:text-4xl">
+                  {t.hostPage.calendarTitle}
+                </h2>
+                <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+                  {t.hostPage.calendarLead}
+                </p>
+              </div>
+              <Link
+                href="/find-a-workshop"
+                className="shrink-0 border-b-2 border-avanza-green pb-0.5 text-sm font-bold text-avanza-dark transition-colors hover:border-avanza-green-dark"
+              >
+                {t.hostPage.calendarLink}
+              </Link>
+            </div>
+            <div className="mt-8">
+              <ScheduledVenues />
+            </div>
+          </FadeIn>
         </div>
       </section>
 
@@ -423,19 +487,7 @@ function WorkshopSection({
   )
 }
 
-function PastProgramCard({
-  name,
-  image,
-  imageAlt,
-  gradeRange,
-  duration,
-  location,
-  description,
-  credit,
-  note,
-  imageBoxClassName = "h-56 sm:h-64",
-  imageClassName = "object-cover",
-}: {
+type PastProgramCardProps = {
   name: string
   // Optional: venues that do not allow photography get a text-only card.
   image?: string
@@ -448,7 +500,21 @@ function PastProgramCard({
   note?: string
   imageBoxClassName?: string
   imageClassName?: string
-}) {
+}
+
+function PastProgramCard({
+  name,
+  image,
+  imageAlt,
+  gradeRange,
+  duration,
+  location,
+  description,
+  credit,
+  note,
+  imageBoxClassName = "h-56 sm:h-64",
+  imageClassName = "object-cover",
+}: PastProgramCardProps) {
   const meta = [gradeRange, duration, location].filter(Boolean).join(" · ")
   return (
     <article className="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">

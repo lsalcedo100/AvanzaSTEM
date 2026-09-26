@@ -25,6 +25,18 @@ export function formatSessionDate(iso: string, language: string) {
   })
 }
 
+/** "October 2026", or "October 2026 – November 2026" when the dates span months. */
+export function formatSessionMonths(sessions: string[], language: string) {
+  const label = (iso: string) =>
+    parseISODate(iso).toLocaleDateString(DATE_LOCALES[language] ?? "en-US", {
+      month: "long",
+      year: "numeric",
+    })
+  const first = label(sessions[0])
+  const last = label(sessions[sessions.length - 1])
+  return first === last ? first : `${first} – ${last}`
+}
+
 /** The first session that has not happened yet, or null once the series is done. */
 export function nextSession(sessions: string[] | undefined) {
   if (!sessions?.length) return null

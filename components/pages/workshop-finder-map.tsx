@@ -656,7 +656,6 @@ function MapPanel({
 // ---------------------------------------------------------------------------
 
 export type MapLabels = {
-  noUpcomingDate: string
   planningArea: string
   notScheduled: string
   nextSession: string
@@ -735,7 +734,7 @@ export function WorkshopFinderMap({
                 : labels.tentative,
             }
           : lib.status === "active"
-            ? { color: "#2ecc71", text: labels.noUpcomingDate }
+            ? { color: "#2ecc71", text: labels.hosted }
             : { color: "#1a1a2e", text: labels.planningArea }
       return {
         id: lib.id,

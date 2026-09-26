@@ -14,7 +14,11 @@ export function WhoItsForSection() {
     { value: t.home.impactStudentsValue, label: t.home.impactStudentsLabel },
     { value: t.home.impactLibrariesValue, label: t.home.impactLibrariesLabel },
     { value: t.home.impactPhotosValue, label: t.home.impactPhotosLabel },
-    { value: t.home.impactSearchClicksValue, label: t.home.impactSearchClicksLabel },
+    {
+      value: t.home.impactWeeklyVisitorsValue,
+      label: t.home.impactWeeklyVisitorsLabel,
+      source: t.home.impactWeeklyVisitorsSource,
+    },
     {
       value: t.home.impactSearchImpressionsValue,
       label: t.home.impactSearchImpressionsLabel,
@@ -41,6 +45,11 @@ export function WhoItsForSection() {
                   <p className="mt-1 text-sm text-primary-foreground/65">
                     {stat.label}
                   </p>
+                  {"source" in stat && (
+                    <p className="mt-0.5 text-xs text-primary-foreground/40">
+                      {stat.source}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>

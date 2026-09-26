@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { HeroCarousel } from "@/components/pages/home/HeroCarousel"
@@ -21,19 +20,18 @@ export function HeroSection() {
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/80">
             {t.home.heroDescription}
           </p>
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href="/find-a-workshop"
-              className="group inline-flex items-center gap-3 rounded-lg bg-avanza-dark px-7 py-3.5 text-base font-bold text-primary-foreground shadow-[0_12px_32px_-10px_rgba(26,26,46,0.5)] transition-all duration-300 hover:scale-[1.04] hover:shadow-[0_18px_40px_-10px_rgba(26,26,46,0.6)]"
+              className="inline-flex h-12 items-center justify-center rounded-md bg-avanza-dark px-6 text-base font-bold text-primary-foreground transition-colors duration-150 hover:bg-avanza-dark/90"
             >
               {t.home.finderTrigger}
             </Link>
             <Link
               href="/projects"
-              className="group inline-flex items-center gap-2 rounded-lg bg-white/80 px-5 py-3.5 text-base font-bold text-avanza-dark ring-1 ring-avanza-dark/15 transition-all duration-200 hover:bg-white hover:ring-avanza-dark/30"
+              className="inline-flex h-12 items-center justify-center rounded-md border-2 border-avanza-dark px-6 text-base font-bold text-avanza-dark transition-colors duration-150 hover:bg-avanza-dark/5"
             >
               {t.home.startLearning}
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
           </div>
           <p className="mt-6 text-sm font-semibold leading-relaxed text-avanza-dark/70">

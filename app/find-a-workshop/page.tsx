@@ -58,9 +58,12 @@ const describedPlaces = [
     alternateName: partner.localName,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Minhang",
-      addressRegion: "Shanghai",
-      addressCountry: "CN",
+      // Only the Shanghai venues carry a locality in the data; the rest are
+      // described at country level so no venue is given an address it lacks.
+      ...(partner.localityKey === "minhang"
+        ? { addressLocality: "Minhang", addressRegion: "Shanghai" }
+        : {}),
+      addressCountry: partner.country,
     },
     geo: {
       "@type": "GeoCoordinates",

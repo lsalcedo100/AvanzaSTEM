@@ -41,8 +41,7 @@ export const LIBRARIES: Library[] = [
     zip: "07052",
     lat: 40.797,
     lng: -74.2545,
-    status: "upcoming",
-    sessions: ["2026-09-01", "2026-09-08", "2026-09-15"],
+    status: "active",
   },
   {
     id: "cedar-grove",
@@ -51,9 +50,7 @@ export const LIBRARIES: Library[] = [
     zip: "07009",
     lat: 40.8513,
     lng: -74.2277,
-    status: "upcoming",
-    sessions: ["2026-09-04", "2026-09-11", "2026-09-18"],
-    tentative: true,
+    status: "active",
   },
   {
     id: "berkeley-heights",
@@ -62,8 +59,7 @@ export const LIBRARIES: Library[] = [
     zip: "07922",
     lat: 40.6815,
     lng: -74.4438,
-    status: "upcoming",
-    sessions: ["2026-09-14", "2026-09-21", "2026-09-28"],
+    status: "active",
   },
   {
     id: "caldwell",
@@ -258,7 +254,7 @@ export const INTERNATIONAL_PARTNERS: InternationalPartner[] = [
     country: "EC",
     lat: -0.112,
     lng: -78.4448,
-    status: "scheduled",
+    status: "hosted",
   },
   {
     id: "bnp-gestion-cultural",

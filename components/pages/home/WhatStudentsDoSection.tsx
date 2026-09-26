@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
-import { codingFeatureImage, preExpansionGalleryImages } from "@/components/ui/gallery"
+import { codingFeatureImage, galleryPhoto } from "@/components/ui/gallery"
 
 const codingThumbnailImage = codingFeatureImage.full
 
@@ -95,7 +95,7 @@ export function WhatStudentsDoSection() {
 
   const programs = [
     {
-      image: preExpansionGalleryImages[0].full,
+      image: galleryPhoto(174).full,
       title: t.home.realWorkshopBuilding,
       description: t.home.realWorkshopBuildingShort,
     },
