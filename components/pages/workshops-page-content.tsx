@@ -34,6 +34,7 @@ export function WorkshopsPageContent() {
   const { t } = useLanguage()
   const workshops = [
     {
+      id: "building",
       week: t.workshopsPage.week1,
       title: t.workshopsPage.buildingTitle,
       description: t.workshopsPage.buildingDesc,
@@ -43,6 +44,7 @@ export function WorkshopsPageContent() {
       accent: "bg-avanza-purple",
     },
     {
+      id: "coding",
       week: t.workshopsPage.week2,
       title: t.workshopsPage.codingWorkshopTitle,
       description: t.workshopsPage.codingWorkshopDesc,
@@ -52,6 +54,7 @@ export function WorkshopsPageContent() {
       reverse: true,
     },
     {
+      id: "ai",
       week: t.workshopsPage.week3,
       title: t.workshopsPage.aiWorkshopTitle,
       description: t.workshopsPage.aiWorkshopDesc,
@@ -402,6 +405,7 @@ function ApproachPoint({
 }
 
 function WorkshopSection({
+  id,
   week,
   title,
   description,
@@ -413,6 +417,7 @@ function WorkshopSection({
   accent,
   reverse = false,
 }: {
+  id: string
   week: string
   title: string
   description: string
@@ -427,7 +432,7 @@ function WorkshopSection({
   const isPortraitFeature = imageLayout === "portraitFeature"
 
   return (
-    <article className="overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-shadow duration-300 hover:shadow-md">
+    <article id={id} className="scroll-mt-28 overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-shadow duration-300 hover:shadow-md">
       <div
         className={`grid gap-0 lg:items-stretch ${
           isPortraitFeature

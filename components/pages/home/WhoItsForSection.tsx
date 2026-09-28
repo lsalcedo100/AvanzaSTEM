@@ -13,12 +13,12 @@ export function WhoItsForSection() {
   const stats = [
     { value: t.home.impactStudentsValue, label: t.home.impactStudentsLabel },
     { value: t.home.impactLibrariesValue, label: t.home.impactLibrariesLabel },
-    { value: t.home.impactPhotosValue, label: t.home.impactPhotosLabel },
     {
       value: t.home.impactWeeklyVisitorsValue,
       label: t.home.impactWeeklyVisitorsLabel,
       source: t.home.impactWeeklyVisitorsSource,
     },
+    { value: t.home.impactPhotosValue, label: t.home.impactPhotosLabel },
     {
       value: t.home.impactSearchImpressionsValue,
       label: t.home.impactSearchImpressionsLabel,
@@ -39,10 +39,10 @@ export function WhoItsForSection() {
             <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3">
               {stats.map((stat) => (
                 <div key={stat.label}>
-                  <p className="text-3xl font-extrabold text-avanza-green sm:text-4xl">
+                  <p className="text-3xl font-black text-avanza-green sm:text-4xl">
                     {stat.value}
                   </p>
-                  <p className="mt-1 text-sm text-primary-foreground/65">
+                  <p className="mt-1 text-sm font-bold text-primary-foreground/85">
                     {stat.label}
                   </p>
                   {"source" in stat && (
