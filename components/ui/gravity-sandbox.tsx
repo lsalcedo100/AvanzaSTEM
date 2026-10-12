@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import { useOnScreen } from "@/components/ui/useOnScreen"
 import { Award, ChevronLeft, Crosshair, FolderOpen, Lock, Move, Orbit, Pause, Play, RotateCcw, Save, SkipForward, Sparkles, Star, Trash2, Trophy, X, ZoomIn, ZoomOut } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
@@ -1982,9 +1983,13 @@ export function GravitySandbox() {
 
   // Keyboard shortcuts. The handler is kept fresh in a ref so the window
   // listener is attached only once.
+  /** Keys only act while the lab is on screen; /games has twelve other activities. */
+  const sectionRef = useRef<HTMLElement>(null)
+  const onScreen = useOnScreen(sectionRef)
   const shortcutRef = useRef<(e: KeyboardEvent) => void>(() => {})
   useEffect(() => {
     shortcutRef.current = (e: KeyboardEvent) => {
+      if (!onScreen.current) return
       const el = e.target as HTMLElement | null
       if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable)) return
       if (e.metaKey || e.ctrlKey || e.altKey) return
@@ -2024,7 +2029,7 @@ export function GravitySandbox() {
   const completedCount = LEVELS.filter((l) => (progress.stars[l.id] || 0) >= 1).length
 
   return (
-    <section className="relative overflow-hidden bg-[#0b0e1f] py-20 md:py-24">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#0b0e1f] py-20 md:py-24">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.6]"

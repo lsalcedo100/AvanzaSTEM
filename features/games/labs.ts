@@ -13,7 +13,7 @@
 export const LAB_GROUPS = [
   { id: "group-code", labs: ["python", "robot", "logic", "sort"] },
   { id: "group-build", labs: ["bridge", "tower", "catapult", "marble"] },
-  { id: "group-science", labs: ["atom", "circuit", "density", "gravity"] },
+  { id: "group-science", labs: ["atom", "circuit", "density", "gravity", "zerog"] },
 ] as const
 
 export type LabGroupId = (typeof LAB_GROUPS)[number]["id"]

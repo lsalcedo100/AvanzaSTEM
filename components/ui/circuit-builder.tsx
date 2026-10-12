@@ -21,6 +21,7 @@ import {
   Zap,
 } from "lucide-react"
 import type { ComponentType } from "react"
+import { useOnScreen } from "@/components/ui/useOnScreen"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import {
@@ -1094,8 +1095,18 @@ function useCircuitKeyboard({
   onRotate: () => void
   onErase: (r: number, c: number) => void
 }) {
+  // Keys only act while the lab is on screen; /games has twelve other
+  // activities. Both play modes call this hook from inside the lab's section,
+  // which carries a fixed id, so the hook finds it rather than threading a ref
+  // through every mode component.
+  const sectionRef = useRef<HTMLElement | null>(null)
+  useEffect(() => {
+    sectionRef.current = document.getElementById("circuit-game")
+  }, [])
+  const onScreen = useOnScreen(sectionRef)
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
+      if (!onScreen.current) return
       const el = e.target as HTMLElement | null
       const tag = el?.tagName
       if (tag === "INPUT" || tag === "TEXTAREA" || el?.isContentEditable) return
@@ -1111,7 +1122,7 @@ function useCircuitKeyboard({
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [hovered, onRotate, onErase])
+  }, [hovered, onScreen, onRotate, onErase])
 }
 
 /** Can the active tool act on this cell? Used for highlighting & prevention. */

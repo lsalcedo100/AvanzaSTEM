@@ -187,7 +187,7 @@ const staticRoutes = [
   { path: '/resources', priority: 0.9, changeFrequency: 'weekly', lastModified: '2026-08-28' },
   { path: '/about', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-09-19' },
   { path: '/projects', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-07-04' },
-  { path: '/games', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-07-16' },
+  { path: '/games', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-10-12' },
   { path: '/blog', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-08-27' },
   { path: '/workshops', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-09-25' },
   { path: '/find-a-workshop', priority: 0.7, changeFrequency: 'monthly', lastModified: '2026-09-25' },

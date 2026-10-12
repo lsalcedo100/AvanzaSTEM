@@ -32,6 +32,7 @@ import {
 } from "./catapult-physics"
 import { createLevelUpSounds, playRandomLevelUpSound, stopLevelUpSounds } from "./level-up-sounds"
 import { useLanguage } from "@/components/providers/language-provider"
+import { useOnScreen } from "@/components/ui/useOnScreen"
 import type { Translations } from "@/i18n/translations"
 
 /** The catapult wording, threaded through the pure game reducer. */
@@ -222,6 +223,9 @@ export function CatapultLab() {
   const [completedLevels, setCompletedLevels] = useState<Set<number>>(new Set())
   const [bestScores, setBestScores] = useState<Record<number, number>>({})
   const svgRef = useRef<SVGSVGElement | null>(null)
+  /** The lab's own section, watched so keyboard shortcuts only work while it is on screen. */
+  const sectionRef = useRef<HTMLElement>(null)
+  const onScreenRef = useOnScreen(sectionRef)
   const gameRef = useRef(game)
   const targetSoundsRef = useRef<HTMLAudioElement[]>([])
   const weakWallBreakSoundsRef = useRef<HTMLAudioElement[]>([])
@@ -453,6 +457,11 @@ export function CatapultLab() {
         return
       }
 
+      // Keys only act while the lab is actually on screen. The handler lives on
+      // the window, and twelve other activities share this page: a Space bar
+      // pressed while reading another lab must not fire the catapult.
+      if (!onScreenRef.current) return
+
       const current = gameRef.current
       unlockAudio()
 
@@ -494,6 +503,7 @@ export function CatapultLab() {
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
   })
+
 
   const visibleTargets = useMemo(
     () =>
@@ -773,7 +783,7 @@ export function CatapultLab() {
   const projectilePosition = game.projectile?.position
 
   return (
-    <section className="bg-[#f7f8f5] py-14 md:py-16">
+    <section ref={sectionRef} className="bg-[#f7f8f5] py-14 md:py-16">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <FadeIn>
           <div className="border border-[#d6d8d2] bg-white">

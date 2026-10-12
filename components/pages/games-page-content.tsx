@@ -11,6 +11,7 @@ import { CodePathRobot } from "@/components/ui/code-path-robot"
 import { CircuitBuilder } from "@/components/ui/circuit-builder"
 import { CatapultLab } from "@/components/ui/catapult-lab"
 import { GravitySandbox } from "@/components/ui/gravity-sandbox"
+import { GravitySwitch } from "@/components/ui/gravity-switch"
 import { BooleanLogicGame } from "@/components/ui/logic-game"
 import { DensityTower } from "@/components/ui/density-tower"
 import { SortingRace } from "@/components/ui/sorting-race"
@@ -179,6 +180,9 @@ export function GamesPageContent() {
       </div>
       <div id="gravity" style={{ scrollMarginTop: 96 }}>
         <GravitySandbox />
+      </div>
+      <div id="zerog" style={{ scrollMarginTop: 96 }}>
+        <GravitySwitch />
       </div>
 
       {/* CLOSING CTA */}

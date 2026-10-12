@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useOnScreen } from "@/components/ui/useOnScreen"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
 import { createLevelUpSounds, playRandomLevelUpSound } from "@/components/ui/level-up-sounds"
@@ -175,6 +176,9 @@ export function MarbleRun() {
 
   const boardRef = useRef<HTMLDivElement | null>(null)
   const marbleRef = useRef<HTMLDivElement | null>(null)
+  /** Keys only act while the lab is on screen; /games has twelve other activities. */
+  const sectionRef = useRef<HTMLElement>(null)
+  const onScreen = useOnScreen(sectionRef)
   const trailRef = useRef<SVGPathElement | null>(null)
   const animationRef = useRef<number | null>(null)
   const marbleBaseTransformRef = useRef("")
@@ -909,6 +913,7 @@ export function MarbleRun() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (!onScreen.current) return
       const target = event.target
       if (
         target instanceof HTMLElement &&
@@ -947,7 +952,7 @@ export function MarbleRun() {
 
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [clearBoard, eraseSelected, goNext, resetMarble, restartLevel, rotateActive, runSimulation, runState])
+  }, [clearBoard, eraseSelected, goNext, onScreen, resetMarble, restartLevel, rotateActive, runSimulation, runState])
 
   const hoverProblem =
     hoveredCell && tool !== "erase"
@@ -955,7 +960,7 @@ export function MarbleRun() {
       : null
 
   return (
-    <section className="overflow-hidden bg-[#f4ead7] py-10 text-[#26313a] md:py-16">
+    <section ref={sectionRef} className="overflow-hidden bg-[#f4ead7] py-10 text-[#26313a] md:py-16">
       <div className="mx-auto max-w-7xl px-3 sm:px-5 md:px-6">
         <FadeIn className="max-w-3xl">
           <p className="inline-flex rounded-full border border-[#caa66b] bg-[#fff7e6] px-3 py-1 text-xs font-extrabold uppercase tracking-[0.16em] text-[#7a5524] shadow-sm">
