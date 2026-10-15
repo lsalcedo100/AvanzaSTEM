@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "@/components/ui/link"
-import Image from "next/image"
+import Image from "@/components/ui/image"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "@/components/ui/link"
-import Image from "next/image"
+import Image from "@/components/ui/image"
 import { ArrowRight, ChevronDown } from "lucide-react"
 import { FadeIn } from "@/components/ui/animate"
 import { getProjectGuides } from "@/features/projects/data"

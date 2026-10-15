@@ -1,6 +1,6 @@
 "use client"
 
-import Image from "next/image"
+import Image from "@/components/ui/image"
 
 import { useLanguage } from "@/components/providers/language-provider"
 import {

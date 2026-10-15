@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "@/components/ui/image"
 import Link from "@/components/ui/link"
 import { JourneyDiagram } from "@/components/pages/intro-to-ai/journey-diagram"
 import type { CurriculumCopy, CurriculumEntry } from "@/features/curriculums/catalog"

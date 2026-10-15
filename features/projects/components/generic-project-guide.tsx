@@ -1,5 +1,5 @@
 import Link from "@/components/ui/link"
-import Image from "next/image"
+import Image from "@/components/ui/image"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { PrintButton } from "@/components/ui/print-button"

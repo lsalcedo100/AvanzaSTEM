@@ -1,6 +1,7 @@
 "use client"
 
-import Image, { type ImageProps } from "next/image"
+import type { ImageProps } from "next/image"
+import Image from "@/components/ui/image"
 import { useImageLightbox } from "@/components/providers/image-lightbox-provider"
 import { cn } from "@/lib/utils"
 
