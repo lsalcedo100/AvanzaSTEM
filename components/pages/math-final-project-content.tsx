@@ -6,7 +6,7 @@ import {
   getMathAdventuresCurriculum,
 } from "@/features/curriculums/math-adventures/i18n"
 import { useEffect, useState } from "react"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { Check, Circle, X } from "lucide-react"
 import { MathLessonVisit } from "@/components/pages/math-adventures-progress-ui"
 import { useMathProgress } from "@/components/ui/useMathProgress"

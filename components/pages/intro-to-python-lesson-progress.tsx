@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { formatTemplate } from "@/lib/format-template"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import {
   introToPythonCurriculum,
   introToPythonPath,

@@ -1,5 +1,5 @@
 import Image from "next/image"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import type { CSSProperties, ReactNode } from "react"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"

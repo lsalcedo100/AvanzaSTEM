@@ -1,7 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LightboxImage } from "@/components/ui/lightbox-image"
 import { FadeIn } from "@/components/ui/animate"

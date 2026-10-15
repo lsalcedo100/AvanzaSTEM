@@ -4,7 +4,7 @@ import { useLanguage } from "@/components/providers/language-provider"
 import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai/i18n"
 
 import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { introToAiCourse, introToAiLessonPath, introToAiPath } from "@/features/curriculums/intro-to-ai"
 import { isCorrect } from "@/features/curriculums/intro-to-ai/quiz"
 import {

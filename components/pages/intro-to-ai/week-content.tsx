@@ -3,7 +3,7 @@
 import { useLanguage } from "@/components/providers/language-provider"
 import { findAiWeek, getIntroToAiCourse } from "@/features/curriculums/intro-to-ai/i18n"
 
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { ArrowRight, Check } from "lucide-react"
 import {
   introToAiLessonPath,

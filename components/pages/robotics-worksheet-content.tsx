@@ -5,7 +5,7 @@ import {
   findRoboticsModule,
   getRoboticsModules,
 } from "@/features/curriculums/robotics/i18n"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { roboticsLessonPath, type RoboticsModule } from "@/features/curriculums/robotics"
 import { PrintButton } from "@/components/ui/print-button"
 

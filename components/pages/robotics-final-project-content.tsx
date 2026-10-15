@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useLanguage } from "@/components/providers/language-provider"
 import type { Translations } from "@/i18n/translations"
 import { getRoboticsModules } from "@/features/curriculums/robotics/i18n"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import {
   roboticsLessonPath,
   roboticsPath,

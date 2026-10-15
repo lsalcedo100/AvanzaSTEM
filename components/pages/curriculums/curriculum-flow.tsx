@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { scienceLessonPath } from "@/features/curriculums/science-experiments"
 import { getScienceExperimentsCurriculum } from "@/features/curriculums/science-experiments/i18n"
 import type { Language, Translations } from "@/i18n/translations"

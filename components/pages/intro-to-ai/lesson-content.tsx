@@ -5,7 +5,7 @@ import { introToAiCourse } from "@/features/curriculums/intro-to-ai"
 import { findAiLesson, findAiWeek } from "@/features/curriculums/intro-to-ai/i18n"
 
 import { useEffect } from "react"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { ArrowLeft, ArrowRight, Check } from "lucide-react"
 import type { Lesson, LessonSection } from "@/features/curriculums/intro-to-ai/types"
 import {

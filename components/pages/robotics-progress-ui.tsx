@@ -3,7 +3,7 @@
 import { useLanguage } from "@/components/providers/language-provider"
 import { getRoboticsModules } from "@/features/curriculums/robotics/i18n"
 import { useEffect } from "react"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import {
   getRoboticsModuleById,
   roboticsCurriculum,

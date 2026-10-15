@@ -6,7 +6,7 @@ import {
   findRoboticsModule,
   getRoboticsModules,
 } from "@/features/curriculums/robotics/i18n"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import {
   ROBOTICS_SAFETY,
   roboticsLessonPath,

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { useLanguage } from "@/components/providers/language-provider"
 import { getEngineeringFundamentalsCurriculum } from "@/features/curriculums/engineering-fundamentals/i18n"
 import {

@@ -3,7 +3,7 @@
 import { useLanguage } from "@/components/providers/language-provider"
 import { getIntroToAiCourse } from "@/features/curriculums/intro-to-ai/i18n"
 
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { introToAiLessonPath, introToAiPath } from "@/features/curriculums/intro-to-ai"
 import { courseCompletionRequirements, finalProjectComplete } from "@/features/curriculums/intro-to-ai/progress"
 import { computeSkillStates, summarizeSkills, skillDefs, statusLabels, type SkillStatus } from "@/features/curriculums/intro-to-ai/skills"

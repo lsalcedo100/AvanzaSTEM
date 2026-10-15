@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import Image from "next/image"
 import { ArrowRight, ChevronDown } from "lucide-react"
 import { FadeIn } from "@/components/ui/animate"

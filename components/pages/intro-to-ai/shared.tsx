@@ -1,6 +1,6 @@
 "use client"
 
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import type { VisualExplanation } from "@/features/curriculums/intro-to-ai/types"
 import { BeforeAfterDiagram, DecisionTreeDiagram, FlowDiagram } from "@/components/pages/intro-to-ai/diagrams"
 import { useLanguage } from "@/components/providers/language-provider"

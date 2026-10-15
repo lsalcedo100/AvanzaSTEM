@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { curriculumCatalog, resolveCurriculumCopy } from "@/features/curriculums/catalog"
 import type { Translations } from "@/i18n/translations"
 

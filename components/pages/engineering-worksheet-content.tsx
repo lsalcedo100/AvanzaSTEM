@@ -5,7 +5,7 @@ import {
   findEngineeringLesson,
   getEngineeringFundamentalsCurriculum,
 } from "@/features/curriculums/engineering-fundamentals/i18n"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import { PrintButton } from "@/components/ui/print-button"
 import {
   engineeringLessonPath,

@@ -5,7 +5,7 @@ import {
   findMathLesson,
   getMathAdventuresCurriculum,
 } from "@/features/curriculums/math-adventures/i18n"
-import Link from "next/link"
+import Link from "@/components/ui/link"
 import {
   MathLessonComplete,
   MathLessonVisit,
