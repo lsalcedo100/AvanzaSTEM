@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useOnScreen } from "@/components/ui/useOnScreen"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
-import { createLevelUpSounds, playRandomLevelUpSound } from "@/components/ui/level-up-sounds"
+import { createLevelUpSounds, playRandomLevelUpSound, warmSounds } from "@/components/ui/level-up-sounds"
 import { MARBLE_RUN_LEVELS } from "@/components/ui/marble-run-levels"
 import {
   Check,
@@ -281,6 +281,10 @@ export function MarbleRun() {
     if (trailRef.current) trailRef.current.setAttribute("d", "")
   }, [])
 
+  const warmAudio = useCallback(() => {
+    warmSounds([rollingSoundRef.current, ...levelUpSoundsRef.current])
+  }, [])
+
   const stopRollingSound = useCallback(() => {
     const sound = rollingSoundRef.current
     if (!sound) return
@@ -400,7 +404,7 @@ export function MarbleRun() {
 
   useEffect(() => {
     const audio = new Audio(ROLLING_SOUND_PATH)
-    audio.preload = "auto"
+    audio.preload = "none"
     audio.loop = true
     audio.volume = 0.45
     rollingSoundRef.current = audio
@@ -960,7 +964,12 @@ export function MarbleRun() {
       : null
 
   return (
-    <section ref={sectionRef} className="overflow-hidden bg-[#f4ead7] py-10 text-[#26313a] md:py-16">
+    <section
+      ref={sectionRef}
+      className="overflow-hidden bg-[#f4ead7] py-10 text-[#26313a] md:py-16"
+      onPointerDownCapture={warmAudio}
+      onKeyDownCapture={warmAudio}
+    >
       <div className="mx-auto max-w-7xl px-3 sm:px-5 md:px-6">
         <FadeIn className="max-w-3xl">
           <p className="inline-flex rounded-full border border-[#caa66b] bg-[#fff7e6] px-3 py-1 text-xs font-extrabold uppercase tracking-[0.16em] text-[#7a5524] shadow-sm">

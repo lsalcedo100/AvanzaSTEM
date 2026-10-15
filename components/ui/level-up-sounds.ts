@@ -14,10 +14,25 @@ export const LEVEL_UP_SOUND_PATHS = [
   "/audio/universfield-level-up-08-402152.mp3",
 ]
 
+// Sound effects are created with preload="none": the games page mounts every
+// game at once, so preloading meant ~28 mp3 downloads (80+ CDN requests) for
+// each visitor, most of whom never press play. warmSounds() flips them to
+// preload="auto" on the first pointer or key interaction inside a game.
+const warmedSounds = new WeakSet<HTMLAudioElement>()
+
+export function warmSounds(sounds: Array<HTMLAudioElement | null | undefined>) {
+  for (const sound of sounds) {
+    if (!sound || warmedSounds.has(sound)) continue
+    warmedSounds.add(sound)
+    sound.preload = "auto"
+    sound.load()
+  }
+}
+
 export function createLevelUpSounds(volume = 0.7) {
   return LEVEL_UP_SOUND_PATHS.map((src) => {
     const audio = new Audio(src)
-    audio.preload = "auto"
+    audio.preload = "none"
     audio.volume = volume
     return audio
   })

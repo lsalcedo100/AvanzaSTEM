@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import {
   Check,
@@ -15,7 +15,7 @@ import {
 } from "lucide-react"
 import { useLanguage } from "@/components/providers/language-provider"
 import { FadeIn } from "@/components/ui/animate"
-import { createLevelUpSounds, playRandomLevelUpSound } from "@/components/ui/level-up-sounds"
+import { createLevelUpSounds, playRandomLevelUpSound, warmSounds } from "@/components/ui/level-up-sounds"
 import { cn } from "@/lib/utils"
 
 type Dir = 0 | 1 | 2 | 3 // 0 = up, 1 = right, 2 = down, 3 = left
@@ -384,6 +384,10 @@ export function CodePathRobot() {
   const overDeleteRef = useRef(false)
   const starSoundsRef = useRef<HTMLAudioElement[]>([])
   const levelUpSoundsRef = useRef<HTMLAudioElement[]>([])
+
+  const warmAudio = useCallback(() => {
+    warmSounds([...starSoundsRef.current, ...levelUpSoundsRef.current])
+  }, [])
   const completedLevelSoundIdsRef = useRef<Set<number>>(new Set())
   const progressReadyRef = useRef(false)
   const restoredProgramRef = useRef<ProgramBlock[] | null>(null)
@@ -453,7 +457,7 @@ export function CodePathRobot() {
   useEffect(() => {
     starSoundsRef.current = STAR_SOUND_PATHS.map((src) => {
       const audio = new Audio(src)
-      audio.preload = "auto"
+      audio.preload = "none"
       audio.volume = 0.75
       return audio
     })
@@ -757,7 +761,11 @@ export function CodePathRobot() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-[#eef9ff] py-20 md:py-24">
+    <section
+      className="relative overflow-hidden bg-[#eef9ff] py-20 md:py-24"
+      onPointerDownCapture={warmAudio}
+      onKeyDownCapture={warmAudio}
+    >
       <div className="relative mx-auto max-w-6xl px-6">
         <FadeIn className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-bold uppercase tracking-wider text-avanza-purple">

@@ -30,7 +30,7 @@ import {
   type SegmentRectHit,
   type Vec,
 } from "./catapult-physics"
-import { createLevelUpSounds, playRandomLevelUpSound, stopLevelUpSounds } from "./level-up-sounds"
+import { createLevelUpSounds, playRandomLevelUpSound, stopLevelUpSounds, warmSounds } from "./level-up-sounds"
 import { useLanguage } from "@/components/providers/language-provider"
 import { useOnScreen } from "@/components/ui/useOnScreen"
 import type { Translations } from "@/i18n/translations"
@@ -285,35 +285,35 @@ export function CatapultLab() {
   useEffect(() => {
     targetSoundsRef.current = TARGET_DESTROY_SOUND_PATHS.map((src) => {
       const audio = new Audio(src)
-      audio.preload = "auto"
+      audio.preload = "none"
       audio.volume = 0.65
       return audio
     })
 
     weakWallBreakSoundsRef.current = WEAK_WALL_BREAK_SOUND_PATHS.map((src) => {
       const audio = new Audio(src)
-      audio.preload = "auto"
+      audio.preload = "none"
       audio.volume = 0.72
       return audio
     })
 
     const bounceAudio = new Audio(BOUNCE_SOUND_PATH)
-    bounceAudio.preload = "auto"
+    bounceAudio.preload = "none"
     bounceAudio.volume = 0.55
     bounceSoundRef.current = bounceAudio
 
     const groundHitAudio = new Audio(GROUND_HIT_SOUND_PATH)
-    groundHitAudio.preload = "auto"
+    groundHitAudio.preload = "none"
     groundHitAudio.volume = 0.58
     groundHitSoundRef.current = groundHitAudio
 
     const cannonFireAudio = new Audio(CANNON_FIRE_SOUND_PATH)
-    cannonFireAudio.preload = "auto"
+    cannonFireAudio.preload = "none"
     cannonFireAudio.volume = 0.62
     cannonFireSoundRef.current = cannonFireAudio
 
     const loseAudio = new Audio(LOSE_SOUND_PATH)
-    loseAudio.preload = "auto"
+    loseAudio.preload = "none"
     loseAudio.volume = 0.65
     loseSoundRef.current = loseAudio
 
@@ -622,6 +622,7 @@ export function CatapultLab() {
 
     if (!sounds.length) return
     audioUnlockedRef.current = true
+    warmSounds(sounds)
 
     for (const sound of sounds) {
       const primer = sound.cloneNode() as HTMLAudioElement
@@ -783,7 +784,12 @@ export function CatapultLab() {
   const projectilePosition = game.projectile?.position
 
   return (
-    <section ref={sectionRef} className="bg-[#f7f8f5] py-14 md:py-16">
+    <section
+      ref={sectionRef}
+      className="bg-[#f7f8f5] py-14 md:py-16"
+      onPointerDownCapture={unlockAudio}
+      onKeyDownCapture={unlockAudio}
+    >
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <FadeIn>
           <div className="border border-[#d6d8d2] bg-white">
