@@ -13,8 +13,12 @@ import {
   galleryPhoto,
 } from "@/components/ui/gallery"
 
+// Trims the top 12% of the 2:3 portrait so it fills the 1600:2110 feature box.
+// Expressed as c_fill + aspect ratio + gravity, not a pixel c_crop: the
+// Cloudinary loader (components/ui/cloudinary-loader.ts) rewrites w_/h_ tokens
+// for each srcset width, which turns a pixel crop into a tiny zoomed-in window.
 const buildingWorkshopImage =
-  "https://res.cloudinary.com/dw4uprmkk/image/upload/f_auto,q_auto:good,w_1600/c_crop,x_0,y_290,w_1600,h_2110/gallery-00174.jpg"
+  "https://res.cloudinary.com/dw4uprmkk/image/upload/c_fill,g_south,ar_1600:2110,f_auto,q_auto:good,w_1600/gallery-00174.jpg"
 const codingThumbnailImage = codingFeatureImage.full
 // Pinned to fixed Cloudinary numbers, not gallery positions, so future uploads
 // never swap these out from under the cards.
